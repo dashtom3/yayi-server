@@ -1,0 +1,49 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.CartDao">
+	<resultMap type="Cart" id="cartRM">
+		<id column="cart_id" property="cartId"/>
+		<result column="user_id" property="userId"/>
+		<result column="item_id" property="itemId"/>
+		<result column="pic" property="pic"/>
+		<result column="name" property="name"/>
+		<result column="price" property="price"/>
+		<result column="num" property="num"/>
+		<result column="item_SKU" property="itemSKU"/>
+		<result column="item_property_namea" property="itemPropertyNamea"/>
+		<result column="item_property_nameb" property="itemPropertyNameb"/>
+		<result column="item_property_namec" property="itemPropertyNamec"/>
+	</resultMap>
+	
+	<select id="list" resultMap="cartRM">
+		SELECT item_id,cart_id,item_SKU,item_property_namea,item_property_nameb,item_property_namec,pic,name,price,num FROM cart
+		WHERE user_id=#{userId};
+	</select>
+	
+	<update id="updateOne">
+		UPDATE cart SET num=num+#{num} WHERE item_SKU=#{itemSKU} AND user_id=#{userId};
+	</update>
+	
+	<update id="updateNum">
+		UPDATE cart SET num=#{num} WHERE item_SKU=#{itemSKU} AND user_id=#{userId};
+	</update>
+	
+	<delete id="delete">
+		DELETE FROM cart WHERE user_id=#{userId} AND item_SKU=#{itemSKU};
+	</delete>
+	
+	<insert id="star" parameterType="ItemStar">
+		INSERT INTO item_star(user_id,item_id,created,updated) VALUES(#{userId},#{itemId},NOW(),NOW());
+	</insert>
+	
+	<insert id="add" parameterType="Cart">
+		INSERT INTO cart(user_id,item_id,name,pic,num,price,item_SKU,item_property_namea,item_property_nameb,item_property_namec,created,updated)
+		VALUES(#{userId},#{itemId},#{name},#{pic},#{num},#{price},#{itemSKU},#{itemPropertyNamea},#{itemPropertyNameb},#{itemPropertyNamec},NOW(),NOW());
+	</insert>
+	
+	<select id="getCountItemSKU" resultType="int">
+		SELECT COUNT(*) FROM cart WHERE item_SKU=#{itemSKU};
+	</select>
+</mapper>

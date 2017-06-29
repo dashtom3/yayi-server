@@ -1,0 +1,204 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.OrderManagementDao">
+
+	<resultMap type="User" id="userOrderManageResultMap">
+		<id property="userId" column="userId" />
+		<result property="phone" column="phone" />
+		<collection property="orderaList" ofType="Ordera">
+			<id property="orderId" column="order_id" />
+			<result property="qbDed" column="qb_ded" />
+			<result property="actualPay" column="actual_pay" />
+			<result property="totalFee" column="total_fee" />
+			<result property="created" column="created" />
+			<result property="state" column="state" />
+			<result property="shippingName" column="shipping_name" />
+			<result property="shippingCode" column="shipping_code" />
+			<result property="refund" column="refund" />
+
+		</collection>
+	</resultMap>
+	<select id="showOrder" resultMap="userOrderManageResultMap">
+		SELECT
+		orde.order_id,orde.total_fee,orde.qb_ded,orde.actual_pay,us.phone,orde.created,
+		orde.state, CONCAT(shipping_name,shipping_code) AS
+		information,orde.refund,orde.shipping_name,orde.shipping_code
+		FROM USER
+		us JOIN ordera orde ON us.user_id=orde.user_id
+		<where>
+			<if test="orderId !=null">
+				orde.order_id=#{orderId}
+			</if>
+			<!-- <choose> <when test="buyerInfo != null"> and us.phone = #{buyerInfo} 
+				</when> <otherwise> and us.true_name = #{buyerInfo} </otherwise> </choose> -->
+			<if test="buyerInfo != null">
+				and us.phone = #{buyerInfo} or us.true_name =
+				#{buyerInfo}
+			</if>
+			<if test="orderState !=null">
+				and orde.state=#{orderState}
+			</if>
+			<if test="isRefund !=null">
+				and orde.refund=#{isRefund}
+			</if>
+			<if test="orderCTime !=null and orderETime!=null">
+				and orde.created
+				BETWEEN #{orderCTime} AND #{orderETime}
+			</if>
+			<if test="orderCTime !=null and orderETime==null">
+				and orde.created >#{orderCTime}
+
+			</if>
+			<if test="orderETime !=null and orderCTime==null">
+				and orde.created &lt;#{orderETime}
+			</if>
+			<!-- <if test="orderCTime !=null"> and orde.created>#{orderCTime} </if> 
+				<if test="orderETime !=null"> and orde.created &lt;#{orderETime} </if> -->
+		</where>
+	</select>
+
+	<!-- //关闭交易 or确定交易 -->
+	<update id="closeTrading">
+		update ordera set state =${flagBit} where
+		order_id=${order_Id}
+	</update>
+<!-- //订单详情  resultMap-->
+	<resultMap type="Ordera" id="details">
+		<id property="OrderId" column="order_id" />
+		<result property="state" column="state" />
+		<result property="paymentTime" column="payment_time" />
+		<result property="totalFee" column="total_fee" />
+		<result property="postFee" column="post_fee" />
+		<result property="qbDed" column="qb_ded" />
+		<result property="orderId" column="order_id" />
+		<result property="payType" column="pay_type" />
+		<result property="invoiceHand" column="invoice_hand" />
+		<result property="buyerMessage" column="buyer_message" />
+		<result property="isRegister" column="is_register" />
+		
+		<association property="receiver"
+			javaType="com.yayiabc.http.mvc.pojo.jpa.Receiver">
+			<id property="receiverId" column="receiver_id" />
+			<result property="receivername" column="receiver_name" />
+			<result property="province" column="province" />
+			<result property="city" column="city" />
+			<result property="county" column="county" />
+			<result property="receiverdetail" column="receiver_detail" />
+		</association>
+		
+		<collection property="orderitemList" ofType="OrderItem">
+			<id property="itemId" column="item_id" />
+			<result property="itemPropertyNamea" column="item_property_namea" />
+			<result property="itemPropertyNameb" column="item_property_nameb" />
+			<result property="itemPropertyNamec" column="item_property_namec" />
+			<result property="" column="pic_path" />
+			<result property="" column="price" />
+			<result property="" column="num" />
+			<result property="" column="pic_path" />
+			<association property="itemInfo" javaType="com.yayiabc.http.mvc.pojo.jpa.ItemInfo">
+				<result property="itemName" column="item_name" />
+			</association>
+		</collection>
+		
+	</resultMap>
+
+	<!-- //订单详情 -->
+	<select id="queryOrderDetails" resultMap="details">
+		SELECT
+		orde.state,orde.created,orde.payment_time,orde.total_fee,orde.post_fee,
+		orde.qb_ded,orde.order_id,orde.pay_type,orde.invoice_hand,orde.buyer_message,orde.is_register,
+
+		rece.user_id,rece.receiver_name,rece.province,rece.city,rece.county,rece.receiver_detail,
+
+		orde_it.item_property_namea,orde_it.item_property_nameb,orde_it.item_property_namec,
+
+		orde_it.pic_path,orde_it.price,orde_it.num,item_de.register_id,item_in.item_name
+		FROM ordera orde JOIN receiver rece ON
+		orde.receiver_id=rece.receiver_id JOIN order_item orde_it ON
+		orde_it.order_id=orde.order_id JOIN item_detail item_de ON
+		orde_it.item_id=item_de.item_id JOIN item_info item_in ON
+		item_in.item_id=orde_it.item_id orde.order_id=#{orderId}
+	</select>
+
+	<!-- //退款处理 resultMap -->
+	<resultMap type="Ordera" id="refundProcessingResultMap">
+		<id property="orderId" column="order_id" />
+		<result property="actualPay" column="actual_pay" />
+		<result property="postFee" column="post_fee" />
+		<result property="qbDed" column="qb_ded" />
+		<!-- <result property="userId" column="user_id" /> -->
+		<collection property="orderitemList" ofType="OrderItem">
+			<id property="itemId" column="item_id" />
+			<result property="itemPropertyNamea" column="item_property_namea" />
+			<result property="itemPropertyNameb" column="item_property_nameb" />
+			<result property="itemPropertyNamec" column="item_property_namec" />
+			<result property="qbDed" column="qb_ded" />
+			<result property="num" column="num" />
+			<result property="price" column="price" />
+			<association property="itemInfo"
+				javaType="com.yayiabc.http.mvc.pojo.jpa.ItemInfo">
+				<id property="itemId" column="item_id" />
+				<result property="itemName" column="item_name" />
+			</association>
+		</collection>
+	</resultMap>
+	<!-- //退款处理 显示 -->
+	<select id="refundProcessing" resultMap="refundProcessingResultMap">
+		SELECT
+		<!-- orde.user_id, -->
+		orde.actual_pay,orde.order_id,orde.post_fee,orde.qb_ded,orde_it.item_property_namea,orde_it.item_property_nameb
+		,orde_it.item_property_namec,orde_it.price,orde_it.num,item_in.item_name,item_in.item_id,orde_it.qb_ded
+		FROM ordera orde JOIN order_item orde_it ON
+		orde.order_id=orde_it.order_id JOIN item_info item_in ON
+		orde_it.item_id=item_in.item_id
+		where orde.order_id=#{orderId}
+	</select>
+	<!-- 操作退款数据 -->
+	<insert id="makeRefundData" parameterType="com.yayiabc.http.mvc.pojo.jpa.Refund">
+		INSERT INTO
+		refund(user_id,item_id,refund_num,refund_reason,refund_money,refund_pic,state,fail_reason)
+		VALUES(
+		#{userId}, #{itemId}, #{refundNum}, #{refundReason},
+		#{refundMoney}, #{refundPic}, #{state},#{failReason}
+		)
+	</insert>
+
+
+	<resultMap type="OrderItem" id="c">
+
+		<id property="itemId" column="item_id" />
+
+		<result property="qbDed" column="qb_ded" />
+
+		<result property="price" column="price" />
+		<result property="num" column="num" />
+
+	</resultMap>
+
+
+
+	<!-- 查询订单的商品的最大数量 -->
+	<select id="showFund" resultMap="c">
+		SELECT item_id,qb_ded,price,num
+		FROM order_item WHERE order_id=#{orderId} AND item_id=#{itemId}
+	</select>
+
+	<!-- 根据订单 查询用户 -->
+	<select id="queryUser" resultType="java.lang.String">
+		select user.id from ordera
+		where order_id=#{orederId}
+	</select>
+
+	<!-- 根据用户id 查询该用户钱币余额 -->
+	<select id="userBalance" resultType="int">
+		select qb_balance from
+		qb_record where user_id=#{userId}
+	</select>
+    
+         <!-- 仓库发货 -->
+     <insert id="warehouseDelivery" >
+          insert into usera(shipping_name,shipping_code) values(#{logisticsName},#{logisticsCode},#{orderId})
+     </insert>
+</mapper>

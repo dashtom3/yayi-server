@@ -1,0 +1,76 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.yayiabc.http.mvc.dao.ItemInfoManageDao">
+ 	<!-- <select id="itemInfoList" resultMap="itemInfoRM">
+ 		select a.*,b.item_brand_name from 
+ 		item_info a
+ 		inner join
+ 		(select item_brand_id p_id,item_brand_name from item_brand) b
+ 		on a.item_brand_id=b.p_id
+ 		<where>
+ 			<if test="itemId!=null"> and item_id=#{itemId}</if>
+ 			<if test="itemName!=null">and item_name=#{itemName}</if>
+ 			<if test="oneClassify!=null">and one_classify=#{oneClassify}</if>
+ 			<if test="oneClassify!=null">or two_classify=#{oneClassify}</if>
+ 			<if test="oneClassify!=null">or three_classify=#{oneClassify}</if>
+ 			<if test="twoClassify!=null">and item_brand_name=#{twoClassify}</if>
+ 			<if test="state!=null">and state=#{state}</if>
+ 		</where>
+ 	</select>
+ 	<resultMap type="ItemInfo" id="itemInfoRM" autoMapping="true">
+ 		<id column="item_id" property="itemId"/>
+ 		<association property="itemBrand" javaType="ItemBrand" autoMapping="true">
+ 			<id property="itemBrandId" column="item_brand_id"/>
+ 		</association>
+ 	</resultMap>
+ 	
+ 	<update id="up">
+ 		update item_info set state=1 where item_id=#{itemId}
+ 	</update>
+ 	
+ 	<update id="down">
+ 		update item_info set state=0 where item_id=#{itemId}
+ 	</update>
+ 	
+ 	<delete id="deleteItemInfo">
+ 		delete from item_info where item_id=#{itemId}
+ 	</delete>
+ 	
+ 	<delete id="deleteItemDetail">
+ 		delete from item_detail where item_id=#{itemId}
+ 	</delete>
+ 	
+ 	<delete id="deleteItemValue">
+ 		delete from item_value where item_id=#{itemId}
+ 	</delete>
+ 	
+ 	<insert id="insertItemPropertyd">
+ 			insert into item_propertyd values
+ 		<foreach collection="itemPropertyList" item="itemProperty" open="" close="" separator=" ">
+ 			(#{itemPropertyd.stockNum},#{itemPropertyd.itemQb},#{itemPropertyd.tiCheng},#{itemPropertyd.itemSkuPrice},#{itemPropertyd.itemSKU},#{itemPropertyd.itemSKU},now(),now())
+ 		</foreach>
+ 	</insert>
+ 	
+ 	<insert id="insertItemValue">
+ 		insert into item_value
+ 		values
+ 		<foreach collection="list" index="index" item="item" separator=",">
+          (null,#{itemId},#{item.itemPropertyName},#{itemPropertyInfo})
+ 		</foreach>
+ 	</insert>
+ 	
+ 	<insert id="insertItemInfo">
+ 		insert into item_info values(#{itemId},#{itemName},#{itemBrand.itemBrandId},#{},null,0,1,#{oneClassify},#{twoClassify},#{threeClassify},now(),now());
+ 	</insert>
+ 	
+ 	<insert id="insertItemDetail">
+ 		insert into item_detail 
+ 		values
+ 		(#{itemId},#{itemDetail.itemDesc},#{itemDetail.itemUse},#{itemDetail.video},#{itemDetail.itemPica},#{itemDetail.itemPicb},
+ 		#{itemDetail.itemPicc},#{itemDetail.itemPicd},#{itemDetail.itemPice},null,1,null,#{itemDetail.storeItemId},#{itemDetail.apparatusType},#{itemDetail.unit},#{itemDetail.producePompany},
+ 		#{itemDetail.registerId},#{itemDetail.registerDate},#{itemDetail.itemPacking},#{itemDetail.itemLevels},#{itemDetail.itemRange},null,now(),now()
+ 		)
+ 	</insert> -->
+</mapper>       

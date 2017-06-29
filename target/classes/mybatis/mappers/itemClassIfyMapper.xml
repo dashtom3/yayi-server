@@ -1,0 +1,84 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.ItemClassifyDao">
+
+	<resultMap id="queryTreeList" type="Classify">
+		<id property="oneId" column="one_id"/>
+		<result property="oneClassify" column="one_classify"/>
+		<collection property="classifyTwoList" ofType="ClassifyTwo">
+			<id property="twoId" column="two_id"/>
+			<result property="classifyTwoName" column="classify_two_name"/>
+			<collection property="classifyThreeList" ofType="ClassifyThree">
+				<id property="threeId" column="three_id"/>
+				<result property="classifyThreeName" column="classify_three_name"/>
+			</collection>
+		</collection>
+	</resultMap>
+	
+	
+   <select id="showsTreeClassify" resultMap="queryTreeList">
+	SELECT d.one_id,d.two_id,d.one_classify,d.classify_two_name,c.three_id,c.classify_three_name FROM
+    (SELECT * FROM
+    (SELECT one_id,one_classify one_class FROM classify) a
+    INNER JOIN
+    classify_two b
+    ON a.one_class=b.one_classify) d
+    INNER JOIN
+    classify_three c
+    ON d.classify_two_name=c.classify_two_name
+   </select>
+   
+   <resultMap type="ItemInfo" id="itemInfoRM" autoMapping="true">
+		<id property="itemId" column="item_id"/>
+		<association property="itemDetail" javaType="ItemDetail">
+			<id property="itemId" column="x_id"/>
+			<result property="itemPica" column="item_pica"/>
+		</association>
+	</resultMap>
+   
+   <select id="getCount" resultType="int" parameterType="Search">
+   	SELECT count(0) FROM
+    (SELECT * FROM
+    item_info a
+    INNER JOIN 
+    (SELECT item_id x_id,item_pica FROM item_detail) b
+    ON a.item_id=b.x_id) c
+    INNER JOIN 
+    (SELECT item_brand_id p_id,item_brand_name FROM item_brand) d
+    ON c.item_brand_id=d.p_id
+    <where>
+    	<if test="oneClassify!=null">one_classify=#{oneClassify}</if>
+    	<if test="twoClassify!=null">and two_classify=#{twoClassify}</if>
+    	<if test="threeClassify!=null">and three_classify=#{threeClassify}</if>
+    	<if test="itemBrandName!=null">and item_brand_name=#{itemBrandName}</if>
+    </where>
+   </select>
+   
+   <select id="queryItemSearch" resultMap="itemInfoRM" parameterType="Search">
+   	SELECT * FROM
+    (SELECT * FROM
+    item_info a
+    INNER JOIN 
+    (SELECT item_id x_id,item_pica FROM item_detail) b
+    ON a.item_id=b.x_id) c
+    INNER JOIN 
+    (SELECT item_brand_id p_id,item_brand_name FROM item_brand) d
+    ON c.item_brand_id=d.p_id
+    <where>
+    	<if test="oneClassify!=null">one_classify=#{oneClassify}</if>
+    	<if test="twoClassify!=null">and two_classify=#{twoClassify}</if>
+    	<if test="threeClassify!=null">and three_classify=#{threeClassify}</if>
+    	<if test="itemBrandName!=null">and item_brand_name=#{itemBrandName}</if>
+    </where>
+    order by 
+    <choose>
+    	<when test="rule==1">updated desc</when>
+    	<when test="rule==2">sales desc</when>
+    	<when test="rule==3">item_price desc</when>
+    	<when test="rule==4">item_price asc</when>
+    </choose>
+    LIMIT #{currentNumber},#{numberPerPage} 
+   </select>
+</mapper>

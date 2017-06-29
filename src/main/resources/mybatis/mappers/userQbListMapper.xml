@@ -1,0 +1,46 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.UserQbListDao">
+	<resultMap type="User" id="userQbListRM">
+		<id column="user_id" property="userId"/>
+		<result column="phone" property="phone"/>
+		<result column="qb_balance" property="qbBalance"/>
+		<collection property="qbRecordList" ofType="QbRecord">
+			<id column="qb_rid" property="qbRid"/>
+			<result column="qb_rget" property="qbRget"/>
+			<result column="qb_rout" property="qbRout"/>
+			<result column="qb_time" property="qbTime"/>
+			<result column="remark" property="remark"/>
+		</collection>
+	</resultMap>
+	
+	<select id="list" resultMap="userQbListRM">
+		SELECT q.qb_rid,u.phone,u.qb_balance,q.qb_rget,q.qb_rout,q.qb_time,q.remark 
+		FROM qb_record q
+		LEFT JOIN user u
+		ON u.user_id=q.user_id
+		<where>
+			<if test="phone !=null and phone !=''">
+			u.phone LIKE '%${phone}%'
+			</if>
+			<if test="startDate !=null and startDate !=''">
+			and	q.qb_time <![CDATA[  >=  ]]> #{startDate}
+			</if>
+			<if test="endDate != null and endDate !=''">
+			and	q.qb_time &lt; #{endDate}
+			</if>
+		</where>
+	</select>
+	
+	<update id="update">
+		UPDATE user 
+		<set>
+			<if test="qbBalance !=null and qbBalance !=''">
+				qb_balance=#{qbBalance}
+			</if>
+		</set>
+		WHERE phone=#{phone};
+	</update>
+</mapper>

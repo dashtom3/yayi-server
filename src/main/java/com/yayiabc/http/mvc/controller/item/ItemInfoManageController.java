@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.controller.item;
 
+import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -118,9 +119,36 @@ public class ItemInfoManageController {
 	 */
 	@RequestMapping("insert")
 	@ResponseBody
-	public DataWrapper<Void> insert(
-			@ModelAttribute ItemInfo itemInfo
+	public DataWrapper<Void> insert(                                 
+	@RequestParam(value="itemId",required=true) String itemId ,
+	@RequestParam(value="itemName",required=true) String itemName,
+	@RequestParam(value="oneClassify",required=true) String oneClassify,
+	@RequestParam(value="twoClassify",required=true) String twoClassify,
+	@RequestParam(value="threeClassify",required=true) String threeClassify,
+	@RequestParam(value="itemPica",required=true) String itemPica,
+	@RequestParam(value="itemPicb",required=true) String itemPicb,
+	@RequestParam(value="itemPicc",required=true) String itemPicc,
+	@RequestParam(value="itemPicd",required=true) String itemPicd,
+	@RequestParam(value="itemPice",required=true) String itemPice,
+	@RequestParam(value="video",required=true) String video,
+	@RequestParam(value="itemDesc",required=true) String itemDesc,
+	@RequestParam(value="itemUse",required=true) String itemUse,
+	@RequestParam(value="itemRange",required=true) String itemRange,
+	@RequestParam(value="registerId",required=true) String registerId,
+	@RequestParam(value="storeItemId",required=true) String storeItemId,
+	@RequestParam(value="apparatusType",required=true) Integer apparatusType,
+	@RequestParam(value="producePompany",required=true) String producePompany,
+	@RequestParam(value="unit",required=true) String unit,
+	@RequestParam(value="registerDate",required=true) Date registerDate,
+	@RequestParam(value="itemPacking",required=true) String itemPacking,
+	@RequestParam(value="itemLevels",required=true) String itemLevels,
+	@RequestParam(value="itemPparam",required=true) String itemPparam,
+	@RequestParam(value="itemBrandName",required=true) String itemBrandName, 
+	@RequestBody List<ItemValue> itemValueList
 			){
-		return itemInfoManageService.insert(itemInfo);
+		return itemInfoManageService.insert(itemId,itemName,oneClassify,itemLevels,
+				twoClassify,threeClassify,itemPica,itemPicb,itemPicc,itemPicd,itemPice,
+				video,itemDesc,itemUse,itemRange,registerId,storeItemId,apparatusType,unit,
+				producePompany,registerDate,itemPacking,itemPparam,itemBrandName,itemValueList);
 	}
 }

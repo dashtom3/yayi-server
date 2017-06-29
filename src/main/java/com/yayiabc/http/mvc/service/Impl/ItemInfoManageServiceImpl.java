@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
@@ -71,7 +72,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 
 	@Override
 	public DataWrapper<Void> update() {
-		// TODO Auto-generated method stub
+		
 		return null;
 	}
 
@@ -84,20 +85,58 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 	}
 
 	@Override
-	public DataWrapper<Void> insert(ItemInfo itemInfo) {
+	public DataWrapper<Void> insert(String itemId, String itemName,
+			String oneClassify, String itemLevels, String twoClassify,
+			String threeClassify, String itemPica, String itemPicb,
+			String itemPicc, String itemPicd, String itemPice, String video,
+			String itemDesc, String itemUse, String itemRange,
+			String registerId, String storeItemId, Integer apparatusType,
+			String unit, String producePompany, Date registerDate,
+			String itemPacking, String itemPparam, String itemBrandName,
+			List<ItemValue> itemValueList) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		
-		HashMap<String, Object> map=new HashMap<String,Object>();
-		map.put("itemId", itemInfo.getItemId());
-		map.put("itemValueList", itemInfo.getItemValueList());
-		itemInfoManageDao.insertItemPropertyd(map);
-		itemInfoManageDao.insertItemDetail(itemInfo);
-		itemInfoManageDao.insertItemValue(itemInfo);
-		itemInfoManageDao.insertItemInfo(itemInfo);
-		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-		
-		return dataWrapper;
+			ItemInfo itemInfo=new ItemInfo();
+			itemInfo.setItemId(itemId);
+			itemInfo.setItemName(itemName);
+			itemInfo.setOneClassify(oneClassify);
+			itemInfo.setTwoClassify(twoClassify);
+			itemInfo.setThreeClassify(threeClassify);
+			ItemBrand itemBrand =new ItemBrand();
+			itemBrand.setItemBrandName(itemBrandName);
+			ItemDetail itemDetail =new ItemDetail();
+			itemDetail.setItemId(itemId);
+			itemDetail.setItemDesc(itemDesc);
+			itemDetail.setItemUse(itemUse);
+			itemDetail.setVideo(video);
+			itemDetail.setItemPica(itemPica);
+			itemDetail.setItemPicb(itemPicb);
+			itemDetail.setItemPicc(itemPicc);
+			itemDetail.setItemPicd(itemPicd);
+			itemDetail.setItemPice(itemPice);
+			itemDetail.setStoreItemId(storeItemId);
+			itemDetail.setApparatusType(apparatusType);
+			itemDetail.setUnit(unit);
+			itemDetail.setProducePompany(producePompany);
+			itemDetail.setRegisterId(registerId);
+			itemDetail.setRegisterDate(registerDate);
+			itemDetail.setItemPacking(itemPacking);
+			itemDetail.setItemLevels(itemLevels);
+			itemDetail.setItemRange(itemRange);
+			itemDetail.setCreated(new Date());
+			itemDetail.setUpdated(new Date());
+			itemInfo.setItemDetail(itemDetail);
+			itemInfo.setItemBrand(itemBrand);
+			itemInfo.setItemValueList(itemValueList);
+			
+			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+			return dataWrapper;
 	}
+
+	
+
+	
+	
+	
 
 	
 

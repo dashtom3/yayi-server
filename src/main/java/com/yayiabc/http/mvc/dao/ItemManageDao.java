@@ -1,6 +1,7 @@
 package com.yayiabc.http.mvc.dao;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
@@ -35,9 +36,17 @@ public interface ItemManageDao {
 
 	void addProperty(String itemPropertyName);
 
-	void addPropertyd(ItemProperty itemProperty);
+	
 
 	void addItemClassify(ItemClassify itemClassify);
+
+	void addPropertyd(List<String> itemPparamList);
+
+	Integer queryItemPropertyIdByName(String itemPropertyName);
+
+	void addPropertyd(Map<String, Object> map);
+
+	void addPropertyd(ItemProperty itemProperty);
 
 	
 

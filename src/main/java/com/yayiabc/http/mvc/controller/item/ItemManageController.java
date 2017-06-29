@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -161,6 +162,18 @@ public class ItemManageController {
 			@RequestParam(value="itemPparam",required=true) String itemPparam
 			){
 		return itemManageService.addPropertyd(itemPropertyId,itemPparam);
+	}
+	
+	/**
+	 * 添加属性值和属性名
+	 */
+	@RequestMapping("addPropertydAndPropertyName")
+	@ResponseBody
+	public DataWrapper<Void> addPropertydAndPropertyName(
+			@RequestParam(value="itemPropertyName",required=true) String itemPropertyName,
+			@RequestBody List<String> itemPparamList
+			){
+		return itemManageService.addPropertyAndPropertyName(itemPropertyName,itemPparamList);
 	}
 	
 	/**

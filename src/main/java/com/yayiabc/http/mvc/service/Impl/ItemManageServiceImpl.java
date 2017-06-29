@@ -1,6 +1,8 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -215,6 +217,20 @@ public class ItemManageServiceImpl implements ItemManageService{
 		itemClassify.setItemClassifyName(itemClassifyName);
 		itemClassify.setItemPreviousClassify(itemPreviousClassify);
 		itemManageDao.addItemClassify(itemClassify);
+		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+		return dataWrapper;
+	}
+
+	@Override
+	public DataWrapper<Void> addPropertyAndPropertyName(
+			String itemPropertyName, List<String> itemPparamList) {
+		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		itemManageDao.addProperty(itemPropertyName);
+		Integer itemPropertyId =itemManageDao.queryItemPropertyIdByName(itemPropertyName);
+		Map<String,Object> map=new HashMap<String,Object>();
+		map.put("itemPropertyId", itemPropertyId);
+		map.put("itemPparamList", itemPparamList);
+		itemManageDao.addPropertyd(map);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
 	}

@@ -117,6 +117,7 @@ public interface UserPersonalInfoApi {
      * @apiParam {String} part 单位所在地（非必须）
      * @apiParam {String} workAddress 详细地址（非必须）
      * @apiParam {String} doctorPic 医师资格证图片（必须）
+     * @apiParam {int} judge 状态判断（非必须，0或者1）
      * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:

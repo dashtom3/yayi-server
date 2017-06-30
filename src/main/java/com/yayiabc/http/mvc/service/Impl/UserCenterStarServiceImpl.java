@@ -78,7 +78,7 @@ public class UserCenterStarServiceImpl  implements UserCenterStarService{
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		String userId=userDao.getUserId(phone);
 		int st=0;
-		//根据当前商品id  查询是否已经收藏
+		//根据当前商品id  查询是否已经收藏1
 		List<Integer> list=usercenterstardao.queryOne(itemId);
 		if(list.isEmpty()){
 			st=usercenterstardao.addMyStar(userId, itemId);

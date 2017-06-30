@@ -3,14 +3,10 @@ package com.yayiabc.http.mvc.pojo.jpa;
 public class VidManage {
 	private Integer viId;
 	private  String vidName;
-	private String videoType;
+	private String vidType;
+	private String vidRoute;
 	
-	public String getVideoType() {
-		return videoType;
-	}
-	public void setVideoType(String videoType) {
-		this.videoType = videoType;
-	}
+	
 	public Integer getViId() {
 		return viId;
 	}
@@ -23,11 +19,24 @@ public class VidManage {
 	public void setVidName(String vidName) {
 		this.vidName = vidName;
 	}
+	public String getVidType() {
+		return vidType;
+	}
+	public void setVidType(String vidType) {
+		this.vidType = vidType;
+	}
+	public String getVidRoute() {
+		return vidRoute;
+	}
+	public void setVidRoute(String vidRoute) {
+		this.vidRoute = vidRoute;
+	}
 	@Override
 	public String toString() {
 		return "VidManage [viId=" + viId + ", vidName=" + vidName
-				+ ", videoType=" + videoType + "]";
+				+ ", vidType=" + vidType + ", vidRoute=" + vidRoute + "]";
 	}
+	
 	
 
 }

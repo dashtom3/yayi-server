@@ -62,7 +62,7 @@
 	<!-- //关闭交易 or确定交易 -->
 	<update id="closeTrading">
 		update ordera set state =${flagBit} where
-		order_id=${order_Id}
+		order_id=${orderId}
 	</update>
 <!-- //订单详情  resultMap-->
 	<resultMap type="Ordera" id="details">
@@ -187,18 +187,33 @@
 
 	<!-- 根据订单 查询用户 -->
 	<select id="queryUser" resultType="java.lang.String">
-		select user.id from ordera
+		select user_id from ordera
 		where order_id=#{orederId}
 	</select>
 
 	<!-- 根据用户id 查询该用户钱币余额 -->
 	<select id="userBalance" resultType="int">
-		select qb_balance from
-		qb_record where user_id=#{userId}
+		select   IFNULL(qb_balance,0)AS   qb_balance from
+		user where user_id=#{userId}
 	</select>
     
          <!-- 仓库发货 -->
-     <insert id="warehouseDelivery" >
-          insert into usera(shipping_name,shipping_code) values(#{logisticsName},#{logisticsCode},#{orderId})
-     </insert>
+     <update id="warehouseDelivery" >
+     update ordera <set>
+           <if test="logisticsName!=null">
+           shipping_name=#{logisticsName},
+           </if>
+            <if test="logisticsCode!=null">
+           shipping_code=#{logisticsCode}
+           </if>
+           <where>
+              user_id=#{userId}
+           </where>
+     </set>
+          <!-- insert into user(shipping_name,shipping_code) values(#{logisticsName},#{logisticsCode},#{orderId}) -->
+     </update>
+     
+     <select id="queryUserId" resultType="java.lang.String">
+      select user_id from ordera where order_id=#{orderId}
+     </select>
 </mapper>

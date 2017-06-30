@@ -50,7 +50,7 @@ public class PlaceOrderController {
 			){
 		return placeOrderService.ded(phone,num);
 	}
-	//
+	//选择地址
 	@RequestMapping("upateAddress")
 	@ResponseBody
 	public DataWrapper<Receiver> upateAddress(
@@ -84,8 +84,8 @@ public class PlaceOrderController {
 	@ResponseBody
 	public 	DataWrapper<HashMap<String, Object>> buyNow(
 			@ModelAttribute OrderItem orderItem,
-			@RequestParam(value="phone",required=false) String phone,
-			@RequestParam(value="receiverId",required=false) String receiverIds
+			@RequestParam(value="phone",required=true) String phone,
+			@RequestParam(value="receiverId",required=true) String receiverIds
 			){
 		
 		Integer receiverId= Integer.parseInt(receiverIds);

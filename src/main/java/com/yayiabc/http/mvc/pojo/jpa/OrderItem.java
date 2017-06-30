@@ -14,7 +14,7 @@ public class OrderItem extends BasePojo {
 	private String itemId;
 	private String orderId;
 	private Ordera ordera;
-
+	private String itemSKU;
 	private Integer qbDed;
 
 	private Integer num;
@@ -36,6 +36,14 @@ public class OrderItem extends BasePojo {
 	
 	
 	
+	public String getItemSKU() {
+		return itemSKU;
+	}
+
+	public void setItemSKU(String itemSKU) {
+		this.itemSKU = itemSKU;
+	}
+
 	public String getOrderId() {
 		return orderId;
 	}

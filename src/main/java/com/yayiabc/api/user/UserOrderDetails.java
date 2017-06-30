@@ -2,7 +2,7 @@ package com.yayiabc.api.user;
 
 public interface UserOrderDetails {
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/OrderDetails/show 查看订单
+	 * @api {post} http://192.168.1.103:8081/api/OrderDetails/show 查看订单
 	 * @apiName show
 	 * @apiGroup OrderDetailsShow
 	 * @apiVersion 0.1.0

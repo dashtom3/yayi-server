@@ -122,6 +122,7 @@ public class ItemInfoManageController {
 	public DataWrapper<Void> insert(                                 
 	@RequestParam(value="itemId",required=true) String itemId ,
 	@RequestParam(value="itemName",required=true) String itemName,
+	@RequestParam(value="itemBrandId",required=true) Integer itemBrandId,
 	@RequestParam(value="oneClassify",required=true) String oneClassify,
 	@RequestParam(value="twoClassify",required=true) String twoClassify,
 	@RequestParam(value="threeClassify",required=true) String threeClassify,
@@ -143,10 +144,10 @@ public class ItemInfoManageController {
 	@RequestParam(value="itemPacking",required=true) String itemPacking,
 	@RequestParam(value="itemLevels",required=true) String itemLevels,
 	@RequestParam(value="itemPparam",required=true) String itemPparam,
-	@RequestParam(value="itemBrandName",required=true) String itemBrandName, 
+	@RequestParam(value="itemBrandName",required=false) String itemBrandName, 
 	@RequestBody List<ItemValue> itemValueList
 			){
-		return itemInfoManageService.insert(itemId,itemName,oneClassify,itemLevels,
+		return itemInfoManageService.insert(itemId,itemName,itemBrandId,oneClassify,itemLevels,
 				twoClassify,threeClassify,itemPica,itemPicb,itemPicc,itemPicd,itemPice,
 				video,itemDesc,itemUse,itemRange,registerId,storeItemId,apparatusType,unit,
 				producePompany,registerDate,itemPacking,itemPparam,itemBrandName,itemValueList);

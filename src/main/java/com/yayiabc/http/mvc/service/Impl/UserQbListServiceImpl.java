@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.dao.UserQbListDao;
+import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.UserQbListService;
 
@@ -19,9 +20,10 @@ public class UserQbListServiceImpl implements UserQbListService {
 
 	@Override
 	public DataWrapper<List<User>> list(String phone, String startDate,
+	public DataWrapper<List<QbRecord>> list(String phone, String startDate,
 			String endDate) {
-		DataWrapper<List<User>> dataWrapper = new DataWrapper<List<User>>();
-		List<User> list = userQbListDao.list(phone, startDate, endDate);
+		DataWrapper<List<QbRecord>> dataWrapper = new DataWrapper<List<QbRecord>>();
+		List<QbRecord> list = userQbListDao.list(phone, startDate, endDate);
 		dataWrapper.setData(list);
 		return dataWrapper;
 	}

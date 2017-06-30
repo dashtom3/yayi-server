@@ -4,14 +4,14 @@ public interface itemStatisticsApi {
 	/**
      * @api {get} http://47.93.48.111:8080/api/itemStatistics/query （后台）商品统计
      * @apiName query
-     * @apiGroup userStatistics
+     * @apiGroup itemStatistics
      * @apiVersion 0.1.0
      * @apiDescription 商品统计
      *
      * @apiParam {String} itmeName 商品名称（非必须）
      * @apiParam {String} itemId 商品ID（非必须）
      * @apiParam {String} itemSKU 商品SKU代码（非必须）
-     * @apiParam {String} itemBrand 品牌名称（非必须，全部传空值）
+     * @apiParam {String} itemBrandName 品牌名称（非必须，全部传空值）
      * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
@@ -23,7 +23,7 @@ public interface itemStatisticsApi {
      * 		itemId:"3",
      * 		itemName:"假牙",
      * 		itemSKU:"abc132",
-     * 		itemBrand:"品牌1",
+     * 		itemBrandName:"品牌1",
      * 		price:200,
      * 		sales:10,
      * 		salesMoney:2000,
@@ -32,7 +32,7 @@ public interface itemStatisticsApi {
       * 	itemId:"2",
      * 		itemName:"种植体",
      * 		itemSKU:"aaa123",
-     * 		itemBrand:"品牌2",
+     * 		itemBrandName:"品牌2",
      * 		price:300,
      * 		sales:100,
      * 		salesMoney:3000,

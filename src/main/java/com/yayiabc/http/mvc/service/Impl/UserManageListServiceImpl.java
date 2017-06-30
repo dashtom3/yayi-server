@@ -39,6 +39,7 @@ public class UserManageListServiceImpl implements UserManageListService {
 			String saleName) {
 		DataWrapper<List<SaleInfo>> dataWrapper=new DataWrapper<List<SaleInfo>>();
 		List<SaleInfo> list=userManageListDao.salelist(salePhone, saleName);
+		System.out.println("sale"+list.toString());
 		dataWrapper.setData(list);
 		return dataWrapper;
 	}

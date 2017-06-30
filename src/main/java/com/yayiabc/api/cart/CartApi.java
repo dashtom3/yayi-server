@@ -2,7 +2,7 @@ package com.yayiabc.api.cart;
 
 public interface CartApi {
 	/**
-     * @api {post} http://47.93.48.111:8080/api/cart/add    新增商品到购物车
+     * @api {post} http://47.93.48.111:8080/api/cart/add 新增商品到购物车
      * @apiName add
      * @apiGroup cart
      * @apiVersion 0.1.0

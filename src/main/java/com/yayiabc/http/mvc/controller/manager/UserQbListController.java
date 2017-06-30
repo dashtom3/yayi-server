@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.UserQbListService;
 
@@ -25,7 +26,7 @@ public class UserQbListController {
 	 */
 	@RequestMapping(value="list",method=RequestMethod.GET)
 	@ResponseBody
-	public DataWrapper<List<User>> list(
+	public DataWrapper<List<QbRecord>> list(
 			@RequestParam(value="phone",required=true)String phone,
 			@RequestParam(value="startDate",required=true)String startDate,
 			@RequestParam(value="endDate",required=true)String endDate,

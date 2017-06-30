@@ -135,22 +135,26 @@ public class UserServiceImpl implements UserService{
 		User user=new User();
 		user.setPhone(phone);
 		User seUser=userDao.getUserByUser(user);
+		String token=null;
 		if(seUser!=null){
 			if(MD5Util.getMD5String(password).equals(seUser.getPwd())){
 				dataWrapper.setData(seUser);
-				int num=userDao.getCartNum(user);
+				int num=userDao.getCartNum(seUser);
 		        dataWrapper.setNum(num);
 				dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 				dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-				String token=userDao.getTokenByUserId(user.getUserId());
+				String userId=seUser.getUserId();
+				token=userDao.getTokenByUserId(userId);
+				System.out.println(token);
                 if(token==null||"".equals(token)){
                 	token=UUID.randomUUID().toString();
                 	UserToken userToken=new UserToken();
-                    userToken.setUserId(user.getUserId());
+                    userToken.setUserId(seUser.getUserId());
                     userToken.setToken(token);
                 	userDao.addToken(userToken);
+                	System.out.println(token+"token值");
                 }
-	                dataWrapper.setToken(token);
+	                
 			}else{
 				dataWrapper.setErrorCode(ErrorCodeEnum.Password_error);
 				dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
@@ -159,6 +163,7 @@ public class UserServiceImpl implements UserService{
 			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
 			dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
 		}
+		dataWrapper.setToken(token);
 		return dataWrapper;
 	}
 

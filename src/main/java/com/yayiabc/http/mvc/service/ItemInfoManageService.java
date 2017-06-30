@@ -20,16 +20,26 @@ public interface ItemInfoManageService {
 
 	DataWrapper<Void> delete(String itemId);
 
-	DataWrapper<Void> update();
+	
 
 
-	DataWrapper<Void> getItemSku(String itemId);
 
-	DataWrapper<Void> insert(String itemId, String itemName,
+
+	DataWrapper<Void> insert(String itemId, String itemName,Integer itemBrandId,
 			String oneClassify, String itemLevels, String twoClassify,
 			String threeClassify, String itemPica, String itemPicb,
 			String itemPicc, String itemPicd, String itemPice, String video,
 			String itemDesc, String itemUse, String itemRange,
+			String registerId, String storeItemId, Integer apparatusType,
+			String unit, String producePompany, Date registerDate,
+			String itemPacking, String itemPparam, String itemBrandName,
+			List<ItemValue> itemValueList);
+
+	DataWrapper<Void> update(String itemId, String itemName,
+			Integer itemBrandId, String oneClassify, String itemLevels,
+			String twoClassify, String threeClassify, String itemPica,
+			String itemPicb, String itemPicc, String itemPicd, String itemPice,
+			String video, String itemDesc, String itemUse, String itemRange,
 			String registerId, String storeItemId, Integer apparatusType,
 			String unit, String producePompany, Date registerDate,
 			String itemPacking, String itemPparam, String itemBrandName,

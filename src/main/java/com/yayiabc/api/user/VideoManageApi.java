@@ -2,7 +2,7 @@ package com.yayiabc.api.user;
 
 public interface VideoManageApi {
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/vid/showVid  显示视屏数据
+	 * @api {post} http://192.168.1.103:8081/api/vid/showVid  显示视屏数据
 	 * @apiName showVid
 	 * @apiGroup vid
 	 * @apiVersion 0.1.0
@@ -39,7 +39,7 @@ public interface VideoManageApi {
 	 * }
 	 */
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/vid/updateVid  修改视屏数据
+	 * @api {post} http://192.168.1.103:8081/api/vid/updateVid  修改视屏数据
 	 * @apiName updateVid
 	 * @apiGroup vid
 	 * @apiVersion 0.1.0
@@ -80,7 +80,7 @@ public interface VideoManageApi {
      * }
 	 */
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/vid/insertVid  新增视屏数据
+	 * @api {post} http://192.168.1.103:8081/api/vid/insertVid  新增视屏数据
 	 * @apiName insertVid
 	 * @apiGroup vid
 	 * @apiVersion 0.1.0
@@ -121,7 +121,7 @@ public interface VideoManageApi {
      * }
 	 */
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/vid/deleteVid  删除视屏数据
+	 * @api {post} http://192.168.1.103:8081/api/vid/deleteVid  删除视屏数据
 	 * @apiName deletetVid
 	 * @apiGroup vid
 	 * @apiVersion 0.1.0

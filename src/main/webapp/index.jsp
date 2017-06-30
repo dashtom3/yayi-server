@@ -5,7 +5,7 @@
  <title>myJSP</title>
  </head>
  <body>
-	<!-- <form action="/api/user/register" method="post">
+	<form action="/api/user/register" method="post">
 		<h1>注册</h1>
 		手机号码<input type="text" name="phone"/>
 		密码<input type="text" name="password"/>
@@ -86,7 +86,7 @@
 		商品品牌名字<input type="text" name="itemBrandName"/>
 		状态<input type="text" name="state"/>
 		<input type="submit" name="提交"/>
-</form> -->
+</form>
 <form method="post" action="/api/item/insert">
     <input name="itemId" type="text" />
     <input name="itemName" type="text" />
@@ -115,6 +115,13 @@
     <input name="itemPropertyName" type="text" />
 	<input value="提交" type="submit" />
 </form>
+<form action="/api/item/addItemClassify" method="post">
+	    <h1>品牌查询</h1>
+		<input type="text" name="itemClassifyName"/>
+		<input type="text" name="itemPreviousClassify"/>
+		<input type="text" name="itemClassifyGrade"/>
+		<input type="submit" name="提交"/>
+	</form>
 	
  </body>
 </html>

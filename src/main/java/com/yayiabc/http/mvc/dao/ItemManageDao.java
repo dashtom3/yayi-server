@@ -5,7 +5,6 @@ import java.util.Map;
 
 import org.springframework.stereotype.Repository;
 
-import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.ItemClassify;
 import com.yayiabc.http.mvc.pojo.jpa.ItemProperty;
 import com.yayiabc.http.mvc.pojo.jpa.ItemPropertyd;
@@ -32,7 +31,6 @@ public interface ItemManageDao {
 
 	String queryItemClassifyName(Integer itemClassifyId);
 
-	void updateItemClassify(ItemClassify itemClassify);
 
 	void addProperty(String itemPropertyName);
 
@@ -53,6 +51,29 @@ public interface ItemManageDao {
 	void insertItemClassifyTwo(ItemClassify itemClassify);
 
 	void insertItemClassifyThree(ItemClassify itemClassify);
+
+	void deleteItemClassify(ItemClassify itemClassify);
+
+	void deleteItemClassifyTwo(ItemClassify itemClassify);
+
+	void deleteItemClassifyThree(ItemClassify itemClassify);
+
+	void updateItemClassify(ItemClassify itemClassify);
+	
+	void updateItemClassifyOne(ItemClassify itemClassify);
+	
+	void updateItemClassifyTwo(ItemClassify itemClassify);
+
+	void updateItemClassifyThree(ItemClassify itemClassify);
+
+	void deleteItemClassifyOneSon(ItemClassify itemClassify);
+
+	void deleteItemClassifyTwoSon(ItemClassify itemClassify);
+
+	String queryItemClassifyByName(ItemClassify itemClassify);
+
+	void deleteItemClassifyOne(ItemClassify itemClassify);
+
 
 	
 

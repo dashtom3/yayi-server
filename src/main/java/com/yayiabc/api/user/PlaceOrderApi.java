@@ -2,7 +2,7 @@ package com.yayiabc.api.user;
 
 public interface PlaceOrderApi {
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/po/buyNows  用户车点击立即购买时:
+	 * @api {post} http://192.168.1.103:8081/api/po/buyNows  用户车点击立即购买时:
 	 * @apiName buyNows
 	 * @apiGroup po
 	 * @apiVersion 0.1.0
@@ -42,7 +42,7 @@ public interface PlaceOrderApi {
 	 * }
 	 **/
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/po/Ded  使用钱币抵扣时  onChange
+	 * @api {post} http://192.168.1.103:8081/api/po/Ded  使用钱币抵扣时  onChange
 	 * @apiName Ded
 	 * @apiGroup po
 	 * @apiVersion 0.1.0
@@ -83,7 +83,7 @@ public interface PlaceOrderApi {
 	 **/
 
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/po/upateAddress  手动选取地址时
+	 * @api {post} http://192.168.1.103:8081/api/po/upateAddress  手动选取地址时
 	 * @apiName upateAddress
 	 * @apiGroup po
 	 * @apiVersion 0.1.0
@@ -123,7 +123,7 @@ public interface PlaceOrderApi {
 	 **/
 	
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/po/buyNow  当用户点击商品图片购买时: 单个购买
+	 * @api {post} http://192.168.1.103:8081/api/po/buyNow  当用户点击商品图片购买时: 单个购买
 	 * @apiName buyNow
 	 * @apiGroup po
 	 * @apiVersion 0.1.0
@@ -131,7 +131,6 @@ public interface PlaceOrderApi {
 	 * 
 	 * @apiParam {String} phone  (必须) 
 	 * @apiParam {Integer} receiverId  (必须)
-	 * @apiParam {OrderItem}
 	 * @apiParam {String} itemSKU  (必须)
 	 * @apiParam {String} itemId  (必须)
 	 * @apiParam {String} qbDed  (必须)
@@ -174,7 +173,7 @@ public interface PlaceOrderApi {
 	 **/
 	
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/po/saveMessage  提交订单
+	 * @api {post} http://192.168.1.103:8081/api/po/saveMessage  提交订单
 	 * @apiName saveMessage
 	 * @apiGroup po
 	 * @apiVersion 0.1.0
@@ -222,7 +221,7 @@ public interface PlaceOrderApi {
 	 **/
 	
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/po/emptyCart   交易完成清空当前用户购物车
+	 * @api {post} http://192.168.1.103:8081/api/po/emptyCart   交易完成清空当前用户购物车
 	 * @apiName emptyCart
 	 * @apiGroup po
 	 * @apiVersion 0.1.0

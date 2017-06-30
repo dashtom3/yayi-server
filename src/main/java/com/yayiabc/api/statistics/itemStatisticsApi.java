@@ -2,13 +2,13 @@ package com.yayiabc.api.statistics;
 
 public interface itemStatisticsApi {
 	/**
-     * @api {get} http://47.93.48.111:8080/api/itemStatistics/query （后台）商品统计
+     * @api {get} http://192.168.1.103:8081/api/itemStatistics/query （后台）商品统计
      * @apiName query
      * @apiGroup itemStatistics
      * @apiVersion 0.1.0
      * @apiDescription 商品统计
      *
-     * @apiParam {String} itmeName 商品名称（非必须）
+     * @apiParam {String} itemName 商品名称（非必须）
      * @apiParam {String} itemId 商品ID（非必须）
      * @apiParam {String} itemSKU 商品SKU代码（非必须）
      * @apiParam {String} itemBrandName 品牌名称（非必须，全部传空值）

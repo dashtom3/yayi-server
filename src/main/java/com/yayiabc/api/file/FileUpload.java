@@ -3,7 +3,7 @@ package com.yayiabc.api.file;
 public interface FileUpload {
 	/**
 	 * 
-	 * @api {get} http://47.93.48.111:8080/api/file/getUpToken   获取文件上传的token
+	 * @api {get} http://192.168.1.103:8081/api/file/getUpToken   获取文件上传的token
 	 * @apiName getUpToken
 	 * @apiGroup fileUpload
 	 * @apiVersion 0.1.0

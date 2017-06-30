@@ -3,7 +3,7 @@ package com.yayiabc.api.item;
 public interface ItemBrand {
 	/**
 	 * 
-	 * @api {get} http://47.93.48.111:8080/api/item/brandList   品牌列表
+	 * @api {get} http://192.168.1.103:8081/api/item/brandList   品牌列表
 	 * @apiName brandList
 	 * @apiGroup itemBrand
 	 * @apiVersion 0.1.0
@@ -45,7 +45,7 @@ public interface ItemBrand {
 	
 	/**
 	 * 
-	 * @api {post} http://47.93.48.111:8080/api/item/brandItemList  获取品牌下的所有商品列表
+	 * @api {post} http://192.168.1.103:8081/api/item/brandItemList  获取品牌下的所有商品列表
 	 * @apiName brandItemList
 	 * @apiGroup itemBrand
 	 * @apiVersion 0.1.0
@@ -101,7 +101,7 @@ public interface ItemBrand {
 	
 	/**
 	 * 
-	 * @api {get} http://47.93.48.111:8080/api/item/itemDetailDes  商品详情
+	 * @api {get} http://192.168.1.103:8081/api/item/itemDetailDes  商品详情
 	 * @apiName itemDetailDes
 	 * @apiGroup itemBrand
 	 * @apiVersion 0.1.0

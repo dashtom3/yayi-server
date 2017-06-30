@@ -2,7 +2,7 @@ package com.yayiabc.api.user;
 
 public interface CommentManageApi {
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/commentManage/show  查看评论
+	 * @api {post} http://192.168.1.103:8081/api/commentManage/show  查看评论
 	 * @apiName show
 	 * @apiGroup commentManage
 	 * @apiVersion 0.1.0
@@ -44,7 +44,7 @@ public interface CommentManageApi {
 	 * }
 	 */
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/commentManage/reply  回复评论
+	 * @api {post} http://192.168.1.103:8081/api/commentManage/reply  回复评论
 	 * @apiName reply
 	 * @apiGroup commentManage
 	 * @apiVersion 0.1.0

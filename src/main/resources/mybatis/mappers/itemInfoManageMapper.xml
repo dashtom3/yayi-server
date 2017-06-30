@@ -46,31 +46,26 @@
  		delete from item_value where item_id=#{itemId}
  	</delete>
  	
- 	<insert id="insertItemPropertyd">
- 			insert into item_propertyd values
- 		<foreach collection="list" item="itemProperty" index="index" separator=",">
- 			(#{itemPropertyd.stockNum},#{itemPropertyd.itemQb},#{itemPropertyd.tiCheng},#{itemPropertyd.itemSkuPrice},#{itemPropertyd.itemSKU},#{itemPropertyd.itemSKU},now(),now())
- 		</foreach>
- 	</insert>
+
  	
  	<insert id="insertItemValue">
  		insert into item_value
  		values
  		<foreach collection="list" index="index" item="item" separator=",">
-          (null,#{itemId},#{item.itemPropertyName},#{itemPropertyInfo})
+          (null,#{itemId},#{item.itemPropertyName},#{item.itemPropertyInfo})
  		</foreach>
  	</insert>
  	
  	<insert id="insertItemInfo">
- 		insert into item_info values(#{itemId},#{itemName},#{itemBrand.itemBrandId},null,0,1,#{oneClassify},#{twoClassify},#{threeClassify},now(),now());
+ 		insert into item_info values(#{itemId},#{itemName},#{itemBrandId},null,0,1,#{oneClassify},#{twoClassify},#{threeClassify},now(),now());
  	</insert>
  	
  	<insert id="insertItemDetail">
  		insert into item_detail 
  		values
- 		(#{itemId},#{itemDetail.itemDesc},#{itemDetail.itemUse},#{itemDetail.video},#{itemDetail.itemPica},#{itemDetail.itemPicb},
- 		#{itemDetail.itemPicc},#{itemDetail.itemPicd},#{itemDetail.itemPice},null,1,null,#{itemDetail.storeItemId},#{itemDetail.apparatusType},#{itemDetail.unit},#{itemDetail.producePompany},
- 		#{itemDetail.registerId},#{itemDetail.registerDate},#{itemDetail.itemPacking},#{itemDetail.itemLevels},#{itemDetail.itemRange},null,now(),now()
+ 		(#{itemId},#{itemDesc},#{itemUse},#{video},#{itemPica},#{itemPicb},
+ 		#{itemPicc},#{itemPicd},#{itemPice},null,1,null,#{storeItemId},#{apparatusType},#{unit},#{producePompany},
+ 		#{registerId},#{registerDate},#{itemPacking},#{itemLevels},#{itemRange},null,now(),now()
  		)
  	</insert>
 </mapper>       

@@ -63,6 +63,17 @@
  		</where>
  	</select>
  	
+ 	<resultMap type="ItemClassify" id="itemClassify">
+ 		<id property="itemClassifyId" column="item_classify_id"/>
+ 		<result property="itemClassifyGrade" column="item_classify_grade"/>
+ 		<result property="itemClassifyName" column="item_classify_name"/>
+ 		<result property="itemPreviousClassify" column="item_previous_classify"/>
+ 	</resultMap>
+ 	
+ 	<select id="queryItemClassifyByName">
+ 		select classify_two_name from classify_two where one_classify=#{itemClassifyName}
+ 	</select>
+ 	
  	<select id="queryItemClassifyName" resultType="string">
  		select item_classify_name from item_classify where item_classify_id=#{itemClassifyId}
  	</select>
@@ -71,14 +82,46 @@
  		delete from item_classify where item_classify_name=#{itemClassifyName} or item_previous_classify=#{itemClassifyName}
  	</delete>
  	
+ 	<delete id="deleteItemClassifyOneSon">
+ 		delete from classify_two where one_classify=#{itemClassifyName}
+ 	</delete>
+ 	
+ 	<delete id="deleteItemClassifyTwoSon">
+ 		delete from classify_three where classify_two_name=#{itemClassifyName}
+ 	</delete>
+ 	
  	<update id="updateItemClassify">
  		update item_classify set item_classify_name=#{itemClassifyName},item_previous_classify=#{itemPreviousClassify} 
  		where item_classify_id=#{itemClassifyId}
  	</update>
  	
+ 	<update id="updateItemClassifyOne">
+ 		update classify set one_classify=#{itemClassifyName} where one_classify=#{itemPreviousClassify}
+ 	</update>
+ 	
+ 	<update id="updateItemClassifyTwo">
+ 		update classify_two set classify_two_name=#{itemClassifyName} where classify_two_name=#{itemPreviousClassify}
+ 	</update>
+ 	
+ 	<update id="updateItemClassifyThree">
+ 		update classify_three set classify_three_name=#{itemClassifyName} where classify_three_name=#{itemPreviousClassify}
+ 	</update>
+ 	
  	<insert id="addItemClassify">
- 		insert into item_classify values(null,null,#{itemClassifyName},#{itemPreviousClassify},now(),now())
+ 		insert into item_classify values(null,#{itemClassifyGrade},#{itemClassifyName},#{itemPreviousClassify},now(),now())
  	</insert>
+ 	
+ 	<delete id="deleteItemClassifyOne">
+ 		delete from classify where one_classify=#{itemClassifyName}
+ 	</delete>
+ 	
+ 	<delete id="deleteItemClassifyTwo">
+ 		delete from classify_two where classify_two_name=#{itemClassifyName}
+ 	</delete>
+ 	
+ 	<delete id="deleteItemClassifyThree">
+ 		delete from classify_three where classify_three_name=#{itemClassifyName}
+ 	</delete>
  	
  	<insert id="addPropertyd">
  		insert into item_propertyd
@@ -91,4 +134,13 @@
  	<select id="queryItemPropertyIdByName" resultType="int">
  		select item_property_id from item_property where item_property_name=#{itemPropertyName}
  	</select>
+ 	<insert id="insertItemClassify">
+ 		insert into classify values(null,#{itemClassifyName},now(),now())
+ 	</insert>
+ 	<insert id="insertItemClassifyTwo">
+ 		insert into classify_two values(null,#{itemClassifyName},#{itemPreviousClassify},now(),now())
+ 	</insert>
+ 	<insert id="insertItemClassifyThree">
+ 		insert into classify_three values(null,#{itemClassifyName},#{itemPreviousClassify},now(),now())
+ 	</insert>
 </mapper>       

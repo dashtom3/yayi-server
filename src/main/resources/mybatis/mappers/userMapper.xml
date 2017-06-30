@@ -32,6 +32,6 @@
     </select>
     
     <insert id="addToken">
-    	insert into user_token values(#{token},#{userId})
+    	insert into user_token values (#{token},#{userId})
     </insert>
 </mapper>       

@@ -2,7 +2,7 @@ package com.yayiabc.api.user;
 
 public interface AdvManageApi {
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/adv/showAdv  显示广告数据
+	 * @api {post} http://192.168.1.103:8081/api/adv/showAdv  显示广告数据
 	 * @apiName showAdv
 	 * @apiGroup adv
 	 * @apiVersion 0.1.0
@@ -39,7 +39,7 @@ public interface AdvManageApi {
 	 * }
 	 */
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/adv/updateAdv  修改广告数据
+	 * @api {post} http://192.168.1.103:8081/api/adv/updateAdv  修改广告数据
 	 * @apiName updateAdv
 	 * @apiGroup adv
 	 * @apiVersion 0.1.0
@@ -49,7 +49,7 @@ public interface AdvManageApi {
 	 * @apiParam {String} advName    广告名称     （非必须）
 	 * @apiParam {String} advUrl     广告url （非必须） 
 	 * @apiParam {String} advType    广告Type （非必须） 
-	 * @apiParam {Integer} advId    广告id （必须） 
+	 * @apiParam {Integer} advId    广告id （非必须） 
 	 * 
 	 * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -82,7 +82,7 @@ public interface AdvManageApi {
      * }
 	 */
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/adv/insertAdv  新增广告数据
+	 * @api {post} http://192.168.1.103:8081/api/adv/insertAdv  新增广告数据
 	 * @apiName insertAdv
 	 * @apiGroup adv
 	 * @apiVersion 0.1.0
@@ -124,7 +124,7 @@ public interface AdvManageApi {
      * }
 	 */
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/adv/deletetAdv  删除广告数据
+	 * @api {post} http://192.168.1.103:8081/api/adv/deletetAdv  删除广告数据
 	 * @apiName deletetAdv
 	 * @apiGroup adv
 	 * @apiVersion 0.1.0

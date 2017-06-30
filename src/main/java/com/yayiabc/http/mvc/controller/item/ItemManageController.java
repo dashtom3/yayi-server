@@ -194,26 +194,29 @@ public class ItemManageController {
 	@RequestMapping("deleteItemClassify")
 	@ResponseBody
 	public DataWrapper<Void> deleteItemClassify(
-			@RequestParam(value="itemClassifyId",required=true) Integer itemClassifyId
+			@RequestParam(value="itemClassifyId",required=true) Integer itemClassifyId,
+			@RequestParam(value="itemClassifyName",required=true) String itemClassifyName,
+			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade
 			){
-		return itemManageService.deleteItemClassify(itemClassifyId);
+		return itemManageService.deleteItemClassify(itemClassifyId,itemClassifyName,itemClassifyGrade);
 	}
 	
 	/**
-	 * 修改商品分类
+	 * 修改分类
 	 */
 	@RequestMapping("updateItemClassify")
 	@ResponseBody
 	public DataWrapper<Void> updateItemClassify(
 			@RequestParam(value="itemClassifyId",required=true) Integer itemClassifyId,
 			@RequestParam(value="itemClassifyName",required=true) String itemClassifyName,
-			@RequestParam(value="itemPreviousClassify",required=true) String itemPreviousClassify
+			@RequestParam(value="itemPreviousClassify",required=true) String itemPreviousClassify, //之前的名字
+			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade
 			){
-		return itemManageService.updateItemClassify(itemClassifyId,itemClassifyName,itemPreviousClassify);
+		return itemManageService.updateItemClassify(itemClassifyId,itemClassifyName,itemPreviousClassify,itemClassifyGrade);
 	}
 	
 	/**
-	 * 增加商品分类
+	 * 增加分类
 	 */
 	@RequestMapping("addItemClassify")
 	@ResponseBody

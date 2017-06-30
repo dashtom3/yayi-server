@@ -33,10 +33,10 @@ public interface ItemManageService {
 	DataWrapper<List<ItemClassify>> showItemClassify(String itemClassifyName,
 			String itemPreviousClassify);
 
-	DataWrapper<Void> deleteItemClassify(Integer itemClassifyId);
+	DataWrapper<Void> deleteItemClassify(Integer itemClassifyId,String itemClassifyName,Integer itemClassifyGrade);
 
 	DataWrapper<Void> updateItemClassify(Integer itemClassifyId,
-			String itemClassifyName, String itemPreviousClassify);
+			String itemClassifyName, String itemPreviousClassify,Integer itemClassifyGrade);
 
 	DataWrapper<Void> addItemBrand(String itemBrandName, String itemBrandHome,
 			String itemBrandLogo);

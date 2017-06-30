@@ -70,22 +70,14 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 		return dataWrapper;
 	}
 
-	@Override
-	public DataWrapper<Void> update() {
-		
-		return null;
-	}
+	
 
 	
 
-	@Override
-	public DataWrapper<Void> getItemSku(String itemId) {
-		
-		return null;
-	}
+
 
 	@Override
-	public DataWrapper<Void> insert(String itemId, String itemName,
+	public DataWrapper<Void> insert(String itemId, String itemName,Integer itemBrandId,
 			String oneClassify, String itemLevels, String twoClassify,
 			String threeClassify, String itemPica, String itemPicb,
 			String itemPicc, String itemPicd, String itemPice, String video,
@@ -103,6 +95,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 			itemInfo.setThreeClassify(threeClassify);
 			ItemBrand itemBrand =new ItemBrand();
 			itemBrand.setItemBrandName(itemBrandName);
+			itemBrand.setItemBrandId(itemBrandId);
 			ItemDetail itemDetail =new ItemDetail();
 			itemDetail.setItemId(itemId);
 			itemDetail.setItemDesc(itemDesc);
@@ -127,9 +120,25 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 			itemInfo.setItemDetail(itemDetail);
 			itemInfo.setItemBrand(itemBrand);
 			itemInfo.setItemValueList(itemValueList);
-			
+			itemInfoManageDao.insertItemInfo(itemInfo);
+			itemInfoManageDao.insertItemDetail(itemDetail);
+			itemInfoManageDao.insertItemValue(itemValueList);
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			return dataWrapper;
+	}
+
+	@Override
+	public DataWrapper<Void> update(String itemId, String itemName,
+			Integer itemBrandId, String oneClassify, String itemLevels,
+			String twoClassify, String threeClassify, String itemPica,
+			String itemPicb, String itemPicc, String itemPicd, String itemPice,
+			String video, String itemDesc, String itemUse, String itemRange,
+			String registerId, String storeItemId, Integer apparatusType,
+			String unit, String producePompany, Date registerDate,
+			String itemPacking, String itemPparam, String itemBrandName,
+			List<ItemValue> itemValueList) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 
 	

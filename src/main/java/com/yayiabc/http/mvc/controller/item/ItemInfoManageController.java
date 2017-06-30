@@ -79,16 +79,37 @@ public class ItemInfoManageController {
 	@RequestMapping("update")
 	@ResponseBody
 	public DataWrapper<Void> update(
-		@RequestParam(value="itemId",required=true) String itemId,
-		@RequestParam(value="itemName",required=true) String itemName,
-		@RequestParam(value="oneClassify",required=true) String oneClassify,
-		@RequestParam(value="twoClassify",required=false) String twoClassify,
-		@RequestParam(value="threeClassify",required=false) String threeClassify,
-		@RequestParam(value="itemBrandName",required=true) String itemBrandName,
-		@RequestParam(value="registerId",required=true) String registerId,
-		@RequestParam(value="registerId",required=true) String Id
+			@RequestParam(value="itemId",required=true) String itemId ,
+			@RequestParam(value="itemName",required=true) String itemName,
+			@RequestParam(value="itemBrandId",required=true) Integer itemBrandId,
+			@RequestParam(value="oneClassify",required=true) String oneClassify,
+			@RequestParam(value="twoClassify",required=true) String twoClassify,
+			@RequestParam(value="threeClassify",required=true) String threeClassify,
+			@RequestParam(value="itemPica",required=true) String itemPica,
+			@RequestParam(value="itemPicb",required=true) String itemPicb,
+			@RequestParam(value="itemPicc",required=true) String itemPicc,
+			@RequestParam(value="itemPicd",required=true) String itemPicd,
+			@RequestParam(value="itemPice",required=true) String itemPice,
+			@RequestParam(value="video",required=true) String video,
+			@RequestParam(value="itemDesc",required=true) String itemDesc,
+			@RequestParam(value="itemUse",required=true) String itemUse,
+			@RequestParam(value="itemRange",required=true) String itemRange,
+			@RequestParam(value="registerId",required=true) String registerId,
+			@RequestParam(value="storeItemId",required=true) String storeItemId,
+			@RequestParam(value="apparatusType",required=true) Integer apparatusType,
+			@RequestParam(value="producePompany",required=true) String producePompany,
+			@RequestParam(value="unit",required=true) String unit,
+			@RequestParam(value="registerDate",required=true) Date registerDate,
+			@RequestParam(value="itemPacking",required=true) String itemPacking,
+			@RequestParam(value="itemLevels",required=true) String itemLevels,
+			@RequestParam(value="itemPparam",required=true) String itemPparam,
+			@RequestParam(value="itemBrandName",required=false) String itemBrandName, 
+			@RequestBody List<ItemValue> itemValueList
 			){
-		return itemInfoManageService.update();
+		return itemInfoManageService.update(itemId,itemName,itemBrandId,oneClassify,itemLevels,
+				twoClassify,threeClassify,itemPica,itemPicb,itemPicc,itemPicd,itemPice,
+				video,itemDesc,itemUse,itemRange,registerId,storeItemId,apparatusType,unit,
+				producePompany,registerDate,itemPacking,itemPparam,itemBrandName,itemValueList);
 	}
 	
 	/**
@@ -103,16 +124,6 @@ public class ItemInfoManageController {
 		return dataWrapper;
 	}
 	
-	/**
-	 * 获取sku代码
-	 */
-	@RequestMapping("getItemSku")
-	@ResponseBody
-	public DataWrapper<Void> getItemSku(
-			@RequestParam(value="itemId",required=true) String itemId
-			){
-		return itemInfoManageService.getItemSku(itemId);
-	}
 	
 	/**
 	 * 商品新增

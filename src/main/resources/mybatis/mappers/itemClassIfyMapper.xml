@@ -21,13 +21,13 @@
    <select id="showsTreeClassify" resultMap="queryTreeList">
 	SELECT d.one_id,d.two_id,d.one_classify,d.classify_two_name,c.three_id,c.classify_three_name FROM
     (SELECT * FROM
-    (SELECT one_id,one_classify one_class FROM classify) a
-    INNER JOIN
-    classify_two b
-    ON a.one_class=b.one_classify) d
-    INNER JOIN
-    classify_three c
-    ON d.classify_two_name=c.classify_two_name
+    (SELECT one_id,one_classify FROM classify) a
+    LEFT JOIN
+    (SELECT two_id,classify_two_name,one_classify one_c FROM classify_two) b
+    ON a.one_classify=b.one_c) d
+    LEFT JOIN
+    (SELECT three_id,classify_three_name,classify_two_name three_c FROM classify_three) c
+    ON d.classify_two_name=c.three_c
    </select>
    
    <resultMap type="ItemInfo" id="itemInfoRM" autoMapping="true">

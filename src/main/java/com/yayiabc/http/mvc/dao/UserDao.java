@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.dao;
 
 import org.springframework.stereotype.Repository;
 
+import com.sun.org.glassfish.gmbal.ParameterNames;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.UserToken;
 

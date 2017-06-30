@@ -3,7 +3,7 @@ package com.yayiabc.api.user;
 public interface UserMyQbApi {
 	
 	/**
-     * @api {get} http://47.93.48.111:8080/api/userMyQb/query 获取乾币记录信息列表
+     * @api {get} http://192.168.1.103:8081/api/userMyQb/query 获取乾币记录信息列表
      * @apiName query
      * @apiGroup userMyQb
      * @apiVersion 0.1.0
@@ -60,7 +60,7 @@ public interface UserMyQbApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48.111:8080/api/userMyQb/add 新增我的乾币记录
+     * @api {post} http://192.168.1.103:8081/api/userMyQb/add 新增我的乾币记录
      * @apiName add
      * @apiGroup userMyQb
      * @apiVersion 0.1.0

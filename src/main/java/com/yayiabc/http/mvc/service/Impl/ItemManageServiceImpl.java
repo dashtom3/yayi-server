@@ -157,10 +157,29 @@ public class ItemManageServiceImpl implements ItemManageService{
 	}
 
 	@Override
-	public DataWrapper<Void> deleteItemClassify(Integer itemClassifyId) {
+	public DataWrapper<Void> deleteItemClassify(Integer itemClassifyId,String itemClassifyName,Integer itemClassifyGrade) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		String itemClassifyName =itemManageDao.queryItemClassifyName(itemClassifyId);
-		itemManageDao.deleteItemClassify(itemClassifyName);
+		ItemClassify itemClassify =new ItemClassify();
+		itemClassify.setItemClassifyId(itemClassifyId);
+		itemClassify.setItemClassifyName(itemClassifyName);
+		itemClassify.setItemClassifyGrade(itemClassifyGrade);
+		if(itemClassifyGrade==1){
+			itemManageDao.deleteItemClassifyOne(itemClassify);
+			itemManageDao.deleteItemClassifyOneSon(itemClassify);
+			String itemClassifyTwo=itemManageDao.queryItemClassifyByName(itemClassify);
+			itemClassify.setItemClassifyName(itemClassifyTwo);
+			itemManageDao.deleteItemClassifyTwoSon(itemClassify);
+			System.out.println(1);
+		}else if(itemClassifyGrade==2){
+			itemManageDao.deleteItemClassifyTwo(itemClassify);
+			itemManageDao.deleteItemClassifyTwoSon(itemClassify);
+			System.out.println(2);
+		}else if(itemClassifyGrade==3){
+			itemManageDao.deleteItemClassifyThree(itemClassify);
+			System.out.println(3);
+		}
+		String itemClassifyNameA =itemManageDao.queryItemClassifyName(itemClassifyId);
+		itemManageDao.deleteItemClassify(itemClassifyNameA);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		String msg=dataWrapper.getErrorCode().getLabel();
 		dataWrapper.setMsg(msg);
@@ -169,12 +188,23 @@ public class ItemManageServiceImpl implements ItemManageService{
 
 	@Override
 	public DataWrapper<Void> updateItemClassify(Integer itemClassifyId,
-			String itemClassifyName, String itemPreviousClassify) {
+			String itemClassifyName, String itemPreviousClassify,Integer itemClassifyGrade) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		ItemClassify itemClassify =new ItemClassify();
 		itemClassify.setItemClassifyId(itemClassifyId);
 		itemClassify.setItemClassifyName(itemClassifyName);
 		itemClassify.setItemPreviousClassify(itemPreviousClassify);
+		itemClassify.setItemClassifyGrade(itemClassifyGrade);
+		if(itemClassifyGrade==1){
+			itemManageDao.updateItemClassifyOne(itemClassify);
+			System.out.println(1);
+		}else if(itemClassifyGrade==2){
+			itemManageDao.updateItemClassifyTwo(itemClassify);
+			System.out.println(2);
+		}else if(itemClassifyGrade==3){
+			itemManageDao.updateItemClassifyThree(itemClassify);
+			System.out.println(3);
+		}
 		itemManageDao.updateItemClassify(itemClassify);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
@@ -221,12 +251,16 @@ public class ItemManageServiceImpl implements ItemManageService{
 		itemClassify.setItemClassifyName(itemClassifyName);
 		itemClassify.setItemClassifyGrade(itemClassifyGrade);
 		itemClassify.setItemPreviousClassify(itemPreviousClassify);
+		System.out.println(itemClassifyGrade);
 		if(itemClassifyGrade==1){
 			itemManageDao.insertItemClassify(itemClassify);
+			System.out.println(1);
 		}else if(itemClassifyGrade==2){
 			itemManageDao.insertItemClassifyTwo(itemClassify);
+			System.out.println(2);
 		}else if(itemClassifyGrade==3){
 			itemManageDao.insertItemClassifyThree(itemClassify);
+			System.out.println(3);
 		}
 		itemManageDao.addItemClassify(itemClassify);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);

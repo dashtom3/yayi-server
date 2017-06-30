@@ -2,7 +2,7 @@ package com.yayiabc.api.user;
 
 public interface UserPersonalInfoApi {
 	/**
-     * @api {get} http://47.93.48.111:8080/api/userPersonalInfo/detail 获取个人资料详情
+     * @api {get} http://192.168.1.103:8081/api/userPersonalInfo/detail 获取个人资料详情
      * @apiName detail
      * @apiGroup userPersonalInfo
      * @apiVersion 0.1.0
@@ -58,7 +58,7 @@ public interface UserPersonalInfoApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48.111:8080/api/userPersonalInfo/updateUser 编辑个人资料个人信息
+     * @api {post} http://192.168.1.103:8081/api/userPersonalInfo/updateUser 编辑个人资料个人信息
      * @apiName updateUser
      * @apiGroup userPersonalInfo
      * @apiVersion 0.1.0
@@ -105,7 +105,7 @@ public interface UserPersonalInfoApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48.111:8080/api/userPersonalInfo/updateCertification 编辑个人资料资质认证
+     * @api {post} http://192.168.1.103:8081/api/userPersonalInfo/updateCertification 编辑个人资料资质认证
      * @apiName updateCertification
      * @apiGroup userPersonalInfo
      * @apiVersion 0.1.0

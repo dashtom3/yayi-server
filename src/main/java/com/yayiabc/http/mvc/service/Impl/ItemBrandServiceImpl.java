@@ -67,7 +67,7 @@ public class ItemBrandServiceImpl implements ItemBrandService{
         if(itemId.equals(starItemId)){
         	num=1;
         }
-
+        System.out.println(num);
         ItemInfo itemInfo = itemBrandDao.itemDetailDes(itemId);
         dataWrapper.setData(itemInfo);
         dataWrapper.setNum(num);

@@ -45,13 +45,17 @@ public class ItemManageServiceImpl implements ItemManageService{
 	@Override
 	public DataWrapper<Void> deleteItemBrand(Integer itemBrandId) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		String itemId=itemBrandDao.queryItemIdByItemBrandId(itemBrandId);
-		itemBrandDao.deleteItemDetailByItemId(itemId);
-		itemBrandDao.deleteItemInfoByItemId(itemId);
-		int num=itemBrandDao.deleteItemBrand(itemBrandId);
-		if(num!=0){
-			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-		}else{
+		try {
+			String itemId=itemBrandDao.queryItemIdByItemBrandId(itemBrandId);
+			itemBrandDao.deleteItemDetailByItemId(itemId);
+			itemBrandDao.deleteItemInfoByItemId(itemId);
+			int num=itemBrandDao.deleteItemBrand(itemBrandId);
+			if(num!=0){
+				dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+			}else{
+				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+			}
+		} catch (Exception e) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 		}
 		String msg=dataWrapper.getErrorCode().getLabel();
@@ -211,11 +215,19 @@ public class ItemManageServiceImpl implements ItemManageService{
 
 	@Override
 	public DataWrapper<Void> addItemClassify(String itemClassifyName,
-			String itemPreviousClassify) {
+			String itemPreviousClassify,Integer itemClassifyGrade) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		ItemClassify itemClassify=new ItemClassify();
 		itemClassify.setItemClassifyName(itemClassifyName);
+		itemClassify.setItemClassifyGrade(itemClassifyGrade);
 		itemClassify.setItemPreviousClassify(itemPreviousClassify);
+		if(itemClassifyGrade==1){
+			itemManageDao.insertItemClassify(itemClassify);
+		}else if(itemClassifyGrade==2){
+			itemManageDao.insertItemClassifyTwo(itemClassify);
+		}else if(itemClassifyGrade==3){
+			itemManageDao.insertItemClassifyThree(itemClassify);
+		}
 		itemManageDao.addItemClassify(itemClassify);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;

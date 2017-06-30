@@ -48,6 +48,12 @@ public interface ItemManageDao {
 
 	void addPropertyd(ItemProperty itemProperty);
 
+	void insertItemClassify(ItemClassify itemClassify);
+
+	void insertItemClassifyTwo(ItemClassify itemClassify);
+
+	void insertItemClassifyThree(ItemClassify itemClassify);
+
 	
 
 

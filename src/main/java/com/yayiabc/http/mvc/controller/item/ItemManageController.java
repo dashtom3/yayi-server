@@ -219,9 +219,11 @@ public class ItemManageController {
 	@ResponseBody
 	public DataWrapper<Void> addItemClassify(
 			@RequestParam(value="itemClassifyName",required=true) String itemClassifyName,
-			@RequestParam(value="itemPreviousClassify",required=true) String itemPreviousClassify
+			@RequestParam(value="itemPreviousClassify",required=true) String itemPreviousClassify,
+			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade
+			
 			){
-		return itemManageService.addItemClassify(itemClassifyName,itemPreviousClassify);
+		return itemManageService.addItemClassify(itemClassifyName,itemPreviousClassify,itemClassifyGrade);
 	}
 	
 	

@@ -19,7 +19,6 @@ public class UserQbListServiceImpl implements UserQbListService {
 	UserQbListDao userQbListDao;
 
 	@Override
-	public DataWrapper<List<User>> list(String phone, String startDate,
 	public DataWrapper<List<QbRecord>> list(String phone, String startDate,
 			String endDate) {
 		DataWrapper<List<QbRecord>> dataWrapper = new DataWrapper<List<QbRecord>>();

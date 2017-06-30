@@ -3,7 +3,7 @@ package com.yayiabc.api.item;
 public class ItemInfo {
 	/**
 	 * 
-	 * @api {post} http://47.93.48.111:8080/api/item/itemInfoList  商品列表
+	 * @api {post} http://192.168.1.103:8081/api/item/itemInfoList  商品列表
 	 * @apiName itemInfoList
 	 * @apiGroup itemInfo
 	 * @apiVersion 0.1.0
@@ -59,7 +59,7 @@ public class ItemInfo {
 	
 	/**
 	 * 
-	 * @api {post} http://47.93.48.111:8080/api/item/up  商品上架
+	 * @api {post} http://192.168.1.103:8081/api/item/up  商品上架
 	 * @apiName up
 	 * @apiGroup itemInfo
 	 * @apiVersion 0.1.0
@@ -97,7 +97,7 @@ public class ItemInfo {
 	
 	/**
 	 * 
-	 * @api {post} http://47.93.48.111:8080/api/item/down  商品下架
+	 * @api {post} http://192.168.1.103:8081/api/item/down  商品下架
 	 * @apiName down
 	 * @apiGroup itemInfo
 	 * @apiVersion 0.1.0
@@ -135,7 +135,7 @@ public class ItemInfo {
 	
 	/**
 	 * 
-	 * @api {post} http://47.93.48.111:8080/api/item/delete  商品删除
+	 * @api {post} http://192.168.1.103:8081/api/item/delete  商品删除
 	 * @apiName delete
 	 * @apiGroup itemInfo
 	 * @apiVersion 0.1.0
@@ -173,7 +173,7 @@ public class ItemInfo {
 	
 	/**
 	 * 
-	 * @api {post} http://47.93.48.111:8080/api/item/getItemId  获取商品编号
+	 * @api {post} http://192.168.1.103:8081/api/item/getItemId  获取商品编号
 	 * @apiName getItemId
 	 * @apiGroup itemInfo
 	 * @apiVersion 0.1.0
@@ -215,7 +215,7 @@ public class ItemInfo {
 	
 	/**
 	 * 
-	 * @api {post} http://47.93.48.111:8080/api/item/getItemSku  获取SKU代码
+	 * @api {post} http://192.168.1.103:8081/api/item/getItemSku  获取SKU代码
 	 * @apiName getItemSku
 	 * @apiGroup itemInfo
 	 * @apiVersion 0.1.0
@@ -256,7 +256,7 @@ public class ItemInfo {
 	
 	/**
 	 * 
-	 * @api {post} http://47.93.48.111:8080/api/item/insert  商品新增
+	 * @api {post} http://192.168.1.103:8081/api/item/insert  商品新增
 	 * @apiName insert
 	 * @apiGroup itemInfo
 	 * @apiVersion 0.1.0
@@ -264,6 +264,7 @@ public class ItemInfo {
 	 * 
 	 * @apiParam {String} itemId  商品id
 	 * @apiParam {String} itemName  商品名称
+	 * @apiParam {Integer} itemBrandId  商品品牌id
 	 * @apiParam {String} oneClassify  商品一级分类
 	 * @apiParam {String} twoClassify  商品二级分类
 	 * @apiParam {String} threeClassify  商品三级分类
@@ -324,7 +325,7 @@ public class ItemInfo {
 	
 	/**
 	 * 
-	 * @api {post} http://47.93.48.111:8080/api/item/update  商品修改
+	 * @api {post} http://192.168.1.103:8081/api/item/update  商品修改
 	 * @apiName update
 	 * @apiGroup itemInfo
 	 * @apiVersion 0.1.0

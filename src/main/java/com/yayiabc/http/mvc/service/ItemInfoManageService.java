@@ -25,7 +25,7 @@ public interface ItemInfoManageService {
 
 	DataWrapper<Void> getItemSku(String itemId);
 
-	DataWrapper<Void> insert(String itemId, String itemName,
+	DataWrapper<Void> insert(String itemId, String itemName,Integer itemBrandId,
 			String oneClassify, String itemLevels, String twoClassify,
 			String threeClassify, String itemPica, String itemPicb,
 			String itemPicc, String itemPicd, String itemPice, String video,

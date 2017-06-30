@@ -2,7 +2,7 @@ package com.yayiabc.api.user;
 
 public interface MyStar {
 	  /**
-     * @api {post} http://47.93.48.111:8080/api/mystar/shows 显示商品收藏数据
+     * @api {post} http://192.168.1.103:8081/api/mystar/shows 显示商品收藏数据
      * @apiName shows
      * @apiGroup myStar
      * @apiVersion 0.1.0
@@ -73,7 +73,7 @@ public interface MyStar {
      */
 
     /**
-     * @api {post} http://47.93.48.111:8080/api/mystar/deleteOne 取消收藏单个商品
+     * @api {post} http://192.168.1.103:8081/api/mystar/deleteOne 取消收藏单个商品
      * @apiName deleteOne
      * @apiGroup myStar
      * @apiDescription 取消收藏单个商品
@@ -114,7 +114,7 @@ public interface MyStar {
      */
 
     /**
-     * @api {post} http://47.93.48.111:8080/api/mystar/deleteAll 取消全部商品收藏
+     * @api {post} http://192.168.1.103:8081/api/mystar/deleteAll 取消全部商品收藏
      * @apiName deleteAll
      * @apiGroup myStar
      * @apiVersion 0.1.0

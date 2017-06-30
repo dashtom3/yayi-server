@@ -85,7 +85,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 	}
 
 	@Override
-	public DataWrapper<Void> insert(String itemId, String itemName,
+	public DataWrapper<Void> insert(String itemId, String itemName,Integer itemBrandId,
 			String oneClassify, String itemLevels, String twoClassify,
 			String threeClassify, String itemPica, String itemPicb,
 			String itemPicc, String itemPicd, String itemPice, String video,
@@ -103,6 +103,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 			itemInfo.setThreeClassify(threeClassify);
 			ItemBrand itemBrand =new ItemBrand();
 			itemBrand.setItemBrandName(itemBrandName);
+			itemBrand.setItemBrandId(itemBrandId);
 			ItemDetail itemDetail =new ItemDetail();
 			itemDetail.setItemId(itemId);
 			itemDetail.setItemDesc(itemDesc);
@@ -127,6 +128,8 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 			itemInfo.setItemDetail(itemDetail);
 			itemInfo.setItemBrand(itemBrand);
 			itemInfo.setItemValueList(itemValueList);
+			itemInfoManageDao.insertItemInfo(itemInfo);
+			/*itemInfoManageDao.insertItemDetail(itemDetail);*/
 			
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			return dataWrapper;

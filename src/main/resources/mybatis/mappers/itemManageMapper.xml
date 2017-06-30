@@ -91,4 +91,13 @@
  	<select id="queryItemPropertyIdByName" resultType="int">
  		select item_property_id from item_property where item_property_name=#{itemPropertyName}
  	</select>
+ 	<insert id="insertItemClassify">
+ 		insert into classify values(null,#{oneClassify},now(),now())
+ 	</insert>
+ 	<insert id="insertItemClassifyTwo">
+ 		insert into classify_two values(null,#{itemClassifyName},#{itemPreviousClassify},now(),now())
+ 	</insert>
+ 	<insert id="insertItemClassifyThree">
+ 		insert into classify_three values(null,#{itemClassifyName},#{itemPreviousClassify},now(),now())
+ 	</insert>
 </mapper>       

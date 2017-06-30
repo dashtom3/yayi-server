@@ -4,7 +4,7 @@ package com.yayiabc.api.item;
 public interface ItemClassify {
 	/**
 	 * 
-	 * @api {get} http://47.93.48.111:8080/api/item/showClassify   展示商品分类
+	 * @api {get} http://192.168.1.103:8081/api/item/showClassify   展示商品分类
 	 * @apiName showClassify
 	 * @apiGroup itemClassify
 	 * @apiVersion 0.1.0
@@ -52,7 +52,7 @@ public interface ItemClassify {
 	
 	/**
 	 * 
-	 * @api {get} http://47.93.48.111:8080/api/item/getAllClassifyAndBrand   获取所有商品分类和品牌列表
+	 * @api {get} http://192.168.1.103:8081/api/item/getAllClassifyAndBrand   获取所有商品分类和品牌列表
 	 * @apiName getAllClassifyAndBrand
 	 * @apiGroup itemClassify
 	 * @apiVersion 0.1.0
@@ -105,7 +105,7 @@ public interface ItemClassify {
 
 	/**
 	 * 
-	 * @api {post} http://47.93.48.111:8080/api/item/queryItemSearch   商品根据分类和品牌以及排序查询
+	 * @api {post} http://192.168.1.103:8081/api/item/queryItemSearch   商品根据分类和品牌以及排序查询
 	 * @apiName queryItemSearch
 	 * @apiGroup itemClassify
 	 * @apiVersion 0.1.0

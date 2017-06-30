@@ -2,6 +2,8 @@ package com.yayiabc.http.mvc.pojo.jpa;
 
 import java.util.Date;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 /**
  * 
  * @author xiaojiang 乾币记录表
@@ -15,7 +17,10 @@ public class QbRecord extends BasePojo {
 
 	private Integer qbRout;
 
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date qbTime;
+
+	private Integer qbBalances;
 
 	private String remark;
 
@@ -77,12 +82,21 @@ public class QbRecord extends BasePojo {
 		this.user = user;
 	}
 
+
+	public Integer getQbBalances() {
+		return qbBalances;
+	}
+
+	public void setQbBalances(Integer qbBalances) {
+		this.qbBalances = qbBalances;
+	}
+
 	public QbRecord() {
 		super();
 	}
 
 	public QbRecord(Integer qbRid, String userId, Integer qbRget,
-			Integer qbRout, Date qbTime, String remark) {
+			Integer qbRout, Date qbTime, String remark, Integer qbBalances) {
 		super();
 		this.qbRid = qbRid;
 		this.userId = userId;
@@ -90,10 +104,12 @@ public class QbRecord extends BasePojo {
 		this.qbRout = qbRout;
 		this.qbTime = qbTime;
 		this.remark = remark;
+		this.qbBalances = qbBalances;
 	}
 
 	public QbRecord(Integer qbRid, String userId, Integer qbRget,
-			Integer qbRout, Date qbTime, String remark, User user) {
+			Integer qbRout, Date qbTime, String remark, Integer qbBalances,
+			User user) {
 		super();
 		this.qbRid = qbRid;
 		this.userId = userId;
@@ -101,6 +117,7 @@ public class QbRecord extends BasePojo {
 		this.qbRout = qbRout;
 		this.qbTime = qbTime;
 		this.remark = remark;
+		this.qbBalances = qbBalances;
 		this.user = user;
 	}
 
@@ -108,7 +125,8 @@ public class QbRecord extends BasePojo {
 	public String toString() {
 		return "QbRecord [qbRid=" + qbRid + ", userId=" + userId + ", qbRget="
 				+ qbRget + ", qbRout=" + qbRout + ", qbTime=" + qbTime
-				+ ", remark=" + remark + "]";
+				+ ", qbBalances=" + qbBalances + ", remark=" + remark + ", user="
+				+ user + "]";
 	}
 
 }

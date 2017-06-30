@@ -2,24 +2,24 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yayiabc.http.mvc.dao.UserQbListDao">
-	<resultMap type="User" id="userQbListRM">
-		<id column="user_id" property="userId"/>
-		<result column="phone" property="phone"/>
-		<result column="qb_balance" property="qbBalance"/>
-		<collection property="qbRecordList" ofType="QbRecord">
-			<id column="qb_rid" property="qbRid"/>
+<mapper namespace="com.yayiabc.http.mvc.dao.UserQbListDao">	
+	<resultMap type="QbRecord" id="qbRecordListRM">
+		<id column="qb_rid" property="qbRid"/>
 			<result column="qb_rget" property="qbRget"/>
 			<result column="qb_rout" property="qbRout"/>
 			<result column="qb_time" property="qbTime"/>
+			<result column="qb_balances" property="qbBalances"/>
 			<result column="remark" property="remark"/>
-		</collection>
+		<association property="user" javaType="com.yayiabc.http.mvc.pojo.jpa.User">
+			<id column="user_id" property="userId"/>
+			<result column="phone" property="phone"/>
+		</association>
 	</resultMap>
 	
-	<select id="list" resultMap="userQbListRM">
-		SELECT q.qb_rid,u.phone,u.qb_balance,q.qb_rget,q.qb_rout,q.qb_time,q.remark 
+	<select id="list" resultMap="qbRecordListRM">
+		SELECT q.qb_rid,u.phone,q.qb_rget,q.qb_rout,q.qb_time,q.remark,q.qb_balances
 		FROM qb_record q
-		LEFT JOIN user u
+		LEFT JOIN USER u
 		ON u.user_id=q.user_id
 		<where>
 			<if test="phone !=null and phone !=''">
@@ -32,6 +32,7 @@
 			and	q.qb_time &lt; #{endDate}
 			</if>
 		</where>
+		ORDER BY q.qb_time DESC
 	</select>
 	
 	<update id="update">

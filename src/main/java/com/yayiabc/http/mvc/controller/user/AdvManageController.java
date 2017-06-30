@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.sdk.LogisticsMain;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.AdvChart;
 import com.yayiabc.http.mvc.service.AdvManageService;
@@ -46,11 +47,33 @@ public class AdvManageController {
     	return advManageService.insertAdv(advChart);
     }
   //delete
+    /**
+     *  "SF",
+        "LogisticCode": "118650888018"
+     * @param advId
+     * @return
+     */
     @RequestMapping("deleteAdv")
     @ResponseBody
     public DataWrapper<Void> deleteAdv(
     		@RequestParam(value="advId") Integer advId
     		){
     	return advManageService.deleteAdv(advId);
+    }
+    @RequestMapping("testLogMain")
+    @ResponseBody
+    public String testLogMain(
+    		@RequestParam(value="ShipperCode") String  ShipperCode,
+    		@RequestParam(value="LogisticCode") String  LogisticCode
+    		){
+    	try {
+    		String s=new LogisticsMain().getOrderTracesByJson(ShipperCode, LogisticCode);
+    				System.out.println(s);
+			return s;
+		} catch (Exception e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		return LogisticCode;
     }
 }

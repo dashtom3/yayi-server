@@ -6,6 +6,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+import com.github.pagehelper.Page;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.sessionManager.SessionManager;
 import com.yayiabc.common.utils.DataWrapper;
@@ -23,8 +24,13 @@ public class UserCenterStarServiceImpl  implements UserCenterStarService{
 	UserDao userDao;
 	//显示收藏数据
 	@Override
-	public DataWrapper<List<MyStar>>shows(String phone){
+	public DataWrapper<List<MyStar>>shows(
+			String phone,Integer currentPage,Integer numberPerpage
+			){
 		DataWrapper<List<MyStar>> dataWrapper=new DataWrapper<List<MyStar>>();
+		Page page=new Page(currentPage,numberPerpage);
+		//总条数
+		usercenterstardao.queryCount("");
 		String userId=userDao.getUserId(phone);
 		List<MyStar> itemStarList=usercenterstardao.shows(userId);
 		dataWrapper.setData(itemStarList);

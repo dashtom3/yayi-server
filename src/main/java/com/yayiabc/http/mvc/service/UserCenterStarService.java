@@ -10,7 +10,7 @@ import com.yayiabc.http.mvc.pojo.jpa.MyStar;
 
 
 public interface UserCenterStarService {
-	DataWrapper<List<MyStar>> shows(String phone);
+	DataWrapper<List<MyStar>> shows(String phone,Integer currentPage,Integer numberPerpage);
 	DataWrapper<Void>  deleteStarOne(int deleteOneId,String phone);
 	DataWrapper<Void>  deleteStarAll(String deleteAllId);
 	DataWrapper<Void>  addMyStar(String phone, String itemId);

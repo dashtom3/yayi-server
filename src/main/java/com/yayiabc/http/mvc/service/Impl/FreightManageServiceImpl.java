@@ -88,4 +88,19 @@ public class FreightManageServiceImpl implements FreightManageService{
 		}
 		return dataWrapper;
 	}
+	@Override
+	//新增自定义运费
+	public DataWrapper<Void> addCustomFreight(PostFee postFee) {
+		// TODO Auto-generated method stub
+		DataWrapper<Void>  dataWrapper=new DataWrapper<Void> ();
+		int state=freightManageDao.addCustomFreight(postFee);
+		if(state>0){
+			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+			dataWrapper.setMsg("操作成功");
+		}else{
+			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+			dataWrapper.setMsg("操作失败");
+		}
+		return dataWrapper;
+	}
 }

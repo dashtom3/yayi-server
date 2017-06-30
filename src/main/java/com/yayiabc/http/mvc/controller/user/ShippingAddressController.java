@@ -3,6 +3,7 @@ package com.yayiabc.http.mvc.controller.user;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -27,7 +28,7 @@ public class ShippingAddressController {
 		
 		//request.setCharacterEncoding("UTF-8");
 		DataWrapper<Void> dataWrapper=null;
-	      if(receiver.getIsDefault()){
+	      if(receiver.getIsDefault()==true){
 	    	  //根据电话号码  查询出当前登录人user_ID
 	    	  Integer receiverId=shippingAddressService.addConditions(newPhone);
 	    	  System.out.println(receiverId);
@@ -61,7 +62,7 @@ public class ShippingAddressController {
 		receiver.setReceiverId(receiverId);
 		System.out.println(receiver);
 		DataWrapper<Void> dataWrapper=null;
-		if(receiver.getIsDefault()){
+		if(receiver.getIsDefault()==true){
 			//if y
 			Integer receiverIdcopy=shippingAddressService.addConditions(newPhone);
 			System.out.println("收货地址id"+receiverId);

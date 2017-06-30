@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.controller.user;
 
 import java.util.List;
 
+import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -24,6 +25,8 @@ public class UserCenterStarController {
       @RequestMapping("shows")
       @ResponseBody
       public DataWrapper<List<MyStar>> shows(
+    		  //这里改为phone
+    		  
     		  @RequestParam(value = "phone",required=true) String phone,
     		  @RequestParam(value = "token",required=true) String token
     		  ){

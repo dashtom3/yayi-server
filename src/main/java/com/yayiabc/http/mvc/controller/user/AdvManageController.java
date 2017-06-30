@@ -45,7 +45,6 @@ public class AdvManageController {
     		){
     	return advManageService.insertAdv(advChart);
     }
-    
   //delete
     @RequestMapping("deleteAdv")
     @ResponseBody

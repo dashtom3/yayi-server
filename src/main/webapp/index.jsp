@@ -5,7 +5,7 @@
  <title>myJSP</title>
  </head>
  <body>
-	<form action="/api/user/register" method="post">
+	<!-- <form action="/api/user/register" method="post">
 		<h1>注册</h1>
 		手机号码<input type="text" name="phone"/>
 		密码<input type="text" name="password"/>
@@ -77,7 +77,7 @@
     <input name="token" type="text" />
 	<input value="提交" type="submit" />
 </form>
-<!-- 查询商品列表 -->
+查询商品列表
 <form action="/api/item/itemInfoList" method="post">
 	    <h1>商品查询</h1>
 		商品id<input type="text" name="itemId"/>
@@ -86,7 +86,35 @@
 		商品品牌名字<input type="text" name="itemBrandName"/>
 		状态<input type="text" name="state"/>
 		<input type="submit" name="提交"/>
-	</form>
+</form> -->
+<form method="post" action="/api/item/insert">
+    <input name="itemId" type="text" />
+    <input name="itemName" type="text" />
+    <input name="oneClassify" type="text" />
+    <input name="twoClassify" type="text" />
+    <input name="threeClassify" type="text" />
+    <input name="itemPica" type="text" />
+    <input name="itemPicb" type="text" />
+    <input name="itemPicc" type="text" />
+    <input name="itemPicd" type="text" />
+    <input name="itemPice" type="text" />
+    <input name="video" type="text" />
+    <input name="itemDesc" type="text" />
+    <input name="itemUse" type="text" />
+    <input name="itemRange" type="text" />
+    <input name="registerId" type="text" />
+    <input name="storeItemId" type="text" />
+    <input name="apparatusType" type="text" />
+    <input name="producePompany" type="text" />
+    <input name="unit" type="text" />
+    <input name="registerDate" type="text" />
+    <input name="itemPacking" type="text" />
+    <input name="itemLevels" type="text" />
+    <input name="itemPparam" type="text" />
+    <input name="itemBrandName" type="text" />
+    <input name="itemPropertyName" type="text" />
+	<input value="提交" type="submit" />
+</form>
 	
  </body>
 </html>

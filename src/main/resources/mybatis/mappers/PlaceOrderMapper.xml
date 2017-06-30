@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+
+<mapper namespace="com.yayiabc.http.mvc.dao.PlaceOrderDao">
+
+	<select id="buyNows" resultType="com.yayiabc.http.mvc.pojo.jpa.Cart">
+		select * from cart where user_id=#{userId}
+	</select>
+	
+	<select id="queryPostFree" resultType="com.yayiabc.http.mvc.pojo.jpa.FreeShipping">
+	select * from  free_shipping
+	</select>
+	
+	<select id="query" resultType="com.yayiabc.http.mvc.pojo.jpa.PostFee">
+	select * from post_fee
+	</select>
+	
+	<select id="ded" resultType="int">
+	 select qb_balance  from user where user_id=#{userId}
+	</select>
+	
+	<select id="queryReceiver" resultType="com.yayiabc.http.mvc.pojo.jpa.Receiver">
+	    select * from receiver where receiver_id=#{receiverId}
+	</select>
+	
+	
+	
+	<insert id="synchronization" parameterType="com.yayiabc.http.mvc.pojo.jpa.Cart">
+	  insert into order_item(itm_SKU,item_id,order_id,num,price,item_property_namea
+	  ,item_property_nameb,item_property_namec)values(
+	   #{cart.itemSKU}, #{cart.itemId},#{orderId},#{cart.num}, #{cart.price},
+	    #{cart.itemPropertyNamea},#{cart.itemPropertyNameb},#{cart.itemPropertyNamec}
+	  )
+	</insert>
+	
+	<insert id="synchronizationOne" parameterType="com.yayiabc.http.mvc.pojo.jpa.OrderItem">
+	 insert into order_item(itm_SKU,item_id,order_id,pic_path,num,price,item_property_namea
+	  ,item_property_nameb,item_property_namec)values(
+	   #{orderItem.itemSKU}, #{orderItem.itemId},#{orderItem.orderId}, #{orderItem.picPath},
+	   #{orderItem.num}, #{orderItem.price},
+	    #{orderItem.itemPropertyNamea},#{orderItem.itemPropertyNameb},#{orderItem.itemPropertyNamec})
+	</insert>
+	
+	<!-- //把订单保存到数据库 -->
+	<insert id="saveMessage" parameterType="com.yayiabc.http.mvc.pojo.jpa.Ordera">
+	   insert into ordera values(
+	   #{order.orderId},#{order.userId},#{order.actualPay},#{order.payType},#{order.postFee},#{order.paymentTime},#{order.consignTime},
+	   #{order.endTime},#{order.closeTime},#{order.buyerMessage}#{order.buyerNick},#{order.buyerRate},
+	   #{order.state},#{order.shippingName},#{order.shippingCode},#{order.invoiceHand},#{order.isRegister},receiverId
+	   #{order.giveQb},#{order.refundInfo},#{order.totalFee},#{order.qbDed},#{order.refund},#{order.receiverId}
+	   )
+	   
+	</insert>
+	
+	<delete id="emptyCart">
+	  delete from cart where user_id=#{userId}
+	</delete>
+	
+	<insert id="createOrder" parameterType="java.lang.String">
+	   insert into ordera(order_id)values(#{orderId})
+	</insert>
+	
+	
+	<!-- //更改地址后 -->
+	<select id="upateAddress">
+	
+	select * from receiver where receiver_id=#{receiverId}
+	</select>
+</mapper>

@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.controller.user;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -9,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.PostFee;
 import com.yayiabc.http.mvc.pojo.jpa.FreeShipping;
@@ -25,11 +27,16 @@ public class FreightManageController {
     public DataWrapper< List<PostFee>> show(){
     	return freightManageService.showFreight();
     }
-    //自定义运费
+    //更改自定义运费
     @RequestMapping("customFreight")
     @ResponseBody
     public DataWrapper< Void> customFreight(
     		@RequestParam(value="postFeeId",required=true) String postFeeId,
+    	/*	@RequestParam(value="postCity",required=false) String postCity,
+    		@RequestParam(value="firstNum",required=false) Integer firstNum,
+    		@RequestParam(value="firstMoney",required=false) Integer firstMoney,
+    		@RequestParam(value="addNum",required=false) Integer addNum,
+    		@RequestParam(value="addMoney",required=false) Integer addMoney*/
     		@ModelAttribute PostFee postFee
     		){
     	//PostFee postFee=new PostFee();
@@ -40,6 +47,27 @@ public class FreightManageController {
     	postFee.setAddNum(addNum);
     	postFee.setAddMoney(addMoney);*/
     	return freightManageService.customFreight(postFee);
+    }
+    //add
+    @RequestMapping("addCustomFreight")
+    @ResponseBody
+    public DataWrapper< Void> addCustomFreight(
+    		//@RequestParam(value="postFeeId",required=true) Integer postFeeId,
+    	/*	@RequestParam(value="postCity",required=false) String postCity,
+    		@RequestParam(value="firstNum",required=false) Integer firstNum,
+    		@RequestParam(value="firstMoney",required=false) Integer firstMoney,
+    		@RequestParam(value="addNum",required=false) Integer addNum,
+    		@RequestParam(value="addMoney",required=false) Integer addMoney*/
+    		@ModelAttribute PostFee postFee
+    		){
+    	//PostFee postFee=new PostFee();
+    	
+    	/*postFee.setPostCity(postCity);
+    	postFee.setFirstNum(firstNum);
+    	postFee.setFirstMoney(firstMoney);
+    	postFee.setAddNum(addNum);
+    	postFee.setAddMoney(addMoney);*/
+    	return freightManageService.addCustomFreight(postFee);
     }
     //删除
     @RequestMapping("deleteCustomFreight")
@@ -56,9 +84,8 @@ public class FreightManageController {
     public DataWrapper<List<FreeShipping>> showFreeShipp() {
 		// TODO Auto-generated method stub
 		DataWrapper<List<FreeShipping>> list=freightManageService.showFreeShipp();
+	    
 		return list;
-	}public FreightManageController() {
-		// TODO Auto-generated constructor stub
 	}
 	//包邮Add
 	 @RequestMapping("insertFreeShipp")

@@ -14,8 +14,10 @@ import com.yayiabc.http.mvc.pojo.jpa.FreeShipping;
 public interface FreightManageService {
 	//显示运费
 	DataWrapper< List<PostFee>>    showFreight();
-	   //自定义运费
+	   //新增自定义运费
 	DataWrapper<Void> customFreight(PostFee postFee);
+	//新增
+	DataWrapper<Void> addCustomFreight(PostFee postFee);
 	DataWrapper<Void> deleteCustomFreight(Integer postFeeId);
 	//显示包邮数据
 	DataWrapper<List<FreeShipping> > showFreeShipp();

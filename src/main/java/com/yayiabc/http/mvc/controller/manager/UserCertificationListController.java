@@ -38,7 +38,7 @@ public class UserCertificationListController {
 	}
 	
 	/**
-	 * 审核用户资质认证信息
+	 * 审核用户资质认证信息123
 	 */
 	@RequestMapping(value="verify",method=RequestMethod.POST)
 	@ResponseBody

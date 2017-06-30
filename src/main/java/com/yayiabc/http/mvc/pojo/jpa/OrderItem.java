@@ -12,7 +12,7 @@ import java.util.List;
  */
 public class OrderItem extends BasePojo {
 	private String itemId;
-	
+	private String orderId;
 	private Ordera ordera;
 
 	private Integer qbDed;
@@ -35,6 +35,15 @@ public class OrderItem extends BasePojo {
      
 	
 	
+	
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
 	public Refund getRefund() {
 		return refund;
 	}

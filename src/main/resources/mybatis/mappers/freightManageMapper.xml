@@ -12,7 +12,12 @@
 		post_fee_id,post_city,is_post,first_num,first_money,add_num,add_money
 		from post_fee
 	</select>
-	<!-- 自定义运费 -->
+	<insert id="addCustomFreight">
+	  insert into post_fee(post_city,is_post,first_num,first_money,add_num,add_money) 
+	  values(#{postCity},#{isPost},#{firstNum},#{firstMoney},#{addNum},#{addMoney})
+	</insert>
+	
+	<!-- 更改自定义运费 -->
 	<update id="customFreight">
 		UPDATE post_fee
 		SET
@@ -55,13 +60,13 @@
 		update free_shipping 
 		<set>
 		<if test="postCity!=null">
-			post_city=#{postCity}
+			post_city=#{postCity},
 		</if>
 		<if test="freeShippingMoney!=null">
-			free_shipping_money=#{freeShippingMoney}
+			free_shipping_money=#{freeShippingMoney},
 		</if>
 		<if test="state!=null">
-			state=#{state}
+			state=#{state},
 		</if>
 		</set>
 		where free_post_id=#{freePostId}

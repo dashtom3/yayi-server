@@ -3,6 +3,7 @@ package com.yayiabc.http.mvc.service.Impl;
 import java.util.HashMap;
 import java.util.List;
 
+import org.springframework.aop.IntroductionAdvisor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -45,6 +46,7 @@ public class ShippingAdressServiceImpl implements ShippingAddressService{
 		HashMap<String, Receiver> hMap= new HashMap<String,Receiver>();
 		String userId=userDao.getUserId(newPhone);
 		receiver.setUserId(userId);
+		System.out.println(receiver);
 		hMap.put("receiver",receiver );
 		int sign=shippingAddressDao.updateUserAddress(hMap);
 		if(sign>0){

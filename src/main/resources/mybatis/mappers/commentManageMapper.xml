@@ -70,7 +70,8 @@
 	</select>
 	<!-- 回复 -->
 	<insert id="reply">
-	  insert into comments(reply_content,recovery_state) values(#{data},1) where item_id=#{itemId} and orderId=#{orderId}
+	 <!--  insert into comments(reply_content,recovery_state) values(#{data},1) where item_id=#{itemId} and order_id=#{orderId} -->
+	 update comments set reply_content=#{data},recovery_state=1 where item_id=#{itemId} and order_id=#{orderId}
 	</insert>
 	
 </mapper>

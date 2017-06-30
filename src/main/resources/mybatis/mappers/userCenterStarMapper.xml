@@ -36,4 +36,8 @@
 	<insert id="addMyStar">
 	insert into item_star(user_id,item_id) values(#{userId},#{itemId})
 	</insert>
+	 <!-- //查询是否已经收藏 -->
+	<select id="queryOne"  resultType="int">
+	  select item_star_id from item_star where item_id=#{itemId}
+	</select>
 </mapper>  

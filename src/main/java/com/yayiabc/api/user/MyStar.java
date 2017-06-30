@@ -8,7 +8,7 @@ public interface MyStar {
      * @apiVersion 0.1.0
      * @apiDescription 收藏
      *
-     * @apiParam {String} phone  （必须，可作为查询当前用户收藏商品）
+     * @apiParam {String} phone  （必须)可作为查询当前用户收藏商品
      * @apiParam {String} token  （必须） 
      * 
      * @apiSuccessExample {json} Success-Response:
@@ -81,6 +81,7 @@ public interface MyStar {
      *
      * @apiParam {String} itemId 商品收藏id（必须）
      * @apiParam {String} token  （必须） 
+     * @apiParam {String} phone  （必须） 
      *
      * @apiSuccessExample Success-Response:
      *  HTTP/1.1 200 OK
@@ -152,5 +153,46 @@ public interface MyStar {
      * msg :null,
      * }
      *
+     */
+	  /**
+     * @api {post} http://47.93.48.111:8080/api/mystar/addMyStar add收藏商品
+     * @apiName addMyStar
+     * @apiGroup myStar
+     * @apiDescription add收藏商品
+     * @apiVersion 0.1.0
+     *
+     * @apiParam {String} itemId 商品收藏id（必须）
+     * @apiParam {String} token  （必须） 
+     * @apiParam {String} phone  （必须） 
+     *
+     * @apiSuccessExample Success-Response:
+     *  HTTP/1.1 200 OK
+     * {
+     * callStatus:"SUCCEED",
+     * errorCode:"No_Error",
+     * data:null,
+     * token:null,
+     * numberPerPage:0,
+     * currentPage:0,
+     * totalNumber:0,
+     * totalPage:0,
+     * num :null,
+     * msg :null,
+     * }
+     *  
+     *  @apiErrorExample {json} Error-Response
+     *  HTTP/1.1 200 OK
+     * {
+     * callStatus:"SUCCEED",
+     * errorCode:"未知错误",
+     * data:null,
+     * token:null,
+     * numberPerPage:0,
+     * currentPage:0,
+     * totalNumber:0,
+     * totalPage:0,
+     * num :null,
+     * msg :null,
+     * }
      */
 }

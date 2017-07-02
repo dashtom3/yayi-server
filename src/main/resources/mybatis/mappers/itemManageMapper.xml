@@ -50,9 +50,6 @@
  		insert into item_property values(null,#{itemPropertyName},now(),now())
  	</insert>
  	
- 	<!-- <insert id="addPropertyd">
- 		insert into item_propertyd values(null,null,#{itemPropertyId},#{itemPropertyName},now(),now())
- 	</insert> -->
  	
  	<select id="showItemClassify" resultType="itemClassify">
  		select * from item_classify

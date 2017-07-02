@@ -5,7 +5,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -13,9 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.ItemIdUtils;
-import com.yayiabc.http.mvc.pojo.jpa.ItemDetail;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
-import com.yayiabc.http.mvc.pojo.jpa.ItemProperty;
 import com.yayiabc.http.mvc.pojo.jpa.ItemValue;
 import com.yayiabc.http.mvc.service.ItemInfoManageService;
 
@@ -68,9 +65,10 @@ public class ItemInfoManageController {
 	@RequestMapping("delete")
 	@ResponseBody
 	public DataWrapper<Void> delete(
+			@RequestParam(value="itemSKU") String itemSKU,
 			@RequestParam(value="itemId") String itemId
 			){
-		return itemInfoManageService.delete(itemId);
+		return itemInfoManageService.delete(itemSKU,itemId);
 	}
 	
 	/**
@@ -82,6 +80,7 @@ public class ItemInfoManageController {
 			@RequestParam(value="itemId",required=true) String itemId ,
 			@RequestParam(value="itemName",required=true) String itemName,
 			@RequestParam(value="itemBrandId",required=true) Integer itemBrandId,
+			@RequestParam(value="itemBrandName",required=true) String itemBrandName, 
 			@RequestParam(value="oneClassify",required=true) String oneClassify,
 			@RequestParam(value="twoClassify",required=true) String twoClassify,
 			@RequestParam(value="threeClassify",required=true) String threeClassify,
@@ -102,14 +101,12 @@ public class ItemInfoManageController {
 			@RequestParam(value="registerDate",required=true) Date registerDate,
 			@RequestParam(value="itemPacking",required=true) String itemPacking,
 			@RequestParam(value="itemLevels",required=true) String itemLevels,
-			@RequestParam(value="itemPparam",required=true) String itemPparam,
-			@RequestParam(value="itemBrandName",required=false) String itemBrandName, 
 			@RequestBody List<ItemValue> itemValueList
 			){
 		return itemInfoManageService.update(itemId,itemName,itemBrandId,oneClassify,itemLevels,
 				twoClassify,threeClassify,itemPica,itemPicb,itemPicc,itemPicd,itemPice,
 				video,itemDesc,itemUse,itemRange,registerId,storeItemId,apparatusType,unit,
-				producePompany,registerDate,itemPacking,itemPparam,itemBrandName,itemValueList);
+				producePompany,registerDate,itemPacking,itemBrandName,itemValueList);
 	}
 	
 	/**
@@ -134,6 +131,7 @@ public class ItemInfoManageController {
 	@RequestParam(value="itemId",required=true) String itemId ,
 	@RequestParam(value="itemName",required=true) String itemName,
 	@RequestParam(value="itemBrandId",required=true) Integer itemBrandId,
+	@RequestParam(value="itemBrandName",required=true) String itemBrandName, 
 	@RequestParam(value="oneClassify",required=true) String oneClassify,
 	@RequestParam(value="twoClassify",required=true) String twoClassify,
 	@RequestParam(value="threeClassify",required=true) String threeClassify,
@@ -154,13 +152,11 @@ public class ItemInfoManageController {
 	@RequestParam(value="registerDate",required=true) Date registerDate,
 	@RequestParam(value="itemPacking",required=true) String itemPacking,
 	@RequestParam(value="itemLevels",required=true) String itemLevels,
-	@RequestParam(value="itemPparam",required=true) String itemPparam,
-	@RequestParam(value="itemBrandName",required=false) String itemBrandName, 
 	@RequestBody List<ItemValue> itemValueList
 			){
 		return itemInfoManageService.insert(itemId,itemName,itemBrandId,oneClassify,itemLevels,
 				twoClassify,threeClassify,itemPica,itemPicb,itemPicc,itemPicd,itemPice,
 				video,itemDesc,itemUse,itemRange,registerId,storeItemId,apparatusType,unit,
-				producePompany,registerDate,itemPacking,itemPparam,itemBrandName,itemValueList);
+				producePompany,registerDate,itemPacking,itemBrandName,itemValueList);
 	}
 }

@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
-import com.yayiabc.http.mvc.pojo.jpa.User;
 
 @Repository
 public interface UserQbListDao {

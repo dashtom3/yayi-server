@@ -142,6 +142,7 @@ public class ItemInfo {
 	 * @apiDescription  商品删除
 	 * 
 	 * @apiParam {String} itemId  商品id(必需)
+	 * @apiParam {String} itemSKU  商品SKU码(必需)
 	 * 
 	 * @apiSuccessExample {json} Success-Response: 
 	 * HTTP/1.1 200 OK 
@@ -149,7 +150,7 @@ public class ItemInfo {
 	 * callStatus:"SUCCEED", 
 	 * errorCode:"No_Error",
 	 * data:null,
-	 * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
+	 * token:null,
 	 * numberPerPage:0, 
 	 * currentPage:0, 
 	 * totalNumber:0,

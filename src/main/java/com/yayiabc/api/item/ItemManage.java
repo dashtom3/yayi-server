@@ -441,14 +441,14 @@ public class ItemManage {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/addPropertyd  添加属性值
-	 * @apiName addPropertyd
+	 * @api {post} http://192.168.1.103:8081/api/item/addPropertydAndPropertyName  添加属性值
+	 * @apiName addPropertydAndPropertyName
 	 * @apiGroup itemManage
 	 * @apiVersion 0.1.0
-	 * @apiDescription  添加属性
+	 * @apiDescription  添加属性值
 	 * 
-	 * @apiParam  {Integer} itemPropertyId  属性id
-	 * @apiParam  {String} itemPparam       属性值
+	 * @apiParam  {String} itemPropertyName  属性名
+	 * @apiParam  {String} itemPparam       属性值(此处需要传一个json串)
 	 * 
 	 * @apiSuccessExample {json} Success-Response: 
 	 * HTTP/1.1 200 OK 

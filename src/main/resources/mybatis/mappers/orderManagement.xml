@@ -4,11 +4,10 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yayiabc.http.mvc.dao.OrderManagementDao">
 
-	<resultMap type="User" id="userOrderManageResultMap">
-		<id property="userId" column="userId" />
+	<resultMap type="Ordera" id="userOrderManageResultMap">
+	<id property="orderId" column="order_id" />
 		<result property="phone" column="phone" />
-		<collection property="orderaList" ofType="Ordera">
-			<id property="orderId" column="order_id" />
+			
 			<result property="qbDed" column="qb_ded" />
 			<result property="actualPay" column="actual_pay" />
 			<result property="totalFee" column="total_fee" />
@@ -18,15 +17,15 @@
 			<result property="shippingCode" column="shipping_code" />
 			<result property="refund" column="refund" />
 
-		</collection>
 	</resultMap>
 	<select id="showOrder" resultMap="userOrderManageResultMap">
 		SELECT
-		orde.order_id,orde.total_fee,orde.qb_ded,orde.actual_pay,us.phone,orde.created,
+		orde.order_id,orde.total_fee,orde.qb_ded,orde.actual_pay,us.phone,orde.created,rece.receiver_name,
+		rece.phone,orde.payment_time,
 		orde.state, CONCAT(shipping_name,shipping_code) AS
 		information,orde.refund,orde.shipping_name,orde.shipping_code
-		FROM USER
-		us JOIN ordera orde ON us.user_id=orde.user_id
+		FROM ordera orde JOIN USER
+		us  ON us.user_id=orde.user_id JOIN receiver rece ON rece.user_id=orde.user_id
 		<where>
 			<if test="orderId !=null">
 				orde.order_id=#{orderId}

@@ -2,13 +2,13 @@ package com.yayiabc.api.user;
 
 public interface MyStar {
 	  /**
-     * @api {post} http://192.168.1.103:8081/api/mystar/shows 显示商品收藏数据
+     * @api {post} http://47.93.48.111:8080/api/mystar/shows 显示商品收藏数据
      * @apiName shows
      * @apiGroup myStar
      * @apiVersion 0.1.0
      * @apiDescription 收藏
      *
-     * @apiParam {String} phone  （必须，可作为查询当前用户收藏商品）
+     * @apiParam {String} phone  （必须)可作为查询当前用户收藏商品
      * @apiParam {String} token  （必须） 
      * 
      * @apiSuccessExample {json} Success-Response:
@@ -73,7 +73,7 @@ public interface MyStar {
      */
 
     /**
-     * @api {post} http://192.168.1.103:8081/api/mystar/deleteOne 取消收藏单个商品
+     * @api {post} http://47.93.48.111:8080/api/mystar/deleteOne 取消收藏单个商品
      * @apiName deleteOne
      * @apiGroup myStar
      * @apiDescription 取消收藏单个商品
@@ -81,6 +81,7 @@ public interface MyStar {
      *
      * @apiParam {String} itemId 商品收藏id（必须）
      * @apiParam {String} token  （必须） 
+     * @apiParam {String} phone  （必须） 
      *
      * @apiSuccessExample Success-Response:
      *  HTTP/1.1 200 OK
@@ -114,7 +115,7 @@ public interface MyStar {
      */
 
     /**
-     * @api {post} http://192.168.1.103:8081/api/mystar/deleteAll 取消全部商品收藏
+     * @api {post} http://47.93.48.111:8080/api/mystar/deleteAll 取消全部商品收藏
      * @apiName deleteAll
      * @apiGroup myStar
      * @apiVersion 0.1.0
@@ -152,5 +153,46 @@ public interface MyStar {
      * msg :null,
      * }
      *
+     */
+	  /**
+     * @api {post} http://47.93.48.111:8080/api/mystar/addMyStar add收藏商品
+     * @apiName addMyStar
+     * @apiGroup myStar
+     * @apiDescription add收藏商品
+     * @apiVersion 0.1.0
+     *
+     * @apiParam {String} itemId 商品收藏id（必须）
+     * @apiParam {String} token  （必须） 
+     * @apiParam {String} phone  （必须） 
+     *
+     * @apiSuccessExample Success-Response:
+     *  HTTP/1.1 200 OK
+     * {
+     * callStatus:"SUCCEED",
+     * errorCode:"No_Error",
+     * data:null,
+     * token:null,
+     * numberPerPage:0,
+     * currentPage:0,
+     * totalNumber:0,
+     * totalPage:0,
+     * num :null,
+     * msg :null,
+     * }
+     *  
+     *  @apiErrorExample {json} Error-Response
+     *  HTTP/1.1 200 OK
+     * {
+     * callStatus:"SUCCEED",
+     * errorCode:"未知错误",
+     * data:null,
+     * token:null,
+     * numberPerPage:0,
+     * currentPage:0,
+     * totalNumber:0,
+     * totalPage:0,
+     * num :null,
+     * msg :null,
+     * }
      */
 }

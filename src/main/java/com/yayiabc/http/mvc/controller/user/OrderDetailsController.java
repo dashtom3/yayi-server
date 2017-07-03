@@ -36,7 +36,7 @@ public class OrderDetailsController {
      @RequestMapping("show")
      @ResponseBody
      public DataWrapper<List<User>> show(
-    		  @RequestParam(value="phone",required=true) String phone,
+    		  @RequestParam(value="phone",required=false) String phone,
     		  @RequestParam(value="state",required=false) String state,
     		  @RequestParam(value="currentPage",required=false) Integer currentPage,
      		  @RequestParam(value="numberPerpage",required=false) Integer numberPerpage

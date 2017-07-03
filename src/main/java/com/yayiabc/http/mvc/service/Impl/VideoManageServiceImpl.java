@@ -39,7 +39,7 @@ public class VideoManageServiceImpl implements VideoManageService {
 	public DataWrapper<Void> insertVid(VidManage vidManage) {
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
-		int state=videoManageDao.updateVid(vidManage);
+		int state=videoManageDao.insertVid(vidManage);
 		if(state>0){
 			dataWrapper.setMsg("操作成功");
 		}else{

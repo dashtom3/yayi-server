@@ -40,7 +40,7 @@ public class CommentManageServiceImpl implements CommentManageService {
 			page.setCurrentPage(1);
 		}
 		//总条数
-		int count=userCenterStarDao.queryCount("comments");
+		int count=userCenterStarDao.queryCount("item_star");
 		
 		//容器
 		List<Map<String,String>> containerList=new ArrayList<Map<String,String>>();

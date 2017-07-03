@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -7,6 +8,7 @@ import org.apache.ibatis.annotations.Param;
 
 
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
+import com.yayiabc.http.mvc.pojo.jpa.User;
 
 
 public interface CommentManageDao{

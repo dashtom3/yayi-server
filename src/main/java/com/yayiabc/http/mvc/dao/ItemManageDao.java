@@ -3,6 +3,7 @@ package com.yayiabc.http.mvc.dao;
 import java.util.List;
 import java.util.Map;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.yayiabc.http.mvc.pojo.jpa.ItemClassify;
@@ -11,7 +12,7 @@ import com.yayiabc.http.mvc.pojo.jpa.ItemPropertyd;
 @Repository
 public interface ItemManageDao {
 	
-	List<ItemProperty> queryProperty(String itemPropertyName);
+	List<ItemProperty> queryProperty(@Param("itemPropertyName") String itemPropertyName);
 
 	void deleteProperty(Integer itemPropertyId);
 
@@ -71,6 +72,12 @@ public interface ItemManageDao {
 	String queryItemClassifyByName(ItemClassify itemClassify);
 
 	void deleteItemClassifyOne(ItemClassify itemClassify);
+
+	void updateItemClassifyOneSon(ItemClassify itemClassify);
+
+	void updateItemClassifyTwoSon(ItemClassify itemClassify);
+
+	String queryItemClassifySonName(String itemClassifyNameA);
 
 
 	

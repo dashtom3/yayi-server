@@ -35,8 +35,8 @@ public interface ItemManageService {
 
 	DataWrapper<Void> deleteItemClassify(Integer itemClassifyId,String itemClassifyName,Integer itemClassifyGrade);
 
-	DataWrapper<Void> updateItemClassify(Integer itemClassifyId,
-			String itemClassifyName, String itemPreviousClassify,Integer itemClassifyGrade);
+	DataWrapper<Void> updateItemClassify(Integer itemClassifyId,String itemClassifyName,
+			String itemOldName ,Integer itemClassifyGrade);
 
 	DataWrapper<Void> addItemBrand(String itemBrandName, String itemBrandHome,
 			String itemBrandLogo);
@@ -48,7 +48,7 @@ public interface ItemManageService {
 			String itemPreviousClassify,Integer itemClassifyGrade);
 
 	DataWrapper<Void> addPropertyAndPropertyName(String itemPropertyName,
-			List<String> itemPparamList);
+			String[] itemPparams);
 
 	
 

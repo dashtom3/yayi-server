@@ -4,6 +4,7 @@ public class VidManage {
 	private Integer viId;
 	private  String vidName;
 	private String videoType;
+	private String vidRoute;
 	
 	public String getVideoType() {
 		return videoType;
@@ -27,6 +28,12 @@ public class VidManage {
 	public String toString() {
 		return "VidManage [viId=" + viId + ", vidName=" + vidName
 				+ ", videoType=" + videoType + "]";
+	}
+	public String getVidRoute() {
+		return vidRoute;
+	}
+	public void setVidRoute(String vidRoute) {
+		this.vidRoute = vidRoute;
 	}
 	
 

@@ -13,6 +13,17 @@ public class ItemInfo extends BasePojo {
 	private String itemName;
 
 	private List<ItemValue> itemValueList;
+	
+	private Integer isThrow;
+	
+
+	public Integer getIsThrow() {
+		return isThrow;
+	}
+
+	public void setIsThrow(Integer isThrow) {
+		this.isThrow = isThrow;
+	}
 
 	private Integer itemStockNum;
 
@@ -183,16 +194,18 @@ public class ItemInfo extends BasePojo {
 	}
 
 	public ItemInfo(String itemId, String itemName,
-			List<ItemValue> itemValueList, Integer itemStockNum,
-			Integer itemPrice, Integer sales, Integer state,
-			String oneClassify, String twoClassify, String threeClassify,
-			String itemPnamea, String itemPnameb, String itemPnamec,
-			ItemDetail itemDetail, List<Comments> commentList,
-			ItemBrand itemBrand, List<ItemProperty> itemPropertyList) {
+			List<ItemValue> itemValueList, Integer isThrow,
+			Integer itemStockNum, Integer itemPrice, Integer sales,
+			Integer state, String oneClassify, String twoClassify,
+			String threeClassify, String itemPnamea, String itemPnameb,
+			String itemPnamec, ItemDetail itemDetail,
+			List<Comments> commentList, ItemBrand itemBrand,
+			List<ItemProperty> itemPropertyList) {
 		super();
 		this.itemId = itemId;
 		this.itemName = itemName;
 		this.itemValueList = itemValueList;
+		this.isThrow = isThrow;
 		this.itemStockNum = itemStockNum;
 		this.itemPrice = itemPrice;
 		this.sales = sales;
@@ -222,17 +235,18 @@ public class ItemInfo extends BasePojo {
 	@Override
 	public String toString() {
 		return "ItemInfo [itemId=" + itemId + ", itemName=" + itemName
-				+ ", itemValueList=" + itemValueList + ", itemStockNum="
-				+ itemStockNum + ", itemPrice=" + itemPrice + ", sales="
-				+ sales + ", state=" + state + ", oneClassify=" + oneClassify
-				+ ", twoClassify=" + twoClassify + ", threeClassify="
-				+ threeClassify + ", itemPnamea=" + itemPnamea
-				+ ", itemPnameb=" + itemPnameb + ", itemPnamec=" + itemPnamec
-				+ ", itemDetail=" + itemDetail + ", commentList=" + commentList
-				+ ", itemBrand=" + itemBrand + ", itemPropertyList="
-				+ itemPropertyList + "]";
+				+ ", itemValueList=" + itemValueList + ", isThrow=" + isThrow
+				+ ", itemStockNum=" + itemStockNum + ", itemPrice=" + itemPrice
+				+ ", sales=" + sales + ", state=" + state + ", oneClassify="
+				+ oneClassify + ", twoClassify=" + twoClassify
+				+ ", threeClassify=" + threeClassify + ", itemPnamea="
+				+ itemPnamea + ", itemPnameb=" + itemPnameb + ", itemPnamec="
+				+ itemPnamec + ", itemDetail=" + itemDetail + ", commentList="
+				+ commentList + ", itemBrand=" + itemBrand
+				+ ", itemPropertyList=" + itemPropertyList + "]";
 	}
 
+	
 	
 
 	

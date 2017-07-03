@@ -2,13 +2,16 @@ package com.yayiabc.http.mvc.controller.item;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.sun.xml.internal.xsom.impl.scd.Iterators.Map;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
 import com.yayiabc.http.mvc.pojo.jpa.ItemClassify;
@@ -159,10 +162,10 @@ public class ItemManageController {
 	@RequestMapping("addPropertydAndPropertyName")
 	@ResponseBody
 	public DataWrapper<Void> addPropertydAndPropertyName(
-			@RequestParam(value="itemPropertyName",required=true) String itemPropertyName,
-			@RequestBody List<String> itemPparamList
+			@RequestHeader(value="itemPropertyName",required=true) String itemPropertyName,
+			@RequestBody String[] itemPparams
 			){
-		return itemManageService.addPropertyAndPropertyName(itemPropertyName,itemPparamList);
+		return itemManageService.addPropertyAndPropertyName(itemPropertyName,itemPparams);
 	}
 	
 	/**
@@ -198,10 +201,10 @@ public class ItemManageController {
 	public DataWrapper<Void> updateItemClassify(
 			@RequestParam(value="itemClassifyId",required=true) Integer itemClassifyId,
 			@RequestParam(value="itemClassifyName",required=true) String itemClassifyName,
-			@RequestParam(value="itemPreviousClassify",required=true) String itemPreviousClassify, //之前的名字
+			@RequestParam(value="itemOldName",required=true) String itemOldName,
 			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade
 			){
-		return itemManageService.updateItemClassify(itemClassifyId,itemClassifyName,itemPreviousClassify,itemClassifyGrade);
+		return itemManageService.updateItemClassify(itemClassifyId,itemClassifyName,itemOldName,itemClassifyGrade);
 	}
 	
 	/**

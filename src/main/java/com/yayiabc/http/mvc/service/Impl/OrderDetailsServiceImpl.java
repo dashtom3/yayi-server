@@ -37,7 +37,10 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		
         		
 		DataWrapper<List<User>> dataWrapper=new DataWrapper<List<User>>();
-		String userId=userDao.getUserId(newPhone);
+		String userId = null;
+		if(newPhone!=null){
+			 userId=userDao.getUserId(newPhone);
+		}
 		map.put("phone", userId);
 		map.put("currentPage", String.valueOf(page.getCurrentPage()));
 		map.put("numberPerpage", String.valueOf(page.getNumberPerPage()));

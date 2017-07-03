@@ -18,17 +18,19 @@
 		phone=#{phone}
 	</select>
 	<!-- 开始 -->
-	<resultMap type="User" id="orderDetailsResultMap">
-		<id property="userId" column="user_id" />
+	<resultMap type="Ordera" id="orderDetailsResultMap">
+	
+		
 		<!-- 订单表 -->
-		<collection property="orderaList" ofType="Ordera">
+		<!-- <collection property="orderaList" ofType="Ordera"> -->
 			<id property="orderId" column="order_id" />
+			<result property="user_id" column="userId" />
 			<result property="shippingCode" column="shipping_code" />
 			<result property="created" column="created" />
 			<result property="state" column="state" />
 			<result property="actualPay" column="actual_pay" />
 			<result property="qbDed" column="qb_ded" />
-				<result property="totalFee" column="total_fee" />
+			<result property="totalFee" column="total_fee" />
 			<!-- //订单商品表 -->
 			<collection property="orderitemList" ofType="OrderItem">
 				<id property="itemId" column="item_id" />
@@ -63,7 +65,7 @@
 					<!-- end -->
 				</association>
 			</collection>
-		</collection>
+		<!-- </collection> -->
 	</resultMap>
 	<select id="orderDetailsShow" parameterType="java.util.Map"
 		resultMap="orderDetailsResultMap">

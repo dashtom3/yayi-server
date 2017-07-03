@@ -214,46 +214,7 @@ public class ItemInfo {
 	 */
 	
 	
-	/**
-	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/getItemSku  获取SKU代码
-	 * @apiName getItemSku
-	 * @apiGroup itemInfo
-	 * @apiVersion 0.1.0
-	 * @apiDescription  获取sku代码  Msg中即为sku代码
-	 * 
-	 * 
-	 * @apiSuccessExample {json} Success-Response: 
-	 * HTTP/1.1 200 OK 
-	 * {
-	 * callStatus:"SUCCEED", 
-	 * errorCode:"No_Error",
-	 * data:null,
-	 * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
-	 * numberPerPage:0, 
-	 * currentPage:0, 
-	 * totalNumber:0,
-	 * totalPage:0 ,
-	 * num:null,
-	 * msg:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996"
-	 *}
-	 * 
-	 * @apiSuccessExample {json} Error-Response: 
-	 * HTTP/1.1 200 OK 
-	 * {
-	 * callStatus:"FAILED", 
-	 * errorCode:"Error", 
-	 * data:null,
-	 * token:null, 
-	 * numberPerPage:0, 
-	 * currentPage:0,
-	 * totalNumber:0, 
-	 * totalPage:0 ,
-	 * num:null,
-	 * msg:null
-	 * }
-	 * 
-	 */
+	
 	
 	/**
 	 * 
@@ -266,9 +227,11 @@ public class ItemInfo {
 	 * @apiParam {String} itemId  商品id
 	 * @apiParam {String} itemName  商品名称
 	 * @apiParam {Integer} itemBrandId  商品品牌id
+	 * @apiParam {String} itemBrandName  商品品牌名称
 	 * @apiParam {String} oneClassify  商品一级分类
 	 * @apiParam {String} twoClassify  商品二级分类
 	 * @apiParam {String} threeClassify  商品三级分类
+	 * @apiParam {Integer} isThrow    是否推荐到首页
 	 * @apiParam {String} itemPica  商品第一张图片
 	 * @apiParam {String} itemPicb  商品第二张图片
 	 * @apiParam {String} itemPicc  商品第三张图片
@@ -278,18 +241,17 @@ public class ItemInfo {
 	 * @apiParam {String} itemDesc  商品描述
 	 * @apiParam {String} itemUse  商品使用说明
 	 * @apiParam {String} itemRange  商品使用范围
+	 * @apiParam {String} itemLevels  商品使用范围
 	 * @apiParam {String} registerId  商品注册证号
 	 * @apiParam {String} storeItemId  商家货号
 	 * @apiParam {Integer} apparatusType  商品器械类别
 	 * @apiParam {String} unit  商品单位
 	 * @apiParam {String} producePompany  生产单位
 	 * @apiParam {Date} registerDate  注册日期
-	 * @apiParam {String} itemPropertyName  属性名称
 	 * @apiParam {String} itemSKU  sku代码
 	 * @apiParam {String} itemPacking  商品包装
 	 * @apiParam {Integer} itemQb  商品乾币抵扣
 	 * @apiParam {Double} tiCheng  商品价格
-	 * @apiParam {String} itemPparam  商品属性值
 	 * 
 	 * 
 	 * @apiSuccessExample {json} Success-Response: 

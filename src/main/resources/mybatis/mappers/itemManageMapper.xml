@@ -67,7 +67,7 @@
  		<result property="itemPreviousClassify" column="item_previous_classify"/>
  	</resultMap>
  	
- 	<select id="queryItemClassifyByName">
+ 	<select id="queryItemClassifyByName" resultType="string">
  		select classify_two_name from classify_two where one_classify=#{itemClassifyName}
  	</select>
  	
@@ -83,12 +83,16 @@
  		delete from classify_two where one_classify=#{itemClassifyName}
  	</delete>
  	
+ 	<select id="queryItemClassifySonName" resultType="string"> 
+ 		select item_classify_name from item_classify where item_previous_classify=#{itemClassifyNameA}
+ 	</select>
+ 	
  	<delete id="deleteItemClassifyTwoSon">
  		delete from classify_three where classify_two_name=#{itemClassifyName}
  	</delete>
  	
  	<update id="updateItemClassify">
- 		update item_classify set item_classify_name=#{itemClassifyName},item_previous_classify=#{itemPreviousClassify} 
+ 		update item_classify set item_classify_name=#{itemClassifyName}
  		where item_classify_id=#{itemClassifyId}
  	</update>
  	
@@ -96,8 +100,16 @@
  		update classify set one_classify=#{itemClassifyName} where one_classify=#{itemPreviousClassify}
  	</update>
  	
+ 	<update id="updateItemClassifyOneSon">
+ 		update classify_two set one_classify=#{itemClassifyName} where one_classify=#{itemPreviousClassify}
+ 	</update>
+ 	
  	<update id="updateItemClassifyTwo">
  		update classify_two set classify_two_name=#{itemClassifyName} where classify_two_name=#{itemPreviousClassify}
+ 	</update>
+ 	
+ 	<update id="updateItemClassifyTwoSon">
+ 		update classify_three set classify_two_name=#{itemClassifyName} where classify_two_name=#{itemPreviousClassify}
  	</update>
  	
  	<update id="updateItemClassifyThree">
@@ -123,7 +135,7 @@
  	<insert id="addPropertyd">
  		insert into item_propertyd
  		values
- 		<foreach collection="list" item="item" separator="," index="index">
+ 		<foreach collection="array" item="item" separator="," index="index">
  			(null,null,null,null,null,#{itemPropertyId},#{item},1,now(),now())
  		</foreach>
  	</insert>

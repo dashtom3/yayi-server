@@ -448,7 +448,7 @@ public class ItemManage {
 	 * @apiDescription  添加属性值
 	 * 
 	 * @apiParam  {String} itemPropertyName  属性名
-	 * @apiParam  {String} itemPparam       属性值(此处需要传一个json串)
+	 * @apiParam  {String} itemPparam       属性值
 	 * 
 	 * @apiSuccessExample {json} Success-Response: 
 	 * HTTP/1.1 200 OK 
@@ -589,7 +589,6 @@ public class ItemManage {
 	 * 
 	 * @apiParam  {Integer} itemClassifyId     商品分类Id
 	 * @apiParam  {String} itemClassifyName    商品分类名称
-	 * @apiParam  {String} itemPreviousClassify 旧的分类名称
 	 * @apiParam  {Integer} itemClassifyGrade  分类等级
 	 * 
 	 * @apiSuccessExample {json} Success-Response: 

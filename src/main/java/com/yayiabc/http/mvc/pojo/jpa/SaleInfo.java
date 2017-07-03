@@ -27,6 +27,8 @@ public class SaleInfo extends BasePojo {
 
 	private Integer bindUserNum;
 
+	private Integer isBindUser;
+
 	private List<User> user;
 
 	private List<SaleIncome> saleincome;
@@ -69,6 +71,14 @@ public class SaleInfo extends BasePojo {
 
 	public Integer getSex() {
 		return sex;
+	}
+
+	public Integer getIsBindUser() {
+		return isBindUser;
+	}
+
+	public void setIsBindUser(Integer isBindUser) {
+		this.isBindUser = isBindUser;
 	}
 
 	public void setSex(Integer sex) {
@@ -125,8 +135,8 @@ public class SaleInfo extends BasePojo {
 
 	public SaleInfo(String saleId, String trueName, Date birthday,
 			Integer money, Integer type, String phone, Integer sex,
-			String address, Integer bindUserNum, List<User> user,
-			List<SaleIncome> saleincome) {
+			String address, Integer bindUserNum, Integer isBindUser,
+			List<User> user, List<SaleIncome> saleincome) {
 		super();
 		this.saleId = saleId;
 		this.trueName = trueName;
@@ -137,6 +147,7 @@ public class SaleInfo extends BasePojo {
 		this.sex = sex;
 		this.address = address;
 		this.bindUserNum = bindUserNum;
+		this.isBindUser = isBindUser;
 		this.user = user;
 		this.saleincome = saleincome;
 	}
@@ -146,8 +157,9 @@ public class SaleInfo extends BasePojo {
 		return "SaleInfo [saleId=" + saleId + ", trueName=" + trueName
 				+ ", birthday=" + birthday + ", money=" + money + ", type="
 				+ type + ", phone=" + phone + ", sex=" + sex + ", address="
-				+ address + ", bindUserNum=" + bindUserNum + ", user=" + user
-				+ ", saleincome=" + saleincome + "]";
+				+ address + ", bindUserNum=" + bindUserNum + ", isBindUser="
+				+ isBindUser + ", user=" + user + ", saleincome=" + saleincome
+				+ "]";
 	}
 
 }

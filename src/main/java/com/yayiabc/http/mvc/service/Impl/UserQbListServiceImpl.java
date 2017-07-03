@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.yayiabc.common.utils.Page;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.dao.UserQbListDao;
@@ -20,9 +20,15 @@ public class UserQbListServiceImpl implements UserQbListService {
 
 	@Override
 	public DataWrapper<List<QbRecord>> list(String phone, String startDate,
-			String endDate) {
+			String endDate, Integer currentPage, Integer numberPerPage) {
 		DataWrapper<List<QbRecord>> dataWrapper = new DataWrapper<List<QbRecord>>();
-		List<QbRecord> list = userQbListDao.list(phone, startDate, endDate);
+		Page page = new Page();
+		page.setNumberPerPage(numberPerPage);
+	    page.setCurrentPage(currentPage);
+		int totalNumber = userQbListDao.getCount(phone, startDate, endDate);
+		dataWrapper.setPage(page, totalNumber);
+		List<QbRecord> list = userQbListDao.list(phone, startDate, endDate,
+				page);
 		dataWrapper.setData(list);
 		return dataWrapper;
 	}

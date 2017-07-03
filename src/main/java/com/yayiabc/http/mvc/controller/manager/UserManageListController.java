@@ -33,9 +33,11 @@ public class UserManageListController {
 			@RequestParam(value="isBindSale",required=true)Integer isBindSale,
 			@RequestParam(value="type",required=true)Integer type,
 			@RequestParam(value="saleName",required=true)String saleName,
+			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
 			@RequestParam(value="token",required=true)Integer token
 	){
-		return userManageListService.userlist(phone, trueName, companyName, isBindSale, type, saleName);
+		return userManageListService.userlist(phone, trueName, companyName, isBindSale, type, saleName,currentPage,numberPerPage);
 	}
 	
 	/**

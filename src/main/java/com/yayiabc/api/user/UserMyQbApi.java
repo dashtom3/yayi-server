@@ -11,6 +11,8 @@ public interface UserMyQbApi {
      *
      * @apiParam {String} phone 手机号码（必须）
      * @apiParam {int} type 类型（必须，1全部，2收入乾币，3支出乾币）
+     * @apiParam {int} currentPage （非必须）
+     * @apiParam {int} numberPerPage （非必须）
      * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
@@ -79,10 +81,10 @@ public interface UserMyQbApi {
      * errorCode:"No_Error",
      * data:null,
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
-     * numberPerPage:10,
-     * currentPage:1,
-     * totalNumber:1,
-     * totalPage:1,
+     * numberPerPage:0,
+     * currentPage:0,
+     * totalNumber:0,
+     * totalPage:0,
      * num :null,
      * msg :null,
      *  }

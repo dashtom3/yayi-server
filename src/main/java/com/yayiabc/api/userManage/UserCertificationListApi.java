@@ -13,6 +13,8 @@ public interface UserCertificationListApi {
      * @apiParam {String} companyName 单位名称（非必须）     
      * @apiParam {int} type 类型（必须，全部传空值，1个人，2机构）
      * @apiParam {int} state 状态（必须，全部传空值，1待审核，2审核通过，3，审核未通过）
+     * @apiParam {int} currentPage （非必须）
+     * @apiParam {int} numberPerPage （非必须） 
      * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
@@ -44,10 +46,10 @@ public interface UserCertificationListApi {
      * 		failReason:"资格证过期"
      * }],
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
-     * numberPerPage:0,
-     * currentPage:0,
-     * totalNumber:0,
-     * totalPage:0,
+     * numberPerPage:10,
+     * currentPage:1,
+     * totalNumber:1,
+     * totalPage:1,
      * num :null,
      * msg :null,
      *  }

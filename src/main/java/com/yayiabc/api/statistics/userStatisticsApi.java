@@ -11,7 +11,9 @@ public interface userStatisticsApi {
      * @apiParam {String} phone 手机号码（非必须）
      * @apiParam {String} trueName 姓名（非必须）
      * @apiParam {String} startDate 开始时间（非必须，不填时传空值，格式'yyyy-MM-dd hh:mm'）
-     * @apiParam {String} endDate 结束时间（非必须，不填时传空值，格式'yyyy-MM-dd hh:mm'）     
+     * @apiParam {String} endDate 结束时间（非必须，不填时传空值，格式'yyyy-MM-dd hh:mm'）    
+     * @apiParam {int} currentPage （非必须）
+     * @apiParam {int} numberPerPage （非必须）  
      * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
@@ -35,10 +37,10 @@ public interface userStatisticsApi {
      * 		latelyOrderDate:"2017-01-01"
      * }],
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
-     * numberPerPage:0,
-     * currentPage:0,
-     * totalNumber:0,
-     * totalPage:0,
+     * numberPerPage:10,
+     * currentPage:1,
+     * totalNumber:1,
+     * totalPage:1,
      * num :null,
      * msg :null,
      *  }

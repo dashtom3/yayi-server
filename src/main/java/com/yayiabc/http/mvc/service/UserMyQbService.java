@@ -9,5 +9,5 @@ import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 public interface UserMyQbService {
 	DataWrapper<QbRecord> add(QbRecord qbRecord,String phone);
 	
-	DataWrapper<List<QbRecord>> query(String phone,Integer type,Page page);
+	DataWrapper<List<QbRecord>> query(String phone,Integer type,Integer currentPage,Integer numberPerPage);
 }

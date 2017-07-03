@@ -7,7 +7,8 @@ import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 
 public interface UserQbListService {
-	DataWrapper<List<QbRecord>> list(String phone, String startDate, String endDate);
+	DataWrapper<List<QbRecord>> list(String phone, String startDate,
+			String endDate, Integer currentPage, Integer numberPerPage);
 
 	DataWrapper<Void> update(Integer qbBalance, String phone);
 }

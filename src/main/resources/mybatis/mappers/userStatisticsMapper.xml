@@ -18,6 +18,27 @@
 				AND o.updated BETWEEN #{startDate}  AND #{endDate}
 			</if>
 		</where>
+		 <if test="page.numberPerPage != '' and page.numberPerPage != null">
+            LIMIT ${page.currentNumber},${page.numberPerPage}
+         </if>
+	</select>
+	
+	<select id="getCount" resultType="int">
+		SELECT count(*) 
+		FROM USER u 
+		LEFT JOIN ordera o 
+		ON u.user_id=o.user_id
+		<where>
+			<if test="phone !=null and phone !=''">
+				u.phone LIKE '%${phone}%'
+			</if>
+			<if test="trueName !=null and trueName !=''">
+				AND u.true_name LIKE '%${trueName}%' 
+			</if>
+			<if test="startDate !=null and startDate !='' and endDate !=null and endDate !=''">
+				AND o.updated BETWEEN #{startDate}  AND #{endDate}
+			</if>
+		</where>
 	</select>
 	
 	<select id="queryCount" resultType="UserStatistics">

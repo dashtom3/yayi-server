@@ -41,39 +41,20 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 	}
 
 	@Override
-	public DataWrapper<List<QbRecord>> query(String phone,Integer type, Page page) {
+	public DataWrapper<List<QbRecord>> query(String phone,Integer type, Integer currentPage,Integer numberPerPage) {
 		DataWrapper<List<QbRecord>> dataWrapper = new DataWrapper<List<QbRecord>>();
 		String userId = userDao.getUserId(phone);
 		if(userId == null){
 			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
 		}else{
-			switch (type) {
-			case 1:
-				//查询全部
-				List<QbRecord> list = userMyQbDao.query(page,userId);
-				int totalNumber = userMyQbDao.getCount(userId);
-				dataWrapper.setPage(page, totalNumber);
-				dataWrapper.setData(list);
-				break;
-			case 2:
-				//查询收入
-				List<QbRecord> list1 = userMyQbDao.queryRget(page,userId);
-				int totalNumber1 = userMyQbDao.getCountRget(userId);
-				dataWrapper.setPage(page, totalNumber1);
-				dataWrapper.setData(list1);
-				break;
-			case 3:
-				//查询支出
-				List<QbRecord> list2 = userMyQbDao.queryRout(page,userId);
-				int totalNumber2 = userMyQbDao.getCountRout(userId);
-				dataWrapper.setPage(page, totalNumber2);
-				dataWrapper.setData(list2);
-				break;
-			default:
-				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-				break;
-			}
-			
+			Page page = new Page();
+			page.setNumberPerPage(numberPerPage);
+		    page.setCurrentPage(currentPage);
+		    int totalNumber=userMyQbDao.getCount(userId);
+		    dataWrapper.setPage(page, totalNumber);
+		    List<QbRecord> list=userMyQbDao.query(page, userId,type);
+		    System.out.println("!!"+list.toString());
+		    dataWrapper.setData(list);
 		}
 		return dataWrapper;
 	}

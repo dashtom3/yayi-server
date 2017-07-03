@@ -4,7 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.yayiabc.common.utils.Page;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.dao.UserCertificationListDao;
@@ -20,13 +20,19 @@ public class UserCertificationListServiceImpl implements
 	UserCertificationListDao userCertificationListDao;
 	@Autowired
 	UserDao userDao;
-	
+
 	@Override
 	public DataWrapper<List<User>> list(String phone, String trueName,
-			String companyName, Integer type, Integer state) {
+			String companyName, Integer type, Integer state,
+			Integer currentPage, Integer numberPerPage) {
 		DataWrapper<List<User>> dataWrapper = new DataWrapper<List<User>>();
+		Page page = new Page();
+		page.setNumberPerPage(numberPerPage);
+	    page.setCurrentPage(currentPage);
+		int totalNumber = userCertificationListDao.getCount(phone, trueName, companyName, type, state);
+		dataWrapper.setPage(page, totalNumber);
 		List<User> list = userCertificationListDao.list(phone, trueName,
-				companyName, type, state);
+				companyName, type, state, page);
 		dataWrapper.setData(list);
 		return dataWrapper;
 	}

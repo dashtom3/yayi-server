@@ -38,7 +38,11 @@ public interface OrderManagementDao {
 	int userBalance(String userId);
 	
     //仓库发货
-	int warehouseDelivery(@Param("orderId")String orderId,
+	int warehouseDelivery(@Param("userId")String userId,
 			@Param("logisticsName")String logisticsName,
 			@Param("logisticsCode")String  logisticsCode);
+    //根据//通过orderId查找到userId
+	String queryUserId(@Param("orderId")String orderId);
+
+	int queryCount(HashMap<String, Object> hMap);
 }

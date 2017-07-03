@@ -24,7 +24,6 @@ import com.yayiabc.http.mvc.service.ItemInfoManageService;
 public class ItemInfoManageController {
 	@Autowired
 	private ItemInfoManageService itemInfoManageService;
-	
 	/**
 	 * 查询商品列表
 	 */

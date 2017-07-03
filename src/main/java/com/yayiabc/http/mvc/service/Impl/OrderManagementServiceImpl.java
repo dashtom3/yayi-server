@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.OrderManagementDao;
+import com.yayiabc.http.mvc.dao.UserCenterStarDao;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.Refund;
@@ -24,16 +26,29 @@ import com.yayiabc.http.mvc.service.OrderManagementService;
 public class OrderManagementServiceImpl implements OrderManagementService{
 	@Autowired
 	private OrderManagementDao orderManagementDao;
-
 	@Override
-	public DataWrapper<List<User>> showOrder(HashMap<String, Object> hMap) {
+	public DataWrapper<List<User>> showOrder(HashMap<String, Object> hMap,
+			Integer currentPage,Integer numberPerpage
+			) {
+		Page page=new Page();
+		if(currentPage!=null&numberPerpage!=null){
+		page.setNumberPerPage(numberPerpage);
+		page.setCurrentPage(currentPage);
+		}else{
+			page.setNumberPerPage(10);
+			page.setCurrentPage(1);
+		}
+		
 		// TODO Auto-generated method stub
 		DataWrapper<List<User>> dataWrapper=new DataWrapper<List<User>>();
+		//总条数
+				int count=orderManagementDao.queryCount(hMap);
 		List<User> userOrderList=orderManagementDao.showOrder(hMap);
 		if(userOrderList.isEmpty()){
 			dataWrapper.setMsg("暂无数据");
 		}else{
 			dataWrapper.setData(userOrderList);
+			dataWrapper.setPage(page, count);
 		}
 		return dataWrapper;
 	}

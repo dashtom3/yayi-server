@@ -29,9 +29,11 @@ public class CommentManageController {
     		 @RequestParam(value="phone",required=true) String phone,
     		 @RequestParam(value="orderId",required=false) String orderid,
     		 @RequestParam(value="userId",required=false) String userId,
-    		 @RequestParam(value="recoveryState",required=false) String recoveryState
+    		 @RequestParam(value="recoveryState",required=false) String recoveryState,
+    		 @RequestParam(value="currentPage",required=false) Integer currentPage,
+    		 @RequestParam(value="numberPerpage",required=false) Integer numberPerpage
     		 ){
-		return commentManage.commentM(orderid,userId,recoveryState,phone);
+		return commentManage.commentM(orderid,userId,recoveryState,phone,currentPage,numberPerpage);
       }
       //回复评论
       @RequestMapping("reply")

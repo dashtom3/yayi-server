@@ -38,7 +38,9 @@ public class OrderManagementController {
 		   @RequestParam(value="orderState",required=false)String orderState,
 		   @RequestParam(value="orderCTime",required=false)String orderCTime,
 		   @RequestParam(value="orderETime",required=false)String orderETime,
-		   @RequestParam(value="isRefund",required=false)String isRefund
+		   @RequestParam(value="isRefund",required=false)String isRefund,
+		   @RequestParam(value="currentPage",required=false)Integer currentPage,
+		   @RequestParam(value="numberPerpage",required=false)Integer numberPerpage
 		   ){
 	       HashMap<String, Object> hMap=new HashMap<String,Object>();
 	       hMap.put("orderId", orderId);
@@ -47,7 +49,7 @@ public class OrderManagementController {
 	       hMap.put("orderCTime", orderCTime);
 	       hMap.put("orderETime", orderETime);
 	       hMap.put("isRefund", isRefund);
-	   return  orderManagementService.showOrder(hMap);
+	   return  orderManagementService.showOrder(hMap,currentPage,numberPerpage);
    }
    //关闭交易or确定交易
    @RequestMapping("closeTrading")

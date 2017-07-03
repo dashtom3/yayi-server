@@ -11,4 +11,6 @@ public interface OrderDetailsDao {
 	List<User> orderDetailsShow(
 			HashMap<String,String> map
 			);
+
+	int queryCount(HashMap<String, String> map);
 }

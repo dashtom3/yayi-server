@@ -14,7 +14,34 @@
 	</resultMap>
 	
 	<select id="query" resultMap="itemStatisticsRM">
-		SELECT ii.item_id,ii.item_name,iv.item_sKU,ib.item_brand_name,ii.item_price,ii.sales,ii.item_price*ii.sales AS salesMoney FROM item_info ii
+		SELECT ii.item_id,ii.item_name,iv.item_sKU,ib.item_brand_name,ii.item_price,ii.sales,ii.item_price*ii.sales AS salesMoney 
+		FROM item_info ii
+		LEFT JOIN item_value iv
+		ON ii.item_id=iv.item_id
+		LEFT JOIN item_brand ib
+		ON ii.item_brand_id=ib.item_brand_id 
+		<where>
+			<if test="itemName !=null and itemName !=''">
+				ii.item_name LIKE '%${itemName}%'
+			</if>
+			<if test="itemId !=null and itemId !=''">
+				AND ii.item_id LIKE '%${itemId}%'
+			</if>
+			<if test="itemSKU !=null and itemSKU !=''">
+				AND iv.item_sKU LIKE '%${itemSKU}%'
+			</if>
+			<if test="itemBrandName !=null and itemBrandName !=''">
+				AND ib.item_brand_name LIKE '%${itemBrandName}%'
+			</if>
+		</where>
+		 <if test="page.numberPerPage != '' and page.numberPerPage != null">
+            LIMIT ${page.currentNumber},${page.numberPerPage}
+         </if>
+	</select>
+	
+	<select id="getCount" resultType="int">
+		SELECT count(*)
+		FROM item_info ii
 		LEFT JOIN item_value iv
 		ON ii.item_id=iv.item_id
 		LEFT JOIN item_brand ib

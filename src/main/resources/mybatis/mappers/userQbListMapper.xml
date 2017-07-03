@@ -33,6 +33,25 @@
 			</if>
 		</where>
 		ORDER BY q.qb_time DESC
+        LIMIT ${page.currentNumber},${page.numberPerPage}
+	</select>
+	
+	<select id="getCount" resultType="int">
+		SELECT COUNT(*) 
+		FROM qb_record q
+		LEFT JOIN USER u
+		ON u.user_id=q.user_id
+		<where>
+			<if test="phone !=null and phone !=''">
+			u.phone LIKE '%${phone}%'
+			</if>
+			<if test="startDate !=null and startDate !=''">
+			and	q.qb_time <![CDATA[  >=  ]]> #{startDate}
+			</if>
+			<if test="endDate != null and endDate !=''">
+			and	q.qb_time &lt; #{endDate}
+			</if>
+		</where>
 	</select>
 	
 	<update id="update">

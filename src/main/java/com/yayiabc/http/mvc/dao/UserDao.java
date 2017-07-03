@@ -2,7 +2,6 @@ package com.yayiabc.http.mvc.dao;
 
 import org.springframework.stereotype.Repository;
 
-import com.sun.org.glassfish.gmbal.ParameterNames;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.UserToken;
 
@@ -29,4 +28,8 @@ public interface UserDao {
 	String getTokenByUserId(String userId);
 
 	void addToken(UserToken userToken);
+
+	String getUserIdByToken(String token);
+
+	User getUserByUserId(String userId);
 }

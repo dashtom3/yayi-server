@@ -30,8 +30,10 @@ public class ItemStatisticsController {
 			@RequestParam(value="itemId",required=true)String itemId,
 			@RequestParam(value="itemSKU",required=true)String itemSKU,
 			@RequestParam(value="itemBrandName",required=true)String itemBrandName,
+			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
 			@RequestParam(value="token",required=true)String token
 	){
-		return itemStatisticsService.query(itemName, itemId, itemSKU, itemBrandName);
+		return itemStatisticsService.query(itemName, itemId, itemSKU, itemBrandName,currentPage,numberPerPage);
 	}
 }

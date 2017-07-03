@@ -61,11 +61,15 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 	}
 
 	@Override
-	public DataWrapper<Void> delete(String itemId) {
+	public DataWrapper<Void> delete(String itemSKU,String itemId) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		itemInfoManageDao.deleteItemInfo(itemId);
-		itemInfoManageDao.deleteItemDetail(itemId);
-		itemInfoManageDao.deleteItemValue(itemId);
+		itemInfoManageDao.deleteItemValue(itemSKU);
+		Integer itemNum=itemInfoManageDao.queryItemNum(itemSKU);
+		itemInfoManageDao.deleteItemStock(itemSKU);
+		if(itemNum==0){
+			itemInfoManageDao.deleteItemDetail(itemId);
+			itemInfoManageDao.deleteItemInfo(itemId);
+		}
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
 	}
@@ -84,7 +88,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 			String itemDesc, String itemUse, String itemRange,
 			String registerId, String storeItemId, Integer apparatusType,
 			String unit, String producePompany, Date registerDate,
-			String itemPacking, String itemPparam, String itemBrandName,
+			String itemPacking, String itemBrandName,
 			List<ItemValue> itemValueList) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 			ItemInfo itemInfo=new ItemInfo();
@@ -120,9 +124,14 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 			itemInfo.setItemDetail(itemDetail);
 			itemInfo.setItemBrand(itemBrand);
 			itemInfo.setItemValueList(itemValueList);
-			itemInfoManageDao.insertItemInfo(itemInfo);
+			for (ItemValue itemValue : itemValueList) {
+				itemValue.setItemId(itemId);
+			}
 			itemInfoManageDao.insertItemDetail(itemDetail);
 			itemInfoManageDao.insertItemValue(itemValueList);
+			Integer itemPrice =itemInfoManageDao.getMinPriceFromItemValue(itemId);
+			itemInfo.setItemPrice(itemPrice);
+			itemInfoManageDao.insertItemInfo(itemInfo);
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			return dataWrapper;
 	}
@@ -134,11 +143,55 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 			String itemPicb, String itemPicc, String itemPicd, String itemPice,
 			String video, String itemDesc, String itemUse, String itemRange,
 			String registerId, String storeItemId, Integer apparatusType,
-			String unit, String producePompany, Date registerDate,
-			String itemPacking, String itemPparam, String itemBrandName,
+			String unit,String producePompany, Date registerDate,
+			String itemPacking,String itemBrandName,
 			List<ItemValue> itemValueList) {
-		// TODO Auto-generated method stub
-		return null;
+		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		ItemInfo itemInfo=new ItemInfo();
+		itemInfo.setItemId(itemId);
+		itemInfo.setItemName(itemName);
+		itemInfo.setOneClassify(oneClassify);
+		itemInfo.setTwoClassify(twoClassify);
+		itemInfo.setThreeClassify(threeClassify);
+		ItemBrand itemBrand =new ItemBrand();
+		itemBrand.setItemBrandName(itemBrandName);
+		itemBrand.setItemBrandId(itemBrandId);
+		ItemDetail itemDetail =new ItemDetail();
+		itemDetail.setItemId(itemId);
+		itemDetail.setItemDesc(itemDesc);
+		itemDetail.setItemUse(itemUse);
+		itemDetail.setVideo(video);
+		itemDetail.setItemPica(itemPica);
+		itemDetail.setItemPicb(itemPicb);
+		itemDetail.setItemPicc(itemPicc);
+		itemDetail.setItemPicd(itemPicd);
+		itemDetail.setItemPice(itemPice);
+		itemDetail.setStoreItemId(storeItemId);
+		itemDetail.setApparatusType(apparatusType);
+		itemDetail.setUnit(unit);
+		itemDetail.setProducePompany(producePompany);
+		itemDetail.setRegisterId(registerId);
+		itemDetail.setRegisterDate(registerDate);
+		itemDetail.setItemPacking(itemPacking);
+		itemDetail.setItemLevels(itemLevels);
+		itemDetail.setItemRange(itemRange);
+		itemDetail.setCreated(new Date());
+		itemDetail.setUpdated(new Date());
+		itemInfo.setItemDetail(itemDetail);
+		itemInfo.setItemBrand(itemBrand);
+		itemInfo.setItemValueList(itemValueList);
+		for (ItemValue itemValue : itemValueList) {
+			itemValue.setItemId(itemId);
+		}
+		itemInfoManageDao.updateItemDetail(itemDetail);
+		for (ItemValue itemValue : itemValueList) {
+			itemInfoManageDao.updateItemValue(itemValue);
+		}
+		Integer itemPrice =itemInfoManageDao.getMinPriceFromItemValue(itemId);
+		itemInfo.setItemPrice(itemPrice);
+		itemInfoManageDao.updateItemInfo(itemInfo);
+		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+		return dataWrapper;
 	}
 
 	

@@ -44,8 +44,6 @@ public interface ItemManageDao {
 
 	void addPropertyd(Map<String, Object> map);
 
-	void addPropertyd(ItemProperty itemProperty);
-
 	void insertItemClassify(ItemClassify itemClassify);
 
 	void insertItemClassifyTwo(ItemClassify itemClassify);

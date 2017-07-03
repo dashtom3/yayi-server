@@ -42,6 +42,31 @@
 				AND c.state=#{state}
 			</if>
 		</where>
+            LIMIT ${page.currentNumber},${page.numberPerPage}
+	</select>
+	
+	<select id="getCount" resultType="int">
+		SELECT count(*)
+		FROM certification c
+		LEFT JOIN user u
+		ON c.user_id=u.user_id	
+		<where>
+			<if test="phone !=null and phone !=''">
+				u.phone LIKE '%${phone}%'
+			</if>
+			<if test="trueName !=null and trueName !=''">
+				AND u.true_name LIKE '%${trueName}%'
+			</if>
+			<if test="companyName !=null and companyName !=''">
+				AND c.company_name  LIKE '%${companyName}%'
+			</if>
+			<if test="type !=null and type !=''">
+				AND c.type=#{type}
+			</if>
+			<if test="state !=null and state !=''">
+				AND c.state=#{state}
+			</if>
+		</where>
 	</select>
 	
 	<update id="verify">

@@ -32,13 +32,16 @@ public class UserCertificationListController {
 			@RequestParam(value="companyName",required=true)String companyName,
 			@RequestParam(value="type",required=true)Integer type,
 			@RequestParam(value="state",required=true)Integer state,
+			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
 			@RequestParam(value="token",required=true)String token
 	){
-		return userCertificationListService.list(phone, trueName, companyName, type, state);
+		
+		return userCertificationListService.list(phone, trueName, companyName, type, state,currentPage,numberPerPage);
 	}
 	
 	/**
-	 * 审核用户资质认证信息123
+	 * 审核用户资质认证信息
 	 */
 	@RequestMapping(value="verify",method=RequestMethod.POST)
 	@ResponseBody

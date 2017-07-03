@@ -4,9 +4,7 @@ import java.util.Date;
 import java.util.List;
 
 import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.http.mvc.pojo.jpa.ItemDetail;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
-import com.yayiabc.http.mvc.pojo.jpa.ItemProperty;
 import com.yayiabc.http.mvc.pojo.jpa.ItemValue;
 
 public interface ItemInfoManageService {
@@ -18,22 +16,14 @@ public interface ItemInfoManageService {
 
 	DataWrapper<Void> down(String itemId);
 
-	DataWrapper<Void> delete(String itemId);
+	DataWrapper<Void> delete(String itemSKU,String itemId);
 
 	
 
 
 
 
-	DataWrapper<Void> insert(String itemId, String itemName,Integer itemBrandId,
-			String oneClassify, String itemLevels, String twoClassify,
-			String threeClassify, String itemPica, String itemPicb,
-			String itemPicc, String itemPicd, String itemPice, String video,
-			String itemDesc, String itemUse, String itemRange,
-			String registerId, String storeItemId, Integer apparatusType,
-			String unit, String producePompany, Date registerDate,
-			String itemPacking, String itemPparam, String itemBrandName,
-			List<ItemValue> itemValueList);
+	
 
 	DataWrapper<Void> update(String itemId, String itemName,
 			Integer itemBrandId, String oneClassify, String itemLevels,
@@ -41,8 +31,18 @@ public interface ItemInfoManageService {
 			String itemPicb, String itemPicc, String itemPicd, String itemPice,
 			String video, String itemDesc, String itemUse, String itemRange,
 			String registerId, String storeItemId, Integer apparatusType,
+			String unit,String producePompany, Date registerDate,
+			String itemPacking,String itemBrandName,
+			List<ItemValue> itemValueList);
+
+	DataWrapper<Void> insert(String itemId, String itemName,
+			Integer itemBrandId, String oneClassify, String itemLevels,
+			String twoClassify, String threeClassify, String itemPica,
+			String itemPicb, String itemPicc, String itemPicd, String itemPice,
+			String video, String itemDesc, String itemUse, String itemRange,
+			String registerId, String storeItemId, Integer apparatusType,
 			String unit, String producePompany, Date registerDate,
-			String itemPacking, String itemPparam, String itemBrandName,
+			String itemPacking, String itemBrandName,
 			List<ItemValue> itemValueList);
 
 

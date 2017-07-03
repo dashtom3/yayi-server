@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.yayiabc.http.mvc.pojo.jpa.AdvChart;
 import com.yayiabc.http.mvc.pojo.jpa.VidManage;
 
 public interface VideoManageDao {

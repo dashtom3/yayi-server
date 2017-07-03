@@ -24,27 +24,28 @@ public class UserQbListController {
 	/**
 	 * 获取用户乾币信息列表
 	 */
-	@RequestMapping(value="list",method=RequestMethod.GET)
+	@RequestMapping(value = "list", method = RequestMethod.GET)
 	@ResponseBody
 	public DataWrapper<List<QbRecord>> list(
-			@RequestParam(value="phone",required=true)String phone,
-			@RequestParam(value="startDate",required=true)String startDate,
-			@RequestParam(value="endDate",required=true)String endDate,
-			@RequestParam(value="token",required=true)String token
-	){
-		return userQbListService.list(phone, startDate, endDate);
+			@RequestParam(value = "phone", required = true) String phone,
+			@RequestParam(value = "startDate", required = true) String startDate,
+			@RequestParam(value = "endDate", required = true) String endDate,
+			@RequestParam(value = "currentPage", required = false, defaultValue = "1") Integer currentPage,
+			@RequestParam(value = "numberPerPage", required = false, defaultValue = "10") Integer numberPerPage,
+			@RequestParam(value = "token", required = true) String token) {
+		return userQbListService.list(phone, startDate, endDate, currentPage,
+				numberPerPage);
 	}
-	
+
 	/**
 	 * 修改用户乾币
 	 */
-	@RequestMapping(value="update",method=RequestMethod.POST)
+	@RequestMapping(value = "update", method = RequestMethod.POST)
 	@ResponseBody
 	public DataWrapper<Void> update(
-			@RequestParam(value="phone",required=true)String phone,
-			@RequestParam(value="qbBalance",required=true)Integer qbBalance,
-			@RequestParam(value="token",required=true)String token
-	){
+			@RequestParam(value = "phone", required = true) String phone,
+			@RequestParam(value = "qbBalance", required = true) Integer qbBalance,
+			@RequestParam(value = "token", required = true) String token) {
 		return userQbListService.update(qbBalance, phone);
 	}
 }

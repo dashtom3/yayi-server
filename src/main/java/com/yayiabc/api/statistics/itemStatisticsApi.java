@@ -12,6 +12,8 @@ public interface itemStatisticsApi {
      * @apiParam {String} itemId 商品ID（非必须）
      * @apiParam {String} itemSKU 商品SKU代码（非必须）
      * @apiParam {String} itemBrandName 品牌名称（非必须，全部传空值）
+     * @apiParam {int} currentPage （非必须）
+     * @apiParam {int} numberPerPage （非必须） 
      * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
@@ -39,10 +41,10 @@ public interface itemStatisticsApi {
      * 		refundNum:10
      * }],
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
-     * numberPerPage:0,
-     * currentPage:0,
-     * totalNumber:0,
-     * totalPage:0,
+     * numberPerPage:10,
+     * currentPage:1,
+     * totalNumber:1,
+     * totalPage:1,
      * num :null,
      * msg :null,
      *  }

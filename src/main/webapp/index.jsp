@@ -5,7 +5,7 @@
  <title>myJSP</title>
  </head>
  <body>
-	<form action="/api/user/register" method="post">
+<form action="/api/user/register" method="post">
 		<h1>注册</h1>
 		手机号码<input type="text" name="phone"/>
 		密码<input type="text" name="password"/>
@@ -41,7 +41,7 @@
 		<input type="text" name="token"/>
 		<input type="submit" value="提交"/>
 	</form>
-	<form action="/api/item/queryItemSearch" method="post">
+<!--	<form action="/api/item/queryItemSearch" method="post">
 	 	<h1>查询商品</h1>
 		一级分类<input type="text" name="oneClassify"/><br>
 		二级分类<input type="text" name="twoClassify"/><br>
@@ -86,10 +86,12 @@
 		商品品牌名字<input type="text" name="itemBrandName"/>
 		状态<input type="text" name="state"/>
 		<input type="submit" name="提交"/>
-</form>
-<form method="post" action="/api/item/insert">
+</form>-->
+添加商品
+<form action="/api/item/insert" method="post">
     <input name="itemId" type="text" />
     <input name="itemName" type="text" />
+    <input name="itemBrandId" type="text" />
     <input name="oneClassify" type="text" />
     <input name="twoClassify" type="text" />
     <input name="threeClassify" type="text" />
@@ -107,19 +109,49 @@
     <input name="apparatusType" type="text" />
     <input name="producePompany" type="text" />
     <input name="unit" type="text" />
-    <input name="registerDate" type="text" />
+    <input name="registerDate" type="date" />
     <input name="itemPacking" type="text" />
     <input name="itemLevels" type="text" />
-    <input name="itemPparam" type="text" />
     <input name="itemBrandName" type="text" />
-    <input name="itemPropertyName" type="text" />
 	<input value="提交" type="submit" />
 </form>
-<form action="/api/item/addItemClassify" method="post">
+<!--<form action="/api/item/addItemClassify" method="post">
 	    <h1>品牌查询</h1>
 		<input type="text" name="itemClassifyName"/>
 		<input type="text" name="itemPreviousClassify"/>
 		<input type="text" name="itemClassifyGrade"/>
+		<input type="submit" name="提交"/>
+	</form> -->
+	管理员添加
+	<form action="/api/adminstrator/add" method="post">
+		用户名<input type="text" name="phone"/><br/>
+		密码<input type="text" name="adminstratorPwd"/><br/>
+		真实姓名<input type="text" name="trueName"/><br/>
+		<input type="submit" name="提交"/>
+	</form>
+	管理员删除
+	<form action="/api/adminstrator/delete" method="post">
+		id<input type="text" name="adminstratorId"/><br/>
+		<input type="submit" name="提交"/>
+	</form>
+	管理员修改
+	<form action="/api/adminstrator/update" method="post">
+		id<input type="text" name="adminstratorId"/><br/>
+		用户名<input type="text" name="phone"/><br/>
+		密码<input type="text" name="adminstratorPwd"/><br/>
+		真实姓名<input type="text" name="trueName"/><br/>
+		<input type="submit" name="提交"/>
+	</form>
+	管理员查询
+	<form action="/api/adminstrator/query" method="post">
+		用户名<input type="text" name="phone"/><br/>
+		真实姓名<input type="text" name="trueName"/><br/>
+		<input type="submit" name="提交"/>
+	</form>
+	管理员登录
+	<form action="/api/adminstrator/login" method="post">
+		用户名<input type="text" name="phone"/><br/>
+		密码<input type="text" name="adminstratorPwd"/><br/>
 		<input type="submit" name="提交"/>
 	</form>
 	

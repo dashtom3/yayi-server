@@ -152,17 +152,6 @@ public class ItemManageController {
 		return itemManageService.addProperty(itemPropertyName);
 	}
 	
-	/**
-	 * 添加属性值
-	 */
-	@RequestMapping("addPropertyd")
-	@ResponseBody
-	public DataWrapper<Void> addPropertyd(
-			@RequestParam(value="itemPropertyId",required=true) Integer itemPropertyId,
-			@RequestParam(value="itemPparam",required=true) String itemPparam
-			){
-		return itemManageService.addPropertyd(itemPropertyId,itemPparam);
-	}
 	
 	/**
 	 * 添加属性值和属性名

@@ -1,6 +1,7 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
 public class ItemValue {
+	private String itemId;
 	private String itemSKU;
 	private Integer itemSkuPrice;
 	private Double  tiChen;
@@ -14,6 +15,18 @@ public class ItemValue {
 	public String getItemSKU() {
 		return itemSKU;
 	}
+	
+	
+	public String getItemId() {
+		return itemId;
+	}
+
+
+	public void setItemId(String itemId) {
+		this.itemId = itemId;
+	}
+
+
 	public void setItemSKU(String itemSKU) {
 		this.itemSKU = itemSKU;
 	}
@@ -65,11 +78,14 @@ public class ItemValue {
 	public void setItemPropertyInfo(String itemPropertyInfo) {
 		this.itemPropertyInfo = itemPropertyInfo;
 	}
-	public ItemValue(String itemSKU, Integer itemSkuPrice, Double tiChen,
-			Integer itemQb, Integer stockNum, Integer canUse,
+
+
+	public ItemValue(String itemId, String itemSKU, Integer itemSkuPrice,
+			Double tiChen, Integer itemQb, Integer stockNum, Integer canUse,
 			Integer itemValueId, String itemPropertyName,
 			String itemPropertyInfo) {
 		super();
+		this.itemId = itemId;
 		this.itemSKU = itemSKU;
 		this.itemSkuPrice = itemSkuPrice;
 		this.tiChen = tiChen;
@@ -80,18 +96,23 @@ public class ItemValue {
 		this.itemPropertyName = itemPropertyName;
 		this.itemPropertyInfo = itemPropertyInfo;
 	}
+
+
 	public ItemValue() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
+
+
 	@Override
 	public String toString() {
-		return "ItemValue [itemSKU=" + itemSKU + ", itemSkuPrice="
-				+ itemSkuPrice + ", tiChen=" + tiChen + ", itemQb=" + itemQb
-				+ ", stockNum=" + stockNum + ", canUse=" + canUse
-				+ ", itemValueId=" + itemValueId + ", itemPropertyName="
-				+ itemPropertyName + ", itemPropertyInfo=" + itemPropertyInfo
-				+ "]";
+		return "ItemValue [itemId=" + itemId + ", itemSKU=" + itemSKU
+				+ ", itemSkuPrice=" + itemSkuPrice + ", tiChen=" + tiChen
+				+ ", itemQb=" + itemQb + ", stockNum=" + stockNum + ", canUse="
+				+ canUse + ", itemValueId=" + itemValueId
+				+ ", itemPropertyName=" + itemPropertyName
+				+ ", itemPropertyInfo=" + itemPropertyInfo + "]";
 	}
+	
 	
 }

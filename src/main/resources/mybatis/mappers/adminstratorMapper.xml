@@ -1,0 +1,30 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.yayiabc.http.mvc.dao.AdminstratorDao">
+	<insert id="addAdminstrator">
+		insert into adminstrator values(null,#{phone},#{adminstratorPwd},#{trueName})
+	</insert>
+	
+	<delete id="deleteAdminstrator">
+		delete from adminstrator where adminstrator_id=#{adminstratorId}
+	</delete>
+	
+	<update id="updateAdminstrator">
+		update adminstrator set phone=#{phone},adminstrator_pwd=#{adminstratorPwd},true_name=#{trueName} where adminstrator_id=#{adminstratorId} 
+	</update>
+	
+	<select id="queryAdminstrator" resultType="Adminstrator">
+		select * from adminstrator
+		<where>
+			true
+			<if test="phone!=null">and phone=#{phone}</if>
+			<if test="trueName!=null">and true_name=#{trueName}</if>
+		</where>
+	</select>
+	
+	<select id="loginAdminstrator" resultType="Adminstrator">
+		select * from adminstrator where phone=#{phone} and adminstrator_pwd=#{adminstratorPwd}
+	</select>
+</mapper>       

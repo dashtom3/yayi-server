@@ -231,17 +231,7 @@ public class ItemManageServiceImpl implements ItemManageService{
 		return dataWrapper;
 	}
 
-	@Override
-	public DataWrapper<Void> addPropertyd(Integer itemPropertyId,
-			String itemPparam) {
-		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		ItemProperty itemProperty =new ItemProperty();
-		itemProperty.setItemPropertyId(itemPropertyId);
-		itemProperty.setItemPropertyName(itemPparam);
-		itemManageDao.addPropertyd(itemProperty);
-		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-		return dataWrapper;
-	}
+
 
 	@Override
 	public DataWrapper<Void> addItemClassify(String itemClassifyName,

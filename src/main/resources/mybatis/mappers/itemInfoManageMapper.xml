@@ -43,7 +43,7 @@
  	</delete>
  	
  	<delete id="deleteItemValue">
- 		delete from item_value where item_id=#{itemId}
+ 		delete from item_value where item_sKU=#{itemSKU}
  	</delete>
  	
 
@@ -52,12 +52,12 @@
  		insert into item_value
  		values
  		<foreach collection="list" index="index" item="item" separator=",">
-          (null,#{itemId},#{item.itemPropertyName},#{item.itemPropertyInfo})
+          (#{item.canUse},#{item.stockNum},#{item.itemQb},#{item.tiChen},#{item.itemSkuPrice},#{item.itemSku},#{item.itemId},#{item.itemPropertyName},#{item.itemPropertyInfo})
  		</foreach>
  	</insert>
  	
  	<insert id="insertItemInfo">
- 		insert into item_info values(#{itemId},#{itemName},#{itemBrandId},null,0,1,#{oneClassify},#{twoClassify},#{threeClassify},now(),now());
+ 		insert into item_info values(#{itemId},#{itemName},#{itemBrandId},#{itemPrice},0,1,#{oneClassify},#{twoClassify},#{threeClassify},now(),now());
  	</insert>
  	
  	<insert id="insertItemDetail">
@@ -68,4 +68,38 @@
  		#{registerId},#{registerDate},#{itemPacking},#{itemLevels},#{itemRange},null,now(),now()
  		)
  	</insert>
+ 	
+ 	<update id="updateItemInfo">
+ 		update item_info set item_name=#{itemName},item_brand_id=#{itemBrandId},item_price=#{itemPrice},one_classify=#{oneClassify},two_classify=#{twoClassify},three_classify=#{threeClassify},
+ 		updated=now() where item_id=#{itemId}
+ 	</update>
+ 	
+ 	<update id="updateItemDetail">
+ 		update item_detail set item_desc=#{itemDesc},item_use=#{itemUse},video=#{video},item_pica=#{itemPica},item_picb=#{itemPicb},item_picc=#{itemPicc},item_picd=#{itemPicd},
+ 		item_pice=#{itemPice},store_item_id=#{storeItemId},apparatus_type=#{apparatusType},unit=#{unit},produce_pompany=#{producePompany},register_id=#{registerId},register_date=#{registerDate},
+ 		item_packing=#{itemPacking},item_levels=#{itemLevels},item_range=#{itemRange},updated=now()
+ 	</update>
+ 	
+ 	<update id="updateItemValue">
+ 		update item_value set can_use=#{canUse},stock_num=#{stockNum},item_qb=#{itemQb},ti_chen=#{tiChen},item_sku_price=#{itemSkuPrice}
+ 	</update>
+ 	
+ 	<select id="getMinPriceFromItemValue">
+ 		SELECT MIN(item_sku_price) FROM item_value WHERE item_id=#{itemId}
+ 	</select>
+ 	
+ 	<delete id="deleteItemStock">
+ 		delete from item_stock where item_id =#{itemId}
+ 	</delete>
+ 	
+ 	<delete id="deleteComments">
+ 		delete from comments where item_id=#{itemId}
+ 	</delete>
+ 	
+ 	<select id="queryItemNum" resultType="int">
+ 		select count(0) from item_value where item_sKU=#{itemSKU}
+ 	</select>
+ 	
+ 	
+ 	
 </mapper>       

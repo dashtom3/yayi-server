@@ -9,48 +9,37 @@
 		VALUE(#{userId},#{qbRget},#{qbRout},NOW(),#{remark},NOW(),NOW());
 	</insert>
 	
-	<resultMap type="QbRecord" id="userMyQbRM">
+	<resultMap type="QbRecord" id="qbRecordRM">
 		<id column="qb_rid" property="qbRid"/>
-			<result column="user_id" property="userId"/>
 			<result column="qb_rget" property="qbRget"/>
 			<result column="qb_rout" property="qbRout"/>
 			<result column="qb_time" property="qbTime"/>
+			<result column="qb_balances" property="qbBalances"/>
 			<result column="remark" property="remark"/>
 		<association property="user" javaType="com.yayiabc.http.mvc.pojo.jpa.User">
 			<id column="user_id" property="userId"/>
-			<id column="qb_balance" property="qbBalance"/>
+			<result column="phone" property="phone"/>
 		</association>
 	</resultMap>
 	
-	<select id="query" resultMap="userMyQbRM">
-		 SELECT qb.user_id,qb.qb_rget,qb.qb_rout,qb.qb_time,qb.remark,u.qb_balance
-         FROM qb_record qb
-         LEFT JOIN USER u ON qb.user_id = u.user_id
-         WHERE qb.user_id='${userId}'
-         ORDER BY qb.qb_time DESC
-         <if test="page.numberPerPage != 0">
-            LIMIT ${page.currentNumber},${page.numberPerPage}
-         </if>
-	</select>
-	
-	<select id="queryRget" resultMap="userMyQbRM">
-		 SELECT qb.user_id,qb.qb_rget,qb.qb_rout,qb.qb_time,qb.remark,u.qb_balance
-         FROM qb_record qb
-         LEFT JOIN USER u ON qb.user_id = u.user_id
-	     WHERE qb.qb_rget !=0 AND qb.user_id='${userId}'
-         <if test="page.numberPerPage != 0">
-            LIMIT ${page.currentNumber},${page.numberPerPage}
-         </if>
-	</select>
-	
-	<select id="queryRout" resultMap="userMyQbRM">
-		SELECT qb.user_id,qb.qb_rget,qb.qb_rout,qb.qb_time,qb.remark,u.qb_balance
-        FROM qb_record qb
-        LEFT JOIN USER u ON qb.user_id = u.user_id
-	    WHERE qb.qb_rout !=0 AND qb.user_id='${userId}'
-        <if test="page.numberPerPage != 0">
-            LIMIT ${page.currentNumber},${page.numberPerPage}
-        </if>
+	<select id="query" resultMap="qbRecordRM">
+		 SELECT q.qb_rid,u.phone,q.qb_rget,q.qb_rout,q.qb_time,q.remark,q.qb_balances
+		FROM qb_record q
+		LEFT JOIN USER u
+		ON u.user_id=q.user_id
+         <where>
+         	<if test="userId !=null and userId !=''">
+         		q.user_id='${userId}'
+         	</if>
+         	<if test="type ==2 and type !=null and type != ''">
+         		and q.qb_rget !='' 
+         	</if>
+         	<if test="type ==3 and type !=null and type != ''">
+         		and q.qb_rout !='' 
+         	</if>
+         </where>
+         ORDER BY q.qb_time DESC
+         LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
 	
 	<select id="getCount" resultType="int">
@@ -58,19 +47,5 @@
         FROM qb_record qb
         LEFT JOIN USER u ON qb.user_id = u.user_id
         WHERE qb.user_id='${userId}';
-	</select>
-	
-	<select id="getCountRget" resultType="int">
-		SELECT COUNT(*)
-        FROM qb_record qb
-        LEFT JOIN USER u ON qb.user_id = u.user_id
-	    WHERE qb_rget !=0 AND qb.user_id='${userId}';
-	</select>
-	
-	<select id="getCountRout" resultType="int">
-		SELECT COUNT(*)
-        FROM qb_record qb
-        LEFT JOIN USER u ON qb.user_id = u.user_id
-        WHERE qb_rout !=0 AND qb.user_id='${userId}';
 	</select>
 </mapper>        

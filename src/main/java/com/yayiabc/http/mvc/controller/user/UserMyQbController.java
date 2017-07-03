@@ -42,9 +42,10 @@ public class UserMyQbController {
 	public DataWrapper<List<QbRecord>> query(
 			@RequestParam(value="phone",required=true)String phone,
 			@RequestParam(value="type",required=true)Integer type,
-			@RequestParam(value="token",required=true)String token,
-			@ModelAttribute Page page
+			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
+			@RequestParam(value="token",required=true)String token
 	){
-		return userMyQbService.query(phone,type,page);
+		return userMyQbService.query(phone,type,currentPage,numberPerPage);
 	}
 }

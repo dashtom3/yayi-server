@@ -1,17 +1,15 @@
 package com.yayiabc.api.statistics;
 
-public interface UserStatisticsApi {
+public interface SaleStatisticsApi {
 	/**
-     * @api {get} http://192.168.1.103:8081/api/userStatistics/query （后台）电商用户统计
+     * @api {get} http://192.168.1.103:8081/api/saleStatistics/query （后台）销售员统计
      * @apiName query
-     * @apiGroup userStatistics
+     * @apiGroup saleStatistics
      * @apiVersion 0.1.0
-     * @apiDescription 电商用户统计
+     * @apiDescription 销售员统计
      *
      * @apiParam {String} phone 手机号码（非必须）
      * @apiParam {String} trueName 姓名（非必须）
-     * @apiParam {String} startDate 开始时间（非必须，不填时传空值，格式'yyyy-MM-dd hh:mm'）
-     * @apiParam {String} endDate 结束时间（非必须，不填时传空值，格式'yyyy-MM-dd hh:mm'）    
      * @apiParam {int} currentPage （非必须）
      * @apiParam {int} numberPerPage （非必须）  
      * @apiParam {String} token 身份凭证（必须）
@@ -22,19 +20,21 @@ public interface UserStatisticsApi {
      * callStatus:"SUCCEED",
      * errorCode:"No_Error",
      * data:[{
-     * 		userId:"8bf0412e-8fbb-4683-b7a0-1145ac4ed043",
+     * 		saleId:"a123",
      * 		trueName:"真实姓名",
      * 		phone:"17668123578",
-     * 		orderaCount:30,
-     * 		orderaMoneyCount:5000,
+     * 		money:100,
+     * 		saleAllMoney:5000,
+     * 		bindUserNum:10,
      * 		latelyOrderDate:"2017-01-02"
      * },{
-     * 		userId:"e3f5fea6-040e-42f1-b988-4b1806806a6a",
-     * 		trueName:"张用户",
-     * 		phone:"18947657378",
-     * 		orderaCount:10,
-     * 		orderaMoneyCount:2000,
-     * 		latelyOrderDate:"2017-01-01"
+     * 		saleId:"b456",
+     * 		trueName:"真实姓名a",
+     * 		phone:"1766811622",
+     * 		money:100,
+     * 		saleAllMoney:5000,
+     * 		bindUserNum:10,
+     * 		latelyOrderDate:"2017-01-02"
      * }],
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
      * numberPerPage:10,

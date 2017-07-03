@@ -11,8 +11,8 @@
 
 	<insert id="insertVid" parameterType="com.yayiabc.http.mvc.pojo.jpa.VidManage">
 		<if test="vidManage!=null">
-			insert into vid_manage(video_name,video_type)
-			values(#{vidManage.vidName},#{vidManage.videoType})
+			insert into vid_manage(video_name,video_type,video_route)
+			values(#{vidManage.vidName},#{vidManage.videoType},#{vidManage.video_route})
 		</if>
 	</insert>
 
@@ -26,7 +26,7 @@
 				video_type=#{vidType},
 			</if>
 			<if test="videoType!=null">
-				video_route=#{vidRoute}
+				video_route=#{vidRoute},
 			</if>
 		</set>
 		<where>

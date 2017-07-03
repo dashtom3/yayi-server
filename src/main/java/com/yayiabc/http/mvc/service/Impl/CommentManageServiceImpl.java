@@ -10,7 +10,9 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.CommentManageDao;
+import com.yayiabc.http.mvc.dao.UserCenterStarDao;
 import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
@@ -22,17 +24,31 @@ public class CommentManageServiceImpl implements CommentManageService {
 	private CommentManageDao commentManageDao;
    @Autowired
    private UserDao userdao;
+   @Autowired
+   private UserCenterStarDao userCenterStarDao;
 	@Override
 	public DataWrapper<List<Map<String,String>>> commentM(
-			String orderId,String userId,String recoveryState,String phone
+			String orderId,String userId,String recoveryState,String phone,
+			Integer currentPage,Integer numberPerpage
 			) {
-
+		Page page=new Page();
+		if(currentPage!=null&numberPerpage!=null){
+		page.setNumberPerPage(numberPerpage);
+		page.setCurrentPage(currentPage);
+		}else{
+			page.setNumberPerPage(10);
+			page.setCurrentPage(1);
+		}
+		//总条数
+		int count=userCenterStarDao.queryCount("comments");
+		
 		//容器
 		List<Map<String,String>> containerList=new ArrayList<Map<String,String>>();
 		//小容器
 		String phones=userdao.getUserId(phone);
 		System.out.println(orderId+" "+userId+"  "+recoveryState+"   "+phones);
-		List<Ordera> commentMList=commentManageDao.commentM(orderId,userId,recoveryState,phones);
+		System.out.println(page);
+		List<Ordera> commentMList=commentManageDao.commentM(orderId,userId,recoveryState,phones,page.getCurrentPage(),page.getNumberPerPage());
 		StringBuffer sb=new StringBuffer();
 		System.out.println(commentMList);
 		if(!commentMList.isEmpty()){
@@ -63,6 +79,7 @@ public class CommentManageServiceImpl implements CommentManageService {
 			System.out.print(key+": "+containerList.get(1).get(key)+"  ,  ");
 		}*/
 		DataWrapper<List<Map<String,String>>>  d=	new DataWrapper<List<Map<String,String>>>();
+		d.setPage(page,count);
 		d.setData(containerList);
 		return d;
 	}

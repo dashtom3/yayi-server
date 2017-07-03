@@ -37,11 +37,12 @@ public class OrderDetailsController {
      @ResponseBody
      public DataWrapper<List<User>> show(
     		  @RequestParam(value="phone",required=true) String phone,
-    		  @RequestParam(value="state",required=false) String state
-    		 
+    		  @RequestParam(value="state",required=false) String state,
+    		  @RequestParam(value="currentPage",required=false) Integer currentPage,
+     		  @RequestParam(value="numberPerpage",required=false) Integer numberPerpage
     		 ){
     	    HashMap<String,String>map=new HashMap<String,String>();
     	    map.put("state", state);
-    	 return orderDetailsService.orderDetailsShow(map,phone);
+    	 return orderDetailsService.orderDetailsShow(map,phone,currentPage,numberPerpage);
      }
 }

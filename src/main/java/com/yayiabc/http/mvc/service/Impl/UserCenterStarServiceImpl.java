@@ -6,9 +6,11 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 
+
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.sessionManager.SessionManager;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.UserCenterStarDao;
 import com.yayiabc.http.mvc.dao.UserDao;
 
@@ -23,10 +25,28 @@ public class UserCenterStarServiceImpl  implements UserCenterStarService{
 	UserDao userDao;
 	//显示收藏数据
 	@Override
-	public DataWrapper<List<MyStar>>shows(String phone){
+	public DataWrapper<List<MyStar>>shows(
+			String phone,Integer currentPage,Integer numberPerPage
+			){
 		DataWrapper<List<MyStar>> dataWrapper=new DataWrapper<List<MyStar>>();
+		
+		Page page=new Page();
+		if(currentPage!=null&numberPerPage!=null){
+		page.setNumberPerPage(numberPerPage);
+		page.setCurrentPage(currentPage);
+		}else{
+			
+			page.setNumberPerPage(10);
+			page.setCurrentPage(1);
+		}
+		//总条数
+		int count=usercenterstardao.queryCount("item_star");
+		System.out.println("总条数:"+count);
+		System.out.println(page);
+		dataWrapper.setPage(page,count);
+	
 		String userId=userDao.getUserId(phone);
-		List<MyStar> itemStarList=usercenterstardao.shows(userId);
+		List<MyStar> itemStarList=usercenterstardao.shows(userId,page);
 		dataWrapper.setData(itemStarList);
 		if(itemStarList.isEmpty()){
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
@@ -77,12 +97,17 @@ public class UserCenterStarServiceImpl  implements UserCenterStarService{
 	public DataWrapper<Void> addMyStar(String phone, String itemId) {
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		String userId=userDao.getUserId(phone);
-		int st=usercenterstardao.addMyStar(userId, itemId);
+		int st=0;
+		//根据当前商品id  查询是否已经收藏1
+		List<Integer> list=usercenterstardao.queryOne(itemId);
+		if(list.isEmpty()){
+			st=usercenterstardao.addMyStar(userId, itemId);
+		}
 		if(st>0){
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			dataWrapper.setMsg("操作成功");
 			return dataWrapper;
-		}else{
+		 }else{
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			dataWrapper.setMsg("操作失败");
 			return dataWrapper;

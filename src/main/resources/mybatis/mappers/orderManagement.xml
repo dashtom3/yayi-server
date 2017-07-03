@@ -62,7 +62,7 @@
 	<!-- //关闭交易 or确定交易 -->
 	<update id="closeTrading">
 		update ordera set state =${flagBit} where
-		order_id=${order_Id}
+		order_id=${orderId}
 	</update>
 <!-- //订单详情  resultMap-->
 	<resultMap type="Ordera" id="details">
@@ -93,10 +93,9 @@
 			<result property="itemPropertyNamea" column="item_property_namea" />
 			<result property="itemPropertyNameb" column="item_property_nameb" />
 			<result property="itemPropertyNamec" column="item_property_namec" />
-			<result property="" column="pic_path" />
-			<result property="" column="price" />
-			<result property="" column="num" />
-			<result property="" column="pic_path" />
+			<result property="picPath" column="pic_path" />
+			<result property="price" column="price" />
+			<result property="num" column="num" />
 			<association property="itemInfo" javaType="com.yayiabc.http.mvc.pojo.jpa.ItemInfo">
 				<result property="itemName" column="item_name" />
 			</association>
@@ -187,18 +186,71 @@
 
 	<!-- 根据订单 查询用户 -->
 	<select id="queryUser" resultType="java.lang.String">
-		select user.id from ordera
+		select user_id from ordera
 		where order_id=#{orederId}
 	</select>
 
 	<!-- 根据用户id 查询该用户钱币余额 -->
 	<select id="userBalance" resultType="int">
-		select qb_balance from
-		qb_record where user_id=#{userId}
+		select   IFNULL(qb_balance,0)AS   qb_balance from
+		user where user_id=#{userId}
 	</select>
     
          <!-- 仓库发货 -->
-     <insert id="warehouseDelivery" >
-          insert into usera(shipping_name,shipping_code) values(#{logisticsName},#{logisticsCode},#{orderId})
-     </insert>
+     <update id="warehouseDelivery" >
+     update ordera <set>
+           <if test="logisticsName!=null">
+           shipping_name=#{logisticsName},
+           </if>
+            <if test="logisticsCode!=null">
+           shipping_code=#{logisticsCode}
+           </if>
+           <where>
+              user_id=#{userId}
+           </where>
+     </set>
+          <!-- insert into user(shipping_name,shipping_code) values(#{logisticsName},#{logisticsCode},#{orderId}) -->
+     </update>
+     
+     <select id="queryUserId" resultType="java.lang.String">
+      select user_id from ordera where order_id=#{orderId}
+     </select>
+     
+     <!--  -->
+     <select id="queryCount" resultType="int">
+		SELECT
+		count(1)
+		FROM USER
+		us JOIN ordera orde ON us.user_id=orde.user_id
+		<where>
+			<if test="orderId !=null">
+				orde.order_id=#{orderId}
+			</if>
+			<!-- <choose> <when test="buyerInfo != null"> and us.phone = #{buyerInfo} 
+				</when> <otherwise> and us.true_name = #{buyerInfo} </otherwise> </choose> -->
+			<if test="buyerInfo != null">
+				and us.phone = #{buyerInfo} or us.true_name =
+				#{buyerInfo}
+			</if>
+			<if test="orderState !=null">
+				and orde.state=#{orderState}
+			</if>
+			<if test="isRefund !=null">
+				and orde.refund=#{isRefund}
+			</if>
+			<if test="orderCTime !=null and orderETime!=null">
+				and orde.created
+				BETWEEN #{orderCTime} AND #{orderETime}
+			</if>
+			<if test="orderCTime !=null and orderETime==null">
+				and orde.created >#{orderCTime}
+
+			</if>
+			<if test="orderETime !=null and orderCTime==null">
+				and orde.created &lt;#{orderETime}
+			</if>
+			<!-- <if test="orderCTime !=null"> and orde.created>#{orderCTime} </if> 
+				<if test="orderETime !=null"> and orde.created &lt;#{orderETime} </if> -->
+		</where>
+	</select>
 </mapper>

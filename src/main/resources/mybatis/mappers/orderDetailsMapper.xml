@@ -81,14 +81,39 @@
 		orde_it.item_id
 		= item_f.item_id
 		<where>
-			<if test="userId !=NULL">
-				us.user_id=${userId}
+			<if test="phone !=null">
+				us.user_id=${phone}
 			</if>
 
-			<if test="state !=NULL">
+			<if test="state !=null">
 				and orde.state=${state}  <!-- 待付款 -->
 			</if>
+       
+		</where>
+		 limit ${currentPage},${numberPerpage}
+	</select>
+	
+	
+	<select id="queryCount" parameterType="java.util.Map"
+		resultType="int">
+		SELECT
+		 count(1)
+		FROM
+		USER us JOIN
+		ordera orde ON us.user_id=orde.user_id JOIN order_item
+		orde_it ON
+		orde.order_id=orde_it.order_id JOIN
+		item_info item_f ON
+		orde_it.item_id
+		= item_f.item_id
+		<where>
+			<if test="phone !=null">
+				us.user_id=${phone}
+			</if>
 
+			<if test="state !=null">
+				and orde.state=${state}  <!-- 待付款 -->
+			</if>
 		</where>
 	</select>
 </mapper>

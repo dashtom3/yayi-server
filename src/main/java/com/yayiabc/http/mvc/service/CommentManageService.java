@@ -7,7 +7,8 @@ import com.yayiabc.common.utils.DataWrapper;
 
 
 public interface CommentManageService {
-	DataWrapper<List<Map<String,String>>>  commentM(String orderId,String userId,String recoveryState,String phone);
+	DataWrapper<List<Map<String,String>>>  commentM(String orderId,String userId,String recoveryState,String phone
+			,Integer currentPage,Integer numberPerpage);
 
 	DataWrapper<Void> reply(String orderId, String itemId,
 			String data);

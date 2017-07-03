@@ -13,7 +13,9 @@ import org.springframework.stereotype.Service;
 
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.OrderManagementDao;
+import com.yayiabc.http.mvc.dao.UserCenterStarDao;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.Refund;
@@ -24,16 +26,29 @@ import com.yayiabc.http.mvc.service.OrderManagementService;
 public class OrderManagementServiceImpl implements OrderManagementService{
 	@Autowired
 	private OrderManagementDao orderManagementDao;
-
 	@Override
-	public DataWrapper<List<User>> showOrder(HashMap<String, Object> hMap) {
+	public DataWrapper<List<User>> showOrder(HashMap<String, Object> hMap,
+			Integer currentPage,Integer numberPerpage
+			) {
+		Page page=new Page();
+		if(currentPage!=null&numberPerpage!=null){
+		page.setNumberPerPage(numberPerpage);
+		page.setCurrentPage(currentPage);
+		}else{
+			page.setNumberPerPage(10);
+			page.setCurrentPage(1);
+		}
+		
 		// TODO Auto-generated method stub
 		DataWrapper<List<User>> dataWrapper=new DataWrapper<List<User>>();
+		//总条数
+				int count=orderManagementDao.queryCount(hMap);
 		List<User> userOrderList=orderManagementDao.showOrder(hMap);
 		if(userOrderList.isEmpty()){
 			dataWrapper.setMsg("暂无数据");
 		}else{
 			dataWrapper.setData(userOrderList);
+			dataWrapper.setPage(page, count);
 		}
 		return dataWrapper;
 	}
@@ -71,14 +86,17 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		String userId=orderManagementDao.queryUser(OrederId);
 		//根据userId 查询用户余额
 		int balance=orderManagementDao.userBalance(userId);
-		if(balance>0){
+		/*if(balance>0){
 			//
-		}
+		}*/
 		List<OrderItem> list=orderManagementDao.showFund(OrederId,itemId);
+		int price=0;
+		if(!list.isEmpty()){
 		String itemIdy=  list.get(0).getItemId();
 		int QbDed= list.get(0).getQbDed();
-		int price= list.get(0).getPrice();
+		price= list.get(0).getPrice();
 		int num = list.get(0).getNum();
+		}
 		//单个商品的退回钱币数
 		int returnQbNum=price*refundNum;
 
@@ -96,6 +114,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		map.put("returnQbNum", returnQbNum);
 		map.put("returnMoneyNum", returnMoneyNum);
 		map.put("dedQb", dedQb);
+		map.put("userQianBiYE", balance);
 		//这里的  我可以直接就把这条数据 插入到退货管理数据库中了  考虑到 用户又可能不退  暂时搁置 明天再写
 		/*if(refundNum>num){  这里前端做判断
 			dataWrapper.setMsg("");
@@ -144,7 +163,9 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 	public DataWrapper<Void> warehouseDelivery(String orderId,String logisticsName,String  logisticsCode) {
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
-		int state =orderManagementDao.warehouseDelivery(orderId,logisticsName,logisticsCode);
+		//通过orderId查找到userId
+		String userId=orderManagementDao.queryUserId(orderId);
+		int state =orderManagementDao.warehouseDelivery(userId,logisticsName,logisticsCode);
 		if(state>0){
 			dataWrapper.setMsg("操作成功");
 		}else{

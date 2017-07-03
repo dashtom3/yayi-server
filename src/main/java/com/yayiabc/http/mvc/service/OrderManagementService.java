@@ -12,7 +12,9 @@ import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 
 public interface OrderManagementService {
-	DataWrapper<List<User>>  showOrder( HashMap<String, Object> hMap);
+	DataWrapper<List<User>>  showOrder( HashMap<String, Object> hMap,
+			Integer currentPage,Integer numberPerpage
+			);
    //关闭交易
 	DataWrapper<Void> closeTrading(String orderId,String flagBits);
 	//显示退款处理

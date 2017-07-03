@@ -74,8 +74,14 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		String Province =receiver.getProvince();
 		//查询包邮表数据
 		List<FreeShipping> list=placeOrderDao.queryPostFree();
-		
+		if(!list.isEmpty())
+		{
+			System.out.println(receiver);
+			System.out.println(sumPrice);
+			System.out.println(itemSum);
+
 			for(int i=0;i<list.size();i++){
+				
 				String[] citys=list.get(i).getPostCity().split(",");
           System.out.println("检查是否是否包邮:"+Arrays.toString(citys));
 				int money=list.get(i).getFreeShippingMoney();
@@ -102,23 +108,26 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					}
 				}
 			}
-		
+		}
+	    
 		//查询自定义运费表数据
 		List<PostFee> lists=placeOrderDao.query();
-		for(int i=0;i<lists.size();i++){
-			String[] citys=lists.get(i).getPostCity().split(",");
-			System.out.println("自定义邮费:城市"+Arrays.toString(citys));
-			if(Province==null){
-				String cityString=receiver.getCity();
-				for(int x=0;x<citys.length;x++){
-					if(cityString.equals(citys[x])){
-						return lists.get(i).getFirstMoney()+(itemSum-1)*lists.get(i).getAddMoney();
+		if(!lists.isEmpty()){
+			for(int i=0;i<lists.size();i++){
+				String[] citys=lists.get(i).getPostCity().split(",");
+				System.out.println("自定义邮费:城市"+Arrays.toString(citys));
+				if(Province==null){
+					String cityString=receiver.getCity();
+					for(int x=0;x<citys.length;x++){
+						if(cityString.equals(citys[x])){
+							return lists.get(i).getFirstMoney()+(itemSum-1)*lists.get(i).getAddMoney();
+						}
 					}
-				}
-			}else{
-				for(int x=0;x<citys.length;x++){
-					if(Province.equals(citys[x])){
-						return lists.get(i).getFirstMoney()+(itemSum-1)*lists.get(i).getAddMoney();
+				}else{
+					for(int x=0;x<citys.length;x++){
+						if(Province.equals(citys[x])){
+							return lists.get(i).getFirstMoney()+(itemSum-1)*lists.get(i).getAddMoney();
+						}
 					}
 				}
 			}

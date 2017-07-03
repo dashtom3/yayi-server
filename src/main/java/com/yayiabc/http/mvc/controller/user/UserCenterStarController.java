@@ -26,11 +26,12 @@ public class UserCenterStarController {
       @ResponseBody
       public DataWrapper<List<MyStar>> shows(
     		  //这里改为phone
-    		  
     		  @RequestParam(value = "phone",required=true) String phone,
-    		  @RequestParam(value = "token",required=true) String token
+    		  @RequestParam(value = "token",required=true) String token,
+    		  @RequestParam(value = "currentPage",required=false) Integer currentPage,//当前页
+    		  @RequestParam(value = "numberPerPage",required=false) Integer numberPerPage//取多少
     		  ){
-    	  return ucss.shows(phone);
+    	  return ucss.shows(phone,currentPage,numberPerPage);
       }
       //取消单独商品收藏
       @RequestMapping("deleteOne")

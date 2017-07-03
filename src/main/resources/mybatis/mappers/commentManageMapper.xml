@@ -9,7 +9,6 @@
 		<id column="order_id" property="orderId" />
 		<!-- 订单商品表 -->
 		<collection property="orderitemList" ofType="OrderItem">
-			<id property="itemId" column="item_id" />
 			<result property="itemPropertyNamea" column="item_property_namea" />
 			<result property="itemPropertyNameb" column="item_property_nameb" />
 			<result property="itemPropertyNamec" column="item_property_namec" />
@@ -32,8 +31,7 @@
 
 	</resultMap>
 
-
-	<select id="commentM" resultMap="CommentManagementResultMap">
+	<select id="commentM" resultMap="CommentManagementResultMap" >
 		SELECT
 		iif.item_name,oim.item_property_namea,oim.item_property_nameb,oim.item_property_namec
 		,
@@ -41,18 +39,11 @@
 		FROM
 		ordera orde,order_item oim ,COMMENTS comm,item_info iif,item_detail idl
 		 <where>
-		 
 		 orde.order_id=oim.order_id AND oim.item_id=comm.item_id AND comm.item_id=iif.item_id
 		  AND iif.item_id=idl.item_id 
-		 
 		   <if test="orderId!=null">
 		     and orde.order_id=#{orderId} 
 		  </if>
-		<!--  <if test="userId!=null">
-		     and orde.user_id=#{userId} 
-		 </if><else>
-		   and orde.user_id=#{phone}
-		  </else> -->
 		  <if test="recoveryState!=null">
 		     and comm.recovery_state=#{recoveryState} 
 		 </if>
@@ -64,9 +55,8 @@
             and orde.user_id=#{phone}
         </otherwise>
        </choose>
-
 		 </where>
-		
+		limit #{currentPage},#{numberPerPage}
 	</select>
 	<!-- 回复 -->
 	<insert id="reply">

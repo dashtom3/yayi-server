@@ -22,8 +22,8 @@ public class ItemStatisticsServiceImpl implements ItemStatisticsService {
 			Integer currentPage, Integer numberPerPage) {
 		DataWrapper<List<ItemStatistics>> dataWrapper = new DataWrapper<List<ItemStatistics>>();
 		Page page=new Page();
-		page.setCurrentPage(currentPage);
 		page.setNumberPerPage(numberPerPage);
+		page.setCurrentPage(currentPage);
 		int totalNumber =itemStatisticsDao.getCount(itemName, itemId, itemSKU, itemBrandName);
 		dataWrapper.setPage(page, totalNumber);
 		List<ItemStatistics> list = itemStatisticsDao.query(itemName, itemId,

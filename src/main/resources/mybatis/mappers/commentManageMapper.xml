@@ -41,20 +41,18 @@
 		 <where>
 		 orde.order_id=oim.order_id AND oim.item_id=comm.item_id AND comm.item_id=iif.item_id
 		  AND iif.item_id=idl.item_id 
-		   <if test="orderId!=null">
+		   <if test="orderId!=null and orderId!=''">
 		     and orde.order_id=#{orderId} 
 		  </if>
-		  <if test="recoveryState!=null">
+		  <if test="recoveryState!=null and recoveryState!= '' ">
 		     and comm.recovery_state=#{recoveryState} 
 		 </if>
-		<choose>
-        <when test="userId!=null">
-            and orde.user_id=#{userId} 
-        </when>
-        <otherwise>
+		<!-- <choose> -->
+        
+       <!--  <otherwise>
             and orde.user_id=#{phone}
-        </otherwise>
-       </choose>
+        </otherwise> -->
+       <!-- </choose> -->
 		 </where>
 		limit #{currentPage},#{numberPerPage}
 	</select>

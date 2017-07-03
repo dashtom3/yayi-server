@@ -18,9 +18,7 @@
 				AND o.updated BETWEEN #{startDate}  AND #{endDate}
 			</if>
 		</where>
-		 <if test="page.numberPerPage != '' and page.numberPerPage != null">
             LIMIT ${page.currentNumber},${page.numberPerPage}
-         </if>
 	</select>
 	
 	<select id="getCount" resultType="int">

@@ -28,7 +28,7 @@ public class CommentManageServiceImpl implements CommentManageService {
    private UserCenterStarDao userCenterStarDao;
 	@Override
 	public DataWrapper<List<Map<String,String>>> commentM(
-			String orderId,String userId,String recoveryState,String phone,
+			String orderId,String recoveryState,
 			Integer currentPage,Integer numberPerpage
 			) {
 		Page page=new Page();
@@ -45,10 +45,10 @@ public class CommentManageServiceImpl implements CommentManageService {
 		//容器
 		List<Map<String,String>> containerList=new ArrayList<Map<String,String>>();
 		//小容器
-		String phones=userdao.getUserId(phone);
-		System.out.println(orderId+" "+userId+"  "+recoveryState+"   "+phones);
+		
+		
 		System.out.println(page);
-		List<Ordera> commentMList=commentManageDao.commentM(orderId,userId,recoveryState,phones,page.getCurrentPage(),page.getNumberPerPage());
+		List<Ordera> commentMList=commentManageDao.commentM(orderId,recoveryState,page.getCurrentPage(),page.getNumberPerPage());
 		StringBuffer sb=new StringBuffer();
 		System.out.println(commentMList);
 		if(!commentMList.isEmpty()){

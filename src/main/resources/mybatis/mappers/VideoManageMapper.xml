@@ -5,14 +5,20 @@
 
 <mapper namespace="com.yayiabc.http.mvc.dao.VideoManageDao">
 
-	<select id="showVid" resultType="com.yayiabc.http.mvc.pojo.jpa.VidManage">
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.VidManage" id="c">
+		<id column="vi_id" property="viId" />
+		<result column="video_name" property="vidName" />
+		<result column="video_type" property="videoType" />
+		<result column="video_route" property="vidRoute" />
+	</resultMap>
+	<select id="showVid" resultMap="c">
 		select * from vid_manage
 	</select>
 
 	<insert id="insertVid" parameterType="com.yayiabc.http.mvc.pojo.jpa.VidManage">
 		<if test="vidManage!=null">
 			insert into vid_manage(video_name,video_type,video_route)
-			values(#{vidManage.vidName},#{vidManage.videoType},#{vidManage.video_route})
+			values(#{vidManage.vidName},#{vidManage.videoType},#{vidManage.vidRoute})
 		</if>
 	</insert>
 
@@ -35,8 +41,7 @@
 			</if>
 		</where>
 	</update>
-
 	<delete id="deleteVid">
-      delete  from vid_manage where vi_id= #{viId}
+		delete from vid_manage where vi_id= #{viId}
 	</delete>
 </mapper>

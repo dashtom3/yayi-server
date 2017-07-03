@@ -23,8 +23,8 @@ public class UserStatisticsServiceImpl implements UserStatisticsService {
 			Integer currentPage, Integer numberPerPage) {
 		DataWrapper<List<UserStatistics>> dataWrapper = new DataWrapper<List<UserStatistics>>();
 		Page page = new Page();
-		page.setCurrentPage(currentPage);
 		page.setNumberPerPage(numberPerPage);
+		page.setCurrentPage(currentPage);
 		int totalNumber = userStatisticsDao.getCount(phone, trueName,
 				startDate, endDate);
 		List<UserStatistics> list = userStatisticsDao.query(phone, trueName,

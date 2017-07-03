@@ -5,7 +5,7 @@ public class VidManage {
 	private  String vidName;
 	private String videoType;
 	private String vidRoute;
-	
+
 	public String getVideoType() {
 		return videoType;
 	}

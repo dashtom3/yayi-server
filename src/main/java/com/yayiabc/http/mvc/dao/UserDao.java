@@ -28,4 +28,8 @@ public interface UserDao {
 	String getTokenByUserId(String userId);
 
 	void addToken(UserToken userToken);
+
+	String getUserIdByToken(String token);
+
+	User getUserByUserId(String userId);
 }

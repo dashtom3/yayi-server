@@ -18,10 +18,11 @@
 		<result column="doctor_pic" property="doctorPic"/>
 		<result column="state" property="state"/>
 		<result column="fail_reason" property="failReason"/>
+		<result column="judge" property="judge"/>
 	</resultMap>
 	
 	<select id="detail" resultMap="userPersonalInfoRM">
-		SELECT u.phone,u.true_name,u.sex,u.birthday,u.qq,u.user_pic,c.type,c.company_name,c.part,c.work_address,c.doctor_pic,c.state,c.fail_reason
+		SELECT u.phone,u.true_name,u.sex,u.birthday,u.qq,u.user_pic,c.type,c.company_name,c.part,c.work_address,c.doctor_pic,c.state,c.fail_reason,c.judge
 		FROM USER u 
 		LEFT JOIN certification c 
 		ON u.user_id=c.user_id 
@@ -57,6 +58,7 @@
 			<if test="part != null">part=#{part},</if>
 			<if test="workAddress != null">work_address=#{workAddress},</if>
 			<if test="doctorPic != null">doctor_pic=#{doctorPic},</if>
+			<if test="judge !=null">judge=#{judge},</if>
 			state=1,fail_reason=NULL
 		</set>
 		WHERE user_id=#{userId};

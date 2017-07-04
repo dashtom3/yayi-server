@@ -29,10 +29,10 @@ public class SaleListController {
 	@RequestMapping(value="query",method=RequestMethod.GET)
 	@ResponseBody
 	public DataWrapper<List<SaleInfo>> query(
-			@RequestParam(value="saleId",required=true)String saleId,
-			@RequestParam(value="phone",required=true)String phone,
-			@RequestParam(value="trueName",required=true)String trueName,
-			@RequestParam(value="isBindUser",required=true)Integer isBindUser,
+			@RequestParam(value="saleId",required=false)String saleId,
+			@RequestParam(value="phone",required=false)String phone,
+			@RequestParam(value="trueName",required=false)String trueName,
+			@RequestParam(value="isBindUser",required=false)Integer isBindUser,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
 			@RequestParam(value="token",required=true)String token
@@ -46,9 +46,9 @@ public class SaleListController {
 	@RequestMapping(value="userlist",method=RequestMethod.GET)
 	@ResponseBody
 	public DataWrapper<List<User>> userlist(
-			@RequestParam(value="phone",required=true)String phone,
-			@RequestParam(value="trueName",required=true)String trueName,
-			@RequestParam(value="companyName",required=true)String companyName,
+			@RequestParam(value="phone",required=false)String phone,
+			@RequestParam(value="trueName",required=false)String trueName,
+			@RequestParam(value="companyName",required=false)String companyName,
 			@RequestParam(value="isBind",required=true)Integer isBind,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,

@@ -29,7 +29,8 @@ public interface UserPersonalInfoApi {
      * 		workAddress:"XX路100号",
      * 		doctorPic:"image/system05.jpg",
      * 		state:"1",	(1待审核，2审核通过，3审核未通过)   
-     * 		failReason:"资料不全"	( state为3时显示 )
+     * 		failReason:"资料不全",	( state为3时显示 )
+     * 		judge:1
      * },
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
      * numberPerPage:10,

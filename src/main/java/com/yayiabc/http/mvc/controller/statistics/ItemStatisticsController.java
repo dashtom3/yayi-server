@@ -26,10 +26,10 @@ public class ItemStatisticsController {
 	@RequestMapping(value="query",method=RequestMethod.GET)
 	@ResponseBody
 	public DataWrapper<List<ItemStatistics>> query(
-			@RequestParam(value="itemName",required=true)String itemName,
-			@RequestParam(value="itemId",required=true)String itemId,
-			@RequestParam(value="itemSKU",required=true)String itemSKU,
-			@RequestParam(value="itemBrandName",required=true)String itemBrandName,
+			@RequestParam(value="itemName",required=false)String itemName,
+			@RequestParam(value="itemId",required=false)String itemId,
+			@RequestParam(value="itemSKU",required=false)String itemSKU,
+			@RequestParam(value="itemBrandName",required=false)String itemBrandName,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
 			@RequestParam(value="token",required=true)String token

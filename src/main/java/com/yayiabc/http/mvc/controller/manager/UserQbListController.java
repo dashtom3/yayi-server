@@ -27,9 +27,9 @@ public class UserQbListController {
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	@ResponseBody
 	public DataWrapper<List<QbRecord>> list(
-			@RequestParam(value = "phone", required = true) String phone,
-			@RequestParam(value = "startDate", required = true) String startDate,
-			@RequestParam(value = "endDate", required = true) String endDate,
+			@RequestParam(value = "phone", required = false) String phone,
+			@RequestParam(value = "startDate", required = false) String startDate,
+			@RequestParam(value = "endDate", required = false) String endDate,
 			@RequestParam(value = "currentPage", required = false, defaultValue = "1") Integer currentPage,
 			@RequestParam(value = "numberPerPage", required = false, defaultValue = "10") Integer numberPerPage,
 			@RequestParam(value = "token", required = true) String token) {

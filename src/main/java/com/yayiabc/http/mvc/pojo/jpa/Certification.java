@@ -20,6 +20,8 @@ public class Certification extends BasePojo {
 	private Integer state;
 
 	private String failReason;
+	
+	private Integer judge;
 
 	public String getUserId() {
 		return userId;
@@ -85,13 +87,21 @@ public class Certification extends BasePojo {
 		this.failReason = failReason == null ? null : failReason.trim();
 	}
 
+	public Integer getJudge() {
+		return judge;
+	}
+
+	public void setJudge(Integer judge) {
+		this.judge = judge;
+	}
+
 	public Certification() {
 		super();
 	}
 
 	public Certification(String userId, Integer type, String companyName,
 			String part, String doctorPic, String workAddress, Integer state,
-			String failReason) {
+			String failReason,Integer judge) {
 		super();
 		this.userId = userId;
 		this.type = type;
@@ -101,6 +111,7 @@ public class Certification extends BasePojo {
 		this.workAddress = workAddress;
 		this.state = state;
 		this.failReason = failReason;
+		this.judge=judge;
 	}
 
 	public Certification(Integer type, String companyName, String part,

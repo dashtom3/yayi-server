@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 
 public interface OrderDetailsDao {
@@ -13,4 +14,11 @@ public interface OrderDetailsDao {
 			);
 
 	int queryCount(HashMap<String, String> map);
+	
+    //取消订单
+	int  cancel(@Param("orderId")String orderId);
+   //确定收货
+	int  confirmReceipt(String orderId);
+   //显示评论1
+	Ordera showComItem(@Param("orderId")String orderId);
 }

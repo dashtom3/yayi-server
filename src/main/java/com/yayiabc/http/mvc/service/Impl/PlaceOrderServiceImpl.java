@@ -11,6 +11,7 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.OrderIdUtils;
 import com.yayiabc.http.mvc.dao.PlaceOrderDao;
 import com.yayiabc.http.mvc.dao.UserDao;
+import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Cart;
 import com.yayiabc.http.mvc.pojo.jpa.FreeShipping;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
@@ -24,12 +25,12 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	@Autowired
 	private PlaceOrderDao placeOrderDao;
 	@Autowired
-	private UserDao userDao;
+	private UtilsDao utilsDao;
 	@Override
 	
-	public DataWrapper<HashMap<String, Object>> buyNows(String phone,Integer receiverId) {
+	public DataWrapper<HashMap<String, Object>> buyNows(String token,Integer receiverId) {
 		// TODO Auto-generated method stub
-		String userId=userDao.getUserId(phone);
+		String userId=utilsDao.getUserID(token);
 		
 		  //生成 orderId 
 		 String orderId=OrderIdUtils.createOrderId(userId);
@@ -136,10 +137,10 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	}
 	//钱币抵扣
 	@Override
-	public DataWrapper<Void> ded(String phone, int num) {
+	public DataWrapper<Void> ded(String token, int num) {
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		// TODO Auto-generated method stub
-		String userId=userDao.getUserId(phone);
+		String userId=utilsDao.getUserID(token);
 		//查询当前用户的钱币剩余
 		int su= placeOrderDao.ded(userId);
 		if(su>num){
@@ -167,12 +168,12 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	//单个商品的购买
 	@Override
 	public DataWrapper<HashMap<String, Object>> buyNow(OrderItem orderItem,
-			String phone, Integer receiverId) {
+			String token, Integer receiverId) {
 		
 		
 		DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String,Object>>();
 		// 192.168.1.103
-		String userId=userDao.getUserId(phone);
+		String userId=utilsDao.getUserID(token);
 		
 		String orderId=OrderIdUtils.createOrderId(userId);
 		//给order表 创建一个空order
@@ -202,17 +203,17 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	}
   //保存到订单表
 	@Override
-	public DataWrapper<Void> saveMessage(Ordera order,String phone) {
-	  order.setUserId(userDao.getUserId(phone));
+	public DataWrapper<Void> saveMessage(Ordera order,String token) {
+	  order.setUserId(utilsDao.getUserID(token));
 		int state=placeOrderDao.saveMessage(order);
 		return util(state);
 	}
 
 	//伪清空购物车
 	@Override
-	public DataWrapper<Void> emptyCart(String phone) {
+	public DataWrapper<Void> emptyCart(String token) {
 		// TODO Auto-generated method stub
-		int state=placeOrderDao.emptyCart(userDao.getUserId(phone));
+		int state=placeOrderDao.emptyCart(utilsDao.getUserID(token));
 		return util(state);
 	}
 	private DataWrapper<Void> util(int state){

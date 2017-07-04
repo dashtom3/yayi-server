@@ -29,7 +29,7 @@ public class PlaceOrderController {
 	@RequestMapping("buyNows")
 	@ResponseBody
 	public 	DataWrapper<HashMap<String, Object>> buyNows(
-			@RequestParam(value="phone") String phone,
+			@RequestParam(value="token") String token,
 			@RequestParam(value="receiverId") Integer receiverId
 			/*@RequestParam(value="itemId") String itemId,
 			@RequestParam(value="userId") String userId,
@@ -39,16 +39,16 @@ public class PlaceOrderController {
 			@RequestParam(value="itemPropertyNamec") String itemPropertyNamec,
 			@RequestParam(value="num") String num*/
 			){
-		return placeOrderService.buyNows(phone,receiverId);
+		return placeOrderService.buyNows(token,receiverId);
 	}
 	//  使用钱币抵扣时  onChange
 	@RequestMapping("Ded")
 	@ResponseBody
 	public DataWrapper<Void> Ded(
-			@RequestParam(value="phone") String phone,
+			@RequestParam(value="token") String token,
 			@RequestParam(value="qbnum") Integer num
 			){
-		return placeOrderService.ded(phone,num);
+		return placeOrderService.ded(token,num);
 	}
 	//选择地址
 	@RequestMapping("upateAddress")
@@ -72,11 +72,11 @@ public class PlaceOrderController {
 			@RequestParam(value="actualPay",required=false)String actualPay,
 			@RequestParam(value="actualPay",required=false)String actualPay*/
 			@ModelAttribute Ordera order,
-			@RequestParam(value="phone",required=true)String phone
+			@RequestParam(value="token",required=true)String token
 			){
 		//将信息保存到订单表里
 
-		return placeOrderService.saveMessage(order,phone);
+		return placeOrderService.saveMessage(order,token);
 	}
 
 	//当用户点击商品图片购买时:
@@ -84,17 +84,17 @@ public class PlaceOrderController {
 	@ResponseBody
 	public 	DataWrapper<HashMap<String, Object>> buyNow(
 			@ModelAttribute OrderItem orderItem,
-			@RequestParam(value="phone",required=true) String phone,
+			@RequestParam(value="token",required=true) String token,
 			@RequestParam(value="receiverId",required=true) String receiverIds
 			){
 		
 		Integer receiverId= Integer.parseInt(receiverIds);
-		return placeOrderService.buyNow(orderItem,phone,receiverId);
+		return placeOrderService.buyNow(orderItem,token,receiverId);
 	}
 	//伪清空 购物车
 	@ResponseBody
 	@RequestMapping("emptyCart")
-	public DataWrapper<Void> emptyCart(@RequestParam(value="phone")String phone){
-		return placeOrderService.emptyCart(phone);
+	public DataWrapper<Void> emptyCart(@RequestParam(value="token")String token){
+		return placeOrderService.emptyCart(token);
 	}
 }

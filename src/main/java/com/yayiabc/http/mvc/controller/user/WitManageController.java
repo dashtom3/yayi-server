@@ -50,7 +50,7 @@ public class WitManageController {
     	    if(vCode.equals(VerifyCodeManager.getPhoneCode(with.getPhone()))){
     	    	return witManageService.submitWit(with);
     	    }
-    	    DataWrapper<Void> dataWrapper=   new DataWrapper<Void>();
+    	    DataWrapper<Void> dataWrapper= new DataWrapper<Void>();
     	    dataWrapper.setMsg("验证验证码失败");
     	    return dataWrapper;
      }

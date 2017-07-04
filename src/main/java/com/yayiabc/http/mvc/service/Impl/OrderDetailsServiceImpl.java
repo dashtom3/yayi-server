@@ -12,6 +12,8 @@ import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.OrderDetailsDao;
 import com.yayiabc.http.mvc.dao.UserCenterStarDao;
 import com.yayiabc.http.mvc.dao.UserDao;
+import com.yayiabc.http.mvc.dao.UtilsDao;
+import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.OrderDetailsService;
 
@@ -21,9 +23,9 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 	@Autowired
 	private OrderDetailsDao orderdetailsDao;
 	@Autowired
-	UserDao userDao;
+	private UtilsDao utilsDao;
 	@Override
-	public DataWrapper<List<User>>  orderDetailsShow(HashMap<String,String> map,String newPhone
+	public DataWrapper<List<User>>  orderDetailsShow(HashMap<String,String> map,String token
 			,Integer currentPage,Integer numberPerpage){
 		// TODO Auto-generated method stub
 		Page page=new Page();
@@ -38,8 +40,8 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
         		
 		DataWrapper<List<User>> dataWrapper=new DataWrapper<List<User>>();
 		String userId = null;
-		if(newPhone!=null){
-			 userId=userDao.getUserId(newPhone);
+		if(token!=null){
+			 userId=utilsDao.getUserID(token);
 		}
 		map.put("phone", userId);
 		map.put("currentPage", String.valueOf(page.getCurrentPage()));
@@ -47,6 +49,7 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		//总条数
 				int count=orderdetailsDao.queryCount(map);
 		List<User> orderDetailsList=orderdetailsDao.orderDetailsShow(map);
+		map.put("orderItemNum", String.valueOf(orderDetailsList.size()));
 		dataWrapper.setPage(page, count);
 		dataWrapper.setData(orderDetailsList);
 		
@@ -58,6 +61,49 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			return dataWrapper;
 		}
+	}
+	
+	//取消订单
+	@Override
+	public DataWrapper<Void> cancel(String orderId) {
+		// TODO Auto-generated method stub
+		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
+		int state=orderdetailsDao.cancel(orderId);
+		if(state>0){
+			dataWrapper.setMsg("操作成功");
+		}else{
+			dataWrapper.setMsg("操作失败");
+		}
+ 		return dataWrapper;
+	}
+	
+//确定收货
+	@Override
+	public DataWrapper<Void> confirmReceipt(String orderId) {
+		// TODO Auto-generated method stub
+		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
+		int state=orderdetailsDao.confirmReceipt(orderId);
+		if(state>0){
+			dataWrapper.setMsg("操作成功");
+		}else{
+			dataWrapper.setMsg("操作失败");
+		}
+ 		return dataWrapper;
+	}
+   //show comment data
+	@Override
+	public DataWrapper<Ordera> showComItem(String orderId) {
+		// TODO Auto-generated method stub
+		DataWrapper<Ordera> dataWrapper=new DataWrapper<Ordera>();
+		dataWrapper.setData(orderdetailsDao.showComItem(orderId));
+		
+		return dataWrapper;
+	}
+
+	@Override   //这里
+	public DataWrapper<Void> makeSureCom(HashMap<String, String> hashMap) {
+		// TODO Auto-generated method stub
+		return null;
 	}
 }
 

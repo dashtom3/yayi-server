@@ -6,7 +6,7 @@ import com.sun.xml.internal.xsom.impl.scd.Iterators.Map;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 
-public interface LogisticsService {    //
+public interface LogisticsService {    //token, orderId
      
-	HashMap<String,Ordera> queryLog(String phone,String itemId);
+	DataWrapper<String> queryLog(String token,String orderId);
 }

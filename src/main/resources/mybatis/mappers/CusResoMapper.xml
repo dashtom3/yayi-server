@@ -1,0 +1,43 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.CusResoDao">
+
+	<select id="show" resultType="com.yayiabc.http.mvc.pojo.jpa.CusResources">
+		select * from cus_resources
+		<where>
+			<if test="state!=null">
+				unit_name=#{state} or contacts_phone=#{state} or contacts =#{state}
+			</if>
+		</where>
+	</select>
+	
+
+	<insert id="insert" parameterType="com.yayiabc.http.mvc.pojo.jpa.CusResources">
+		insert into cus_resources(unit_name,unit_address,contacts,contacts_phone)
+		values(#{cus.unitName},#{cus.unitAddress},#{cus.contacts},#{cus.contactsPhone})
+	</insert>
+
+	<update id="update" parameterType="com.yayiabc.http.mvc.pojo.jpa.CusResources">
+		update cus_resources
+		<set>
+			<if test="unitName!=null">
+				unit_name=#{unitName},
+			</if>
+			<if test="unitAddress!=null">
+				unit_address=#{unitAddress},
+			</if>
+			<if test="contacts!=null">
+				contacts=#{contacts},
+			</if>
+			<if test="contactsPhone!=null">
+				contacts_phone=#{contactsPhone}
+			</if>
+		</set>
+		where cus_id=#{cusId}
+	</update>
+	<delete id="delete">
+		delete from cus_resources where cus_id=#{cusId}
+	</delete>
+</mapper>       

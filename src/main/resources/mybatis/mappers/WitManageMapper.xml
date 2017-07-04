@@ -4,7 +4,33 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.yayiabc.http.mvc.dao.WitManageDao">
-	<select id="showWit">
-     select true_name,phone from user where phone=#{phone}
+	<select id="showWit" resultType="With">
+     select real_name,phone,cashMoney,type,anumber from cashmanage where phone=#{phone}
 	</select>
-</mapper>
+	
+	<insert id="submitWit" parameterType="With">
+	  insert into cashmanage(real_name,type,anumber,cashMoney,phone,cash_state) values(#{realName},#{type},#{anumber},#{cashMoney},#{phone},0)
+	<!--   默认是 审核中   state 为0  -->
+	  
+	</insert>
+	<update id="oper">
+	  update cashmanage set cash_state=1 where cash_id=#{cashId}
+	</update>
+	
+	<!-- //查询+显示 -->
+	<select id="query" resultType="com.yayiabc.http.mvc.pojo.jpa.With">
+	   select  * from cashmanage 
+	   <where>
+	  
+	    <if test="message!=null">
+	       phone=${message}  or real_name=${message}  
+	    </if>
+	     
+	    <if test="state!=null">
+	       and  cash_state=#{state}
+	   </if>
+	   </where>
+	      order by app_time asc 
+	</select>
+	<!-- select ename,sal from emp where deptno=30 order by sal asc
+ --></mapper>

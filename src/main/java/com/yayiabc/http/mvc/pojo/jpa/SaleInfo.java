@@ -13,9 +13,21 @@ public class SaleInfo extends BasePojo {
 
 	private String trueName;
 
+	private String idCard;
+
 	private Date birthday;
 
 	private Integer money;
+
+	private String salePic;
+
+	private String postalType;
+
+	private String bankName;
+
+	private String openName;
+
+	private String accountNumber;
 
 	private Integer type;
 
@@ -65,12 +77,60 @@ public class SaleInfo extends BasePojo {
 		this.birthday = birthday;
 	}
 
+	public String getIdCard() {
+		return idCard;
+	}
+
+	public void setIdCard(String idCard) {
+		this.idCard = idCard;
+	}
+
 	public Integer getMoney() {
 		return money;
 	}
 
 	public Integer getSex() {
 		return sex;
+	}
+
+	public String getSalePic() {
+		return salePic;
+	}
+
+	public void setSalePic(String salePic) {
+		this.salePic = salePic;
+	}
+
+	public String getPostalType() {
+		return postalType;
+	}
+
+	public void setPostalType(String postalType) {
+		this.postalType = postalType;
+	}
+
+	public String getBankName() {
+		return bankName;
+	}
+
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+
+	public String getOpenName() {
+		return openName;
+	}
+
+	public void setOpenName(String openName) {
+		this.openName = openName;
+	}
+
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
 	}
 
 	public Integer getIsBindUser() {
@@ -133,15 +193,23 @@ public class SaleInfo extends BasePojo {
 		super();
 	}
 
-	public SaleInfo(String saleId, String trueName, Date birthday,
-			Integer money, Integer type, String phone, Integer sex,
-			String address, Integer bindUserNum, Integer isBindUser,
-			List<User> user, List<SaleIncome> saleincome) {
+	public SaleInfo(String saleId, String trueName, String idCard,
+			Date birthday, Integer money, String salePic, String postalType,
+			String bankName, String openName, String accountNumber,
+			Integer type, String phone, Integer sex, String address,
+			Integer bindUserNum, Integer isBindUser, List<User> user,
+			List<SaleIncome> saleincome) {
 		super();
 		this.saleId = saleId;
 		this.trueName = trueName;
+		this.idCard = idCard;
 		this.birthday = birthday;
 		this.money = money;
+		this.salePic = salePic;
+		this.postalType = postalType;
+		this.bankName = bankName;
+		this.openName = openName;
+		this.accountNumber = accountNumber;
 		this.type = type;
 		this.phone = phone;
 		this.sex = sex;
@@ -155,11 +223,13 @@ public class SaleInfo extends BasePojo {
 	@Override
 	public String toString() {
 		return "SaleInfo [saleId=" + saleId + ", trueName=" + trueName
-				+ ", birthday=" + birthday + ", money=" + money + ", type="
-				+ type + ", phone=" + phone + ", sex=" + sex + ", address="
-				+ address + ", bindUserNum=" + bindUserNum + ", isBindUser="
-				+ isBindUser + ", user=" + user + ", saleincome=" + saleincome
-				+ "]";
+				+ ", idCard=" + idCard + ", birthday=" + birthday + ", money="
+				+ money + ", salePic=" + salePic + ", postalType=" + postalType
+				+ ", bankName=" + bankName + ", openName=" + openName
+				+ ", accountNumber=" + accountNumber + ", type=" + type
+				+ ", phone=" + phone + ", sex=" + sex + ", address=" + address
+				+ ", bindUserNum=" + bindUserNum + ", isBindUser=" + isBindUser
+				+ ", user=" + user + ", saleincome=" + saleincome + "]";
 	}
 
 }

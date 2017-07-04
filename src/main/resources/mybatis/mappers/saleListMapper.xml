@@ -11,7 +11,8 @@
 		<result column="isBindUser" property="isBindUser"/>
 		<result column="bind_user_num" property="bindUserNum"/>
 	</resultMap>
-
+	
+	<!-- 销售员列表 -->
 	<select id="query" resultMap="saleInfoRM">
 		SELECT sale_id,true_name,phone,created,IF(bind_user_num IS NOT NULL,1,2) AS isBindUser,bind_user_num 
 		FROM sale_info  
@@ -35,6 +36,7 @@
 		LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
 	
+	<!-- 总数 -->
 	<select id="getCount" resultType="int">
 		SELECT count(*)
 		FROM sale_info  
@@ -55,5 +57,109 @@
 				AND bind_user_num IS NULL
 			</if>
 		</where>
+	</select>
+	
+	<resultMap type="User" id="userRM">
+		<id column="user_id" property="userId"/>
+		<result column="phone" property="phone"/>
+		<result column="true_name" property="trueName"/>
+		<association property="certification" javaType="com.yayiabc.http.mvc.pojo.jpa.Certification">
+			<id column="user_id" property="userId"/>
+			<result column="company_name" property="companyName"/>
+		</association>
+	</resultMap>
+	
+	<!-- 获取简略用户信息列表 -->
+	<select id="userlist" resultMap="userRM">
+		SELECT u.user_id,u.phone,u.true_name,c.company_name 
+		FROM USER u
+		LEFT JOIN certification c
+		ON u.user_id=c.user_id
+		<where>
+			<if test="phone !=null and phone !=''">
+				u.phone LIKE '%${phone}%' 
+			</if>
+			<if test="trueName !=null and trueName !=''">
+				AND u.true_name LIKE '%${trueName}%' 
+			</if>
+			<if test="companyName !=null and companyName !=''">
+				AND c.company_name LIKE '%%'
+			</if>
+			<if test="isBind == 1">
+				AND u.sale_id IS NULL
+			</if>
+			<if test="isBind == 2">
+				AND u.sale_id IS NOT NULL
+			</if>
+		</where>
+			 LIMIT ${page.currentNumber},${page.numberPerPage}
+	</select>
+	
+	<select id="userlistCount" resultType="int">
+		SELECT count(*)
+		FROM USER u
+		LEFT JOIN certification c
+		ON u.user_id=c.user_id
+		<where>
+			<if test="phone !=null and phone !=''">
+				u.phone LIKE '%${phone}%' 
+			</if>
+			<if test="trueName !=null and trueName !=''">
+				AND u.true_name LIKE '%${trueName}%' 
+			</if>
+			<if test="companyName !=null and companyName !=''">
+				AND c.company_name LIKE '%%'
+			</if>
+			<if test="isBind == 1">
+				AND u.sale_id IS NULL
+			</if>
+			<if test="isBind == 2">
+				AND u.sale_id IS NOT NULL
+			</if>
+		</where>
+	</select>
+	
+	<!-- 已绑定的简略用户信息列表 -->
+	<select id="bindUserList" resultMap="userRM">
+		SELECT u.user_id,u.phone,u.true_name,c.company_name 
+		FROM USER u
+		LEFT JOIN certification c
+		ON u.user_id=c.user_id
+		WHERE u.sale_id=#{saleId} AND u.sale_id IS NOT NULL
+		LIMIT ${page.currentNumber},${page.numberPerPage}
+	</select>
+	
+	
+	<select id="bindUserCount" resultType="int">
+		SELECT count(*)
+		FROM USER u
+		LEFT JOIN certification c
+		ON u.user_id=c.user_id
+		WHERE u.sale_id=#{saleId} AND u.sale_id IS NOT NULL
+	</select>
+	
+	<resultMap type="SaleInfo" id="saleInfosRM">
+		<id column="sale_id" property="saleId"/>
+		<result column="true_name" property="trueName"/>
+		<result column="phone" property="phone"/>
+		<result column="sex" property="sex"/>
+		<result column="id_card" property="idCard"/>
+		<result column="created" property="creatd"/>
+		<result column="money" property="money"/>
+		<result column="bind_user_num" property="bindUserNum"/>
+		<result column="sale_pic" property="salePic"/>
+		<result column="postal_type" property="postalType"/>
+		<result column="bank_name" property="bankName"/>
+		<result column="open_name" property="openName"/>
+		<result column="account_number" property="accountNumber"/>
+	</resultMap>
+	
+	<!-- 获取销售员详情 -->
+	<select id="detail" resultMap="saleInfosRM">
+		SELECT sale_id,true_name,phone,sex,id_card,
+		created,money,bind_user_num,sale_pic,
+		postal_type,bank_name,open_name,account_number
+		FROM sale_info
+		WHERE phone = #{phone}
 	</select>
 </mapper>

@@ -11,14 +11,17 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
+import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.SaleListService;
+import com.yayiabc.http.mvc.service.UserManageListService;
 
 @Controller
 @RequestMapping("api/saleList")
 public class SaleListController {
 	@Autowired
 	SaleListService saleListService;
-	
+	@Autowired
+	UserManageListService userManageListService;
 
 	/**
 	 * 销售员列表
@@ -35,5 +38,49 @@ public class SaleListController {
 			@RequestParam(value="token",required=true)String token
 	){
 		return saleListService.query(saleId, phone, trueName,isBindUser, currentPage, numberPerPage);
+	}
+	
+	/**
+	 * 获取简略用户信息列表
+	 */
+	@RequestMapping(value="userlist",method=RequestMethod.GET)
+	@ResponseBody
+	public DataWrapper<List<User>> userlist(
+			@RequestParam(value="phone",required=true)String phone,
+			@RequestParam(value="trueName",required=true)String trueName,
+			@RequestParam(value="companyName",required=true)String companyName,
+			@RequestParam(value="isBind",required=true)Integer isBind,
+			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
+			@RequestParam(value="token",required=true)String token
+	){
+		return saleListService.userlist(phone, trueName, companyName, isBind, currentPage, numberPerPage);
+	}
+	
+	/**
+	 * 获取销售员详情
+	 */
+	@RequestMapping(value="detail",method=RequestMethod.GET)
+	@ResponseBody
+	public DataWrapper<SaleInfo> datail(
+			@RequestParam(value="phone",required=true)String phone,
+			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
+			@RequestParam(value="token",required=true)String token
+	){
+		return saleListService.detail(phone, currentPage, numberPerPage);
+	}
+	
+	/**
+	 * 绑定用户
+	 */
+	@RequestMapping(value="bind",method=RequestMethod.POST)
+	@ResponseBody
+	public DataWrapper<Void> bind(
+			@RequestParam(value="salePhone",required=true)String salePhone,
+			@RequestParam(value="userPhone",required=true)String userPhone,
+			@RequestParam(value="token",required=true)Integer token
+	){
+		return userManageListService.bind(salePhone, userPhone);
 	}
 }

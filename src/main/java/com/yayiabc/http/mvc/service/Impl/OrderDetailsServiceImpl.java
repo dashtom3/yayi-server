@@ -46,7 +46,6 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		map.put("phone", userId);
 		map.put("currentPage", String.valueOf(page.getCurrentPage()));
 		map.put("numberPerpage", String.valueOf(page.getNumberPerPage()));
-		//总条数
 				int count=orderdetailsDao.queryCount(map);
 		List<User> orderDetailsList=orderdetailsDao.orderDetailsShow(map);
 		map.put("orderItemNum", String.valueOf(orderDetailsList.size()));
@@ -55,7 +54,7 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		
 		if(orderDetailsList.isEmpty()){
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-			dataWrapper.setMsg("暂订单为空");
+			dataWrapper.setMsg("鏆傝鍗曚负绌�");
 			return dataWrapper;
 		}else{
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
@@ -63,30 +62,30 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		}
 	}
 	
-	//取消订单
+	//鍙栨秷璁㈠崟
 	@Override
 	public DataWrapper<Void> cancel(String orderId) {
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		int state=orderdetailsDao.cancel(orderId);
 		if(state>0){
-			dataWrapper.setMsg("操作成功");
+			dataWrapper.setMsg("鎿嶄綔鎴愬姛");
 		}else{
-			dataWrapper.setMsg("操作失败");
+			dataWrapper.setMsg("鎿嶄綔澶辫触");
 		}
  		return dataWrapper;
 	}
 	
-//确定收货
+//纭畾鏀惰揣
 	@Override
 	public DataWrapper<Void> confirmReceipt(String orderId) {
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		int state=orderdetailsDao.confirmReceipt(orderId);
 		if(state>0){
-			dataWrapper.setMsg("操作成功");
+			dataWrapper.setMsg("鎿嶄綔鎴愬姛");
 		}else{
-			dataWrapper.setMsg("操作失败");
+			dataWrapper.setMsg("鎿嶄綔澶辫触");
 		}
  		return dataWrapper;
 	}
@@ -100,7 +99,7 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		return dataWrapper;
 	}
 
-	@Override   //这里
+	@Override   //杩欓噷
 	public DataWrapper<Void> makeSureCom(HashMap<String, String> hashMap) {
 		// TODO Auto-generated method stub
 		return null;

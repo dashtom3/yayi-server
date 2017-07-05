@@ -78,6 +78,16 @@ ON d.p_id=c.item_brand_id
 			<id property="itemValueId" column="item_value_id"/>
 			<result property="itemPropertyName" column="item_property_name"/>
 			<result property="itemPropertyInfo" column="item_property_info"/>
+			<result property="itemPropertyNameTwo" column="item_property_name_two"/>
+			<result property="itemPropertyTwoValue" column="item_property_two_value"/>
+			<result property="itemPropertyNameThree" column="item_property_name_three"/>
+			<result property="itemPropertyThreeValue" column="item_property_three_value"/>
+			<result property="itemPropertyFourName" column="item_property_four_name"/>
+			<result property="itemPropertyFourValue" column="item_property_four_value"/>
+			<result property="itemPropertyFiveName" column="item_property_five_name"/>
+			<result property="itemPropertyFiveValue" column="item_property_five_value"/>
+			<result property="itemPropertySixName" column="item_property_six_name"/>
+			<result property="itemPropertySixValue" column="item_property_six_value"/>
 			<result property="itemSkuPrice" column="item_sku_price"/>
 			<result property="itemSKU" column="item_sKU"/>
 		</collection>
@@ -97,8 +107,8 @@ ON d.p_id=c.item_brand_id
 	  SELECT * FROM
 (SELECT o.item_id,o.item_name,o.item_brand_id,o.item_brand_logo,o.item_brand_home,o.item_brand_name,o.item_stock_num,o.item_price,o.sales,o.state,o.one_classify,o.two_classify,o.three_classify,q.prop_id,q.item_property_name,
 q.item_property_info,o.d_id,o.video,o.item_pica,o.item_picb,o.item_picc,o.item_picd,o.item_pice,o.commission,o.is_qb_buy,o.qb_num,o.store_item_id,o.apparatus_type,o.unit,o.produce_pompany,o.register_id,o.register_date,o.item_packing,o.item_levels,o.ietm_range,o.remark,o.item_desc,o.item_use,
-o.comment_id,o.true_name,o.phone,o.comment_grade,o.comment_content,o.reply_content,o.co_created,o.co_updated,q.item_sku_price,q.item_sKU,s.item_property_name_two,s.item_property_two_value,s.item_property_name_three,s.item_property_three_value,
-s.item_property_four_name,s.item_property_four_value,s.item_property_five_name,s.item_property_five_value,s.item_property_six_name,s.item_property_six_value FROM
+o.comment_id,o.true_name,o.phone,o.comment_grade,o.comment_content,o.reply_content,o.co_created,o.co_updated,q.item_sku_price,q.item_sKU,q.item_property_name_two,q.item_property_two_value,q.item_property_name_three,q.item_property_three_value,
+q.item_property_four_name,q.item_property_four_value,q.item_property_five_name,q.item_property_five_value,q.item_property_six_name,q.item_property_six_value FROM
 (SELECT * FROM
 (SELECT * FROM
      (SELECT * FROM
@@ -182,4 +192,47 @@ WHERE s.item_id=#{itemId}
 	<insert id="addItemBrand">
 		insert into item_brand values(null,#{itemBrandLogo},#{itemBrandHome},#{itemBrandName},now(),now())
 	</insert>
+	
+	<select id="getItemPropertyNameA" resultType="string">
+		select item_property_name from item_value where item_id=#{itemId} group by item_property_name
+	</select>
+	
+	<select id="getItemPropertyInfoA" resultType="string">
+		select item_property_info from item_value where item_id=#{itemId}
+	</select>
+	<select id="getItemPropertyNameB" resultType="string">
+		select item_property_name_two from item_value where item_id=#{itemId} group by item_property_name_two
+	</select>
+	
+	<select id="getItemPropertyInfoB" resultType="string">
+		select item_property_two_value from item_value where item_id=#{itemId}
+	</select>
+	<select id="getItemPropertyNameC" resultType="string">
+		select item_property_name_three from item_value where item_id=#{itemId} group by item_property_name_three
+	</select>
+	
+	<select id="getItemPropertyInfoC" resultType="string">
+		select item_property_three_value from item_value where item_id=#{itemId}
+	</select>
+	<select id="getItemPropertyNameD" resultType="string">
+		select item_property_four_name from item_value where item_id=#{itemId} group by item_property_four_name
+	</select>
+	
+	<select id="getItemPropertyInfoD" resultType="string">
+		select item_property_four_value from item_value where item_id=#{itemId}
+	</select>
+	<select id="getItemPropertyNameE" resultType="string">
+		select item_property_five_name from item_value where item_id=#{itemId} group by item_property_five_name
+	</select>
+	
+	<select id="getItemPropertyInfoE" resultType="string">
+		select item_property_five_value from item_value where item_id=#{itemId}
+	</select>
+	<select id="getItemPropertyNameF" resultType="string">
+		select item_property_six_name from item_value where item_id=#{itemId} group by item_property_six_name
+	</select>
+	
+	<select id="getItemPropertyInfoF" resultType="string">
+		select item_property_six_value from item_value where item_id=#{itemId}
+	</select>
 </mapper>       

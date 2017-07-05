@@ -4,6 +4,7 @@ package com.yayiabc.http.mvc.dao;
 
 import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
+import com.yayiabc.http.mvc.pojo.jpa.ItemProperty;
 import com.yayiabc.http.mvc.pojo.model.ItemShow;
 import com.yayiabc.http.mvc.pojo.model.Search;
 
@@ -42,5 +43,30 @@ public interface ItemBrandDao{
 	public String getItemIdByUserId(String userId);
 
 	public void addItemBrand(ItemBrand itemBrand);
+
+	public String getItemPropertyNameA(String itemId);
+
+	public List<String> getItemPropertyInfoA(String itemId);
+
+	public String getItemPropertyNameB(String itemId);
+
+	public List<String> getItemPropertyInfoB(String itemId);
+
+	public String getItemPropertyNameC(String itemId);
+
+	public List<String> getItemPropertyInfoC(String itemId);
+
+	public String getItemPropertyNameD(String itemId);
+
+	public List<String> getItemPropertyInfoD(String itemId);
+
+	public String getItemPropertyNameE(String itemId);
+
+	public List<String> getItemPropertyInfoE(String itemId);
+
+	public String getItemPropertyNameF(String itemId);
+
+	public List<String> getItemPropertyInfoF(String itemId);
+
 }
 

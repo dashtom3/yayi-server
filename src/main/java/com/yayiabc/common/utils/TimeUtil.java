@@ -17,6 +17,10 @@ public class TimeUtil {
         SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd-HH-mm-ss");
         return sdf.parse(time);
     }
+    public static Date changeStringToDateTwo(String time) throws ParseException {
+        SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
+        return sdf.parse(time);
+    }
     public static Long timeBetween(Date oldDate, Date nowDate){
         return Math.abs(nowDate.getTime()-oldDate.getTime());
     }

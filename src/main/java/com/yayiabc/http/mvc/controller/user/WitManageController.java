@@ -21,7 +21,7 @@ import com.yayiabc.http.mvc.service.WitManageService;
 @RequestMapping("api/witManage")
 public class WitManageController {
      @Autowired
-     //显示提现
+     //閺勫墽銇氶幓鎰箛
      private WitManageService witManageService;
      @RequestMapping("showWit")
      @ResponseBody
@@ -32,7 +32,7 @@ public class WitManageController {
     	 return witManageService.showWit(phone);
      }
      
-     //提交提现申请
+     //閹绘劒姘﹂幓鎰箛閻㈠疇顕�
      @RequestMapping("submitWit")
      @ResponseBody//real_name,type,anumber,cashMoney,phone
      public  DataWrapper<Void> submitWit(
@@ -51,11 +51,10 @@ public class WitManageController {
     	    	return witManageService.submitWit(with);
     	    }
     	    DataWrapper<Void> dataWrapper= new DataWrapper<Void>();
-    	    dataWrapper.setMsg("验证验证码失败");
+    	    dataWrapper.setMsg("妤犲矁鐦夋宀冪槈閻礁銇戠拹锟�");
     	    return dataWrapper;
      }
      
-     //获取验证码
      @ResponseBody
      @RequestMapping("gitVcode")
      public  void gitVcode(
@@ -95,7 +94,7 @@ public class WitManageController {
      @ResponseBody
      public  DataWrapper<List<With>> query(
     		 //@RequestParam(value="token") String token,
-    		 @RequestParam(value="message",required=false) String message ,  //姓名  或者手机号
+    		 @RequestParam(value="message",required=false) String message , 
     		 
     		 @RequestParam(value="state",required=false) Integer state
     		 ){

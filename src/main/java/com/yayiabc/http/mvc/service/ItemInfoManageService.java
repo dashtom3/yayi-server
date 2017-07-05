@@ -28,22 +28,24 @@ public interface ItemInfoManageService {
 	DataWrapper<Void> update(String itemId, String itemName,
 			Integer itemBrandId, String oneClassify, String itemLevels,
 			String twoClassify, String threeClassify, String itemPica,
-			String itemPicb, String itemPicc, String itemPicd, String itemPice,
+			String itemPicb, String itemPicc, String itemPicd, String itemPice,Integer isThrow,
 			String video, String itemDesc, String itemUse, String itemRange,
 			String registerId, String storeItemId, Integer apparatusType,
 			String unit,String producePompany, Date registerDate,
-			String itemPacking,String itemBrandName,
-			List<ItemValue> itemValueList);
+			String itemPacking,String itemBrandName);
 
-	DataWrapper<Void> insert(String itemId, String itemName,
+	DataWrapper<Void> insert(String itemId,String itemName,
 			Integer itemBrandId, String oneClassify, String itemLevels,
 			String twoClassify, String threeClassify, String itemPica,
-			String itemPicb, String itemPicc, String itemPicd, String itemPice,
+			String itemPicb, String itemPicc, String itemPicd, String itemPice,Integer isThrow,
 			String video, String itemDesc, String itemUse, String itemRange,
 			String registerId, String storeItemId, Integer apparatusType,
 			String unit, String producePompany, Date registerDate,
-			String itemPacking, String itemBrandName,
-			List<ItemValue> itemValueList);
+			String itemPacking, String itemBrandName);
+
+	DataWrapper<Void> insertItemValue(List<ItemValue> itemValueList);
+
+	DataWrapper<Void> updateItemValue(List<ItemValue> itemValueList);
 
 
 

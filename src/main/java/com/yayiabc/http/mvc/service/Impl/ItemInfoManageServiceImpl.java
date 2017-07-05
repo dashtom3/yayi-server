@@ -81,15 +81,14 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 
 
 	@Override
-	public DataWrapper<Void> insert(String itemId, String itemName,Integer itemBrandId,
+	public DataWrapper<Void> insert(String itemId,String itemName,Integer itemBrandId,
 			String oneClassify, String itemLevels, String twoClassify,
 			String threeClassify, String itemPica, String itemPicb,
-			String itemPicc, String itemPicd, String itemPice, String video,
+			String itemPicc, String itemPicd, String itemPice,Integer isThrow, String video,
 			String itemDesc, String itemUse, String itemRange,
 			String registerId, String storeItemId, Integer apparatusType,
 			String unit, String producePompany, Date registerDate,
-			String itemPacking, String itemBrandName,
-			List<ItemValue> itemValueList) {
+			String itemPacking, String itemBrandName) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 			ItemInfo itemInfo=new ItemInfo();
 			itemInfo.setItemId(itemId);
@@ -97,6 +96,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 			itemInfo.setOneClassify(oneClassify);
 			itemInfo.setTwoClassify(twoClassify);
 			itemInfo.setThreeClassify(threeClassify);
+			itemInfo.setIsThrow(isThrow);
 			ItemBrand itemBrand =new ItemBrand();
 			itemBrand.setItemBrandName(itemBrandName);
 			itemBrand.setItemBrandId(itemBrandId);
@@ -123,29 +123,33 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 			itemDetail.setUpdated(new Date());
 			itemInfo.setItemDetail(itemDetail);
 			itemInfo.setItemBrand(itemBrand);
-			itemInfo.setItemValueList(itemValueList);
-			for (ItemValue itemValue : itemValueList) {
-				itemValue.setItemId(itemId);
-			}
 			itemInfoManageDao.insertItemDetail(itemDetail);
-			itemInfoManageDao.insertItemValue(itemValueList);
 			Integer itemPrice =itemInfoManageDao.getMinPriceFromItemValue(itemId);
 			itemInfo.setItemPrice(itemPrice);
 			itemInfoManageDao.insertItemInfo(itemInfo);
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			return dataWrapper;
 	}
+	@Override
+	public DataWrapper<Void> insertItemValue(List<ItemValue> itemValueList) {
+		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		for (ItemValue itemValue : itemValueList) {
+			itemInfoManageDao.insertItemValue(itemValue);
+		}
+		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+		
+		return dataWrapper;
+	}
 
 	@Override
 	public DataWrapper<Void> update(String itemId, String itemName,
 			Integer itemBrandId, String oneClassify, String itemLevels,
 			String twoClassify, String threeClassify, String itemPica,
-			String itemPicb, String itemPicc, String itemPicd, String itemPice,
+			String itemPicb, String itemPicc, String itemPicd, String itemPice,Integer isThrow,
 			String video, String itemDesc, String itemUse, String itemRange,
 			String registerId, String storeItemId, Integer apparatusType,
 			String unit,String producePompany, Date registerDate,
-			String itemPacking,String itemBrandName,
-			List<ItemValue> itemValueList) {
+			String itemPacking,String itemBrandName) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		ItemInfo itemInfo=new ItemInfo();
 		itemInfo.setItemId(itemId);
@@ -153,6 +157,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 		itemInfo.setOneClassify(oneClassify);
 		itemInfo.setTwoClassify(twoClassify);
 		itemInfo.setThreeClassify(threeClassify);
+		itemInfo.setIsThrow(isThrow);
 		ItemBrand itemBrand =new ItemBrand();
 		itemBrand.setItemBrandName(itemBrandName);
 		itemBrand.setItemBrandId(itemBrandId);
@@ -179,17 +184,23 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 		itemDetail.setUpdated(new Date());
 		itemInfo.setItemDetail(itemDetail);
 		itemInfo.setItemBrand(itemBrand);
-		itemInfo.setItemValueList(itemValueList);
-		for (ItemValue itemValue : itemValueList) {
-			itemValue.setItemId(itemId);
-		}
 		itemInfoManageDao.updateItemDetail(itemDetail);
-		for (ItemValue itemValue : itemValueList) {
-			itemInfoManageDao.updateItemValue(itemValue);
-		}
 		Integer itemPrice =itemInfoManageDao.getMinPriceFromItemValue(itemId);
 		itemInfo.setItemPrice(itemPrice);
 		itemInfoManageDao.updateItemInfo(itemInfo);
+		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+		return dataWrapper;
+	}
+
+
+	
+
+	@Override
+	public DataWrapper<Void> updateItemValue(List<ItemValue> itemValueList) {
+		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		for (ItemValue itemValue : itemValueList) {
+			itemInfoManageDao.updateItemValue(itemValue);
+		}
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
 	}

@@ -22,7 +22,7 @@ public interface ItemInfoManageDao {
 
 	void deleteItemValue(String itemSKU);
 
-	void insertItemValue(List<ItemValue> itemValueList);
+
 
 	void insertItemInfo(ItemInfo itemInfo);
 
@@ -41,6 +41,8 @@ public interface ItemInfoManageDao {
 	void deleteComments(String itemId);
 
 	Integer queryItemNum(String itemSKU);
+
+	void insertItemValue(ItemValue itemValue);
 
 
 

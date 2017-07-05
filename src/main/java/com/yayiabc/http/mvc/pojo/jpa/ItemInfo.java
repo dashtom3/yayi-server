@@ -3,6 +3,8 @@ package com.yayiabc.http.mvc.pojo.jpa;
 import java.util.Date;
 import java.util.List;
 
+import com.yayiabc.http.mvc.pojo.model.Property;
+
 /**
  * 
  * @author xiaojiang 商品信息表
@@ -53,25 +55,8 @@ public class ItemInfo extends BasePojo {
 
 	private ItemBrand itemBrand;
 	
-	private List<ItemProperty> itemPropertyList;
-	
-	
+	private List<Property> propertyList;
 
-	public List<ItemProperty> getItemPropertyList() {
-		return itemPropertyList;
-	}
-
-	public void setItemPropertyList(List<ItemProperty> itemPropertyList) {
-		this.itemPropertyList = itemPropertyList;
-	}
-
-	public List<ItemValue> getItemValueList() {
-		return itemValueList;
-	}
-
-	public void setItemValueList(List<ItemValue> itemValueList) {
-		this.itemValueList = itemValueList;
-	}
 
 	public String getItemId() {
 		return itemId;
@@ -87,6 +72,14 @@ public class ItemInfo extends BasePojo {
 
 	public void setItemName(String itemName) {
 		this.itemName = itemName;
+	}
+
+	public List<ItemValue> getItemValueList() {
+		return itemValueList;
+	}
+
+	public void setItemValueList(List<ItemValue> itemValueList) {
+		this.itemValueList = itemValueList;
 	}
 
 	public Integer getItemStockNum() {
@@ -193,6 +186,14 @@ public class ItemInfo extends BasePojo {
 		this.itemBrand = itemBrand;
 	}
 
+	public List<Property> getPropertyList() {
+		return propertyList;
+	}
+
+	public void setPropertyList(List<Property> propertyList) {
+		this.propertyList = propertyList;
+	}
+
 	public ItemInfo(String itemId, String itemName,
 			List<ItemValue> itemValueList, Integer isThrow,
 			Integer itemStockNum, Integer itemPrice, Integer sales,
@@ -200,7 +201,7 @@ public class ItemInfo extends BasePojo {
 			String threeClassify, String itemPnamea, String itemPnameb,
 			String itemPnamec, ItemDetail itemDetail,
 			List<Comments> commentList, ItemBrand itemBrand,
-			List<ItemProperty> itemPropertyList) {
+			List<Property> propertyList) {
 		super();
 		this.itemId = itemId;
 		this.itemName = itemName;
@@ -219,7 +220,7 @@ public class ItemInfo extends BasePojo {
 		this.itemDetail = itemDetail;
 		this.commentList = commentList;
 		this.itemBrand = itemBrand;
-		this.itemPropertyList = itemPropertyList;
+		this.propertyList = propertyList;
 	}
 
 	public ItemInfo() {
@@ -242,12 +243,14 @@ public class ItemInfo extends BasePojo {
 				+ ", threeClassify=" + threeClassify + ", itemPnamea="
 				+ itemPnamea + ", itemPnameb=" + itemPnameb + ", itemPnamec="
 				+ itemPnamec + ", itemDetail=" + itemDetail + ", commentList="
-				+ commentList + ", itemBrand=" + itemBrand
-				+ ", itemPropertyList=" + itemPropertyList + "]";
+				+ commentList + ", itemBrand=" + itemBrand + ", propertyList="
+				+ propertyList + "]";
 	}
-
+	
+	
 	
 	
 
+	
 	
 }

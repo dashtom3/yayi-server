@@ -441,6 +441,49 @@ public class ItemManage {
 	
 	/**
 	 * 
+	 * @api {post} http://192.168.1.103:8081/api/item/addToPropertyd  添加属性值
+	 * @apiName addToPropertyd
+	 * @apiGroup itemManage
+	 * @apiVersion 0.1.0
+	 * @apiDescription  添加属性值
+	 * 
+	 * @apiParam  {Integer} itemPid     属性名称Id
+	 * @apiParam  {String} itemPparam   属性值
+	 * 
+	 * @apiSuccessExample {json} Success-Response: 
+	 * HTTP/1.1 200 OK 
+	 * {
+	 * callStatus:"SUCCEED", 
+	 * errorCode:"No_Error",
+	 * data:null,
+	 * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
+	 * numberPerPage:null, 
+	 * currentPage:null, 
+	 * totalNumber:null,
+	 * totalPage:null,
+	 * num:null,
+	 * msg:"正确"
+	 *}
+	 * 
+	 * @apiSuccessExample {json} Error-Response: 
+	 * HTTP/1.1 200 OK 
+	 * {
+	 * callStatus:"FAILED", 
+	 * errorCode:"Error", 
+	 * data:null,
+	 * token:null, 
+	 * numberPerPage:null, 
+	 * currentPage:null, 
+	 * totalNumber:null,
+	 * totalPage:null,
+	 * num:null,
+	 * msg:"错误"
+	 * }
+	 * 
+	 */
+	
+	/**
+	 * 
 	 * @api {post} http://192.168.1.103:8081/api/item/addPropertydAndPropertyName  添加属性值
 	 * @apiName addPropertydAndPropertyName
 	 * @apiGroup itemManage

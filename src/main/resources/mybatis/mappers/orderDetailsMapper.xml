@@ -3,24 +3,8 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yayiabc.http.mvc.dao.OrderDetailsDao">
-
-	<resultMap type="User" id="userMap" autoMapping="true">
-		<id column="user_id" property="userId" jdbcType="VARCHAR" />
-		<association property="certification" javaType="Certification">
-			<id property="certificationId" column="certification_id" />
-		</association>
-		<collection property="receiverList" ofType="list">
-			<id property="receiverId" column="tag_id" />
-		</collection>
-	</resultMap>
-	<select id="getUserByUser" resultMap="userMap">
-		select * from user where
-		phone=#{phone}
-	</select>
 	<!-- 开始 -->
 	<resultMap type="Ordera" id="orderDetailsResultMap">
-	
-		
 		<!-- 订单表 -->
 		<!-- <collection property="orderaList" ofType="Ordera"> -->
 			<id property="orderId" column="order_id" />
@@ -118,16 +102,14 @@
 			</if>
 		</where>
 	</select>
-	<!-- //取消订单 -->confirmReceipt
+	<!-- //取消订单 -->
 	<update id="cancel">
-	  update from  ordera 
-	    set state=0
-	     where order_id=#{orderId}
+	  update ordera set state=0 where order_id=#{orderId}
 	</update>
 	<!-- //确定收货 -->
 	
-	<update id="cancel">
-	  update from  ordera 
+	<update id="confirmReceipt">
+	  update  ordera 
 	    set state=3
 	     where order_id=#{orderId}
 	</update>

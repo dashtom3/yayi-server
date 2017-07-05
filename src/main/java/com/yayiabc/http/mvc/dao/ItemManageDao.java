@@ -39,11 +39,9 @@ public interface ItemManageDao {
 
 	void addItemClassify(ItemClassify itemClassify);
 
-	void addPropertyd(List<String> itemPparamList);
+	void addPropertyd(Map<String,Object> map);
 
 	Integer queryItemPropertyIdByName(String itemPropertyName);
-
-	void addPropertyd(Map<String, Object> map);
 
 	void insertItemClassify(ItemClassify itemClassify);
 
@@ -78,6 +76,8 @@ public interface ItemManageDao {
 	void updateItemClassifyTwoSon(ItemClassify itemClassify);
 
 	String queryItemClassifySonName(String itemClassifyNameA);
+
+	void addToPropertyd(@Param("itemPid")Integer itemPid,@Param("itemPparam") String itemPparam);
 
 
 	

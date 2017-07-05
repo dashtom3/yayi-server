@@ -27,11 +27,11 @@ public class UserCertificationListController {
 	@RequestMapping(value="list",method=RequestMethod.GET)
 	@ResponseBody
 	public DataWrapper<List<User>> list(
-			@RequestParam(value="phone",required=true)String phone,
-			@RequestParam(value="trueName",required=true)String trueName,
-			@RequestParam(value="companyName",required=true)String companyName,
-			@RequestParam(value="type",required=true)Integer type,
-			@RequestParam(value="state",required=true)Integer state,
+			@RequestParam(value="phone",required=false)String phone,
+			@RequestParam(value="trueName",required=false)String trueName,
+			@RequestParam(value="companyName",required=false)String companyName,
+			@RequestParam(value="type",required=false)Integer type,
+			@RequestParam(value="state",required=false)Integer state,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
 			@RequestParam(value="token",required=true)String token
@@ -48,7 +48,7 @@ public class UserCertificationListController {
 	public DataWrapper<Void> verify(
 			@RequestParam(value="phone",required=true)String phone,
 			@RequestParam(value="state",required=true)Integer state,
-			@RequestParam(value="failReason",required=true)String failReason,
+			@RequestParam(value="failReason",required=false)String failReason,
 			@RequestParam(value="token",required=true)String token
 	){
 		return userCertificationListService.verify(phone, state, failReason);			

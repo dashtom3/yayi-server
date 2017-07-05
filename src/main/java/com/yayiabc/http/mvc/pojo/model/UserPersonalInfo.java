@@ -20,6 +20,7 @@ public class UserPersonalInfo {
 	private String doctorPic;
 	private Integer state;
 	private String failReason;
+	private Integer judge;
 
 	public String getPhone() {
 		return phone;
@@ -133,6 +134,14 @@ public class UserPersonalInfo {
 		this.doctorPic = doctorPic;
 	}
 
+	public Integer getJudge() {
+		return judge;
+	}
+
+	public void setJudge(Integer judge) {
+		this.judge = judge;
+	}
+
 	public UserPersonalInfo() {
 		super();
 	}
@@ -140,7 +149,7 @@ public class UserPersonalInfo {
 	public UserPersonalInfo(String userId, String phone, String trueName,
 			Integer sex, Date birthday, String qq, String userPic,
 			Integer type, String companyName, String part, String workAddress,
-			String doctorPic, Integer state, String failReason) {
+			String doctorPic, Integer state, String failReason, Integer judge) {
 		super();
 		this.userId = userId;
 		this.phone = phone;
@@ -156,6 +165,7 @@ public class UserPersonalInfo {
 		this.doctorPic = doctorPic;
 		this.state = state;
 		this.failReason = failReason;
+		this.judge = judge;
 	}
 
 	@Override
@@ -165,7 +175,8 @@ public class UserPersonalInfo {
 				+ birthday + ", qq=" + qq + ", userPic=" + userPic + ", type="
 				+ type + ", companyName=" + companyName + ", part=" + part
 				+ ", workAddress=" + workAddress + ", doctorPic=" + doctorPic
-				+ ", state=" + state + ", failReason=" + failReason + "]";
+				+ ", state=" + state + ", failReason=" + failReason
+				+ ", judge=" + judge + "]";
 	}
 
 }

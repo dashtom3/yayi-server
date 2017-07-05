@@ -27,16 +27,17 @@ public class UserManageListController {
 	@RequestMapping(value="userlist",method=RequestMethod.GET)
 	@ResponseBody
 	public DataWrapper<List<UserAllInfo>> userlist(
-			@RequestParam(value="phone",required=true)String phone,
-			@RequestParam(value="trueName",required=true)String trueName,
-			@RequestParam(value="companyName",required=true)String companyName,
-			@RequestParam(value="isBindSale",required=true)Integer isBindSale,
-			@RequestParam(value="type",required=true)Integer type,
-			@RequestParam(value="saleName",required=true)String saleName,
+			@RequestParam(value="phone",required=false)String phone,
+			@RequestParam(value="trueName",required=false)String trueName,
+			@RequestParam(value="companyName",required=false)String companyName,
+			@RequestParam(value="isBindSale",required=false)Integer isBindSale,
+			@RequestParam(value="type",required=false)Integer type,
+			@RequestParam(value="saleName",required=false)String saleName,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
 			@RequestParam(value="token",required=true)Integer token
 	){
+		System.out.println("!!"+trueName);
 		return userManageListService.userlist(phone, trueName, companyName, isBindSale, type, saleName,currentPage,numberPerPage);
 	}
 	
@@ -46,8 +47,8 @@ public class UserManageListController {
 	@RequestMapping(value="salelist",method=RequestMethod.GET)
 	@ResponseBody
 	public DataWrapper<List<SaleInfo>> salelist(
-			@RequestParam(value="salePhone",required=true)String salePhone,
-			@RequestParam(value="saleName",required=true)String saleName,
+			@RequestParam(value="salePhone",required=false)String salePhone,
+			@RequestParam(value="saleName",required=false)String saleName,
 			@RequestParam(value="token",required=true)Integer token
 	){
 		return userManageListService.salelist(salePhone, saleName);

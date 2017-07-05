@@ -64,8 +64,14 @@
 		</where>
 	</select>
 	
-	<select id="salelist" resultType="SaleInfo">
-		SELECT phone AS salePhone,true_name AS saleName FROM sale_info
+	<resultMap type="SaleInfo" id="saleInfoRM">
+		<id column="sale_id" property="saleId"/>
+		<result column="salePhone" property="phone"/>
+		<result column="saleName" property="trueName"/>
+	</resultMap>
+	
+	<select id="salelist" resultMap="saleInfoRM">
+		SELECT phone,true_name FROM sale_info
 		<where>
 			<if test="salePhone !=null and salePhone !=''">
 				phone LIKE '%${salePhone}%'

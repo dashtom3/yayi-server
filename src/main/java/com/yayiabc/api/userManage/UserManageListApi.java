@@ -81,11 +81,11 @@ public interface UserManageListApi {
      * callStatus:"SUCCEED",
      * errorCode:"No_Error",
      * data:[{
-     * 		salePhone:"17668123578",
-     * 		saleName:"张三" 
+     * 		phone:"17668123578",
+     * 		trueName:"张三" 
      * },{
-     * 		salePhone:"17668147515",
-     * 		saleName:"李四" 
+     * 		phone:"17668147515",
+     * 		trueName:"李四" 
      * }],
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
      * numberPerPage:0,

@@ -155,6 +155,19 @@ public class ItemManageController {
 		return itemManageService.addProperty(itemPropertyName);
 	}
 	
+	/**
+	 * 添加属性值
+	 */
+	@RequestMapping("addToPropertyd")
+	@ResponseBody
+	public DataWrapper<Void> addToPropertyd(
+			@RequestParam(value="itemPid",required=true) Integer itemPid,
+			@RequestParam(value="itemPparam",required=true) String itemPparam
+			){
+		return itemManageService.addToPropertyd(itemPid,itemPparam);
+	}
+	
+	
 	
 	/**
 	 * 添加属性值和属性名
@@ -162,10 +175,11 @@ public class ItemManageController {
 	@RequestMapping("addPropertydAndPropertyName")
 	@ResponseBody
 	public DataWrapper<Void> addPropertydAndPropertyName(
-			@RequestHeader(value="itemPropertyName",required=true) String itemPropertyName,
-			@RequestBody String[] itemPparams
+			@RequestParam(value="itemPropertyName",required=true) String itemPropertyName,
+			@RequestParam(value="itemPparamList",required=false) List<String> itemPparamList
 			){
-		return itemManageService.addPropertyAndPropertyName(itemPropertyName,itemPparams);
+		System.out.println(itemPparamList);
+		return itemManageService.addPropertyAndPropertyName(itemPropertyName,itemPparamList);
 	}
 	
 	/**

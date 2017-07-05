@@ -20,7 +20,7 @@ public class UserServiceImpl implements UserService{
 	@Autowired 
 	private UserDao userDao;
 	public DataWrapper<Void> getVerifyCode(String phone) {
-		 //五分钟之内不能再发短信
+		 //浜斿垎閽熶箣鍐呬笉鑳藉啀鍙戠煭淇�
         DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
         String code = VerifyCodeManager.newPhoneCode(phone);
         if (code == null) {
@@ -45,7 +45,7 @@ public class UserServiceImpl implements UserService{
 		User neUser=new User();
 		neUser.setPhone(phone);
         if (userDao.getUserByUser(neUser) == null) {
-            //验证码服务
+            //楠岃瘉鐮佹湇鍔�
             String serverCode = VerifyCodeManager.getPhoneCode(phone);
             if (serverCode.equals("noCode")) {
                 dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_notExist);
@@ -59,7 +59,7 @@ public class UserServiceImpl implements UserService{
                 newUser.setPhone(phone);
                 newUser.setPwd(MD5Util.getMD5String(password));
                 if (1 == userDao.register(newUser)) {
-                    //移除验证码
+                    //绉婚櫎楠岃瘉鐮�
                     VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
                     dataWrapper.setData(newUser);
                     	String token=UUID.randomUUID().toString();
@@ -152,7 +152,6 @@ public class UserServiceImpl implements UserService{
                     userToken.setUserId(seUser.getUserId());
                     userToken.setToken(token);
                 	userDao.addToken(userToken);
-                	System.out.println(token+"token值");
                 }
 	                
 			}else{

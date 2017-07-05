@@ -8,7 +8,6 @@ public class ItemValue {
 	private Integer itemQb;
 	private Integer stockNum;
 	private Integer canUse;
-	
 	private Integer itemValueId;
 	private String itemPropertyName;
 	private String itemPropertyInfo;

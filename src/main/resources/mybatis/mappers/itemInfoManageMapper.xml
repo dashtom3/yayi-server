@@ -51,13 +51,11 @@
  	<insert id="insertItemValue">
  		insert into item_value
  		values
- 		<foreach collection="list" index="index" item="item" separator=",">
-          (#{item.canUse},#{item.stockNum},#{item.itemQb},#{item.tiChen},#{item.itemSkuPrice},#{item.itemSku},#{item.itemId},#{item.itemPropertyName},#{item.itemPropertyInfo})
- 		</foreach>
+ 		(#{itemPropertySixValue},#{itemPropertySixName},#{itemPropertyFiveValue},#{itemPropertyFiveName},#{itemPropertyFourValue},#{itemPropertyFourName},#{itemPropertyThreeValue},#{itemPropertyNameThree},#{itemPropertyTwoValue},#{itemPropertyNameTwo},#{canUse},#{stockNum},#{itemQb},#{tiChen},#{itemSkuPrice},null,#{itemId},#{itemPropertyName},#{itemPropertyInfo})
  	</insert>
  	
  	<insert id="insertItemInfo">
- 		insert into item_info values(#{itemId},#{itemName},#{itemBrandId},#{itemPrice},0,1,#{oneClassify},#{twoClassify},#{threeClassify},now(),now());
+ 		insert into item_info values(#{isThrow},#{itemId},#{itemName},#{itemBrandId},#{itemPrice},0,1,#{oneClassify},#{twoClassify},#{threeClassify},now(),now());
  	</insert>
  	
  	<insert id="insertItemDetail">
@@ -70,7 +68,7 @@
  	</insert>
  	
  	<update id="updateItemInfo">
- 		update item_info set item_name=#{itemName},item_brand_id=#{itemBrandId},item_price=#{itemPrice},one_classify=#{oneClassify},two_classify=#{twoClassify},three_classify=#{threeClassify},
+ 		update item_info set is_throw=#{isThrow},item_name=#{itemName},item_brand_id=#{itemBrandId},item_price=#{itemPrice},one_classify=#{oneClassify},two_classify=#{twoClassify},three_classify=#{threeClassify},
  		updated=now() where item_id=#{itemId}
  	</update>
  	

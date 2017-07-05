@@ -1,5 +1,4 @@
 package com.yayiabc.http.mvc.service.Impl;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -35,5 +34,5 @@ public DataWrapper<String> queryLog(String token, String orderId) {
 	}
 //	return s;
 	return dataWrapper;
-}
+	}
 }

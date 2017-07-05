@@ -48,7 +48,9 @@ public interface ItemManageService {
 			String itemPreviousClassify,Integer itemClassifyGrade);
 
 	DataWrapper<Void> addPropertyAndPropertyName(String itemPropertyName,
-			String[] itemPparams);
+			List<String> itemPparamList);
+
+	DataWrapper<Void> addToPropertyd(Integer itemPid, String itemPparam);
 
 	
 

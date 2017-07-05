@@ -1,10 +1,12 @@
 package com.yayiabc.http.mvc.controller.item;
 
+import java.text.ParseException;
 import java.util.Date;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -12,9 +14,13 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.ItemIdUtils;
+import com.yayiabc.common.utils.TimeUtil;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
 import com.yayiabc.http.mvc.pojo.jpa.ItemValue;
+import com.yayiabc.http.mvc.pojo.utils.ItemValueModel;
 import com.yayiabc.http.mvc.service.ItemInfoManageService;
+
+
 
 @Controller
 @RequestMapping("api/item")
@@ -88,6 +94,7 @@ public class ItemInfoManageController {
 			@RequestParam(value="itemPicc",required=true) String itemPicc,
 			@RequestParam(value="itemPicd",required=true) String itemPicd,
 			@RequestParam(value="itemPice",required=true) String itemPice,
+			@RequestParam(value="isThrow",required=true) Integer isThrow,
 			@RequestParam(value="video",required=true) String video,
 			@RequestParam(value="itemDesc",required=true) String itemDesc,
 			@RequestParam(value="itemUse",required=true) String itemUse,
@@ -99,13 +106,21 @@ public class ItemInfoManageController {
 			@RequestParam(value="unit",required=true) String unit,
 			@RequestParam(value="registerDate",required=true) Date registerDate,
 			@RequestParam(value="itemPacking",required=true) String itemPacking,
-			@RequestParam(value="itemLevels",required=true) String itemLevels,
-			@RequestBody List<ItemValue> itemValueList
+			@RequestParam(value="itemLevels",required=true) String itemLevels
 			){
 		return itemInfoManageService.update(itemId,itemName,itemBrandId,oneClassify,itemLevels,
-				twoClassify,threeClassify,itemPica,itemPicb,itemPicc,itemPicd,itemPice,
+				twoClassify,threeClassify,itemPica,itemPicb,itemPicc,itemPicd,itemPice,isThrow,
 				video,itemDesc,itemUse,itemRange,registerId,storeItemId,apparatusType,unit,
-				producePompany,registerDate,itemPacking,itemBrandName,itemValueList);
+				producePompany,registerDate,itemPacking,itemBrandName);
+	}
+	
+	/**
+	 * 商品属性修改
+	 */
+	public DataWrapper<Void> updateItemValue(
+			@RequestBody List<ItemValue> itemValueList
+			){
+		return itemInfoManageService.updateItemValue(itemValueList);
 	}
 	
 	/**
@@ -123,6 +138,7 @@ public class ItemInfoManageController {
 	
 	/**
 	 * 商品新增
+	 * @throws ParseException 
 	 */
 	@RequestMapping("insert")
 	@ResponseBody
@@ -139,6 +155,7 @@ public class ItemInfoManageController {
 	@RequestParam(value="itemPicc",required=true) String itemPicc,
 	@RequestParam(value="itemPicd",required=true) String itemPicd,
 	@RequestParam(value="itemPice",required=true) String itemPice,
+	@RequestParam(value="isThrow",required=true) Integer isThrow,
 	@RequestParam(value="video",required=true) String video,
 	@RequestParam(value="itemDesc",required=true) String itemDesc,
 	@RequestParam(value="itemUse",required=true) String itemUse,
@@ -148,14 +165,31 @@ public class ItemInfoManageController {
 	@RequestParam(value="apparatusType",required=true) Integer apparatusType,
 	@RequestParam(value="producePompany",required=true) String producePompany,
 	@RequestParam(value="unit",required=true) String unit,
-	@RequestParam(value="registerDate",required=true) Date registerDate,
+	@RequestParam(value="registerDate",required=true) String registerDate,
 	@RequestParam(value="itemPacking",required=true) String itemPacking,
-	@RequestParam(value="itemLevels",required=true) String itemLevels,
-	@RequestBody List<ItemValue> itemValueList
-			){
+	@RequestParam(value="itemLevels",required=true) String itemLevels
+			) throws ParseException{
+		Date registerDateChangeDate =TimeUtil.changeStringToDateTwo(registerDate);
 		return itemInfoManageService.insert(itemId,itemName,itemBrandId,oneClassify,itemLevels,
-				twoClassify,threeClassify,itemPica,itemPicb,itemPicc,itemPicd,itemPice,
+				twoClassify,threeClassify,itemPica,itemPicb,itemPicc,itemPicd,itemPice,isThrow,
 				video,itemDesc,itemUse,itemRange,registerId,storeItemId,apparatusType,unit,
-				producePompany,registerDate,itemPacking,itemBrandName,itemValueList);
+				producePompany,registerDateChangeDate,itemPacking,itemBrandName);
+	
+	}
+	
+	/**
+	 * 商品属性新增
+	 * @param itemValueList
+	 * @return
+	 */
+	@RequestMapping("insertItemValue")
+	@ResponseBody
+	public DataWrapper<Void> insertItemValue(
+			@RequestBody List<ItemValue> itemValueList
+			){
+		System.out.println(itemValueList);
+		return itemInfoManageService.insertItemValue(itemValueList);
 	}
 }
+
+	

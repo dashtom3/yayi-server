@@ -252,6 +252,19 @@ public class ItemInfo {
 	 * @apiParam {String} itemPacking  商品包装
 	 * @apiParam {Integer} itemQb  商品乾币抵扣
 	 * @apiParam {Double} tiCheng  商品价格
+	 * @apiParam {Integer} itemValueId;
+	 * @apiParam {String} itemPropertyName;
+	 * @apiParam {String} itemPropertyInfo;
+	 * @apiParam {String} itemPropertyNameTwo;
+	 * @apiParam {String} itemPropertyTwoValue;
+	 * @apiParam {String} itemPropertyNameThree;
+	 * @apiParam {String} itemPropertyThreeValue;
+	 * @apiParam {String} itemPropertyFourName;
+	 * @apiParam {String} itemPropertyFourValue;
+	 * @apiParam {String} itemPropertyFiveName;
+	 * @apiParam {String} itemPropertyFiveValue;
+	 * @apiParam {String} itemPropertySixName;
+	 * @apiParam {String} itemPropertySixValue;
 	 * 
 	 * 
 	 * @apiSuccessExample {json} Success-Response: 

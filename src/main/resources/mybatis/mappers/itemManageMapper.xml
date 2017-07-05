@@ -135,7 +135,7 @@
  	<insert id="addPropertyd">
  		insert into item_propertyd
  		values
- 		<foreach collection="array" item="item" separator="," index="index">
+ 		<foreach collection="itemPparamList" item="item" separator="," index="index">
  			(null,null,null,null,null,#{itemPropertyId},#{item},1,now(),now())
  		</foreach>
  	</insert>
@@ -151,5 +151,9 @@
  	</insert>
  	<insert id="insertItemClassifyThree">
  		insert into classify_three values(null,#{itemClassifyName},#{itemPreviousClassify},now(),now())
+ 	</insert>
+ 	
+ 	<insert id="addToPropertyd">
+ 		insert into item_propertyd values(null,null,null,null,null,#{itemPid},#{itemPparam},1,now(),now())
  	</insert>
 </mapper>       

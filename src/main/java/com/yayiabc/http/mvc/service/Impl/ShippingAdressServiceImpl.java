@@ -3,14 +3,13 @@ package com.yayiabc.http.mvc.service.Impl;
 import java.util.HashMap;
 import java.util.List;
 
-import org.springframework.aop.IntroductionAdvisor;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.dao.ShippingAddressDao;
-import com.yayiabc.http.mvc.dao.UserDao;
+import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Receiver;
 import com.yayiabc.http.mvc.service.ShippingAddressService;
 @Service
@@ -18,13 +17,13 @@ public class ShippingAdressServiceImpl implements ShippingAddressService{
 	@Autowired
 	private ShippingAddressDao shippingAddressDao;
 	@Autowired
-	UserDao userDao;
+	private UtilsDao utilsDao;
 	@Override
 	//新增收货地址
-	public DataWrapper<Void> addUserAdress(Receiver receiver,String newPhone) {
+	public DataWrapper<Void> addUserAdress(Receiver receiver,String token) {
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
-	     String userId=userDao.getUserId(newPhone);
+	     String userId=utilsDao.getUserID(token);
 	     receiver.setUserId(userId);
 		int state= shippingAddressDao.addUserAddress(receiver);
 		if(state>0){
@@ -40,11 +39,11 @@ public class ShippingAdressServiceImpl implements ShippingAddressService{
 	}
 	//修改收货地址
 	@Override
-	public DataWrapper<Void> updateUserAddress(Receiver receiver,String newPhone) {
+	public DataWrapper<Void> updateUserAddress(Receiver receiver,String token) {
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		HashMap<String, Receiver> hMap= new HashMap<String,Receiver>();
-		String userId=userDao.getUserId(newPhone);
+		String userId=utilsDao.getUserID(token);
 		receiver.setUserId(userId);
 		System.out.println(receiver);
 		hMap.put("receiver",receiver );
@@ -60,8 +59,8 @@ public class ShippingAdressServiceImpl implements ShippingAddressService{
 		}
 	}
 	@Override
-	public Integer addConditions(String newPhone) {
-		String userId=userDao.getUserId(newPhone);
+	public Integer addConditions(String token) {
+		String userId=utilsDao.getUserID(token);
 		Integer sign=shippingAddressDao.addConditions(userId);
 		return sign;
 	}
@@ -73,8 +72,8 @@ public class ShippingAdressServiceImpl implements ShippingAddressService{
 	}
 	@Override
 	//显示收货地址
-	public DataWrapper<List<Receiver>> showShoppingAddress(String phone) {
-	 String uid=	userDao.getUserId(phone);
+	public DataWrapper<List<Receiver>> showShoppingAddress(String token) {
+	 String uid=	utilsDao.getUserID(token);
 	 List<Receiver> receiverList= shippingAddressDao.showShoppingAddress(uid);
 	 DataWrapper<List<Receiver>> dataWrapper=new DataWrapper<List<Receiver>>();
 	 dataWrapper.setData(receiverList);

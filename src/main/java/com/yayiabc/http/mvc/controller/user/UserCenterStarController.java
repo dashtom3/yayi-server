@@ -2,7 +2,6 @@ package com.yayiabc.http.mvc.controller.user;
 
 import java.util.List;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,42 +25,41 @@ public class UserCenterStarController {
       @ResponseBody
       public DataWrapper<List<MyStar>> shows(
     		  //这里改为phone
-    		  @RequestParam(value = "phone",required=true) String phone,
     		  @RequestParam(value = "token",required=true) String token,
     		  @RequestParam(value = "currentPage",required=false) Integer currentPage,//当前页
     		  @RequestParam(value = "numberPerPage",required=false) Integer numberPerPage//取多少
     		  ){
-    	  return ucss.shows(phone,currentPage,numberPerPage);
+    	  return ucss.shows(token,currentPage,numberPerPage);
       }
       //取消单独商品收藏
       @RequestMapping("deleteOne")
       @ResponseBody
       public DataWrapper<Void> deleteOne(
     		  @RequestParam(value = "itemId",required=true) String itemId,
-    		  @RequestParam(value = "phone",required=true) String phone,
+    		 
     		  @RequestParam(value = "token",required=true) String token
     		  ){
-    	       int itemStarIds=Integer.parseInt(itemId);
-    	  return ucss.deleteStarOne(itemStarIds,phone);
+    	       
+    	  return ucss.deleteStarOne(token,itemId);
       }
       //取消全部商品收藏
       @RequestMapping("deleteAll")
       @ResponseBody
       public DataWrapper<Void> deleteAll(
-    		  @RequestParam(value = "phone",required=true) String phone,
+    		 
     		  @RequestParam(value = "token",required=true) String token
     		  ){
-    	  return ucss.deleteStarAll(phone);
+    	  return ucss.deleteStarAll(token);
       }
       
       //添加收藏
       @RequestMapping("addMyStar")
       @ResponseBody
       public DataWrapper<Void> addMyStar(
-    		  @RequestParam(value = "phone",required=true) String phone,
+    		 
     		  @RequestParam(value = "itemId",required=true) String itemId,
     		  @RequestParam(value = "token",required=true) String token
     		  ){
-    	  return ucss.addMyStar(phone, itemId);
+    	  return ucss.addMyStar(token,itemId);
       }
 }

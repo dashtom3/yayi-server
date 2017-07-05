@@ -8,11 +8,10 @@ import org.springframework.stereotype.Service;
 
 
 import com.yayiabc.common.enums.ErrorCodeEnum;
-import com.yayiabc.common.sessionManager.SessionManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.UserCenterStarDao;
-import com.yayiabc.http.mvc.dao.UserDao;
+import com.yayiabc.http.mvc.dao.UtilsDao;
 
 import com.yayiabc.http.mvc.pojo.jpa.MyStar;
 import com.yayiabc.http.mvc.service.UserCenterStarService;
@@ -22,11 +21,12 @@ public class UserCenterStarServiceImpl  implements UserCenterStarService{
 	@Autowired
 	private  UserCenterStarDao  usercenterstardao;	
 	@Autowired
-	UserDao userDao;
+	private UtilsDao utilsDao;
 	//显示收藏数据
 	@Override
 	public DataWrapper<List<MyStar>>shows(
-			String phone,Integer currentPage,Integer numberPerPage
+			String token,
+			Integer currentPage,Integer numberPerPage
 			){
 		DataWrapper<List<MyStar>> dataWrapper=new DataWrapper<List<MyStar>>();
 		
@@ -45,7 +45,9 @@ public class UserCenterStarServiceImpl  implements UserCenterStarService{
 		System.out.println(page);
 		dataWrapper.setPage(page,count);
 	
-		String userId=userDao.getUserId(phone);
+		//String userId=userDao.getUserId(phone);
+		String userId=utilsDao.getUserID(token);
+		System.out.println(userId);
 		List<MyStar> itemStarList=usercenterstardao.shows(userId,page);
 		dataWrapper.setData(itemStarList);
 		if(itemStarList.isEmpty()){
@@ -60,11 +62,11 @@ public class UserCenterStarServiceImpl  implements UserCenterStarService{
 	}
 	//取消收藏
 	@Override
-	public DataWrapper<Void> deleteStarOne(int deleteOneId,String phone){
+	public DataWrapper<Void> deleteStarOne(String token,String deleteOneId){
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
-		String userId=userDao.getUserId(phone);
+		//String userId=userDao.getUserId(phone);
+		String userId=utilsDao.getUserID(token);
 		int state= usercenterstardao.deleteStarOne(deleteOneId,userId);
-		System.out.println("state:   "+state);
 		if(state>0){
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			dataWrapper.setMsg("操作成功");
@@ -77,11 +79,11 @@ public class UserCenterStarServiceImpl  implements UserCenterStarService{
 
 	}
 	@Override
-	public DataWrapper<Void> deleteStarAll(String phone) {
+	public DataWrapper<Void> deleteStarAll(String token) {
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
-		String deleteAllId=userDao.getUserId(phone);
-		int st=usercenterstardao.deleteStarAll(deleteAllId);
+		String userId=utilsDao.getUserID(token);
+		int st=usercenterstardao.deleteStarAll(userId);
 		if(st>0){
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			dataWrapper.setMsg("操作成功");
@@ -94,9 +96,9 @@ public class UserCenterStarServiceImpl  implements UserCenterStarService{
 	}
 	//新增收藏
 	@Override
-	public DataWrapper<Void> addMyStar(String phone, String itemId) {
+	public DataWrapper<Void> addMyStar(String token, String itemId) {
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
-		String userId=userDao.getUserId(phone);
+		String userId=utilsDao.getUserID(token);
 		int st=0;
 		//根据当前商品id  查询是否已经收藏1
 		List<Integer> list=usercenterstardao.queryOne(itemId);

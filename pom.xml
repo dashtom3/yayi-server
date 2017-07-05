@@ -5,7 +5,7 @@
 	<artifactId>Yayi</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<!-- 集中定义依赖版本号 -->
+	<!-- 闂嗗棔鑵戠€规矮绠熸笟婵婄閻楀牊婀伴崣?-->
 	<properties>
 		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
 		<maven-compiler-plugin.version>3.3</maven-compiler-plugin.version> 
@@ -39,7 +39,7 @@
 	</properties>
 
 	<dependencies>
-		<!-- 单元测试 -->
+		<!-- 閸楁洖鍘撳ù瀣槸 -->
 		<dependency>
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
@@ -98,21 +98,21 @@
 			<version>${mysql.version}</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.alibaba/druid,连接池 -->
+		<!-- https://mvnrepository.com/artifact/com.alibaba/druid,鏉╃偞甯村Ч?-->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
 			<version>1.0.26</version>
 		</dependency>
 
-		<!-- 通用Mapper -->
+		<!-- 闁氨鏁apper -->
 		<dependency>
 			<groupId>com.github.abel533</groupId>
 			<artifactId>mapper</artifactId>
 			<version>${mapper.version}</version>
 		</dependency>
 
-		<!-- 分页插件 -->
+		<!-- 閸掑棝銆夐幓鎺嶆 -->
 		<dependency>
 			<groupId>com.github.pagehelper</groupId>
 			<artifactId>pagehelper</artifactId>
@@ -131,7 +131,7 @@
 			<version>${slf4j.version}</version>
 		</dependency>
 
-		<!-- Jackson Json处理工具包 -->
+		<!-- Jackson Json婢跺嫮鎮婂銉ュ徔閸?-->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
@@ -150,7 +150,7 @@
 			<version>4.3.1</version>
 		</dependency>
 
-		<!-- 消息队列 -->
+		<!-- 濞戝牊浼呴梼鐔峰灙 -->
 		<dependency>
 			<groupId>com.rabbitmq</groupId>
 			<artifactId>amqp-client</artifactId>
@@ -163,7 +163,7 @@
 		</dependency>
 
 
-		<!-- JSP相关 -->
+		<!-- JSP閻╃鍙?-->
 		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
@@ -182,14 +182,14 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- 时间操作组件 -->
+		<!-- 閺冨爼妫块幙宥勭稊缂佸嫪娆?-->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
 			<version>${joda-time.version}</version>
 		</dependency>
 
-		<!-- Apache工具组件 -->
+		<!-- Apache瀹搞儱鍙跨紒鍕 -->
 		<dependency>
 			<groupId>org.apache.commons</groupId>
 			<artifactId>commons-lang3</artifactId>
@@ -201,14 +201,14 @@
 			<version>4.0.1</version>
 		</dependency>
 
-		<!-- 文件上传组件 -->
+		<!-- 閺傚洣娆㈡稉濠佺炊缂佸嫪娆?-->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
 			<version>${commons-fileupload.version}</version>
 		</dependency>
 		
-		<!-- 七牛云文件上传 -->
+		<!-- 娑撳啰澧版禍鎴炴瀮娴犳湹绗傛导?-->
 		<dependency>
 			<groupId>com.qiniu</groupId>
 			<artifactId>qiniu-java-sdk</artifactId>
@@ -231,14 +231,14 @@
 			<version>${jedis.version}</version>
 		</dependency>
 
-		<!-- 字符加密、解密 -->
+		<!-- 鐎涙顑侀崝鐘茬槕閵嗕浇袙鐎?-->
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
 			<version>1.9</version>
 		</dependency>
 
-		<!-- 数据校验 -->
+		<!-- 閺佺増宓侀弽锟犵崣 -->
 		<dependency>
 			<groupId>org.hibernate</groupId>
 			<artifactId>hibernate-validator</artifactId>
@@ -269,8 +269,13 @@
 					<source>1.7</source>
 					<target>1.7</target>
 					<encoding>UTF8</encoding> 
+					<compilerArguments>
+					<extdirs>src\main\webapp\WEB-INF\lib</extdirs>
+					<!-- 	<bootclasspath>${java.home}/lib/rt.jar,${java.home}/lib/jce.jar</bootclasspath> -->
+					</compilerArguments>
 				</configuration>
-			</plugin>
+			</plugin> 
+			
 		</plugins>
 	</build>
 </project>

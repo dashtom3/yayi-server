@@ -1,6 +1,6 @@
 package com.yayiabc.api.statistics;
 
-public interface SaleStatisticsApi {
+public interface saleStatisticsApi {
 	/**
      * @api {get} http://192.168.1.103:8081/api/saleStatistics/query （后台）销售员统计
      * @apiName query

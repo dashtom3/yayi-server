@@ -5,10 +5,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.HttpUtil;
+import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.dao.WitManageDao;
 import com.yayiabc.http.mvc.pojo.jpa.With;
 import com.yayiabc.http.mvc.service.WitManageService;
@@ -16,12 +16,16 @@ import com.yayiabc.http.mvc.service.WitManageService;
 public class WitManageServiceImpl implements WitManageService{
 	@Autowired 
 	private WitManageDao witManageDao;
+	@Autowired
+	private UtilsDao utilsDao;
 	@Override
-	public DataWrapper<With> showWit(String phone) {
+	public DataWrapper<With> showWit(String token) {
 		// TODO Auto-generated method stub
 		DataWrapper<With> dataWrapper=new DataWrapper<With>();
-				With w=witManageDao.showWit(phone);
-				dataWrapper.setData(w);
+		String userId=utilsDao.getUserID(token);
+		String phone=witManageDao.getPhone(userId);
+		With w=witManageDao.showWit(phone);
+		dataWrapper.setData(w);
 		return dataWrapper ;
 	}
 	//提交提现数据
@@ -39,22 +43,22 @@ public class WitManageServiceImpl implements WitManageService{
 		return dataWrapper;
 	}
 	public String getVerifyCode(String phone) {
-       DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
-       String code = VerifyCodeManager.getPhoneCode(phone);
-       System.out.println(code);
-       if (code == null) {
-           return code;
-       }
-       System.out.println(phone);
-       boolean result = HttpUtil.sendPhoneVerifyCode(code, phone);
-       if (result){
-              System.out.println(1);
-       } else {
-           System.out.println(2);
-       }
-       return null;
+		DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
+		String code = VerifyCodeManager.getPhoneCode(phone);
+		System.out.println(code);
+		if (code == null) {
+			return code;
+		}
+		System.out.println(phone);
+		boolean result = HttpUtil.sendPhoneVerifyCode(code, phone);
+		if (result){
+			System.out.println(1);
+		} else {
+			System.out.println(2);
+		}
+		return null;
 	}
-//操作
+	//操作
 	@Override
 	public DataWrapper<Void> oper(
 			int cashId
@@ -68,7 +72,7 @@ public class WitManageServiceImpl implements WitManageService{
 		}
 		return dataWrapper;
 	}
-	
+
 	//查询+显示
 	@Override
 	public DataWrapper<List<With>> query(String message, Integer state) {
@@ -79,10 +83,10 @@ public class WitManageServiceImpl implements WitManageService{
 			dataWrapper.setMsg("暂无数据");
 		}else{
 			dataWrapper.setData(l);
-			
+
 		}
-		
+
 		return dataWrapper;
 	}
-	
+
 }

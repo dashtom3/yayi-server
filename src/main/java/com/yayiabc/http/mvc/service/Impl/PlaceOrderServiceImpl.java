@@ -10,7 +10,6 @@ import org.springframework.stereotype.Service;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.OrderIdUtils;
 import com.yayiabc.http.mvc.dao.PlaceOrderDao;
-import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Cart;
 import com.yayiabc.http.mvc.pojo.jpa.FreeShipping;
@@ -35,7 +34,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		  //生成 orderId 
 		 String orderId=OrderIdUtils.createOrderId(userId);
 		//给order表 创建一个空order
-			placeOrderDao.createOrder(orderId);
+			placeOrderDao.createOrder(orderId,userId);
 		//容器
 		HashMap<String, Object> hMap=new HashMap<String, Object>();
 		int sumPrice=0;//商品总价
@@ -70,8 +69,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		//System.out.println(cartList);
 		return dataWrapper;
 	}
-
-	private int getFreight(Receiver receiver,int sumPrice,int itemSum){
+    
+	public int getFreight(Receiver receiver,int sumPrice,int itemSum){
 		String Province =receiver.getProvince();
 		//查询包邮表数据
 		List<FreeShipping> list=placeOrderDao.queryPostFree();
@@ -151,9 +150,17 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		return dataWrapper;
 	}
 	//更改收货地址
-	public DataWrapper<Receiver>  upateAddress(Integer receiverId){
-		DataWrapper<Receiver> dataWrapper=new DataWrapper<Receiver>();
-		dataWrapper.setData(placeOrderDao.queryReceiver(receiverId));
+	public DataWrapper<HashMap<String, Object>>  upateAddress(Integer receiverId,Integer sumPrice,Integer itemSum){
+		DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String, Object>>();
+		
+		Receiver receiver=placeOrderDao.queryReceiver(receiverId);
+		
+		int yunfei=getFreight(receiver, sumPrice, itemSum);
+		 System.out.println(yunfei);
+		HashMap<String, Object> hashMap=new HashMap<String,Object>();
+		hashMap.put("postFee", yunfei);
+		hashMap.put("Receiver", receiver);
+		dataWrapper.setData(hashMap);
 		return  dataWrapper;
 	}
 
@@ -177,7 +184,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		
 		String orderId=OrderIdUtils.createOrderId(userId);
 		//给order表 创建一个空order
-		placeOrderDao.createOrder(orderId);
+		placeOrderDao.createOrder(orderId,userId);
+		
 		orderItem.setOrderId(orderId);
 	    //把商品更新到   订单商品表
 		//  测试加上的 
@@ -205,11 +213,21 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	@Override
 	public DataWrapper<Void> saveMessage(Ordera order,String token) {
 	  order.setUserId(utilsDao.getUserID(token));
+	  System.out.println(utilsDao.getUserID(token));
+	  DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		int state=placeOrderDao.saveMessage(order);
-		return util(state);
+		if(state>0){
+			dataWrapper.setMsg("cg购物车清空了");
+			emptyCart(token);
+			
+		}else{
+			dataWrapper.setMsg("sb购物车没清空哦");
+		}
+		return dataWrapper;
+		//return util(state);
 	}
 
-	//伪清空购物车
+	//清空购物车
 	@Override
 	public DataWrapper<Void> emptyCart(String token) {
 		// TODO Auto-generated method stub
@@ -225,4 +243,5 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		}
 		return dataWrapper;
 	}
+
 }

@@ -45,22 +45,26 @@ public class OrderDetailsController {
     	 return orderDetailsService.orderDetailsShow(map,token,currentPage,numberPerpage);
      }
      //orderItemNum  订单里面的商品数
-     //付款
+    /* //付款
      @RequestMapping("payment")
      @ResponseBody
      public DataWrapper<HashMap<String, Object>> payment(
     		  @RequestParam(value="token",required=true) String token,
     		  @RequestParam(value="orderItemNum",required=true) String orderItemNum,
     		  @RequestParam(value="receiverId",required=true) Integer receiverId,
-    		  @ModelAttribute OrderItem orderItem
+    		  @RequestParam(value="orderId",required=true) Integer orderId
+    		  //@ModelAttribute OrderItem orderItem
     		 ){
+				//根据订单查询商品明细
+    	 orderDetailsService.payment(orderId,receiverId);
     	  //如果orderItemNum>1  表示 是从购物车发出的结算请求
     	     if(Integer.parseInt(orderItemNum)>1){
     	    	 return placeOrderService.buyNows(token, receiverId);
     	     }else{
     	    	 return placeOrderService.buyNow(orderItem,token, receiverId);
     	     }
-     }
+    	 return null;
+     }*/
      //取消订单
      @RequestMapping("cancel")
      @ResponseBody
@@ -79,21 +83,22 @@ public class OrderDetailsController {
     		 ){
     	 return logisticsService.queryLog(token, orderId);
      }
-     //确定收货  提示获得钱币数
+     //确定收货  提示获得钱币数   这个有问题
      @RequestMapping("definiteHints")
      @ResponseBody
      public DataWrapper<HashMap<String, Object>> definiteHints(
     		  @RequestParam(value="token",required=true) String token,
     		  @RequestParam(value="orderItemNum",required=true) String orderItemNum,
-    		  @RequestParam(value="receiverId",required=true) Integer receiverId,
-    		  @ModelAttribute OrderItem orderItem
+    		  @RequestParam(value="orderId",required=true) String orderId
     		 ){
     	  //如果orderItemNum>1  表示 是从购物车发出的结算请求
     	     if(Integer.parseInt(orderItemNum)>1){
-    	    	 return placeOrderService.buyNows(token, receiverId);
+    	    	 //orderDetailsService.countQb();
+    	    	 //return placeOrderService.buyNows(token, receiverId);
     	     }else{
-    	    	 return placeOrderService.buyNow(orderItem,token, receiverId);
+    	    	 //return placeOrderService.buyNow(orderItem,token, receiverId);
     	     }
+			return null;
      }
      //确定收货
      @RequestMapping("confirmReceipt")
@@ -124,11 +129,11 @@ public class OrderDetailsController {
     		  @RequestParam(value="data",required=true) String data
     		 ){
     	 HashMap<String, String> hashMap=new HashMap<String, String>();
-    	 hashMap.put("token", token);
-    	 hashMap.put("orderId", orderId);
+    	 
+    	 hashMap.put("orderId",orderId);
     	 hashMap.put("itemId", itemId);
     	 hashMap.put("score", score);
     	 hashMap.put("data", data);
-    	 return orderDetailsService.makeSureCom(hashMap);
+    	 return orderDetailsService.makeSureCom(hashMap,token);
      }
 }

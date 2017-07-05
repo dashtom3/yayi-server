@@ -1,7 +1,6 @@
 package com.yayiabc.http.mvc.service.Impl;
 
 import java.util.ArrayList;
-import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
@@ -13,7 +12,6 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.CommentManageDao;
 import com.yayiabc.http.mvc.dao.UserCenterStarDao;
-import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.utils.SkuUtil;
@@ -23,12 +21,10 @@ public class CommentManageServiceImpl implements CommentManageService {
 	@Autowired
 	private CommentManageDao commentManageDao;
    @Autowired
-   private UserDao userdao;
-   @Autowired
    private UserCenterStarDao userCenterStarDao;
 	@Override
 	public DataWrapper<List<Map<String,String>>> commentM(
-			String orderId,String recoveryState,
+			String orderId,String recoveryState,String phone,
 			Integer currentPage,Integer numberPerpage
 			) {
 		Page page=new Page();
@@ -48,7 +44,7 @@ public class CommentManageServiceImpl implements CommentManageService {
 		
 		
 		System.out.println(page);
-		List<Ordera> commentMList=commentManageDao.commentM(orderId,recoveryState,page.getCurrentPage(),page.getNumberPerPage());
+		List<Ordera> commentMList=commentManageDao.commentM(orderId,recoveryState,phone,page.getCurrentPage(),page.getNumberPerPage());
 		StringBuffer sb=new StringBuffer();
 		System.out.println(commentMList);
 		if(!commentMList.isEmpty()){

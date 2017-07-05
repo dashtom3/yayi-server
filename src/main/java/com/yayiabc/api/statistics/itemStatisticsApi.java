@@ -2,7 +2,7 @@ package com.yayiabc.api.statistics;
 
 public interface ItemStatisticsApi {
 	/**
-     * @api {get} http://192.168.1.103:8081/api/itemStatistics/query （后台）商品统计
+     * @api {get} http://47.93.48:8080/api/itemStatistics/query （后台）商品统计
      * @apiName query
      * @apiGroup itemStatistics
      * @apiVersion 0.1.0

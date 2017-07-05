@@ -162,4 +162,9 @@
 		FROM sale_info
 		WHERE phone = #{phone}
 	</select>
+	
+	<!-- 判断销售员手机号是否存在 -->
+	<select id="getSaleId" resultType="String">
+		SELECT sale_id FROM sale_info WHERE phone=#{salePhone};
+	</select>
 </mapper>

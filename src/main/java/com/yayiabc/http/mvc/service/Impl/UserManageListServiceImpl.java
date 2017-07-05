@@ -7,6 +7,7 @@ import org.springframework.stereotype.Service;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.dao.SaleListDao;
 import com.yayiabc.http.mvc.dao.ShippingAddressDao;
 import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.UserManageListDao;
@@ -22,6 +23,8 @@ public class UserManageListServiceImpl implements UserManageListService {
 	UserManageListDao userManageListDao;
 	@Autowired
 	UserDao userDao;
+	@Autowired
+	SaleListDao saleListDao;
 	@Autowired
 	ShippingAddressDao shippingAddressDao;
 
@@ -54,11 +57,17 @@ public class UserManageListServiceImpl implements UserManageListService {
 	@Override
 	public DataWrapper<Void> bind(String salePhone, String userPhone) {
 		DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
-		int i = userManageListDao.bind(salePhone, userPhone);
-		if (i > 0) {
-			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-		} else {
-			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+		String userId=userDao.getUserId(userPhone);
+		String saleId=saleListDao.getSaleId(salePhone);
+		if(userId == null || saleId == null){
+			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
+		}else{
+			int i = userManageListDao.bind(salePhone, userPhone);
+			if (i > 0) {
+				dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+			} else {
+				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+			}
 		}
 		return dataWrapper;
 	}

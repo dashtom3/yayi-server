@@ -24,4 +24,6 @@ public interface SaleListDao {
 	List<User> bindUserList(@Param("saleId")String saleId,@Param("page")Page page);
 	
 	int bindUserCount(@Param("saleId")String saleId);
+	
+	String getSaleId(@Param("salePhone")String salePhone);
 }

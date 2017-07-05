@@ -2,7 +2,7 @@ package com.yayiabc.api.userManage;
 
 public interface UserQbListApi {
 	/**
-     * @api {get} http://192.168.1.103:8081/api/userQbList/list 获取用户乾币信息列表
+     * @api {get} http://47.93.48:8080/api/userQbList/list 获取用户乾币信息列表
      * @apiName list
      * @apiGroup userQbList
      * @apiVersion 0.1.0
@@ -62,7 +62,7 @@ public interface UserQbListApi {
      */
 	
 	/**
-     * @api {post} http://192.168.1.103:8081/api/userQbList/update 修改用户乾币
+     * @api {post} http://47.93.48:8080/api/userQbList/update 修改用户乾币
      * @apiName update
      * @apiGroup userQbList
      * @apiVersion 0.1.0

@@ -3,7 +3,6 @@ package com.yayiabc.http.mvc.service;
 import java.util.HashMap;
 import java.util.List;
 
-import org.apache.ibatis.annotations.Param;
 
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
@@ -21,7 +20,11 @@ public interface OrderDetailsService {
     //显示评论相关内容
 	DataWrapper<Ordera> showComItem(String orderId);
     //提交评论
-	DataWrapper<Void> makeSureCom(HashMap<String, String> hashMap);
+	DataWrapper<Void> makeSureCom(HashMap<String, String> hashMap,String token);
+
+	//void queryItemDetails(Integer orderId);
+     //结账
+	void payment(Integer orderId, Integer receiverId);
 
 	//DataWrapper<HashMap<String, Object>> payment(String token, String orderItemNum);
 }

@@ -1,10 +1,8 @@
 package com.yayiabc.http.mvc.service;
 
 import java.util.HashMap;
-import java.util.List;
 
 import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.http.mvc.pojo.jpa.Cart;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.Receiver;
@@ -19,7 +17,7 @@ public interface PlaceOrderService {
 	DataWrapper<HashMap<String, Object>> buyNow(OrderItem orderItem, String token,Integer receiverId);	
 
     //下面的更改地址
-	public DataWrapper<Receiver>  upateAddress(Integer receiverId);
+	public DataWrapper<HashMap<String, Object>>  upateAddress(Integer receiverId,Integer sumPrice,Integer itemSum);
     
 	//将订单数据保存到订单表
 	DataWrapper<Void> saveMessage(

@@ -92,4 +92,8 @@
 	<delete id="deleteShoppingAddress">
       delete  from receiver where receiver_id=#{receiverId}
 	</delete>
+	
+	<select id="queryShoppingAddress" resultType="com.yayiabc.http.mvc.pojo.jpa.Receiver">
+	  select * from receiver  where  receiver_id=#{receiverId}
+	</select>
 </mapper>  

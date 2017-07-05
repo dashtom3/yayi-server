@@ -3,7 +3,6 @@ package com.yayiabc.http.mvc.controller.user;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -12,9 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.http.mvc.pojo.jpa.*;
 import com.yayiabc.http.mvc.service.CommentManageService;
-import com.yayiabc.http.mvc.service.UserCenterStarService;
 
 @Controller
 @RequestMapping("api/commentManage")
@@ -27,11 +24,12 @@ public class CommentManageController {
       //显示评论
      public DataWrapper<List<Map<String,String>>> show(
     		 @RequestParam(value="orderId",required=false) String orderid,
+    		 @RequestParam(value="phone",required=false) String phone,
     		 @RequestParam(value="recoveryState",required=false) String recoveryState,
     		 @RequestParam(value="currentPage",required=false) Integer currentPage,
     		 @RequestParam(value="numberPerpage",required=false) Integer numberPerpage
     		 ){
-		return commentManage.commentM(orderid,recoveryState,currentPage,numberPerpage);
+		return commentManage.commentM(orderid,recoveryState,phone,currentPage,numberPerpage);
       }
       //回复评论
       @RequestMapping("reply")

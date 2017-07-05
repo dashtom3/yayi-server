@@ -1,10 +1,8 @@
 package com.yayiabc.http.mvc.controller.user;
 
 import java.util.HashMap;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -12,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.http.mvc.pojo.jpa.Cart;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.Receiver;
@@ -52,11 +49,13 @@ public class PlaceOrderController {
 	}
 	//选择地址
 	@RequestMapping("upateAddress")
-	@ResponseBody
-	public DataWrapper<Receiver> upateAddress(
+	@ResponseBody   //ipi需要文档修改
+	public DataWrapper<HashMap<String, Object>> upateAddress(
 			@RequestParam(value="receiverId") Integer receiverId
+			,@RequestParam(value="sumPrice") Integer sumPrice,
+			@RequestParam(value="itemSum") Integer itemSum
 			){
-		return placeOrderService.upateAddress(receiverId);
+		return placeOrderService.upateAddress(receiverId,sumPrice,itemSum);
 	}
 
 	

@@ -3,7 +3,6 @@ package com.yayiabc.http.mvc.controller.user;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -23,27 +22,27 @@ public class ShippingAddressController {
 	@ResponseBody
 	public DataWrapper<Void> insert(
 			@ModelAttribute Receiver receiver,
-			@RequestParam(value=("newPhone"),required=true) String newPhone
+			@RequestParam(value=("token"),required=true) String token
 			) {
 		
 		//request.setCharacterEncoding("UTF-8");
 		DataWrapper<Void> dataWrapper=null;
 	      if(receiver.getIsDefault()==true){
 	    	  //根据电话号码  查询出当前登录人user_ID
-	    	  Integer receiverId=shippingAddressService.addConditions(newPhone);
+	    	  Integer receiverId=shippingAddressService.addConditions(token);
 	    	  System.out.println(receiverId);
 	    	  if(receiverId==null||receiverId==0){
-	  	    	dataWrapper=shippingAddressService.addUserAdress(receiver,newPhone);
+	  	    	dataWrapper=shippingAddressService.addUserAdress(receiver,token);
 	  	    	return dataWrapper;
 	  	    }else{
 	  	    	int state=shippingAddressService.updateIsdefault(receiverId);
 	  	    	if(state>0){
-	  	    		dataWrapper=shippingAddressService.addUserAdress(receiver,newPhone);
+	  	    		dataWrapper=shippingAddressService.addUserAdress(receiver,token);
 	  	    	}
 	  	    	return dataWrapper;
 	  	    }
 	      }else{
-	    	  dataWrapper=shippingAddressService.addUserAdress(receiver,newPhone);
+	    	  dataWrapper=shippingAddressService.addUserAdress(receiver,token);
 	      }
 		return dataWrapper;
 	}
@@ -52,7 +51,7 @@ public class ShippingAddressController {
 	public  DataWrapper<Void> update(
 			@ModelAttribute Receiver receiver,
 			@RequestParam(value="receiverId",required=true) String receiverIds,
-			@RequestParam(value="newPhone",required=true) String newPhone
+			@RequestParam(value="token",required=true) String token
 			){
 		/*System.out.println(receiver);
 		DataWrapper<Void> dataWrapper=shippingAddressService.updateUserAddress(receiver);
@@ -64,19 +63,19 @@ public class ShippingAddressController {
 		DataWrapper<Void> dataWrapper=null;
 		if(receiver.getIsDefault()==true){
 			//if y
-			Integer receiverIdcopy=shippingAddressService.addConditions(newPhone);
+			Integer receiverIdcopy=shippingAddressService.addConditions(token);
 			System.out.println("收货地址id"+receiverId);
 			System.out.println("收receiverIdcopyid"+receiverIdcopy);
 			 if(receiverIdcopy==null){
-				 dataWrapper = shippingAddressService.updateUserAddress(receiver,newPhone);
+				 dataWrapper = shippingAddressService.updateUserAddress(receiver,token);
 				 return dataWrapper;
 			 }else{
 				     shippingAddressService.updateIsdefault(receiverIdcopy);
-					 dataWrapper = shippingAddressService.updateUserAddress(receiver,newPhone);
+					 dataWrapper = shippingAddressService.updateUserAddress(receiver,token);
 					 return dataWrapper;
 			 }
 		}else{
-			dataWrapper = shippingAddressService.updateUserAddress(receiver,newPhone); 
+			dataWrapper = shippingAddressService.updateUserAddress(receiver,token); 
 			return dataWrapper;
 		}
 	}
@@ -84,9 +83,9 @@ public class ShippingAddressController {
 	   @RequestMapping("showShippingAddress")
 	   @ResponseBody
 	   public DataWrapper<List<Receiver>> showShippingAddress(
-			   @RequestParam(value="phone",required=true) String phone
+			   @RequestParam(value="token",required=true) String token
 			   ){
-		      return shippingAddressService.showShoppingAddress(phone);
+		      return shippingAddressService.showShoppingAddress(token);
 	   }
 	   //删除收货地址
 	   @RequestMapping("deleteShippingAddress")

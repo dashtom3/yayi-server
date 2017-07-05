@@ -7,6 +7,10 @@
 	<select id="showWit" resultType="With">
      select real_name,phone,cashMoney,type,anumber from cashmanage where phone=#{phone}
 	</select>
+	<!-- //根据userId 查phone -->
+	<select id="getPhone" resultType="java.lang.String">
+	select phone from user where user_id=#{userId}
+	</select>
 	
 	<insert id="submitWit" parameterType="With">
 	  insert into cashmanage(real_name,type,anumber,cashMoney,phone,cash_state) values(#{realName},#{type},#{anumber},#{cashMoney},#{phone},0)

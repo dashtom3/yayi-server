@@ -4,14 +4,13 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.With;
 
 public interface WitManageDao {
 	
-	With showWit(String phone);
-
+	With showWit(@Param("phone")String phone);
 	
+	String getPhone(@Param("userId")String userId);
 	//操作提现数据
 	int  submitWit(With with);
 	//操作

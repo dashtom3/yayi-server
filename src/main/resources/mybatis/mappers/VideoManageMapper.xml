@@ -29,9 +29,9 @@
 				video_name=#{vidName},
 			</if>
 			<if test="videoType!=null">
-				video_type=#{vidType},
+				video_type=#{videoType},
 			</if>
-			<if test="videoType!=null">
+			<if test="vidRoute!=null">
 				video_route=#{vidRoute},
 			</if>
 		</set>

@@ -61,7 +61,7 @@
 	<!-- //关闭交易 or确定交易 -->
 	<update id="closeTrading">
 		update ordera set state =${flagBit} where
-		order_id=${orderId}
+		order_id=#{orderId}
 	</update>
 <!-- //订单详情  resultMap-->
 	<resultMap type="Ordera" id="details">
@@ -190,8 +190,8 @@
 	</select>
 
 	<!-- 根据用户id 查询该用户钱币余额 -->
-	<select id="userBalance" resultType="int">
-		select   IFNULL(qb_balance,0)AS   qb_balance from
+	<select id="userBalance"  resultType="int">
+		select  qb_balance from
 		user where user_id=#{userId}
 	</select>
     

@@ -49,6 +49,16 @@ public class Ordera extends BasePojo {
 	private  String   refund;
 	
 	private  Receiver receiver;
+	private  Integer receiverId;
+	
+	public Integer getReceiverId() {
+		return receiverId;
+	}
+
+	public void setReceiverId(Integer receiverId) {
+		this.receiverId = receiverId;
+	}
+
 	public Receiver getReceiver() {
 		return receiver;
 	}

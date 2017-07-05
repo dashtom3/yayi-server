@@ -44,22 +44,92 @@
 	</insert>
 	
 	<!-- //把订单保存到数据库 -->
-	<insert id="saveMessage" parameterType="com.yayiabc.http.mvc.pojo.jpa.Ordera">
-	   insert into ordera values(
-	   #{order.orderId},#{order.userId},#{order.actualPay},#{order.payType},#{order.postFee},#{order.paymentTime},#{order.consignTime},
+	<update id="saveMessage" parameterType="com.yayiabc.http.mvc.pojo.jpa.Ordera">
+	 <!--   insert into ordera values(
+	  #{order.userId},#{order.actualPay},#{order.payType},#{order.postFee},#{order.paymentTime},#{order.consignTime},
 	   #{order.endTime},#{order.closeTime},#{order.buyerMessage}#{order.buyerNick},#{order.buyerRate},
-	   #{order.state},#{order.shippingName},#{order.shippingCode},#{order.invoiceHand},#{order.isRegister},receiverId
+	   #{order.state},#{order.shippingName},#{order.shippingCode},#{order.invoiceHand},#{order.isRegister},
 	   #{order.giveQb},#{order.refundInfo},#{order.totalFee},#{order.qbDed},#{order.refund},#{order.receiverId}
-	   )
 	   
-	</insert>
+	   ) -->
+	     update ordera 
+	     <set>
+	      <if test="userId!=null">
+	        user_id=#{userId},
+	      </if>
+	       <if test="actualPay!=null">
+	        actual_pay=#{actualPay},
+	      </if>
+	      <if test="payType!=null">
+	        pay_type=#{payType},
+	      </if>
+	     <if test="postFee!=null">
+	        post_fee=#{postFee},
+	      </if>
+	      <if test="paymentTime!=null">
+	       payment_time=#{paymentTime},
+	      </if>
+	      <if test="consignTime!=null">
+	       consign_time=#{consignTime},
+	      </if>
+	       <if test="closeTime!=null">
+	        close_time=#{closeTime},
+	      </if>
+	      <if test="endTime!=null">
+	        end_time=#{endTime},
+	      </if>
+	      <if test="closeTime!=null">
+	        close_time=#{closeTime},  123132
+	      </if>
+	       <if test="buyerMessage!=null">
+	        buyer_message=#{buyerMessage},
+	      </if>
+	        <if test="buyerNick!=null">
+	        buyer_nick=#{buyerNick},
+	      </if>
+	        <if test="buyerRate!=null">
+	        buyer_rate=#{buyerRate},
+	      </if>
+	        <if test="state!=null">
+	        state=#{state},
+	      </if>
+	        <if test="shippingName!=null">
+	        shipping_name=#{shippingName},
+	      </if>
+	       <if test="shippingCode!=null">
+	        shipping_code=#{shippingCode},invoiceHand
+	      </if>
+	       <if test="invoiceHand!=null">
+	        invoice_hand=#{invoiceHand},
+	      </if>
+	       <if test="isRegister!=null">
+	        is_register=#{isRegister},
+	      </if>
+	       <if test="receiverId!=null">
+	        receiver_id=#{receiverId},
+	      </if>
+	       <if test="giveQb!=null">
+	        give_qb=#{giveQb},
+	      </if>
+	        <if test="refundInfo!=null">
+	       refund_info=#{refundInfo},
+	      </if>
+	        <if test="qbDed!=null">
+	        qb_ded=#{qbDed},
+	      </if>
+	      <if test="refund!=null">
+	        refund=#{refund}
+	      </if>
+	     </set>
+	     where user_id=#{userId}
+	</update>
 	
 	<delete id="emptyCart">
-	  delete from cart where user_id=#{userId}
+	  delete from cart where order_id=#{orderId}
 	</delete>
 	
 	<insert id="createOrder" parameterType="java.lang.String">
-	   insert into ordera(order_id)values(#{orderId})
+	   insert into ordera(order_id,user_id)values(#{orderId},#{userId})
 	</insert>
 	
 	

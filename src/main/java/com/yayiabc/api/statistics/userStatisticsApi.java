@@ -1,6 +1,6 @@
 package com.yayiabc.api.statistics;
 
-public interface UserStatisticsApi {
+public interface userStatisticsApi {
 	/**
      * @api {get} http://47.93.48:8080/api/userStatistics/query （后台）电商用户统计
      * @apiName query

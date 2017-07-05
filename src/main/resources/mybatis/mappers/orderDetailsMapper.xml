@@ -3,53 +3,62 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yayiabc.http.mvc.dao.OrderDetailsDao">
+	<resultMap type="Ordera" id="o">
+		<id property="orderId" column="order_id" />
+		<collection property="orderitemList" ofType="OrderItem">
+			<id property="itemId" column="item_id" />
+			<result property="itemName" column="item_name" />
+			<result property="picPath" column="pic_path" />
+		</collection>
+	</resultMap>
+
 	<!-- 开始 -->
 	<resultMap type="Ordera" id="orderDetailsResultMap">
 		<!-- 订单表 -->
 		<!-- <collection property="orderaList" ofType="Ordera"> -->
-			<id property="orderId" column="order_id" />
-			<result property="user_id" column="userId" />
-			<result property="shippingCode" column="shipping_code" />
-			<result property="created" column="created" />
-			<result property="state" column="state" />
-			<result property="actualPay" column="actual_pay" />
-			<result property="qbDed" column="qb_ded" />
-			<result property="totalFee" column="total_fee" />
-			<!-- //订单商品表 -->
-			<collection property="orderitemList" ofType="OrderItem">
-				<id property="itemId" column="item_id" />
-				<result property="picPath" column="pic_path" />
-				<result property="num" column="num" />
-				<result property="price" column="price" />
-				<result property="itemId" column="order_item" />
-				<result property="itemPropertyNamea" column="item_property_namea" />
-				<result property="itemPropertyNameb" column="item_property_nameb" />
-				<result property="itemPropertyNamec" column="item_property_namec" />
+		<id property="orderId" column="order_id" />
+		<result property="user_id" column="userId" />
+		<result property="shippingCode" column="shipping_code" />
+		<result property="created" column="created" />
+		<result property="state" column="state" />
+		<result property="actualPay" column="actual_pay" />
+		<result property="qbDed" column="qb_ded" />
+		<result property="totalFee" column="total_fee" />
+		<!-- //订单商品表 -->
+		<collection property="orderitemList" ofType="OrderItem">
+			<id property="itemId" column="item_id" />
+			<result property="picPath" column="pic_path" />
+			<result property="num" column="num" />
+			<result property="price" column="price" />
+			<result property="itemId" column="order_item" />
+			<result property="itemPropertyNamea" column="item_property_namea" />
+			<result property="itemPropertyNameb" column="item_property_nameb" />
+			<result property="itemPropertyNamec" column="item_property_namec" />
 
-				<!-- 商品表 信息表 -->
-				<association property="itemInfo"
-					javaType="com.yayiabc.http.mvc.pojo.jpa.ItemInfo">
-					<id property="itemId" column="item_id" />
-					<result property="itemName" column="item_name" />
-					<!-- 商品属性表 -->
-					<!-- <association property="itemPnamea" javaType="com.yayiabc.http.mvc.pojo.jpa.ItemProperty"> 
-						<id property="itemPropertyId" column="item_property_id" /> <result property="itemPropertyName" 
-						column="item_property_name" /> <商品属性详情表 <collection property="itempropertydList" 
-						ofType="ItemPropertyd"> <id property="itemPdid" column="item_pdid" /> <result 
-						property="itemPparam" column="item_pparam" /> </collection> </association> 
-						test1 start 商品属性表 <association property="itemPnameb" javaType="com.yayiabc.http.mvc.pojo.jpa.ItemProperty"> 
-						<result property="itemPropertyName" column="item_property_name" /> <商品属性详情表 
-						<collection property="itempropertydList" ofType="ItemPropertyd"> <id property="itemPdid" 
-						column="item_pdid" /> <result property="itemPparam" column="item_pparam" 
-						/> </collection> </association> end test2 start 商品属性表 <association property="itemPnamec" 
-						javaType="com.yayiabc.http.mvc.pojo.jpa.ItemProperty"> <result property="itemPropertyName" 
-						column="item_property_name" /> <商品属性详情表 <collection property="itempropertydList" 
-						ofType="ItemPropertyd"> <id property="itemPdid" column="item_pdid" /> <result 
-						property="itemPparam" column="item_pparam" /> </collection> </association> -->
-					<!-- end -->
-				</association>
-			</collection>
+			<!-- 商品表 信息表 -->
+			<association property="itemInfo"
+				javaType="com.yayiabc.http.mvc.pojo.jpa.ItemInfo">
+				<id property="itemId" column="item_id" />
+				<result property="itemName" column="item_name" />
+				<!-- 商品属性表 -->
+				<!-- <association property="itemPnamea" javaType="com.yayiabc.http.mvc.pojo.jpa.ItemProperty"> 
+					<id property="itemPropertyId" column="item_property_id" /> <result property="itemPropertyName" 
+					column="item_property_name" /> <商品属性详情表 <collection property="itempropertydList" 
+					ofType="ItemPropertyd"> <id property="itemPdid" column="item_pdid" /> <result 
+					property="itemPparam" column="item_pparam" /> </collection> </association> 
+					test1 start 商品属性表 <association property="itemPnameb" javaType="com.yayiabc.http.mvc.pojo.jpa.ItemProperty"> 
+					<result property="itemPropertyName" column="item_property_name" /> <商品属性详情表 
+					<collection property="itempropertydList" ofType="ItemPropertyd"> <id property="itemPdid" 
+					column="item_pdid" /> <result property="itemPparam" column="item_pparam" 
+					/> </collection> </association> end test2 start 商品属性表 <association property="itemPnamec" 
+					javaType="com.yayiabc.http.mvc.pojo.jpa.ItemProperty"> <result property="itemPropertyName" 
+					column="item_property_name" /> <商品属性详情表 <collection property="itempropertydList" 
+					ofType="ItemPropertyd"> <id property="itemPdid" column="item_pdid" /> <result 
+					property="itemPparam" column="item_pparam" /> </collection> </association> -->
+				<!-- end -->
+			</association>
 		<!-- </collection> -->
+		 </collection> 
 	</resultMap>
 	<select id="orderDetailsShow" parameterType="java.util.Map"
 		resultMap="orderDetailsResultMap">
@@ -74,16 +83,16 @@
 			<if test="state !=null">
 				and orde.state=${state}  <!-- 待付款 -->
 			</if>
-       
+
 		</where>
-		 limit ${currentPage},${numberPerpage}
+		limit ${currentPage},${numberPerpage}
 	</select>
-	
-	
+
+
 	<select id="queryCount" parameterType="java.util.Map"
 		resultType="int">
 		SELECT
-		 count(1)
+		count(1)
 		FROM
 		USER us JOIN
 		ordera orde ON us.user_id=orde.user_id JOIN order_item
@@ -103,30 +112,58 @@
 		</where>
 	</select>
 	<!-- //取消订单 -->
+	
 	<update id="cancel">
-	  update ordera set state=0 where order_id=#{orderId}
+		update from ordera
+		set state=0
+		where order_id=#{orderId}
 	</update>
 	<!-- //确定收货 -->
-	
+
 	<update id="confirmReceipt">
-	  update  ordera 
-	    set state=3
-	     where order_id=#{orderId}
+		update from ordera
+		set state=3
+		where order_id=#{orderId}
 	</update>
-	
-	<resultMap type="Ordera" id="o">
-	  <id property="orderId" column="order_id"/>
-	  <collection property="orderitemList" ofType="OrderItem">
-	     <id property="itemId" column="item_id"/>
-	     <result property="itemName" column="item_name"/>
-	      <result property="picPath" column="pic_path"/>
-	  </collection>
-	</resultMap>
-	 <select id="showComItem" resultMap="o">
-	   SELECT orde_it.order_id,orde_it.item_id,orde_it.item_name,orde_it.pic_path  
-	  FROM 
-	  ordera orde JOIN order_item orde_it ON orde.order_id=orde_it.order_id
-	  WHERE
-	  orde.order_id=#{showComItem}
-	 </select>
+
+
+	<select id="showComItem" resultMap="o">
+		SELECT orde_it.order_id,orde_it.item_id,orde_it.item_name,orde_it.pic_path
+		FROM
+		ordera orde JOIN order_item orde_it ON orde.order_id=orde_it.order_id
+		WHERE
+		orde.order_id=#{showComItem}
+	</select>
+	<!-- //makeSureCom 确定评论 -->
+	<insert id="makeSureCom">
+		insert into comments(user_id,item_id,order_id,comment_grade,comment_content)
+		values(
+		#{userId},#{itemId} ,#{orderId},#{commentGrade} ,#{commentContent}
+		)
+	</insert>
+	 <resultMap type="Ordera" id="q">
+	   <!-- 订单表 -->
+		<!-- <collection property="orderaList" ofType="Ordera"> -->
+		<id property="orderId" column="order_id" />
+		<result property="user_id" column="userId" />
+		<result property="shippingCode" column="shipping_code" />
+		<result property="created" column="created" />
+		<result property="state" column="state" />
+		<result property="actualPay" column="actual_pay" />
+		<result property="qbDed" column="qb_ded" />
+		<!-- //订单商品表 -->
+		<collection property="orderitemList" ofType="OrderItem">
+			<id property="itemId" column="item_id" />
+			<result property="num" column="num" />
+			<result property="price" column="price" />
+			<result property="itemId" column="order_item" />
+		 </collection> 
+	 </resultMap>
+	<select id="queryItemDetails" resultMap="q">
+	   select orde_it.num,orde_it.price,orde_it.item_id,orde_it.item_name 
+	   from 
+	   ordera orde join order_item orde_it on orde.order_id=orde_it.order_id
+	   where
+	   orde.order_id=#{orderId}
+	</select>
 </mapper>

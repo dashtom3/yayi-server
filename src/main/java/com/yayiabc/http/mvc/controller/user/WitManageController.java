@@ -2,7 +2,6 @@ package com.yayiabc.http.mvc.controller.user;
 
 import java.util.List;
 
-import javax.management.Query;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -21,18 +20,17 @@ import com.yayiabc.http.mvc.service.WitManageService;
 @RequestMapping("api/witManage")
 public class WitManageController {
      @Autowired
-     //閺勫墽銇氶幓鎰箛
+     //显示提现
      private WitManageService witManageService;
      @RequestMapping("showWit")
      @ResponseBody
      public  DataWrapper<With> showWit(
-    		 @RequestParam(value="token") String token,
-    		 @RequestParam(value="phone") String phone
+    		 @RequestParam(value="token") String token
     		 ){
-    	 return witManageService.showWit(phone);
+    	 return witManageService.showWit(token);
      }
      
-     //閹绘劒姘﹂幓鎰箛閻㈠疇顕�
+     //提交提现申请
      @RequestMapping("submitWit")
      @ResponseBody//real_name,type,anumber,cashMoney,phone
      public  DataWrapper<Void> submitWit(
@@ -51,10 +49,11 @@ public class WitManageController {
     	    	return witManageService.submitWit(with);
     	    }
     	    DataWrapper<Void> dataWrapper= new DataWrapper<Void>();
-    	    dataWrapper.setMsg("妤犲矁鐦夋宀冪槈閻礁銇戠拹锟�");
+    	    dataWrapper.setMsg("验证验证码失败");
     	    return dataWrapper;
      }
      
+     //获取验证码
      @ResponseBody
      @RequestMapping("gitVcode")
      public  void gitVcode(
@@ -94,7 +93,7 @@ public class WitManageController {
      @ResponseBody
      public  DataWrapper<List<With>> query(
     		 //@RequestParam(value="token") String token,
-    		 @RequestParam(value="message",required=false) String message , 
+    		 @RequestParam(value="message",required=false) String message ,  //姓名  或者手机号
     		 
     		 @RequestParam(value="state",required=false) Integer state
     		 ){

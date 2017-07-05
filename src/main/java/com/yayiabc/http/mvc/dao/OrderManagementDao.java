@@ -8,7 +8,6 @@ import org.apache.ibatis.annotations.Param;
 
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
-import com.yayiabc.http.mvc.pojo.jpa.Refund;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 
 public interface OrderManagementDao {
@@ -35,7 +34,7 @@ public interface OrderManagementDao {
 	String queryUser(String orederId);
     
 	//
-	int userBalance(String userId);
+	int userBalance(String userId); //
 	
     //仓库发货
 	int warehouseDelivery(@Param("userId")String userId,

@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
-import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Cart;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
@@ -39,10 +38,11 @@ public interface PlaceOrderDao {
 	//伪清空购物车
 	int  emptyCart(@Param("userId")String userId);
 	
-    //创建一个空order
-	void createOrder(@Param("orderId")String orderId);	  
+    //创建一个空orderf
+	void createOrder(@Param("orderId")String orderId,@Param("userId")String userId);	  
 	
 	 
 	//用户不用默认  使用其他收货地址时
 	public Receiver  upateAddress(@Param("receiverId")Integer receiverId);
+
 }

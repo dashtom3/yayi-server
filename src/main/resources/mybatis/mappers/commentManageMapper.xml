@@ -36,15 +36,20 @@
 		iif.item_name,oim.item_property_namea,oim.item_property_nameb,oim.item_property_namec
 		,
 		comm.comment_content,comm.comment_grade,comm.order_id,comm.user_id,comm.recovery_state,comm.reply_content
+		,comm.item_id
 		FROM
 		ordera orde,order_item oim ,COMMENTS comm,item_info iif,item_detail idl
-		 <where>
+		<where>
 		 orde.order_id=oim.order_id AND oim.item_id=comm.item_id AND comm.item_id=iif.item_id
 		  AND iif.item_id=idl.item_id 
 		   <if test="orderId!=null and orderId!=''">
 		     and orde.order_id=#{orderId} 
 		  </if>
+		  <!-- <if test="phone!=null">
+		   and =#{orderId} 
+		  </if> -->
 		  <if test="recoveryState!=null and recoveryState!= '' ">
+		  
 		     and comm.recovery_state=#{recoveryState} 
 		 </if>
 		<!-- <choose> -->

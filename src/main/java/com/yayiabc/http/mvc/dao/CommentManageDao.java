@@ -14,10 +14,8 @@ public interface CommentManageDao{
 
 	List<Ordera> commentM(
 			@Param("orderId")String  orderId,
-			
-			
 			@Param("recoveryState")String  recoveryState,
-			
+			@Param("phone")String  phone,
 			@Param("currentPage")Integer currentPage,
 			@Param("numberPerPage")Integer numberPerpage
 			);

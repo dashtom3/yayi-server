@@ -9,7 +9,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import java.util.List;
 import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.http.mvc.pojo.model.SaleStatistics;
+import com.yayiabc.http.mvc.pojo.model.saleStatistics;
 import com.yayiabc.http.mvc.service.SaleStatisticsService;
 
 @Controller
@@ -24,7 +24,7 @@ public class SaleStatisticsController {
 	 */
 	@RequestMapping(value="query",method=RequestMethod.GET)
 	@ResponseBody
-	public DataWrapper<List<SaleStatistics>> query(
+	public DataWrapper<List<saleStatistics>> query(
 			@RequestParam(value="phone",required=false)String phone,
 			@RequestParam(value="trueName",required=false)String trueName,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,

@@ -43,19 +43,17 @@
  	</delete>
  	
  	<delete id="deleteItemValue">
- 		delete from item_value where item_sKU=#{itemSKU}
+ 		delete from item_value where item_id=#{itemId}
  	</delete>
- 	
-
  	
  	<insert id="insertItemValue">
  		insert into item_value
  		values
- 		(#{itemPropertySixValue},#{itemPropertySixName},#{itemPropertyFiveValue},#{itemPropertyFiveName},#{itemPropertyFourValue},#{itemPropertyFourName},#{itemPropertyThreeValue},#{itemPropertyNameThree},#{itemPropertyTwoValue},#{itemPropertyNameTwo},#{canUse},#{stockNum},#{itemQb},#{tiChen},#{itemSkuPrice},null,#{itemId},#{itemPropertyName},#{itemPropertyInfo})
+ 		(#{itemPropertySixValue},#{itemPropertySixName},#{itemPropertyFiveValue},#{itemPropertyFiveName},#{itemPropertyFourValue},#{itemPropertyFourName},#{itemPropertyThreeValue},#{itemPropertyNameThree},#{itemPropertyTwoValue},#{itemPropertyNameTwo},#{canUse},#{stockNum},#{itemQb},#{tiChen},#{itemSkuPrice},#{itemSKU},null,#{itemId},#{itemPropertyName},#{itemPropertyInfo})
  	</insert>
  	
  	<insert id="insertItemInfo">
- 		insert into item_info values(#{isThrow},#{itemId},#{itemName},#{itemBrandId},#{itemPrice},0,1,#{oneClassify},#{twoClassify},#{threeClassify},now(),now());
+ 		insert into item_info values(#{isThrow},#{itemId},#{itemName},#{itemBrand.itemBrandId},#{itemPrice},0,1,#{oneClassify},#{twoClassify},#{threeClassify},now(),now());
  	</insert>
  	
  	<insert id="insertItemDetail">
@@ -75,14 +73,14 @@
  	<update id="updateItemDetail">
  		update item_detail set item_desc=#{itemDesc},item_use=#{itemUse},video=#{video},item_pica=#{itemPica},item_picb=#{itemPicb},item_picc=#{itemPicc},item_picd=#{itemPicd},
  		item_pice=#{itemPice},store_item_id=#{storeItemId},apparatus_type=#{apparatusType},unit=#{unit},produce_pompany=#{producePompany},register_id=#{registerId},register_date=#{registerDate},
- 		item_packing=#{itemPacking},item_levels=#{itemLevels},item_range=#{itemRange},updated=now()
+ 		item_packing=#{itemPacking},item_levels=#{itemLevels},item_range=#{itemRange},updated=now() where item_id=#{itemId}
  	</update>
  	
  	<update id="updateItemValue">
- 		update item_value set can_use=#{canUse},stock_num=#{stockNum},item_qb=#{itemQb},ti_chen=#{tiChen},item_sku_price=#{itemSkuPrice}
+ 		update item_value set can_use=#{canUse},stock_num=#{stockNum},item_qb=#{itemQb},ti_chen=#{tiChen},item_sku_price=#{itemSkuPrice} where item_id=#{itemId}
  	</update>
  	
- 	<select id="getMinPriceFromItemValue">
+ 	<select id="getMinPriceFromItemValue" resultType="int">
  		SELECT MIN(item_sku_price) FROM item_value WHERE item_id=#{itemId}
  	</select>
  	

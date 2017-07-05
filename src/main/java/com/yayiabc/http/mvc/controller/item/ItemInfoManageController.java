@@ -70,10 +70,9 @@ public class ItemInfoManageController {
 	@RequestMapping("delete")
 	@ResponseBody
 	public DataWrapper<Void> delete(
-			@RequestParam(value="itemSKU") String itemSKU,
 			@RequestParam(value="itemId") String itemId
 			){
-		return itemInfoManageService.delete(itemSKU,itemId);
+		return itemInfoManageService.delete(itemId);
 	}
 	
 	/**

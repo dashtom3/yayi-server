@@ -5,10 +5,10 @@ import org.springframework.stereotype.Repository;
 
 import java.util.List;
 import com.yayiabc.common.utils.Page;
-import com.yayiabc.http.mvc.pojo.model.SaleStatistics;
+import com.yayiabc.http.mvc.pojo.model.saleStatistics;
 @Repository
 public interface SaleStatisticsDao {
-	List<SaleStatistics> query(@Param("phone")String phone,@Param("trueName")String trueName,@Param("page")Page page);
+	List<saleStatistics> query(@Param("phone")String phone,@Param("trueName")String trueName,@Param("page")Page page);
 
 	int getCount(@Param("phone")String phone,@Param("trueName")String trueName);
 }

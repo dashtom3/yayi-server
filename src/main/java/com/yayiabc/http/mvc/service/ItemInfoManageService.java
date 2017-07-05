@@ -16,7 +16,7 @@ public interface ItemInfoManageService {
 
 	DataWrapper<Void> down(String itemId);
 
-	DataWrapper<Void> delete(String itemSKU,String itemId);
+	DataWrapper<Void> delete(String itemId);
 
 	
 

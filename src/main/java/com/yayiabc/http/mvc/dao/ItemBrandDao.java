@@ -68,5 +68,7 @@ public interface ItemBrandDao{
 
 	public List<String> getItemPropertyInfoF(String itemId);
 
+	public String getItemSKUByPrice(Integer itemPrice);
+
 }
 

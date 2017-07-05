@@ -109,6 +109,8 @@ public class ItemBrandServiceImpl implements ItemBrandService{
         propertyList.add(propertyF);
         itemInfo.setPropertyList(propertyList);
         dataWrapper.setData(itemInfo);
+        String msg=itemBrandDao.getItemSKUByPrice(itemInfo.getItemPrice());
+        dataWrapper.setMsg(msg);
         dataWrapper.setNum(num);
         return dataWrapper;
     }

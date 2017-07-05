@@ -193,6 +193,10 @@ WHERE s.item_id=#{itemId}
 		insert into item_brand values(null,#{itemBrandLogo},#{itemBrandHome},#{itemBrandName},now(),now())
 	</insert>
 	
+	<select id="getItemSKUByPrice" resultType="string">
+		select item_sKU from item_value where item_sku_price=#{itemPrice}
+	</select>
+	
 	<select id="getItemPropertyNameA" resultType="string">
 		select item_property_name from item_value where item_id=#{itemId} group by item_property_name
 	</select>

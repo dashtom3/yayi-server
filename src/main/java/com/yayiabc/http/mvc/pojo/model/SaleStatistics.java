@@ -1,6 +1,6 @@
 package com.yayiabc.http.mvc.pojo.model;
 
-public class SaleStatistics {
+public class saleStatistics {
 	private Integer saleId;
 
 	private String phone;
@@ -71,11 +71,11 @@ public class SaleStatistics {
 		this.latelyOrderDate = latelyOrderDate;
 	}
 
-	public SaleStatistics() {
+	public saleStatistics() {
 		super();
 	}
 
-	public SaleStatistics(Integer saleId, String phone, String trueName,
+	public saleStatistics(Integer saleId, String phone, String trueName,
 			Integer money, Integer saleAllMoney, Integer bindUserNum,
 			String latelyOrderDate) {
 		super();

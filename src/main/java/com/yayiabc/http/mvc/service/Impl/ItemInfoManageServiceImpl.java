@@ -1,23 +1,21 @@
 package com.yayiabc.http.mvc.service.Impl;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 
-import org.apache.commons.collections.map.HashedMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.sun.xml.internal.xsom.impl.scd.Iterators.Map;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.dao.ItemInfoManageDao;
 import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
 import com.yayiabc.http.mvc.pojo.jpa.ItemDetail;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
-import com.yayiabc.http.mvc.pojo.jpa.ItemProperty;
 import com.yayiabc.http.mvc.pojo.jpa.ItemValue;
 import com.yayiabc.http.mvc.service.ItemInfoManageService;
+
+
 @Service
 public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 	
@@ -61,15 +59,12 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 	}
 
 	@Override
-	public DataWrapper<Void> delete(String itemSKU,String itemId) {
+	public DataWrapper<Void> delete(String itemId) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		itemInfoManageDao.deleteItemValue(itemSKU);
-		Integer itemNum=itemInfoManageDao.queryItemNum(itemSKU);
-		itemInfoManageDao.deleteItemStock(itemSKU);
-		if(itemNum==0){
-			itemInfoManageDao.deleteItemDetail(itemId);
-			itemInfoManageDao.deleteItemInfo(itemId);
-		}
+		itemInfoManageDao.deleteItemValue(itemId);
+		itemInfoManageDao.deleteItemStock(itemId);
+		itemInfoManageDao.deleteItemDetail(itemId);
+		itemInfoManageDao.deleteItemInfo(itemId);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
 	}
@@ -123,10 +118,10 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 			itemDetail.setUpdated(new Date());
 			itemInfo.setItemDetail(itemDetail);
 			itemInfo.setItemBrand(itemBrand);
-			itemInfoManageDao.insertItemDetail(itemDetail);
 			Integer itemPrice =itemInfoManageDao.getMinPriceFromItemValue(itemId);
 			itemInfo.setItemPrice(itemPrice);
 			itemInfoManageDao.insertItemInfo(itemInfo);
+			itemInfoManageDao.insertItemDetail(itemDetail);
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			return dataWrapper;
 	}
@@ -184,10 +179,10 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 		itemDetail.setUpdated(new Date());
 		itemInfo.setItemDetail(itemDetail);
 		itemInfo.setItemBrand(itemBrand);
-		itemInfoManageDao.updateItemDetail(itemDetail);
 		Integer itemPrice =itemInfoManageDao.getMinPriceFromItemValue(itemId);
 		itemInfo.setItemPrice(itemPrice);
 		itemInfoManageDao.updateItemInfo(itemInfo);
+		itemInfoManageDao.updateItemDetail(itemDetail);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
 	}

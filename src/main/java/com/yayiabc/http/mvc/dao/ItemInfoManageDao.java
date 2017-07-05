@@ -20,8 +20,9 @@ public interface ItemInfoManageDao {
 
 	void deleteItemDetail(String itemId);
 
-	void deleteItemValue(String itemSKU);
+	void deleteItemValue(String itemId);
 
+	void deleteItemStock(String itemId);
 
 
 	void insertItemInfo(ItemInfo itemInfo);
@@ -36,7 +37,6 @@ public interface ItemInfoManageDao {
 
 	Integer getMinPriceFromItemValue(String itemId);
 
-	void deleteItemStock(String itemId);
 
 	void deleteComments(String itemId);
 

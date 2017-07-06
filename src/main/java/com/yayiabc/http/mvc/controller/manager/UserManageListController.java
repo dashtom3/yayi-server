@@ -34,8 +34,7 @@ public class UserManageListController {
 			@RequestParam(value="type",required=false)Integer type,
 			@RequestParam(value="saleName",required=false)String saleName,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
-    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-			@RequestParam(value="token",required=true)Integer token
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
 		System.out.println("!!"+trueName);
 		return userManageListService.userlist(phone, trueName, companyName, isBindSale, type, saleName,currentPage,numberPerPage);
@@ -48,8 +47,7 @@ public class UserManageListController {
 	@ResponseBody
 	public DataWrapper<List<SaleInfo>> salelist(
 			@RequestParam(value="salePhone",required=false)String salePhone,
-			@RequestParam(value="saleName",required=false)String saleName,
-			@RequestParam(value="token",required=true)Integer token
+			@RequestParam(value="saleName",required=false)String saleName
 	){
 		return userManageListService.salelist(salePhone, saleName);
 	}
@@ -61,8 +59,7 @@ public class UserManageListController {
 	@ResponseBody
 	public DataWrapper<Void> bind(
 			@RequestParam(value="salePhone",required=true)String salePhone,
-			@RequestParam(value="userPhone",required=true)String userPhone,
-			@RequestParam(value="token",required=true)Integer token
+			@RequestParam(value="userPhone",required=true)String userPhone
 	){
 		return userManageListService.bind(salePhone, userPhone);
 	}
@@ -75,8 +72,7 @@ public class UserManageListController {
 	@ResponseBody
 	public DataWrapper<Void> disBind(
 			@RequestParam(value="salePhone",required=true)String salePhone,
-			@RequestParam(value="userPhone",required=true)String userPhone,
-			@RequestParam(value="token",required=true)Integer token
+			@RequestParam(value="userPhone",required=true)String userPhone
 	){
 		return userManageListService.disBind(salePhone, userPhone);
 	}
@@ -87,8 +83,7 @@ public class UserManageListController {
 	@RequestMapping(value="detail",method=RequestMethod.GET)
 	@ResponseBody
 	public DataWrapper<UserAllInfo> detail(
-			@RequestParam(value="phone",required=true)String phone,
-			@RequestParam(value="token",required=true)Integer token
+			@RequestParam(value="phone",required=true)String phone
 	){
 		return userManageListService.detail(phone);
 	}

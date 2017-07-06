@@ -12,7 +12,6 @@ public interface saleStatisticsApi {
      * @apiParam {String} trueName 姓名（非必须）
      * @apiParam {int} currentPage （非必须）
      * @apiParam {int} numberPerPage （非必须）  
-     * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK

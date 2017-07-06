@@ -33,8 +33,7 @@ public class UserCertificationListController {
 			@RequestParam(value="type",required=false)Integer type,
 			@RequestParam(value="state",required=false)Integer state,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
-    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-			@RequestParam(value="token",required=true)String token
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
 		
 		return userCertificationListService.list(phone, trueName, companyName, type, state,currentPage,numberPerPage);
@@ -48,8 +47,7 @@ public class UserCertificationListController {
 	public DataWrapper<Void> verify(
 			@RequestParam(value="phone",required=true)String phone,
 			@RequestParam(value="state",required=true)Integer state,
-			@RequestParam(value="failReason",required=false)String failReason,
-			@RequestParam(value="token",required=true)String token
+			@RequestParam(value="failReason",required=false)String failReason
 	){
 		return userCertificationListService.verify(phone, state, failReason);			
 	}

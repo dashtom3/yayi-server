@@ -28,8 +28,7 @@ public class SaleStatisticsController {
 			@RequestParam(value="phone",required=false)String phone,
 			@RequestParam(value="trueName",required=false)String trueName,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
-    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-    		@RequestParam(value="token",required=true)String token
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
 		return saleStatisticsService.query(phone, trueName, currentPage, numberPerPage);
 	}

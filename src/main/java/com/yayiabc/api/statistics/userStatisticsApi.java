@@ -14,7 +14,6 @@ public interface userStatisticsApi {
      * @apiParam {String} endDate 结束时间（非必须，不填时传空值，格式'yyyy-MM-dd hh:mm'）    
      * @apiParam {int} currentPage （非必须）
      * @apiParam {int} numberPerPage （非必须）  
-     * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK

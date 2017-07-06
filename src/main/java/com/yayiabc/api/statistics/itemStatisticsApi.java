@@ -14,7 +14,6 @@ public interface itemStatisticsApi {
      * @apiParam {String} itemBrandName 品牌名称（非必须，全部传空值）
      * @apiParam {int} currentPage （非必须）
      * @apiParam {int} numberPerPage （非必须） 
-     * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK

@@ -31,8 +31,7 @@ public class ItemStatisticsController {
 			@RequestParam(value="itemSKU",required=false)String itemSKU,
 			@RequestParam(value="itemBrandName",required=false)String itemBrandName,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
-    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-			@RequestParam(value="token",required=true)String token
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
 		return itemStatisticsService.query(itemName, itemId, itemSKU, itemBrandName,currentPage,numberPerPage);
 	}

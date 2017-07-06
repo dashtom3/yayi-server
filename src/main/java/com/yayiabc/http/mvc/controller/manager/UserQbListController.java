@@ -31,8 +31,8 @@ public class UserQbListController {
 			@RequestParam(value = "startDate", required = false) String startDate,
 			@RequestParam(value = "endDate", required = false) String endDate,
 			@RequestParam(value = "currentPage", required = false, defaultValue = "1") Integer currentPage,
-			@RequestParam(value = "numberPerPage", required = false, defaultValue = "10") Integer numberPerPage,
-			@RequestParam(value = "token", required = true) String token) {
+			@RequestParam(value = "numberPerPage", required = false, defaultValue = "10") Integer numberPerPage
+			) {
 		return userQbListService.list(phone, startDate, endDate, currentPage,
 				numberPerPage);
 	}
@@ -44,8 +44,8 @@ public class UserQbListController {
 	@ResponseBody
 	public DataWrapper<Void> update(
 			@RequestParam(value = "phone", required = true) String phone,
-			@RequestParam(value = "qbBalance", required = true) Integer qbBalance,
-			@RequestParam(value = "token", required = true) String token) {
+			@RequestParam(value = "qbBalance", required = true) Integer qbBalance
+			) {
 		return userQbListService.update(qbBalance, phone);
 	}
 }

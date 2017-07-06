@@ -15,7 +15,6 @@ public interface UserCertificationListApi {
      * @apiParam {int} state 状态（非必须，全部传空值，1待审核，2审核通过，3，审核未通过）
      * @apiParam {int} currentPage （非必须）
      * @apiParam {int} numberPerPage （非必须） 
-     * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -81,7 +80,6 @@ public interface UserCertificationListApi {
      * @apiParam {String} phone 手机号码（必须）
      * @apiParam {int} state 状态（必须，2审核通过，3，审核未通过）
      * @apiParam {String} failReason 未通过理由（非必须，state为3时传值）
-     * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK

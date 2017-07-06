@@ -34,8 +34,7 @@ public class SaleIncomeListController {
 			@RequestParam(value="startDate",required=false)String startDate,
 			@RequestParam(value="endDate",required=false)String endDate,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
-    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-			@RequestParam(value="token",required=true)String token
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
 		return saleIncomeListService.query(saleId, saleName, salePhone, orderId, signLateSeven, getState, startDate, endDate, currentPage, numberPerPage);
 	}
@@ -48,8 +47,7 @@ public class SaleIncomeListController {
 	public DataWrapper<SaleIncomeVo> detail(
 			@RequestParam(value="saleId",required=true)String saleId,
 			@RequestParam(value="userId",required=true)String userId,
-			@RequestParam(value="orderId",required=true)String orderId,
-			@RequestParam(value="token",required=true)String token
+			@RequestParam(value="orderId",required=true)String orderId
 	){
 		return saleIncomeListService.detail(saleId, userId, orderId);
 	}

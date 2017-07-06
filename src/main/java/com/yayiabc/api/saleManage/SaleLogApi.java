@@ -1,10 +1,8 @@
-package com.yayiabc.api.user;
-/**
- * Created by xiaojiang on 2017/5/26.
- */
-public interface UserLogApi {
-    /**
-     * @api {post} http://192.168.1.103:8081/api/user/register 用户注册
+package com.yayiabc.api.saleManage;
+
+public interface SaleLogApi {
+	 /**
+     * @api {post} http://47.93.48:8080/api/saleLog/register （创客系统）销售员注册
      * @apiName register
      * @apiGroup userLog
      * @apiVersion 0.1.0
@@ -18,32 +16,7 @@ public interface UserLogApi {
      *  {
      *  callStatus:"SUCCEED",
      *  errorCode:"No_Error",
-     *  data:{
-     *      userId:"e58acb73-e33c-4798-ad14-5a827714c4a1",
-     *      phone: "13826545963",
-     *      pwd  :null,
-     *      identity: 2,
-     *      trueName:null,
-     *      idCard: null,
-     *      sex : 2,
-     *      userPic: null;
-     *      birthday :null,
-     *      qq  :   null,
-     *      address :null,
-     *      money   :0
-     *      isBand  : 1,
-     *      bindUserNum :0,
-     *      reflect :null,
-     *      bindUser :null,
-     *      certification null,
-     *      recieverList:null,
-     *      orderaList :null,
-     *      refundList :null,
-     *      cart : null,
-     *      commentList :null,
-     *      created :null,
-     *      updated :null,
-     * },
+     *  data:null,
      *  token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
      *  numberPerPage:0,
      *  currentPage:0,
@@ -69,11 +42,11 @@ public interface UserLogApi {
      * }
      *
      */
-
-    /**
-     * @api {post} http://192.168.1.103:8081/api/user/getVerifyCode 获取验证码
+	
+	/**
+     * @api {post} http://47.93.48:8080/api/saleLog/getVerifyCode （创客系统）获取验证码
      * @apiName getVerifyCode
-     * @apiGroup userLog
+     * @apiGroup saleLog
      * @apiVersion 0.1.0
      * @apiDescription 获取验证码
      *
@@ -111,9 +84,9 @@ public interface UserLogApi {
      *  }
      *
      */
-
-    /**
-     * @api {post} http://192.168.1.103:8081/api/user/noteLogin 短信登录
+	
+	/**
+     * @api {post} http://47.93.48:8080/api/saleLog/noteLogin （创客系统）短信登录
      * @apiName noteLogin
      * @apiGroup userLog
      * @apiVersion 0.1.0
@@ -127,38 +100,13 @@ public interface UserLogApi {
      * {
      * callStatus:"SUCCEED",
      * errorCode:"No_Error",
-     * data:{
-     *      userId:"e58acb73-e33c-4798-ad14-5a827714c4a1",
-     *      phone: "13826545963",
-     *      pwd  :null,
-     *      identity: 2,
-     *      trueName:"zhangsan",
-     *      idCard: null,
-     *      sex : 2,
-     *      userPic: image/system05.jpg;
-     *      birthday :"2017-05-23",
-     *      qq  :   "245722369",
-     *      address :"天津市滨海新区临港工业区临港生态饭店",
-     *      money   :12365
-     *      isBand  : 1,
-     *      bindUserNum :30,
-     *      reflect :null,
-     *      bindUser :null,
-     *      certification null,
-     *      recieverList:null,
-     *      orderaList :null,
-     *      refundList :null,
-     *      cart : null,
-     *      commentList :null,
-     *      created :null,
-     *      updated :null,
-     * },
+     * data:null,
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
      * numberPerPage:0,
      * currentPage:0,
      * totalNumber:0,
      * totalPage:0,
-     * num  :12  (购物车里面的商品数量),
+     * num  :0  ,
      * msg  :null  ,
      *  }
      *
@@ -178,11 +126,11 @@ public interface UserLogApi {
      *  }
      *
      */
-
-    /**
-     * @api {post} http://192.168.1.103:8081/api/user/pwdLogin 密码登录
+	
+	 /**
+     * @api {post} http://47.93.48:8080/api/saleLog/pwdLogin （创客系统）密码登录
      * @apiName pwdLogin
-     * @apiGroup userLog
+     * @apiGroup saleLog
      * @apiVersion 0.1.0
      * @apiDescription 密码登录
      *
@@ -194,32 +142,7 @@ public interface UserLogApi {
      * {
      * callStatus:"SUCCEED",
      * errorCode:"No_Error",
-     * data:{
-     *      userId:"e58acb73-e33c-4798-ad14-5a827714c4a1",
-     *      phone: "13826545963",
-     *      pwd  :null,
-     *      identity: 2,
-     *      trueName:"zhangsan",
-     *      idCard: null,
-     *      sex : 2,
-     *      userPic: image/system05.jpg;
-     *      birthday :"2017-05-23",
-     *      qq  :   "245722369",
-     *      address :"天津市滨海新区临港工业区临港生态饭店",
-     *      money   :12365
-     *      isBand  : 1,
-     *      bindUserNum :30,
-     *      reflect :null,
-     *      saleInfo :"wangwu",
-     *      certification null,
-     *      recieverList:null,
-     *      orderaList :null,
-     *      refundList :null,
-     *      cart : null,
-     *      commentList :null,
-     *      created :null,
-     *      updated :null,
-     * },
+     * data:null,
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
      * numberPerPage:0,
      * currentPage:0,
@@ -245,17 +168,11 @@ public interface UserLogApi {
      *  }
      *
      */
-
-    
-
-   
-   
-
-    /**
-     *
-     * @api {post} http://192.168.1.103:8081/api/user/reLogin 退出登录
+	
+	/**
+     * @api {post} http://47.93.48:8080/api/saleLog/reLogin （创客系统）退出登录
      * @apiName reLogin
-     * @apiGroup userLog
+     * @apiGroup saleLog
      * @apiVersion 0.1.0
      * @apiDescription 退出登录
      *
@@ -293,10 +210,10 @@ public interface UserLogApi {
      *
      */
 	
-	/**
-     * @api {post} http://192.168.1.103:8081/api/user/forgetPwd 忘记密码登录
+	 /**
+     * @api {post} http://47.93.48:8080/api/saleLog/forgetPwd （创客系统）忘记密码登录
      * @apiName forgetPwd
-     * @apiGroup userLog
+     * @apiGroup saleLog
      * @apiVersion 0.1.0
      * @apiDescription 忘记密码
      *
@@ -335,6 +252,4 @@ public interface UserLogApi {
      *  }
      *
      */
-
-    
 }

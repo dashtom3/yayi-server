@@ -14,7 +14,6 @@ public class SaleListApi {
      * @apiParam {int} isBindUser 是否绑定客户（非必须，全部传空值，1是，2否）
      * @apiParam {int} currentPage （非必须）
      * @apiParam {int} numberPerPage （非必须）  
-     * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -73,7 +72,6 @@ public class SaleListApi {
      * @apiParam {String} trueName 真实姓名（非必须）
      * @apiParam {String} companyName 公司名称（非必须）
      * @apiParam {int} isBind 是否绑定（必须，1未绑定，2绑定）
-     * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -126,7 +124,6 @@ public class SaleListApi {
      *
      * @apiParam {String} salePhone 销售员手机号码（必须）
      * @apiParam {String} userPhone 用户手机号码（必须）
-     * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      * HTTP/1.1 200 OK
@@ -169,7 +166,6 @@ public class SaleListApi {
      *
      * @apiParam {String} salePhone 销售员手机号码（必须）
      * @apiParam {String} userPhone 用户手机号码（必须）
-     * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      * HTTP/1.1 200 OK
@@ -213,7 +209,6 @@ public class SaleListApi {
      * @apiParam {String} phone 手机号码（必须）
      * @apiParam {int} currentPage （非必须）
      * @apiParam {int} numberPerPage （非必须）  
-     * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK

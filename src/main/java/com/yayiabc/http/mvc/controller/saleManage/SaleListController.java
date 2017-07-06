@@ -34,8 +34,7 @@ public class SaleListController {
 			@RequestParam(value="trueName",required=false)String trueName,
 			@RequestParam(value="isBindUser",required=false)Integer isBindUser,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
-    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-			@RequestParam(value="token",required=true)String token
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
 		return saleListService.query(saleId, phone, trueName,isBindUser, currentPage, numberPerPage);
 	}
@@ -51,8 +50,7 @@ public class SaleListController {
 			@RequestParam(value="companyName",required=false)String companyName,
 			@RequestParam(value="isBind",required=true)Integer isBind,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
-    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-			@RequestParam(value="token",required=true)String token
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
 		return saleListService.userlist(phone, trueName, companyName, isBind, currentPage, numberPerPage);
 	}
@@ -65,8 +63,7 @@ public class SaleListController {
 	public DataWrapper<SaleInfo> datail(
 			@RequestParam(value="phone",required=true)String phone,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
-    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-			@RequestParam(value="token",required=true)String token
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
 		return saleListService.detail(phone, currentPage, numberPerPage);
 	}
@@ -78,8 +75,7 @@ public class SaleListController {
 	@ResponseBody
 	public DataWrapper<Void> bind(
 			@RequestParam(value="salePhone",required=true)String salePhone,
-			@RequestParam(value="userPhone",required=true)String userPhone,
-			@RequestParam(value="token",required=true)Integer token
+			@RequestParam(value="userPhone",required=true)String userPhone
 	){
 		return userManageListService.bind(salePhone, userPhone);
 	}
@@ -91,8 +87,7 @@ public class SaleListController {
 	@ResponseBody
 	public DataWrapper<Void> disBind(
 			@RequestParam(value="salePhone",required=true)String salePhone,
-			@RequestParam(value="userPhone",required=true)String userPhone,
-			@RequestParam(value="token",required=true)Integer token
+			@RequestParam(value="userPhone",required=true)String userPhone
 	){
 		return userManageListService.disBind(salePhone, userPhone);
 	}

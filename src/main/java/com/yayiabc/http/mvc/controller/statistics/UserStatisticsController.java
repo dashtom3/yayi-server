@@ -31,8 +31,7 @@ public class UserStatisticsController {
 			@RequestParam(value="startDate",required=false)String startDate,
 			@RequestParam(value="endDate",required=false)String endDate,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
-    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-			@RequestParam(value="token",required=true)String token
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
 		return userStatisticsService.query(phone, trueName, startDate, endDate,currentPage,numberPerPage);
 	}

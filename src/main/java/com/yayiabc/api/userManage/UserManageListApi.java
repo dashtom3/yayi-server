@@ -16,7 +16,6 @@ public interface UserManageListApi {
      * @apiParam {String} saleName 销售名称（非必须）
      * @apiParam {int} currentPage （非必须）
      * @apiParam {int} numberPerPage （非必须）
-     * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -73,7 +72,6 @@ public interface UserManageListApi {
      *
      * @apiParam {String} salePhone 手机号码（非必须）
      * @apiParam {String} saleName 真实姓名（非必须）
-     * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -122,7 +120,6 @@ public interface UserManageListApi {
      *
      * @apiParam {String} salePhone 销售员手机号码（必须）
      * @apiParam {String} userPhone 用户手机号码（必须）
-     * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      * HTTP/1.1 200 OK
@@ -165,7 +162,6 @@ public interface UserManageListApi {
      *
      * @apiParam {String} salePhone 销售员手机号码（必须）
      * @apiParam {String} userPhone 用户手机号码（必须）
-     * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      * HTTP/1.1 200 OK
@@ -207,7 +203,6 @@ public interface UserManageListApi {
      * @apiDescription 获取用户详情
      *
      * @apiParam {String} phone 手机号码（必须）
-     * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK

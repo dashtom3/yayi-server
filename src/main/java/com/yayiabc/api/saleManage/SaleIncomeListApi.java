@@ -18,7 +18,6 @@ public interface SaleIncomeListApi {
      * @apiParam {String} endDate 结束时间（非必须，格式'yyyy-MM-dd'）     
      * @apiParam {int} currentPage （非必须）
      * @apiParam {int} numberPerPage （非必须）  
-     * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -84,7 +83,6 @@ public interface SaleIncomeListApi {
      * @apiParam {String} saleId 销售员编号（必须）
      * @apiParam {String} userId 用户编号（必须）
      * @apiParam {String} orderId 订单编号（必须）
-     * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK

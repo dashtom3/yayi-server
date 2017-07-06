@@ -2,7 +2,7 @@ package com.yayiabc.api.userManage;
 
 public interface UserManageListApi {
 	/**
-     * @api {get} http://47.93.48:8080/api/userManageList/userlist （后台）获取用户信息列表
+     * @api {get} http://47.93.48.111:8080/api/userManageList/userlist （后台）获取用户信息列表
      * @apiName userlist
      * @apiGroup userManageList
      * @apiVersion 0.1.0
@@ -65,7 +65,7 @@ public interface UserManageListApi {
      */
 	
 	/**
-     * @api {get} http://47.93.48:8080/api/userManageList/salelist （后台）获取简略销售员信息列表
+     * @api {get} http://47.93.48.111:8080/api/userManageList/salelist （后台）获取简略销售员信息列表
      * @apiName salelist
      * @apiGroup userManageList
      * @apiVersion 0.1.0
@@ -114,7 +114,7 @@ public interface UserManageListApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48:8080/api/userManageList/bind （后台）绑定销售员
+     * @api {post} http://47.93.48.111:8080/api/userManageList/bind （后台）绑定销售员
      * @apiName bind
      * @apiGroup userManageList
      * @apiVersion 0.1.0
@@ -157,7 +157,50 @@ public interface UserManageListApi {
      */
 	
 	/**
-     * @api {get} http://47.93.48:8080/api/userManageList/detail （后台）获取用户详情
+     * @api {post} http://47.93.48.111:8080/api/userManageList/disBind （后台）取消绑定销售员
+     * @apiName disBind
+     * @apiGroup userManageList
+     * @apiVersion 0.1.0
+     * @apiDescription 取消绑定销售员
+     *
+     * @apiParam {String} salePhone 销售员手机号码（必须）
+     * @apiParam {String} userPhone 用户手机号码（必须）
+     * @apiParam {String} token 身份凭证（必须）
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     * callStatus:"SUCCEED",
+     * errorCode:"No_Error",
+     * data:null,
+     * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
+     * numberPerPage:0,
+     * currentPage:0,
+     * totalNumber:0,
+     * totalPage:0,
+     * num :null,
+     * msg :null,
+     *  }
+     *
+     * @apiSuccessExample {json} Error-Response:
+     * HTTP/1.1 200 OK
+     * {
+     * callStatus:"FAILED",
+     * errorCode:"Error",
+     * data:null,
+     * token:null,
+     * numberPerPage:0,
+     * currentPage:0,
+     * totalNumber:0,
+     * totalPage:0,
+     * num :null,
+     * msg :null,
+     *  }
+     *
+     */
+	
+	/**
+     * @api {get} http://47.93.48.111:8080/api/userManageList/detail （后台）获取用户详情
      * @apiName detail
      * @apiGroup userManageList
      * @apiVersion 0.1.0

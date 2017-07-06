@@ -88,4 +88,22 @@ public class UserManageListServiceImpl implements UserManageListService {
 		return dataWrapper;
 	}
 
+	@Override
+	public DataWrapper<Void> disBind(String salePhone, String userPhone) {
+		DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
+		String userId = userDao.getUserId(userPhone);
+		String saleId = saleListDao.getSaleId(salePhone);
+		if (userId == null || saleId == null) {
+			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
+		} else {
+			int i = userManageListDao.disBind(salePhone, userPhone);
+			if (i > 0) {
+				dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+			} else {
+				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+			}
+		}
+		return dataWrapper;
+	}
+
 }

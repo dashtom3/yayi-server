@@ -18,6 +18,7 @@
 				AND o.updated BETWEEN #{startDate}  AND #{endDate}
 			</if>
 		</where>
+			GROUP BY o.user_id DESC
             LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
 	
@@ -37,6 +38,7 @@
 				AND o.updated BETWEEN #{startDate}  AND #{endDate}
 			</if>
 		</where>
+		GROUP BY o.user_id DESC
 	</select>
 	
 	<select id="queryCount" resultType="UserStatistics">

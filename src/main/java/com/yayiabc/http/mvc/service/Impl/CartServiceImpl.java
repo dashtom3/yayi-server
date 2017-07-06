@@ -82,7 +82,6 @@ public class CartServiceImpl implements CartService {
 			int isItem = cartDao.getCountItemSKU(cart.getItemSKU());
 			if (isItem == 0) {
 				int id = cartDao.add(cart);
-				System.out.println(cart.toString());
 				if (id > 0) {
 					dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 				} else {

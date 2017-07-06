@@ -161,6 +161,49 @@ public class SaleListApi {
      */
 	
 	/**
+     * @api {post} http://47.93.48.111:8080/api/saleList/disBind （后台）取消绑定用户
+     * @apiName disBind
+     * @apiGroup saleList
+     * @apiVersion 0.1.0
+     * @apiDescription 取消绑定用户
+     *
+     * @apiParam {String} salePhone 销售员手机号码（必须）
+     * @apiParam {String} userPhone 用户手机号码（必须）
+     * @apiParam {String} token 身份凭证（必须）
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     * callStatus:"SUCCEED",
+     * errorCode:"No_Error",
+     * data:null,
+     * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
+     * numberPerPage:0,
+     * currentPage:0,
+     * totalNumber:0,
+     * totalPage:0,
+     * num :null,
+     * msg :null,
+     *  }
+     *
+     * @apiSuccessExample {json} Error-Response:
+     * HTTP/1.1 200 OK
+     * {
+     * callStatus:"FAILED",
+     * errorCode:"Error",
+     * data:null,
+     * token:null,
+     * numberPerPage:0,
+     * currentPage:0,
+     * totalNumber:0,
+     * totalPage:0,
+     * num :null,
+     * msg :null,
+     *  }
+     *
+     */
+	
+	/**
      * @api {get} http://47.93.48:8080/api/saleList/detail （后台）获取销售员详情
      * @apiName detail
      * @apiGroup saleList

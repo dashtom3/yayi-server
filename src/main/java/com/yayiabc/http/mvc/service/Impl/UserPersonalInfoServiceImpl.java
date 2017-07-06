@@ -32,16 +32,13 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 			if (userIdb == null) {
 				userPersonalInfoDao.add(userIda);
 				int i = userPersonalInfoDao.updateUser(user);
-				System.out.println(user.toString());
 				if (i > 0) {
 					dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 				} else {
 					dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 				}
 			} else if (userIdb.equals(userIda) == true) {
-				System.out.println("资质认证信息已存在！");
 				int i = userPersonalInfoDao.updateUser(user);
-				System.out.println(user.toString());
 				if (i > 0) {
 					dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 				} else {

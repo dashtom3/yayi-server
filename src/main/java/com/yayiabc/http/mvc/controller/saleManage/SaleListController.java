@@ -83,4 +83,17 @@ public class SaleListController {
 	){
 		return userManageListService.bind(salePhone, userPhone);
 	}
+	
+	/**
+	 * 取消绑定用户
+	 */
+	@RequestMapping(value="disBind",method=RequestMethod.POST)
+	@ResponseBody
+	public DataWrapper<Void> disBind(
+			@RequestParam(value="salePhone",required=true)String salePhone,
+			@RequestParam(value="userPhone",required=true)String userPhone,
+			@RequestParam(value="token",required=true)Integer token
+	){
+		return userManageListService.disBind(salePhone, userPhone);
+	}
 }

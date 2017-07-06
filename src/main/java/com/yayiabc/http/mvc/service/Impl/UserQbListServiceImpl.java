@@ -29,7 +29,11 @@ public class UserQbListServiceImpl implements UserQbListService {
 		dataWrapper.setPage(page, totalNumber);
 		List<QbRecord> list = userQbListDao.list(phone, startDate, endDate,
 				page);
-		dataWrapper.setData(list);
+		if(list.size()==0){
+			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+		}else if(list.size()!=0){
+			dataWrapper.setData(list);
+		}
 		return dataWrapper;
 	}
 

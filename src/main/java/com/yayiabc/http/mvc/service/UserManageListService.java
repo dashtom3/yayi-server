@@ -14,5 +14,7 @@ public interface UserManageListService {
 	
 	DataWrapper<Void> bind(String salePhone,String userPhone);
 	
+	DataWrapper<Void> disBind(String salePhone,String userPhone);
+	
 	DataWrapper<UserAllInfo> detail(String phone);
 }

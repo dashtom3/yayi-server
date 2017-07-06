@@ -27,7 +27,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	private UtilsDao utilsDao;
 	@Override
 	
-	public DataWrapper<HashMap<String, Object>> buyNows(String token,Integer receiverId) {
+	public DataWrapper<HashMap<String, Object>> buyNows(String token) {
 		// TODO Auto-generated method stub
 		String userId=utilsDao.getUserID(token);
 		
@@ -52,16 +52,16 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			giveQbNum+=0;
 		}
 		//运费计算
-		Receiver receiver=placeOrderDao.queryReceiver(receiverId);
+		
 
-		int yunfei=getFreight(receiver, sumPrice, itemSum);//运费
+		//int yunfei=getFreight(receiver, sumPrice, itemSum);//运费
 		hMap.put("sumPrice", sumPrice);
 		hMap.put("itemSum", itemSum);
-		hMap.put("yunfei", yunfei);
+		//hMap.put("yunfei", yunfei);
 		hMap.put("giveQbNum", giveQbNum);
-		hMap.put("ConsigneeName",receiver.getReceiverName());
-		hMap.put("ConsigneePhone",receiver.getPhone());
-		hMap.put("receiver",receiver);
+		//hMap.put("ConsigneeName",receiver.getReceiverName());
+		//hMap.put("ConsigneePhone",receiver.getPhone());
+		//hMap.put("receiver",receiver);
 		hMap.put("orderId",orderId);
 		
 		hMap.put("cartList",cartList);
@@ -70,6 +70,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		return dataWrapper;
 	}
     
+	
 	public int getFreight(Receiver receiver,int sumPrice,int itemSum){
 		String Province =receiver.getProvince();
 		//查询包邮表数据
@@ -175,9 +176,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	//单个商品的购买
 	@Override
 	public DataWrapper<HashMap<String, Object>> buyNow(OrderItem orderItem,
-			String token, Integer receiverId) {
-		
-		
+			String token) {
 		DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String,Object>>();
 		// 192.168.1.103
 		String userId=utilsDao.getUserID(token);
@@ -196,16 +195,16 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		//商品单价
 		int itemPrice=orderItem.getPrice();
 		HashMap<String, Object> hmHashMap=new HashMap<String, Object>();
-		Receiver receiver=placeOrderDao.queryReceiver(receiverId);
+		//Receiver receiver=placeOrderDao.queryReceiver(receiverId);
 		
 		int priceNum=orderItem.getNum()*orderItem.getPrice();
-		int yunfei=getFreight(receiver,priceNum,orderItem.getNum());
+		//int yunfei=getFreight(receiver,priceNum,orderItem.getNum());
 		
 		hmHashMap.put("sumPrice", itemPrice*itemNum);
 		hmHashMap.put("OrderItem", orderItem);
-		hmHashMap.put("yunfei", yunfei);
+		//hmHashMap.put("yunfei", yunfei);
 		hmHashMap.put("ItemNum", orderItem.getNum());
-		hmHashMap.put("receiver", receiver);
+		//hmHashMap.put("receiver", receiver);
 		dataWrapper.setData(hmHashMap);
 		return dataWrapper;
 	}

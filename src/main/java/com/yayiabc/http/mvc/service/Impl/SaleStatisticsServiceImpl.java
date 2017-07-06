@@ -21,6 +21,7 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService {
 	@Override
 	public DataWrapper<List<SaleStatistics>> query(String phone,
 			String trueName, Integer currentPage, Integer numberPerPage) {
+
 		DataWrapper<List<SaleStatistics>> dataWrapper = new DataWrapper<List<SaleStatistics>>();
 		Page page = new Page();
 		page.setNumberPerPage(numberPerPage);
@@ -34,6 +35,7 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService {
 			dataWrapper.setPage(page, totalNumber);
 			dataWrapper.setData(list);
 		}
+
 		return dataWrapper;
 	}
 

@@ -79,7 +79,7 @@
 	        end_time=#{endTime},
 	      </if>
 	      <if test="closeTime!=null">
-	        close_time=#{closeTime},  123132
+	        close_time=now(),  
 	      </if>
 	       <if test="buyerMessage!=null">
 	        buyer_message=#{buyerMessage},
@@ -97,7 +97,7 @@
 	        shipping_name=#{shippingName},
 	      </if>
 	       <if test="shippingCode!=null">
-	        shipping_code=#{shippingCode},invoiceHand
+	        shipping_code=#{shippingCode},
 	      </if>
 	       <if test="invoiceHand!=null">
 	        invoice_hand=#{invoiceHand},
@@ -118,8 +118,9 @@
 	        qb_ded=#{qbDed},
 	      </if>
 	      <if test="refund!=null">
-	        refund=#{refund}
+	        refund=#{refund},
 	      </if>
+	      update=now()
 	     </set>
 	     where user_id=#{userId}
 	</update>

@@ -14,6 +14,7 @@ import com.yayiabc.http.mvc.dao.OrderManagementDao;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.User;
+import com.yayiabc.http.mvc.pojo.model.OrderManagement;
 import com.yayiabc.http.mvc.service.OrderManagementService;
 
 @Service
@@ -21,7 +22,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 	@Autowired
 	private OrderManagementDao orderManagementDao;
 	@Override
-	public DataWrapper<List<User>> showOrder(HashMap<String, Object> hMap,
+	public DataWrapper<List<OrderManagement>> showOrder(HashMap<String, Object> hMap,
 			Integer currentPage,Integer numberPerpage
 			) {
 		Page page=new Page();
@@ -34,10 +35,10 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		}
 		
 		// TODO Auto-generated method stub
-		DataWrapper<List<User>> dataWrapper=new DataWrapper<List<User>>();
+		DataWrapper<List<OrderManagement>> dataWrapper=new DataWrapper<List<OrderManagement>>();
 		//总条数
 				int count=orderManagementDao.queryCount(hMap);
-		List<User> userOrderList=orderManagementDao.showOrder(hMap);
+		List<OrderManagement> userOrderList=orderManagementDao.showOrder(hMap);
 		if(userOrderList.isEmpty()){
 			dataWrapper.setMsg("暂无数据");
 		}else{
@@ -167,5 +168,12 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		}
 		return dataWrapper;
 	}
-
+	//显示订单详情
+	@Override
+	public DataWrapper<Ordera> queryOrderDetails(String orderId) {
+		DataWrapper<Ordera> dataWrapper=new DataWrapper<Ordera>();
+		Ordera ordera= orderManagementDao.queryOrderDetails(orderId);
+		dataWrapper.setData(ordera);
+		return dataWrapper;
+	}
 }

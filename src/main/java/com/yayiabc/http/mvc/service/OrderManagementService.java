@@ -10,9 +10,10 @@ import org.apache.ibatis.annotations.Param;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.User;
+import com.yayiabc.http.mvc.pojo.model.OrderManagement;
 
 public interface OrderManagementService {
-	DataWrapper<List<User>>  showOrder( HashMap<String, Object> hMap,
+	DataWrapper<List<OrderManagement>>  showOrder( HashMap<String, Object> hMap,
 			Integer currentPage,Integer numberPerpage
 			);
    //关闭交易
@@ -30,4 +31,6 @@ public interface OrderManagementService {
     //仓库发货
 	DataWrapper<Void> warehouseDelivery(@Param("orderId")String orderId,@Param("logisticsName")String logisticsName,
 			@Param("logisticsCode")String  logisticsCode);
+	//显示订单详情
+	DataWrapper<Ordera> queryOrderDetails(String orderId);
 }

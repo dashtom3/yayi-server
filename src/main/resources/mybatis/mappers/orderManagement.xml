@@ -4,28 +4,37 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yayiabc.http.mvc.dao.OrderManagementDao">
 
-	<resultMap type="Ordera" id="userOrderManageResultMap">
-	<id property="orderId" column="order_id" />
+	<resultMap type="com.yayiabc.http.mvc.pojo.model.OrderManagement"
+		id="userOrderManageResultMap">
+		
+		<id property="orderId" column="order_id" />
+
 		<result property="phone" column="phone" />
-			
-			<result property="qbDed" column="qb_ded" />
-			<result property="actualPay" column="actual_pay" />
-			<result property="totalFee" column="total_fee" />
-			<result property="created" column="created" />
-			<result property="state" column="state" />
-			<result property="shippingName" column="shipping_name" />
-			<result property="shippingCode" column="shipping_code" />
-			<result property="refund" column="refund" />
+
+		<result property="qbDed" column="qb_ded" />
+		<result property="actualPay" column="actual_pay" />
+		<result property="totalFee" column="total_fee" />
+		
+		<result property="reName" column="true_name" />
+		
+		<result property="created" column="created" />
+		<result property="state" column="state" />
+		<result property="shippingName" column="shipping_name" />
+		<result property="shippingCode" column="shipping_code" />
+		<result property="refund" column="refund" />
 
 	</resultMap>
 	<select id="showOrder" resultMap="userOrderManageResultMap">
 		SELECT
-		orde.order_id,orde.total_fee,orde.qb_ded,orde.actual_pay,us.phone,orde.created,rece.receiver_name,
-		rece.phone,orde.payment_time,
-		orde.state, CONCAT(shipping_name,shipping_code) AS
+		orde.order_id,orde.total_fee,orde.qb_ded,orde.actual_pay,us.phone,orde.created,us.true_name,
+		orde.payment_time,
+		orde.state,
+		CONCAT(shipping_name,shipping_code) AS
 		information,orde.refund,orde.shipping_name,orde.shipping_code
-		FROM ordera orde JOIN USER
-		us  ON us.user_id=orde.user_id JOIN receiver rece ON rece.user_id=orde.user_id
+		FROM
+		ordera orde JOIN USER
+		us ON us.user_id=orde.user_id JOIN receiver rece
+		ON rece.user_id=orde.user_id
 		<where>
 			<if test="orderId !=null">
 				orde.order_id=#{orderId}
@@ -60,10 +69,12 @@
 
 	<!-- //关闭交易 or确定交易 -->
 	<update id="closeTrading">
-		update ordera set state =${flagBit} where
+		update ordera set state =${flagBit}
+		<!-- 123123 -->
+		 where
 		order_id=#{orderId}
 	</update>
-<!-- //订单详情  resultMap-->
+	<!-- //订单详情 resultMap -->
 	<resultMap type="Ordera" id="details">
 		<id property="OrderId" column="order_id" />
 		<result property="state" column="state" />
@@ -76,7 +87,7 @@
 		<result property="invoiceHand" column="invoice_hand" />
 		<result property="buyerMessage" column="buyer_message" />
 		<result property="isRegister" column="is_register" />
-		
+
 		<association property="receiver"
 			javaType="com.yayiabc.http.mvc.pojo.jpa.Receiver">
 			<id property="receiverId" column="receiver_id" />
@@ -86,7 +97,7 @@
 			<result property="county" column="county" />
 			<result property="receiverdetail" column="receiver_detail" />
 		</association>
-		
+
 		<collection property="orderitemList" ofType="OrderItem">
 			<id property="itemId" column="item_id" />
 			<result property="itemPropertyNamea" column="item_property_namea" />
@@ -95,11 +106,13 @@
 			<result property="picPath" column="pic_path" />
 			<result property="price" column="price" />
 			<result property="num" column="num" />
-			<association property="itemInfo" javaType="com.yayiabc.http.mvc.pojo.jpa.ItemInfo">
+			<result property="itemSKU" column="itm_SKU" />
+			<association property="itemInfo"
+				javaType="com.yayiabc.http.mvc.pojo.jpa.ItemInfo">
 				<result property="itemName" column="item_name" />
 			</association>
 		</collection>
-		
+
 	</resultMap>
 
 	<!-- //订单详情 -->
@@ -112,12 +125,12 @@
 
 		orde_it.item_property_namea,orde_it.item_property_nameb,orde_it.item_property_namec,
 
-		orde_it.pic_path,orde_it.price,orde_it.num,item_de.register_id,item_in.item_name
+		orde_it.pic_path,orde_it.price,orde_it.num,item_de.register_id,item_in.item_name,orde_it.itm_SKU
 		FROM ordera orde JOIN receiver rece ON
 		orde.receiver_id=rece.receiver_id JOIN order_item orde_it ON
 		orde_it.order_id=orde.order_id JOIN item_detail item_de ON
 		orde_it.item_id=item_de.item_id JOIN item_info item_in ON
-		item_in.item_id=orde_it.item_id orde.order_id=#{orderId}
+		item_in.item_id=orde_it.item_id WHERE orde.order_id =#{orderId}
 	</select>
 
 	<!-- //退款处理 resultMap -->
@@ -190,33 +203,35 @@
 	</select>
 
 	<!-- 根据用户id 查询该用户钱币余额 -->
-	<select id="userBalance"  resultType="int">
-		select  qb_balance from
-		user where user_id=#{userId}
+	<select id="userBalance" resultType="int">
+		select qb_balance from
+		user
+		where user_id=#{userId}
 	</select>
-    
-         <!-- 仓库发货 -->
-     <update id="warehouseDelivery" >
-     update ordera <set>
-           <if test="logisticsName!=null">
-           shipping_name=#{logisticsName},
-           </if>
-            <if test="logisticsCode!=null">
-           shipping_code=#{logisticsCode}
-           </if>
-           <where>
-              user_id=#{userId}
-           </where>
-     </set>
-          <!-- insert into user(shipping_name,shipping_code) values(#{logisticsName},#{logisticsCode},#{orderId}) -->
-     </update>
-     
-     <select id="queryUserId" resultType="java.lang.String">
-      select user_id from ordera where order_id=#{orderId}
-     </select>
-     
-     <!--  -->
-     <select id="queryCount" resultType="int">
+
+	<!-- 仓库发货 -->
+	<update id="warehouseDelivery">
+		update ordera
+		<set>
+			<if test="logisticsName!=null">
+				shipping_name=#{logisticsName},
+			</if>
+			<if test="logisticsCode!=null">
+				shipping_code=#{logisticsCode}
+			</if>
+			<where>
+				user_id=#{userId}
+			</where>
+		</set>
+		<!-- insert into user(shipping_name,shipping_code) values(#{logisticsName},#{logisticsCode},#{orderId}) -->
+	</update>
+
+	<select id="queryUserId" resultType="java.lang.String">
+		select user_id from ordera where order_id=#{orderId}
+	</select>
+
+	<!-- -->
+	<select id="queryCount" resultType="int">
 		SELECT
 		count(1)
 		FROM USER

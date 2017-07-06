@@ -20,7 +20,6 @@ import com.yayiabc.http.mvc.service.OrderDetailsService;
 
 @Service
 public class OrderDetailsServiceImpl implements OrderDetailsService {
-
 	@Autowired
 	private OrderDetailsDao orderdetailsDao;
 	@Autowired

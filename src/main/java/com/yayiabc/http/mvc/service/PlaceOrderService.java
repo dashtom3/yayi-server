@@ -10,11 +10,11 @@ import com.yayiabc.http.mvc.pojo.jpa.Receiver;
 
 public interface PlaceOrderService {
    //点击购买 购物车
-	DataWrapper<HashMap<String, Object>> buyNows(String token,Integer receiverId);
+	DataWrapper<HashMap<String, Object>> buyNows(String token);
 
 	DataWrapper<Void> ded(String phone, int num);
 
-	DataWrapper<HashMap<String, Object>> buyNow(OrderItem orderItem, String token,Integer receiverId);	
+	DataWrapper<HashMap<String, Object>> buyNow(OrderItem orderItem, String token);	
 
     //下面的更改地址
 	public DataWrapper<HashMap<String, Object>>  upateAddress(Integer receiverId,Integer sumPrice,Integer itemSum);

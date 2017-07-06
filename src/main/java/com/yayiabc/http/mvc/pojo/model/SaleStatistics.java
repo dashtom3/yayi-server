@@ -88,6 +88,7 @@ public class SaleStatistics {
 		this.latelyOrderDate = latelyOrderDate;
 	}
 
+
 	@Override
 	public String toString() {
 		return "SaleStatistics [saleId=" + saleId + ", phone=" + phone
@@ -96,4 +97,5 @@ public class SaleStatistics {
 				+ bindUserNum + ", latelyOrderDate=" + latelyOrderDate + "]";
 	}
 
+	
 }

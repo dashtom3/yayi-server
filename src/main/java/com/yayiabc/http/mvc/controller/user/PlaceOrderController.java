@@ -26,8 +26,8 @@ public class PlaceOrderController {
 	@RequestMapping("buyNows")
 	@ResponseBody
 	public 	DataWrapper<HashMap<String, Object>> buyNows(
-			@RequestParam(value="token") String token,
-			@RequestParam(value="receiverId") Integer receiverId
+			@RequestParam(value="token") String token
+			
 			/*@RequestParam(value="itemId") String itemId,
 			@RequestParam(value="userId") String userId,
 			@RequestParam(value="receiverId") String receiver_id,
@@ -36,7 +36,7 @@ public class PlaceOrderController {
 			@RequestParam(value="itemPropertyNamec") String itemPropertyNamec,
 			@RequestParam(value="num") String num*/
 			){
-		return placeOrderService.buyNows(token,receiverId);
+		return placeOrderService.buyNows(token);
 	}
 	//  使用钱币抵扣时  onChange
 	@RequestMapping("Ded")
@@ -83,12 +83,11 @@ public class PlaceOrderController {
 	@ResponseBody
 	public 	DataWrapper<HashMap<String, Object>> buyNow(
 			@ModelAttribute OrderItem orderItem,
-			@RequestParam(value="token",required=true) String token,
-			@RequestParam(value="receiverId",required=true) String receiverIds
+			@RequestParam(value="token",required=true) String token
 			){
 		
-		Integer receiverId= Integer.parseInt(receiverIds);
-		return placeOrderService.buyNow(orderItem,token,receiverId);
+		//Integer receiverId= Integer.parseInt(receiverIds);
+		return placeOrderService.buyNow(orderItem,token);
 	}
 	//伪清空 购物车
 	@ResponseBody

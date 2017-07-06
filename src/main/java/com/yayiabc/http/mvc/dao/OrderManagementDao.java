@@ -9,9 +9,10 @@ import org.apache.ibatis.annotations.Param;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.User;
+import com.yayiabc.http.mvc.pojo.model.OrderManagement;
 
 public interface OrderManagementDao {
-   List<User> showOrder(HashMap<String, Object> hMap);
+   List<OrderManagement> showOrder(HashMap<String, Object> hMap);
 
     int  closeTrading(@Param("orderId")String orderId,@Param("flagBit") Integer flagBit);
    
@@ -22,7 +23,7 @@ public interface OrderManagementDao {
     int makeRefundData(Map<String, String> map);
     
     //显示订单详情
-    List<Ordera> orderitemList(String orderId);
+    Ordera queryOrderDetails(String orderId);
     
     //查询下单商品数  SELECT num FROM order_item WHERE item_id=3 AND order_id=2
     int queryMaxNum(@Param("orderId")String orderId,@Param("itemId")String itemId);

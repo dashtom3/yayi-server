@@ -77,11 +77,11 @@
 		= item_f.item_id
 		<where>
 			<if test="phone !=null">
-				us.user_id=${phone}
+				us.user_id=#{phone}
 			</if>
 
 			<if test="state !=null">
-				and orde.state=${state}  <!-- 待付款 -->
+				and orde.state=#{state}  <!-- 待付款 -->
 			</if>
 
 		</where>
@@ -103,11 +103,11 @@
 		= item_f.item_id
 		<where>
 			<if test="phone !=null">
-				us.user_id=${phone}
+				us.user_id=#{phone}
 			</if>
 
 			<if test="state !=null">
-				and orde.state=${state}  <!-- 待付款 -->
+				and orde.state=#{state}  <!-- 待付款 -->
 			</if>
 		</where>
 	</select>
@@ -115,14 +115,14 @@
 	
 	<update id="cancel">
 		update from ordera
-		set state=0
+		set state=0,close_time=now()
 		where order_id=#{orderId}
 	</update>
 	<!-- //确定收货 -->
 
 	<update id="confirmReceipt">
 		update from ordera
-		set state=3
+		set state=3,set end_time=now()
 		where order_id=#{orderId}
 	</update>
 

@@ -69,8 +69,14 @@
 
 	<!-- //关闭交易 or确定交易 -->
 	<update id="closeTrading">
-		update ordera set state =${flagBit}
-		<!-- 123123 -->
+		update ordera set state =${flagBit},
+		<if test="flagBit==0">
+		close_time=now(),
+		</if>
+		<if test="flagBit==5">
+		end_time=now(),
+		</if>
+		updated=now()
 		 where
 		order_id=#{orderId}
 	</update>
@@ -169,10 +175,11 @@
 	<!-- 操作退款数据 -->
 	<insert id="makeRefundData" parameterType="com.yayiabc.http.mvc.pojo.jpa.Refund">
 		INSERT INTO
-		refund(user_id,item_id,refund_num,refund_reason,refund_money,refund_pic,state,fail_reason)
+		refund(user_id,item_id,refund_num,refund_reason,refund_money,refund_pic,state,fail_reason,
+		updated)
 		VALUES(
 		#{userId}, #{itemId}, #{refundNum}, #{refundReason},
-		#{refundMoney}, #{refundPic}, #{state},#{failReason}
+		#{refundMoney}, #{refundPic}, #{state},#{failReason},now()
 		)
 	</insert>
 
@@ -217,8 +224,9 @@
 				shipping_name=#{logisticsName},
 			</if>
 			<if test="logisticsCode!=null">
-				shipping_code=#{logisticsCode}
+				shipping_code=#{logisticsCode},
 			</if>
+			   updated=now(),state=3
 			<where>
 				user_id=#{userId}
 			</where>

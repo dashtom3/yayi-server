@@ -24,6 +24,7 @@
 		<result property="actualPay" column="actual_pay" />
 		<result property="qbDed" column="qb_ded" />
 		<result property="totalFee" column="total_fee" />
+		
 		<!-- //订单商品表 -->
 		<collection property="orderitemList" ofType="OrderItem">
 			<id property="itemId" column="item_id" />
@@ -115,14 +116,14 @@
 	
 	<update id="cancel">
 		update from ordera
-		set state=0,close_time=now()
+		set state=0,close_time=now(),updated=now()
 		where order_id=#{orderId}
 	</update>
 	<!-- //确定收货 -->
 
 	<update id="confirmReceipt">
 		update from ordera
-		set state=3,set end_time=now()
+		set state=4,end_time=now(),updated=now()
 		where order_id=#{orderId}
 	</update>
 

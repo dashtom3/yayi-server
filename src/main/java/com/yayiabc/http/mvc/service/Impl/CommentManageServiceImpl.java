@@ -1,6 +1,7 @@
 package com.yayiabc.http.mvc.service.Impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.IdentityHashMap;
 import java.util.List;
 import java.util.Map;
@@ -23,7 +24,7 @@ public class CommentManageServiceImpl implements CommentManageService {
    @Autowired
    private UserCenterStarDao userCenterStarDao;
 	@Override
-	public DataWrapper<List<Map<String,String>>> commentM(
+	public DataWrapper<List<Ordera>> commentM(
 			String orderId,String recoveryState,String phone,
 			Integer currentPage,Integer numberPerpage
 			) {
@@ -36,18 +37,12 @@ public class CommentManageServiceImpl implements CommentManageService {
 			page.setCurrentPage(1);
 		}
 		//总条数
-		int count=userCenterStarDao.queryCount("item_star");
-		
-		//容器
-		List<Map<String,String>> containerList=new ArrayList<Map<String,String>>();
-		//小容器
-		
-		
+		int count=userCenterStarDao.queryCount("comments");
 		System.out.println(page);
 		List<Ordera> commentMList=commentManageDao.commentM(orderId,recoveryState,phone,page.getCurrentPage(),page.getNumberPerPage());
-		StringBuffer sb=new StringBuffer();
-		System.out.println(commentMList);
-		if(!commentMList.isEmpty()){
+		System.out.println(" "+orderId);
+		System.out.println("commentMList:"+ commentMList);
+	/*	if(!commentMList.isEmpty()){
 			List<OrderItem> orderItemList=commentMList.get(0).getOrderitemList();
 
 			for(int i=0;i<orderItemList.size();i++){
@@ -70,14 +65,15 @@ public class CommentManageServiceImpl implements CommentManageService {
 				sb.delete(0,sb.length());
 			}
 
-		}
+		}*/
 		/*for(String key:containerList.get(1).keySet()){
 			System.out.print(key+": "+containerList.get(1).get(key)+"  ,  ");
 		}*/
-		DataWrapper<List<Map<String,String>>>  d=	new DataWrapper<List<Map<String,String>>>();
-		d.setPage(page,count);
-		d.setData(containerList);
-		return d;
+		//DataWrapper<List<Map<String,String>>>  d=	new DataWrapper<List<Map<String,String>>>();
+		DataWrapper<List<Ordera>> dataWrapper=new DataWrapper<List<Ordera>>();
+		dataWrapper.setData(commentMList);
+		dataWrapper.setPage(page,count);
+		return dataWrapper;
 	}
 	//回复评论
 	@Override

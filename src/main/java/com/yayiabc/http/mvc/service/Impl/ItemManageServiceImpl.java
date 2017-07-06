@@ -97,8 +97,8 @@ public class ItemManageServiceImpl implements ItemManageService{
 	@Override
 	public DataWrapper<Void> deleteProperty(Integer itemPropertyId) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		itemManageDao.deleteProperty(itemPropertyId);
 		itemManageDao.deletePropertyd(itemPropertyId);
+		itemManageDao.deleteProperty(itemPropertyId);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
 	}

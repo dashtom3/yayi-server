@@ -212,6 +212,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	@Override
 	public DataWrapper<Void> saveMessage(Ordera order,String token) {
 	  order.setUserId(utilsDao.getUserID(token));
+	  System.out.println(order);
+	  System.out.println(token);
 	  System.out.println(utilsDao.getUserID(token));
 	  DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		int state=placeOrderDao.saveMessage(order);

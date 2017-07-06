@@ -12,6 +12,7 @@ import java.util.List;
  */
 public class OrderItem extends BasePojo {
 	private String itemId;
+	private String itemName;
 	private String orderId;
 	private Ordera ordera;
 	private String itemSKU;
@@ -50,6 +51,15 @@ public class OrderItem extends BasePojo {
 
 	public void setOrderId(String orderId) {
 		this.orderId = orderId;
+	}
+
+	
+	public String getItemName() {
+		return itemName;
+	}
+
+	public void setItemName(String itemName) {
+		this.itemName = itemName;
 	}
 
 	public Refund getRefund() {

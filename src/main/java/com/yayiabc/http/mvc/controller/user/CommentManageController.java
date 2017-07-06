@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.service.CommentManageService;
 
 @Controller
@@ -22,7 +23,7 @@ public class CommentManageController {
       @RequestMapping("show")
       @ResponseBody
       //显示评论
-     public DataWrapper<List<Map<String,String>>> show(
+     public DataWrapper<List<Ordera>> show(
     		 @RequestParam(value="orderId",required=false) String orderid,
     		 @RequestParam(value="phone",required=false) String phone,
     		 @RequestParam(value="recoveryState",required=false) String recoveryState,

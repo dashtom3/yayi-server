@@ -120,17 +120,17 @@
 	      <if test="refund!=null">
 	        refund=#{refund},
 	      </if>
-	      update=now()
+	      updated=now()
 	     </set>
 	     where user_id=#{userId}
 	</update>
 	
 	<delete id="emptyCart">
-	  delete from cart where order_id=#{orderId}
+	  delete from cart where user_id=#{userId}
 	</delete>
 	
 	<insert id="createOrder" parameterType="java.lang.String">
-	   insert into ordera(order_id,user_id)values(#{orderId},#{userId})
+	   insert into ordera(state,order_id,user_id)values(1,#{orderId},#{userId})
 	</insert>
 	
 	

@@ -2,18 +2,21 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-        
+
 <mapper namespace="com.yayiabc.http.mvc.dao.CommentManageDao">
 	<!-- 订单表 -->
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.Ordera" id="CommentManagementResultMap">
 		<id column="order_id" property="orderId" />
 		<!-- 订单商品表 -->
 		<collection property="orderitemList" ofType="OrderItem">
+		<result property="itemId" column="item_id" />
+		<result property="itemName" column="item_name" />
 			<result property="itemPropertyNamea" column="item_property_namea" />
 			<result property="itemPropertyNameb" column="item_property_nameb" />
 			<result property="itemPropertyNamec" column="item_property_namec" />
 			<!-- 评论表 -->
-			<collection property="commentList" ofType="com.yayiabc.http.mvc.pojo.jpa.Comments">
+			<collection property="commentList"
+				ofType="com.yayiabc.http.mvc.pojo.jpa.Comments">
 				<id property="commentId" column="comment_id" />
 				<result property="userId" column="user_id" />
 				<result property="orderId" column="order_id" />
@@ -22,49 +25,52 @@
 				<result property="commentGrade" column="comment_grade" />
 				<result property="commentContent" column="comment_content" />
 				<!-- 商品表 -->
-				<association property="itemInfo" javaType="ItemInfo">
-			       <id property="itemId" column="item_id" />
-			       <result property="itemName" column="item_name" />
-		        </association>
+				<!-- <association property="itemInfo" javaType="ItemInfo">
+					<id property="itemId" column="item_id" />
+					<result property="itemName" column="item_name" />
+				</association> -->
 			</collection>
 		</collection>
 
 	</resultMap>
 
-	<select id="commentM" resultMap="CommentManagementResultMap" >
+	<select id="commentM" resultMap="CommentManagementResultMap">
 		SELECT
-		iif.item_name,oim.item_property_namea,oim.item_property_nameb,oim.item_property_namec
-		,
+		oim.item_property_namea,oim.item_property_nameb,oim.item_property_namec,
 		comm.comment_content,comm.comment_grade,comm.order_id,comm.user_id,comm.recovery_state,comm.reply_content
-		,comm.item_id
+		,comm.item_id,oim.item_name
 		FROM
-		ordera orde,order_item oim ,COMMENTS comm,item_info iif,item_detail idl
+		ordera orde JOIN order_item oim ON orde.order_id=oim.order_id JOIN comments
+		comm ON oim.item_id=comm.item_id
 		<where>
-		 orde.order_id=oim.order_id AND oim.item_id=comm.item_id AND comm.item_id=iif.item_id
-		  AND iif.item_id=idl.item_id 
-		   <if test="orderId!=null and orderId!=''">
-		     and orde.order_id=#{orderId} 
-		  </if>
-		  <!-- <if test="phone!=null">
-		   and =#{orderId} 
-		  </if> -->
-		  <if test="recoveryState!=null and recoveryState!= '' ">
-		  
-		     and comm.recovery_state=#{recoveryState} 
-		 </if>
-		<!-- <choose> -->
-        
-       <!--  <otherwise>
-            and orde.user_id=#{phone}
-        </otherwise> -->
-       <!-- </choose> -->
-		 </where>
+			<!-- <if test="orderId!=null">
+				
+			</if> -->
+			<choose>
+			<when test="orderId==null">
+				<!-- orde.order_id=#{orderId} -->
+			</when>
+			<otherwise>
+			orde.order_id=#{orderId}
+			</otherwise>
+			</choose>
+			<!-- <if test="phone!=null"> and =#{orderId} </if> -->
+			<if test="recoveryState != null">
+				and comm.recovery_state=#{recoveryState}
+			</if>
+			<!-- <choose> -->
+
+			<!-- <otherwise> and orde.user_id=#{phone} </otherwise> -->
+			<!-- </choose> -->
+		</where>
 		limit #{currentPage},#{numberPerPage}
 	</select>
 	<!-- 回复 -->
 	<insert id="reply">
-	 <!--  insert into comments(reply_content,recovery_state) values(#{data},1) where item_id=#{itemId} and order_id=#{orderId} -->
-	 update comments set reply_content=#{data},recovery_state=1 where item_id=#{itemId} and order_id=#{orderId}
+		<!-- insert into comments(reply_content,recovery_state) values(#{data},1) 
+			where item_id=#{itemId} and order_id=#{orderId} -->
+		update comments set reply_content=#{data},recovery_state=1 where
+		item_id=#{itemId} and order_id=#{orderId}
 	</insert>
-	
+
 </mapper>

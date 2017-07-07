@@ -8,7 +8,7 @@ import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 
 public interface PlaceOrderService {
    //点击购买 购物车
-	DataWrapper<HashMap<String, Object>> buyNows(String token);
+	DataWrapper<HashMap<String, Object>> buyNows(String token,String[] itemSKUs);
 
 	DataWrapper<Void> ded(String phone, int num);
 

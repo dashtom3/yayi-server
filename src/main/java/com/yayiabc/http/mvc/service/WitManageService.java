@@ -17,4 +17,6 @@ public interface WitManageService {
 	
     //查询+显示
 	DataWrapper<List<With>> query(String message, Integer state);
+     
+
 }

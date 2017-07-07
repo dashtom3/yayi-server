@@ -47,7 +47,7 @@
 				
 			</if> -->
 			<choose>
-			<when test="orderId==null">
+			<when test="orderId==null and orderId!=''">
 				<!-- orde.order_id=#{orderId} -->
 			</when>
 			<otherwise>
@@ -55,7 +55,7 @@
 			</otherwise>
 			</choose>
 			<!-- <if test="phone!=null"> and =#{orderId} </if> -->
-			<if test="recoveryState != null">
+			<if test="recoveryState != null and recoveryState!=''">
 				and comm.recovery_state=#{recoveryState}
 			</if>
 			<!-- <choose> -->

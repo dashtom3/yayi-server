@@ -1,10 +1,12 @@
 package com.yayiabc.http.mvc.controller.user;
 
+import java.util.Arrays;
 import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestBody;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -24,8 +26,8 @@ public class PlaceOrderController {
 	@RequestMapping("buyNows")
 	@ResponseBody
 	public 	DataWrapper<HashMap<String, Object>> buyNows(
-			@RequestParam(value="token") String token
-			
+			@RequestParam(value="token") String token,
+			@RequestParam(value="itemSKUs",required=true) String[] itemSKUs
 			/*@RequestParam(value="itemId") String itemId,
 			@RequestParam(value="userId") String userId,
 			@RequestParam(value="receiverId") String receiver_id,
@@ -34,7 +36,9 @@ public class PlaceOrderController {
 			@RequestParam(value="itemPropertyNamec") String itemPropertyNamec,
 			@RequestParam(value="num") String num*/
 			){
-		return placeOrderService.buyNows(token);
+		/*System.out.println(Arrays.toString(itemSKU));
+		return null;*/
+		return placeOrderService.buyNows(token,itemSKUs);
 	}
 	//  使用钱币抵扣时  onChange
 	@RequestMapping("Ded")

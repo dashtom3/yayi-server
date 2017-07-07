@@ -9,7 +9,6 @@ import org.apache.http.config.RegistryBuilder;
 import org.apache.http.conn.ConnectTimeoutException;
 import org.apache.http.conn.socket.ConnectionSocketFactory;
 import org.apache.http.conn.socket.PlainConnectionSocketFactory;
-import org.apache.http.conn.ssl.DefaultHostnameVerifier;
 import org.apache.http.conn.ssl.SSLConnectionSocketFactory;
 import org.apache.http.entity.StringEntity;
 import org.apache.http.impl.client.HttpClientBuilder;
@@ -45,7 +44,7 @@ public class WXPayRequest {
      */
     private String requestOnce(final String domain, String urlSuffix, String uuid, String data, int connectTimeoutMs, int readTimeoutMs, boolean useCert) throws Exception {
         BasicHttpClientConnectionManager connManager;
-        if (useCert) {
+      /*  if (useCert) {
             // 证书
             char[] password = config.getMchID().toCharArray();
             InputStream certStream = config.getCertStream();
@@ -64,7 +63,8 @@ public class WXPayRequest {
                     sslContext,
                     new String[]{"TLSv1"},
                     null,
-                    new DefaultHostnameVerifier());
+                    //new DefaultHostnameVerifier()
+                    );
 
             connManager = new BasicHttpClientConnectionManager(
                     RegistryBuilder.<ConnectionSocketFactory>create()
@@ -75,8 +75,9 @@ public class WXPayRequest {
                     null,
                     null
             );
-        }
-        else {
+        }*/
+        //else 
+        {
             connManager = new BasicHttpClientConnectionManager(
                     RegistryBuilder.<ConnectionSocketFactory>create()
                             .register("http", PlainConnectionSocketFactory.getSocketFactory())

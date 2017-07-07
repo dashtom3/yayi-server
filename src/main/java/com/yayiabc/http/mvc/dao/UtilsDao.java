@@ -5,4 +5,6 @@ import org.apache.ibatis.annotations.Param;
 public interface UtilsDao {
 
 	String getUserID(@Param("token")String token);
+	
+	 String getSaleId(@Param("SaleToken")String token);
 }

@@ -7,6 +7,22 @@
  
  
 	<select id="show" resultType="com.yayiabc.http.mvc.pojo.jpa.SaleInfo">
-		SELECT * FROM USER WHERE sale_id IS null
+		SELECT * FROM USER 
+		<where>
+		 sale_id IS null
+			<if test="cusName!=null and cusName!=''">
+				true_name=#{cusName} and
+			</if>
+			<if test="phone!=null and phone!=''">
+			phone=#{phone} and 
+			</if>
+		</where>
+	</select>
+	
+	<select id="showMyCus" resultType="com.yayiabc.http.mvc.pojo.jpa.User">
+		SELECT * FROM USER 
+		<where>
+		 sale_id =#{saleId}
+		</where>
 	</select>
 </mapper>       

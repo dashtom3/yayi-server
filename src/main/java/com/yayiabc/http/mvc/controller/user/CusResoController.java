@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.controller.user;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -21,11 +22,12 @@ public class CusResoController {
     //show+query
     @RequestMapping("show")
     @ResponseBody
+    
     public DataWrapper<List<CusResources>> show(
     		
-    		@RequestParam(value="state",required=false)String state 
+    		 HashMap<String, String> hashMap
     		){
-    	return cusResoService.show(state);
+    	return cusResoService.show(hashMap);
     }
      //insert
     @RequestMapping("insert")
@@ -52,7 +54,7 @@ public class CusResoController {
     @RequestMapping("delete")
     @ResponseBody
     public DataWrapper<Void> delete(
-    		@RequestParam(value="id",required=true)Integer id 
+    		@RequestParam(value="cusId",required=true)Integer id 
     		
     		//四个参数非必须     但id是必须
     		){

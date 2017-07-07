@@ -1,5 +1,7 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
+import java.util.Date;
+
 /**
  * 
  * @author xiaojiang 销售员收入表
@@ -14,13 +16,21 @@ public class SaleIncome extends BasePojo {
 	private Integer getMoney;
 
 	private Integer getState;
-
+	private Date updated;
 	public Integer getSaleIncomeId() {
 		return saleIncomeId;
 	}
 
 	public void setSaleIncomeId(Integer saleIncomeId) {
 		this.saleIncomeId = saleIncomeId;
+	}
+
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
 	}
 
 	public String getSaleId() {
@@ -55,25 +65,10 @@ public class SaleIncome extends BasePojo {
 		this.getState = getState;
 	}
 
-	public SaleIncome() {
-		super();
-	}
-
-	public SaleIncome(Integer saleIncomeId, String saleId, String orderId,
-			Integer getMoney, Integer getState) {
-		super();
-		this.saleIncomeId = saleIncomeId;
-		this.saleId = saleId;
-		this.orderId = orderId;
-		this.getMoney = getMoney;
-		this.getState = getState;
-	}
-
 	@Override
 	public String toString() {
-		return "SaleIncome [saleIncomeId=" + saleIncomeId + ", saleId="
-				+ saleId + ", orderId=" + orderId + ", getMoney=" + getMoney
-				+ ", getState=" + getState + "]";
+		return "SaleIncome [getMoney=" + getMoney + ", update=" + updated + "]";
 	}
 
+	
 }

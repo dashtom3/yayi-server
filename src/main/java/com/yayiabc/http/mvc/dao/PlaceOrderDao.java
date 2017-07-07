@@ -14,7 +14,8 @@ import com.yayiabc.http.mvc.pojo.jpa.FreeShipping;
 
 public interface PlaceOrderDao {
 	//购物车
-	List<Cart> buyNows(String userId);
+	List<Cart> buyNows(@Param("userId")String userId,@Param("itemSKUs")String[] itemSKUs);
+	
      
 	//查询订货地址
 	Receiver  queryReceiver(Integer receiverId);

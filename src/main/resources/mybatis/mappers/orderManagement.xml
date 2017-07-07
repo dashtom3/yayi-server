@@ -82,7 +82,7 @@
 	</update>
 	<!-- //订单详情 resultMap -->
 	<resultMap type="Ordera" id="details">
-		<id property="OrderId" column="order_id" />
+		<id property="orderId" column="order_id" />
 		<result property="state" column="state" />
 		<result property="paymentTime" column="payment_time" />
 		<result property="totalFee" column="total_fee" />
@@ -97,11 +97,11 @@
 		<association property="receiver"
 			javaType="com.yayiabc.http.mvc.pojo.jpa.Receiver">
 			<id property="receiverId" column="receiver_id" />
-			<result property="receivername" column="receiver_name" />
+			<result property="receiverName" column="receiver_name" />
 			<result property="province" column="province" />
 			<result property="city" column="city" />
 			<result property="county" column="county" />
-			<result property="receiverdetail" column="receiver_detail" />
+			<result property="receiverDetail" column="receiver_detail" />
 		</association>
 
 		<collection property="orderitemList" ofType="OrderItem">

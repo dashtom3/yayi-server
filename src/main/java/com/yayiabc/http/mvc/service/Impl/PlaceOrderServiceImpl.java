@@ -25,20 +25,23 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	private UtilsDao utilsDao;
 	@Override
 	
-	public DataWrapper<HashMap<String, Object>> buyNows(String token) {
+	public DataWrapper<HashMap<String, Object>> buyNows(String token,String[] itemSKUs) {
 		// TODO Auto-generated method stub
+		//  create userId
 		String userId=utilsDao.getUserID(token);
 		
-		  //生成 orderId 
+		  //obtain orderId 
 		 String orderId=OrderIdUtils.createOrderId(userId);
-		//给order表 创建一个空order
+		//create userId
 			placeOrderDao.createOrder(orderId,userId);
-		//容器
+		//容器container
 		HashMap<String, Object> hMap=new HashMap<String, Object>();
+		
 		int sumPrice=0;//商品总价
 		DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String, Object>>();
-		
-		List<Cart> cartList=placeOrderDao.buyNows(userId);
+		// obtain sure shoppingCart item
+		List<Cart> cartList=placeOrderDao.buyNows(userId,itemSKUs);
+		System.out.println(cartList);
 		//下单赠送钱币数：
 		int giveQbNum=0;
 		int itemSum=cartList.size();//商品总数量

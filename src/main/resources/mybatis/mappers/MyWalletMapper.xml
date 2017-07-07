@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.MyWalletDao">
+
+	<!-- <resultMap type="Salelnfo" id="map"> <id property="saleId" column="" 
+		sale_id /> <result property="money" column="money" /> <collection property="saleincome" 
+		ofType="SaleIncome"> <id property="saleIncomeId" column="sale_income_id" 
+		/> <result property="getMoney" column="get_money" /> </collection> <collection 
+		property="With" column="With"> <id property="cashId" column="cash_id" /> 
+		<result property="cashMoney" column="cash_money" /> </collection> </resultMap> -->
+
+	<select id="saleInCome" resultType="com.yayiabc.http.mvc.pojo.jpa.SaleIncome">
+		SELECT
+		come.get_money,come.updated,come.order_id FROM
+		sale_income come JOIN
+		ordera orde ON
+		orde.order_id=come.order_id WHERE
+		sale_id=#{saleId}
+		ORDER
+		BY come.created DESC
+	</select>
+
+	<select id="with" resultType="com.yayiabc.http.mvc.pojo.jpa.With">
+		<!-- SELECT cashMoney,cash_su_time FROM cashmanage WHERE sale_id=#{saleId} 
+			AND cash_su_time <(SELECT DATE_ADD(NOW(),INTERVAL #{data} MONTH)) AND -->
+	</select>
+
+	<!-- //chaxun userid -->
+	<select id="queryUserID" resultType="java.lang.String">
+		select user_id from ordera
+		where order_id=#{orderId}
+	</select>
+	
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.SaleInfo" id="c">
+	 <id property="saleId" column="sale_id"/>
+	   <!-- userTable -->
+	     <collection property="user" ofType="User">
+	      <id property="userId" column="user_id"/>
+	      <result property="trueName" column="true_name"/>
+	      <result property="phone" column="phone"/>
+	        <!-- //订单表 -->
+	         <collection property="orderaList" ofType="Ordera">
+	            <id property="orderId" column="order_id"/>
+	            <result property="closeTime" column="close_name"/>
+	            <result property="state" column="state"/>
+	            <result property="refund" column="refund"/>
+	            
+	            <!-- //订单商品表 -->
+	            <collection property="orderitemList" ofType="OrderItem">
+	               <result property="itemName" column="item_name"/>
+	               <result property="price" column="price"/>
+	               <result property="num" column="num"/>
+	               <result property="totalFee" column="total_fee"/>
+	                
+	            </collection>
+	            
+	         </collection>
+	     </collection>
+	     <!-- //收入表 -->
+	     <collection property="saleincome" ofType="SaleIncome">
+	       <id property="sale_income_id" column="saleIncomeId"/>
+	       <result property="getState" column="get_state"/>
+	       <result property="getMoney" column="get_money"/>
+	     </collection>
+	 </resultMap>
+	<!-- //主页面 mian -->
+	<select id="queryOrder" resultMap="c">
+		SELECT
+		us.true_name,us.phone,orde.state,orde.close_time,
+		orde_it.item_name,
+		orde_it.price,orde_it.num,orde_it.total_fee,
+		refu.refund_money,sale_in.get_state,sale_in.get_money
+		FROM sale_info sale JOIN sale_income sale_come ON sale.sale_id
+		=sale_come.sale_id
+		JOIN ordera orde ON sale_come.order_id=orde.order_id JOIN USER us ON
+		us.user_id=orde.user_id
+		JOIN order_item orde_it ON orde.order_id=orde_it.order_id JOIN refund refu
+		ON refu.order_id=orde.order_id
+		JOIN sale_income sale_in ON orde.order_id=sale_in.order_id
+	</select>
+</mapper>       

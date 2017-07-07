@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -14,10 +15,10 @@ public class CusResoServiceImpl  implements CusResoService{
    @Autowired
    private  CusResoDao cuResoDao;
 	@Override
-	public DataWrapper<List<CusResources>> show(String state) {
+	public DataWrapper<List<CusResources>> show(HashMap<String, String> hashMap) {
 		// TODO Auto-generated method stub
 		DataWrapper<List<CusResources>>  dataWrapper=new DataWrapper<List<CusResources>>();
-		List<CusResources> list=cuResoDao.show(state);
+		List<CusResources> list=cuResoDao.show(hashMap);
 		if(list.isEmpty()){
 			dataWrapper.setMsg("暂无数据");
 		}else{

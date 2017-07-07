@@ -1,4 +1,4 @@
-package com.yayiabc.http.mvc.controller.saleManage;
+/*package com.yayiabc.http.mvc.controller.saleManage;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,9 +17,9 @@ public class SaleLogController {
 	@Autowired
 	SaleLogService saleLogService;
 	
-	/*
+	
 	 * 获取验证码
-	 */
+	 
 	@RequestMapping("getVerifyCode")
 	@ResponseBody
 	public DataWrapper<Void> getVerifyCode(
@@ -28,9 +28,9 @@ public class SaleLogController {
 		return saleLogService.getVerifyCode(phone);
 	}
 	
-	/*
+	
 	 * 用户注册
-	 */
+	 
 	@RequestMapping("register")
 	@ResponseBody
 	public DataWrapper<SaleInfo> register(
@@ -41,9 +41,9 @@ public class SaleLogController {
 		return saleLogService.register(phone, password, code);
 	}
 	
-	/*
+	
 	 * 短信登录
-	 */
+	 
 	@RequestMapping("noteLogin")
 	@ResponseBody
 	public DataWrapper<SaleInfo> noteLogin(
@@ -83,3 +83,4 @@ public class SaleLogController {
 		return saleLogService.forgetPwd(phone, code, password);
 	}
 }
+*/

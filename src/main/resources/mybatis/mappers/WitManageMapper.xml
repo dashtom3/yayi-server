@@ -26,11 +26,11 @@
 	   select  * from cashmanage 
 	   <where>
 	  
-	    <if test="message!=null">
+	    <if test="message!=null and message!=''">
 	       phone=${message}  or real_name=${message}  
 	    </if>
 	     
-	    <if test="state!=null">
+	    <if test="state!=null and state!=''">
 	       and  cash_state=#{state}
 	   </if>
 	   </where>

@@ -7,4 +7,7 @@
 	<select id="getUserID" parameterType="java.lang.String" resultType="java.lang.String">
 		select user_id from user_token where token=#{token} 
 	</select>
+	<select id="getSaleId" parameterType="java.lang.String" resultType="java.lang.String">
+		select sale_id from sale_token where token=#{token} 
+	</select>
 </mapper>       

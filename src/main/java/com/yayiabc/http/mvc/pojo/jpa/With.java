@@ -1,5 +1,7 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
+import java.util.Date;
+
 public class With {
 	private Integer cashId;
 	private String realName;
@@ -11,6 +13,15 @@ public class With {
 	private  String anumber;
 	private  String appTime;
 	private  String cashState;
+	private Date cashSuTime;
+	
+	
+	public Date getCashSuTime() {
+		return cashSuTime;
+	}
+	public void setCashSuTime(Date cashSuTime) {
+		this.cashSuTime = cashSuTime;
+	}
 	public Integer getCashId() {
 		return cashId;
 	}
@@ -73,10 +84,8 @@ public class With {
 	}
 	@Override
 	public String toString() {
-		return "With [cashId=" + cashId + ", realName=" + realName + ", phone="
-				+ phone + ", cashMoney=" + cashMoney + ", type=" + type
-				+ ", accountUser=" + accountUser + ", bank=" + bank + ", anumber="
-				+ anumber + ", appTime=" + appTime + ", cashState=" + cashState
+		return "With [cashMoney=" + cashMoney + ", cashSuTime=" + cashSuTime
 				+ "]";
 	}
+
 }

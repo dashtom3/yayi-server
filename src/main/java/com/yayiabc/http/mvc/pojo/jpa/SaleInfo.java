@@ -10,9 +10,7 @@ import java.util.List;
 
 public class SaleInfo extends BasePojo {
 	private String saleId;
-	
-	private String salePwd;
-
+	 private String salePwd;
 	private String trueName;
 
 	private String idCard;
@@ -46,13 +44,11 @@ public class SaleInfo extends BasePojo {
 	private List<User> user;
 
 	private List<SaleIncome> saleincome;
+	
+	private List<With> With;
 
 	public String getSaleId() {
 		return saleId;
-	}
-
-	public void setSaleId(String saleId) {
-		this.saleId = saleId;
 	}
 
 	public String getSalePwd() {
@@ -63,6 +59,10 @@ public class SaleInfo extends BasePojo {
 		this.salePwd = salePwd;
 	}
 
+	public void setSaleId(String saleId) {
+		this.saleId = saleId;
+	}
+
 	public String getTrueName() {
 		return trueName;
 	}
@@ -71,12 +71,12 @@ public class SaleInfo extends BasePojo {
 		this.trueName = trueName;
 	}
 
-	public String getIdCard() {
-		return idCard;
+	public List<SaleIncome> getSaleincome() {
+		return saleincome;
 	}
 
-	public void setIdCard(String idCard) {
-		this.idCard = idCard;
+	public void setSaleincome(List<SaleIncome> saleincome) {
+		this.saleincome = saleincome;
 	}
 
 	public Date getBirthday() {
@@ -87,12 +87,20 @@ public class SaleInfo extends BasePojo {
 		this.birthday = birthday;
 	}
 
+	public String getIdCard() {
+		return idCard;
+	}
+
+	public void setIdCard(String idCard) {
+		this.idCard = idCard;
+	}
+
 	public Integer getMoney() {
 		return money;
 	}
 
-	public void setMoney(Integer money) {
-		this.money = money;
+	public Integer getSex() {
+		return sex;
 	}
 
 	public String getSalePic() {
@@ -135,6 +143,22 @@ public class SaleInfo extends BasePojo {
 		this.accountNumber = accountNumber;
 	}
 
+	public Integer getIsBindUser() {
+		return isBindUser;
+	}
+
+	public void setIsBindUser(Integer isBindUser) {
+		this.isBindUser = isBindUser;
+	}
+
+	public void setSex(Integer sex) {
+		this.sex = sex;
+	}
+
+	public void setMoney(Integer money) {
+		this.money = money;
+	}
+
 	public Integer getType() {
 		return type;
 	}
@@ -149,14 +173,6 @@ public class SaleInfo extends BasePojo {
 
 	public void setPhone(String phone) {
 		this.phone = phone;
-	}
-
-	public Integer getSex() {
-		return sex;
-	}
-
-	public void setSex(Integer sex) {
-		this.sex = sex;
 	}
 
 	public String getAddress() {
@@ -175,14 +191,6 @@ public class SaleInfo extends BasePojo {
 		this.bindUserNum = bindUserNum;
 	}
 
-	public Integer getIsBindUser() {
-		return isBindUser;
-	}
-
-	public void setIsBindUser(Integer isBindUser) {
-		this.isBindUser = isBindUser;
-	}
-
 	public List<User> getUser() {
 		return user;
 	}
@@ -191,23 +199,18 @@ public class SaleInfo extends BasePojo {
 		this.user = user;
 	}
 
-	public List<SaleIncome> getSaleincome() {
-		return saleincome;
+	public SaleInfo() {
+		super();
 	}
 
-	public void setSaleincome(List<SaleIncome> saleincome) {
-		this.saleincome = saleincome;
-	}
-
-	public SaleInfo(String saleId, String salePwd, String trueName,
-			String idCard, Date birthday, Integer money, String salePic,
-			String postalType, String bankName, String openName,
-			String accountNumber, Integer type, String phone, Integer sex,
-			String address, Integer bindUserNum, Integer isBindUser,
-			List<User> user, List<SaleIncome> saleincome) {
+	public SaleInfo(String saleId, String trueName, String idCard,
+			Date birthday, Integer money, String salePic, String postalType,
+			String bankName, String openName, String accountNumber,
+			Integer type, String phone, Integer sex, String address,
+			Integer bindUserNum, Integer isBindUser, List<User> user,
+			List<SaleIncome> saleincome) {
 		super();
 		this.saleId = saleId;
-		this.salePwd = salePwd;
 		this.trueName = trueName;
 		this.idCard = idCard;
 		this.birthday = birthday;
@@ -227,28 +230,24 @@ public class SaleInfo extends BasePojo {
 		this.saleincome = saleincome;
 	}
 
-	public SaleInfo() {
-		super();
-		// TODO Auto-generated constructor stub
+	public List<With> getWith() {
+		return With;
 	}
 
-	public SaleInfo(Date created, Date updated) {
-		super(created, updated);
-		// TODO Auto-generated constructor stub
+	public void setWith(List<With> with) {
+		With = with;
 	}
 
 	@Override
 	public String toString() {
-		return "SaleInfo [saleId=" + saleId + ", salePwd=" + salePwd
-				+ ", trueName=" + trueName + ", idCard=" + idCard
-				+ ", birthday=" + birthday + ", money=" + money + ", salePic="
-				+ salePic + ", postalType=" + postalType + ", bankName="
-				+ bankName + ", openName=" + openName + ", accountNumber="
-				+ accountNumber + ", type=" + type + ", phone=" + phone
-				+ ", sex=" + sex + ", address=" + address + ", bindUserNum="
-				+ bindUserNum + ", isBindUser=" + isBindUser + ", user=" + user
-				+ ", saleincome=" + saleincome + "]";
+		return "SaleInfo [saleId=" + saleId + ", trueName=" + trueName
+				+ ", idCard=" + idCard + ", birthday=" + birthday + ", money="
+				+ money + ", salePic=" + salePic + ", postalType=" + postalType
+				+ ", bankName=" + bankName + ", openName=" + openName
+				+ ", accountNumber=" + accountNumber + ", type=" + type
+				+ ", phone=" + phone + ", sex=" + sex + ", address=" + address
+				+ ", bindUserNum=" + bindUserNum + ", isBindUser=" + isBindUser
+				+ ", user=" + user + ", saleincome=" + saleincome + "]";
 	}
 
-	
 }

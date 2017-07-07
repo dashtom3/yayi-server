@@ -3,12 +3,17 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yayiabc.http.mvc.dao.CusResoDao">
-
 	<select id="show" resultType="com.yayiabc.http.mvc.pojo.jpa.CusResources">
 		select * from cus_resources
 		<where>
-			<if test="state!=null">
-				unit_name=#{state} or contacts_phone=#{state} or contacts =#{state}
+			<if test="cusName!=null and cusName!=''">
+				unit_name=#{cusName} and
+			</if>
+			<if test="phone!=null and phone!=''">
+			contacts_phone=#{phone} and 
+			</if>
+			<if test="cusAddress!=null and cusAddress!=''">
+			contacts=#{cusAddress}
 			</if>
 		</where>
 	</select>

@@ -89,6 +89,7 @@ public class ItemManageServiceImpl implements ItemManageService{
 		}
 		List<ItemProperty> itemPropertyList=itemManageDao.queryProperty(itemPropertyName);
 		dataWrapper.setData(itemPropertyList);
+		System.out.println(itemPropertyList);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		
 		return dataWrapper;

@@ -28,8 +28,9 @@ public class UserCertificationListServiceImpl implements
 		DataWrapper<List<User>> dataWrapper = new DataWrapper<List<User>>();
 		Page page = new Page();
 		page.setNumberPerPage(numberPerPage);
-	    page.setCurrentPage(currentPage);
-		int totalNumber = userCertificationListDao.getCount(phone, trueName, companyName, type, state);
+		page.setCurrentPage(currentPage);
+		int totalNumber = userCertificationListDao.getCount(phone, trueName,
+				companyName, type, state);
 		dataWrapper.setPage(page, totalNumber);
 		List<User> list = userCertificationListDao.list(phone, trueName,
 				companyName, type, state, page);

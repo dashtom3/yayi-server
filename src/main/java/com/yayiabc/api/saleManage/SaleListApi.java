@@ -242,10 +242,10 @@ public class SaleListApi {
      * }]
      * },
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
-     * numberPerPage:0,
-     * currentPage:0,
-     * totalNumber:0,
-     * totalPage:0,
+     * numberPerPage:10,
+     * currentPage:1,
+     * totalNumber:1,
+     * totalPage:1,
      * num :null,
      * msg :null,
      *  }

@@ -11,7 +11,7 @@
 			ON a.item_property_id=b.item_pid
 			<where>
 				true 
-				<if test="itemPropertyName!=null"> and item_property_name=#{itemPropertyName}</if>
+				<if test="itemPropertyName!=null"> and item_property_name like '%${itemPropertyName}%'</if>
 			</where>
  	</select>
  	

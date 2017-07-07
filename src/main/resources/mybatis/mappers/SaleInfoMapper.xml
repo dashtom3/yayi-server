@@ -1,0 +1,35 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.SaleInfoDao">
+	<update id="updateSale">
+		UPDATE sale_info 
+		<set>
+			<if test="trueName !=null and trueName !=''">true_name=#{trueName},</if>
+			<if test="idCard != null and idCard !=''">id_card=#{idCard},</if>
+			<if test="weChar !=null and weChar !=''">we_char=#{weChar},</if>
+			<if test="email !=null and email !=''">email=#{email},</if>
+			<if test="sex !=null and sex !=''">sex=#{sex},</if>
+			<if test="birthday !=null and birthday !=''">birthday=#{birthday},</if>
+			<if test="part !=null and part !=''">part=#{part},</if>
+			<if test="address !=null and address !=''">address=#{address},</if>
+			<if test="education !=null and education !=''">education=#{education},</if>
+			<if test="workUnit !=null and workUnit !=''">work_unit=#{workUnit},</if>
+			<if test="workPosition !=null and workPosition !=''">work_position=#{workPosition},</if>
+			<if test="salePic !=null and salePic !=''">sale_pic=#{salePic}</if>
+		</set>
+		WHERE sale_id=#{saleId};	
+	</update>
+	
+	<update id="updatePostal">
+		UPDATE sale_info	
+		<set>
+			<if test="postalType !=null and postalType !=''">postal_type=#{postalType},</if>
+			bank_name=#{bankName},
+			<if test="openName !=null and openName !=''">open_name=#{openName},</if>
+			<if test="accountNumber !=null and accountNumber !=''">account_number=#{accountNumber}</if>
+		</set>
+		WHERE sale_id=#{saleId};
+	</update>
+</mapper>

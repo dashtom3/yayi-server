@@ -1,0 +1,53 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.SaleMyClientDao">
+	<select id="myClient" resultType="UserStatistics">
+		SELECT 
+		u.sale_id,
+		u.user_id,
+		s.bind_user_num,
+		u.true_name,
+		u.phone,
+		c.company_name,
+		u.bind_sale_time,
+		c.work_address
+		FROM USER u
+		LEFT JOIN sale_info s
+		ON u.sale_id=s.sale_id
+		LEFT JOIN certification c
+		ON u.user_id=c.user_id
+		WHERE  
+		u.true_name LIKE '%${value}%' AND u.sale_id =#{saleId} OR 
+		u.phone LIKE '%${value}%' AND u.sale_id =#{saleId} OR 
+		c.company_name LIKE '%${value}%' AND u.sale_id =#{saleId}
+		GROUP BY u.user_id
+		LIMIT ${page.currentNumber},${page.numberPerPage}
+	</select>
+	
+	<select id="getCount" resultType="int">
+		SELECT 
+		count(*)
+		FROM USER u
+		LEFT JOIN sale_info s
+		ON u.sale_id=s.sale_id
+		LEFT JOIN certification c
+		ON u.user_id=c.user_id
+		WHERE  
+		u.true_name LIKE '%${value}%' AND u.sale_id =#{saleId} OR 
+		u.phone LIKE '%${value}%' AND u.sale_id =#{saleId} OR 
+		c.company_name LIKE '%${value}%' AND u.sale_id =#{saleId}
+	</select>
+	
+	<select id="queryCount" resultType="UserStatistics">
+		SELECT
+		IF(COUNT(user_id) IS NOT NULL,COUNT(user_id),0) AS orderaCount,
+		IF(SUM(actual_pay) IS NOT NULL,SUM(actual_pay),0) AS orderaMoneyCount,
+		updated AS latelyOrderDate 
+		FROM ordera 
+		WHERE user_id=#{userId} 
+		ORDER BY updated DESC  
+		LIMIT 1
+	</select>
+</mapper>

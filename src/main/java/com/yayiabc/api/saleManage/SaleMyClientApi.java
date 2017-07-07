@@ -8,9 +8,7 @@ public interface SaleMyClientApi {
      * @apiVersion 0.1.0
      * @apiDescription 我的客户
      *
-     * @apiParam {String} userName 客户姓名（非必须）
-     * @apiParam {String} userPhone 客户手机号（非必须）
-     * @apiParam {String} companyName 单位名称（非必须）
+     * @apiParam {String} value 输入框值（非必须，包含客户姓名，客户手机号,单位名称）
      * @apiParam {int} currentPage （非必须）
      * @apiParam {int} numberPerPage （非必须）  
      * @apiParam {String} token 身份凭证（必须）
@@ -23,8 +21,8 @@ public interface SaleMyClientApi {
      * data:[{
      * 		userId:"fe3-c2cd-417f-8f6f-bf7412",
      * 		bindUserNum:10,
-     * 		userName:"张三",
-     * 		userPhone:"15778318861",
+     * 		trueName:"张三",
+     * 		phone:"15778318861",
      * 		companyName:"XXXX公司",
      * 		workAddress:"上海市杨浦区XXXX路",
      * 		orderaCount:30,
@@ -34,8 +32,8 @@ public interface SaleMyClientApi {
      * }，{
      * 		userId:"06600bb1-a679-4a24-8e14-51c86bb123bf",
      * 		bindUserNum:10,
-     * 		userName:"李四",
-     * 		userPhone:"15779431515",
+     * 		trueName:"张三",
+     * 		phone:"15778318861",
      * 		companyName:"XXXX公司",
      * 		workAddress:"上海市杨浦区XXXX路",
      * 		orderaCount:50,

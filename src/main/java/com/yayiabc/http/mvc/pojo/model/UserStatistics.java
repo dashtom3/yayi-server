@@ -2,8 +2,9 @@ package com.yayiabc.http.mvc.pojo.model;
 
 /**
  * 用户统计表
+ * 
  * @author xiaojiang
- *
+ * 
  */
 public class UserStatistics {
 	private String userId;
@@ -11,6 +12,14 @@ public class UserStatistics {
 	private String phone;
 
 	private String trueName;
+
+	private Integer bindUserNum;
+
+	private String companyName;
+
+	private String bindSaleTime;
+
+	private String workAddress;
 
 	private String orderaCount;
 
@@ -66,16 +75,54 @@ public class UserStatistics {
 		this.latelyOrderDate = latelyOrderDate;
 	}
 
+	public Integer getBindUserNum() {
+		return bindUserNum;
+	}
+
+	public void setBindUserNum(Integer bindUserNum) {
+		this.bindUserNum = bindUserNum;
+	}
+
+	public String getCompanyName() {
+		return companyName;
+	}
+
+	public void setCompanyName(String companyName) {
+		this.companyName = companyName;
+	}
+
+	public String getBindSaleTime() {
+		return bindSaleTime;
+	}
+
+	public void setBindSaleTime(String bindSaleTime) {
+		this.bindSaleTime = bindSaleTime;
+	}
+
+	public String getWorkAddress() {
+		return workAddress;
+	}
+
+	public void setWorkAddress(String workAddress) {
+		this.workAddress = workAddress;
+	}
+
 	public UserStatistics() {
 		super();
 	}
 
 	public UserStatistics(String userId, String phone, String trueName,
-			String orderaCount, String orderaMoneyCount, String latelyOrderDate) {
+			Integer bindUserNum, String companyName, String bindSaleTime,
+			String workAddress, String orderaCount, String orderaMoneyCount,
+			String latelyOrderDate) {
 		super();
 		this.userId = userId;
 		this.phone = phone;
 		this.trueName = trueName;
+		this.bindUserNum = bindUserNum;
+		this.companyName = companyName;
+		this.bindSaleTime = bindSaleTime;
+		this.workAddress = workAddress;
 		this.orderaCount = orderaCount;
 		this.orderaMoneyCount = orderaMoneyCount;
 		this.latelyOrderDate = latelyOrderDate;
@@ -84,9 +131,12 @@ public class UserStatistics {
 	@Override
 	public String toString() {
 		return "UserStatistics [userId=" + userId + ", phone=" + phone
-				+ ", trueName=" + trueName + ", orderaCount=" + orderaCount
-				+ ", orderaMoneyCount=" + orderaMoneyCount
-				+ ", latelyOrderDate=" + latelyOrderDate + "]";
+				+ ", trueName=" + trueName + ", bindUserNum=" + bindUserNum
+				+ ", companyName=" + companyName + ", bindSaleTime="
+				+ bindSaleTime + ", workAddress=" + workAddress
+				+ ", orderaCount=" + orderaCount + ", orderaMoneyCount="
+				+ orderaMoneyCount + ", latelyOrderDate=" + latelyOrderDate
+				+ "]";
 	}
 
 }

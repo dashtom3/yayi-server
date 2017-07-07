@@ -12,7 +12,7 @@
 		<result column="user_phone" property="userPhone"/>
 		<result column="get_state" property="getState"/>
 		<result column="get_updated" property="getUpdated"/>
-		<result column="get_money" property="getMoey"/>
+		<result column="get_money" property="getMoney"/>
 		<result column="sign_late_seven" property="signLateSeven"/>
 		<collection property="orderVoList" ofType="OrderVo">
 			<id column="order_id" property="orderId"/>
@@ -115,12 +115,14 @@
 	<select id="detail" resultMap="saleIncomeVoRM">
 		SELECT s.sale_id,s.true_name AS sale_name,s.phone AS sale_phone, 
 		u.user_id,u.true_name AS user_name,u.phone AS user_phone,
-		si.get_state,si.updated AS get_updated,si.get_money
+		si.get_state,si.updated AS get_updated,si.get_money,r.refund_money
 		FROM sale_info s
 		LEFT JOIN USER u
 		ON s.sale_id = u.sale_id
 		LEFT JOIN sale_income si
 		ON s.sale_id =si.sale_id
+		LEFT JOIN refund r
+		ON u.user_id=r.user_id
 		WHERE s.sale_id=#{saleId} AND u.user_id=#{userId}
 	</select>
 		

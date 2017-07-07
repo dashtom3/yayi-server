@@ -1,0 +1,161 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.SaleMyOrderDao">
+	<resultMap type="MyOrderVo" id="myOrderVoRM">
+		<id column="sale_id" property="saleId"/>
+		<result column="order_created" property="orderCreated"/>
+		<result column="user_name" property="userName"/>
+		<result column="user_phone" property="userPhone"/>
+		<result column="item_name" property="itemName"/>
+		<result column="total_fee" property="totalFee"/>
+		<result column="refund_money" property="refundMoney"/>
+		<result column="get_money" property="getMoney"/>
+		<result column="get_state" property="getState"/>
+		<result column="get_updated" property="getUpdated"/>
+		<!-- <association property="saleDataStatistics" javaType="com.yayiabc.http.mvc.pojo.model.SaleDataStatistics">
+			<result column="overYearHasCommission" property="overYearHasCommission"/>
+			<result column="allCommission" property="allCommission"/>
+			<result column="stayCommission" property="stayCommission"/>
+			<result column="hasCommission" property="hasCommission"/>
+		</association> -->
+	</resultMap>
+	
+	<select id="myOrder" resultMap="myOrderVoRM">
+		SELECT 
+		u.sale_id,
+		o.created AS order_created,
+		u.true_name AS user_name,
+		u.phone AS user_phone,
+		oi.item_name,
+		oi.total_fee,
+		r.refund_money,
+		si.get_money,
+		(SELECT updated FROM sale_income WHERE get_state = 2 AND sale_id=#{saleId}) AS get_updated
+		FROM order_item oi
+		LEFT JOIN ordera o
+		ON oi.order_id = o.order_id
+		LEFT JOIN USER u
+		ON o.user_id=u.user_id
+		LEFT JOIN refund r
+		ON u.user_id=r.user_id
+		LEFT JOIN sale_info s
+		ON u.sale_id=s.sale_id
+		LEFT JOIN sale_income si
+		ON s.sale_id=si.sale_id
+		WHERE o.user_id IN(SELECT user_id FROM USER WHERE sale_id=#{saleId})
+		GROUP BY o.order_id 		
+		ORDER BY o.created DESC
+		LIMIT ${page.currentNumber},${page.numberPerPage}	
+	</select>
+	
+	<select id="getCount" resultType="int">
+		SELECT 
+		count(*)
+		FROM order_item oi
+		LEFT JOIN ordera o
+		ON oi.order_id = o.order_id
+		LEFT JOIN USER u
+		ON o.user_id=u.user_id
+		LEFT JOIN refund r
+		ON u.user_id=r.user_id
+		LEFT JOIN sale_info s
+		ON u.sale_id=s.sale_id
+		LEFT JOIN sale_income si
+		ON s.sale_id=si.sale_id
+		WHERE o.user_id IN(SELECT user_id FROM USER WHERE sale_id=#{saleId})
+	</select>
+	
+	<select id="myOrderData" resultType="SaleDataStatistics">
+		SELECT sale_id,
+		(SELECT SUM(get_money) FROM sale_income WHERE get_state=2) AS overYearHasCommission,
+		(SELECT SUM(get_money) FROM sale_income WHERE YEAR(created) = DATE_FORMAT(NOW(), '%Y')) AS allCommission,
+		(SELECT SUM(get_money) FROM sale_income WHERE get_state=1 AND YEAR(created) = DATE_FORMAT(NOW(), '%Y')) AS stayCommission,
+		(SELECT SUM(get_money) FROM sale_income WHERE get_state=2 AND YEAR(created) = DATE_FORMAT(NOW(), '%Y')) AS hasCommission 
+		FROM sale_income WHERE sale_id=#{saleId}
+		GROUP BY sale_id
+	</select>
+	
+	<select id="myOrderOrder" resultType="SaleDataStatistics">
+		SELECT 
+		SUM(oi.total_fee) AS sumOrderMoney,COUNT(o.order_id) AS orderNum 
+		FROM USER u
+		LEFT JOIN ordera o
+		ON u.user_id=o.user_id
+		LEFT JOIN order_item oi
+		ON o.order_id=oi.order_id	
+		WHERE o.user_id IN(SELECT user_id FROM USER WHERE sale_id=#{saleId})	
+	</select>
+	
+	<select id="chart" resultType="SaleDataStatistics">
+		SELECT SUM(get_money) AS dayCommission,COUNT(order_id) AS dayOrderNum 
+		FROM sale_income WHERE sale_id=#{saleId} AND YEAR(created) =#{year} AND MONTH(created)=#{month}
+		GROUP BY DAY(created)
+	</select>
+	
+	<resultMap type="SaleIncomeVo" id="saleIncomeVoRM">
+		<id column="user_id" property="userId"/>
+		<result column="user_name" property="userName"/>
+		<result column="user_phone" property="userPhone"/>
+		<result column="get_state" property="getState"/>
+		<result column="get_money" property="getMoney"/>
+		<collection property="orderVoList" ofType="OrderVo">
+			<id column="order_id" property="orderId"/>
+			<result column="order_state" property="orderState"/>
+			<result column="item_name" property="itemName"/>
+			<result column="price" property="price"/>
+			<result column="num" property="num"/>
+			<result column="total_fee" property="totalFee"/>
+			<result column="refund_money" property="refundMoney"/>
+			<result column="order_created" property="orderCreated"/>
+		</collection>
+	</resultMap>
+	
+	<select id="detailO" resultMap="saleIncomeVoRM">
+		SELECT  
+		oi.item_name,
+		oi.price,
+		oi.num,
+		o.created AS order_created,
+		o.order_id,
+		r.refund_money,
+		o.state AS order_state,
+		oi.total_fee
+		FROM order_item oi
+		LEFT JOIN ordera o
+		ON oi.order_id = o.order_id
+		LEFT JOIN item_detail id
+		ON oi.item_id=id.item_id
+		LEFT JOIN USER u
+		ON o.user_id=u.user_id
+		LEFT JOIN refund r
+		ON u.user_id=r.user_id
+		LEFT JOIN sale_income si
+		ON u.sale_id=si.sale_id
+		WHERE o.user_id=#{userId} AND o.order_id=#{orderId} AND u.sale_id=#{saleId}
+		GROUP BY u.true_name
+	</select>
+	
+	<select id="detailS" resultMap="saleIncomeVoRM">
+		SELECT  
+		o.user_id,
+		u.true_name AS user_name,
+		u.phone AS user_phone,
+		si.get_state,
+		si.get_money
+		FROM order_item oi
+		LEFT JOIN ordera o
+		ON oi.order_id = o.order_id
+		LEFT JOIN item_detail id
+		ON oi.item_id=id.item_id
+		LEFT JOIN USER u
+		ON o.user_id=u.user_id
+		LEFT JOIN refund r
+		ON u.user_id=r.user_id
+		LEFT JOIN sale_income si
+		ON u.sale_id=si.sale_id
+		WHERE o.user_id=#{userId} AND o.order_id=#{orderId} AND u.sale_id=#{saleId}
+		GROUP BY u.true_name
+	</select>
+</mapper>

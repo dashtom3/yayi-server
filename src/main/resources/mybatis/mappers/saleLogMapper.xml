@@ -11,12 +11,17 @@
 		insert into sale_info(sale_pwd,sale_id,phone) values(#{salePwd},#{saleId},#{phone})
 	</insert>
 	
+	
 	<insert id="addSaleToken">
 		insert into sale_token values(#{saleId},#{saleToken})
 	</insert>
 	
 	<select id="getTokenBySaleId" resultType="string">
 		select sale_token from sale_token where sale_id=#{saleId}
+	</select>
+	
+	<select id="getSaleIdByToken" resultType="string">
+		SELECT sale_id FROM sale_token WHERE sale_token=#{token};
 	</select>
 	
 	<update id="updatePwd">

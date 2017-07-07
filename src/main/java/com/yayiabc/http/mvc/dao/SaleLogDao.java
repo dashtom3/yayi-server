@@ -15,6 +15,8 @@ public interface SaleLogDao {
 
 	String getTokenBySaleId(String saleId);
 
+	String getSaleIdByToken(@Param("token")String token);
+	
 	void updatePwd(@Param("password")String password,@Param("saleId") String saleId);
 	
 	

@@ -144,7 +144,7 @@
 		<result column="phone" property="phone"/>
 		<result column="sex" property="sex"/>
 		<result column="id_card" property="idCard"/>
-		<result column="created" property="creatd"/>
+		<result column="created" property="created"/>
 		<result column="money" property="money"/>
 		<result column="bind_user_num" property="bindUserNum"/>
 		<result column="sale_pic" property="salePic"/>

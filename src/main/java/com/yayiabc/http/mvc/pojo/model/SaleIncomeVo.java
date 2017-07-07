@@ -11,9 +11,10 @@ public class SaleIncomeVo {
 	private String userPhone; // 用户手机号
 	private String getState; // 收入状态
 	private String getUpdated; // 结算日期
-	private Integer getMoey; // 销售收入金额
+	private Integer getMoney; // 销售收入金额
 	private Integer signLateSeven; // 签收是否已过7天
 	private List<OrderVo> orderVoList;
+	private SaleDataStatistics saleDataStatistics;
 
 	public String getSaleId() {
 		return saleId;
@@ -79,12 +80,14 @@ public class SaleIncomeVo {
 		this.getUpdated = getUpdated;
 	}
 
-	public Integer getGetMoey() {
-		return getMoey;
+
+
+	public Integer getGetMoney() {
+		return getMoney;
 	}
 
-	public void setGetMoey(Integer getMoey) {
-		this.getMoey = getMoey;
+	public void setGetMoney(Integer getMoney) {
+		this.getMoney = getMoney;
 	}
 
 	public Integer getSignLateSeven() {
@@ -103,14 +106,22 @@ public class SaleIncomeVo {
 		this.orderVoList = orderVoList;
 	}
 
+	public SaleDataStatistics getSaleDataStatistics() {
+		return saleDataStatistics;
+	}
+
+	public void setSaleDataStatistics(SaleDataStatistics saleDataStatistics) {
+		this.saleDataStatistics = saleDataStatistics;
+	}
+
 	public SaleIncomeVo() {
 		super();
 	}
 
 	public SaleIncomeVo(String saleId, String saleName, String salePhone,
 			String userId, String userName, String userPhone, String getState,
-			String getUpdated, Integer getMoey, Integer signLateSeven,
-			List<OrderVo> orderVoList) {
+			String getUpdated, Integer getMoney, Integer signLateSeven,
+			List<OrderVo> orderVoList, SaleDataStatistics saleDataStatistics) {
 		super();
 		this.saleId = saleId;
 		this.saleName = saleName;
@@ -120,19 +131,21 @@ public class SaleIncomeVo {
 		this.userPhone = userPhone;
 		this.getState = getState;
 		this.getUpdated = getUpdated;
-		this.getMoey = getMoey;
+		this.getMoney = getMoney;
 		this.signLateSeven = signLateSeven;
 		this.orderVoList = orderVoList;
+		this.saleDataStatistics = saleDataStatistics;
 	}
 
 	@Override
 	public String toString() {
-		return "SaleIncome [saleId=" + saleId + ", saleName=" + saleName
+		return "SaleIncomeVo [saleId=" + saleId + ", saleName=" + saleName
 				+ ", salePhone=" + salePhone + ", userId=" + userId
 				+ ", userName=" + userName + ", userPhone=" + userPhone
 				+ ", getState=" + getState + ", getUpdated=" + getUpdated
-				+ ", getMoey=" + getMoey + ", signLateSeven=" + signLateSeven
-				+ ", orderVoList=" + orderVoList + "]";
+				+ ", getMoney=" + getMoney + ", signLateSeven=" + signLateSeven
+				+ ", orderVoList=" + orderVoList + ", saleDataStatistics="
+				+ saleDataStatistics + "]";
 	}
 
 }

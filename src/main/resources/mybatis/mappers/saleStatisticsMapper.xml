@@ -16,6 +16,7 @@
                 AND s.true_name LIKE '%${trueName}%'
             </if>
         </where>
+        GROUP BY s.true_name
         LIMIT ${page.currentNumber},${page.numberPerPage}
     </select>
     

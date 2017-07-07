@@ -12,6 +12,7 @@ public class OrderVo {
 	private Integer refundMoney; // 退款金额
 	private Integer commission; // 提成收入
 	private String orderCreated; // 下单时间
+	private SaleIncomeVo saleIncomeVo;
 
 	public String getOrderId() {
 		return orderId;
@@ -101,6 +102,14 @@ public class OrderVo {
 		this.orderCreated = orderCreated;
 	}
 
+	public SaleIncomeVo getSaleIncomeVo() {
+		return saleIncomeVo;
+	}
+
+	public void setSaleIncomeVo(SaleIncomeVo saleIncomeVo) {
+		this.saleIncomeVo = saleIncomeVo;
+	}
+
 	public OrderVo() {
 		super();
 	}
@@ -108,7 +117,7 @@ public class OrderVo {
 	public OrderVo(String orderId, String orderState, String signUpdated,
 			String itemName, String itemSKU, Integer price, Integer num,
 			Integer totalFee, Integer refundMoney, Integer commission,
-			String orderCreated) {
+			String orderCreated, SaleIncomeVo saleIncomeVo) {
 		super();
 		this.orderId = orderId;
 		this.orderState = orderState;
@@ -121,6 +130,7 @@ public class OrderVo {
 		this.refundMoney = refundMoney;
 		this.commission = commission;
 		this.orderCreated = orderCreated;
+		this.saleIncomeVo = saleIncomeVo;
 	}
 
 	@Override
@@ -130,7 +140,7 @@ public class OrderVo {
 				+ ", itemSKU=" + itemSKU + ", price=" + price + ", num=" + num
 				+ ", totalFee=" + totalFee + ", refundMoney=" + refundMoney
 				+ ", commission=" + commission + ", orderCreated="
-				+ orderCreated + "]";
+				+ orderCreated + ", saleIncomeVo=" + saleIncomeVo + "]";
 	}
 
 }

@@ -43,7 +43,6 @@ public class WitManageServiceImpl implements WitManageService{
 		return dataWrapper;
 	}
 	public String getVerifyCode(String phone) {
-		DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
 		String code = VerifyCodeManager.getPhoneCode(phone);
 		System.out.println(code);
 		if (code == null) {

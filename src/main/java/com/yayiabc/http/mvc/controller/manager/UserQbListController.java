@@ -11,7 +11,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
-import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.UserQbListService;
 
 @Controller

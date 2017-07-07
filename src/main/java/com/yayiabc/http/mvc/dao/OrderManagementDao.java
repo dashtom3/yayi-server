@@ -3,12 +3,9 @@ package com.yayiabc.http.mvc.dao;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
-
 import org.apache.ibatis.annotations.Param;
-
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
-import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.OrderManagement;
 
 public interface OrderManagementDao {

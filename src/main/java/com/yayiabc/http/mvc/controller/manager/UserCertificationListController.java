@@ -10,7 +10,6 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.common.utils.ParamUtil;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.UserCertificationListService;
 

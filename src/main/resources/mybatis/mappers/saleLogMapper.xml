@@ -1,0 +1,25 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.SaleLogDao">
+	<select id="getSaleInfoByPhone" resultType="SaleInfo">
+		select * from sale_info where phone=#{phone}
+	</select>
+	
+	<insert id="register" parameterType="SaleInfo">
+		insert into sale_info(sale_pwd,sale_id,phone) values(#{})
+	</insert>
+	
+	<insert id="addSaleToken">
+		insert into sale_token values(#{saleId},#{saleToken})
+	</insert>
+	
+	<select id="getTokenBySaleId" resultType="string">
+		select from sale_token where sale_id=#{saleId}
+	</select>
+	
+	<update id="updatePwd">
+		update sale_info set sale_pwd=#{password} where sale_id=#{saleId}
+	</update>
+</mapper>

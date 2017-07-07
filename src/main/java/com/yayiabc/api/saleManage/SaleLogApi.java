@@ -2,7 +2,7 @@ package com.yayiabc.api.saleManage;
 
 public interface SaleLogApi {
 	 /**
-     * @api {post} http://47.93.48:8080/api/saleLog/register （创客系统）销售员注册
+     * @api {post} http://47.93.48.111:8080/api/saleLog/register （创客系统）销售员注册
      * @apiName register
      * @apiGroup userLog
      * @apiVersion 0.1.0
@@ -44,7 +44,7 @@ public interface SaleLogApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48:8080/api/saleLog/getVerifyCode （创客系统）获取验证码
+     * @api {post} http://47.93.48.111:8080/api/saleLog/getVerifyCode （创客系统）获取验证码
      * @apiName getVerifyCode
      * @apiGroup saleLog
      * @apiVersion 0.1.0
@@ -86,7 +86,7 @@ public interface SaleLogApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48:8080/api/saleLog/noteLogin （创客系统）短信登录
+     * @api {post} http://47.93.48.111:8080/api/saleLog/noteLogin （创客系统）短信登录
      * @apiName noteLogin
      * @apiGroup userLog
      * @apiVersion 0.1.0
@@ -128,7 +128,7 @@ public interface SaleLogApi {
      */
 	
 	 /**
-     * @api {post} http://47.93.48:8080/api/saleLog/pwdLogin （创客系统）密码登录
+     * @api {post} http://47.93.48.111:8080/api/saleLog/pwdLogin （创客系统）密码登录
      * @apiName pwdLogin
      * @apiGroup saleLog
      * @apiVersion 0.1.0
@@ -170,7 +170,7 @@ public interface SaleLogApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48:8080/api/saleLog/reLogin （创客系统）退出登录
+     * @api {post} http://47.93.48.111:8080/api/saleLog/reLogin （创客系统）退出登录
      * @apiName reLogin
      * @apiGroup saleLog
      * @apiVersion 0.1.0
@@ -211,7 +211,7 @@ public interface SaleLogApi {
      */
 	
 	 /**
-     * @api {post} http://47.93.48:8080/api/saleLog/forgetPwd （创客系统）忘记密码登录
+     * @api {post} http://47.93.48.111:8080/api/saleLog/forgetPwd （创客系统）忘记密码登录
      * @apiName forgetPwd
      * @apiGroup saleLog
      * @apiVersion 0.1.0

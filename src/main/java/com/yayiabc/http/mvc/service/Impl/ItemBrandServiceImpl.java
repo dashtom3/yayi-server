@@ -6,21 +6,22 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-
 import com.yayiabc.common.enums.ErrorCodeEnum;
-import com.yayiabc.common.sessionManager.SessionManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.ItemBrandDao;
 import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
-import com.yayiabc.http.mvc.pojo.jpa.ItemProperty;
-import com.yayiabc.http.mvc.pojo.jpa.ItemPropertyd;
-import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.ItemShow;
 import com.yayiabc.http.mvc.pojo.model.Property;
 import com.yayiabc.http.mvc.pojo.model.Search;
 import com.yayiabc.http.mvc.service.ItemBrandService;
+
+
+
+
+
+
 
 @Service
 public class ItemBrandServiceImpl implements ItemBrandService{
@@ -63,13 +64,16 @@ public class ItemBrandServiceImpl implements ItemBrandService{
     {
         DataWrapper<ItemInfo> dataWrapper = new DataWrapper<ItemInfo>();
         String userId =itemBrandDao.getUserIdByToken(token);
-        String starItemId=itemBrandDao.getItemIdByUserId(userId);
+        List<String> starItemId=itemBrandDao.getItemIdByUserId(userId);
         int num=0;
-        if(itemId.equals(starItemId)){
-        	num=1;
+        if(starItemId!=null){
+        	if(starItemId.contains(itemId)){
+        		num=1;
+        	}
         }
         System.out.println(num);
         ItemInfo itemInfo = itemBrandDao.itemDetailDes(itemId);
+        System.out.println(itemInfo);
         List<Property> propertyList=new ArrayList<Property>();
         Property propertyA =new Property();
         String propertyAName=itemBrandDao.getItemPropertyNameA(itemId);
@@ -109,7 +113,9 @@ public class ItemBrandServiceImpl implements ItemBrandService{
         propertyList.add(propertyF);
         itemInfo.setPropertyList(propertyList);
         dataWrapper.setData(itemInfo);
-        String msg=itemBrandDao.getItemSKUByPrice(itemInfo.getItemPrice());
+        System.out.println(itemInfo.getItemPrice());
+        String msg=itemBrandDao.getItemSKUByPrice(itemInfo.getItemPrice(),itemId);
+        System.out.println(msg);
         dataWrapper.setMsg(msg);
         dataWrapper.setNum(num);
         return dataWrapper;

@@ -1,21 +1,14 @@
 package com.yayiabc.http.mvc.service.Impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.IdentityHashMap;
-import java.util.List;
-import java.util.Map;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.CommentManageDao;
 import com.yayiabc.http.mvc.dao.UserCenterStarDao;
-import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
-import com.yayiabc.http.mvc.pojo.utils.SkuUtil;
 import com.yayiabc.http.mvc.service.CommentManageService;
 @Service
 public class CommentManageServiceImpl implements CommentManageService {

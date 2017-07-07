@@ -75,6 +75,7 @@ public class ItemInfoManageController {
 	
 	/**
 	 * 商品修改
+	 * @throws ParseException 
 	 */
 	@RequestMapping("update")
 	@ResponseBody
@@ -95,20 +96,64 @@ public class ItemInfoManageController {
 			@RequestParam(value="video",required=true) String video,
 			@RequestParam(value="itemDesc",required=true) String itemDesc,
 			@RequestParam(value="itemUse",required=true) String itemUse,
-			@RequestParam(value="itemRange",required=true) String itemRange,
+			@RequestParam(value="itemRange",required=false) String itemRange,
 			@RequestParam(value="registerId",required=true) String registerId,
-			@RequestParam(value="storeItemId",required=true) String storeItemId,
-			@RequestParam(value="apparatusType",required=true) Integer apparatusType,
-			@RequestParam(value="producePompany",required=true) String producePompany,
-			@RequestParam(value="unit",required=true) String unit,
-			@RequestParam(value="registerDate",required=true) Date registerDate,
-			@RequestParam(value="itemPacking",required=true) String itemPacking,
-			@RequestParam(value="itemLevels",required=true) String itemLevels
+			@RequestParam(value="storeItemId",required=false) String storeItemId,
+			@RequestParam(value="apparatusType",required=false) String apparatusType,
+			@RequestParam(value="producePompany",required=false) String producePompany,
+			@RequestParam(value="unit",required=false) String unit,
+			@RequestParam(value="registerDate",required=false) String registerDate,
+			@RequestParam(value="itemPacking",required=false) String itemPacking,
+			@RequestParam(value="itemLevels",required=false) String itemLevels
 			){
+		Date registerDateChangeDate=null;
+		if(registerDate==null||"".equals(registerDate)){
+			registerDate=null;
+		}else {
+			try {
+				registerDateChangeDate =TimeUtil.changeStringToDateTwo(registerDate);
+			} catch (ParseException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		if(itemRange==null||"".equals(itemRange)){
+			itemRange=null;
+		}
+		if(storeItemId==null||"".equals(storeItemId)){
+			storeItemId=null;
+		}
+		if(apparatusType==null||"".equals(apparatusType)){
+			apparatusType=null;
+		}
+		if(producePompany==null||"".equals(producePompany)){
+			producePompany=null;
+		}
+		if(itemLevels==null||"".equals(itemLevels)){
+			itemLevels=null;
+		}
+		if(itemPacking==null||"".equals(itemPacking)){
+			itemPacking=null;
+		}
+		if(itemPicb==null||"".equals(itemPicb)){
+			itemPicb=null;
+		}
+		if(itemPicc==null||"".equals(itemPicc)){
+			itemPicc=null;
+		}
+		if(itemPicd==null||"".equals(itemPicd)){
+			itemPicd=null;
+		}
+		if(itemPice==null||"".equals(itemPice)){
+			itemPice=null;
+		}
+		if(unit==null||"".equals(unit)){
+			unit=null;
+		}
 		return itemInfoManageService.update(itemId,itemName,itemBrandId,oneClassify,itemLevels,
 				twoClassify,threeClassify,itemPica,itemPicb,itemPicc,itemPicd,itemPice,isThrow,
 				video,itemDesc,itemUse,itemRange,registerId,storeItemId,apparatusType,unit,
-				producePompany,registerDate,itemPacking,itemBrandName);
+				producePompany,registerDateChangeDate,itemPacking,itemBrandName);
 	}
 	
 	/**
@@ -148,25 +193,69 @@ public class ItemInfoManageController {
 	@RequestParam(value="twoClassify",required=true) String twoClassify,
 	@RequestParam(value="threeClassify",required=true) String threeClassify,
 	@RequestParam(value="itemPica",required=true) String itemPica,
-	@RequestParam(value="itemPicb",required=true) String itemPicb,
-	@RequestParam(value="itemPicc",required=true) String itemPicc,
-	@RequestParam(value="itemPicd",required=true) String itemPicd,
-	@RequestParam(value="itemPice",required=true) String itemPice,
+	@RequestParam(value="itemPicb",required=false) String itemPicb,
+	@RequestParam(value="itemPicc",required=false) String itemPicc,
+	@RequestParam(value="itemPicd",required=false) String itemPicd,
+	@RequestParam(value="itemPice",required=false) String itemPice,
 	@RequestParam(value="isThrow",required=true) Integer isThrow,
 	@RequestParam(value="video",required=true) String video,
 	@RequestParam(value="itemDesc",required=true) String itemDesc,
 	@RequestParam(value="itemUse",required=true) String itemUse,
-	@RequestParam(value="itemRange",required=true) String itemRange,
+	@RequestParam(value="itemRange",required=false) String itemRange,
 	@RequestParam(value="registerId",required=true) String registerId,
-	@RequestParam(value="storeItemId",required=true) String storeItemId,
-	@RequestParam(value="apparatusType",required=true) Integer apparatusType,
-	@RequestParam(value="producePompany",required=true) String producePompany,
-	@RequestParam(value="unit",required=true) String unit,
-	@RequestParam(value="registerDate",required=true) String registerDate,
-	@RequestParam(value="itemPacking",required=true) String itemPacking,
-	@RequestParam(value="itemLevels",required=true) String itemLevels
-			) throws ParseException{
-		Date registerDateChangeDate =TimeUtil.changeStringToDateTwo(registerDate);
+	@RequestParam(value="storeItemId",required=false) String storeItemId,
+	@RequestParam(value="apparatusType",required=false) String apparatusType,
+	@RequestParam(value="producePompany",required=false) String producePompany,
+	@RequestParam(value="unit",required=false) String unit,
+	@RequestParam(value="registerDate",required=false) String registerDate,
+	@RequestParam(value="itemPacking",required=false) String itemPacking,
+	@RequestParam(value="itemLevels",required=false) String itemLevels
+			){
+		Date registerDateChangeDate=null;
+		if(registerDate==null||"".equals(registerDate)){
+			registerDate=null;
+		}else {
+			try {
+				registerDateChangeDate =TimeUtil.changeStringToDateTwo(registerDate);
+			} catch (ParseException e) {
+				e.printStackTrace();
+				return null;
+			}
+		}
+		if(itemRange==null||"".equals(itemRange)){
+			itemRange=null;
+		}
+		if(storeItemId==null||"".equals(storeItemId)){
+			storeItemId=null;
+		}
+		if(apparatusType==null||"".equals(apparatusType)){
+			apparatusType=null;
+		}
+		if(producePompany==null||"".equals(producePompany)){
+			producePompany=null;
+		}
+		if(itemLevels==null||"".equals(itemLevels)){
+			itemLevels=null;
+		}
+		if(itemPacking==null||"".equals(itemPacking)){
+			itemPacking=null;
+		}
+		if(itemPicb==null||"".equals(itemPicb)){
+			itemPicb=null;
+		}
+		if(itemPicc==null||"".equals(itemPicc)){
+			itemPicc=null;
+		}
+		if(itemPicd==null||"".equals(itemPicd)){
+			itemPicd=null;
+		}
+		if(itemPice==null||"".equals(itemPice)){
+			itemPice=null;
+		}
+		if(unit==null||"".equals(unit)){
+			unit=null;
+		}
+		
 		return itemInfoManageService.insert(itemId,itemName,itemBrandId,oneClassify,itemLevels,
 				twoClassify,threeClassify,itemPica,itemPicb,itemPicc,itemPicd,itemPice,isThrow,
 				video,itemDesc,itemUse,itemRange,registerId,storeItemId,apparatusType,unit,

@@ -29,7 +29,7 @@ public class ItemDetail extends BasePojo {
 
 	private String storeItemId;
 
-	private Integer apparatusType;
+	private String apparatusType;
 
 	private String unit;
 
@@ -155,11 +155,11 @@ public class ItemDetail extends BasePojo {
 		this.storeItemId = storeItemId == null ? null : storeItemId.trim();
 	}
 
-	public Integer getApparatusType() {
+	public String getApparatusType() {
 		return apparatusType;
 	}
 
-	public void setApparatusType(Integer apparatusType) {
+	public void setApparatusType(String apparatusType) {
 		this.apparatusType = apparatusType;
 	}
 
@@ -235,7 +235,7 @@ public class ItemDetail extends BasePojo {
 	public ItemDetail(String itemId, String video, String itemPica,
 			String itemPicb, String itemPicc, String itemPicd, String itemPice,
 			Integer commission, Integer isQbBuy, Integer qbNum,
-			String storeItemId, Integer apparatusType, String unit,
+			String storeItemId, String apparatusType, String unit,
 			String producePompany, String registerId, Date registerDate,
 			String itemPacking, String itemLevels, String itemRange,
 			String remark, String itemDesc, String itemUse) {

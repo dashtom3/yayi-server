@@ -4,12 +4,10 @@ package com.yayiabc.http.mvc.dao;
 
 import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
-import com.yayiabc.http.mvc.pojo.jpa.ItemProperty;
 import com.yayiabc.http.mvc.pojo.model.ItemShow;
 import com.yayiabc.http.mvc.pojo.model.Search;
-
 import java.util.List;
-
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 @Repository
 public interface ItemBrandDao{
@@ -40,7 +38,7 @@ public interface ItemBrandDao{
 
 	public String getUserIdByToken(String token);
 
-	public String getItemIdByUserId(String userId);
+	public List<String> getItemIdByUserId(String userId);
 
 	public void addItemBrand(ItemBrand itemBrand);
 
@@ -68,7 +66,7 @@ public interface ItemBrandDao{
 
 	public List<String> getItemPropertyInfoF(String itemId);
 
-	public String getItemSKUByPrice(Integer itemPrice);
+	public String getItemSKUByPrice(@Param("itemPrice") Integer itemPrice,@Param("itemId") String itemId);
 
 }
 

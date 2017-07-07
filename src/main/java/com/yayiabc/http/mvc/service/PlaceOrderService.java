@@ -1,11 +1,9 @@
 package com.yayiabc.http.mvc.service;
 
 import java.util.HashMap;
-
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
-import com.yayiabc.http.mvc.pojo.jpa.Receiver;
 
 
 public interface PlaceOrderService {

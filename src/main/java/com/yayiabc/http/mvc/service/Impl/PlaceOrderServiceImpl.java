@@ -3,10 +3,8 @@ package com.yayiabc.http.mvc.service.Impl;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
-
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.OrderIdUtils;
 import com.yayiabc.http.mvc.dao.PlaceOrderDao;
@@ -195,11 +193,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		//商品单价
 		int itemPrice=orderItem.getPrice();
 		HashMap<String, Object> hmHashMap=new HashMap<String, Object>();
-		//Receiver receiver=placeOrderDao.queryReceiver(receiverId);
-		
-		int priceNum=orderItem.getNum()*orderItem.getPrice();
-		//int yunfei=getFreight(receiver,priceNum,orderItem.getNum());
-		
 		hmHashMap.put("sumPrice", itemPrice*itemNum);
 		hmHashMap.put("OrderItem", orderItem);
 		//hmHashMap.put("yunfei", yunfei);

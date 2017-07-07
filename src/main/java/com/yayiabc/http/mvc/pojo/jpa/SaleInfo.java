@@ -3,6 +3,8 @@ package com.yayiabc.http.mvc.pojo.jpa;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 /**
  * 
  * @author xiaojiang 销售员信息表
@@ -10,41 +12,56 @@ import java.util.List;
 
 public class SaleInfo extends BasePojo {
 	private String saleId;
-	 private String salePwd;
-	private String trueName;
 
-	private String idCard;
+	private String salePwd; // 密码
 
-	private Date birthday;
+	private String trueName;// 姓名
 
-	private Integer money;
+	private String idCard;// 身份证号码
 
-	private String salePic;
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date birthday;// 出生日期
 
-	private String postalType;
+	private Integer money;// 钱包余额
 
-	private String bankName;
+	private String salePic;// 头像
 
-	private String openName;
+	private String postalType;// 提现类型
 
-	private String accountNumber;
+	private String bankName;// 银行名称
 
-	private Integer type;
+	private String openName;// 开户者
 
-	private String phone;
+	private String accountNumber;// 支付宝账号 或 银行卡号
 
-	private Integer sex;
+	private Integer type; // 类型
 
-	private String address;
+	private String phone;// 手机号码
 
-	private Integer bindUserNum;
+	private Integer sex;// 性别
+
+	private String address; // 地址
+
+	private String weChar;// 微信号
+
+	private String email;// 邮箱
+
+	private String part;// 地区
+
+	private String education; // 学历
+
+	private String workUnit;// 工作单位
+
+	private String workPosition;// 工作职位
+
+	private Integer bindUserNum; // 绑定用户数
 
 	private Integer isBindUser;
 
 	private List<User> user;
 
 	private List<SaleIncome> saleincome;
-	
+
 	private List<With> With;
 
 	public String getSaleId() {
@@ -77,6 +94,54 @@ public class SaleInfo extends BasePojo {
 
 	public void setSaleincome(List<SaleIncome> saleincome) {
 		this.saleincome = saleincome;
+	}
+
+	public String getWeChar() {
+		return weChar;
+	}
+
+	public void setWeChar(String weChar) {
+		this.weChar = weChar;
+	}
+
+	public String getEmail() {
+		return email;
+	}
+
+	public void setEmail(String email) {
+		this.email = email;
+	}
+
+	public String getPart() {
+		return part;
+	}
+
+	public void setPart(String part) {
+		this.part = part;
+	}
+
+	public String getEducation() {
+		return education;
+	}
+
+	public void setEducation(String education) {
+		this.education = education;
+	}
+
+	public String getWorkUnit() {
+		return workUnit;
+	}
+
+	public void setWorkUnit(String workUnit) {
+		this.workUnit = workUnit;
+	}
+
+	public String getWorkPosition() {
+		return workPosition;
+	}
+
+	public void setWorkPosition(String workPosition) {
+		this.workPosition = workPosition;
 	}
 
 	public Date getBirthday() {
@@ -204,13 +269,37 @@ public class SaleInfo extends BasePojo {
 	}
 
 	public SaleInfo(String saleId, String trueName, String idCard,
-			Date birthday, Integer money, String salePic, String postalType,
-			String bankName, String openName, String accountNumber,
-			Integer type, String phone, Integer sex, String address,
-			Integer bindUserNum, Integer isBindUser, List<User> user,
-			List<SaleIncome> saleincome) {
+			Date birthday, String salePic, Integer sex, String address,
+			String weChar, String email, String part, String education,
+			String workUnit, String workPosition) {
 		super();
 		this.saleId = saleId;
+		this.trueName = trueName;
+		this.idCard = idCard;
+		this.birthday = birthday;
+		this.salePic = salePic;
+		this.sex = sex;
+		this.address = address;
+		this.weChar = weChar;
+		this.email = email;
+		this.part = part;
+		this.education = education;
+		this.workUnit = workUnit;
+		this.workPosition = workPosition;
+	}
+
+	public SaleInfo(String saleId, String salePwd, String trueName,
+			String idCard, Date birthday, Integer money, String salePic,
+			String postalType, String bankName, String openName,
+			String accountNumber, Integer type, String phone, Integer sex,
+			String address, String weChar, String email, String part,
+			String education, String workUnit, String workPosition,
+			Integer bindUserNum, Integer isBindUser, List<User> user,
+			List<SaleIncome> saleincome,
+			List<com.yayiabc.http.mvc.pojo.jpa.With> with) {
+		super();
+		this.saleId = saleId;
+		this.salePwd = salePwd;
 		this.trueName = trueName;
 		this.idCard = idCard;
 		this.birthday = birthday;
@@ -224,10 +313,17 @@ public class SaleInfo extends BasePojo {
 		this.phone = phone;
 		this.sex = sex;
 		this.address = address;
+		this.weChar = weChar;
+		this.email = email;
+		this.part = part;
+		this.education = education;
+		this.workUnit = workUnit;
+		this.workPosition = workPosition;
 		this.bindUserNum = bindUserNum;
 		this.isBindUser = isBindUser;
 		this.user = user;
 		this.saleincome = saleincome;
+		With = with;
 	}
 
 	public List<With> getWith() {
@@ -240,14 +336,18 @@ public class SaleInfo extends BasePojo {
 
 	@Override
 	public String toString() {
-		return "SaleInfo [saleId=" + saleId + ", trueName=" + trueName
-				+ ", idCard=" + idCard + ", birthday=" + birthday + ", money="
-				+ money + ", salePic=" + salePic + ", postalType=" + postalType
-				+ ", bankName=" + bankName + ", openName=" + openName
-				+ ", accountNumber=" + accountNumber + ", type=" + type
-				+ ", phone=" + phone + ", sex=" + sex + ", address=" + address
-				+ ", bindUserNum=" + bindUserNum + ", isBindUser=" + isBindUser
-				+ ", user=" + user + ", saleincome=" + saleincome + "]";
+		return "SaleInfo [saleId=" + saleId + ", salePwd=" + salePwd
+				+ ", trueName=" + trueName + ", idCard=" + idCard
+				+ ", birthday=" + birthday + ", money=" + money + ", salePic="
+				+ salePic + ", postalType=" + postalType + ", bankName="
+				+ bankName + ", openName=" + openName + ", accountNumber="
+				+ accountNumber + ", type=" + type + ", phone=" + phone
+				+ ", sex=" + sex + ", address=" + address + ", weChar="
+				+ weChar + ", email=" + email + ", part=" + part
+				+ ", education=" + education + ", workUnit=" + workUnit
+				+ ", workPosition=" + workPosition + ", bindUserNum="
+				+ bindUserNum + ", isBindUser=" + isBindUser + ", user=" + user
+				+ ", saleincome=" + saleincome + ", With=" + With + "]";
 	}
 
 }

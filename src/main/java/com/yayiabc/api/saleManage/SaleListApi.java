@@ -2,7 +2,7 @@ package com.yayiabc.api.saleManage;
 
 public class SaleListApi {
 	/**
-     * @api {get} http://47.93.48:8080/api/saleList/query （后台）销售员列表
+     * @api {get} http://47.93.48.111:8080/api/saleList/query （后台）销售员列表
      * @apiName query
      * @apiGroup saleList
      * @apiVersion 0.1.0
@@ -62,7 +62,7 @@ public class SaleListApi {
      */
 	
 	/**
-     * @api {get} http://47.93.48:8080/api/saleList/userlist （后台）获取简略用户信息列表
+     * @api {get} http://47.93.48.111:8080/api/saleList/userlist （后台）获取简略用户信息列表
      * @apiName userlist
      * @apiGroup saleList
      * @apiVersion 0.1.0
@@ -116,7 +116,7 @@ public class SaleListApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48:8080/api/saleList/bind （后台）绑定用户
+     * @api {post} http://47.93.48.111:8080/api/saleList/bind （后台）绑定用户
      * @apiName bind
      * @apiGroup saleList
      * @apiVersion 0.1.0
@@ -200,7 +200,7 @@ public class SaleListApi {
      */
 	
 	/**
-     * @api {get} http://47.93.48:8080/api/saleList/detail （后台）获取销售员详情
+     * @api {get} http://47.93.48.111:8080/api/saleList/detail （后台）获取销售员详情
      * @apiName detail
      * @apiGroup saleList
      * @apiVersion 0.1.0

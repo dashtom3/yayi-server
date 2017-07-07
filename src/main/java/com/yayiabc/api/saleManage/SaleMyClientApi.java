@@ -2,7 +2,7 @@ package com.yayiabc.api.saleManage;
 
 public interface SaleMyClientApi {
 	/**
-     * @api {get} http://47.93.48:8080/api/saleMyClient/myClient （创客系统）我的客户
+     * @api {get} http://47.93.48.111:8080/api/saleMyClient/myClient （创客系统）我的客户
      * @apiName myClient
      * @apiGroup saleMyClient
      * @apiVersion 0.1.0

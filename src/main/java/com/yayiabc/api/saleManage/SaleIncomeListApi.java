@@ -2,7 +2,7 @@ package com.yayiabc.api.saleManage;
 
 public interface SaleIncomeListApi {
 	/**
-     * @api {get} http://47.93.48:8080/api/saleIncomeList/query （后台）收入列表
+     * @api {get} http://47.93.48.111:8080/api/saleIncomeList/query （后台）收入列表
      * @apiName query
      * @apiGroup saleIncomeList
      * @apiVersion 0.1.0
@@ -74,7 +74,7 @@ public interface SaleIncomeListApi {
      */
 	
 	/**
-     * @api {get} http://47.93.48:8080/api/saleIncomeList/detail （后台）收入详情
+     * @api {get} http://47.93.48.111:8080/api/saleIncomeList/detail （后台）收入详情
      * @apiName detail
      * @apiGroup saleIncomeList
      * @apiVersion 0.1.0

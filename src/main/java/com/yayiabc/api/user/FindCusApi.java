@@ -2,7 +2,7 @@ package com.yayiabc.api.user;
 
 public interface FindCusApi {
 	  /**
-     * @api {post} http://47.93.48.111:8080/api/findCus/unregistered   未注册客户资源
+     * @api {post} http://47.93.48.111:8080/api/findCus/unregistered   （创客系统）未注册客户资源
      * @apiName unregistered
      * @apiGroup findCus
      * @apiVersion 0.1.0
@@ -74,7 +74,7 @@ public interface FindCusApi {
      */
 
     /**
-     * @api {post} http://47.93.48.111:8080/api/findCus/registered 已注册客户 待绑定
+     * @api {post} http://47.93.48.111:8080/api/findCus/registered （创客系统）已注册客户 待绑定
      * @apiName registered
      * @apiGroup findCus
      * @apiDescription 已注册客户 待绑定
@@ -116,7 +116,7 @@ public interface FindCusApi {
      */
 
     /**
-     * @api {post} http://47.93.48.111:8080/api/findCus/me 我已经绑定的客户
+     * @api {post} http://47.93.48.111:8080/api/findCus/me （创客系统）我已经绑定的客户
      * @apiName me
      * @apiGroup findCus
      * @apiVersion 0.1.0

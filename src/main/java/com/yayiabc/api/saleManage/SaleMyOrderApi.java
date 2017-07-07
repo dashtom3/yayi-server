@@ -2,7 +2,7 @@ package com.yayiabc.api.saleManage;
 
 public interface SaleMyOrderApi {
 	/**
-     * @api {get} http://47.93.48:8080/api/saleMyOrder/myOrder （创客系统）我的订单
+     * @api {get} http://47.93.48.111:8080/api/saleMyOrder/myOrder （创客系统）我的订单
      * @apiName myOrder
      * @apiGroup saleMyOrder
      * @apiVersion 0.1.0
@@ -62,7 +62,7 @@ public interface SaleMyOrderApi {
      */
 	
 	/**
-     * @api {get} http://47.93.48:8080/api/saleMyOrder/chart （创客系统）折线图
+     * @api {get} http://47.93.48.111:8080/api/saleMyOrder/chart （创客系统）折线图
      * @apiName chart
      * @apiGroup saleMyOrder
      * @apiVersion 0.1.0
@@ -110,9 +110,9 @@ public interface SaleMyOrderApi {
      */
 	
 	/**
-     * @api {get} http://47.93.48:8080/api/saleMyOrder/detail （创客系统）查看详情
-     * @apiName myOrder
-     * @apiGroup detail
+     * @api {get} http://47.93.48.111:8080/api/saleMyOrder/detail （创客系统）查看详情
+     * @apiName detail
+     * @apiGroup saleMyOrder
      * @apiVersion 0.1.0
      * @apiDescription 查看详情
      *

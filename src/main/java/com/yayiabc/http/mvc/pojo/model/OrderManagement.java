@@ -11,7 +11,7 @@ public class OrderManagement {
 	private	String state;
 	private	String shippingName;
 	private	String shippingCode;
-	private	String refund;
+	private	String refundInfo;
 	public String getOrderId() {
 		return orderId;
 	}
@@ -72,11 +72,11 @@ public class OrderManagement {
 	public void setShippingCode(String shippingCode) {
 		this.shippingCode = shippingCode;
 	}
-	public String getRefund() {
-		return refund;
+	public String getRefundInfo() {
+		return refundInfo;
 	}
-	public void setRefund(String refund) {
-		this.refund = refund;
+	public void setRefundInfo(String refundInfo) {
+		this.refundInfo = refundInfo;
 	}
 	@Override
 	public String toString() {
@@ -85,7 +85,6 @@ public class OrderManagement {
 				+ ", totalFee=" + totalFee + ", reName=" + reName
 				+ ", created=" + created + ", state=" + state
 				+ ", shippingName=" + shippingName + ", shippingCode="
-				+ shippingCode + ", refund=" + refund + "]";
+				+ shippingCode + ", refundInfo=" + refundInfo + "]";
 	}
-
 }

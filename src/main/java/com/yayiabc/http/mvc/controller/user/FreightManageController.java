@@ -71,11 +71,13 @@ public class FreightManageController {
     @RequestMapping("deleteCustomFreight")
     @ResponseBody
     public DataWrapper< Void> customFreight(
-    		@RequestParam(value="postFeeId",required=true) Integer postFeeId
+    		//@RequestParam(value="postFeeId",required=true)
+    		 Integer postFeeId
+    		 
     		){
     	return freightManageService.deleteCustomFreight(postFeeId);
-		
     }
+    
     //显示包邮数据
     @RequestMapping("showFreeShipp")
     @ResponseBody

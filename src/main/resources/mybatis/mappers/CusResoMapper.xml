@@ -6,14 +6,14 @@
 	<select id="show" resultType="com.yayiabc.http.mvc.pojo.jpa.CusResources">
 		select * from cus_resources
 		<where>
-			<if test="cusName!=null and cusName!=''">
-				unit_name=#{cusName} and
+			<if test="companyName!=null and companyName!=''">
+				unit_name like '%${companyName}%'
 			</if>
-			<if test="phone!=null and phone!=''">
-			contacts_phone=#{phone} and 
+			<if test="linkMan!=null and linkMan!=''">
+		    and  	contacts_phone  like '%${linkMan}%'
 			</if>
-			<if test="cusAddress!=null and cusAddress!=''">
-			contacts=#{cusAddress}
+			<if test="companyAdd!=null and companyAdd!=''">
+			 and contacts like '%${companyAdd}%'
 			</if>
 		</where>
 	</select>

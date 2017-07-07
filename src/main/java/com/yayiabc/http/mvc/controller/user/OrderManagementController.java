@@ -77,7 +77,7 @@ public class OrderManagementController {
 		   @RequestParam(value="orderId",required=true) String orderId,
 		   @RequestParam(value="num",required=true) Integer num  
 		   ){
-	   return  orderManagementService.loseFocus(num,itemId,orderId);
+	   return  orderManagementService.loseFocus(num,orderId,itemId);
    }
    
    //仓库发货 Warehouse delivery warehouseDelivery

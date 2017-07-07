@@ -3,9 +3,6 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.yayiabc.http.mvc.dao.FindCusDao">
- 
- 
- 
 	<select id="show" resultType="com.yayiabc.http.mvc.pojo.jpa.SaleInfo">
 		SELECT * FROM USER 
 		<where>
@@ -24,5 +21,27 @@
 		<where>
 		 sale_id =#{saleId}
 		</where>
+	</select>
+	
+	<select id="shows" resultType="com.yayiabc.http.mvc.pojo.jpa.CusResources">
+	  select  * from  cus_resources where 
+	  
+	  unit_name ='%${state}%' or unit_address='%${state}%' or contacts_phone='%${state}%'
+	  
+	  
+	</select>
+	
+	<select id="queryCount" resultType="int">
+	  select  count(1) from  cus_resources where 
+	  
+	  unit_name ='%${state}%' or unit_address='%${state}%' or contacts_phone='%${state}%'
+	  
+	  
+	</select>
+	<select id="showsss" resultType="com.yayiabc.http.mvc.pojo.jpa.User">
+	  select  * from  user where 
+	  
+	  true_name ='%${state}%' and sale_id is null   or phone='%${state}%' and sale_id is null
+	  
 	</select>
 </mapper>       

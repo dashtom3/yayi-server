@@ -22,7 +22,7 @@ import com.yayiabc.http.mvc.service.PlaceOrderService;
 public class PlaceOrderController {
 	@Autowired
 	private PlaceOrderService placeOrderService;
-	//购物车点击立即购买时:
+	//从购物车下单时:
 	@RequestMapping("buyNows")
 	@ResponseBody
 	public 	DataWrapper<HashMap<String, Object>> buyNows(

@@ -6,7 +6,7 @@ public class With {
 	private Integer cashId;
 	private String realName;
 	private  String phone;
-	private  String cashMoney;
+	private  Integer cashMoney;
 	private  String type;
 	private  String accountUser;
 	private  String bank;
@@ -40,10 +40,10 @@ public class With {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public String getCashMoney() {
+	public Integer getCashMoney() {
 		return cashMoney;
 	}
-	public void setCashMoney(String cashMoney) {
+	public void setCashMoney(Integer cashMoney) {
 		this.cashMoney = cashMoney;
 	}
 	public String getType() {

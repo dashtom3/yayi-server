@@ -10,13 +10,14 @@
  		(select item_brand_id p_id,item_brand_name from item_brand) b
  		on a.item_brand_id=b.p_id
  		<where>
- 			<if test="itemId!=null"> and item_id=#{itemId}</if>
- 			<if test="itemName!=null">and item_name=#{itemName}</if>
- 			<if test="oneClassify!=null">and one_classify=#{oneClassify}</if>
- 			<if test="oneClassify!=null">or two_classify=#{oneClassify}</if>
- 			<if test="oneClassify!=null">or three_classify=#{oneClassify}</if>
- 			<if test="twoClassify!=null">and item_brand_name=#{twoClassify}</if>
- 			<if test="state!=null">and state=#{state}</if>
+ 			true
+ 			<if test="itemId!=null and itemId!=''"> and item_id=#{itemId}</if>
+ 			<if test="itemName!=null and itemName!=''">and item_name=#{itemName}</if>
+ 			<if test="oneClassify!=null and oneClassify!=''">and one_classify=#{oneClassify}</if>
+ 			<if test="oneClassify!=null and oneClassify!=''">or two_classify=#{oneClassify}</if>
+ 			<if test="oneClassify!=null and oneClassify!=''">or three_classify=#{oneClassify}</if>
+ 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
+ 			<if test="state!=null and state!=''">and state=#{state}</if>
  		</where>
  	</select>
  	<resultMap type="ItemInfo" id="itemInfoRM" autoMapping="true">

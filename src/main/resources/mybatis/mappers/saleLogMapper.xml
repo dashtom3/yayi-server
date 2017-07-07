@@ -8,7 +8,7 @@
 	</select>
 	
 	<insert id="register" parameterType="SaleInfo">
-		insert into sale_info(sale_pwd,sale_id,phone) values(#{})
+		insert into sale_info(sale_pwd,sale_id,phone) values(#{salePwd},#{saleId},#{phone})
 	</insert>
 	
 	<insert id="addSaleToken">
@@ -16,7 +16,7 @@
 	</insert>
 	
 	<select id="getTokenBySaleId" resultType="string">
-		select from sale_token where sale_id=#{saleId}
+		select sale_token from sale_token where sale_id=#{saleId}
 	</select>
 	
 	<update id="updatePwd">

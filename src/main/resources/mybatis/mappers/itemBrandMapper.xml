@@ -199,41 +199,41 @@ WHERE s.item_id=#{itemId}
 	</select>
 	
 	<select id="getItemPropertyInfoA" resultType="string">
-		select item_property_info from item_value where item_id=#{itemId}
+		select item_property_info from item_value where item_id=#{itemId} group by item_property_info
 	</select>
 	<select id="getItemPropertyNameB" resultType="string">
 		select item_property_name_two from item_value where item_id=#{itemId} group by item_property_name_two
 	</select>
 	
 	<select id="getItemPropertyInfoB" resultType="string">
-		select item_property_two_value from item_value where item_id=#{itemId}
+		select item_property_two_value from item_value where item_id=#{itemId} group by item_property_two_value
 	</select>
 	<select id="getItemPropertyNameC" resultType="string">
 		select item_property_name_three from item_value where item_id=#{itemId} group by item_property_name_three
 	</select>
 	
 	<select id="getItemPropertyInfoC" resultType="string">
-		select item_property_three_value from item_value where item_id=#{itemId}
+		select item_property_three_value from item_value where item_id=#{itemId} group by item_property_three_value
 	</select>
 	<select id="getItemPropertyNameD" resultType="string">
 		select item_property_four_name from item_value where item_id=#{itemId} group by item_property_four_name
 	</select>
 	
 	<select id="getItemPropertyInfoD" resultType="string">
-		select item_property_four_value from item_value where item_id=#{itemId}
+		select item_property_four_value from item_value where item_id=#{itemId} group by item_property_four_value
 	</select>
 	<select id="getItemPropertyNameE" resultType="string">
 		select item_property_five_name from item_value where item_id=#{itemId} group by item_property_five_name
 	</select>
 	
 	<select id="getItemPropertyInfoE" resultType="string">
-		select item_property_five_value from item_value where item_id=#{itemId}
+		select item_property_five_value from item_value where item_id=#{itemId} group by item_property_five_value
 	</select>
 	<select id="getItemPropertyNameF" resultType="string">
 		select item_property_six_name from item_value where item_id=#{itemId} group by item_property_six_name
 	</select>
 	
 	<select id="getItemPropertyInfoF" resultType="string">
-		select item_property_six_value from item_value where item_id=#{itemId}
+		select item_property_six_value from item_value where item_id=#{itemId} group by item_property_six_value
 	</select>
 </mapper>       

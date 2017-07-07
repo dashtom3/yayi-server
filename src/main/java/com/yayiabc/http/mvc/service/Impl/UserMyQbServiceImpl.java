@@ -53,7 +53,6 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 		    int totalNumber=userMyQbDao.getCount(userId);
 		    dataWrapper.setPage(page, totalNumber);
 		    List<QbRecord> list=userMyQbDao.query(page, userId,type);
-		    System.out.println("!!"+list.toString());
 		    dataWrapper.setData(list);
 		}
 		return dataWrapper;

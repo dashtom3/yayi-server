@@ -15,9 +15,11 @@ public interface UserManageListDao {
 	
 	List<SaleInfo> salelist(@Param("salePhone")String salePhone,@Param("saleName")String saleName);
 																	
-	int bind(@Param("salePhone")String salePhone,@Param("userPhone")String userPhone);
+	int bind(@Param("salePhone")String salePhone,@Param("userPhone")String userPhone);	//绑定
 	
-	int disBind(@Param("salePhone")String salePhone,@Param("userPhone")String userPhone);
+	int disBind(@Param("salePhone")String salePhone,@Param("userPhone")String userPhone);	//取消绑定
+	
+	void bindUpdateNum(@Param("saleId")String saleId);	//绑定或取消绑定后更新绑定数量
 	
 	UserAllInfo detail(@Param("userId")String userId);
 	

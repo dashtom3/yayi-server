@@ -2,9 +2,13 @@ package com.yayiabc.http.mvc.pojo.jpa;
 
 import java.util.Date;
 
-public class BasePojo {
-	private Date created;
+import org.springframework.format.annotation.DateTimeFormat;
 
+public class BasePojo {
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date created;
+	
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date updated;
 
 	public Date getCreated() {

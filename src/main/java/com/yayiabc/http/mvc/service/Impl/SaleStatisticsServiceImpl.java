@@ -28,13 +28,8 @@ public class SaleStatisticsServiceImpl implements SaleStatisticsService {
 		int totalNumber = saleStatisticsDao.getCount(phone, trueName);
 		List<SaleStatistics> list = saleStatisticsDao.query(phone, trueName,
 				page);
-		if (list.size() == 0) {
-			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-		} else if (list.size() != 0) {
 			dataWrapper.setPage(page, totalNumber);
 			dataWrapper.setData(list);
-		}
-
 		return dataWrapper;
 	}
 

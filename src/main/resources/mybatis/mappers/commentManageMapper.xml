@@ -43,27 +43,14 @@
 		ordera orde JOIN order_item oim ON orde.order_id=oim.order_id JOIN comments
 		comm ON oim.item_id=comm.item_id
 		<where>
-			<!-- <if test="orderId!=null">
-				
-			</if> -->
-			<choose>
-			<when test="orderId==null and orderId!=''">
-				<!-- orde.order_id=#{orderId} -->
-			</when>
-			<otherwise>
-			orde.order_id=#{orderId}
-			</otherwise>
-			</choose>
-			<!-- <if test="phone!=null"> and =#{orderId} </if> -->
+		 <if test="orderId!=null and orderId!=''">
+				orde.order_id=#{orderId}
+			</if> 
 			<if test="recoveryState != null and recoveryState!=''">
 				and comm.recovery_state=#{recoveryState}
 			</if>
-			<!-- <choose> -->
-
-			<!-- <otherwise> and orde.user_id=#{phone} </otherwise> -->
-			<!-- </choose> -->
 		</where>
-		limit #{currentPage},#{numberPerPage}
+		<!-- limit #{currentPage},#{numberPerPage} -->
 	</select>
 	<!-- 回复 -->
 	<insert id="reply">

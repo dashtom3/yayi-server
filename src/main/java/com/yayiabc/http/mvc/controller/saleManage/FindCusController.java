@@ -12,10 +12,9 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.CusResources;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.FindCusService;
-
 @Controller
 @RequestMapping("api/findCus")
-public class findCusController {
+public class FindCusController {
 	@Autowired
 	private  FindCusService findCusService;
 	//未注册客户

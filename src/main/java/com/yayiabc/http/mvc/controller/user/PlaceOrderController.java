@@ -2,11 +2,13 @@ package com.yayiabc.http.mvc.controller.user;
 
 import java.util.Arrays;
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,7 +29,7 @@ public class PlaceOrderController {
 	@ResponseBody
 	public 	DataWrapper<HashMap<String, Object>> buyNows(
 			@RequestParam(value="token") String token,
-			@RequestParam(value="itemSKUs",required=true) String[] itemSKUs
+			@RequestParam(value="itemSKUs",required=true) String[] itemSKUs,
 			/*@RequestParam(value="itemId") String itemId,
 			@RequestParam(value="userId") String userId,
 			@RequestParam(value="receiverId") String receiver_id,
@@ -35,10 +37,11 @@ public class PlaceOrderController {
 			@RequestParam(value="itemPropertyNameb") String itemPropertyNameb,
 			@RequestParam(value="itemPropertyNamec") String itemPropertyNamec,
 			@RequestParam(value="num") String num*/
+			@ModelAttribute Ordera order
 			){
 		/*System.out.println(Arrays.toString(itemSKU));
 		return null;*/
-		return placeOrderService.buyNows(token,itemSKUs);
+		return placeOrderService.buyNows(token,itemSKUs,order);
 	}
 	//  使用钱币抵扣时  onChange
 	@RequestMapping("Ded")
@@ -85,16 +88,28 @@ public class PlaceOrderController {
 	@ResponseBody
 	public 	DataWrapper<HashMap<String, Object>> buyNow(
 			@ModelAttribute OrderItem orderItem,
-			@RequestParam(value="token",required=true) String token
+			@RequestParam(value="token",required=true) String token,
+			@ModelAttribute Ordera order
 			){
 		
 		//Integer receiverId= Integer.parseInt(receiverIds);
-		return placeOrderService.buyNow(orderItem,token);
+		return placeOrderService.buyNow(orderItem,token,order);
 	}
 	//伪清空 购物车
 	@ResponseBody
 	@RequestMapping("emptyCart")
 	public DataWrapper<Void> emptyCart(@RequestParam(value="token")String token){
 		return placeOrderService.emptyCart(token);
+	}
+	
+	//1234
+	@ResponseBody
+	@RequestMapping("generaOrder")
+	public DataWrapper<HashMap<String, Object>> generaOrder(
+			@RequestHeader String token,
+			@RequestBody List<OrderItem>  orderItem,
+			@ModelAttribute Ordera order
+			){
+		return placeOrderService.generaOrder(token,orderItem,order);
 	}
 }

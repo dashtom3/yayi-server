@@ -18,7 +18,7 @@ public class FindCusServiceImpl implements FindCusService {
 	private FindCusDao findDao;
 	@Autowired
 	private UtilsDao utilsDao;
-	@Autowired
+
 	
 	@Override
 	//查询  已注册  未绑定的

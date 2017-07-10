@@ -3,7 +3,7 @@ package com.yayiabc.api.item;
 public class ItemManage {
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/queryItemBrand  根据商品品牌名称和品牌产地来查询品牌
+	 * @api {post} http://47.93.48.111:8080/api/item/queryItemBrand  （后台）根据商品品牌名称和品牌产地来查询品牌
 	 * @apiName queryItemBrand
 	 * @apiGroup itemManage
 	 * @apiVersion 0.1.0
@@ -47,7 +47,7 @@ public class ItemManage {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/deleteItemBrand  删除商品品牌
+	 * @api {post} http://47.93.48.111:8080/api/item/deleteItemBrand  （后台）删除商品品牌
 	 * @apiName deleteItemBrand
 	 * @apiGroup itemManage
 	 * @apiVersion 0.1.0
@@ -90,7 +90,7 @@ public class ItemManage {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/updateItemBrand  修改商品品牌
+	 * @api {post} http://47.93.48.111:8080/api/item/updateItemBrand  （后台）修改商品品牌
 	 * @apiName updateItemBrand
 	 * @apiGroup itemManage
 	 * @apiVersion 0.1.0
@@ -135,7 +135,7 @@ public class ItemManage {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/addItemBrand  增加商品品牌
+	 * @api {post} http://47.93.48.111:8080/api/item/addItemBrand  （后台）增加商品品牌
 	 * @apiName addItemBrand
 	 * @apiGroup itemManage
 	 * @apiVersion 0.1.0
@@ -179,7 +179,7 @@ public class ItemManage {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/queryProperty  查询属性及显示属性列表
+	 * @api {post} http://47.93.48.111:8080/api/item/queryProperty  （后台）查询属性及显示属性列表
 	 * @apiName updateItemBrand
 	 * @apiGroup itemManage
 	 * @apiVersion 0.1.0
@@ -230,7 +230,7 @@ public class ItemManage {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/deleteProperty  删除属性
+	 * @api {post} http://47.93.48.111:8080/api/item/deleteProperty  （后台）删除属性
 	 * @apiName deleteProperty
 	 * @apiGroup itemManage
 	 * @apiVersion 0.1.0
@@ -272,7 +272,7 @@ public class ItemManage {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/deletePropertyd  删除属性值
+	 * @api {post} http://47.93.48.111:8080/api/item/deletePropertyd  （后台）删除属性值
 	 * @apiName deletePropertyd
 	 * @apiGroup itemManage
 	 * @apiVersion 0.1.0
@@ -315,7 +315,7 @@ public class ItemManage {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/updatePropertyd  修改属性值
+	 * @api {post} http://47.93.48.111:8080/api/item/updatePropertyd  （后台）修改属性值
 	 * @apiName updatePropertyd
 	 * @apiGroup itemManage
 	 * @apiVersion 0.1.0
@@ -357,7 +357,7 @@ public class ItemManage {
 	 */
 	
 	/**
-	 * @api {post} http://192.168.1.103:8081/api/item/updateProperty  保存修改属性
+	 * @api {post} http://47.93.48.111:8080/api/item/updateProperty  （后台）保存修改属性
 	 * @apiName updateProperty
 	 * @apiGroup itemManage
 	 * @apiVersion 0.1.0
@@ -399,7 +399,7 @@ public class ItemManage {
 	 */
 	
 	/**
-	 * @api {post} http://192.168.1.103:8081/api/item/addProperty  添加属性
+	 * @api {post} http://47.93.48.111:8080/api/item/addProperty  （后台）添加属性
 	 * @apiName addProperty
 	 * @apiGroup itemManage
 	 * @apiVersion 0.1.0
@@ -441,7 +441,7 @@ public class ItemManage {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/addToPropertyd  添加属性值
+	 * @api {post} http://47.93.48.111:8080/api/item/addToPropertyd  （后台）添加属性值
 	 * @apiName addToPropertyd
 	 * @apiGroup itemManage
 	 * @apiVersion 0.1.0
@@ -484,7 +484,7 @@ public class ItemManage {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/addPropertydAndPropertyName  添加属性值
+	 * @api {post} http://47.93.48.111:8080/api/item/addPropertydAndPropertyName  （后台）添加属性值
 	 * @apiName addPropertydAndPropertyName
 	 * @apiGroup itemManage
 	 * @apiVersion 0.1.0
@@ -529,7 +529,7 @@ public class ItemManage {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/showItemClassify  分类显示
+	 * @api {post} http://47.93.48.111:8080/api/item/showItemClassify  （后台）分类显示
 	 * @apiName showItemClassify
 	 * @apiGroup itemManage
 	 * @apiVersion 0.1.0
@@ -579,7 +579,7 @@ public class ItemManage {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/deleteItemClassify  删除分类
+	 * @api {post} http://47.93.48.111:8080/api/item/deleteItemClassify  （后台）删除分类
 	 * @apiName deleteItemClassify
 	 * @apiGroup itemManage
 	 * @apiVersion 0.1.0
@@ -624,7 +624,7 @@ public class ItemManage {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/deleteItemClassify  修改商品分类
+	 * @api {post} http://47.93.48.111:8080/api/item/deleteItemClassify  （后台）修改商品分类
 	 * @apiName updateItemClassify
 	 * @apiGroup itemManage
 	 * @apiVersion 0.1.0
@@ -668,7 +668,7 @@ public class ItemManage {
 	
 	/**
 	 * 
-	 * @api {get} http://192.168.1.103:8081/api/item/addItemClassify  新增商品分类
+	 * @api {get} http://47.93.48.111:8080/api/item/addItemClassify  （后台）新增商品分类
 	 * @apiName addItemClassify
 	 * @apiGroup itemManage
 	 * @apiVersion 0.1.0

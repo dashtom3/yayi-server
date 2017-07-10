@@ -2,7 +2,7 @@ package com.yayiabc.api.userManage;
 
 public interface UserCertificationListApi {
 	/**
-     * @api {get} http://47.93.48:8080/api/userCertificationList/list 获取用户资质信息列表
+     * @api {get} http://47.93.48.111:8080/api/userCertificationList/list （后台）获取用户资质信息列表
      * @apiName list
      * @apiGroup userCertificationList
      * @apiVersion 0.1.0
@@ -71,7 +71,7 @@ public interface UserCertificationListApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48:8080/api/userCertificationList/verify 审核用户资质认证信息
+     * @api {post} http://47.93.48.111:8080/api/userCertificationList/verify （后台）审核用户资质认证信息
      * @apiName verify
      * @apiGroup userCertificationList
      * @apiVersion 0.1.0

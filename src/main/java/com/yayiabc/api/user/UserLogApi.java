@@ -4,7 +4,7 @@ package com.yayiabc.api.user;
  */
 public interface UserLogApi {
     /**
-     * @api {post} http://192.168.1.103:8081/api/user/register 用户注册
+     * @api {post} http://192.168.1.103:8081/api/user/register （前台）用户注册
      * @apiName register
      * @apiGroup userLog
      * @apiVersion 0.1.0
@@ -71,7 +71,7 @@ public interface UserLogApi {
      */
 
     /**
-     * @api {post} http://192.168.1.103:8081/api/user/getVerifyCode 获取验证码
+     * @api {post} http://192.168.1.103:8081/api/user/getVerifyCode （前台）获取验证码
      * @apiName getVerifyCode
      * @apiGroup userLog
      * @apiVersion 0.1.0
@@ -113,7 +113,7 @@ public interface UserLogApi {
      */
 
     /**
-     * @api {post} http://192.168.1.103:8081/api/user/noteLogin 短信登录
+     * @api {post} http://192.168.1.103:8081/api/user/noteLogin （前台）短信登录
      * @apiName noteLogin
      * @apiGroup userLog
      * @apiVersion 0.1.0
@@ -180,7 +180,7 @@ public interface UserLogApi {
      */
 
     /**
-     * @api {post} http://192.168.1.103:8081/api/user/pwdLogin 密码登录
+     * @api {post} http://192.168.1.103:8081/api/user/pwdLogin （前台）密码登录
      * @apiName pwdLogin
      * @apiGroup userLog
      * @apiVersion 0.1.0
@@ -253,7 +253,7 @@ public interface UserLogApi {
 
     /**
      *
-     * @api {post} http://192.168.1.103:8081/api/user/reLogin 退出登录
+     * @api {post} http://192.168.1.103:8081/api/user/reLogin （前台）退出登录
      * @apiName reLogin
      * @apiGroup userLog
      * @apiVersion 0.1.0
@@ -294,7 +294,7 @@ public interface UserLogApi {
      */
 	
 	/**
-     * @api {post} http://192.168.1.103:8081/api/user/forgetPwd 忘记密码登录
+     * @api {post} http://192.168.1.103:8081/api/user/forgetPwd （前台）忘记密码登录
      * @apiName forgetPwd
      * @apiGroup userLog
      * @apiVersion 0.1.0

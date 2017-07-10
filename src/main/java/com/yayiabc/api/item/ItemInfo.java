@@ -3,7 +3,7 @@ package com.yayiabc.api.item;
 public class ItemInfo {
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/itemInfoList  商品列表
+	 * @api {post} http://47.93.48.111:8080/api/item/itemInfoList  （后台）商品列表
 	 * @apiName itemInfoList
 	 * @apiGroup itemInfo
 	 * @apiVersion 0.1.0
@@ -59,7 +59,7 @@ public class ItemInfo {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/up  商品上架
+	 * @api {post} http://47.93.48.111:8080/api/item/up  （后台）商品上架
 	 * @apiName up
 	 * @apiGroup itemInfo
 	 * @apiVersion 0.1.0
@@ -97,7 +97,7 @@ public class ItemInfo {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/down  商品下架
+	 * @api {post} http://47.93.48.111:8080/api/item/down  （后台）商品下架
 	 * @apiName down
 	 * @apiGroup itemInfo
 	 * @apiVersion 0.1.0
@@ -135,7 +135,7 @@ public class ItemInfo {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/delete  商品删除
+	 * @api {post} http://47.93.48.111:8080/api/item/delete  （后台）商品删除
 	 * @apiName delete
 	 * @apiGroup itemInfo
 	 * @apiVersion 0.1.0
@@ -174,7 +174,7 @@ public class ItemInfo {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/getItemId  获取商品编号
+	 * @api {post} http://47.93.48.111:8080/api/item/getItemId  （后台）获取商品编号
 	 * @apiName getItemId
 	 * @apiGroup itemInfo
 	 * @apiVersion 0.1.0
@@ -218,7 +218,7 @@ public class ItemInfo {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/insert  商品新增
+	 * @api {post} http://47.93.48.111:8080/api/item/insert  （后台）商品新增
 	 * @apiName insert
 	 * @apiGroup itemInfo
 	 * @apiVersion 0.1.0
@@ -301,7 +301,7 @@ public class ItemInfo {
 	
 	/**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/update  商品修改
+	 * @api {post} http://47.93.48.111:8080/api/item/update  （后台）商品修改
 	 * @apiName update
 	 * @apiGroup itemInfo
 	 * @apiVersion 0.1.0
@@ -333,6 +333,48 @@ public class ItemInfo {
 	 * @apiParam {Integer} itemQb  商品乾币抵扣
 	 * @apiParam {Double} tiCheng  商品价格
 	 * @apiParam {String} itemPparam  商品属性值
+	 * 
+	 * @apiSuccessExample {json} Success-Response: 
+	 * HTTP/1.1 200 OK 
+	 * {
+	 * callStatus:"SUCCEED", 
+	 * errorCode:"No_Error",
+	 * data:null,
+	 * token:null,
+	 * numberPerPage:0, 
+	 * currentPage:0, 
+	 * totalNumber:0,
+	 * totalPage:0 ,
+	 * num:null,
+	 * msg:"正确"
+	 *}
+	 * 
+	 * @apiSuccessExample {json} Error-Response: 
+	 * HTTP/1.1 200 OK 
+	 * {
+	 * callStatus:"FAILED", 
+	 * errorCode:"Error", 
+	 * data:null,
+	 * token:null, 
+	 * numberPerPage:0, 
+	 * currentPage:0,
+	 * totalNumber:0, 
+	 * totalPage:0 ,
+	 * num:null,
+	 * msg:"服务器错误"
+	 * }
+	 * 
+	 */
+	
+	/**
+	 * 
+	 * @api {post} http://47.93.48.111:8080/api/item/updateItemValue  （后台）商品属性修改
+	 * @apiName updateItemValue
+	 * @apiGroup itemInfo
+	 * @apiVersion 0.1.0
+	 * @apiDescription  商品属性修改
+	 * 
+	 * 
 	 * 
 	 * @apiSuccessExample {json} Success-Response: 
 	 * HTTP/1.1 200 OK 

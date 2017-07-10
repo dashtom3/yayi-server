@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.controller.user;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -15,6 +16,8 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.service.PlaceOrderService;
+
+import net.sf.json.JSONArray;
 
 
 //下订单
@@ -87,7 +90,7 @@ public class PlaceOrderController {
 			@RequestParam(value="token",required=true) String token,
 			@ModelAttribute Ordera order
 			){
-		
+
 		//Integer receiverId= Integer.parseInt(receiverIds);
 		return placeOrderService.buyNow(orderItem,token,order);
 	}
@@ -97,19 +100,27 @@ public class PlaceOrderController {
 	public DataWrapper<Void> emptyCart(@RequestParam(value="token")String token){
 		return placeOrderService.emptyCart(token);
 	}
-	
+
 	//1234
 	@ResponseBody
 	@RequestMapping("generaOrder")
 	public DataWrapper<HashMap<String, Object>> generaOrder(
 			//@RequestHeader String token,
-			@RequestParam(value="token",required=false) String token,
+			@RequestParam(value="token",required=true) String token,
 			//@RequestParam(required=true) List<OrderItem>  orderItem,
 			@RequestParam(required=true) String  orderItem,
 			@ModelAttribute Ordera order
 			){
 		System.out.println(token+"  orderItem:"+orderItem+" order:"+order);
 		//return placeOrderService.generaOrder(token,orderItem,order);
-		return null;
+		JSONArray json = JSONArray.fromObject(orderItem);
+		ArrayList<OrderItem> orderItemList = (ArrayList<OrderItem>)JSONArray.toCollection(json, OrderItem.class);
+		return placeOrderService.generaOrder(token,orderItemList,order);
 	}
+	/***
+	 * String personstr="[{'itemId':'170564878','num':1,'price':12,'itemSKU':123543543543'}]";
+	  JSONArray json = JSONArray.fromObject(personstr);
+	  List persons = (List) JSONArray.toCollection(json, OrderItem.class);
+	  System.out.println(persons.get(0));
+	 */
 }

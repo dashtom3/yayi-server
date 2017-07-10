@@ -1,0 +1,10 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.yayiabc.http.mvc.dao.AliPayDao">
+	<update id="updateStateAndPayTime">
+	<!-- 这是已支付状态记不清了 -->
+		update ordera set state=2,payment_time=now(),updated=now() where orderId=#{orderId} 
+	</update>
+</mapper>       

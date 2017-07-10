@@ -5,11 +5,11 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.yayiabc.http.mvc.pojo.jpa.Cart;
+import com.yayiabc.http.mvc.pojo.jpa.FreeShipping;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.PostFee;
 import com.yayiabc.http.mvc.pojo.jpa.Receiver;
-import com.yayiabc.http.mvc.pojo.jpa.FreeShipping;
 
 
 public interface PlaceOrderDao {

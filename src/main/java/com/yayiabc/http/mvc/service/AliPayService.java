@@ -2,8 +2,6 @@ package com.yayiabc.http.mvc.service;
 
 import java.util.Map;
 
-import org.springframework.web.bind.annotation.RequestParam;
-
 /**
  * 
  * @author me

@@ -7,10 +7,9 @@ import org.springframework.stereotype.Service;
 
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
-
 import com.yayiabc.http.mvc.dao.FreightManageDao;
-import com.yayiabc.http.mvc.pojo.jpa.PostFee;
 import com.yayiabc.http.mvc.pojo.jpa.FreeShipping;
+import com.yayiabc.http.mvc.pojo.jpa.PostFee;
 import com.yayiabc.http.mvc.service.FreightManageService;
 @Service
 public class FreightManageServiceImpl implements FreightManageService{

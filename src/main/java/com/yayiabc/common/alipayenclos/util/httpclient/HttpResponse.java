@@ -1,11 +1,11 @@
 package com.yayiabc.common.alipayenclos.util.httpclient;
 
 
+import java.io.UnsupportedEncodingException;
+
 import org.apache.commons.httpclient.Header;
 
 import com.yayiabc.common.alipayenclos.config.AlipayConfig;
-
-import java.io.UnsupportedEncodingException;
 
 /* *
  *类名：HttpResponse

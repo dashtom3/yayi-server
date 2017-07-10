@@ -2,10 +2,9 @@ package com.yayiabc.http.mvc.service;
 
 import java.util.List;
 
-
 import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.http.mvc.pojo.jpa.PostFee;
 import com.yayiabc.http.mvc.pojo.jpa.FreeShipping;
+import com.yayiabc.http.mvc.pojo.jpa.PostFee;
 
 
 public interface FreightManageService {

@@ -1,7 +1,5 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
-import com.yayiabc.http.mvc.pojo.jpa.BasePojo;
-
 public class  MyStar extends BasePojo{
     private String item_pica;
     private String item_name;

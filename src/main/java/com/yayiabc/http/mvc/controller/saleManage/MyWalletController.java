@@ -1,6 +1,5 @@
 package com.yayiabc.http.mvc.controller.saleManage;
 
-import java.util.List;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;

@@ -6,7 +6,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.yayiabc.http.mvc.pojo.jpa.*;
+import com.yayiabc.http.mvc.pojo.jpa.Receiver;
 @Repository
 public interface ShippingAddressDao {
     //新增收货地址	                   

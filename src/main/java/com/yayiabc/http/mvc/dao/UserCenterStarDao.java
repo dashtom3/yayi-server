@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.yayiabc.common.utils.Page;
-import com.yayiabc.http.mvc.pojo.jpa.*;
+import com.yayiabc.http.mvc.pojo.jpa.MyStar;
 @Repository
 public interface UserCenterStarDao {
 	

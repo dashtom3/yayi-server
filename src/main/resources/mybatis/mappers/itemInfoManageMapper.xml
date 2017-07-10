@@ -67,7 +67,7 @@
  	</insert>
  	
  	<update id="updateItemInfo">
- 		update item_info set is_throw=#{isThrow},item_name=#{itemName},item_brand_id=#{itemBrandId},item_price=#{itemPrice},one_classify=#{oneClassify},two_classify=#{twoClassify},three_classify=#{threeClassify},
+ 		update item_info set is_throw=#{isThrow},item_name=#{itemName},item_brand_id=#{itemBrand.itemBrandId},item_price=#{itemPrice},one_classify=#{oneClassify},two_classify=#{twoClassify},three_classify=#{threeClassify},
  		updated=now() where item_id=#{itemId}
  	</update>
  	

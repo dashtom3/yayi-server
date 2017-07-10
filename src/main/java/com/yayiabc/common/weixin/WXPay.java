@@ -361,13 +361,7 @@ public class WXPay {
      * @throws Exception
      */
     public Map<String, String> unifiedOrder(Map<String, String> reqData,  int connectTimeoutMs, int readTimeoutMs) throws Exception {
-        String url;
-        if (this.useSandbox) {
-            url = WXPayConstants.SANDBOX_UNIFIEDORDER_URL_SUFFIX;
-        }
-        else {
-            url = WXPayConstants.UNIFIEDORDER_URL_SUFFIX;
-        }
+        String url = WXPayConstants.UNIFIEDORDER_URL_SUFFIX;
         if(this.notifyUrl != null) {
             reqData.put("notify_url", this.notifyUrl);
         }

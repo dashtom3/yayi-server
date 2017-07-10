@@ -10,14 +10,14 @@ public class WXPayConfigImpl extends WXPayConfig{
     private byte[] certData;
     private static WXPayConfigImpl INSTANCE;
 
-    private WXPayConfigImpl() throws Exception{
+    /*private WXPayConfigImpl() throws Exception{
         String certPath = "D://CERT/common/apiclient_cert.p12";
         File file = new File(certPath);
         InputStream certStream = new FileInputStream(file);
         this.certData = new byte[(int) file.length()];
         certStream.read(this.certData);
         certStream.close();
-    }
+    }*/
 
     
     //线程安全的单例模式
@@ -41,7 +41,7 @@ public class WXPayConfigImpl extends WXPayConfig{
     }
 
     public String getKey() {
-        return "34ef187bbb661764132c7d9a56bfb0e1";
+        return "7RugQu1eD55AIv46fHhUxwHB7lNPSuzz";
         
     }
 

@@ -88,7 +88,7 @@ public interface SaleLogApi {
 	/**
      * @api {post} http://47.93.48.111:8080/api/saleLog/noteLogin （创客系统）短信登录
      * @apiName noteLogin
-     * @apiGroup userLog
+     * @apiGroup saleLog
      * @apiVersion 0.1.0
      * @apiDescription 短信登录
      *

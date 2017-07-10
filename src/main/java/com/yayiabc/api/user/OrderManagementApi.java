@@ -2,7 +2,7 @@ package com.yayiabc.api.user;
 
 public interface OrderManagementApi {
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/showOrder 显示用户订单
+	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/showOrder （后台）显示用户订单
 	 * @apiName showOrder
 	 * @apiGroup showUserOrderManage
 	 * @apiVersion 0.1.0
@@ -46,7 +46,7 @@ public interface OrderManagementApi {
 	 * }
 	 */
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/closeTrading  关闭交易or确定交易
+	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/closeTrading  （后台）关闭交易or确定交易
 	 * @apiName closeTrading
 	 * @apiGroup showUserOrderManage
 	 * @apiVersion 0.1.0
@@ -86,7 +86,7 @@ public interface OrderManagementApi {
      * }
 	 */
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/showRefundProcessing   显示退款处理
+	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/showRefundProcessing   （后台）显示退款处理
 	 * @apiName showRefundProcessing
 	 * @apiGroup showUserOrderManage
 	 * @apiVersion 0.1.0
@@ -125,7 +125,7 @@ public interface OrderManagementApi {
      * }
 	 */
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/makeRefundData  退款数据处理
+	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/makeRefundData  （后台）退款数据处理
 	 * @apiName makeRefundData
 	 * @apiGroup showUserOrderManage
 	 * @apiVersion 0.1.0
@@ -164,7 +164,7 @@ public interface OrderManagementApi {
      * }
 	 */
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/loseFocus  onChange事件
+	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/loseFocus  （后台）onChange事件
 	 * @apiName loseFocus
 	 * @apiGroup showUserOrderManage
 	 * @apiVersion 0.1.0
@@ -205,7 +205,7 @@ public interface OrderManagementApi {
      * }
 	 */
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/warehouseDelivery  仓库发货 
+	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/warehouseDelivery  （后台）仓库发货 
 	 * @apiName warehouseDelivery
 	 * @apiGroup showUserOrderManage
 	 * @apiVersion 0.1.0

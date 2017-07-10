@@ -3,7 +3,7 @@ package com.yayiabc.api.item;
 public interface ItemSearch {
    /**
 	 * 
-	 * @api {post} http://192.168.1.103:8081/api/item/itemSearch   首页搜索框查询
+	 * @api {post} http://47.93.48.111:8080/api/item/itemSearch   （前台）首页搜索框查询
 	 * @apiName itemSearch
 	 * @apiGroup itemSearch
 	 * @apiVersion 0.1.0

@@ -2,7 +2,7 @@ package com.yayiabc.api.adminstrator;
 
 public interface Adiminstrator {
 	/**
-     * @api {post} http://192.168.1.103:8081/api/adminstrator/add   管理员增加   
+     * @api {post} http://47.93.48.111:8080/api/adminstrator/add   （后台）管理员增加   
      * @apiName add
      * @apiGroup adminstrator
      * @apiVersion 0.1.0
@@ -45,7 +45,7 @@ public interface Adiminstrator {
      */
 	
 	/**
-     * @api {post} http://192.168.1.103:8081/api/adminstrator/delete   管理员删除   
+     * @api {post} http://47.93.48.111:8080/api/adminstrator/delete   （后台）管理员删除   
      * @apiName delete
      * @apiGroup adminstrator
      * @apiVersion 0.1.0
@@ -86,7 +86,7 @@ public interface Adiminstrator {
      */
 	
 	/**
-     * @api {post} http://192.168.1.103:8081/api/adminstrator/update   管理员修改  
+     * @api {post} http://47.93.48.111:8080/api/adminstrator/update   （后台）管理员修改  
      * @apiName update
      * @apiGroup adminstrator
      * @apiVersion 0.1.0
@@ -130,7 +130,7 @@ public interface Adiminstrator {
      */
 	
 	/**
-     * @api {post} http://192.168.1.103:8081/api/adminstrator/query   管理员列表及查询 
+     * @api {post} http://47.93.48.111:8080/api/adminstrator/query   （后台）管理员列表及查询 
      * @apiName query
      * @apiGroup adminstrator
      * @apiVersion 0.1.0
@@ -182,7 +182,7 @@ public interface Adiminstrator {
      */
 	
 	/**
-     * @api {post} http://192.168.1.103:8081/api/adminstrator/login   管理员登录 
+     * @api {post} http://47.93.48.111:8080/api/adminstrator/login   （后台）管理员登录 
      * @apiName login
      * @apiGroup adminstrator
      * @apiVersion 0.1.0

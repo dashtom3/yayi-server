@@ -156,4 +156,8 @@
  	<insert id="addToPropertyd">
  		insert into item_propertyd values(null,null,null,null,null,#{itemPid},#{itemPparam},1,now(),now())
  	</insert>
+ 	
+ 	<select id="getCountByItemPropertyName" resultType="int">
+ 		select count(0) from item_property where item_property_name=#{itemPropertyName}
+ 	</select>
 </mapper>       

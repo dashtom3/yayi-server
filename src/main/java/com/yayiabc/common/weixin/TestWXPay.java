@@ -3,7 +3,6 @@ package com.yayiabc.common.weixin;
 import java.util.HashMap;
 import java.util.Map;
 
-import org.junit.Test;
 
 public class TestWXPay {
 
@@ -23,7 +22,6 @@ public class TestWXPay {
     /**
      * 扫码支付  下单
      */
-    @Test
     public void doUnifiedOrder() {
         HashMap<String, String> data = new HashMap<String, String>();
         data.put("body", "腾讯充值中心-QQ会员充值");

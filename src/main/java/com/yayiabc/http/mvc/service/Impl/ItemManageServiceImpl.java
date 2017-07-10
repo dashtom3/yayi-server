@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import org.hibernate.validator.internal.util.StringHelper;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -266,14 +267,24 @@ public class ItemManageServiceImpl implements ItemManageService{
 	public DataWrapper<Void> addPropertyAndPropertyName(
 			String itemPropertyName, List<String> itemPparamList) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		itemManageDao.addProperty(itemPropertyName);
-		Integer itemPropertyId =itemManageDao.queryItemPropertyIdByName(itemPropertyName);
-		System.out.println(itemPparamList);
-		Map<String,Object> map=new HashMap<String,Object>();
-		map.put("itemPropertyId",itemPropertyId);
-		map.put("itemPparamList", itemPparamList);
-		itemManageDao.addPropertyd(map);
-		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+		int count=itemManageDao.getCountByItemPropertyName(itemPropertyName);
+		if(count==0){
+			itemManageDao.addProperty(itemPropertyName);
+			Integer itemPropertyId =itemManageDao.queryItemPropertyIdByName(itemPropertyName);
+			System.out.println(itemPparamList);
+			Map<String,Object> map=new HashMap<String,Object>();
+			map.put("itemPropertyId",itemPropertyId);
+			map.put("itemPparamList", itemPparamList);
+			itemManageDao.addPropertyd(map);
+			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+			String msg=dataWrapper.getErrorCode().getLabel();
+			dataWrapper.setMsg(msg);
+		}else{
+			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+			String msg=dataWrapper.getErrorCode().getLabel();
+			dataWrapper.setMsg(msg);
+		}
+		
 		return dataWrapper;
 	}
 

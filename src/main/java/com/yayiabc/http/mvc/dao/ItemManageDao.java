@@ -79,6 +79,8 @@ public interface ItemManageDao {
 
 	void addToPropertyd(@Param("itemPid")Integer itemPid,@Param("itemPparam") String itemPparam);
 
+	int getCountByItemPropertyName(String itemPropertyName);
+
 
 	
 

@@ -67,7 +67,7 @@ public interface UserQbListApi {
      * @apiVersion 0.1.0
      * @apiDescription 查询具体某位用户的钱币余额
      *
-     * @apiParam {String} userPhone 手机号码（非必须）
+     * @apiParam {String} userPhone 手机号码（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK

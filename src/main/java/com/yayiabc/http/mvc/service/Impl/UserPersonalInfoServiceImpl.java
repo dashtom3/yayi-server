@@ -7,6 +7,7 @@ import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.UserPersonalInfoDao;
+import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Certification;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.UserPersonalInfo;
@@ -19,13 +20,16 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 	UserPersonalInfoDao userPersonalInfoDao;
 	@Autowired
 	UserDao userDao;
+	@Autowired
+	UtilsDao utilsDao;
 
 	@Override
-	public DataWrapper<User> updateUser(User user) {
+	public DataWrapper<User> updateUser(User user,String token) {
 		DataWrapper<User> dataWrapper = new DataWrapper<User>();
 		String userIda = userDao.getUserId(user.getPhone());// 根据手机号码查询userId
-		if (userIda == null) {
-			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
+		if (userIda == null || userIda.equals(utilsDao.getUserID(token))== false) {
+			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+			dataWrapper.setMsg("token错误");
 		} else {
 			user.setUserId(userIda);
 			String userIdb = userPersonalInfoDao.getUserIdOnC(userIda);// 查询资质认证表userId
@@ -51,11 +55,12 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 
 	@Override
 	public DataWrapper<Certification> updateCertification(
-			Certification certification, String phone) {
+			Certification certification, String phone, String token) {
 		DataWrapper<Certification> dataWrapper = new DataWrapper<Certification>();
 		String userId = userDao.getUserId(phone);
-		if (userId == null) {
-			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
+		if (userId == null || userId.equals(utilsDao.getUserID(token)) == false) {
+			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+			dataWrapper.setMsg("token错误");
 		} else {
 			certification.setUserId(userId);
 			int i = userPersonalInfoDao.updateCertification(certification);
@@ -69,20 +74,19 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 	}
 	
 	@Override
-	public DataWrapper<UserPersonalInfo> detail(String phone) {
+	public DataWrapper<UserPersonalInfo> detail(String phone, String token) {
 		DataWrapper<UserPersonalInfo> dataWrapper = new DataWrapper<UserPersonalInfo>();
 		String userId = userDao.getUserId(phone);
-		if (userId == null) {
-			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
+		if (userId == null || userId.equals(utilsDao.getUserID(token)) == false) {
+			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+			dataWrapper.setMsg("token错误");
 		} else {
-			UserPersonalInfo userPersonalInfo = userPersonalInfoDao.detail(userId);
+			UserPersonalInfo userPersonalInfo = userPersonalInfoDao
+					.detail(userId);
 			dataWrapper.setData(userPersonalInfo);
 		}
 
 		return dataWrapper;
 	}
 
-
-
-	
 }

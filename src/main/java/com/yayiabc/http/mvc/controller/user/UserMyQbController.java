@@ -21,30 +21,28 @@ public class UserMyQbController {
 	UserMyQbService userMyQbService;
 
 	/**
-	 *  添加我的乾币记录
+	 * 添加我的乾币记录
 	 */
-	@RequestMapping(value="add",method=RequestMethod.POST)
+	@RequestMapping(value = "add", method = RequestMethod.POST)
 	@ResponseBody
-	public DataWrapper<QbRecord> add(
-			@ModelAttribute QbRecord qbRecord,
-			@RequestParam(value="phone",required=true)String phone,
-			@RequestParam(value="token",required=true)String token
-	){
-		return userMyQbService.add(qbRecord,phone);
+	public DataWrapper<QbRecord> add(@ModelAttribute QbRecord qbRecord,
+			@RequestParam(value = "phone", required = true) String phone,
+			@RequestParam(value = "token", required = true) String token) {
+		return userMyQbService.add(qbRecord, phone, token);
 	}
-	
+
 	/**
 	 * 获取乾币记录信息列表
 	 */
-	@RequestMapping(value="query",method=RequestMethod.GET)
+	@RequestMapping(value = "query", method = RequestMethod.GET)
 	@ResponseBody
 	public DataWrapper<List<QbRecord>> query(
-			@RequestParam(value="phone",required=true)String phone,
-			@RequestParam(value="type",required=true)Integer type,
-			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
-    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-			@RequestParam(value="token",required=true)String token
-	){
-		return userMyQbService.query(phone,type,currentPage,numberPerPage);
+			@RequestParam(value = "phone", required = true) String phone,
+			@RequestParam(value = "type", required = true) Integer type,
+			@RequestParam(value = "currentPage", required = false, defaultValue = "1") Integer currentPage,
+			@RequestParam(value = "numberPerPage", required = false, defaultValue = "10") Integer numberPerPage,
+			@RequestParam(value = "token", required = true) String token) {
+		return userMyQbService.query(phone, type, currentPage, numberPerPage,
+				token);
 	}
 }

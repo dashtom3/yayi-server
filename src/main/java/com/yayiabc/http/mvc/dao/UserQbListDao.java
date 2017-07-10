@@ -14,5 +14,7 @@ public interface UserQbListDao {
 	
 	int update(@Param("qbBalance")Integer qbBalance,@Param("phone")String phone);
 	
+	Integer queryQb(@Param("userPhone")String userPhone);
+	
 	int getCount(@Param("phone")String phone,@Param("startDate")String startDate,@Param("endDate")String endDate);
 }

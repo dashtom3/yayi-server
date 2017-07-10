@@ -30,7 +30,7 @@ public class UserPersonalInfoController {
 			@RequestParam(value="phone",required=true)String phone,
 			@RequestParam(value="token",required=true)String token
 	){
-		return userPersonalInfoService.detail(phone);
+		return userPersonalInfoService.detail(phone,token);
 	}
 	
 	/**
@@ -42,7 +42,7 @@ public class UserPersonalInfoController {
 			@ModelAttribute User user,
 			@RequestParam(value = "token", required = true) String token
 	){
-		    return userPersonalInfoService.updateUser(user);
+		    return userPersonalInfoService.updateUser(user,token);
 	}
 	
 	/**
@@ -55,6 +55,6 @@ public class UserPersonalInfoController {
 			@RequestParam(value = "phone", required = true) String phone,
 			@RequestParam(value = "token", required = true) String token
 	){
-		return userPersonalInfoService.updateCertification(certification, phone);
+		return userPersonalInfoService.updateCertification(certification, phone,token);
 	}
 }

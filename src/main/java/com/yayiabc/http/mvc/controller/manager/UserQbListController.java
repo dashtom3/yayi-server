@@ -1,6 +1,7 @@
 package com.yayiabc.http.mvc.controller.manager;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -46,5 +47,16 @@ public class UserQbListController {
 			@RequestParam(value = "qbBalance", required = true) Integer qbBalance
 			) {
 		return userQbListService.update(qbBalance, phone);
+	}
+	
+	/**
+	 * 查询具体某位用户的钱币余额
+	 */
+	@RequestMapping(value = "queryQb", method = RequestMethod.GET)
+	@ResponseBody
+	public DataWrapper<Map<String, Integer>> queryQb(
+			@RequestParam(value = "userPhone", required = true) String userPhone
+			) {
+		return userQbListService.queryQb(userPhone);
 	}
 }

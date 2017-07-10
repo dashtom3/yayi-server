@@ -1,4 +1,4 @@
-package com.yayiabc.common.utils;
+/*package com.yayiabc.common.utils;
 
 import java.awt.image.BufferedImage;  
 import java.io.File;  
@@ -15,11 +15,11 @@ import com.google.zxing.EncodeHintType;
 import com.google.zxing.MultiFormatWriter;  
 import com.google.zxing.common.BitMatrix;  
 import com.google.zxing.qrcode.decoder.ErrorCorrectionLevel;  
-/** 
+*//** 
  * 通过google的zxing实现二维码(加入logo图片) 
  * @author tskk 
  * @version 2015-6-26 13:30:20 
- * */  
+ * *//*  
 public final class EncodeImgZxing {   
     //二维码颜色  
     private static final int BLACK = 0xFF000000;//0xFFFF0000，红色  
@@ -33,14 +33,14 @@ public final class EncodeImgZxing {
     //二维码格式参数  
     private static final EnumMap<EncodeHintType, Object> hints = new EnumMap<EncodeHintType, Object>(EncodeHintType.class);  
     static{  
-        /*二维码的纠错级别(排错率),4个级别： 
+        二维码的纠错级别(排错率),4个级别： 
          L (7%)、 
          M (15%)、 
          Q (25%)、 
          H (30%)(最高H) 
          纠错信息同样存储在二维码中，纠错级别越高，纠错信息占用的空间越多，那么能存储的有用讯息就越少；共有四级； 
          选择M，扫描速度快。 
-         */  
+           
         hints.put(EncodeHintType.ERROR_CORRECTION, ErrorCorrectionLevel.H);  
         // 二维码边界空白大小 1,2,3,4 (4为默认,最大)  
         hints.put(EncodeHintType.MARGIN, 1);  
@@ -48,11 +48,11 @@ public final class EncodeImgZxing {
         hints.put(EncodeHintType.MAX_SIZE, 350);  
         hints.put(EncodeHintType.MIN_SIZE, 150);  
     }  
-    /** 
+    *//** 
      * 绘制二维码 
      * @param contents 二维码内容   
      * @return image 二维码图片 
-     * */  
+     * *//*  
     public static BufferedImage encodeImg(String contents){  
         BufferedImage image = null;  
         try{  
@@ -71,12 +71,12 @@ public final class EncodeImgZxing {
         return image;  
     }  
       
-    /** 
+    *//** 
      * 二维码输出到文件 
      *  @param contents 二维码内容 
      * @param format 图片格式 
      * @param file 输出文件 
-     * */  
+     * *//*  
     public static void writeToFile(String contents,String format,File file){  
         BufferedImage image = encodeImg(contents);  
         try {  
@@ -85,12 +85,12 @@ public final class EncodeImgZxing {
             System.out.println("二维码写入文件失败"+e.getMessage());  
         }  
     }  
-    /** 
+    *//** 
      * 二维码流式输出 
      *  @param contents 二维码内容 
      * @param format 图片格式 
      * @param stream 输出流 
-     * */  
+     * *//*  
     public static void writeToStream(String contents,String format,OutputStream stream){  
         BufferedImage image = encodeImg(contents);  
         try {  
@@ -109,12 +109,13 @@ public final class EncodeImgZxing {
          EncodeImgZxing.writeToFile(contents, format, img);    
            
          //解析二维码  
-/*         String content = DecodeImgZxing.decodeImg(img);  
+         String content = DecodeImgZxing.decodeImg(img);  
          System.out.println("1:"+content);  
          //带logo  
          String content1 = DecodeImgZxing.decodeImg(img1);  
-         System.out.println("2:"+content1);  */
+         System.out.println("2:"+content1);  
      }  
 
 }
 
+*/

@@ -74,6 +74,8 @@ public class MyWalletServiceImpl implements MyWalletService{
 				withdrawalsTX+=lists.get(x).getCashMoney();
 			}
 			treeMap.put("withdrawalsTX", withdrawalsTX);
+		}else{
+			treeMap.put("withdrawalsTX", 0);
 		}
 	}
 	//查看订单详情

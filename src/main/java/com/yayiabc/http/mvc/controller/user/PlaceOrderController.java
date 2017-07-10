@@ -24,7 +24,7 @@ import com.yayiabc.http.mvc.service.PlaceOrderService;
 public class PlaceOrderController {
 	@Autowired
 	private PlaceOrderService placeOrderService;
-	//从购物车下单时:
+	//多个商品时 
 	@RequestMapping("buyNows")
 	@ResponseBody
 	public 	DataWrapper<HashMap<String, Object>> buyNows(

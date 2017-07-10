@@ -17,7 +17,9 @@ public class OrderItem extends BasePojo {
 	private Ordera ordera;
 	private String itemSKU;
 	private Integer qbDed;
-
+/**
+ * cartId,userId
+ */
 	private Integer num;
 
 	private Integer price;

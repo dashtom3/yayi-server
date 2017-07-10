@@ -30,7 +30,11 @@ public class BasePojo {
 	public BasePojo() {
 		super();
 	}
-
+    /**
+     * catid
+     * @param created
+     * @param updated
+     */
 	public BasePojo(Date created, Date updated) {
 		super();
 		this.created = created;

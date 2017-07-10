@@ -1,6 +1,5 @@
 package com.yayiabc.http.mvc.controller.user;
 
-import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
 
@@ -62,8 +61,6 @@ public class PlaceOrderController {
 			){
 		return placeOrderService.upateAddress(receiverId,sumPrice,itemSum);
 	}
-
-	
 	//提交订单//将信息保存到订单表里
 	@RequestMapping("saveMessage")
 	@ResponseBody
@@ -82,7 +79,6 @@ public class PlaceOrderController {
 
 		return placeOrderService.saveMessage(order,token);
 	}
-
 	//当用户点击商品图片购买时:
 	@RequestMapping("buyNow")
 	@ResponseBody
@@ -106,10 +102,14 @@ public class PlaceOrderController {
 	@ResponseBody
 	@RequestMapping("generaOrder")
 	public DataWrapper<HashMap<String, Object>> generaOrder(
-			@RequestHeader String token,
-			@RequestBody List<OrderItem>  orderItem,
+			//@RequestHeader String token,
+			@RequestParam(value="token",required=false) String token,
+			//@RequestParam(required=true) List<OrderItem>  orderItem,
+			@RequestParam(required=true) String  orderItem,
 			@ModelAttribute Ordera order
 			){
-		return placeOrderService.generaOrder(token,orderItem,order);
+		System.out.println(token+"  orderItem:"+orderItem+" order:"+order);
+		//return placeOrderService.generaOrder(token,orderItem,order);
+		return null;
 	}
 }

@@ -8,16 +8,8 @@ public interface CartApi {
      * @apiVersion 0.1.0
      * @apiDescription 新增商品到购物车
      *
-     * @apiParam {String} phone 手机号码（必须）
-     * @apiParam {String} itemId 商品ID（必须）
-     * @apiParam {String} name 商品名称（必须）
-     * @apiParam {String} pic 商品主图（必须）
      * @apiParam {int} num 商品数量（必须）
-     * @apiParam {int} price 商品价格（必须）
      * @apiParam {String} itemSKU 商品SKU代码（必须）
-     * @apiParam {String} itemPropertyNamea 商品属性值a(必须)
-     * @apiParam {String} itemPropertyNameb 商品属性值b(非必须)
-     * @apiParam {String} itemPropertyNamec 商品属性值c(非必须)
      * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
@@ -59,7 +51,6 @@ public interface CartApi {
      * @apiVersion 0.1.0
      * @apiDescription 修改购物车内商品数量
      *
-     * @apiParam {String} phone 手机号码（必须）
      * @apiParam {int} num 数量（必须）
      * @apiParam {String} itemSKU 商品SKU代码（必须）
      * @apiParam {String} token 身份凭证（必须）
@@ -103,7 +94,6 @@ public interface CartApi {
      * @apiVersion 0.1.0
      * @apiDescription 获取购物车列表
      *
-     * @apiParam {String} phone 手机号码（必须）
      * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
@@ -167,7 +157,6 @@ public interface CartApi {
      * @apiVersion 0.1.0
      * @apiDescription 删除购物车内商品
      *
-     * @apiParam {String} phone 手机号码（必须）
      * @apiParam {String} itemSKU 商品SKU代码（必须）
      * @apiParam {String} token 身份凭证（必须）
      *
@@ -210,7 +199,6 @@ public interface CartApi {
      * @apiVersion 0.1.0
      * @apiDescription 收藏商品
      *
-     * @apiParam {String} phone 手机号码（必须）
      * @apiParam {String} itemId 商品ID（必须）
      * @apiParam {String} itemSKU 商品SKU代码（必须）
      * @apiParam {String} token 身份凭证（必须）

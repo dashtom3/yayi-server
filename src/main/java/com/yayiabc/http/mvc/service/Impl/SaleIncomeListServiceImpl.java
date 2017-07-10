@@ -34,12 +34,8 @@ public class SaleIncomeListServiceImpl implements SaleIncomeListService {
 		List<SaleIncomeVo> list = saleIncomeListDao.query(saleId, saleName,
 				salePhone, orderId, signLateSeven, getState, startDate,
 				endDate, page);
-		if (list.size() == 0) {
-			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-		} else if (list.size() != 0) {
 			dataWrapper.setPage(page, totalNumber);
 			dataWrapper.setData(list);
-		}
 		return dataWrapper;
 	}
 
@@ -49,12 +45,12 @@ public class SaleIncomeListServiceImpl implements SaleIncomeListService {
 		DataWrapper<SaleIncomeVo> dataWrapper = new DataWrapper<SaleIncomeVo>();
 		SaleIncomeVo saleIncomeVo = saleIncomeListDao.detail(saleId, userId);
 		List<OrderVo> list = saleIncomeListDao.orderList(userId, orderId);
-		if (list.size() == 0) {
-			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-		} else if (list.size() != 0) {
+		if(list==null){
+			saleIncomeVo.setOrderVoList(null);
+		}else{
 			saleIncomeVo.setOrderVoList(list);
-			dataWrapper.setData(saleIncomeVo);
 		}
+		dataWrapper.setData(saleIncomeVo);
 		return dataWrapper;
 	}
 

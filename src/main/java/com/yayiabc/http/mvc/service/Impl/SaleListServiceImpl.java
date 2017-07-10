@@ -5,7 +5,6 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.SaleListDao;
@@ -31,12 +30,8 @@ public class SaleListServiceImpl implements SaleListService {
 				isBindUser);
 		List<SaleInfo> list = saleListDao.query(saleId, phone, trueName,
 				isBindUser, page);
-		if (list.size() == 0) {
-			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-		} else if (list.size() != 0) {
-			dataWrapper.setPage(page, totalNumber);
-			dataWrapper.setData(list);
-		}
+		dataWrapper.setPage(page, totalNumber);
+		dataWrapper.setData(list);
 		return dataWrapper;
 	}
 
@@ -52,12 +47,8 @@ public class SaleListServiceImpl implements SaleListService {
 				companyName, isBind);
 		List<User> list = saleListDao.userlist(phone, trueName, companyName,
 				isBind, page);
-		if (list.size() == 0) {
-			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-		} else if (list.size() != 0) {
-			dataWrapper.setPage(page, totalNumber);
-			dataWrapper.setData(list);
-		}
+		dataWrapper.setPage(page, totalNumber);
+		dataWrapper.setData(list);
 		return dataWrapper;
 	}
 
@@ -71,13 +62,13 @@ public class SaleListServiceImpl implements SaleListService {
 		page.setCurrentPage(currentPage);
 		int totalNumber = saleListDao.bindUserCount(saleInfo.getSaleId());
 		List<User> list = saleListDao.bindUserList(saleInfo.getSaleId(), page);
-		if (list.size() == 0) {
-			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-		} else if (list.size() != 0) {
-			dataWrapper.setPage(page, totalNumber);
+		dataWrapper.setPage(page, totalNumber);
+		if(list==null){
+			saleInfo.setUser(null);
+		}else{
 			saleInfo.setUser(list);
-			dataWrapper.setData(saleInfo);
 		}
+		dataWrapper.setData(saleInfo);
 		return dataWrapper;
 	}
 

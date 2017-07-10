@@ -36,7 +36,6 @@ public class UserManageListController {
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
-		System.out.println("!!"+trueName);
 		return userManageListService.userlist(phone, trueName, companyName, isBindSale, type, saleName,currentPage,numberPerPage);
 	}
 	

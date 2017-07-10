@@ -2,6 +2,64 @@ package com.yayiabc.api.saleManage;
 
 public interface SaleInfoApi {
 	/**
+     * @api {get} http://47.93.48.111:8080/api/saleInfo/query （创客系统）查询个人信息
+     * @apiName query
+     * @apiGroup saleInfo
+     * @apiVersion 0.1.0
+     * @apiDescription 查询个人信息
+     * 
+     * @apiParam {String} token 身份凭证（必须）
+     *
+     * @apiSuccessExample {json} Success-Response:
+     *  HTTP/1.1 200 OK
+     * {
+     * callStatus:"SUCCEED",
+     * errorCode:"No_Error",
+     * data:{
+     * 		phone:"13122390809",
+     * 		trueName:"张三",
+     * 		idCard:"123456789",
+     * 		weChar:"888888",
+     * 		email:"123456@qq.com",
+     * 		sex:1,	（必须，1男，2女）
+     * 		birthday:"1993-10-10",
+     * 		part:"上海市杨浦区",
+     * 		address:"XXXX路XXXX号",
+     * 		education:"大学",
+     * 		workUnit:"XXXX公司",
+     * 		workPosition:"销售",
+     * 		postalType:"提现类型", （银行卡或支付宝）
+     * 		bankName:"中国银行",
+     * 		openName:"王某某",
+     * 		accountNumber:"123456798"
+     * },
+     * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
+     * numberPerPage:0,
+     * currentPage:0,
+     * totalNumber:0,
+     * totalPage:0,
+     * num :null,
+     * msg :null,
+     *  }
+     *
+     *  @apiSuccessExample {json} Error-Response:
+     *  HTTP/1.1 200 OK
+     * {
+     * callStatus:"FAILED",
+     * errorCode:"Error",
+     * data:null,
+     * token:null,
+     * numberPerPage:0,
+     * currentPage:0,
+     * totalNumber:0,
+     * totalPage:0,
+     * num :null,
+     * msg :null,
+     *  }
+     *
+     */
+	
+	/**
      * @api {post} http://47.93.48.111:8080/api/saleInfo/updateSale （创客系统）编辑销售员个人信息基础资料
      * @apiName updateSale
      * @apiGroup saleInfo

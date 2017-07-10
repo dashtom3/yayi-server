@@ -9,7 +9,6 @@ public interface UserMyQbApi {
      * @apiVersion 0.1.0
      * @apiDescription 获取乾币记录信息列表
      *
-     * @apiParam {String} phone 手机号码（必须）
      * @apiParam {int} type 类型（必须，1全部，2收入乾币，3支出乾币）
      * @apiParam {int} currentPage （非必须）
      * @apiParam {int} numberPerPage （非必须）
@@ -68,7 +67,6 @@ public interface UserMyQbApi {
      * @apiVersion 0.1.0
      * @apiDescription 新增我的乾币记录
      *
-     * @apiParam {String} phone 手机号码（必须）
      * @apiParam {String} qbRget 收入（收入和支出选填一项）
      * @apiParam {String} qbRout 支出（收入和支出选填一项）
      * @apiParam {String} remark 描述（非必须）

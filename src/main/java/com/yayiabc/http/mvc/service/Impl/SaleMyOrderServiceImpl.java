@@ -16,31 +16,33 @@ import com.yayiabc.http.mvc.pojo.model.OrderVo;
 import com.yayiabc.http.mvc.pojo.model.SaleDataStatistics;
 import com.yayiabc.http.mvc.pojo.model.SaleIncomeVo;
 import com.yayiabc.http.mvc.service.SaleMyOrderService;
+
 @Service
 public class SaleMyOrderServiceImpl implements SaleMyOrderService {
-	
+
 	@Autowired
 	SaleMyOrderDao saleMyOrderDao;
 	@Autowired
 	SaleLogDao saleLogDao;
 	@Autowired
 	UserDao userDao;
-	
+
 	@Override
-	public DataWrapper<SaleDataStatistics> myOrder(String token,Integer currentPage, Integer numberPerPage) {
-		DataWrapper<SaleDataStatistics> dataWrapper=new DataWrapper<SaleDataStatistics>();
-		SaleDataStatistics saleDataStatistics=new SaleDataStatistics();
-		String saleId=saleLogDao.getSaleIdByToken(token);
-		if(saleId == null){
+	public DataWrapper<SaleDataStatistics> myOrder(String token,
+			Integer currentPage, Integer numberPerPage) {
+		DataWrapper<SaleDataStatistics> dataWrapper = new DataWrapper<SaleDataStatistics>();
+		SaleDataStatistics saleDataStatistics = new SaleDataStatistics();
+		String saleId = saleLogDao.getSaleIdByToken(token);
+		if (saleId == null) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
-		}else{
-			saleDataStatistics=saleMyOrderDao.myOrderData(saleId);
-			saleDataStatistics=saleMyOrderDao.myOrderOrder(saleId);
+		} else {
+			saleDataStatistics = saleMyOrderDao.myOrderData(saleId);
+			saleDataStatistics = saleMyOrderDao.myOrderOrder(saleId);
 			Page page = new Page();
 			page.setNumberPerPage(numberPerPage);
 			page.setCurrentPage(currentPage);
-			int totalNumber=saleMyOrderDao.getCount(saleId);
-			List<MyOrderVo> list=saleMyOrderDao.myOrder(saleId, page);
+			int totalNumber = saleMyOrderDao.getCount(saleId);
+			List<MyOrderVo> list = saleMyOrderDao.myOrder(saleId, page);
 			dataWrapper.setPage(page, totalNumber);
 			saleDataStatistics.setMyOrderVoList(list);
 			dataWrapper.setData(saleDataStatistics);
@@ -49,14 +51,15 @@ public class SaleMyOrderServiceImpl implements SaleMyOrderService {
 	}
 
 	@Override
-	public DataWrapper<List<SaleDataStatistics>> chart(String token, String year,
-			String month) {
-		DataWrapper<List<SaleDataStatistics>> dataWrapper=new DataWrapper<List<SaleDataStatistics>>();
-		String saleId=saleLogDao.getSaleIdByToken(token);
-		if(saleId == null){
+	public DataWrapper<List<SaleDataStatistics>> chart(String token,
+			String year, String month) {
+		DataWrapper<List<SaleDataStatistics>> dataWrapper = new DataWrapper<List<SaleDataStatistics>>();
+		String saleId = saleLogDao.getSaleIdByToken(token);
+		if (saleId == null) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
-		}else{
-			List<SaleDataStatistics> list=saleMyOrderDao.chart(saleId, year, month);
+		} else {
+			List<SaleDataStatistics> list = saleMyOrderDao.chart(saleId, year,
+					month);
 			dataWrapper.setData(list);
 		}
 		return dataWrapper;
@@ -75,12 +78,12 @@ public class SaleMyOrderServiceImpl implements SaleMyOrderService {
 					saleId);
 			List<OrderVo> list = saleMyOrderDao
 					.detailO(userId, orderId, saleId);
-			if(list.size() == 0){
-				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-			}else{
+			if (list == null) {
+				saleIncomeVo.setOrderVoList(null);
+			} else {
 				saleIncomeVo.setOrderVoList(list);
-				dataWrapper.setData(saleIncomeVo);
-			}	
+			}
+			dataWrapper.setData(saleIncomeVo);
 		}
 		return dataWrapper;
 	}

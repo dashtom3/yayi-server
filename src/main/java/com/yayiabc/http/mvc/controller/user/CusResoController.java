@@ -24,9 +24,14 @@ public class CusResoController {
     @ResponseBody
     
     public DataWrapper<List<CusResources>> show(
-    		
-    		 HashMap<String, String> hashMap
+    		   @RequestParam(value="companyName",required=false) String companyName,
+    		   @RequestParam(value="companyAdd",required=false) String companyAdd,
+    		   @RequestParam(value="linkMan",required=false) String linkMan
     		){
+    	 HashMap<String, String> hashMap =new HashMap<String,String>();
+    	 hashMap.put("companyName", companyName);
+    	 hashMap.put("companyAdd", companyAdd);
+    	 hashMap.put("linkMan", linkMan);
     	return cusResoService.show(hashMap);
     }
      //insert

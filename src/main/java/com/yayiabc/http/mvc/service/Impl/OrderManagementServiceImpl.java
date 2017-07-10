@@ -80,10 +80,14 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		//根据订单id 查询出 当前订单的用户id 去钱币表 查看 该用户的钱币余额   queryUser
 		String userId=orderManagementDao.queryUser(OrederId);
 		//根据userId 查询用户余额
-		int balance=orderManagementDao.userBalance(userId);
-		/*if(balance>0){
-			//
-		}*/
+		System.out.println(OrederId);
+		System.out.println(userId);
+		System.out.println(itemId);
+		Integer balance=orderManagementDao.userBalance(userId);
+		if(null==balance){
+			dataWrapper.setMsg("这个用户钱币null呀");
+			return dataWrapper;
+		}
 		List<OrderItem> list=orderManagementDao.showFund(OrederId,itemId);
 		int price=0;
 		if(!list.isEmpty()){

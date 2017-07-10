@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.With;
 import com.yayiabc.http.mvc.service.MyWalletService;
 import com.yayiabc.http.mvc.service.WitManageService;
@@ -25,14 +26,13 @@ public class MyWalletController {
 
 	private WitManageService witManageService;
 	//钱包明细
-	@RequestMapping(value="detail")
+	@RequestMapping("detail")
 	@ResponseBody
 	public DataWrapper<TreeMap<String, Object>> detail(
 			@RequestParam(value="token",required=true)String token,
-			@RequestParam(value="date",required=true)int date,
-			@RequestParam(value="state",required=true)int state
+			@RequestParam(value="state",required=true)Integer state
 			){
-		return myWalletService.myWalletDetails(token,date,state);
+		return myWalletService.myWalletDetails(token,state);
 	}
 	//提现入口
 	@RequestMapping("showWit")
@@ -64,11 +64,15 @@ public class MyWalletController {
 		dataWrapper.setMsg("验证验证码失败");
 		return dataWrapper;
 	}
+	
 	//查看操作 的订单详情
-		 void queryOrder(
+	@RequestMapping("queryOrder")
+	@ResponseBody//real_name,type,anumber,cashMoney,phone
+	public  DataWrapper<SaleInfo> queryOrder(
 				 @RequestParam(value="orderId") String orderId,
 				 @RequestParam(value="token") String token
 				 ){
-			 myWalletService.queryOrder(orderId,token);
+		return 	 myWalletService.queryOrder(orderId,token);
+			
 		  }
 }

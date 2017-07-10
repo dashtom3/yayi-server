@@ -46,7 +46,7 @@ public class Ordera extends BasePojo {
 
 	private Integer totalFee;
 	private  Integer qbDed;
-	private  String   refund;
+	private  Refund   refund;
 	
 	private  Receiver receiver;
 	private  Integer receiverId;
@@ -67,15 +67,18 @@ public class Ordera extends BasePojo {
 		this.receiver = receiver;
 	}
 
-	public String getRefund() {
+
+	private User user;
+
+	
+	public Refund getRefund() {
 		return refund;
 	}
 
-	public void setRefund(String refund) {
+	public void setRefund(Refund refund) {
 		this.refund = refund;
 	}
 
-	private User user;
 
 	private List<OrderItem> orderitemList;
 

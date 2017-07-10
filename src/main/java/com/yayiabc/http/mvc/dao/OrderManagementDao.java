@@ -32,7 +32,7 @@ public interface OrderManagementDao {
 	String queryUser(String orederId);
     
 	//
-	int userBalance(String userId); //
+	Integer userBalance(String userId); //
 	
     //仓库发货
 	int warehouseDelivery(@Param("userId")String userId,

@@ -16,15 +16,17 @@
 		come.get_money,come.updated,come.order_id FROM
 		sale_income come JOIN
 		ordera orde ON
-		orde.order_id=come.order_id WHERE
-		sale_id=#{saleId}
-		ORDER
-		BY come.created DESC
+		orde.order_id=come.order_id
+		<!-- WHERE
+		sale_id=#{saleId} and come.updated<(SELECT DATE_ADD(NOW(),INTERVAL -#{data} MONTH)) -->
+		
+		<!-- ORDER   &lt
+		BY come.created DESC -->
 	</select>
 
 	<select id="with" resultType="com.yayiabc.http.mvc.pojo.jpa.With">
-		<!-- SELECT cashMoney,cash_su_time FROM cashmanage WHERE sale_id=#{saleId} 
-			AND cash_su_time <(SELECT DATE_ADD(NOW(),INTERVAL #{data} MONTH)) AND -->
+		SELECT cashMoney,cash_su_time FROM cashmanage 
+		WHERE sale_id=#{saleId}
 	</select>
 
 	<!-- //chaxun userid -->
@@ -32,39 +34,46 @@
 		select user_id from ordera
 		where order_id=#{orderId}
 	</select>
-	
+
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.SaleInfo" id="c">
-	 <id property="saleId" column="sale_id"/>
-	   <!-- userTable -->
-	     <collection property="user" ofType="User">
-	      <id property="userId" column="user_id"/>
-	      <result property="trueName" column="true_name"/>
-	      <result property="phone" column="phone"/>
-	        <!-- //订单表 -->
-	         <collection property="orderaList" ofType="Ordera">
-	            <id property="orderId" column="order_id"/>
-	            <result property="closeTime" column="close_name"/>
-	            <result property="state" column="state"/>
-	            <result property="refund" column="refund"/>
-	            
-	            <!-- //订单商品表 -->
-	            <collection property="orderitemList" ofType="OrderItem">
-	               <result property="itemName" column="item_name"/>
-	               <result property="price" column="price"/>
-	               <result property="num" column="num"/>
-	               <result property="totalFee" column="total_fee"/>
-	                
-	            </collection>
-	            
-	         </collection>
-	     </collection>
-	     <!-- //收入表 -->
-	     <collection property="saleincome" ofType="SaleIncome">
-	       <id property="sale_income_id" column="saleIncomeId"/>
-	       <result property="getState" column="get_state"/>
-	       <result property="getMoney" column="get_money"/>
-	     </collection>
-	 </resultMap>
+		<id property="saleId" column="sale_id" />
+		<!-- userTable -->
+		<collection property="user" ofType="User">
+			<id property="userId" column="user_id" />
+			<result property="trueName" column="true_name" />
+			<result property="phone" column="phone" />
+
+			<!-- //订单表 -->
+			<collection property="orderaList" ofType="Ordera">
+				<id property="orderId" column="order_id" />
+				<result property="closeTime" column="close_name" />
+				<result property="state" column="state" />
+
+
+				<!-- //退款表 -->
+				<association property="refund"
+					javaType="com.yayiabc.http.mvc.pojo.jpa.Refund">
+					<id property="refundId" column="refund_id" />
+					<result property="refund_money" column="refundMoney" />
+				</association>
+
+				<!-- //订单商品表 -->
+				<collection property="orderitemList" ofType="OrderItem">
+					<result property="itemName" column="item_name" />
+					<result property="price" column="price" />
+					<result property="num" column="num" />
+					<result property="totalFee" column="total_fee" />
+
+				</collection>
+			</collection>
+		</collection>
+		<!-- //收入表 -->
+		<collection property="saleincome" ofType="SaleIncome">
+			<id property="sale_income_id" column="saleIncomeId" />
+			<result property="getState" column="get_state" />
+			<result property="getMoney" column="get_money" />
+		</collection>
+	</resultMap>
 	<!-- //主页面 mian -->
 	<select id="queryOrder" resultMap="c">
 		SELECT
@@ -72,12 +81,18 @@
 		orde_it.item_name,
 		orde_it.price,orde_it.num,orde_it.total_fee,
 		refu.refund_money,sale_in.get_state,sale_in.get_money
-		FROM sale_info sale JOIN sale_income sale_come ON sale.sale_id
+		FROM sale_info
+		sale LEFT JOIN sale_income sale_come ON sale.sale_id
 		=sale_come.sale_id
-		JOIN ordera orde ON sale_come.order_id=orde.order_id JOIN USER us ON
+		LEFT JOIN ordera orde ON
+		sale_come.order_id=orde.order_id LEFT JOIN USER us ON
 		us.user_id=orde.user_id
-		JOIN order_item orde_it ON orde.order_id=orde_it.order_id JOIN refund refu
-		ON refu.order_id=orde.order_id
-		JOIN sale_income sale_in ON orde.order_id=sale_in.order_id
+		LEFT JOIN order_item orde_it ON
+		orde.order_id=orde_it.order_id LEFT JOIN refund refu
+		ON
+		refu.order_id=orde.order_id
+		LEFT JOIN sale_income sale_in ON
+		orde.order_id=sale_in.order_id
+		where orde.order_id=#{orderId}
 	</select>
 </mapper>       

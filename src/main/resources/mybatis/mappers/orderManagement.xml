@@ -21,7 +21,7 @@
 		<result property="state" column="state" />
 		<result property="shippingName" column="shipping_name" />
 		<result property="shippingCode" column="shipping_code" />
-		<result property="refund" column="refund" />
+		<result property="refundInfo" column="refundInfo" />
 
 	</resultMap>
 	<select id="showOrder" resultMap="userOrderManageResultMap">

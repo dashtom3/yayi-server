@@ -8,6 +8,6 @@
 		select user_id from user_token where token=#{token} 
 	</select>
 	<select id="getSaleId" parameterType="java.lang.String" resultType="java.lang.String">
-		select sale_id from sale_token where token=#{token} 
+		select sale_id from sale_token where sale_id=#{SaleToken} 
 	</select>
 </mapper>       

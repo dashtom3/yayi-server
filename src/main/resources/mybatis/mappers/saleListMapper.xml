@@ -149,6 +149,7 @@
 		<result column="bind_user_num" property="bindUserNum"/>
 		<result column="sale_pic" property="salePic"/>
 		<result column="postal_type" property="postalType"/>
+		<result column="birthday" property="birthday"/>
 		<result column="bank_name" property="bankName"/>
 		<result column="open_name" property="openName"/>
 		<result column="account_number" property="accountNumber"/>
@@ -156,7 +157,7 @@
 	
 	<!-- 获取销售员详情 -->
 	<select id="detail" resultMap="saleInfosRM">
-		SELECT sale_id,true_name,phone,sex,id_card,
+		SELECT birthday,sale_id,true_name,phone,sex,id_card,
 		created,money,bind_user_num,sale_pic,
 		postal_type,bank_name,open_name,account_number
 		FROM sale_info

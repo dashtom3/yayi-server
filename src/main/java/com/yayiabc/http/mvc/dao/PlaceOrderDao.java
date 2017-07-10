@@ -25,10 +25,10 @@ public interface PlaceOrderDao {
 	List<PostFee> query();
      //用户钱币剩余
 	int  ded(@Param("userId")String userId);
-    //把购物车的商品同步到订单商品表
-	void synchronization(@Param("cart")Cart cart,@Param("orderId")String orderId);
+    //把商品同步到订单商品表
+	int synchronization(@Param("cart")OrderItem cart,@Param("orderId")String orderId);
      //更新单个商品到订单商品表
-	void synchronizationOne(@Param("orderItem")OrderItem orderItem);
+	int synchronizationOne(@Param("orderItem")OrderItem orderItem);
 
 	  //订单数据保存到订单表
 	int  saveMessage(
@@ -39,11 +39,16 @@ public interface PlaceOrderDao {
 	//伪清空购物车
 	int  emptyCart(@Param("userId")String userId);
 	
-    //创建一个空orderf
-	void createOrder(@Param("orderId")String orderId,@Param("userId")String userId);	  
+    //创建订单  并插入订单数据
+	int  createOrder(@Param("orderId")String orderId,@Param("userId")String userId,
+			@Param("order")Ordera order
+			);	  
 	
 	 
 	//用户不用默认  使用其他收货地址时
 	public Receiver  upateAddress(@Param("receiverId")Integer receiverId);
+
+     //查看钱币赠送百分比
+	Integer queryQbPercentage(@Param("itemSKU")String itemSKU);
 
 }

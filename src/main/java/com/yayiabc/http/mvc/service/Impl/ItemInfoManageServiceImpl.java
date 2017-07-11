@@ -80,7 +80,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 			String oneClassify, String itemLevels, String twoClassify,
 			String threeClassify, String itemPica, String itemPicb,
 			String itemPicc, String itemPicd, String itemPice,Integer isThrow, String video,
-			String itemDesc, String itemUse, String itemRange,
+			String itemDesc, String itemUse, String itemRange,String remark,
 			String registerId, String storeItemId, String apparatusType,
 			String unit, String producePompany, Date registerDate,
 			String itemPacking, String itemBrandName) {
@@ -114,6 +114,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 			itemDetail.setItemPacking(itemPacking);
 			itemDetail.setItemLevels(itemLevels);
 			itemDetail.setItemRange(itemRange);
+			itemDetail.setRemark(remark);
 			itemDetail.setCreated(new Date());
 			itemDetail.setUpdated(new Date());
 			itemInfo.setItemDetail(itemDetail);

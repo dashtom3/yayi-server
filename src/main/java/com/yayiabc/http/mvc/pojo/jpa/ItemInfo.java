@@ -18,6 +18,8 @@ public class ItemInfo extends BasePojo {
 	
 	private Integer isThrow;
 	
+	private String itemSort;
+	
 
 	public Integer getIsThrow() {
 		return isThrow;
@@ -56,7 +58,17 @@ public class ItemInfo extends BasePojo {
 	private ItemBrand itemBrand;
 	
 	private List<Property> propertyList;
+	
+	
 
+
+	public String getItemSort() {
+		return itemSort;
+	}
+
+	public void setItemSort(String itemSort) {
+		this.itemSort = itemSort;
+	}
 
 	public String getItemId() {
 		return itemId;
@@ -195,7 +207,7 @@ public class ItemInfo extends BasePojo {
 	}
 
 	public ItemInfo(String itemId, String itemName,
-			List<ItemValue> itemValueList, Integer isThrow,
+			List<ItemValue> itemValueList, Integer isThrow, String itemSort,
 			Integer itemStockNum, Integer itemPrice, Integer sales,
 			Integer state, String oneClassify, String twoClassify,
 			String threeClassify, String itemPnamea, String itemPnameb,
@@ -207,6 +219,7 @@ public class ItemInfo extends BasePojo {
 		this.itemName = itemName;
 		this.itemValueList = itemValueList;
 		this.isThrow = isThrow;
+		this.itemSort = itemSort;
 		this.itemStockNum = itemStockNum;
 		this.itemPrice = itemPrice;
 		this.sales = sales;
@@ -237,20 +250,14 @@ public class ItemInfo extends BasePojo {
 	public String toString() {
 		return "ItemInfo [itemId=" + itemId + ", itemName=" + itemName
 				+ ", itemValueList=" + itemValueList + ", isThrow=" + isThrow
-				+ ", itemStockNum=" + itemStockNum + ", itemPrice=" + itemPrice
-				+ ", sales=" + sales + ", state=" + state + ", oneClassify="
-				+ oneClassify + ", twoClassify=" + twoClassify
-				+ ", threeClassify=" + threeClassify + ", itemPnamea="
-				+ itemPnamea + ", itemPnameb=" + itemPnameb + ", itemPnamec="
-				+ itemPnamec + ", itemDetail=" + itemDetail + ", commentList="
-				+ commentList + ", itemBrand=" + itemBrand + ", propertyList="
-				+ propertyList + "]";
+				+ ", itemSort=" + itemSort + ", itemStockNum=" + itemStockNum
+				+ ", itemPrice=" + itemPrice + ", sales=" + sales + ", state="
+				+ state + ", oneClassify=" + oneClassify + ", twoClassify="
+				+ twoClassify + ", threeClassify=" + threeClassify
+				+ ", itemPnamea=" + itemPnamea + ", itemPnameb=" + itemPnameb
+				+ ", itemPnamec=" + itemPnamec + ", itemDetail=" + itemDetail
+				+ ", commentList=" + commentList + ", itemBrand=" + itemBrand
+				+ ", propertyList=" + propertyList + "]";
 	}
-	
-	
-	
-	
 
-	
-	
 }

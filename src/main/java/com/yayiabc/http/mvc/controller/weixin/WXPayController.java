@@ -30,7 +30,7 @@ public class WXPayController {
 		try {
 			WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:8080/api/item/getItemId");
 			Map<String,String> reqData =new HashMap<String,String>();
-			reqData.put("body", "商品描述");//必传
+			reqData.put("body", "http://47.93.48.111:85/");//必传
 			//必传,商户系统内部订单号，要求32个字符内，只能是数字、大小写字母_-|*@ ，且在同一个商户号下唯一。可以传参进来
 			reqData.put("out_trade_no",System.currentTimeMillis()+"123");//out_trade_no不要传人你自己订单系统的订单号，而是重新生成一个新的唯一流水，这样每次请求提交支付，可以保证out_trade_no不重复。
 			reqData.put("total_fee", "1");//必传,总金额,接口中单位为分,对账单中的单位为元,必须为整数,可以通过参数传进来

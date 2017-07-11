@@ -202,6 +202,7 @@ public class ItemInfoManageController {
 	@RequestParam(value="itemDesc",required=true) String itemDesc,
 	@RequestParam(value="itemUse",required=true) String itemUse,
 	@RequestParam(value="itemRange",required=false) String itemRange,
+	@RequestParam(value="remark",required=false) String remark,
 	@RequestParam(value="registerId",required=true) String registerId,
 	@RequestParam(value="storeItemId",required=false) String storeItemId,
 	@RequestParam(value="apparatusType",required=false) String apparatusType,
@@ -255,10 +256,13 @@ public class ItemInfoManageController {
 		if(unit==null||"".equals(unit)){
 			unit=null;
 		}
+		if(remark==null||"".equals(remark)){
+			remark=null;
+		}
 		
 		return itemInfoManageService.insert(itemId,itemName,itemBrandId,oneClassify,itemLevels,
 				twoClassify,threeClassify,itemPica,itemPicb,itemPicc,itemPicd,itemPice,isThrow,
-				video,itemDesc,itemUse,itemRange,registerId,storeItemId,apparatusType,unit,
+				video,itemDesc,itemUse,itemRange,remark,registerId,storeItemId,apparatusType,unit,
 				producePompany,registerDateChangeDate,itemPacking,itemBrandName);
 	
 	}

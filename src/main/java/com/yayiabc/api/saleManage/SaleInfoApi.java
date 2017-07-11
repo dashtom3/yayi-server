@@ -28,6 +28,7 @@ public interface SaleInfoApi {
      * 		education:"大学",
      * 		workUnit:"XXXX公司",
      * 		workPosition:"销售",
+     * 		salePic:"image/XXXX.jsp",
      * 		postalType:"提现类型", （银行卡或支付宝）
      * 		bankName:"中国银行",
      * 		openName:"王某某",

@@ -14,4 +14,6 @@ public interface SaleInfoDao {
 			@Param("openName") String openName,
 			@Param("accountNumber") String accountNumber,
 			@Param("saleId") String saleId);
+	
+	SaleInfo query(@Param("saleId") String saleId);
 }

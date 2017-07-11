@@ -8,4 +8,6 @@ public interface SaleInfoService {
 	
 	DataWrapper<Void> updatePostal(String postalType,String bankName,
 			String openName,String accountNumber,String token);
+	
+	DataWrapper<SaleInfo> query(String token);
 }

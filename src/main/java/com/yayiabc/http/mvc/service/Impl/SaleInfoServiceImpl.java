@@ -53,4 +53,17 @@ public class SaleInfoServiceImpl implements SaleInfoService {
 		return dataWrapper;
 	}
 
+	@Override
+	public DataWrapper<SaleInfo> query(String token) {
+		DataWrapper<SaleInfo> dataWrapper=new DataWrapper<SaleInfo>();
+		String saleId=saleLogDao.getSaleIdByToken(token);
+		if(saleId == null){
+			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
+		}else{
+			SaleInfo saleInfo=saleInfoDao.query(saleId);
+			dataWrapper.setData(saleInfo);
+		}
+		return dataWrapper;
+	}
+
 }

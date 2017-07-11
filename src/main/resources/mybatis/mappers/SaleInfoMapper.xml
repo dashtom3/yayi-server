@@ -32,4 +32,13 @@
 		</set>
 		WHERE sale_id=#{saleId};
 	</update>
+	
+	<select id="query" resultType="SaleInfo">
+		SELECT 
+		phone,true_name,id_card,we_char,
+		email,sex,birthday,part,address,education,
+		work_unit,work_position,sale_pic,postal_type,
+		bank_name,open_name,account_number FROM sale_info 
+		WHERE sale_id =#{saleId};
+	</select>
 </mapper>

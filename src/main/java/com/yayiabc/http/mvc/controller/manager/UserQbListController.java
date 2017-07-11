@@ -57,7 +57,6 @@ public class UserQbListController {
 	public DataWrapper<Map<String, Integer>> queryQb(
 			@RequestParam(value = "userPhone", required = true) String userPhone
 			) {
-		//return userQbListService.queryQb(userPhone);
-		return null;
+		return userQbListService.queryQb(userPhone);
 	}
 }

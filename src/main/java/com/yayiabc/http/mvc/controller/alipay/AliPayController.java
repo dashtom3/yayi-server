@@ -31,7 +31,7 @@ public class AliPayController {
 	private AliPayService alipayService;
 	//支付satrt
 	@RequestMapping("payParame")
-	@ResponseBody
+	@ResponseBody   //测试用途
 	String payParame(
 			@RequestParam(value="WIDout_trade_no",required=true) String WIDout_trade_no,//订单号
 			@RequestParam(value="WIDout_trade_no",required=true) String WIDsubject,//商品名称
@@ -55,6 +55,12 @@ public class AliPayController {
 			//。。。。下面还可以加一些参数 现在暂时不加
 			){
 		try {
+			System.out.println("is_success: "+is_success);
+			System.out.println("sign_type: "+sign_type);
+			System.out.println("sign: "+sign);
+			System.out.println("交易状态trade_status: "+trade_status);
+			System.out.println("订单号out_trade_no: "+out_trade_no);
+			System.out.println("支付宝交易号trade_no: "+trade_no);
 			//获取支付宝GET过来反馈信息
 			Map<String,String> params = new HashMap<String,String>();
 			Map requestParams = request.getParameterMap();

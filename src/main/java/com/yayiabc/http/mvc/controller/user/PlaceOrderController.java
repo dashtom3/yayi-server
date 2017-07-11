@@ -1,7 +1,11 @@
 package com.yayiabc.http.mvc.controller.user;
 
+import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -13,6 +17,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
+import com.yayiabc.http.mvc.service.AliPayService;
 import com.yayiabc.http.mvc.service.PlaceOrderService;
 
 import net.sf.json.JSONArray;
@@ -24,6 +29,9 @@ import net.sf.json.JSONArray;
 public class PlaceOrderController {
 	@Autowired
 	private PlaceOrderService placeOrderService;
+	
+	@Autowired
+	private AliPayService aliPayService;
 	//多个商品时 
 	@RequestMapping("buyNows")
 	@ResponseBody
@@ -100,12 +108,12 @@ public class PlaceOrderController {
 	}
 
 	//1234
-	@ResponseBody
 	@RequestMapping("generaOrder")
-	public DataWrapper<HashMap<String, Object>> generaOrder(
+	public void generaOrder(
 			@RequestParam(value="token",required=true) String token,
 			@RequestParam(value="orderItem",required=true) String  orderItem,
-			@ModelAttribute Ordera order
+			@ModelAttribute Ordera order,
+			HttpServletResponse response 
 			){
 		//System.out.println(token+"  orderItem:"+orderItem+" order:"+order);
 		//return placeOrderService.generaOrder(token,orderItem,order);
@@ -114,7 +122,27 @@ public class PlaceOrderController {
 		ArrayList<OrderItem> orderItemList = (ArrayList<OrderItem>)JSONArray.toCollection(json,OrderItem.class);
 		System.out.println(orderItemList);
 		System.out.println(order);
-		return placeOrderService.generaOrder(token,orderItemList,order);
+		//接入 支付   订单号  商品名称    付款金额    商品描述
+		/**
+		 * hashMap.put("itemNames", sb.toString());
+		hashMap.put("OrderId",orderId);
+		hashMap.put("sumPrice",sumPrice);
+		hashMap.put("giveQbNum", giveQbNum);
+		hashMap.put("itemSum", itemSum);
+		 */
+		HashMap<String, Object>hm=placeOrderService.generaOrder(token,orderItemList,order);
+		                                                                                                                             
+		String  str=aliPayService.packingParameter((String)hm.get("OrderId"), (String)hm.get("itemNames"), 
+				                                           //描述
+				(String)hm.get("sumPrice"),(String)hm.get("itemMS") );
+		try {
+			response.getWriter().write(str);
+			
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//return str;
 	}
 	/***
 	 * String personstr="[{'itemId':'170564878','num':1,'price':12,'itemSKU':123543543543'}]";

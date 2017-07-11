@@ -31,5 +31,5 @@ public interface PlaceOrderService {
 	
 	
 	//1234
-	DataWrapper<HashMap<String, Object>> generaOrder(String token, List<OrderItem> orderItem, Ordera order);
+	HashMap<String, Object> generaOrder(String token, List<OrderItem> orderItem, Ordera order);
 }

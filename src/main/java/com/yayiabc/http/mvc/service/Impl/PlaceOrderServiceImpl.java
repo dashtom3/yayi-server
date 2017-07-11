@@ -291,7 +291,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 
 	//1234
 	@Override
-	public DataWrapper<HashMap<String, Object>> generaOrder(String token, List<OrderItem> orderItemList, Ordera order) {
+	public HashMap<String, Object> generaOrder(String token, List<OrderItem> orderItemList, Ordera order) {
 		// TODO Auto-generated method stub
 		//  get userId
 		String userId=utilsDao.getUserID(token);
@@ -315,6 +315,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			order.setBuyerMessage("该单暂时未被评价呢");
 			order.setBuyerRate(0);
 		}
+		//存放 商品名称的 
+		StringBuffer sb=new StringBuffer();
 		//保存订单数据
 		placeOrderDao.createOrder(orderId,userId,order);
 		int giveQbNum=0;
@@ -330,14 +332,24 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			giveQbNum+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice()*qbPercentage;
 			//将购物车的商品 同步到 订单商品表里
 			placeOrderDao.synchronization(orderItemList.get(i),orderId);
+			if(i!=orderItemList.size()-1){
+				sb.append(orderItemList.get(i).getItemName()+",");
+			}else{
+				sb.append(orderItemList.get(i).getItemName());
+			}
 			//giveQbNum+=0;
 		}
+		
 		HashMap<String, Object> hashMap=new HashMap<String, Object>();
+		hashMap.put("itemNames", sb.toString());
+		hashMap.put("OrderId",orderId);
+		hashMap.put("sumPrice",String.valueOf(sumPrice));
 		hashMap.put("giveQbNum", giveQbNum);
 		hashMap.put("itemSum", itemSum);
-		
-		DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String,Object>>();
-		dataWrapper.setData(hashMap);
-		return dataWrapper;
+		//商品描述==
+		hashMap.put("itemMS", "不错");
+		/*DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String,Object>>();
+		dataWrapper.setData(hashMap);*/
+		return hashMap;
 	}
 }

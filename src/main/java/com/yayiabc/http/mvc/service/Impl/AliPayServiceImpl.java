@@ -98,7 +98,7 @@ public class AliPayServiceImpl implements AliPayService{
 					if(state>0){
 						return "success";
 					}
-					return "fail";
+					
 				}
 				//验证成功  支付失败 123
                
@@ -145,6 +145,7 @@ public class AliPayServiceImpl implements AliPayService{
 					aliPayDao.updateStateAndPayTime(out_trade_no);
 					//注意：
 					//退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
+					return "success";
 				} else if (trade_status.equals("TRADE_SUCCESS")){
 					//判断该笔订单是否在商户网站中已经做过处理
 					//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
@@ -153,12 +154,13 @@ public class AliPayServiceImpl implements AliPayService{
 					aliPayDao.updateStateAndPayTime(out_trade_no);
 					//注意：
 					//付款完成后，支付宝系统发送该交易状态通知
+					return "success";
 				}
 
 				//——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
                  //notify_url页面只能返回success，异步通知页面上不可有任何HTML代码。支付结果请以异步通知为准。
 				//out.print("success");	//请不要修改或删除
-                return "success";
+                
 				//////////////////////////////////////////////////////////////////////////////////////////
 			}else{//验证失败
 				//out.print("fail");

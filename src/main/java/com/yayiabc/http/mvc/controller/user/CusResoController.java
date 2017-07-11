@@ -22,7 +22,6 @@ public class CusResoController {
     //show+query
     @RequestMapping("show")
     @ResponseBody
-    
     public DataWrapper<List<CusResources>> show(
     		   @RequestParam(value="companyName",required=false) String companyName,
     		   @RequestParam(value="companyAdd",required=false) String companyAdd,
@@ -38,7 +37,6 @@ public class CusResoController {
     @RequestMapping("insert")
     @ResponseBody
     public DataWrapper<Void> insert(
-    		
     		//@RequestParam(value="state",required=true)String state 
     		@ModelAttribute CusResources cus
     		//四个参数全必须

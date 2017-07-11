@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import java.util.Date;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -57,6 +58,8 @@ public class SaleLogServiceImpl implements SaleLogService {
                 saleInfoTwo.setSaleId(UUID.randomUUID().toString());
                 saleInfoTwo.setPhone(phone);
                 saleInfoTwo.setSalePwd(MD5Util.getMD5String(password));
+                saleInfoTwo.setUpdated(new Date());
+                saleInfoTwo.setCreated(new Date());
                 if (1 == saleLogDao.register(saleInfoTwo)) {
                     VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
                     dataWrapper.setData(saleInfoTwo);

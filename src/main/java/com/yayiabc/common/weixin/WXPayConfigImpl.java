@@ -43,11 +43,11 @@ public class WXPayConfigImpl extends WXPayConfig{
         
     }
 
-    public InputStream getCertStream() {
+  /*  public InputStream getCertStream() {
         ByteArrayInputStream certBis;
         certBis = new ByteArrayInputStream(this.certData);
         return certBis;
-    }
+    }*/
 
 
     public int getHttpConnectTimeoutMs() {

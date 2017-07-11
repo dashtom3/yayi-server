@@ -35,7 +35,7 @@ public abstract class WXPayConfig {
      *
      * @return 商户证书内容
      */
-    abstract InputStream getCertStream();
+    /*abstract InputStream getCertStream();*/
 
     /**
      * HTTP(S) 连接超时时间，单位毫秒

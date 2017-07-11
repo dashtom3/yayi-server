@@ -8,7 +8,7 @@
 	</select>
 	
 	<insert id="register" parameterType="SaleInfo">
-		insert into sale_info(sale_pwd,sale_id,phone) values(#{salePwd},#{saleId},#{phone})
+		insert into sale_info(sale_pwd,sale_id,phone,created,updated) values(#{salePwd},#{saleId},#{phone},#{created},#{updated})
 	</insert>
 	
 	

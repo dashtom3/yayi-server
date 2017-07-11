@@ -2,13 +2,15 @@ package com.yayiabc.http.mvc.dao;
 
 
 
+import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
+
 import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
 import com.yayiabc.http.mvc.pojo.model.ItemShow;
 import com.yayiabc.http.mvc.pojo.model.Search;
-import java.util.List;
-import org.apache.ibatis.annotations.Param;
-import org.springframework.stereotype.Repository;
 @Repository
 public interface ItemBrandDao{
 

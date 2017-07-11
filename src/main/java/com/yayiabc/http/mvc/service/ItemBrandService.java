@@ -3,7 +3,6 @@ package com.yayiabc.http.mvc.service;
 
 import java.util.List;
 
-
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;

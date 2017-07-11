@@ -12,6 +12,9 @@ public class OrderIdUtils {
 
 	public static   String 	createOrderId(String userId){
 		String str="0123456789";
+		if(userId==null){
+			return "没有查看该用户";
+		}
 		StringBuilder sb=new StringBuilder(userId);
 		for(int i=0;i<4;i++)
 		{

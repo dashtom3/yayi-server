@@ -3,8 +3,10 @@ package com.yayiabc.http.mvc.service.Impl;
 import java.util.Arrays;
 import java.util.HashMap;
 import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.OrderIdUtils;
 import com.yayiabc.http.mvc.dao.PlaceOrderDao;
@@ -293,7 +295,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		// TODO Auto-generated method stub
 		//  get userId
 		String userId=utilsDao.getUserID(token);
-
+   System.out.println(userId);
 		//obtain orderId 
 		String orderId=OrderIdUtils.createOrderId(userId);
 		//将订单信息保存在订单里 你如是否需要发表  留言等。。。 

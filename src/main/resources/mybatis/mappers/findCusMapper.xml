@@ -24,24 +24,30 @@
 	</select>
 	
 	<select id="shows" resultType="com.yayiabc.http.mvc.pojo.jpa.CusResources">
-	  select  * from  cus_resources where 
-	  
-	  unit_name ='%${state}%' or unit_address='%${state}%' or contacts_phone='%${state}%'
-	  
+	  select  * from  cus_resources  
+	  <where>
+	   <if test="state!=null and state!=''">
+	  unit_name like'%${state}%' or unit_address like '%${state}%' or contacts_phone like '%${state}%'
+	  </if>
+	  </where>
 	  
 	</select>
 	
 	<select id="queryCount" resultType="int">
 	  select  count(1) from  cus_resources where 
 	  
-	  unit_name ='%${state}%' or unit_address='%${state}%' or contacts_phone='%${state}%'
+	  unit_name like '%${state}%' or unit_address like '%${state}%' or contacts_phone like '%${state}%'
 	  
 	  
 	</select>
 	<select id="showsss" resultType="com.yayiabc.http.mvc.pojo.jpa.User">
 	  select  * from  user where 
-	  
-	  true_name ='%${state}%' and sale_id is null   or phone='%${state}%' and sale_id is null
+	   
+	  <if test="state!=null and state=''">
+	  true_name like '%${state}%' and sale_id is null  or phone like '%${state}%' and sale_id is null and 
+	  </if>
+	  sale_id is null
+	 <!--  true_name ='%${state}%' and sale_id is null  or phone='%${state}%' and sale_id is null -->
 	  
 	</select>
 </mapper>       

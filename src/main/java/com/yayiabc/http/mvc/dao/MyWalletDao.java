@@ -6,7 +6,6 @@ import org.apache.ibatis.annotations.Param;
 
 import com.yayiabc.http.mvc.pojo.jpa.SaleIncome;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
-import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.jpa.With;
 
 public interface MyWalletDao {

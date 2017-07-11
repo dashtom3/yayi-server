@@ -1,9 +1,9 @@
 package com.yayiabc.common.weixin;
-import org.apache.http.conn.ConnectTimeoutException;
-
 import java.net.UnknownHostException;
 import java.util.HashMap;
 import java.util.Map;
+
+import org.apache.http.conn.ConnectTimeoutException;
 
 /**
  * Created by blaketang on 2017/6/16.

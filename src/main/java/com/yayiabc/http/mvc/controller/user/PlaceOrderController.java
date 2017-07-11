@@ -2,16 +2,14 @@ package com.yayiabc.http.mvc.controller.user;
 
 import java.util.ArrayList;
 import java.util.HashMap;
-import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestBody;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
@@ -105,16 +103,17 @@ public class PlaceOrderController {
 	@ResponseBody
 	@RequestMapping("generaOrder")
 	public DataWrapper<HashMap<String, Object>> generaOrder(
-			//@RequestHeader String token,
 			@RequestParam(value="token",required=true) String token,
-			//@RequestParam(required=true) List<OrderItem>  orderItem,
-			@RequestParam(required=true) String  orderItem,
+			@RequestParam(value="orderItem",required=true) String  orderItem,
 			@ModelAttribute Ordera order
 			){
-		System.out.println(token+"  orderItem:"+orderItem+" order:"+order);
+		//System.out.println(token+"  orderItem:"+orderItem+" order:"+order);
 		//return placeOrderService.generaOrder(token,orderItem,order);
 		JSONArray json = JSONArray.fromObject(orderItem);
-		ArrayList<OrderItem> orderItemList = (ArrayList<OrderItem>)JSONArray.toCollection(json, OrderItem.class);
+		System.out.println(token);
+		ArrayList<OrderItem> orderItemList = (ArrayList<OrderItem>)JSONArray.toCollection(json,OrderItem.class);
+		System.out.println(orderItemList);
+		System.out.println(order);
 		return placeOrderService.generaOrder(token,orderItemList,order);
 	}
 	/***

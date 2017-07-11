@@ -1,13 +1,15 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
+import com.yayiabc.common.utils.Page;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.common.utils.Page;
+import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.UserQbListDao;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.service.UserQbListService;
@@ -17,6 +19,8 @@ public class UserQbListServiceImpl implements UserQbListService {
 
 	@Autowired
 	UserQbListDao userQbListDao;
+	@Autowired
+	UserDao userDao;
 
 	@Override
 	public DataWrapper<List<QbRecord>> list(String phone, String startDate,
@@ -29,11 +33,7 @@ public class UserQbListServiceImpl implements UserQbListService {
 		dataWrapper.setPage(page, totalNumber);
 		List<QbRecord> list = userQbListDao.list(phone, startDate, endDate,
 				page);
-		if(list.size()==0){
-			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-		}else if(list.size()!=0){
 			dataWrapper.setData(list);
-		}
 		return dataWrapper;
 	}
 
@@ -45,6 +45,25 @@ public class UserQbListServiceImpl implements UserQbListService {
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		} else {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+		}
+		return dataWrapper;
+	}
+
+	@Override
+	public DataWrapper<Map<String, Integer>> queryQb(String userPhone) {
+		DataWrapper<Map<String, Integer>> dataWrapper = new DataWrapper<Map<String, Integer>>();
+		String userId = userDao.getUserId(userPhone);
+		if (userId == null) {
+			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
+		} else {
+			Integer qbBalance = userQbListDao.queryQb(userPhone);
+			Map<String, Integer> map = new HashMap<String, Integer>();
+			if (qbBalance == null) {
+				map.put("qbBalance", 0);
+			} else {
+				map.put("qbBalance", qbBalance);
+			}
+			dataWrapper.setData(map);
 		}
 		return dataWrapper;
 	}

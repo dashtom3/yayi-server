@@ -20,6 +20,9 @@ public interface CartDao {
 	
 	int getCountItemSKU(String itemSKU);
 	
+	//根据SKU代码查询商品信息
+	Cart queryBySKU(@Param("itemSKU")String itemSKU);
+	
 	//每次数量+
 	void updateOne(@Param("userId")String userId,@Param("itemSKU")String itemSKU,@Param("num")Integer num);
 	

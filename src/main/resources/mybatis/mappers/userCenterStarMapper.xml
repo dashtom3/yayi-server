@@ -38,7 +38,7 @@
 	</insert>
 	 <!-- //查询是否已经收藏 -->
 	<select id="queryOne"  resultType="int">
-	  select item_star_id from item_star where item_id=#{itemId}
+	  select item_star_id from item_star where item_id=#{itemId} and user_id=#{userId}
 	</select>
 	
 	<select id="queryCount"  resultType="java.lang.Integer">

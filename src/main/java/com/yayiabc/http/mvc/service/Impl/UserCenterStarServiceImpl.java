@@ -98,7 +98,7 @@ public class UserCenterStarServiceImpl  implements UserCenterStarService{
 		String userId=utilsDao.getUserID(token);
 		int st=0;
 		//根据当前商品id  查询是否已经收藏1
-		List<Integer> list=usercenterstardao.queryOne(itemId);
+		List<Integer> list=usercenterstardao.queryOne(itemId,userId);
 		if(list.isEmpty()){
 			st=usercenterstardao.addMyStar(userId, itemId);
 		}

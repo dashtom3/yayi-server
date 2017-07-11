@@ -7,13 +7,13 @@ import com.yayiabc.http.mvc.pojo.jpa.Cart;
 import com.yayiabc.http.mvc.pojo.jpa.ItemStar;
 
 public interface CartService {
-	DataWrapper<List<Cart>> list(String phone);
+	DataWrapper<List<Cart>> list(String token);
 	
-	DataWrapper<Void> delete(String phone,String itemSKU);
+	DataWrapper<Void> delete(String itemSKU,String token);
 	
-	DataWrapper<ItemStar> star(String phone,String itemId,String itemSKU);
+	DataWrapper<ItemStar> star(String itemId,String itemSKU,String token);
 	
-	DataWrapper<Cart> add(Cart cart,String phone);
+	DataWrapper<Cart> add(Integer num,String itemSKU,String token);
 	
-	DataWrapper<Void> updateNum(String phone,Integer num,String itemSKU);
+	DataWrapper<Void> updateNum(Integer num,String itemSKU,String token);
 }

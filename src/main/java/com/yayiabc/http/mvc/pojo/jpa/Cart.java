@@ -1,6 +1,5 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
-
 /**
  * 
  * @author xiaojiang 购物车表
@@ -22,11 +21,18 @@ public class Cart extends BasePojo {
 
 	private String itemSKU;
 
-	private String itemPropertyNamea;
-
-	private String itemPropertyNameb;
-
-	private String itemPropertyNamec;
+	private String itemPropertyName;
+	private String itemPropertyInfo;
+	private String itemPropertyNameTwo;
+	private String itemPropertyTwoValue;
+	private String itemPropertyNameThree;
+	private String itemPropertyThreeValue;
+	private String itemPropertyFourName;
+	private String itemPropertyFourValue;
+	private String itemPropertyFiveName;
+	private String itemPropertyFiveValue;
+	private String itemPropertySixName;
+	private String itemPropertySixValue;
 
 	public Integer getCartId() {
 		return cartId;
@@ -42,30 +48,6 @@ public class Cart extends BasePojo {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
-	}
-
-	public String getItemPropertyNamea() {
-		return itemPropertyNamea;
-	}
-
-	public void setItemPropertyNamea(String itemPropertyNamea) {
-		this.itemPropertyNamea = itemPropertyNamea;
-	}
-
-	public String getItemPropertyNameb() {
-		return itemPropertyNameb;
-	}
-
-	public void setItemPropertyNameb(String itemPropertyNameb) {
-		this.itemPropertyNameb = itemPropertyNameb;
-	}
-
-	public String getItemPropertyNamec() {
-		return itemPropertyNamec;
-	}
-
-	public void setItemPropertyNamec(String itemPropertyNamec) {
-		this.itemPropertyNamec = itemPropertyNamec;
 	}
 
 	public String getItemId() {
@@ -116,14 +98,114 @@ public class Cart extends BasePojo {
 		this.price = price;
 	}
 
+	public String getItemPropertyName() {
+		return itemPropertyName;
+	}
+
+	public void setItemPropertyName(String itemPropertyName) {
+		this.itemPropertyName = itemPropertyName;
+	}
+
+	public String getItemPropertyInfo() {
+		return itemPropertyInfo;
+	}
+
+	public void setItemPropertyInfo(String itemPropertyInfo) {
+		this.itemPropertyInfo = itemPropertyInfo;
+	}
+
+	public String getItemPropertyNameTwo() {
+		return itemPropertyNameTwo;
+	}
+
+	public void setItemPropertyNameTwo(String itemPropertyNameTwo) {
+		this.itemPropertyNameTwo = itemPropertyNameTwo;
+	}
+
+	public String getItemPropertyTwoValue() {
+		return itemPropertyTwoValue;
+	}
+
+	public void setItemPropertyTwoValue(String itemPropertyTwoValue) {
+		this.itemPropertyTwoValue = itemPropertyTwoValue;
+	}
+
+	public String getItemPropertyNameThree() {
+		return itemPropertyNameThree;
+	}
+
+	public void setItemPropertyNameThree(String itemPropertyNameThree) {
+		this.itemPropertyNameThree = itemPropertyNameThree;
+	}
+
+	public String getItemPropertyThreeValue() {
+		return itemPropertyThreeValue;
+	}
+
+	public void setItemPropertyThreeValue(String itemPropertyThreeValue) {
+		this.itemPropertyThreeValue = itemPropertyThreeValue;
+	}
+
+	public String getItemPropertyFourName() {
+		return itemPropertyFourName;
+	}
+
+	public void setItemPropertyFourName(String itemPropertyFourName) {
+		this.itemPropertyFourName = itemPropertyFourName;
+	}
+
+	public String getItemPropertyFourValue() {
+		return itemPropertyFourValue;
+	}
+
+	public void setItemPropertyFourValue(String itemPropertyFourValue) {
+		this.itemPropertyFourValue = itemPropertyFourValue;
+	}
+
+	public String getItemPropertyFiveName() {
+		return itemPropertyFiveName;
+	}
+
+	public void setItemPropertyFiveName(String itemPropertyFiveName) {
+		this.itemPropertyFiveName = itemPropertyFiveName;
+	}
+
+	public String getItemPropertyFiveValue() {
+		return itemPropertyFiveValue;
+	}
+
+	public void setItemPropertyFiveValue(String itemPropertyFiveValue) {
+		this.itemPropertyFiveValue = itemPropertyFiveValue;
+	}
+
+	public String getItemPropertySixName() {
+		return itemPropertySixName;
+	}
+
+	public void setItemPropertySixName(String itemPropertySixName) {
+		this.itemPropertySixName = itemPropertySixName;
+	}
+
+	public String getItemPropertySixValue() {
+		return itemPropertySixValue;
+	}
+
+	public void setItemPropertySixValue(String itemPropertySixValue) {
+		this.itemPropertySixValue = itemPropertySixValue;
+	}
+
 	public Cart() {
 		super();
 	}
 
 	public Cart(Integer cartId, String userId, String itemId, String name,
 			String pic, Integer num, Integer price, String itemSKU,
-			String itemPropertyNamea, String itemPropertyNameb,
-			String itemPropertyNamec) {
+			String itemPropertyName, String itemPropertyInfo,
+			String itemPropertyNameTwo, String itemPropertyTwoValue,
+			String itemPropertyNameThree, String itemPropertyThreeValue,
+			String itemPropertyFourName, String itemPropertyFourValue,
+			String itemPropertyFiveName, String itemPropertyFiveValue,
+			String itemPropertySixName, String itemPropertySixValue) {
 		super();
 		this.cartId = cartId;
 		this.userId = userId;
@@ -133,9 +215,18 @@ public class Cart extends BasePojo {
 		this.num = num;
 		this.price = price;
 		this.itemSKU = itemSKU;
-		this.itemPropertyNamea = itemPropertyNamea;
-		this.itemPropertyNameb = itemPropertyNameb;
-		this.itemPropertyNamec = itemPropertyNamec;
+		this.itemPropertyName = itemPropertyName;
+		this.itemPropertyInfo = itemPropertyInfo;
+		this.itemPropertyNameTwo = itemPropertyNameTwo;
+		this.itemPropertyTwoValue = itemPropertyTwoValue;
+		this.itemPropertyNameThree = itemPropertyNameThree;
+		this.itemPropertyThreeValue = itemPropertyThreeValue;
+		this.itemPropertyFourName = itemPropertyFourName;
+		this.itemPropertyFourValue = itemPropertyFourValue;
+		this.itemPropertyFiveName = itemPropertyFiveName;
+		this.itemPropertyFiveValue = itemPropertyFiveValue;
+		this.itemPropertySixName = itemPropertySixName;
+		this.itemPropertySixValue = itemPropertySixValue;
 	}
 
 	@Override
@@ -143,9 +234,18 @@ public class Cart extends BasePojo {
 		return "Cart [cartId=" + cartId + ", userId=" + userId + ", itemId="
 				+ itemId + ", name=" + name + ", pic=" + pic + ", num=" + num
 				+ ", price=" + price + ", itemSKU=" + itemSKU
-				+ ", itemPropertyNamea=" + itemPropertyNamea
-				+ ", itemPropertyNameb=" + itemPropertyNameb
-				+ ", itemPropertyNamec=" + itemPropertyNamec + "]";
+				+ ", itemPropertyName=" + itemPropertyName
+				+ ", itemPropertyInfo=" + itemPropertyInfo
+				+ ", itemPropertyNameTwo=" + itemPropertyNameTwo
+				+ ", itemPropertyTwoValue=" + itemPropertyTwoValue
+				+ ", itemPropertyNameThree=" + itemPropertyNameThree
+				+ ", itemPropertyThreeValue=" + itemPropertyThreeValue
+				+ ", itemPropertyFourName=" + itemPropertyFourName
+				+ ", itemPropertyFourValue=" + itemPropertyFourValue
+				+ ", itemPropertyFiveName=" + itemPropertyFiveName
+				+ ", itemPropertyFiveValue=" + itemPropertyFiveValue
+				+ ", itemPropertySixName=" + itemPropertySixName
+				+ ", itemPropertySixValue=" + itemPropertySixValue + "]";
 	}
 
 }

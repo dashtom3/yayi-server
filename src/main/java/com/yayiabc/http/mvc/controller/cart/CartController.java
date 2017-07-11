@@ -4,7 +4,6 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,11 +27,10 @@ public class CartController {
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	@ResponseBody
 	public DataWrapper<List<Cart>> list(
-			@RequestParam(value="phone",required=true)String phone,
 			@RequestParam(value = "token", required = true) String token
 			
 	){
-		return cartService.list(phone);
+		return cartService.list(token);
 	}
 	
 	/**
@@ -41,11 +39,10 @@ public class CartController {
 	@RequestMapping(value = "delete", method = RequestMethod.POST)
 	@ResponseBody
 	public DataWrapper<Void> delete(
-			@RequestParam(value="phone",required=true)String phone,
 			@RequestParam(value="itemSKU",required=true)String itemSKU,
 			@RequestParam(value="token",required=true)String token
 	){
-		return cartService.delete(phone, itemSKU);
+		return cartService.delete(itemSKU,token);
 	}
 	
 
@@ -55,12 +52,11 @@ public class CartController {
 	@RequestMapping(value = "star", method = RequestMethod.POST)
 	@ResponseBody
 	public DataWrapper<ItemStar> star(
-			@RequestParam(value="phone",required=true)String phone,
 			@RequestParam(value="itemId",required=true)String itemId,
 			@RequestParam(value="itemSKU",required=true)String itemSKU,
 			@RequestParam(value="token",required=true)String token
 	){
-		return cartService.star(phone,itemId,itemSKU);
+		return cartService.star(itemId,itemSKU,token);
 	}
 	
 	/**
@@ -69,11 +65,11 @@ public class CartController {
 	@RequestMapping(value = "add", method = RequestMethod.POST)
 	@ResponseBody
 	public DataWrapper<Cart> add(
-			@ModelAttribute Cart cart,
-			@RequestParam(value="phone",required=true)String phone,
+			@RequestParam(value="num",required=true)Integer num,
+			@RequestParam(value="itemSKU",required=true)String itemSKU,
 			@RequestParam(value="token",required=true)String token
 	){
-		return cartService.add(cart, phone);
+		return cartService.add(num, itemSKU, token);
 	}
 	
 	/**
@@ -82,11 +78,10 @@ public class CartController {
 	@RequestMapping(value = "updateNum", method = RequestMethod.POST)
 	@ResponseBody
 	public DataWrapper<Void> updateNum(
-			@RequestParam(value="phone",required=true)String phone,
 			@RequestParam(value="num",required=true)Integer num,
 			@RequestParam(value="itemSKU",required=true)String itemSKU,
 			@RequestParam(value="token",required=true)String token
 	){
-		return cartService.updateNum(phone, num, itemSKU);
+		return cartService.updateNum(num, itemSKU, token);
 	}
 }

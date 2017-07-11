@@ -15,7 +15,7 @@ public interface UserCenterStarDao {
 	int  deleteStarAll(@Param("userId") String userId);
 	int  addMyStar(@Param("userId") String userId,@Param("itemId") String itemId);
 	//查询是否已经收藏
-	List<Integer> queryOne(@Param("itemId")String itemId);
+	List<Integer> queryOne(@Param("itemId")String itemId,@Param("userId")String userId);
 	
 	//查询总条数
 	int queryCount(@Param("tablename")String tablename);

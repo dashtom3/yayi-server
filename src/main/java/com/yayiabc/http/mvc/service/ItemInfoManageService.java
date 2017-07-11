@@ -31,7 +31,7 @@ public interface ItemInfoManageService {
 			Integer itemBrandId, String oneClassify, String itemLevels,
 			String twoClassify, String threeClassify, String itemPica,
 			String itemPicb, String itemPicc, String itemPicd, String itemPice,Integer isThrow,
-			String video, String itemDesc, String itemUse, String itemRange,
+			String video, String itemDesc, String itemUse, String itemRange,String remark,
 			String registerId, String storeItemId, String apparatusType,
 			String unit, String producePompany, Date registerDate,
 			String itemPacking, String itemBrandName);

@@ -11,8 +11,8 @@
  		on a.item_brand_id=b.p_id
  		<where>
  			true
- 			<if test="itemId!=null and itemId!=''"> and item_id=#{itemId}</if>
- 			<if test="itemName!=null and itemName!=''">and item_name=#{itemName}</if>
+ 			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
+ 			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
  			<if test="oneClassify!=null and oneClassify!=''">and one_classify=#{oneClassify}</if>
  			<if test="oneClassify!=null and oneClassify!=''">or two_classify=#{oneClassify}</if>
  			<if test="oneClassify!=null and oneClassify!=''">or three_classify=#{oneClassify}</if>
@@ -54,7 +54,7 @@
  	</insert>
  	
  	<insert id="insertItemInfo">
- 		insert into item_info values(#{isThrow},#{itemId},#{itemName},#{itemBrand.itemBrandId},#{itemPrice},0,1,#{oneClassify},#{twoClassify},#{threeClassify},now(),now());
+ 		insert into item_info values(#{itemSort},#{isThrow},#{itemId},#{itemName},#{itemBrand.itemBrandId},#{itemPrice},0,1,#{oneClassify},#{twoClassify},#{threeClassify},now(),now());
  	</insert>
  	
  	<insert id="insertItemDetail">
@@ -62,7 +62,7 @@
  		values
  		(#{itemId},#{itemDesc},#{itemUse},#{video},#{itemPica},#{itemPicb},
  		#{itemPicc},#{itemPicd},#{itemPice},null,1,null,#{storeItemId},#{apparatusType},#{unit},#{producePompany},
- 		#{registerId},#{registerDate},#{itemPacking},#{itemLevels},#{itemRange},null,now(),now()
+ 		#{registerId},#{registerDate},#{itemPacking},#{itemLevels},#{itemRange},#{remark},now(),now()
  		)
  	</insert>
  	

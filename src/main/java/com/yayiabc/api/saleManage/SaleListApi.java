@@ -68,27 +68,25 @@ public class SaleListApi {
      * @apiVersion 0.1.0
      * @apiDescription 获取简略用户信息列表
      *
-     * @apiParam {String} phone 手机号码（非必须）
+     * @apiParam {String} salePhone 销售员手机号码（必须）
+     * @apiParam {int} isBind 是否绑定（必须，1未绑定，2绑定）
+     * @apiParam {String} userPhone 用户手机号码（非必须）
      * @apiParam {String} trueName 真实姓名（非必须）
      * @apiParam {String} companyName 公司名称（非必须）
-     * @apiParam {int} isBind 是否绑定（必须，1未绑定，2绑定）
+     * @apiParam {int} currentPage （非必须）
+     * @apiParam {int} numberPerPage （非必须）  
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
      * {
      * callStatus:"SUCCEED",
      * errorCode:"No_Error",
-     * data:[{
+     * data:{
      * 		userId:"asasd17668123578",
      * 		phone:"17668147515",
      * 		trueName:"张三",
      * 		companyName:"XXX公司"
-     * },{
-     * 		userId:"agwq578",
-     * 		phone:"17668147515",
-     * 		trueName:"李四",
-     * 		companyName:"XXX公司"
-     * }],
+     * },
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
      * numberPerPage:0,
      * currentPage:0,

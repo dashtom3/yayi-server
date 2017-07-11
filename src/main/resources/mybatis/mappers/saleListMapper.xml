@@ -76,20 +76,21 @@
 		LEFT JOIN certification c
 		ON u.user_id=c.user_id
 		<where>
-			<if test="phone !=null and phone !=''">
-				u.phone LIKE '%${phone}%' 
+			<if test="userPhone !=null and userPhone !=''">
+				u.phone LIKE '%${userPhone}%'
 			</if>
 			<if test="trueName !=null and trueName !=''">
 				AND u.true_name LIKE '%${trueName}%' 
 			</if>
 			<if test="companyName !=null and companyName !=''">
-				AND c.company_name LIKE '%%'
+				AND c.company_name LIKE '%${companyName}%'
 			</if>
 			<if test="isBind == 1">
 				AND u.sale_id IS NULL
 			</if>
 			<if test="isBind == 2">
 				AND u.sale_id IS NOT NULL
+				AND u.sale_id = #{saleId}
 			</if>
 		</where>
 			 LIMIT ${page.currentNumber},${page.numberPerPage}
@@ -101,20 +102,21 @@
 		LEFT JOIN certification c
 		ON u.user_id=c.user_id
 		<where>
-			<if test="phone !=null and phone !=''">
-				u.phone LIKE '%${phone}%' 
+			<if test="userPhone !=null and userPhone !=''">
+				u.phone LIKE '%${userPhone}%'
 			</if>
 			<if test="trueName !=null and trueName !=''">
 				AND u.true_name LIKE '%${trueName}%' 
 			</if>
 			<if test="companyName !=null and companyName !=''">
-				AND c.company_name LIKE '%%'
+				AND c.company_name LIKE '%${companyName}%'
 			</if>
 			<if test="isBind == 1">
 				AND u.sale_id IS NULL
 			</if>
 			<if test="isBind == 2">
 				AND u.sale_id IS NOT NULL
+				AND u.sale_id = #{saleId}
 			</if>
 		</where>
 	</select>

@@ -59,6 +59,11 @@
 		SELECT qb_balance FROM USER WHERE phone = #{userPhone};
 	</select>
 	
+	<select id="queryQbBalances" resultType="java.lang.Integer">
+		SELECT qb_balances FROM qb_record WHERE user_id = #{userId}
+		ORDER BY qb_time DESC LIMIT 1
+	</select>
+	
 	<update id="update">
 		UPDATE user 
 		<set>

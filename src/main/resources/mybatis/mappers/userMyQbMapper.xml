@@ -5,8 +5,8 @@
        
 <mapper namespace="com.yayiabc.http.mvc.dao.UserMyQbDao">
 	<insert id="add" parameterType="QbRecord">
-		INSERT INTO qb_record(user_id,qb_rget,qb_rout,qb_time,remark,created,updated)
-		VALUE(#{userId},#{qbRget},#{qbRout},NOW(),#{remark},NOW(),NOW());
+			INSERT INTO qb_record(user_id,qb_rget,qb_rout,qb_time,qb_balances,remark,created,updated)
+			VALUE(#{userId},#{qbRget},#{qbRout},NOW(),#{qbBalances},#{remark},NOW(),NOW());
 	</insert>
 	
 	<resultMap type="QbRecord" id="qbRecordRM">

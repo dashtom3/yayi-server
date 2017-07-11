@@ -36,16 +36,17 @@ public class SaleListServiceImpl implements SaleListService {
 	}
 
 	@Override
-	public DataWrapper<List<User>> userlist(String phone, String trueName,
+	public DataWrapper<List<User>> userlist(String salePhone,String userPhone, String trueName,
 			String companyName, Integer isBind, Integer currentPage,
 			Integer numberPerPage) {
 		DataWrapper<List<User>> dataWrapper = new DataWrapper<List<User>>();
+		String saleId=saleListDao.getSaleId(salePhone);
 		Page page = new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		int totalNumber = saleListDao.userlistCount(phone, trueName,
+		int totalNumber = saleListDao.userlistCount(saleId,userPhone, trueName,
 				companyName, isBind);
-		List<User> list = saleListDao.userlist(phone, trueName, companyName,
+		List<User> list = saleListDao.userlist(saleId,userPhone, trueName, companyName,
 				isBind, page);
 		dataWrapper.setPage(page, totalNumber);
 		dataWrapper.setData(list);

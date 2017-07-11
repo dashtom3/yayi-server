@@ -10,6 +10,7 @@ import com.yayiabc.common.utils.Page;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.dao.UserDao;
+import com.yayiabc.http.mvc.dao.UserMyQbDao;
 import com.yayiabc.http.mvc.dao.UserQbListDao;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.service.UserQbListService;
@@ -21,6 +22,8 @@ public class UserQbListServiceImpl implements UserQbListService {
 	UserQbListDao userQbListDao;
 	@Autowired
 	UserDao userDao;
+	@Autowired
+	UserMyQbDao userMyQbDao;
 
 	@Override
 	public DataWrapper<List<QbRecord>> list(String phone, String startDate,
@@ -40,9 +43,24 @@ public class UserQbListServiceImpl implements UserQbListService {
 	@Override
 	public DataWrapper<Void> update(Integer qbBalance, String phone) {
 		DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
+		String userId = userDao.getUserId(phone);		
 		int i = userQbListDao.update(qbBalance, phone);
 		if (i > 0) {
-			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+			QbRecord qbRecord=new QbRecord();
+			qbRecord.setUserId(userId);
+			Integer newQb = userQbListDao.queryQb(phone);
+			Integer oldQb=userQbListDao.queryQbBalances(userId);
+			if(newQb > oldQb){
+				qbRecord.setQbRget(newQb-oldQb);
+			}else if(newQb < oldQb){
+				qbRecord.setQbRout(newQb-oldQb);
+			}
+			qbRecord.setQbBalances(qbBalance);
+			qbRecord.setRemark("管理员修改乾币余额");
+			int sign=userMyQbDao.add(qbRecord);
+			if(sign > 0){
+				dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+			}
 		} else {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 		}

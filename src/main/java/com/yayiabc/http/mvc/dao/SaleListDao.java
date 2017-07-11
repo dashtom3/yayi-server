@@ -14,9 +14,9 @@ public interface SaleListDao {
 
 	int getCount(@Param("saleId")String saleId,@Param("phone")String phone,@Param("trueName")String trueName,@Param("isBindUser")Integer isBindUser);
 	
-	List<User> userlist(@Param("phone")String phone,@Param("trueName")String trueName,@Param("companyName")String companyName,@Param("isBind")Integer isBind,@Param("page")Page page); 
+	List<User> userlist(@Param("saleId")String saleId,@Param("userPhone")String userPhone,@Param("trueName")String trueName,@Param("companyName")String companyName,@Param("isBind")Integer isBind,@Param("page")Page page); 
 	
-	int userlistCount(@Param("phone")String phone,@Param("trueName")String trueName,@Param("companyName")String companyName,@Param("isBind")Integer isBind);
+	int userlistCount(@Param("saleId")String saleId,@Param("userPhone")String userPhone,@Param("trueName")String trueName,@Param("companyName")String companyName,@Param("isBind")Integer isBind);
 
 	SaleInfo detail(@Param("phone")String phone);
 	

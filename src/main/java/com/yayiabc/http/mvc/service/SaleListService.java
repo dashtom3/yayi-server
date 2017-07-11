@@ -9,7 +9,7 @@ import com.yayiabc.http.mvc.pojo.jpa.User;
 public interface SaleListService {
 	DataWrapper<List<SaleInfo>> query(String saleId,String phone,String trueName,Integer isBindUser,Integer currentPage, Integer numberPerPage);
 
-	DataWrapper<List<User>> userlist(String phone,String trueName,String companyName,Integer isBind,Integer currentPage, Integer numberPerPage);
+	DataWrapper<List<User>> userlist(String salePhone,String userPhone,String trueName,String companyName,Integer isBind,Integer currentPage, Integer numberPerPage);
 
 	DataWrapper<SaleInfo> detail(String phone,Integer currentPage,
 			Integer numberPerPage);

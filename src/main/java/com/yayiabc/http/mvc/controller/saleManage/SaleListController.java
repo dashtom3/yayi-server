@@ -45,14 +45,15 @@ public class SaleListController {
 	@RequestMapping(value="userlist",method=RequestMethod.GET)
 	@ResponseBody
 	public DataWrapper<List<User>> userlist(
-			@RequestParam(value="phone",required=false)String phone,
+			@RequestParam(value="salePhone",required=true)String salePhone,
+			@RequestParam(value="userPhone",required=false)String userPhone,
 			@RequestParam(value="trueName",required=false)String trueName,
 			@RequestParam(value="companyName",required=false)String companyName,
 			@RequestParam(value="isBind",required=true)Integer isBind,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
-		return saleListService.userlist(phone, trueName, companyName, isBind, currentPage, numberPerPage);
+		return saleListService.userlist(salePhone,userPhone, trueName, companyName, isBind, currentPage, numberPerPage);
 	}
 	
 	/**

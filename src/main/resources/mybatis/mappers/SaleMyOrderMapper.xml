@@ -22,6 +22,7 @@
 		</association> -->
 	</resultMap>
 	
+	<!-- 查询我的订单 -->
 	<select id="myOrder" resultMap="myOrderVoRM">
 		SELECT 
 		u.sale_id,
@@ -67,6 +68,7 @@
 		WHERE o.user_id IN(SELECT user_id FROM USER WHERE sale_id=#{saleId})
 	</select>
 	
+	<!-- 销售员收入等数据 -->
 	<select id="myOrderData" resultType="SaleDataStatistics">
 		SELECT sale_id,
 		(SELECT SUM(get_money) FROM sale_income WHERE get_state=2) AS overYearHasCommission,
@@ -77,6 +79,7 @@
 		GROUP BY sale_id
 	</select>
 	
+	<!-- 销售员订单等数据 -->
 	<select id="myOrderOrder" resultType="SaleDataStatistics">
 		SELECT 
 		SUM(oi.total_fee) AS sumOrderMoney,COUNT(o.order_id) AS orderNum 
@@ -112,6 +115,7 @@
 		</collection>
 	</resultMap>
 	
+	<!-- 查看详情订单 -->
 	<select id="detailO" resultMap="saleIncomeVoRM">
 		SELECT  
 		oi.item_name,
@@ -137,6 +141,7 @@
 		GROUP BY u.true_name
 	</select>
 	
+	<!-- 查看详情客户 -->
 	<select id="detailS" resultMap="saleIncomeVoRM">
 		SELECT  
 		o.user_id,

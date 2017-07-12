@@ -5,7 +5,6 @@ import org.springframework.stereotype.Service;
 
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.UserPersonalInfoDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Certification;
@@ -19,15 +18,13 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 	@Autowired
 	UserPersonalInfoDao userPersonalInfoDao;
 	@Autowired
-	UserDao userDao;
-	@Autowired
 	UtilsDao utilsDao;
 
 	@Override
-	public DataWrapper<User> updateUser(User user,String token) {
+	public DataWrapper<User> updateUser(User user, String token) {
 		DataWrapper<User> dataWrapper = new DataWrapper<User>();
-		String userIda = userDao.getUserId(user.getPhone());// 根据手机号码查询userId
-		if (userIda == null || userIda.equals(utilsDao.getUserID(token))== false) {
+		String userIda = utilsDao.getUserID(token);// 根据token查询userId
+		if (userIda == null) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("token错误");
 		} else {
@@ -55,10 +52,10 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 
 	@Override
 	public DataWrapper<Certification> updateCertification(
-			Certification certification, String phone, String token) {
+			Certification certification, String token) {
 		DataWrapper<Certification> dataWrapper = new DataWrapper<Certification>();
-		String userId = userDao.getUserId(phone);
-		if (userId == null || userId.equals(utilsDao.getUserID(token)) == false) {
+		String userId = utilsDao.getUserID(token);
+		if (userId == null) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("token错误");
 		} else {
@@ -72,12 +69,12 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 		}
 		return dataWrapper;
 	}
-	
+
 	@Override
-	public DataWrapper<UserPersonalInfo> detail(String phone, String token) {
+	public DataWrapper<UserPersonalInfo> detail(String token) {
 		DataWrapper<UserPersonalInfo> dataWrapper = new DataWrapper<UserPersonalInfo>();
-		String userId = userDao.getUserId(phone);
-		if (userId == null || userId.equals(utilsDao.getUserID(token)) == false) {
+		String userId = utilsDao.getUserID(token);
+		if (userId == null) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("token错误");
 		} else {
@@ -85,7 +82,6 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 					.detail(userId);
 			dataWrapper.setData(userPersonalInfo);
 		}
-
 		return dataWrapper;
 	}
 

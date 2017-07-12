@@ -60,12 +60,12 @@ public class CartServiceImpl implements CartService {
 	public DataWrapper<ItemStar> star(String itemId,String itemSKU,String token) {
 		DataWrapper<ItemStar> dataWrapper = new DataWrapper<ItemStar>();
 		String userId=utilsDao.getUserID(token);
-		List<Integer> list=userCenterStarDao.queryOne(itemId,userId);
+		List<Integer> list=userCenterStarDao.queryOne(itemId,userId); //查询我的收藏中商品是否已存在
 		if (userId == null) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("token错误");
 		} else {
-			if(list.size()==0){
+			if(list.size()==0){		//我的收藏商品不存在
 				ItemStar itemStar = new ItemStar();
 				itemStar.setUserId(userId);
 				itemStar.setItemId(itemId);
@@ -73,12 +73,11 @@ public class CartServiceImpl implements CartService {
 				if (id > 0) {
 					dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 					this.delete(itemSKU, token); // 收藏后调用删除方法，从购物车中移除
-				} else {
+				} else {		
 					dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 				}
-			}else{
-				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-				dataWrapper.setMsg("商品已收藏");
+			}else{		//我的收藏商品已存在
+					this.delete(itemSKU, token);
 			}
 		}
 		return dataWrapper;

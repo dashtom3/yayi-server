@@ -6,9 +6,9 @@ import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.UserPersonalInfo;
 
 public interface UserPersonalInfoService {
-	DataWrapper<UserPersonalInfo> detail(String phone,String token);
+	DataWrapper<UserPersonalInfo> detail(String token);
 	
 	DataWrapper<User> updateUser(User user,String token);
 	
-	DataWrapper<Certification> updateCertification(Certification certification,String phone,String token);
+	DataWrapper<Certification> updateCertification(Certification certification,String token);
 }

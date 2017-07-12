@@ -27,10 +27,9 @@ public class UserPersonalInfoController {
 	@RequestMapping(value="detail",method=RequestMethod.GET)
 	@ResponseBody
 	public DataWrapper<UserPersonalInfo> detail(
-			@RequestParam(value="phone",required=true)String phone,
 			@RequestParam(value="token",required=true)String token
 	){
-		return userPersonalInfoService.detail(phone,token);
+		return userPersonalInfoService.detail(token);
 	}
 	
 	/**
@@ -52,9 +51,8 @@ public class UserPersonalInfoController {
 	@ResponseBody
 	public DataWrapper<Certification> updateCertification(
 			@ModelAttribute Certification certification,
-			@RequestParam(value = "phone", required = true) String phone,
 			@RequestParam(value = "token", required = true) String token
 	){
-		return userPersonalInfoService.updateCertification(certification, phone,token);
+		return userPersonalInfoService.updateCertification(certification,token);
 	}
 }

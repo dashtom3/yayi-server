@@ -28,8 +28,7 @@ public class SaleIncomeListServiceImpl implements SaleIncomeListService {
 		Page page = new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		int totalNumber = saleIncomeListDao
-				.getCount(saleId, saleName, salePhone, orderId, signLateSeven,
+		int totalNumber = saleIncomeListDao.getCount(saleId, saleName, salePhone, orderId, signLateSeven,
 						getState, startDate, endDate);
 		List<SaleIncomeVo> list = saleIncomeListDao.query(saleId, saleName,
 				salePhone, orderId, signLateSeven, getState, startDate,

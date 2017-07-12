@@ -22,7 +22,7 @@ public class SaleIncomeListController {
 	/**
 	 * 收入列表
 	 */
-	@RequestMapping(value="query",method=RequestMethod.GET)
+	@RequestMapping("query")
 	@ResponseBody
 	public DataWrapper<List<SaleIncomeVo>> query(
 			@RequestParam(value="saleId",required=false)String saleId,

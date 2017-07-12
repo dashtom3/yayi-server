@@ -43,9 +43,20 @@
 	</select>
 	
 	<select id="getCount" resultType="int">
-		SELECT COUNT(*)
-        FROM qb_record qb
-        LEFT JOIN USER u ON qb.user_id = u.user_id
-        WHERE qb.user_id='${userId}';
+		SELECT count(*)
+		FROM qb_record q
+		LEFT JOIN USER u
+		ON u.user_id=q.user_id
+         <where>
+         	<if test="userId !=null and userId !=''">
+         		q.user_id='${userId}'
+         	</if>
+         	<if test="type ==2 and type !=null and type != ''">
+         		and q.qb_rget !='' 
+         	</if>
+         	<if test="type ==3 and type !=null and type != ''">
+         		and q.qb_rout !='' 
+         	</if>
+         </where>
 	</select>
 </mapper>        

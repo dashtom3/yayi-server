@@ -91,20 +91,17 @@ public class CartServiceImpl implements CartService {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("token错误");
 		} else {
-			Cart cart =new Cart();
-			cart = cartDao.queryBySKU(itemSKU);
-			cart.setNum(num);
-			cart.setUserId(userId);
-			int isItem = cartDao.getCountItemSKU(cart.getItemSKU());	//判断购物车内是否已存在该商品
+			
+			int isItem = cartDao.getCountItemSKU(itemSKU);	//判断购物车内是否已存在该商品
 			if (isItem == 0) {
-				int id = cartDao.add(cart);
+				int id = cartDao.add(userId, num, itemSKU);
 				if (id > 0) {
 					dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 				} else {
 					dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 				}
 			} else if (isItem > 0) {
-				cartDao.updateOne(userId, cart.getItemSKU(), cart.getNum());
+				cartDao.updateOne(userId, itemSKU, num);
 			}
 
 		}

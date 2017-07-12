@@ -62,13 +62,15 @@
 			<if test="getState !=null and getState !=''">
 				AND si.get_state = #{getState}
 			</if>
-				<if test="startDate !=null and startDate !=''">
-				AND	q.qb_time <![CDATA[  >=  ]]> #{startDate}
+			<if test="startDate !=null and startDate !=''">
+				AND DATE_FORMAT(si.updated,'%Y-%m-%d') <![CDATA[  >=  ]]>#{startDate}
 			</if>
 			<if test="endDate != null and endDate !=''">
-				AND	q.qb_time &lt; #{endDate}
+				AND DATE_FORMAT(si.updated,'%Y-%m-%d') <![CDATA[  <=  ]]>#{endDate}
 			</if>
 		</where>
+		GROUP BY o.order_id
+		ORDER BY o.created
 		LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
 	
@@ -103,11 +105,11 @@
 			<if test="getState !=null and getState !=''">
 				AND si.get_state = #{getState}
 			</if>
-				<if test="startDate !=null and startDate !=''">
-				AND	q.qb_time <![CDATA[  >=  ]]> #{startDate}
+			<if test="startDate !=null and startDate !=''">
+				AND DATE_FORMAT(si.updated,'%Y-%m-%d') <![CDATA[  >=  ]]>#{startDate}
 			</if>
 			<if test="endDate != null and endDate !=''">
-				AND	q.qb_time &lt; #{endDate}
+				AND DATE_FORMAT(si.updated,'%Y-%m-%d') <![CDATA[  <=  ]]>#{endDate}
 			</if>
 		</where>
 	</select>

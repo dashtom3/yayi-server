@@ -28,16 +28,28 @@
 
 	<select id="list" resultMap="cartRM">
 		SELECT
-		item_id,cart_id,item_SKU,
-		item_property_name,item_property_info,
-		item_property_name_two,item_property_two_value,
-		item_property_name_three,item_property_three_value,
-		item_property_four_name,item_property_four_value,
-		item_property_five_name,item_property_five_value,
-		item_property_six_name,item_property_six_value,
-		pic,name,price,num
-		FROM cart
-		WHERE user_id=#{userId};
+		c.cart_id,
+		id.item_id, 
+		ii.item_name AS NAME,
+		id.item_pica AS pic,
+		c.num,
+		iv.item_sku_price AS price,
+		iv.item_sKU AS item_SKU,
+		iv.item_property_name,iv.item_property_info,
+		iv.item_property_name_two,iv.item_property_two_value,
+		iv.item_property_name_three,iv.item_property_three_value,
+		iv.item_property_four_name,iv.item_property_four_value,
+		iv.item_property_five_name,iv.item_property_five_value,
+		iv.item_property_six_name,iv.item_property_six_value
+		FROM cart c
+		LEFT JOIN item_value iv 
+		ON c.item_SKU=iv.item_sKU
+		LEFT JOIN item_info ii
+		ON iv.item_id=ii.item_id
+		LEFT JOIN item_detail id
+		ON iv.item_id=id.item_id
+		WHERE c.user_id=#{userId}
+		ORDER BY c.created DESC;
 	</select>
 
 	<update id="updateOne">
@@ -62,46 +74,9 @@
 	</insert>
 
 	<insert id="add" parameterType="Cart">
-		INSERT INTO cart(
-		user_id,item_id,NAME,pic,num,price,item_SKU,
-		item_property_name,item_property_info,
-		item_property_name_two,item_property_two_value,
-		item_property_name_three,item_property_three_value,
-		item_property_four_name,item_property_four_value,
-		item_property_five_name,item_property_five_value,
-		item_property_six_name,item_property_six_value,
-		created,updated)
-		VALUES(#{userId},#{itemId},#{name},#{pic},#{num},#{price},#{itemSKU},
-		#{itemPropertyName},#{itemPropertyInfo},
-		#{itemPropertyNameTwo},#{itemPropertyTwoValue},
-		#{itemPropertyNameThree},#{itemPropertyThreeValue},
-		#{itemPropertyFourName},#{itemPropertyFourValue},
-		#{itemPropertyFiveName},#{itemPropertyFiveValue},
-		#{itemPropertySixName},#{itemPropertySixValue},
-		NOW(),NOW());
+		INSERT INTO cart(user_id,num,item_SKU,created,updated)
+		VALUES(#{userId},#{num},#{itemSKU},NOW(),NOW())
 	</insert>
-
-	<select id="queryBySKU" resultMap="cartRM">
-		SELECT
-		id.item_id, 
-		id.item_pica AS pic,
-		ii.item_name AS NAME,
-		iv.item_sKU AS item_SKU,
-		iv.item_property_name,iv.item_property_info,
-		iv.item_property_name_two,iv.item_property_two_value,
-		iv.item_property_name_three,iv.item_property_three_value,
-		iv.item_property_four_name,iv.item_property_four_value,
-		iv.item_property_five_name,iv.item_property_five_value,
-		iv.item_property_six_name,iv.item_property_six_value,
-		iv.item_sku_price AS price
-		FROM item_value iv
-		LEFT JOIN item_info ii
-		ON iv.item_id=ii.item_id
-		LEFT JOIN item_detail id
-		ON iv.item_id=id.item_id
-		WHERE iv.item_sKU=#{itemSKU}
-		GROUP BY iv.item_sKU
-	</select>
 
 	<select id="getCountItemSKU" resultType="int">
 		SELECT COUNT(*) FROM

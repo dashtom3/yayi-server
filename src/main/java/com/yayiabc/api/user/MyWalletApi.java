@@ -1,16 +1,15 @@
 package com.yayiabc.api.user;
 
-public interface MyStar {
+public interface MyWalletApi {
 	  /**
-     * @api {post} http://47.93.48.111:8080/api/mystar/shows 显示商品收藏数据
-     * @apiName shows
-     * @apiGroup myStar
+     * @api {post} http://47.93.48.111:8080/api/myWallet/detail   钱币明细
+     * @apiName detail
+     * @apiGroup myWallet
      * @apiVersion 0.1.0
-     * @apiDescription 收藏
+     * @apiDescription 钱币明细
      *
-     * @apiParam {String} token  （必须)可作为查询当前用户收藏商品
-     * @apiParam {Integer} currentPage  （非必须）
-     * @apiParam {Integer} numberPerPage  （非必须） 
+     * @apiParam {String} token  （必须) 当前销售员的token
+     * @apiParam {String} state  （必须） 1表示 进账 2表示提现  0表示 提现进账都显示 
      * 
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -74,14 +73,13 @@ public interface MyStar {
      */
 
     /**
-     * @api {post} http://47.93.48.111:8080/api/mystar/deleteOne 取消收藏单个商品
-     * @apiName deleteOne
-     * @apiGroup myStar
-     * @apiDescription 取消收藏单个商品
+     * @api {post} http://47.93.48.111:8080/api/myWallet/showWit 提现入口
+     * @apiName showWit
+     * @apiGroup myWallet
+     * @apiDescription 提现入口
      * @apiVersion 0.1.0
      *
-     * @apiParam {String} itemId 商品收藏id（必须）
-     * @apiParam {String} token  （必须） 
+     * @apiParam {String} token  （必须） 当前销售员的token
      *
      * @apiSuccessExample Success-Response:
      *  HTTP/1.1 200 OK
@@ -115,14 +113,14 @@ public interface MyStar {
      */
 
     /**
-     * @api {post} http://47.93.48.111:8080/api/mystar/deleteAll 取消全部商品收藏
-     * @apiName deleteAll
-     * @apiGroup myStar
+     * @api {post} http://47.93.48.111:8080/api/myWallet/submitWit 提现申请
+     * @apiName submitWit
+     * @apiGroup myWallet
      * @apiVersion 0.1.0
-     * @apiDescription 取消全部商品收藏
+     * @apiDescription 提现申请
      *
-     * @apiParam {String} token  （必须）
-     * 
+     * @apiParam {String} saleToken  （必须）
+     * @apiParam {String} vCode  （必须）   验证嘛
      * @apiSuccessExample Success-Response:
      * HTTP/1.1 200 OK
      * {
@@ -154,17 +152,16 @@ public interface MyStar {
      *
      */
 	  /**
-     * @api {post} http://47.93.48.111:8080/api/mystar/addMyStar add收藏商品
-     * @apiName addMyStar
-     * @apiGroup myStar
-     * @apiDescription add收藏商品
+     * @api {post} http://47.93.48.111:8080/api/myWallet/queryOrder 查看详情
+     * @apiName queryOrder
+     * @apiGroup myWallet
      * @apiVersion 0.1.0
+     * @apiDescription 提现申请
      *
-     * @apiParam {String} itemId 商品收藏id（必须）
-     * @apiParam {String} token  （必须）  
-     *
+     * @apiParam {String} orderId  （必须）
+     * @apiParam {String} token    （必须）当前销售员的token
      * @apiSuccessExample Success-Response:
-     *  HTTP/1.1 200 OK
+     * HTTP/1.1 200 OK
      * {
      * callStatus:"SUCCEED",
      * errorCode:"No_Error",
@@ -176,9 +173,8 @@ public interface MyStar {
      * totalPage:0,
      * num :null,
      * msg :null,
-     * }
-     *  
-     *  @apiErrorExample {json} Error-Response
+     *  }
+     * @apiSuccessExample {json} Error-Response
      *  HTTP/1.1 200 OK
      * {
      * callStatus:"SUCCEED",
@@ -192,5 +188,6 @@ public interface MyStar {
      * num :null,
      * msg :null,
      * }
+     *
      */
 }

@@ -129,4 +129,9 @@ public class QbRecord extends BasePojo {
 				+ user + "]";
 	}
 
+	public QbRecord(Date created, Date updated) {
+		super(created, updated);
+		// TODO Auto-generated constructor stub
+	}
+
 }

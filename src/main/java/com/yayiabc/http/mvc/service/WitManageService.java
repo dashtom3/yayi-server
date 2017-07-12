@@ -16,7 +16,7 @@ public interface WitManageService {
 	DataWrapper<Void> oper(@Param("cashId")int cashId);
 	
     //查询+显示
-	DataWrapper<List<With>> query(String message, Integer state);
+	DataWrapper<List<With>> query(String message, String state);
      
 
 }

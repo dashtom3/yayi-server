@@ -62,6 +62,8 @@
 			<if test="orderETime !=null and orderCTime==null">
 				and orde.created &lt;#{orderETime}
 			</if>
+			
+			and created order by desc
 			<!-- <if test="orderCTime !=null"> and orde.created>#{orderCTime} </if> 
 				<if test="orderETime !=null"> and orde.created &lt;#{orderETime} </if> -->
 		</where>
@@ -126,7 +128,7 @@
 		SELECT
 		orde.state,orde.created,orde.payment_time,orde.total_fee,orde.post_fee,
 		orde.qb_ded,orde.order_id,orde.pay_type,orde.invoice_hand,orde.buyer_message,orde.is_register,
-
+        
 		rece.user_id,rece.receiver_name,rece.province,rece.city,rece.county,rece.receiver_detail,
 
 		orde_it.item_property_namea,orde_it.item_property_nameb,orde_it.item_property_namec,

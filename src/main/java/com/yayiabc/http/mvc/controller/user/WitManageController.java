@@ -49,7 +49,7 @@ public class WitManageController {
     		 @RequestParam(value="type") String type*/
     		 @ModelAttribute With with
     		 ){
-    	 
+    	    //这里关于提现金额 没有判断  ，闲下来我会判断的
     	    if(vCode.equals(VerifyCodeManager.getPhoneCode(with.getPhone()))){
     	    	return witManageService.submitWit(with);
     	    }
@@ -100,7 +100,7 @@ public class WitManageController {
     		 //@RequestParam(value="token") String token,
     		 @RequestParam(value="message",required=false) String message ,  //姓名  或者手机号
     		 
-    		 @RequestParam(value="state",required=false) Integer state
+    		 @RequestParam(value="state",required=false) String state
     		 ){
     	 return witManageService.query(message,state);
      }

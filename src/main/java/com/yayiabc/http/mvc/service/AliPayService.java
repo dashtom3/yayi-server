@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.service;
 
+import java.util.HashMap;
 import java.util.Map;
 
 /**
@@ -35,4 +36,5 @@ public interface AliPayService {
 			String trade_no, 
 			Map<String, String> params
 			);
+	HashMap<String , String> queryY(String orderId);
 }

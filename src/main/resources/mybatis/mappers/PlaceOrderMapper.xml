@@ -177,4 +177,16 @@
 	<select id="queryQbPercentage" resultType="int">
 	   select item_qb from item_value where item_sKU=#{itemSKU}
 	</select>
+	
+	<select id="queryAttributes" resultType="com.yayiabc.http.mvc.pojo.jpa.ItemValue">
+	  select * from item_value where item_sKU=#{itemSKU}
+	</select>
+	
+	<select id="queryItemName" resultType="java.lang.String">
+	  select item_name from item_info where item_id=#{itemId}
+	</select>
+	
+	<select id="queryItemPicPath" resultType="java.lang.String">
+	  select item_pica from item_detail where item_id=#{itemId}
+	</select>
 </mapper>

@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.yayiabc.http.mvc.pojo.jpa.Cart;
 import com.yayiabc.http.mvc.pojo.jpa.FreeShipping;
+import com.yayiabc.http.mvc.pojo.jpa.ItemValue;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.PostFee;
@@ -50,5 +51,15 @@ public interface PlaceOrderDao {
 
      //查看钱币赠送百分比
 	Integer queryQbPercentage(@Param("itemSKU")String itemSKU);
+   
+	// 根据传过来的  商品sku 与 商品购买数目 查找对应的 其他参数（已知sku  num,orderId.,qbDed,create,update） 
+				//需要item_name,qbded,price,totalfee,picpath, a,b,c 属性，
+	ItemValue queryAttributes(@Param("itemSKU")String itemSKU);
+
+	//根据sku 查找商品名称 业户说的 
+	String queryItemName(@Param("itemId")String itemId);
+
+	//根据sku查找商品的图片路径
+	String queryItemPicPath(String itemId);
 
 }

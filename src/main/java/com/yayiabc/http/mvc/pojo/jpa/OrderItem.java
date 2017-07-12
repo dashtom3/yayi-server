@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
+import java.util.Date;
 import java.util.List;
 
 
@@ -177,5 +178,16 @@ public class OrderItem extends BasePojo {
 	public void setCommentList(List<Comments> commentList) {
 		this.commentList = commentList;
 	}
+
+	public OrderItem() {
+		super();
+		// TODO Auto-generated constructor stub
+	}
+
+	public OrderItem(Date created, Date updated) {
+		super(created, updated);
+		// TODO Auto-generated constructor stub
+	}
+	
 
 }

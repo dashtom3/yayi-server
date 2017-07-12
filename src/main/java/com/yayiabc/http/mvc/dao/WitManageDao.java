@@ -17,5 +17,5 @@ public interface WitManageDao {
 	int oper(@Param("cashId")int cashId);
 
      //查询+显示
-	List<With> query(@Param("message")String message, @Param("state")Integer state);
+	List<With> query(@Param("message")String message, @Param("state")String state);
 }

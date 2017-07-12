@@ -27,12 +27,13 @@
 	   <where>
 	  
 	    <if test="message!=null and message!=''">
-	       phone=${message}  or real_name=${message}  
+	       phone=#{message}  or real_name=#{message}  
 	    </if>
 	     
 	    <if test="state!=null and state!=''">
 	       and  cash_state=#{state}
 	   </if>
+	   
 	   </where>
 	      order by app_time asc 
 	</select>

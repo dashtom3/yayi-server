@@ -74,7 +74,7 @@ public class WitManageServiceImpl implements WitManageService{
 
 	//查询+显示
 	@Override
-	public DataWrapper<List<With>> query(String message, Integer state) {
+	public DataWrapper<List<With>> query(String message, String state) {
 		// TODO Auto-generated method stub
 		DataWrapper<List<With>> dataWrapper =new DataWrapper<List<With>>();
 		List<With> l= witManageDao.query(message,state);

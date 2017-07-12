@@ -109,7 +109,8 @@ public class PlaceOrderController {
 
 	//1234
 	@RequestMapping("generaOrder")
-	public void generaOrder(
+	@ResponseBody
+	public HashMap<String, Object> generaOrder(
 			@RequestParam(value="token",required=true) String token,
 			@RequestParam(value="orderItem",required=true) String  orderItem,
 			@ModelAttribute Ordera order,
@@ -131,8 +132,9 @@ public class PlaceOrderController {
 		hashMap.put("itemSum", itemSum);
 		 */
 		HashMap<String, Object>hm=placeOrderService.generaOrder(token,orderItemList,order);
-		                                                                                                                             
-		String  str=aliPayService.packingParameter((String)hm.get("OrderId"), (String)hm.get("itemNames"), 
+		                return hm;                                                                                                             
+		/*  这里先放下
+		 * String  str=aliPayService.packingParameter((String)hm.get("OrderId"), (String)hm.get("itemNames"), 
 				                                           //描述
 				(String)hm.get("sumPrice"),(String)hm.get("itemMS") );
 		try {
@@ -141,7 +143,7 @@ public class PlaceOrderController {
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}
+		}*/
 		//return str;
 	}
 	/***

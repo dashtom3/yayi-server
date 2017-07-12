@@ -1,21 +1,18 @@
 package com.yayiabc.api.user;
-
-public interface OrderManagementApi {
+public interface FreightManageApi {
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/showOrder 显示用户订单
-	 * @apiName showOrder
-	 * @apiGroup showUserOrderManage
+	 * @api {post} http://47.93.48.111:8080/api/freightManage/customFreight 更改自定义运费   
+	 * @apiName customFreight
+	 * @apiGroup freightManage
 	 * @apiVersion 0.1.0
-	 * @apiDescription 显示用户订单
+	 * @apiDescription 更改自定义运费   
 	 * 
-	 * @apiParam {String} orderId           （非必须）
-	 * @apiParam {String} buyerInfo         （非必须）
-	 * @apiParam {String} orderState         （非必须）
-	 * @apiParam {String} orderCTime         （非必须）
-	 * @apiParam {String} orderETime         （非必须）
-	 * @apiParam {String} isRefund           （非必须）
-	 * @apiParam {Integer} currentPage        （非必须）
-	 * @apiParam {Integer} numberPerpage        （非必须）
+	 * @apiParam {String} postFeeId        id （必须）
+	 * @apiParam {String} postCity       运送城市   （必须）
+	 * @apiParam {String} firstNum      首件数（必须）
+	 * @apiParam {String} firstMoney       首费    （必须）
+	 * @apiParam {String} addNum        续件数（必须）
+	 * @apiParam {String} addMoney      续费（必须）
 	 * 
 	 * @apiSuccessExample {json} Success-Response:
 	 *  HTTP/1.1 200 OK
@@ -48,14 +45,55 @@ public interface OrderManagementApi {
 	 * }
 	 */
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/closeTrading  关闭交易or确定交易
-	 * @apiName closeTrading
-	 * @apiGroup showUserOrderManage
+	 *@api {post} http://47.93.48.111:8080/api/freightManage/addCustomFreight 新增自定义数据
+	 * @apiName addCustomFreight
+	 * @apiGroup freightManage
 	 * @apiVersion 0.1.0
-	 * @apiDescription 关闭交易or确定交易
+	 * @apiDescription 新增自定义数据
 	 * 
-	 * @apiParam {String} orderId        （必须）
-	 * @apiParam {String} flagBit        （必须）  0交易关闭   1确定交易 
+	 * @apiParam {String} postCity       运送城市   （必须）
+	 * @apiParam {String} firstNum      首件数（必须）
+	 * @apiParam {String} firstMoney       首费    （必须）
+	 * @apiParam {String} addNum        续件数（必须）
+	 * @apiParam {String} addMoney      续费（必须）
+	 * 
+	 * @apiSuccessExample {json} Success-Response:
+     *  HTTP/1.1 200 OK
+     * {
+     * callStatus:"SUCCEED",
+     * errorCode:"No_Error",
+     * data:null,
+     * token:null,
+     * numberPerPage:0,
+     * currentPage:0,
+     * totalNumber:0,
+     * totalPage:0,
+     * num :null,
+     * msg :null
+     * }
+     * 
+     * @apiSuccessExample {json} Error-Response:
+     * HTTP/1.1 200 OK
+     * {
+     * callStatus:"SUCCEED",
+     * errorCode:"未知错误",
+     * data:null,
+     * token:null,
+     * numberPerPage:0,
+     * currentPage:0,
+     * totalNumber:0,
+     * totalPage:0,
+     * num :null,
+     * msg :null
+     * }addCustomFreight
+	 */
+	/**
+	 * @api {post} http://47.93.48.111:8080/api/freightManage/show  显示
+	 * @apiName show
+	 * @apiGroup freightManage
+	 * @apiVersion 0.1.0
+	 * @apiDescription 显示
+	 * 
 	 * 
 	 * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -88,13 +126,13 @@ public interface OrderManagementApi {
      * }
 	 */
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/showRefundProcessing   显示退款处理
-	 * @apiName showRefundProcessing
-	 * @apiGroup showUserOrderManage
+	 * @api {post} http://47.93.48.111:8080/api/freightManage/deleteCustomFreight 删除自定义运费   
+	 * @apiName deleteCustomFreight
+	 * @apiGroup freightManage
 	 * @apiVersion 0.1.0
-	 * @apiDescription  显示退款处理
+	 * @apiDescription 删除自定义运费   
 	 * 
-	 * @apiParam {String} orderId        （必须）
+	 * @apiParam {Integer} postFeeId       运费ID（必须）
 	 * 
 	 * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -111,7 +149,7 @@ public interface OrderManagementApi {
      * msg :null
      * }
      * 
-     *  @apiSuccessExample {json} Error-Response:
+     * @apiSuccessExample {json} Error-Response:
      * HTTP/1.1 200 OK
      * {
      * callStatus:"SUCCEED",
@@ -127,15 +165,13 @@ public interface OrderManagementApi {
      * }
 	 */
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/makeRefundData  退款数据处理
-	 * @apiName makeRefundData
-	 * @apiGroup showUserOrderManage
+	 * @api {post} http://47.93.48.111:8080/api/freightManage/showFreeShipp 显示保有数据
+	 * @apiName showFreeShipp
+	 * @apiGroup freightManage
 	 * @apiVersion 0.1.0
-	 * @apiDescription 退款数据处理
+	 * @apiDescription 显示包邮数据   
 	 * 
-	 * @apiParam {Map} map   这个需要沟通格式 (必须)
-	 * 
-	 * @apiSuccessExample {json} Success-Response:
+	 *  @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
      * {
      * callStatus:"SUCCEED",
@@ -149,7 +185,6 @@ public interface OrderManagementApi {
      * num :null,
      * msg :null
      * }
-     * 
      *  @apiSuccessExample {json} Error-Response:
      * HTTP/1.1 200 OK
      * {
@@ -165,126 +200,88 @@ public interface OrderManagementApi {
      * msg :null
      * }
 	 */
-	/**
-	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/loseFocus  lose事件
-	 * @apiName loseFocus
-	 * @apiGroup showUserOrderManage
-	 * @apiVersion 0.1.0
-	 * @apiDescription onChange事件
-	 * 
-	 * @apiParam {String} itemId   (必须)
-	 * @apiParam {String} orderId   (必须)
-	 * @apiParam {Integer} num   (必须)
-	 * 
-	 * @apiSuccessExample {json} Success-Response:
-     *  HTTP/1.1 200 OK
-     * {
-     * callStatus:"SUCCEED",
-     * errorCode:"No_Error",
-     * data:null,
-     * token:null,
-     * numberPerPage:0,
-     * currentPage:0,
-     * totalNumber:0,
-     * totalPage:0,
-     * num :null,
-     * msg :null
-     * }
-     * 
-     *  @apiSuccessExample {json} Error-Response:
-     * HTTP/1.1 200 OK
-     * {
-     * callStatus:"SUCCEED",
-     * errorCode:"未知错误",
-     * data:null,
-     * token:null,
-     * numberPerPage:0,
-     * currentPage:0,
-     * totalNumber:0,
-     * totalPage:0,
-     * num :null,
-     * msg :null
-     * }
-	 */
-	/**
-	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/warehouseDelivery  仓库发货 
-	 * @apiName warehouseDelivery
-	 * @apiGroup showUserOrderManage
-	 * @apiVersion 0.1.0
-	 * @apiDescription 仓库发货
-	 * 
-	 * @apiParam {String} logisticsName   (必须)  快递名称
-	 * @apiParam {String} orderId          (必须)
-	 * @apiParam {Integer} logisticsCode   (必须) 快递编号
-	 * 
-	 * @apiSuccessExample {json} Success-Response:
-     *  HTTP/1.1 200 OK
-     * {
-     * callStatus:"SUCCEED",
-     * errorCode:"No_Error",
-     * data:null,
-     * token:null,
-     * numberPerPage:0,
-     * currentPage:0,
-     * totalNumber:0,
-     * totalPage:0,
-     * num :null,
-     * msg :null
-     * }
-     * 
-     *  @apiSuccessExample {json} Error-Response:
-     * HTTP/1.1 200 OK
-     * {
-     * callStatus:"SUCCEED",
-     * errorCode:"未知错误",
-     * data:null,
-     * token:null,
-     * numberPerPage:0,
-     * currentPage:0,
-     * totalNumber:0,
-     * totalPage:0,
-     * num :null,
-     * msg :null
-     * }
-	 */
+	 
 	 /**
-	 * @api {post} http://47.93.48.111:8080/api/showUserOrderManage/queryOrderDetails  显示订单详情
-	 * @apiName queryOrderDetails
-	 * @apiGroup showUserOrderManage
+	  * @api {post} http://47.93.48.111:8080/api/freightManage/insertFreeShipp 增加包邮数据
+	 * @apiName insertFreeShipp
+	 * @apiGroup freightManage
 	 * @apiVersion 0.1.0
-	 * @apiDescription 退款数据处理
+	 * @apiDescription 增加包邮数据   
 	 * 
-	 * @apiParam {String} orderId   订单id (必须)
+	 * @apiParam {String} postCity       城市（必须）
+	 * @apiParam {String} freeShippingMoney       设置包邮金额（必须）
+	 * @apiParam {String} state       状态是否启用 1:启用  0：不启用（必须）
+	 *  
+	 *  @apiSuccessExample {json} Success-Response:
+     *  HTTP/1.1 200 OK
+     * {
+     * callStatus:"SUCCEED",
+     * errorCode:"No_Error",
+     * data:null,
+     * token:null,
+     * numberPerPage:0,
+     * currentPage:0,
+     * totalNumber:0,
+     * totalPage:0,
+     * num :null,
+     * msg :null
+     * }
+     * 
+     * @apiSuccessExample {json} Error-Response:
+     * HTTP/1.1 200 OK
+     * {
+     * callStatus:"SUCCEED",
+     * errorCode:"未知错误",
+     * data:null,
+     * token:null,
+     * numberPerPage:0,
+     * currentPage:0,
+     * totalNumber:0,
+     * totalPage:0,
+     * num :null,
+     * msg :null
+     * }
+	  */
+	/**
+	 *@api {post} http://47.93.48.111:8080/api/freightManage/updateFreeShipp 更改包邮数据
+	 * @apiName updateFreeShipp
+	 * @apiGroup freightManage
+	 * @apiVersion 0.1.0
+	 * @apiDescription 更改包邮数据   
+	 * 
+	 * @apiParam {String} postCity       城市（必须）
+	 * @apiParam {String} freeShippingMoney       设置包邮金额（必须）
+	 * @apiParam {String} state       状态是否启用 1:启用  0：不启用（必须） 
+	 * @apiParam {String} freePostId      包邮ID（必须）
 	 * 
 	 * @apiSuccessExample {json} Success-Response:
-    *  HTTP/1.1 200 OK
-    * {
-    * callStatus:"SUCCEED",
-    * errorCode:"No_Error",
-    * data:null,
-    * token:null,
-    * numberPerPage:0,
-    * currentPage:0,
-    * totalNumber:0,
-    * totalPage:0,
-    * num :null,
-    * msg :null
-    * }
-    * 
-    *  @apiSuccessExample {json} Error-Response:
-    * HTTP/1.1 200 OK
-    * {
-    * callStatus:"SUCCEED",
-    * errorCode:"未知错误",
-    * data:null,
-    * token:null,
-    * numberPerPage:0,
-    * currentPage:0,
-    * totalNumber:0,
-    * totalPage:0,
-    * num :null,
-    * msg :null
-    * }
-    */ 
+     *  HTTP/1.1 200 OK
+     * {
+     * callStatus:"SUCCEED",
+     * errorCode:"No_Error",
+     * data:null,
+     * token:null,
+     * numberPerPage:0,
+     * currentPage:0,
+     * totalNumber:0,
+     * totalPage:0,
+     * num :null,
+     * msg :null
+     * }
+     * 
+     * @apiSuccessExample {json} Error-Response:
+     * HTTP/1.1 200 OK
+     * {
+     * callStatus:"SUCCEED",
+     * errorCode:"未知错误",
+     * data:null,
+     * token:null,
+     * numberPerPage:0,
+     * currentPage:0,
+     * totalNumber:0,
+     * totalPage:0,
+     * num :null,
+     * msg :null
+     * }
+	 */
 }
-

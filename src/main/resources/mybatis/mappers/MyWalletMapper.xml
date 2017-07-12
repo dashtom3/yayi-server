@@ -13,10 +13,13 @@
 
 	<select id="saleInCome" resultType="com.yayiabc.http.mvc.pojo.jpa.SaleIncome">
 		SELECT
-		come.get_money,come.updated,come.order_id FROM
+		come.get_money,come.updated,come.order_id,money FROM
 		sale_income come JOIN
 		ordera orde ON
-		orde.order_id=come.order_id
+		orde.order_id=come.order_id join  sale_info sale on sale.sale_id=come.sale_id
+		<where>
+		     sale_id=#{saleId} and    created   between #{starTime} and #{endTime}
+		</where>
 		<!-- WHERE
 		sale_id=#{saleId} and come.updated<(SELECT DATE_ADD(NOW(),INTERVAL -#{data} MONTH)) -->
 		
@@ -26,7 +29,10 @@
 
 	<select id="with" resultType="com.yayiabc.http.mvc.pojo.jpa.With">
 		SELECT cashMoney,cash_su_time FROM cashmanage 
-		WHERE sale_id=#{saleId}
+		<where>
+		sale_id=#{saleId} and created   between #{starTime} and #{endTime}
+		</where>
+		<!-- sale_id=#{saleId} -->
 	</select>
 
 	<!-- //chaxun userid -->

@@ -1,15 +1,17 @@
-package com.yayiabc.api.user;
+﻿package com.yayiabc.api.user;
 
 public interface UserOrderDetails {
 	/**
-	 * @api {post} http://47.93.48.111:8080/api/OrderDetails/show （前台）查看订单
+	 * @api {post} http://47.93.48.111:8080/api/OrderDetails/show 查看订单
 	 * @apiName show
 	 * @apiGroup OrderDetailsShow
 	 * @apiVersion 0.1.0
 	 * @apiDescription 查看订单
 	 * 
-	 * @apiParam {String} phone              手机号码（必须）
-	 * @apiParam {String} state     订单状态（必须，1.待付款2.发货）
+	 * @apiParam {String} token              （必须）   
+	 * @apiParam {String} state     订单状态（必须，0交易取消 1.待付款 2.待发货 3待收货 4待评价 5订单已确定 6 退款退货中 7交易成功）
+	 * @apiParam {Integer} currentPage              （非必须）
+	 * @apiParam {Integer} numberPerpage              （非必须）
 	 * 
 	 * @apiSuccessExample {json} Success-Response:
 	 *  HTTP/1.1 200 OK
@@ -106,5 +108,207 @@ public interface UserOrderDetails {
 	 * num :null,
 	 * msg :null,
 	 * }
-	 */   
+	 */  
+	/**
+	 * @api {post} http://47.93.48.111:8080/api/OrderDetails/cancel 取消订单。。。
+	 * @apiName cancel
+	 * @apiGroup OrderDetails
+	 * @apiVersion 0.1.0
+	 * @apiDescription 取消订单。。。
+	 * 
+	 * @apiParam {String} token        （必须）。。。。。
+	 * @apiParam {String} orderId      （必须）
+	 * @apiSuccessExample {json} Success-Response:
+	 *  HTTP/1.1 200 OK
+	 *  {
+	 *	  callStatus	"SUCCEED"
+     *    errorCode	"No_Error"
+     *    data	[1]
+     *    token	
+     *    numberPerPage	0
+     *    currentPage	0
+     *    totalNumber	0
+     *    totalPage	0
+     *    num	0
+     *    msg
+	 *  }
+	 *
+	 * @apiSuccessExample {json} Error-Response:
+	 *  HTTP/1.1 200 OK
+	 * {
+	 * callStatus:"SUCCEED",
+	 * errorCode:"No_Error",
+	 * data:null,
+	 * token:null,
+	 * numberPerPage:0,
+	 * currentPage:0,
+	 * totalNumber:0,
+	 * totalPage:0,
+	 * num :null,
+	 * msg :null,
+	 * }
+	 */
+	/**
+	 * @api {post} http://47.93.48.111:8080/api/OrderDetails/seeLog 查看物流
+	 * @apiName seeLog
+	 * @apiGroup OrderDetails
+	 * @apiVersion 0.1.0
+	 * @apiDescription 查看物流
+	 * 
+	 * @apiParam {String} token                    （必须）。。。。。
+	 * @apiParam {String} orderId           （必须）
+	 * 
+	 * @apiSuccessExample {json} Success-Response:
+	 *  HTTP/1.1 200 OK
+	 *  {
+	 *	  callStatus	"SUCCEED"
+     *    errorCode	"No_Error"
+     *    data	[1]
+     *    token	
+     *    numberPerPage	0
+     *    currentPage	0
+     *    totalNumber	0
+     *    totalPage	0
+     *    num	0
+     *    msg
+	 *  }
+	 *
+	 * @apiSuccessExample {json} Error-Response:
+	 *  HTTP/1.1 200 OK
+	 * {
+	 * callStatus:"SUCCEED",
+	 * errorCode:"No_Error",
+	 * data:null,
+	 * token:null,
+	 * numberPerPage:0,
+	 * currentPage:0,
+	 * totalNumber:0,
+	 * totalPage:0,
+	 * num :null,
+	 * msg :null,
+	 * }
+	 */
+	/**
+	 * @api {post} http://47.93.48.111:8080/api/OrderDetails/confirmReceipt 确定收货
+	 * @apiName confirmReceipt
+	 * @apiGroup OrderDetails
+	 * @apiVersion 0.1.0
+	 * @apiDescription  确定收货
+	 * 
+	 * @apiParam {String} token                    （必须）
+	 * @apiParam {String} orderId           （必须）
+	 * 
+	 * @apiSuccessExample {json} Success-Response:
+	 *  HTTP/1.1 200 OK
+	 *  {
+	 *	  callStatus	"SUCCEED"
+     *    errorCode	"No_Error"
+     *    data	[1]
+     *    token	
+     *    numberPerPage	0
+     *    currentPage	0
+     *    totalNumber	0
+     *    totalPage	0
+     *    num	0
+     *    msg
+	 *  }
+	 *
+	 * @apiSuccessExample {json} Error-Response:
+	 *  HTTP/1.1 200 OK
+	 * {
+	 * callStatus:"SUCCEED",
+	 * errorCode:"No_Error",
+	 * data:null,
+	 * token:null,
+	 * numberPerPage:0,
+	 * currentPage:0,
+	 * totalNumber:0,
+	 * totalPage:0,
+	 * num :null,
+	 * msg :null,
+	 * }
+	 */
+	/**
+	 * @api {post} http://47.93.48.111:8080/api/OrderDetails/showComItem 显示商品内容 评论
+	 * @apiName confirmReceipt
+	 * @apiGroup OrderDetails
+	 * @apiVersion 0.1.0
+	 * @apiDescription  显示商品内容 评论
+	 * 
+	 * @apiParam {String} token                    （必须）
+	 * @apiParam {String} orderId           （必须）
+	 * 
+	 * @apiSuccessExample {json} Success-Response:
+	 *  HTTP/1.1 200 OK
+	 *  {
+	 *	  callStatus	"SUCCEED"
+     *    errorCode	"No_Error"
+     *    data	[1]
+     *    token	
+     *    numberPerPage	0
+     *    currentPage	0
+     *    totalNumber	0
+     *    totalPage	0
+     *    num	0
+     *    msg
+	 *  }
+	 *
+	 * @apiSuccessExample {json} Error-Response:
+	 *  HTTP/1.1 200 OK
+	 * {
+	 * callStatus:"SUCCEED",
+	 * errorCode:"No_Error",
+	 * data:null,
+	 * token:null,
+	 * numberPerPage:0,
+	 * currentPage:0,
+	 * totalNumber:0,
+	 * totalPage:0,
+	 * num :null,
+	 * msg :null,
+	 * }
+	 */
+	/**
+	 * @api {post} http://47.93.48.111:8080/api/OrderDetails/makeSureCom 提交评论内容
+	 * @apiName makeSureCom
+	 * @apiGroup OrderDetails
+	 * @apiVersion 0.1.0
+	 * @apiDescription  提交评论内容
+	 * 
+	 * @apiParam {String} token              （必须）
+	 * @apiParam {String} orderId           （必须）
+	 * @apiParam {String} itemId             （必须）
+	 * @apiParam {String} score            星级（必须）
+	 * @apiParam {String} data           评论内容（必须）
+	 * 
+	 * @apiSuccessExample {json} Success-Response:
+	 *  HTTP/1.1 200 OK
+	 *  {
+	 *	  callStatus	"SUCCEED"
+     *    errorCode	"No_Error"
+     *    data	[1]
+     *    token	
+     *    numberPerPage	0
+     *    currentPage	0
+     *    totalNumber	0
+     *    totalPage	0
+     *    num	0
+     *    msg
+	 *  }
+	 *
+	 * @apiSuccessExample {json} Error-Response:
+	 *  HTTP/1.1 200 OK
+	 * {
+	 * callStatus:"SUCCEED",
+	 * errorCode:"No_Error",
+	 * data:null,
+	 * token:null,
+	 * numberPerPage:0,
+	 * currentPage:0,
+	 * totalNumber:0,
+	 * totalPage:0,
+	 * num :null,
+	 * msg :null,
+	 * }
+	 */
 }

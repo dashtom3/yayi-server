@@ -29,16 +29,40 @@ import com.yayiabc.http.mvc.service.AliPayService;
 public class AliPayController {
 	@Autowired
 	private AliPayService alipayService;
-	//支付satrt
+	//支付satrt 测试
 	@RequestMapping("payParame")
-	@ResponseBody   //测试用途
+	@ResponseBody   
 	String payParame(
+			
 			@RequestParam(value="WIDout_trade_no",required=true) String WIDout_trade_no,//订单号
-			@RequestParam(value="WIDout_trade_no",required=true) String WIDsubject,//商品名称
+			@RequestParam(value="WIDsubject",required=true) String WIDsubject,//商品名称
 			@RequestParam(value="WIDtotal_fee",required=true) String WIDtotal_fee,//付款金额 
+			
 			@RequestParam(value="WIDbody",required=false) String WIDbody//商品描述
 			){
 		return alipayService.packingParameter(WIDout_trade_no, WIDsubject, WIDtotal_fee, WIDbody);
+	}
+	
+	// 14.29  点击选择类型确定支付宝支付时
+	@RequestMapping("payParames")
+	void paParames(
+			@RequestParam(value="orderId",required=true) String orderId,//订单号
+			 HttpServletResponse response
+			){
+		HashMap<String , String> hm=alipayService.queryY(orderId);
+		
+		for(String key:hm.keySet()){
+			System.err.println("key: "+key+" "+hm.get(key));
+		}
+		String sHtmlText=alipayService.packingParameter(hm.get("WIDout_trade_no"), hm.get("WIDsubject"), hm.get("WIDtotal_fee"), hm.get("WIDbody"));
+		System.err.println(sHtmlText);
+		try {
+			//写到页面的自动提交表单数据
+			response.getWriter().write(sHtmlText);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 	//判断订单支付同步跳转
 	@ResponseBody

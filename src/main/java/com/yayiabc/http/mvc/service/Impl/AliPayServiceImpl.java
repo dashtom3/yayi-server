@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.service.Impl;
 
 import java.io.UnsupportedEncodingException;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -24,14 +25,15 @@ public class AliPayServiceImpl implements AliPayService{
 			//订单编号
 			String out_trade_no = new String(WIDout_trade_no.getBytes("ISO-8859-1"),"UTF-8");
 			//订单名称，必填
-			String subject = new String(WIDout_trade_no.getBytes("ISO-8859-1"),"UTF-8");
-
+			//String subject = new String(WIDsubject.getBytes("ISO-8859-1"),"UTF-8");
+			String subject=WIDsubject;
+      
 			//付款金额，必填
 			String total_fee = new String(WIDtotal_fee.getBytes("ISO-8859-1"),"UTF-8");
 
 			//商品描述，可空
-			String body = new String(WIDbody.getBytes("ISO-8859-1"),"UTF-8");
-
+			//String body = new String(WIDbody.getBytes("ISO-8859-1"),"UTF-8");
+			String body=WIDbody;
 			//把请求参数打包成数组
 			Map<String, String> sParaTemp = new HashMap<String, String>();
 			sParaTemp.put("service", AlipayConfig.service);
@@ -142,7 +144,10 @@ public class AliPayServiceImpl implements AliPayService{
 					//请务必判断请求时的total_fee、seller_id与通知时获取的total_fee、seller_id为一致的
 					
 					//如果有做过处理，不执行商户的业务程序
+					int  state=aliPayDao.querySatetIsTwo(out_trade_no);
+					if(2!=state){
 					aliPayDao.updateStateAndPayTime(out_trade_no);
+					}
 					//注意：
 					//退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
 					return "success";
@@ -170,5 +175,30 @@ public class AliPayServiceImpl implements AliPayService{
 			// TODO: handle exception
 		}
 		 return "fail";
+	}
+	
+	//根据订单id 查询结账时需要的数据（订单号，商品名称，易交金额）
+	@Override
+	public HashMap<String , String> queryY(String orderId) {
+		// TODO Auto-generated method stub
+		HashMap<String , String>  hmHashMap=new HashMap<String,String>();
+		//易交金额
+		int WIDtotal_fee=aliPayDao.queryYorderIdAndActualMonry(orderId); 	
+		//商品名称
+		List<String> itemList=aliPayDao.queryYitemNames(orderId);
+		StringBuffer sb=new StringBuffer();
+		for(int i=0;i<itemList.size();i++){
+            if(i<=2){
+            	sb.append(itemList.get(i));
+            }
+            sb.append("...");
+		}
+		//订单留言
+		String WIDbody=aliPayDao.queryYorderMessage(orderId);
+		hmHashMap.put("WIDout_trade_no", orderId);
+		hmHashMap.put("WIDtotal_fee", String.valueOf(WIDtotal_fee));
+		hmHashMap.put("WIDsubject", sb.toString());
+		hmHashMap.put("WIDbody", WIDbody);
+		return hmHashMap;
 	}
 }

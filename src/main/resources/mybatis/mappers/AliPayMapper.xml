@@ -7,4 +7,21 @@
 	<!-- 这是已支付状态记不清了 -->
 		update ordera set state=2,payment_time=now(),updated=now() where orderId=#{orderId} 
 	</update>
+	
+	<select id="queryYorderIdAndActualMonry" resultType="int">
+	  select actual_pay from ordera where order_id=#{orderId}
+	</select>
+	
+	<select id="queryYitemNames" resultType="java.lang.String">
+	   select item_name from order_item where order_id=#{orderId}
+	</select>
+	
+	<select id="queryYorderMessage" resultType="java.lang.String">
+	 select buyer_message from ordera where order_id=#{orderId}
+	</select>
+	
+	
+	<select id="querySatetIsTwo" resultType="int">
+	 select order_id from ordera where order_id=#{orderId}
+	</select>
 </mapper>       

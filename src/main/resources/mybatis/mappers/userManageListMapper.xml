@@ -99,8 +99,8 @@
 	</update>
 	
 	<update id="bindUpdateNum">
-		UPDATE USER u
-		LEFT JOIN sale_info s
+		UPDATE sale_info s
+		LEFT JOIN USER u
 		ON u.sale_id=s.sale_id
 		SET s.bind_user_num=(SELECT COUNT(user_id) FROM USER WHERE sale_id=#{saleId})
 		WHERE s.sale_id=#{saleId};

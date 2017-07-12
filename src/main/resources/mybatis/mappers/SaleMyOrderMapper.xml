@@ -129,16 +129,14 @@
 		FROM order_item oi
 		LEFT JOIN ordera o
 		ON oi.order_id = o.order_id
-		LEFT JOIN item_detail id
-		ON oi.item_id=id.item_id
 		LEFT JOIN USER u
 		ON o.user_id=u.user_id
 		LEFT JOIN refund r
 		ON u.user_id=r.user_id
-		LEFT JOIN sale_income si
-		ON u.sale_id=si.sale_id
-		WHERE o.user_id=#{userId} AND o.order_id=#{orderId} AND u.sale_id=#{saleId}
-		GROUP BY u.true_name
+		WHERE o.user_id=#{userId}
+		AND o.order_id=#{orderId} 
+		AND u.sale_id=#{saleId}
+		GROUP BY oi.itm_SKU
 	</select>
 	
 	<!-- 查看详情客户 -->
@@ -149,18 +147,14 @@
 		u.phone AS user_phone,
 		si.get_state,
 		si.get_money
-		FROM order_item oi
-		LEFT JOIN ordera o
-		ON oi.order_id = o.order_id
-		LEFT JOIN item_detail id
-		ON oi.item_id=id.item_id
+		FROM ordera o 
 		LEFT JOIN USER u
 		ON o.user_id=u.user_id
-		LEFT JOIN refund r
-		ON u.user_id=r.user_id
 		LEFT JOIN sale_income si
 		ON u.sale_id=si.sale_id
-		WHERE o.user_id=#{userId} AND o.order_id=#{orderId} AND u.sale_id=#{saleId}
+		WHERE o.user_id=#{userId}
+		AND o.order_id=#{orderId} 
+		AND u.sale_id=#{saleId}
 		GROUP BY u.true_name
 	</select>
 </mapper>

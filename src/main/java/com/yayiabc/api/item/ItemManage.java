@@ -278,7 +278,7 @@ public class ItemManage {
 	 * @apiVersion 0.1.0
 	 * @apiDescription  删除属性值
 	 * 
-	 * @apiParam {Integer} itemSKU  商品属性详情的id值
+	 * @apiParam {Integer} itemPropertyId  商品属性详情的id值
 	 * 
 	 * @apiSuccessExample {json} Success-Response: 
 	 * HTTP/1.1 200 OK 
@@ -321,7 +321,7 @@ public class ItemManage {
 	 * @apiVersion 0.1.0
 	 * @apiDescription  修改属性值
 	 * 
-	 * @apiParam {Integer} itemSKU  商品属性详情的id值
+	 * @apiParam {Integer} itemPropertyId  商品属性详情的id值
 	 * @apiParam {String} itemPparam 商品属性值
 	 * 
 	 * @apiSuccessExample {json} Success-Response: 

@@ -14,8 +14,8 @@
 	
 	<!-- 销售员列表 -->
 	<select id="query" resultMap="saleInfoRM">
-		SELECT sale_id,true_name,phone,created,IF(bind_user_num IS NOT NULL,1,2) AS isBindUser,bind_user_num 
-		FROM sale_info  
+		SELECT sale_id,true_name,phone,created,IF(bind_user_num=0,2,IF(bind_user_num!=0,1,2)) AS isBindUser,bind_user_num 
+		FROM sale_info 
 		<where>
 			<if test="saleId !=null and saleId !=''">
 				sale_id LIKE '%${saleId}%'

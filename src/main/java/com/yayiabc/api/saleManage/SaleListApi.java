@@ -32,7 +32,7 @@ public class SaleListApi {
      * 		trueName:"真实姓名a",
      * 		phone:"17668123578",
      * 		created:"2017-05-01",
-     * 		isBindUser:0
+     * 		isBindUser:2
      * 		bindUserNum:null
      * }],
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",

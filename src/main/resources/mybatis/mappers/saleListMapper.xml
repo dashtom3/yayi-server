@@ -145,13 +145,20 @@
 		<result column="true_name" property="trueName"/>
 		<result column="phone" property="phone"/>
 		<result column="sex" property="sex"/>
+		<result column="we_char" property="weChar"/>
+		<result column="email" property="email"/>
+		<result column="birthday" property="birthday"/>
+		<result column="education" property="education"/>
+		<result column="work_unit" property="workUnit"/>
+		<result column="work_position" property="workPosition"/>
+		<result column="part" property="part"/>
+		<result column="address" property="address"/>
 		<result column="id_card" property="idCard"/>
 		<result column="created" property="created"/>
 		<result column="money" property="money"/>
 		<result column="bind_user_num" property="bindUserNum"/>
 		<result column="sale_pic" property="salePic"/>
 		<result column="postal_type" property="postalType"/>
-		<result column="birthday" property="birthday"/>
 		<result column="bank_name" property="bankName"/>
 		<result column="open_name" property="openName"/>
 		<result column="account_number" property="accountNumber"/>
@@ -159,9 +166,11 @@
 	
 	<!-- 获取销售员详情 -->
 	<select id="detail" resultMap="saleInfosRM">
-		SELECT birthday,sale_id,true_name,phone,sex,id_card,
-		created,money,bind_user_num,sale_pic,
-		postal_type,bank_name,open_name,account_number
+		SELECT 
+		sale_id,true_name,phone,sex,we_char,email,
+		birthday,education,work_unit,work_position,
+		part,address,id_card,created,money,bind_user_num,
+		sale_pic,postal_type,bank_name,open_name,account_number
 		FROM sale_info
 		WHERE phone = #{phone}
 	</select>

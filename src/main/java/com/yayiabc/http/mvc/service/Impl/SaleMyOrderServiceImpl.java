@@ -74,16 +74,19 @@ public class SaleMyOrderServiceImpl implements SaleMyOrderService {
 		if (saleId == null || userId == null) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
 		} else {
-			SaleIncomeVo saleIncomeVo = saleMyOrderDao.detailS(userId, orderId,
-					saleId);
-			List<OrderVo> list = saleMyOrderDao
-					.detailO(userId, orderId, saleId);
-			if (list == null) {
-				saleIncomeVo.setOrderVoList(null);
+			SaleIncomeVo saleIncomeVo = saleMyOrderDao.detailS(userId, orderId,saleId);
+			if (saleIncomeVo == null) {
+				dataWrapper.setData(null);
 			} else {
-				saleIncomeVo.setOrderVoList(list);
+				List<OrderVo> list = saleMyOrderDao.detailO(userId, orderId,
+						saleId);
+				if (list == null) {
+					saleIncomeVo.setOrderVoList(null);
+				} else {
+					saleIncomeVo.setOrderVoList(list);
+				}
+				dataWrapper.setData(saleIncomeVo);
 			}
-			dataWrapper.setData(saleIncomeVo);
 		}
 		return dataWrapper;
 	}

@@ -86,8 +86,9 @@
 			</if>
 
 		</where>
+		order by orde.created  desc
 		limit ${currentNum},${numberPerpage}
-		order by  orde.created desc
+		
 	</select>
 
 
@@ -104,11 +105,11 @@
 		orde_it.item_id
 		= item_f.item_id
 		<where>
-			<if test="phone !=null">
+			<if test="phone !=null and phone!=''">
 				us.user_id=#{phone}
 			</if>
 
-			<if test="state !=null">
+			<if test="state !=null and state!=''">
 				and orde.state=#{state}  <!-- 待付款 -->
 			</if>
 		</where>
@@ -116,14 +117,14 @@
 	<!-- //取消订单 -->
 	
 	<update id="cancel">
-		update from ordera
+		update  ordera
 		set state=0,close_time=now(),updated=now()
 		where order_id=#{orderId}
 	</update>
 	<!-- //确定收货 -->
 
 	<update id="confirmReceipt">
-		update from ordera
+		update  ordera
 		set state=4,end_time=now(),updated=now()
 		where order_id=#{orderId}
 	</update>

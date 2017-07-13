@@ -95,8 +95,8 @@ public class AliPayServiceImpl implements AliPayService{
 					//判断该笔订单是否在商户网站中已经做过处理
 					//123
 					//(更改订单状态state).如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
-					int state=aliPayDao.updateStateAndPayTime(out_trade_no);
 					//如果有做过处理，不执行商户的业务程序
+					int state=aliPayDao.updateStateAndPayTime(out_trade_no);
 					if(state>0){
 						return "success";
 					}
@@ -139,15 +139,15 @@ public class AliPayServiceImpl implements AliPayService{
 				//——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
 
 				if(trade_status.equals("TRADE_FINISHED")){
-					//判断该笔订单是否在商户网站中已经做过处理
+					//判断该笔订单是否在商户网站中已经做过处理finished
 					//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 					//请务必判断请求时的total_fee、seller_id与通知时获取的total_fee、seller_id为一致的
 					
 					//如果有做过处理，不执行商户的业务程序
 					int  state=aliPayDao.querySatetIsTwo(out_trade_no);
-					if(2!=state){
+//					if(2!=state){  这个判断 暂时不加
 					aliPayDao.updateStateAndPayTime(out_trade_no);
-					}
+	//				}
 					//注意：
 					//退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
 					return "success";
@@ -183,7 +183,7 @@ public class AliPayServiceImpl implements AliPayService{
 		// TODO Auto-generated method stub
 		HashMap<String , String>  hmHashMap=new HashMap<String,String>();
 		//易交金额
-		int WIDtotal_fee=aliPayDao.queryYorderIdAndActualMonry(orderId); 	
+		double WIDtotal_fee=aliPayDao.queryYorderIdAndActualMonry(orderId); 	
 		//商品名称
 		List<String> itemList=aliPayDao.queryYitemNames(orderId);
 		StringBuffer sb=new StringBuffer();

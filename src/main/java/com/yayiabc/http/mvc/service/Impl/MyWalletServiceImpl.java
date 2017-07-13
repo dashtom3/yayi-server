@@ -1,6 +1,7 @@
 package com.yayiabc.http.mvc.service.Impl;
 
 import java.text.SimpleDateFormat;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -24,20 +25,20 @@ public class MyWalletServiceImpl implements MyWalletService{
 	//容器
 	TreeMap<String, Object> treeMap=new TreeMap<String,Object>();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");		
-
+     ArrayList al=new ArrayList<>();
 	@Override
 	public DataWrapper<TreeMap<String, Object>> myWalletDetails(String token
-			,Integer state
+			,Integer state,String starTime,String endTime
 			) {
 		
 		DataWrapper<TreeMap<String, Object>> dataWrapper=new DataWrapper<TreeMap<String, Object>>();
 	     if(state==0){
-	    	 houston( token);
-	    	 withdrawals(token);
+	    	 houston( token,starTime,endTime);
+	    	 withdrawals(token,starTime,endTime);
 	     }else if(state==1){
-	    	 houston(token);
+	    	 houston(token,starTime,endTime);
 	     }else{
-	    	 withdrawals(token );
+	    	 withdrawals(token,starTime,endTime);
 	     }
        /* //测试
 		for(String key:treeMap.keySet()){
@@ -48,9 +49,9 @@ public class MyWalletServiceImpl implements MyWalletService{
 		return dataWrapper;
 	}
 	//进账
-	private void houston(String token){
+	private void houston(String token,String starTime, String endTime){
 		String saleToken=utilsDao.getSaleId(token);
-		List<SaleIncome> list=myWalletDao.saleInCome(saleToken);
+		List<SaleIncome> list=myWalletDao.saleInCome(saleToken,starTime,endTime);
     int houstonJZ=0;
 		System.out.println(list);
 		if(!list.isEmpty()){
@@ -62,10 +63,10 @@ public class MyWalletServiceImpl implements MyWalletService{
 		}
 	}
 	//提现
-	private void withdrawals(String token){
+	private void withdrawals(String token,String starTime,String endTime){
 		String saleToken=utilsDao.getSaleId(token);
 		int withdrawalsTX=0;
-		List<With> lists=myWalletDao.with(saleToken);
+		List<With> lists=myWalletDao.with(saleToken,starTime,endTime);
 		System.out.println(lists);
 		if(!lists.isEmpty()){
 			for(int x=0;x<lists.size();x++){

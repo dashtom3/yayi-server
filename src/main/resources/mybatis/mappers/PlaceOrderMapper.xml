@@ -189,4 +189,8 @@
 	<select id="queryItemPicPath" resultType="java.lang.String">
 	  select item_pica from item_detail where item_id=#{itemId}
 	</select>
+	
+	<delete id="cleanCart">
+	delete from cart where user_id=#{userId} and item_SKU=#{itemSKU} 
+	</delete>
 </mapper>

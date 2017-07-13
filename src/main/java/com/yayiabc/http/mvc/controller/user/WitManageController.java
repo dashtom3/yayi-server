@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.HttpUtil;
@@ -61,27 +62,31 @@ public class WitManageController {
      //获取验证码
      @ResponseBody
      @RequestMapping("gitVcode")
-     public  void gitVcode(
+     public  DataWrapper<String> gitVcode(
     		 //@RequestParam(value="token") String token,
     		 @RequestParam(value="phone") String phone
     		 ){
-    	 getVerifyCode(phone);
+    	 return getVerifyCode(phone);
      }
      
-     public String getVerifyCode(String phone) {
+     public DataWrapper<String> getVerifyCode(String phone) {
          String code = VerifyCodeManager.newPhoneCode(phone);
          System.out.println(code);
+         DataWrapper<String>  dataWrapper=new DataWrapper<String>();
          if (code == null) {
-             return code;
+        	 dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+        	 dataWrapper.setData(code);
+        	 return dataWrapper;
          }
          System.out.println(phone);
          boolean result = HttpUtil.sendPhoneVerifyCode(code, phone);
          if (result){
-                System.out.println(1);
+        	 dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+        	 return dataWrapper;
          } else {
-             System.out.println(2);
+        	 dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+        	 return dataWrapper;
          }
-         return null;
   	}
      //
      @RequestMapping("oper")

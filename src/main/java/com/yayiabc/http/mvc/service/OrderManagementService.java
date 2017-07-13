@@ -23,7 +23,7 @@ public interface OrderManagementService {
     DataWrapper<Void> makeRefundData(Map<String, String> map);
     
     //模拟失去焦点事件
-    public  DataWrapper<Map<String, Integer>> loseFocus(int refundNum,String OrederId,String itemId);
+    public  DataWrapper<Map<String, Object>> loseFocus(int refundNum,String OrederId,String itemId);
     
     
     //仓库发货

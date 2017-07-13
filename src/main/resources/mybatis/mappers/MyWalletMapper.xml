@@ -18,7 +18,12 @@
 		ordera orde ON
 		orde.order_id=come.order_id join  sale_info sale on sale.sale_id=come.sale_id
 		<where>
-		     sale_id=#{saleId} and    created   between #{starTime} and #{endTime}
+		    come.sale_id=#{saleId} 
+		     and    come.created 
+		      <if test="starTime!=null and starTime!='' and endTime!=null and endTime!=''">
+		        between  #{starTime} and #{endTime}
+		      </if> 
+		    
 		</where>
 		<!-- WHERE
 		sale_id=#{saleId} and come.updated<(SELECT DATE_ADD(NOW(),INTERVAL -#{data} MONTH)) -->
@@ -30,7 +35,11 @@
 	<select id="with" resultType="com.yayiabc.http.mvc.pojo.jpa.With">
 		SELECT cashMoney,cash_su_time FROM cashmanage 
 		<where>
-		sale_id=#{saleId} and created   between #{starTime} and #{endTime}
+		sale_id=#{saleId}
+	 and created 
+		<if test="starTime!=null and starTime!='' and endTime!=null and endTime!=''">
+		        between  #{starTime} and #{endTime}
+		      </if> 
 		</where>
 		<!-- sale_id=#{saleId} -->
 	</select>

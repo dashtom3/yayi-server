@@ -37,7 +37,10 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		DataWrapper<List<OrderManagement>> dataWrapper=new DataWrapper<List<OrderManagement>>();
 		//总条数
 				int count=orderManagementDao.queryCount(hMap);
+				hMap.put("currentPage", page.getCurrentPage());
+				hMap.put("numberPerpage", page.getNumberPerPage());
 		List<OrderManagement> userOrderList=orderManagementDao.showOrder(hMap);
+		System.out.println(userOrderList);
 		if(userOrderList.isEmpty()){
 			dataWrapper.setMsg("暂无数据");
 		}else{
@@ -74,8 +77,8 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 	//检查此订单是否包邮   如果是 那就是 如果不包邮就查出 该订单运费   (此处的 是否包邮应该在下订单模块里实现 这里 不需要  先暂时搁置)
 
 	//模拟失去焦点事件
-	public  DataWrapper<Map<String, Integer>> loseFocus(int refundNum,String OrederId,String itemId){
-		DataWrapper<Map<String, Integer>> dataWrapper=new DataWrapper<Map<String, Integer>>();
+	public  DataWrapper<Map<String, Object>> loseFocus(int refundNum,String OrederId,String itemId){
+		DataWrapper<Map<String, Object>> dataWrapper=new DataWrapper<Map<String, Object>>();
 		//根据订单id 查询出 当前订单的用户id 去钱币表 查看 该用户的钱币余额   queryUser
 		String userId=orderManagementDao.queryUser(OrederId);
 		//根据userId 查询用户余额
@@ -88,7 +91,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			return dataWrapper;
 		}
 		List<OrderItem> list=orderManagementDao.showFund(OrederId,itemId);
-		int price=0;
+		Double price=0.0;
 		if(!list.isEmpty()){
 		String itemIdy=  list.get(0).getItemId();
 		int QbDed= list.get(0).getQbDed();
@@ -96,19 +99,19 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		int num = list.get(0).getNum();
 		}
 		//单个商品的退回钱币数
-		int returnQbNum=price*refundNum;
+		Double returnQbNum=price*refundNum;
 
 		//退款金额
-		int returnMoneyNum;
+		Double returnMoneyNum;
 		if(balance>=returnQbNum){
-			returnMoneyNum=0;
+			returnMoneyNum=0.0;
 		}else{
 			returnMoneyNum=returnQbNum-balance;
 		}
 		//扣除钱币数  需要先获取当前商品的对应钱币百分比    int percent=queryQbPercent(num,itemId);
 		int percent=0;
-		Integer dedQb=returnQbNum*percent;
-		Map<String, Integer> map=new HashMap<String, Integer>();
+		Double dedQb=returnQbNum*percent;
+		Map<String, Object> map=new HashMap<String, Object>();
 		map.put("returnQbNum", returnQbNum);
 		map.put("returnMoneyNum", returnMoneyNum);
 		map.put("dedQb", dedQb);

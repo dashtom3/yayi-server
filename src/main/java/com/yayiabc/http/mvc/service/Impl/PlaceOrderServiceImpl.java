@@ -27,7 +27,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	private PlaceOrderDao placeOrderDao;
 	@Autowired
 	private UtilsDao utilsDao;
-
+    
 
 	//本单可获得钱币数
 
@@ -61,7 +61,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		//容器container
 		HashMap<String, Object> hMap=new HashMap<String, Object>();
 
-		int sumPrice=0;//商品总价
+		Integer sumPrice=0;//商品总价
 		DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String, Object>>();
 		// obtain sure shoppingCart item
 		List<Cart> cartList=placeOrderDao.buyNows(userId,itemSKUs);
@@ -99,7 +99,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	}
 
 
-	public int getFreight(Receiver receiver,int sumPrice,int itemSum){
+	public Double getFreight(Receiver receiver,Double sumPrice,Integer itemSum){
 		String Province =receiver.getProvince();
 		//查询包邮表数据
 		List<FreeShipping> list=placeOrderDao.queryPostFree();
@@ -120,7 +120,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 						if(city.equals(citys[x])){
 							if(sumPrice>money||sumPrice==money){
 								if(list.get(i).getState()==1){
-									return 0;
+									return 0.0;
 								}
 							}
 						}
@@ -130,7 +130,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 						if(Province.equals(citys[y])){
 							if(sumPrice>money||sumPrice==money){
 								if(list.get(i).getState()==1){
-									return 0;
+									return 0.0;
 								}
 							}
 						}
@@ -149,19 +149,19 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					String cityString=receiver.getCity();
 					for(int x=0;x<citys.length;x++){
 						if(cityString.equals(citys[x])){
-							return lists.get(i).getFirstMoney()+(itemSum-1)*lists.get(i).getAddMoney();
+							return (double) (lists.get(i).getFirstMoney()+(itemSum-1)*lists.get(i).getAddMoney());
 						}
 					}
 				}else{
 					for(int x=0;x<citys.length;x++){
 						if(Province.equals(citys[x])){
-							return lists.get(i).getFirstMoney()+(itemSum-1)*lists.get(i).getAddMoney();
+							return (double) (lists.get(i).getFirstMoney()+(itemSum-1)*lists.get(i).getAddMoney());
 						}
 					}
 				}
 			}
 		}
-		return 0;
+		return 0.0;
 	}
 	//钱币抵扣
 	@Override
@@ -179,12 +179,12 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		return dataWrapper;
 	}
 	//更改收货地址
-	public DataWrapper<HashMap<String, Object>>  upateAddress(Integer receiverId,Integer sumPrice,Integer itemSum){
+	public DataWrapper<HashMap<String, Object>>  upateAddress(Integer receiverId,Double sumPrice,Integer itemSum){
 		DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String, Object>>();
 
 		Receiver receiver=placeOrderDao.queryReceiver(receiverId);
 
-		int yunfei=getFreight(receiver, sumPrice, itemSum);
+		double yunfei=getFreight(receiver, sumPrice, itemSum);
 		System.out.println(yunfei);
 		HashMap<String, Object> hashMap=new HashMap<String,Object>();
 		hashMap.put("postFee", yunfei);
@@ -241,9 +241,9 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		//购买商品数
 		int itemNum=orderItem.getNum();
 		//商品单价
-		int itemPrice=orderItem.getPrice()*orderItem.getNum();
+		Double itemPrice=orderItem.getPrice()*orderItem.getNum();
 		//赠送钱币数
-		int giveQbNum=orderItem.getPrice()*orderItem.getNum()*placeOrderDao.queryQbPercentage(orderItem.getItemSKU());
+		Double giveQbNum=orderItem.getPrice()*orderItem.getNum()*placeOrderDao.queryQbPercentage(orderItem.getItemSKU());
 		HashMap<String, Object> hmHashMap=new HashMap<String, Object>();
 		hmHashMap.put("giveQbNum", giveQbNum);
 		hmHashMap.put("sumPrice", itemPrice);
@@ -293,104 +293,120 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 
 	//1234
 	@Override
-	public HashMap<String, Object> generaOrder(String token, List<OrderItem> orderItemList, Ordera order) {
+	public DataWrapper<HashMap<String, Object>> generaOrder(String token, List<OrderItem> orderItemList, Ordera order) {
 		// TODO Auto-generated method stub
 		//  get userId
-		String userId=utilsDao.getUserID(token);
-         System.out.println(userId);
-		//obtain orderId 
-		String orderId=OrderIdUtils.createOrderId(userId);
-		//将订单信息保存在订单里 你如是否需要发表  留言等。。。 
-		/**
-		 * state,order_id,user_id,qb_ded,
-		 * invoice_hand, is_register, buyer_message, total_fee,
-		 * actual_pay，post_fee,give_qb,created,
-		 * buyer_nick,buyer_rate
-		 */
-		if(order!=null){
-			if(order.getQbDed()==null){
-				order.setQbDed(0);
-			}if(order.getInvoiceHand()==null){
-				order.setInvoiceHand("没买价没有输入发票抬头");
-			}if(order.getIsRegister()==null){
-				order.setIsRegister(0);
-			}if(order.getBuyerMessage()==null){
-				order.setBuyerMessage("该单暂时未被评价呢");
-				order.setBuyerRate(0);
+		DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String,Object>>();
+		try {
+			String userId=utilsDao.getUserID(token);
+	         System.out.println(userId);
+			//obtain orderId 
+			String orderId=OrderIdUtils.createOrderId(userId);
+			//将订单信息保存在订单里 你如是否需要发表  留言等。。。 
+			/**
+			 * state,order_id,user_id,qb_ded,
+			 * invoice_hand, is_register, buyer_message, total_fee,
+			 * actual_pay，post_fee,give_qb,created,
+			 * buyer_nick,buyer_rate
+			 */
+			if(order!=null){
+				if(order.getQbDed()==null){
+					order.setQbDed(0);
+				}if(order.getInvoiceHand()==null){
+					order.setInvoiceHand("没买价没有输入发票抬头");
+				}if(order.getIsRegister()==null){
+					order.setIsRegister(0);
+				}if(order.getBuyerMessage()==null){
+					order.setBuyerMessage("该单暂时未被评价呢");
+					order.setBuyerRate(0);
+				}
 			}
-		}
-		/**
-		 * itm_SKU   varbinary(100) NULL
-item_id    varchar(50) NULL
-order_id   varchar(100) NULL
-item_name     varchar(50) NULL
-qb_ded     int(10) NULL
-num     int(10) NULL
-price   int(10) NULL
-total_fee   varchar(50) NULL
-pic_path   varchar(100) NULL
-item_property_namea    varchar(50) NULL
-item_property_nameb    varchar(50) NULL
-item_property_namec   varchar(50) NULL
-created   datetime NULL
-updated    datetime NULL 
-		 */
-		//存放 商品名称的 
-		StringBuffer sb=new StringBuffer();
-		//创建订单并保存订单数据
-		placeOrderDao.createOrder(orderId,userId,order);
-		//本单赠送钱币数
-		int giveQbNum=0;
-		//把传过来的 List<OrderItem> 遍历到order_item 表中
-		Integer sumPrice=0;
-		int itemSum=orderItemList.size();//商品总数量
-		for(int i=0;i<orderItemList.size();i++){
-			
-			//query钱币赠送百分比
-			Integer qbPercentage=placeOrderDao.queryQbPercentage(orderItemList.get(i).getItemSKU());
-			giveQbNum+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice()*qbPercentage;
-			// 根据传过来的  商品sku 与 商品购买数目 查找对应的 其他参数（已知sku  num,orderId.,create,update） 
-			//需要item_name,price,picpath, a,b,c 属性，
-			ItemValue itemVlue=placeOrderDao.queryAttributes(orderItemList.get(i).getItemSKU());
-			//根据sku 查找商品名称 业户说的
-			String itemName=placeOrderDao.queryItemName(itemVlue.getItemId());
-			//根据sku查找商品的图片路径
-			String itemPicPath=placeOrderDao.queryItemPicPath(itemVlue.getItemId());
-			orderItemList.get(i).setItemSKU(itemVlue.getItemSKU());
-			orderItemList.get(i).setItemName(itemName);
-			orderItemList.get(i).setPicPath(itemPicPath);
-			orderItemList.get(i).setPrice(itemVlue.getItemSkuPrice());
-			orderItemList.get(i).setItemPropertyNamea(itemVlue.getItemPropertyInfo());
-			orderItemList.get(i).setItemPropertyNameb(itemVlue.getItemPropertyTwoValue());
-			orderItemList.get(i).setItemPropertyNamec(itemVlue.getItemPropertyThreeValue());
-			//订单商品总价
-			sumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
-
-			//将商品 同步到 订单商品表里
-			placeOrderDao.synchronization(orderItemList.get(i),orderId);
-			/*if(i!=orderItemList.size()-1){
-				sb.append(orderItemList.get(i).getItemName()+",");
-			}else{
-				sb.append(orderItemList.get(i).getItemName());
+			/**
+			 * itm_SKU   varbinary(100) NULL
+	item_id    varchar(50) NULL
+	order_id   varchar(100) NULL
+	item_name     varchar(50) NULL
+	qb_ded     int(10) NULL
+	num     int(10) NULL
+	price   int(10) NULL
+	total_fee   varchar(50) NULL
+	pic_path   varchar(100) NULL
+	item_property_namea    varchar(50) NULL
+	item_property_nameb    varchar(50) NULL
+	item_property_namec   varchar(50) NULL
+	created   datetime NULL
+	updated    datetime NULL 
+			 */
+			//存放 商品名称的 
+			StringBuffer sb=new StringBuffer();
+			//创建订单并保存订单数据
+			placeOrderDao.createOrder(orderId,userId,order);
+			//本单赠送钱币数
+			int giveQbNum=0;
+			//把传过来的 List<OrderItem> 遍历到order_item 表中
+			Double sumPrice=0.0;
+			int itemSum=orderItemList.size();//商品总数量
+			for(int i=0;i<orderItemList.size();i++){
+				
+				//query钱币赠送百分比
+				Integer qbPercentage=placeOrderDao.queryQbPercentage(orderItemList.get(i).getItemSKU());
+				giveQbNum+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice()*qbPercentage;
+				// 根据传过来的  商品sku 与 商品购买数目 查找对应的 其他参数（已知sku  num,orderId.,create,update） 
+				//需要item_name,price,picpath, a,b,c 属性，
+				ItemValue itemVlue=placeOrderDao.queryAttributes(orderItemList.get(i).getItemSKU());
+				//根据sku 查找商品名称 业户说的
+				String itemName=placeOrderDao.queryItemName(itemVlue.getItemId());
+				//根据sku查找商品的图片路径
+				String itemPicPath=placeOrderDao.queryItemPicPath(itemVlue.getItemId());
+				orderItemList.get(i).setItemSKU(itemVlue.getItemSKU());
+				orderItemList.get(i).setItemName(itemName);
+				orderItemList.get(i).setPicPath(itemPicPath);
+				orderItemList.get(i).setPrice(itemVlue.getItemSkuPrice());
+				orderItemList.get(i).setItemPropertyNamea(itemVlue.getItemPropertyInfo());
+				orderItemList.get(i).setItemPropertyNameb(itemVlue.getItemPropertyTwoValue());
+				orderItemList.get(i).setItemPropertyNamec(itemVlue.getItemPropertyThreeValue());
+				//订单商品总价
+				sumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
+	            
+				//将商品 同步到 订单商品表里
+				int sta=placeOrderDao.synchronization(orderItemList.get(i),orderId);
+				//放一件到订单商品表清一件到
+				if(sta>0){
+					placeOrderDao.cleanCart(userId,orderItemList.get(i).getItemSKU());
+				}
+				/*if(i!=orderItemList.size()-1){
+					sb.append(orderItemList.get(i).getItemName()+",");
+				}else{
+					sb.append(orderItemList.get(i).getItemName());
+				}*/
+				//giveQbNum+=0;
+			}
+			HashMap<String, Object> hashMap=new HashMap<String, Object>();
+			/*try {
+				//hashMap.put("itemNames", (sb.toString().getBytes("utf-8")));
+			} catch (UnsupportedEncodingException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
 			}*/
-			//giveQbNum+=0;
+			//该单计算运费
+			Receiver receiver=placeOrderDao.queryReceiver(order.getReceiverId());
+			
+			Double postFee=getFreight(receiver,sumPrice,itemSum);
+			
+			hashMap.put("OrderId",orderId);
+			hashMap.put("sumPrice",String.valueOf(sumPrice));
+			hashMap.put("giveQbNum", giveQbNum);
+			hashMap.put("itemSum", itemSum);
+			hashMap.put("postFee", postFee);
+			//商品描述==
+			//hashMap.put("itemMS", "不错");
+			
+			dataWrapper.setData(hashMap);
+			return dataWrapper;
+		} catch (Exception e) {
+			
+			dataWrapper.setMsg("订单提交失败");
+			return dataWrapper;
 		}
-		
-		HashMap<String, Object> hashMap=new HashMap<String, Object>();
-		/*try {
-			//hashMap.put("itemNames", (sb.toString().getBytes("utf-8")));
-		} catch (UnsupportedEncodingException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		hashMap.put("OrderId",orderId);
-		hashMap.put("sumPrice",String.valueOf(sumPrice));
-		hashMap.put("giveQbNum", giveQbNum);
-		hashMap.put("itemSum", itemSum);
-		//商品描述==
-		//hashMap.put("itemMS", "不错");
-		/*DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String,Object>>();
-		dataWrapper.setData(hashMap);*/
-		return hashMap;
 	}
 }

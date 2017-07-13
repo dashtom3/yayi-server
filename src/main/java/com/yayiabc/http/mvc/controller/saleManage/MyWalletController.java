@@ -29,9 +29,12 @@ public class MyWalletController {
 	@ResponseBody
 	public DataWrapper<TreeMap<String, Object>> detail(
 			@RequestParam(value="token",required=true)String token,
-			@RequestParam(value="state",required=true)Integer state
+			@RequestParam(value="state",required=true)Integer state,
+			@RequestParam(value="starTime",required=false)String starTime,
+			@RequestParam(value="endTime",required=false)String endTime
 			){
-		return myWalletService.myWalletDetails(token,state);
+		
+		return myWalletService.myWalletDetails(token,state,starTime,endTime);
 	}
 	//提现入口
 	@RequestMapping("showWit")

@@ -142,7 +142,6 @@ public class ItemInfo {
 	 * @apiDescription  商品删除
 	 * 
 	 * @apiParam {String} itemId  商品id(必需)
-	 * @apiParam {String} itemSKU  商品SKU码(必需)
 	 * 
 	 * @apiSuccessExample {json} Success-Response: 
 	 * HTTP/1.1 200 OK 
@@ -309,9 +308,12 @@ public class ItemInfo {
 	 * 
 	 * @apiParam {String} itemId  商品id
 	 * @apiParam {String} itemName  商品名称
+	 * @apiParam {Integer} itemBrandId  商品品牌id
+	 * @apiParam {String} itemBrandName  商品品牌名称
 	 * @apiParam {String} oneClassify  商品一级分类
 	 * @apiParam {String} twoClassify  商品二级分类
 	 * @apiParam {String} threeClassify  商品三级分类
+	 * @apiParam {Integer} isThrow    是否推荐到首页
 	 * @apiParam {String} itemPica  商品第一张图片
 	 * @apiParam {String} itemPicb  商品第二张图片
 	 * @apiParam {String} itemPicc  商品第三张图片
@@ -321,18 +323,30 @@ public class ItemInfo {
 	 * @apiParam {String} itemDesc  商品描述
 	 * @apiParam {String} itemUse  商品使用说明
 	 * @apiParam {String} itemRange  商品使用范围
+	 * @apiParam {String} itemLevels  商品使用范围
 	 * @apiParam {String} registerId  商品注册证号
 	 * @apiParam {String} storeItemId  商家货号
 	 * @apiParam {Integer} apparatusType  商品器械类别
 	 * @apiParam {String} unit  商品单位
 	 * @apiParam {String} producePompany  生产单位
 	 * @apiParam {Date} registerDate  注册日期
-	 * @apiParam {String} itemPropertyName  属性名称
 	 * @apiParam {String} itemSKU  sku代码
 	 * @apiParam {String} itemPacking  商品包装
 	 * @apiParam {Integer} itemQb  商品乾币抵扣
 	 * @apiParam {Double} tiCheng  商品价格
-	 * @apiParam {String} itemPparam  商品属性值
+	 * @apiParam {Integer} itemValueId;
+	 * @apiParam {String} itemPropertyName;
+	 * @apiParam {String} itemPropertyInfo;
+	 * @apiParam {String} itemPropertyNameTwo;
+	 * @apiParam {String} itemPropertyTwoValue;
+	 * @apiParam {String} itemPropertyNameThree;
+	 * @apiParam {String} itemPropertyThreeValue;
+	 * @apiParam {String} itemPropertyFourName;
+	 * @apiParam {String} itemPropertyFourValue;
+	 * @apiParam {String} itemPropertyFiveName;
+	 * @apiParam {String} itemPropertyFiveValue;
+	 * @apiParam {String} itemPropertySixName;
+	 * @apiParam {String} itemPropertySixValue;
 	 * 
 	 * @apiSuccessExample {json} Success-Response: 
 	 * HTTP/1.1 200 OK 
@@ -366,47 +380,6 @@ public class ItemInfo {
 	 * 
 	 */
 	
-	/**
-	 * 
-	 * @api {post} http://47.93.48.111:8080/api/item/updateItemValue  （后台）商品属性修改
-	 * @apiName updateItemValue
-	 * @apiGroup itemInfo
-	 * @apiVersion 0.1.0
-	 * @apiDescription  商品属性修改
-	 * 
-	 * 
-	 * 
-	 * @apiSuccessExample {json} Success-Response: 
-	 * HTTP/1.1 200 OK 
-	 * {
-	 * callStatus:"SUCCEED", 
-	 * errorCode:"No_Error",
-	 * data:null,
-	 * token:null,
-	 * numberPerPage:0, 
-	 * currentPage:0, 
-	 * totalNumber:0,
-	 * totalPage:0 ,
-	 * num:null,
-	 * msg:"正确"
-	 *}
-	 * 
-	 * @apiSuccessExample {json} Error-Response: 
-	 * HTTP/1.1 200 OK 
-	 * {
-	 * callStatus:"FAILED", 
-	 * errorCode:"Error", 
-	 * data:null,
-	 * token:null, 
-	 * numberPerPage:0, 
-	 * currentPage:0,
-	 * totalNumber:0, 
-	 * totalPage:0 ,
-	 * num:null,
-	 * msg:"服务器错误"
-	 * }
-	 * 
-	 */
 	
 	
 }

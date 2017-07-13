@@ -33,7 +33,7 @@ public class ItemInfo extends BasePojo {
 
 	// private Refund refundId;
 
-	private Integer itemPrice;
+	private Double itemPrice;
 
 	private Integer sales;
 
@@ -102,11 +102,11 @@ public class ItemInfo extends BasePojo {
 		this.itemStockNum = itemStockNum;
 	}
 
-	public Integer getItemPrice() {
+	public Double getItemPrice() {
 		return itemPrice;
 	}
 
-	public void setItemPrice(Integer itemPrice) {
+	public void setItemPrice(Double itemPrice) {
 		this.itemPrice = itemPrice;
 	}
 
@@ -208,7 +208,7 @@ public class ItemInfo extends BasePojo {
 
 	public ItemInfo(String itemId, String itemName,
 			List<ItemValue> itemValueList, Integer isThrow, String itemSort,
-			Integer itemStockNum, Integer itemPrice, Integer sales,
+			Integer itemStockNum, Double itemPrice, Integer sales,
 			Integer state, String oneClassify, String twoClassify,
 			String threeClassify, String itemPnamea, String itemPnameb,
 			String itemPnamec, ItemDetail itemDetail,

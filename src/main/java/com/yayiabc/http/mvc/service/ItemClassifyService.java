@@ -15,4 +15,8 @@ public interface ItemClassifyService {
 	DataWrapper<List<ItemInfo>> queryItemSearch(String oneClassify,
 			String twoClassify, String threeClassify, String itemBrandName,
 			Integer rule,Integer currentPage,Integer numberPerPage);
+
+	DataWrapper<List<ItemInfo>> queryItemSearchGet(String oneClassify,
+			String twoClassify, String threeClassify, String itemBrandName,
+			Integer rule, Integer currentPage, Integer numberPerPage);
 }

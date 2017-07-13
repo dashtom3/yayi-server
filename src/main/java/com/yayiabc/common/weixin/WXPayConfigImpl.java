@@ -39,7 +39,7 @@ public class WXPayConfigImpl extends WXPayConfig{
     }
 
     public String getKey() {
-        return "7RugQu1eD55AIv46fHhUxwHB7lNPSuzz";
+        return "xiaojiangxiaojiangxiaojiangjiang";
         
     }
 

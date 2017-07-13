@@ -119,7 +119,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 			itemDetail.setUpdated(new Date());
 			itemInfo.setItemDetail(itemDetail);
 			itemInfo.setItemBrand(itemBrand);
-			Integer itemPrice =itemInfoManageDao.getMinPriceFromItemValue(itemId);
+			Double itemPrice =itemInfoManageDao.getMinPriceFromItemValue(itemId);
 			itemInfo.setItemPrice(itemPrice);
 			itemInfoManageDao.insertItemInfo(itemInfo);
 			itemInfoManageDao.insertItemDetail(itemDetail);
@@ -180,7 +180,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 		itemDetail.setUpdated(new Date());
 		itemInfo.setItemDetail(itemDetail);
 		itemInfo.setItemBrand(itemBrand);
-		Integer itemPrice =itemInfoManageDao.getMinPriceFromItemValue(itemId);
+		Double itemPrice =itemInfoManageDao.getMinPriceFromItemValue(itemId);
 		itemInfo.setItemPrice(itemPrice);
 		itemInfoManageDao.updateItemInfo(itemInfo);
 		itemInfoManageDao.updateItemDetail(itemDetail);

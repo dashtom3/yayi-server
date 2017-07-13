@@ -72,4 +72,29 @@ public class ItemClassifyServiceImpl implements ItemClassifyService {
 		dataWrapper.setData(itemInfoList);
 		return dataWrapper;
 	}
+
+	@Override
+	public DataWrapper<List<ItemInfo>> queryItemSearchGet(String oneClassify,
+			String twoClassify, String threeClassify, String itemBrandName,
+			Integer rule, Integer currentPage, Integer numberPerPage) {
+		DataWrapper<List<ItemInfo>> dataWrapper =new DataWrapper<List<ItemInfo>>();
+		Search search =new Search();
+		search.setNumberPerPage(numberPerPage);
+		search.setCurrentPage(currentPage);
+		search.setOneClassify(oneClassify);
+		search.setTwoClassify(twoClassify);
+		search.setItemBrandName(itemBrandName);
+		search.setThreeClassify(threeClassify);
+		search.setRule(rule);
+		Page page=new Page();
+        page.setNumberPerPage(search.getNumberPerPage());
+        page.setCurrentPage(search.getCurrentPage());
+		int totalNumber=itemClassifyDao.getCountGet(search);
+		dataWrapper.setPage(page, totalNumber);
+		search.setCurrentNumber(page.getCurrentNumber());
+		List<ItemInfo> itemInfoList=itemClassifyDao.queryItemSearchGet(search);
+		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+		dataWrapper.setData(itemInfoList);
+		return dataWrapper;
+	}
 }

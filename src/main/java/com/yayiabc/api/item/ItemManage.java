@@ -586,8 +586,6 @@ public class ItemManage {
 	 * @apiDescription  删除分类
 	 * 
 	 * @apiParam  {Integer} itemClassifyId     商品分类Id
-	 * @apiParam  {String} itemClassifyName     分类名称
-	 * @apiParam  {Integer} itemClassifyGrade    分类等级
 	 * 
 	 * @apiSuccessExample {json} Success-Response: 
 	 * HTTP/1.1 200 OK 
@@ -631,8 +629,6 @@ public class ItemManage {
 	 * @apiDescription  修改商品分类
 	 * 
 	 * @apiParam  {Integer} itemClassifyId     商品分类Id
-	 * @apiParam  {String} itemClassifyName    商品分类名称
-	 * @apiParam  {Integer} itemClassifyGrade  分类等级
 	 * 
 	 * @apiSuccessExample {json} Success-Response: 
 	 * HTTP/1.1 200 OK 
@@ -676,7 +672,6 @@ public class ItemManage {
 	 * 
 	 * @apiParam  {String} itemClassifyName    商品分类名称
 	 * @apiParam  {String} itemPreviousClassify 父级分类的名称
-	 * @apiParam  {Integer} itemClassifyGrade  分类等级1.一级2.二级3.三级
 	 * 
 	 * @apiSuccessExample {json} Success-Response: 
 	 * HTTP/1.1 200 OK 

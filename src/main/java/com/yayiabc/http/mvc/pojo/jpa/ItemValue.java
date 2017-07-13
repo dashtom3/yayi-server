@@ -3,7 +3,7 @@ package com.yayiabc.http.mvc.pojo.jpa;
 public class ItemValue {
 	private String itemId;
 	private String itemSKU;
-	private Integer itemSkuPrice;
+	private Double itemSkuPrice;
 	private Double  tiChen;
 	private Integer itemQb;
 	private Integer stockNum;
@@ -33,10 +33,10 @@ public class ItemValue {
 	public void setItemSKU(String itemSKU) {
 		this.itemSKU = itemSKU;
 	}
-	public Integer getItemSkuPrice() {
+	public Double getItemSkuPrice() {
 		return itemSkuPrice;
 	}
-	public void setItemSkuPrice(Integer itemSkuPrice) {
+	public void setItemSkuPrice(Double itemSkuPrice) {
 		this.itemSkuPrice = itemSkuPrice;
 	}
 	public Double getTiChen() {
@@ -141,7 +141,7 @@ public class ItemValue {
 	public void setItemPropertySixValue(String itemPropertySixValue) {
 		this.itemPropertySixValue = itemPropertySixValue;
 	}
-	public ItemValue(String itemId, String itemSKU, Integer itemSkuPrice,
+	public ItemValue(String itemId, String itemSKU, Double itemSkuPrice,
 			Double tiChen, Integer itemQb, Integer stockNum, Integer canUse,
 			Integer itemValueId, String itemPropertyName,
 			String itemPropertyInfo, String itemPropertyNameTwo,

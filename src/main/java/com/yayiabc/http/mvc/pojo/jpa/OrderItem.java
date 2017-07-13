@@ -23,7 +23,7 @@ public class OrderItem extends BasePojo {
  */
 	private Integer num;
 
-	private Integer price;
+	private Double price;
 
 	private String totalFee;
 
@@ -140,11 +140,11 @@ public class OrderItem extends BasePojo {
 		this.num = num;
 	}
 
-	public Integer getPrice() {
+	public Double getPrice() {
 		return price;
 	}
 
-	public void setPrice(Integer price) {
+	public void setPrice(Double price) {
 		this.price = price;
 	}
 

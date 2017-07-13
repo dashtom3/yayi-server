@@ -17,46 +17,25 @@
 			<result column="remark" property="remark"/>
 		<association property="user" javaType="com.yayiabc.http.mvc.pojo.jpa.User">
 			<id column="user_id" property="userId"/>
-			<result column="phone" property="phone"/>
 			<result column="qb_balance" property="qbBalance"/>
 		</association>
 	</resultMap>
 	
 	<select id="query" resultMap="qbRecordRM">
-		SELECT q.qb_rid,u.phone,q.qb_rget,q.qb_rout,q.qb_time,q.remark,u.qb_balance
+		SELECT q.qb_rid,q.qb_rget,q.qb_rout,q.qb_time,q.remark,u.qb_balance
 		FROM qb_record q
 		LEFT JOIN USER u
 		ON u.user_id=q.user_id
-         <where>
-         	<if test="userId !=null and userId !=''">
-         		q.user_id='${userId}'
-         	</if>
-         	<if test="type ==2 and type !=null and type != ''">
-         		and q.qb_rget !='' 
-         	</if>
-         	<if test="type ==3 and type !=null and type != ''">
-         		and q.qb_rout !='' 
-         	</if>
-         </where>
-         ORDER BY q.qb_time DESC
-         LIMIT ${page.currentNumber},${page.numberPerPage}
+        where q.user_id=#{userId} 
+        ORDER BY q.qb_time DESC
+        LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
 	
 	<select id="getCount" resultType="int">
-		SELECT count(*)
+		SELECT count(0)
 		FROM qb_record q
 		LEFT JOIN USER u
 		ON u.user_id=q.user_id
-         <where>
-         	<if test="userId !=null and userId !=''">
-         		q.user_id='${userId}'
-         	</if>
-         	<if test="type ==2 and type !=null and type != ''">
-         		and q.qb_rget !='' 
-         	</if>
-         	<if test="type ==3 and type !=null and type != ''">
-         		and q.qb_rout !='' 
-         	</if>
-         </where>
+        where q.user_id=#{userId} 
 	</select>
 </mapper>        

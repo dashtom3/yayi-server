@@ -26,9 +26,8 @@ public class UserMyQbController {
 	@RequestMapping(value = "add", method = RequestMethod.POST)
 	@ResponseBody
 	public DataWrapper<QbRecord> add(@ModelAttribute QbRecord qbRecord,
-			@RequestParam(value = "phone", required = true) String phone,
 			@RequestParam(value = "token", required = true) String token) {
-		return userMyQbService.add(qbRecord, phone, token);
+		return userMyQbService.add(qbRecord, token);
 	}
 
 	/**
@@ -37,12 +36,9 @@ public class UserMyQbController {
 	@RequestMapping(value = "query", method = RequestMethod.GET)
 	@ResponseBody
 	public DataWrapper<List<QbRecord>> query(
-			@RequestParam(value = "phone", required = true) String phone,
-			@RequestParam(value = "type", required = true) Integer type,
 			@RequestParam(value = "currentPage", required = false, defaultValue = "1") Integer currentPage,
 			@RequestParam(value = "numberPerPage", required = false, defaultValue = "10") Integer numberPerPage,
 			@RequestParam(value = "token", required = true) String token) {
-		return userMyQbService.query(phone, type, currentPage, numberPerPage,
-				token);
+		return userMyQbService.query(token, currentPage, numberPerPage);
 	}
 }

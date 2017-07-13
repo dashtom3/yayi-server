@@ -11,6 +11,6 @@ import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 @Repository
 public interface UserMyQbDao {
 	int add(QbRecord qbRecord);
-	List<QbRecord> query(@Param("page")Page page,@Param("userId")String userId,@Param("type")Integer type);
+	List<QbRecord> query(@Param("userId")String userId,@Param("page")Page page);
 	int getCount(@Param("userId")String userId);
 }

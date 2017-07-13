@@ -25,11 +25,11 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 	UtilsDao utilsDao;
 
 	@Override
-	public DataWrapper<QbRecord> add(QbRecord qbRecord, String phone,
+	public DataWrapper<QbRecord> add(QbRecord qbRecord,
 			String token) {
 		DataWrapper<QbRecord> dataWrapper = new DataWrapper<QbRecord>();
-		String userId = userDao.getUserId(phone);
-		if (userId == null || userId.equals(utilsDao.getUserID(token)) == false) {
+		String userId=utilsDao.getUserID(token);
+		if (userId == null) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("token错误");
 		} else {
@@ -46,11 +46,10 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 	}
 
 	@Override
-	public DataWrapper<List<QbRecord>> query(String phone, Integer type,
-			Integer currentPage, Integer numberPerPage, String token) {
+	public DataWrapper<List<QbRecord>> query(String token,Integer currentPage, Integer numberPerPage) {
 		DataWrapper<List<QbRecord>> dataWrapper = new DataWrapper<List<QbRecord>>();
-		String userId = userDao.getUserId(phone);
-		if (userId == null || userId.equals(utilsDao.getUserID(token)) == false) {
+		String userId = utilsDao.getUserID(token);
+		if (userId == null) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("token错误");
 		} else {
@@ -59,7 +58,7 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 			page.setCurrentPage(currentPage);
 			int totalNumber = userMyQbDao.getCount(userId);
 			dataWrapper.setPage(page, totalNumber);
-			List<QbRecord> list = userMyQbDao.query(page, userId, type);
+			List<QbRecord> list = userMyQbDao.query(userId,page);
 			dataWrapper.setData(list);
 		}
 		return dataWrapper;

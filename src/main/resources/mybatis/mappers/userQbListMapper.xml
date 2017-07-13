@@ -38,7 +38,7 @@
 	</select>
 	
 	<select id="getCount" resultType="int">
-		SELECT COUNT(*) 
+		SELECT COUNT(0) 
 		FROM qb_record q
 		LEFT JOIN USER u
 		ON u.user_id=q.user_id
@@ -66,11 +66,8 @@
 	
 	<update id="update">
 		UPDATE user 
-		<set>
-			<if test="qbBalance !=null and qbBalance !=''">
-				qb_balance=#{qbBalance}
-			</if>
-		</set>
+		set
+		qb_balance=#{qbBalance}
 		WHERE phone=#{phone};
 	</update>
 </mapper>

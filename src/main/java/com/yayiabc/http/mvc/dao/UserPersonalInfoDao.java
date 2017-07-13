@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.dao;
 
+import java.util.List;
 import org.springframework.stereotype.Repository;
 
 import com.yayiabc.http.mvc.pojo.jpa.Certification;
@@ -17,4 +18,7 @@ public interface UserPersonalInfoDao {
 	String getUserIdOnC(String userId);
 	
 	int add(String userId);
+	
+	
+	List<String> queryBind(String userId);
 }

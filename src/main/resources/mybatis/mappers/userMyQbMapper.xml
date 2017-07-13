@@ -38,4 +38,10 @@
 		ON u.user_id=q.user_id
         where q.user_id=#{userId} 
 	</select>
+	
+	<select id="updateUserQb">
+		UPDATE user 	
+		SET	qb_balance=qb_balance+#{qbNum}
+		WHERE user_id=#{userId};
+	</select>
 </mapper>        

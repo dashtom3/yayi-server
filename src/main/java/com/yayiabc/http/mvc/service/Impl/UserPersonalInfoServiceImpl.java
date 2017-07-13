@@ -1,5 +1,10 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -78,9 +83,25 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("token错误");
 		} else {
-			UserPersonalInfo userPersonalInfo = userPersonalInfoDao
-					.detail(userId);
+			UserPersonalInfo userPersonalInfo = userPersonalInfoDao.detail(userId);
 			dataWrapper.setData(userPersonalInfo);
+		}
+		return dataWrapper;
+	}
+
+	@Override
+	public DataWrapper<Map<String, String>> queryBind(String token) {
+		DataWrapper<Map<String, String>> dataWrapper =new DataWrapper<Map<String, String>>();
+		String userId=utilsDao.getUserID(token);
+		if(userId==null){
+			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+			dataWrapper.setMsg("token错误");
+		}else{
+			List<String> list=userPersonalInfoDao.queryBind(userId);
+			Map<String, String> map =new HashMap<String, String>();
+			map.put("isBindSale", list.get(0));
+			map.put("saleName", list.get(1));
+			dataWrapper.setData(map);
 		}
 		return dataWrapper;
 	}

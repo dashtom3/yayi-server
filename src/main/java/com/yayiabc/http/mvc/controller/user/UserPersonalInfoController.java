@@ -1,5 +1,8 @@
 package com.yayiabc.http.mvc.controller.user;
 
+import java.util.List;
+import java.util.Map;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -54,5 +57,16 @@ public class UserPersonalInfoController {
 			@RequestParam(value = "token", required = true) String token
 	){
 		return userPersonalInfoService.updateCertification(certification,token);
+	}
+	
+	/**
+	 * 查询用户是否已绑定销售员
+	 */
+	@RequestMapping(value="queryBind",method=RequestMethod.GET)
+	@ResponseBody
+	public DataWrapper<Map<String, String>> queryBind(
+			@RequestParam(value="token",required=true)String token
+	){
+		return userPersonalInfoService.queryBind(token);
 	}
 }

@@ -63,4 +63,20 @@
 		</set>
 		WHERE user_id=#{userId};
 	</update>
+	
+	<select id="queryBind" resultType="String">
+		SELECT 
+		IF(u.sale_id IS NOT NULL,1,2) AS isBindSale 
+		FROM USER u
+		LEFT JOIN sale_info s
+		ON u.sale_id=s.sale_id
+		WHERE u.user_id=#{userId}
+		UNION ALL
+		SELECT 
+	    s.true_name AS saleName
+		FROM USER u
+		LEFT JOIN sale_info s
+		ON u.sale_id=s.sale_id
+		WHERE u.user_id=#{userId}
+	</select>
 </mapper>

@@ -245,8 +245,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		//赠送钱币数
 		Double giveQbNum=orderItem.getPrice()*orderItem.getNum()*placeOrderDao.queryQbPercentage(orderItem.getItemSKU());
 		HashMap<String, Object> hmHashMap=new HashMap<String, Object>();
-		hmHashMap.put("giveQbNum", giveQbNum);
-		hmHashMap.put("sumPrice", itemPrice);
+		/*hmHashMap.put("giveQbNum", giveQbNum);
+		hmHashMap.put("sumPrice", itemPrice);*/
 		hmHashMap.put("OrderItem", orderItem);
 		//hmHashMap.put("yunfei", yunfei);
 		hmHashMap.put("ItemNum", itemNum);

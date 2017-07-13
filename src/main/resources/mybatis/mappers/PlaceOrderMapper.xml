@@ -154,13 +154,13 @@
 	<insert id="createOrder">
 		insert into
 		ordera(state,order_id,user_id,qb_ded,invoice_hand,is_register,buyer_message,total_fee,actual_pay
-		,post_fee,give_qb,created
+		,post_fee,give_qb,created,receiver_id
 		<!-- ,buyer_nick,buyer_rate -->
 		
 		)
 		values(1,#{orderId},#{userId},#{order.qbDed}
 		,#{order.invoiceHand},#{order.isRegister},#{order.buyerMessage},#{order.totalFee}
-		,#{order.actualPay},#{order.postFee},#{order.giveQb},now()
+		,#{order.actualPay},#{order.postFee},#{order.giveQb},now(),#{order.receiverId}
 		<!-- ,#{order.buyerNick}
 		,#{order.buyerRate} -->
 		)

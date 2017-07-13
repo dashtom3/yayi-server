@@ -188,7 +188,6 @@ public class ItemInfoManageController {
 	@RequestParam(value="itemId",required=true) String itemId ,
 	@RequestParam(value="itemName",required=true) String itemName,
 	@RequestParam(value="itemBrandId",required=true) Integer itemBrandId,
-	@RequestParam(value="itemBrandName",required=true) String itemBrandName, 
 	@RequestParam(value="oneClassify",required=true) String oneClassify,
 	@RequestParam(value="twoClassify",required=true) String twoClassify,
 	@RequestParam(value="threeClassify",required=true) String threeClassify,
@@ -263,7 +262,7 @@ public class ItemInfoManageController {
 		return itemInfoManageService.insert(itemId,itemName,itemBrandId,oneClassify,itemLevels,
 				twoClassify,threeClassify,itemPica,itemPicb,itemPicc,itemPicd,itemPice,isThrow,
 				video,itemDesc,itemUse,itemRange,remark,registerId,storeItemId,apparatusType,unit,
-				producePompany,registerDateChangeDate,itemPacking,itemBrandName);
+				producePompany,registerDateChangeDate,itemPacking);
 	
 	}
 	

@@ -81,7 +81,7 @@
  		update item_value set can_use=#{canUse},stock_num=#{stockNum},item_qb=#{itemQb},ti_chen=#{tiChen},item_sku_price=#{itemSkuPrice} where item_id=#{itemId}
  	</update>
  	
- 	<select id="getMinPriceFromItemValue" resultType="int">
+ 	<select id="getMinPriceFromItemValue" resultType="java.lang.Double">
  		SELECT MIN(item_sku_price) FROM item_value WHERE item_id=#{itemId}
  	</select>
  	
@@ -95,6 +95,10 @@
  	
  	<select id="queryItemNum" resultType="int">
  		select count(0) from item_value where item_sKU=#{itemSKU}
+ 	</select>
+ 	
+ 	<select id="getItemBrandNameByItemId" resultType="string">
+ 		select item_brand_name from item_brand where item_brand_id=#{itemBrandId}
  	</select>
  	
  	

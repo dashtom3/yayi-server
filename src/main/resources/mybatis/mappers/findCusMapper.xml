@@ -3,18 +3,29 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.yayiabc.http.mvc.dao.FindCusDao">
-	<select id="show" resultType="com.yayiabc.http.mvc.pojo.jpa.SaleInfo">
-		SELECT * FROM USER 
+     <resultMap type="User" id="c">
+     <id property="userId" column="user_id"/>
+     <result property="phone" column="phone"/>
+      <result property="trueName" column="true_name"/>
+     <association property="certification" javaType="com.yayiabc.http.mvc.pojo.jpa.Certification">
+      <id property="userId" column="user_id"/>
+       <result property="companyName" column="company_name"/>
+        <result property="part" column="part"/>
+        <result property="workAddress" column="work_address"/>
+     </association>
+     </resultMap>
+	<!-- <select id="show" resultMap="c">
+		SELECT  cert.company_name,cart.part,cart.work_address,us.phone,us.true_name  FROM USER us join certification cert on us.user_id=cert.user_id 
 		<where>
-		 sale_id IS null
+		 us.sale_id IS null
 			<if test="cusName!=null and cusName!=''">
-				true_name=#{cusName} and
+				cert.company_name='%${cusName}%' and
 			</if>
 			<if test="phone!=null and phone!=''">
-			phone=#{phone} and 
+			us.phone=#{phone}
 			</if>
 		</where>
-	</select>
+	</select> -->
 	
 	<select id="showMyCus" resultType="com.yayiabc.http.mvc.pojo.jpa.User">
 		SELECT * FROM USER 
@@ -40,13 +51,16 @@
 	  
 	  
 	</select>
-	<select id="showsss" resultType="com.yayiabc.http.mvc.pojo.jpa.User">
-	  select  * from  user where 
+	<select id="showsss" resultMap="c">
+	SELECT  cert.company_name,cert.part,cert.work_address,us.phone,us.true_name  FROM USER us join certification cert on us.user_id=cert.user_id 
+	 <where>
 	   
-	  <if test="state!=null and state=''">
-	  true_name like '%${state}%' and sale_id is null  or phone like '%${state}%' and sale_id is null and 
+	  <if test="state!=null and state!=''">
+	  us.true_name like '%${state}%' and us.sale_id is null  or us.phone like '%${state}%' and us.sale_id is null or  cert.company_name like '%${state}%'
+	  and us.sale_id is null 
 	  </if>
-	  sale_id is null
+	and   us.sale_id is null
+	 </where>
 	 <!--  true_name ='%${state}%' and sale_id is null  or phone='%${state}%' and sale_id is null -->
 	  
 	</select>

@@ -44,6 +44,8 @@ public interface ItemInfoManageDao {
 
 	void insertItemValue(ItemValue itemValue);
 
+	String getItemBrandNameByItemId(Integer itemBrandId);
+
 
 
 

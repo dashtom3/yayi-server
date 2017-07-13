@@ -10,7 +10,7 @@ public interface AliPayDao {
      //更改 订单状态
 	int updateStateAndPayTime(@Param("orderId")String orderId);
     //查询  订单的 实际付款
-	int queryYorderIdAndActualMonry(@Param("orderId")String orderId);
+	double queryYorderIdAndActualMonry(@Param("orderId")String orderId);
 	//商品名称序列
 	List<String> queryYitemNames(@Param("orderId")String orderId);
 	

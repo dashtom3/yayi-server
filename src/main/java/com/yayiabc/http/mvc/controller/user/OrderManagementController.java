@@ -74,7 +74,7 @@ public class OrderManagementController {
    //模拟失去焦点事件
    @RequestMapping("loseFocus")
    @ResponseBody
-   public DataWrapper<Map<String, Integer>> loseFocus(
+   public DataWrapper<Map<String, Object>> loseFocus(
 		   @RequestParam(value="itemId",required=true) String itemId,
 		   @RequestParam(value="orderId",required=true) String orderId,
 		   @RequestParam(value="num",required=true) Integer num  

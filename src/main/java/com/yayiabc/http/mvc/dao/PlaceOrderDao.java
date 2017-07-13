@@ -62,4 +62,7 @@ public interface PlaceOrderDao {
 	//根据sku查找商品的图片路径
 	String queryItemPicPath(String itemId);
 
+     //放一件轻易间
+	int cleanCart(@Param("userId")String userId,@Param("itemSKU")String itemSKU);
+
 }

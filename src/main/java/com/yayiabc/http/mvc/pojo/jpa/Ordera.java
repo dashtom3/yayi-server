@@ -314,18 +314,22 @@ public class Ordera extends BasePojo {
 
 	@Override
 	public String toString() {
-		return "Ordera [orderId=" + orderId + ", actualPay=" + actualPay
-				+ ", payType=" + payType + ", postFee=" + postFee
-				+ ", paymentTime=" + paymentTime + ", consignTime="
-				+ consignTime + ", endTime=" + endTime + ", closeTime="
-				+ closeTime + ", buyerMessage=" + buyerMessage + ", buyerNick="
-				+ buyerNick + ", buyerRate=" + buyerRate + ", state=" + state
-				+ ", shippingName=" + shippingName + ", shippingCode="
-				+ shippingCode + ", invoiceHand=" + invoiceHand
-				+ ", isRegister=" + isRegister + ", giveQb=" + giveQb
-				+ ", refundInfo=" + refundInfo + ", totalFee=" + totalFee
+		return "Ordera [orderId=" + orderId + ", userId=" + userId
+				+ ", actualPay=" + actualPay + ", payType=" + payType
+				+ ", postFee=" + postFee + ", paymentTime=" + paymentTime
+				+ ", consignTime=" + consignTime + ", endTime=" + endTime
+				+ ", closeTime=" + closeTime + ", buyerMessage=" + buyerMessage
+				+ ", buyerNick=" + buyerNick + ", buyerRate=" + buyerRate
+				+ ", state=" + state + ", shippingName=" + shippingName
+				+ ", shippingCode=" + shippingCode + ", invoiceHand="
+				+ invoiceHand + ", isRegister=" + isRegister + ", giveQb="
+				+ giveQb + ", refundInfo=" + refundInfo + ", totalFee="
+				+ totalFee + ", qbDed=" + qbDed + ", refund=" + refund
+				+ ", receiver=" + receiver + ", receiverId=" + receiverId
 				+ ", user=" + user + ", orderitemList=" + orderitemList
 				+ ", commentList=" + commentList + "]";
 	}
+
+	
 
 }

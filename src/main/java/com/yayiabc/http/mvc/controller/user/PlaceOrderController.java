@@ -65,7 +65,7 @@ public class PlaceOrderController {
 	@ResponseBody   //ipi需要文档修改
 	public DataWrapper<HashMap<String, Object>> upateAddress(
 			@RequestParam(value="receiverId") Integer receiverId
-			,@RequestParam(value="sumPrice") Integer sumPrice,
+			,@RequestParam(value="sumPrice") Double sumPrice,
 			@RequestParam(value="itemSum") Integer itemSum
 			){
 		return placeOrderService.upateAddress(receiverId,sumPrice,itemSum);
@@ -110,7 +110,7 @@ public class PlaceOrderController {
 	//1234
 	@RequestMapping("generaOrder")
 	@ResponseBody
-	public HashMap<String, Object> generaOrder(
+	public DataWrapper<HashMap<String, Object>> generaOrder(
 			@RequestParam(value="token",required=true) String token,
 			@RequestParam(value="orderItem",required=true) String  orderItem,
 			@ModelAttribute Ordera order,
@@ -131,7 +131,7 @@ public class PlaceOrderController {
 		hashMap.put("giveQbNum", giveQbNum);
 		hashMap.put("itemSum", itemSum);
 		 */
-		HashMap<String, Object>hm=placeOrderService.generaOrder(token,orderItemList,order);
+		DataWrapper<HashMap<String, Object>> hm=placeOrderService.generaOrder(token,orderItemList,order);
 		                return hm;                                                                                                             
 		/*  这里先放下
 		 * String  str=aliPayService.packingParameter((String)hm.get("OrderId"), (String)hm.get("itemNames"), 

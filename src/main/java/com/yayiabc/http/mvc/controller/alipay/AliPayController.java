@@ -65,7 +65,6 @@ public class AliPayController {
 		}
 	}
 	//判断订单支付同步跳转
-	@ResponseBody
 	@RequestMapping("payVerifica")
 	void ReturnUrl(
 			@RequestParam(value="is_success",required=true) String is_success,//表示接口调用是否成功，并不表明业务处理结果。
@@ -100,18 +99,26 @@ public class AliPayController {
 				valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
 				params.put(name, valueStr);
 			}
-			OutputStream out = response.getOutputStream();  
+			System.out.println("已经请求到同步方法内");
 			response.setContentType("text/html;charset=UTF-8");  
-			out.write(alipayService.ReturnUrl(
-					is_success, sign_type, sign, trade_status, out_trade_no, trade_no,params).getBytes("UTF-8")
+			String Sign=alipayService.ReturnUrl(
+					is_success, sign_type, sign, trade_status, out_trade_no, trade_no,params);
+			System.out.println(Sign);
+			if("success".equals(Sign)){
+				System.out.println("已经成功  正在跳转");
+				response.sendRedirect("http://47.93.48.111:85/paySuccess");
+			}else{
+				System.out.println("已经失败  正在跳转");
+				response.sendRedirect("http://47.93.48.111:85/payFail");
+			}
+			/*out.write(
 					);//以UTF-8进行编码  
-
+*/
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
 	}
 	////判断订单支付异步跳转
-	@ResponseBody
 	@RequestMapping("notifyVerifica")
 	void notifyVerifica(
 			@RequestParam(value="is_success",required=true) String is_success,//表示接口调用是否成功，并不表明业务处理结果。
@@ -145,7 +152,7 @@ public class AliPayController {
 			response.setContentType("text/html;charset=UTF-8");  
 			out.write(alipayService.notifyVerifica(
 					is_success, sign_type, sign, trade_status, out_trade_no, trade_no,params).getBytes("UTF-8")
-					);//以UTF-8进行编码  
+					);//以UTF-8进行编码  0
 		} catch (IOException e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();

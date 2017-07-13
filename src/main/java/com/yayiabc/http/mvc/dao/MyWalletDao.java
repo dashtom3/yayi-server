@@ -10,9 +10,12 @@ import com.yayiabc.http.mvc.pojo.jpa.With;
 
 public interface MyWalletDao {
      //查询 进账
-	List<SaleIncome> saleInCome(@Param("saleId")String token);
+	List<SaleIncome> saleInCome(@Param("saleId")String token,
+			@Param("starTime")String starTime,@Param("endTime")String endTime);
 	//查询提现
-	List<With> with(@Param("saleId")String token);
+	List<With> with(@Param("saleId")String token,
+			@Param("starTime")String starTime,@Param("endTime")String endTime);
+	
 	  
 	//查询 订单详细
 	SaleInfo queryOrder(@Param("orderId")String orderId,@Param("userId")String userId);

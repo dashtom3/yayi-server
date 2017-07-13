@@ -17,7 +17,7 @@ public interface PlaceOrderService {
 	DataWrapper<HashMap<String, Object>> buyNow(OrderItem orderItem, String token,Ordera order);	
 
     //下面的更改地址
-	public DataWrapper<HashMap<String, Object>>  upateAddress(Integer receiverId,Integer sumPrice,Integer itemSum);
+	public DataWrapper<HashMap<String, Object>>  upateAddress(Integer receiverId,Double sumPrice,Integer itemSum);
 	//将订单数据保存到订单表
 	
 	DataWrapper<Void> saveMessage(
@@ -31,5 +31,5 @@ public interface PlaceOrderService {
 	
 	
 	//1234
-	HashMap<String, Object> generaOrder(String token, List<OrderItem> orderItem, Ordera order);
+	DataWrapper<HashMap<String, Object>> generaOrder(String token, List<OrderItem> orderItem, Ordera order);
 }

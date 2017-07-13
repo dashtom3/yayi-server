@@ -21,14 +21,14 @@
 		<result property="state" column="state" />
 		<result property="shippingName" column="shipping_name" />
 		<result property="shippingCode" column="shipping_code" />
-		<result property="refundInfo" column="refundInfo" />
+		<result property="refundInfo" column="refund_info" />
 
 	</resultMap>
 	<select id="showOrder" resultMap="userOrderManageResultMap">
 		SELECT
 		orde.order_id,orde.total_fee,orde.qb_ded,orde.actual_pay,us.phone,orde.created,us.true_name,
 		orde.payment_time,
-		orde.state,
+		orde.state,orde.refund_info,
 		CONCAT(shipping_name,shipping_code) AS
 		information,orde.refund,orde.shipping_name,orde.shipping_code
 		FROM
@@ -36,37 +36,36 @@
 		us ON us.user_id=orde.user_id JOIN receiver rece
 		ON rece.user_id=orde.user_id
 		<where>
-			<if test="orderId !=null">
-				orde.order_id=#{orderId}
+			<if test="orderId !=null and orderId!=''">
+				orde.order_id  like '%{orderId}%'
 			</if>
-			<!-- <choose> <when test="buyerInfo != null"> and us.phone = #{buyerInfo} 
-				</when> <otherwise> and us.true_name = #{buyerInfo} </otherwise> </choose> -->
-			<if test="buyerInfo != null">
+			
+			<if test="buyerInfo != null and buyerInfo!=''">
 				and us.phone = #{buyerInfo} or us.true_name =
 				#{buyerInfo}
 			</if>
-			<if test="orderState !=null">
+			<if test="orderState !=null and orderState!=''">
 				and orde.state=#{orderState}
 			</if>
-			<if test="isRefund !=null">
+			<if test="isRefund !=null and isRefund!=''">
 				and orde.refund=#{isRefund}
 			</if>
 			<if test="orderCTime !=null and orderETime!=null">
 				and orde.created
 				BETWEEN #{orderCTime} AND #{orderETime}
 			</if>
-			<if test="orderCTime !=null and orderETime==null">
+			
+			<if test="orderCTime !=null and orderCTime!=null">
 				and orde.created >#{orderCTime}
 
 			</if>
-			<if test="orderETime !=null and orderCTime==null">
+			<if test="orderETime !=null and orderETime!=null">
 				and orde.created &lt;#{orderETime}
 			</if>
-			
-			and created order by desc
-			<!-- <if test="orderCTime !=null"> and orde.created>#{orderCTime} </if> 
-				<if test="orderETime !=null"> and orde.created &lt;#{orderETime} </if> -->
+			    
 		</where>
+		
+		 order by  orde.created desc   limit #{currentNum} ,#{numberPerpage}
 	</select>
 
 	<!-- //关闭交易 or确定交易 -->

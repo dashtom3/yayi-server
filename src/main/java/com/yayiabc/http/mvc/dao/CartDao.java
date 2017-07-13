@@ -18,7 +18,7 @@ public interface CartDao {
 	
 	int add(@Param("userId")String userId,@Param("num")Integer num,@Param("itemSKU")String itemSKU);
 	
-	int getCountItemSKU(String itemSKU);
+	int getCountItemSKU(@Param("userId")String userId,@Param("itemSKU")String itemSKU);
 	
 	//每次数量+
 	void updateOne(@Param("userId")String userId,@Param("itemSKU")String itemSKU,@Param("num")Integer num);

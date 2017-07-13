@@ -58,13 +58,13 @@
 	</update>
 
 	<update id="updateNum">
-		UPDATE cart SET num=#{num} WHERE item_SKU=#{itemSKU}
-		AND user_id=#{userId};
+		UPDATE cart SET num=#{num} 
+		WHERE item_SKU=#{itemSKU} AND user_id=#{userId};
 	</update>
 
 	<delete id="delete">
-		DELETE FROM cart WHERE user_id=#{userId} AND
-		item_SKU=#{itemSKU};
+		DELETE FROM cart 
+		WHERE user_id=#{userId} AND item_SKU=#{itemSKU};
 	</delete>
 
 	<insert id="star" parameterType="ItemStar">
@@ -74,12 +74,12 @@
 	</insert>
 
 	<insert id="add">
-		INSERT INTO cart(user_id,num,item_SKU,created,updated)
-		VALUES(#{userId},#{num},#{itemSKU},NOW(),NOW())
+		INSERT INTO cart(cart_id,user_id,num,item_SKU,created,updated)
+		VALUES(null,#{userId},#{num},#{itemSKU},NOW(),NOW())
 	</insert>
 
 	<select id="getCountItemSKU" resultType="int">
 		SELECT COUNT(0) FROM
-		cart WHERE item_SKU=#{itemSKU};
+		cart WHERE item_SKU=#{itemSKU} and user_id=#{userId};
 	</select>
 </mapper>

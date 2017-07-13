@@ -404,7 +404,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			dataWrapper.setData(hashMap);
 			return dataWrapper;
 		} catch (Exception e) {
-			
 			dataWrapper.setMsg("订单提交失败");
 			return dataWrapper;
 		}

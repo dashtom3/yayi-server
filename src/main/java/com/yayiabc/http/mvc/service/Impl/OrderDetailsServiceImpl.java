@@ -45,8 +45,10 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		if(token!=null){
 			 userId=utilsDao.getUserID(token);
 		}
+		String currentNum=String.valueOf(page.getCurrentNumber());
+		map.put("currentNum", currentNum);
 		map.put("phone", userId);
-		map.put("currentPage", String.valueOf(page.getCurrentPage()));
+		//map.put("currentPage", String.valueOf(page.getCurrentPage()));
 		map.put("numberPerpage", String.valueOf(page.getNumberPerPage()));
 		//总条数
 				int count=orderdetailsDao.queryCount(map);

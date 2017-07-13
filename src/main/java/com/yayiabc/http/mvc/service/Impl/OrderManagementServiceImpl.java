@@ -25,6 +25,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			Integer currentPage,Integer numberPerpage
 			) {
 		Page page=new Page();
+		
 		if(currentPage!=null&numberPerpage!=null){
 		page.setNumberPerPage(numberPerpage);
 		page.setCurrentPage(currentPage);
@@ -37,6 +38,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		DataWrapper<List<OrderManagement>> dataWrapper=new DataWrapper<List<OrderManagement>>();
 		//总条数
 				int count=orderManagementDao.queryCount(hMap);
+				
 				hMap.put("currentPage", page.getCurrentPage());
 				hMap.put("numberPerpage", page.getNumberPerPage());
 		List<OrderManagement> userOrderList=orderManagementDao.showOrder(hMap);

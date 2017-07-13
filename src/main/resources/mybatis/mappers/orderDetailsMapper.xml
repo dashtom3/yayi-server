@@ -86,7 +86,7 @@
 			</if>
 
 		</where>
-		limit ${currentPage},${numberPerpage}
+		limit ${currentNum},${numberPerpage}
 		order by  orde.created desc
 	</select>
 

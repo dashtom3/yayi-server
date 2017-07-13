@@ -12,4 +12,8 @@ public interface ItemClassifyDao {
  List<ItemInfo> queryItemSearch(Search search);
 
 int getCount(Search search);
+
+int getCountGet(Search search);
+
+List<ItemInfo> queryItemSearchGet(Search search);
 }

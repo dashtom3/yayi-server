@@ -38,7 +38,7 @@
 	<select id="brandItemList" resultMap="itemInfoRM">
 		SELECT d.item_id,d.item_pica,d.item_name,c.item_brand_name,d.item_price,d.sales,d.updated,c.item_brand_id FROM
 (SELECT * FROM
-(SELECT item_id,item_name,item_brand_id p_id,item_price,sales,updated FROM item_info) a
+(SELECT item_id,item_name,item_brand_id p_id,item_price,sales,updated FROM item_info where state=1) a
 INNER JOIN
 (SELECT item_id did,item_pica FROM item_detail) b
 ON a.item_id=b.did) d
@@ -57,7 +57,7 @@ ON d.p_id=c.item_brand_id
 	<select id="getCount" resultType="int">
 		SELECT count(0) FROM
 (SELECT * FROM
-(SELECT item_id,item_name,item_brand_id p_id,item_price,sales,updated FROM item_info) a
+(SELECT item_id,item_name,item_brand_id p_id,item_price,sales,updated FROM item_info where state=1) a
 INNER JOIN
 (SELECT item_id did,item_pica FROM item_detail) b
 ON a.item_id=b.did) d

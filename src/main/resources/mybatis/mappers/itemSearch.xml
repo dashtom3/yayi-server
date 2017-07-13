@@ -7,7 +7,7 @@
 	<bind name="pattern" value="'%' + itemBrandName + '%'" />
 		 SELECT d.item_id,d.x_id,d.item_name,d.item_price,d.item_pica,d.one_classify,d.sales,d.two_classify,d.three_classify,c.item_brand_name,d.updated FROM
  (SELECT * FROM
- (SELECT item_id,item_name,sales,item_brand_id,item_price,one_classify,two_classify,three_classify,updated FROM item_info) a
+ (SELECT item_id,item_name,sales,item_brand_id,item_price,one_classify,two_classify,three_classify,updated FROM item_info where state=1) a
  LEFT JOIN
  (SELECT item_id x_id,item_pica FROM item_detail) b
  ON a.item_id=b.x_id) d
@@ -30,7 +30,7 @@
 	<bind name="pattern" value="'%' + itemBrandName + '%'" />
 		 SELECT count(0) FROM
  (SELECT * FROM
- (SELECT item_id,item_name,item_brand_id,item_price,one_classify,two_classify,three_classify FROM item_info) a
+ (SELECT item_id,item_name,item_brand_id,item_price,one_classify,two_classify,three_classify FROM item_info where state=1) a
  LEFT JOIN
  (SELECT item_id x_id,item_pica FROM item_detail) b
  ON a.item_id=b.x_id) d

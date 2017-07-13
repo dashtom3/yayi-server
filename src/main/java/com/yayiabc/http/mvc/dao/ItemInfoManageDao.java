@@ -35,7 +35,7 @@ public interface ItemInfoManageDao {
 
 	void updateItemValue(ItemValue itemValue);
 
-	Integer getMinPriceFromItemValue(String itemId);
+	Double getMinPriceFromItemValue(String itemId);
 
 
 	void deleteComments(String itemId);

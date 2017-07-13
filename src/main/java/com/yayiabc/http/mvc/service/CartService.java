@@ -13,7 +13,7 @@ public interface CartService {
 	
 	DataWrapper<ItemStar> star(String itemId,String itemSKU,String token);
 	
-	DataWrapper<Cart> add(Integer num,String itemSKU,String token);
+	DataWrapper<Void> add(Integer num,String itemSKU,String token);
 	
 	DataWrapper<Void> updateNum(Integer num,String itemSKU,String token);
 }

@@ -64,7 +64,7 @@ public class CartController {
 	 */
 	@RequestMapping(value = "add", method = RequestMethod.POST)
 	@ResponseBody
-	public DataWrapper<Cart> add(
+	public DataWrapper<Void> add(
 			@RequestParam(value="num",required=true)Integer num,
 			@RequestParam(value="itemSKU",required=true)String itemSKU,
 			@RequestParam(value="token",required=true)String token

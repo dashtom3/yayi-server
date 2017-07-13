@@ -73,13 +73,13 @@
 		VALUES(#{userId},#{itemId},NOW(),NOW());
 	</insert>
 
-	<insert id="add" parameterType="Cart">
+	<insert id="add">
 		INSERT INTO cart(user_id,num,item_SKU,created,updated)
 		VALUES(#{userId},#{num},#{itemSKU},NOW(),NOW())
 	</insert>
 
 	<select id="getCountItemSKU" resultType="int">
-		SELECT COUNT(*) FROM
+		SELECT COUNT(0) FROM
 		cart WHERE item_SKU=#{itemSKU};
 	</select>
 </mapper>

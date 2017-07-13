@@ -84,8 +84,8 @@ public class CartServiceImpl implements CartService {
 	}
 
 	@Override
-	public DataWrapper<Cart> add(Integer num,String itemSKU,String token) {
-		DataWrapper<Cart> dataWrapper = new DataWrapper<Cart>();
+	public DataWrapper<Void> add(Integer num,String itemSKU,String token) {
+		DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
 		String userId=utilsDao.getUserID(token);
 		if (userId == null) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);

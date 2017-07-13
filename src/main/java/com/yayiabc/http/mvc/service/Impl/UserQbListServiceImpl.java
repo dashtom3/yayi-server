@@ -46,6 +46,7 @@ public class UserQbListServiceImpl implements UserQbListService {
 		String userId = userDao.getUserId(phone);		
 		int i = userQbListDao.update(qbBalance, phone);
 		if (i > 0) {
+			
 			QbRecord qbRecord=new QbRecord();
 			qbRecord.setUserId(userId);
 			Integer newQb = userQbListDao.queryQb(phone);
@@ -61,6 +62,7 @@ public class UserQbListServiceImpl implements UserQbListService {
 			if(sign > 0){
 				dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			}
+		
 		} else {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 		}

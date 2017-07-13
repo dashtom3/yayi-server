@@ -8,7 +8,6 @@ import org.springframework.stereotype.Service;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
-import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.UserMyQbDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
@@ -20,24 +19,28 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 	@Autowired
 	UserMyQbDao userMyQbDao;
 	@Autowired
-	UserDao userDao;
-	@Autowired
 	UtilsDao utilsDao;
 
 	@Override
-	public DataWrapper<QbRecord> add(QbRecord qbRecord,
-			String token) {
-		DataWrapper<QbRecord> dataWrapper = new DataWrapper<QbRecord>();
+	public DataWrapper<Void> add(QbRecord qbRecord,String token) {
+		DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
 		String userId=utilsDao.getUserID(token);
 		if (userId == null) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("token错误");
 		} else {
+			
 			qbRecord.setUserId(userId);
+			if (qbRecord.getQbRget() != null && qbRecord.getQbRget() > 0) {
+				userMyQbDao.updateUserQb(qbRecord.getQbRget(), userId);
+			} else if (qbRecord.getQbRout() != null && qbRecord.getQbRout() < 0) {
+				userMyQbDao.updateUserQb(qbRecord.getQbRout(), userId);
+			}
+			
+			qbRecord.setQbBalances(userMyQbDao.queryQbbalance(userId));
 			int id = userMyQbDao.add(qbRecord);
 			if (id > 0) {
 				dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-				dataWrapper.setData(qbRecord);
 			} else {
 				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			}

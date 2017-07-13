@@ -25,7 +25,8 @@ public class UserMyQbController {
 	 */
 	@RequestMapping(value = "add", method = RequestMethod.POST)
 	@ResponseBody
-	public DataWrapper<QbRecord> add(@ModelAttribute QbRecord qbRecord,
+	public DataWrapper<Void> add(
+			@ModelAttribute QbRecord qbRecord,
 			@RequestParam(value = "token", required = true) String token) {
 		return userMyQbService.add(qbRecord, token);
 	}

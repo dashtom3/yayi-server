@@ -18,10 +18,10 @@
 			<if test="companyName !=null and companyName !=''">
 				AND c.company_name LIKE '%${companyName}%'
 			</if>
-			<if test="isBindSale == 1">
+			<if test="isBindSale == 1 and isBindSale !=null and isBindSale !=''">
 				AND u.sale_id IS NOT NULL
 			</if>
-			<if test="isBindSale == 2">
+			<if test="isBindSale == 2 and isBindSale !=null and isBindSale !=''">
 				AND u.sale_id IS NULL
 			</if>
 			<if test="type !=null and type!=''">
@@ -31,11 +31,13 @@
 				AND s.true_name LIKE '%${saleName}%'
 			</if>
 		</where>
+			GROUP BY u.user_id
+	   		ORDER BY u.created	
             LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
 	
 	<select id="getCount" resultType="int">
-		SELECT count(*)
+		SELECT COUNT(0)
 		FROM USER u 
 		LEFT JOIN sale_info s ON u.sale_id=s.sale_id
 		LEFT JOIN certification c ON u.user_id=c.user_id

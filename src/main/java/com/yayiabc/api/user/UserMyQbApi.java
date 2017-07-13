@@ -66,8 +66,8 @@ public interface UserMyQbApi {
      * @apiVersion 0.1.0
      * @apiDescription 新增我的乾币记录
      *
-     * @apiParam {String} qbRget 收入（收入和支出选填一项）
-     * @apiParam {String} qbRout 支出（收入和支出选填一项）
+     * @apiParam {String} qbRget 收入（收入和支出选填一项，输正数）
+     * @apiParam {String} qbRout 支出（收入和支出选填一项，输负数）
      * @apiParam {String} remark 描述（非必须）
      * @apiParam {String} token 身份凭证（必须）
      *

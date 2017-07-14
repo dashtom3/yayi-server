@@ -159,6 +159,8 @@ public class ItemInfoManageController {
 	/**
 	 * 商品属性修改
 	 */
+	@RequestMapping("updateItemValue")
+	@ResponseBody
 	public DataWrapper<Void> updateItemValue(
 			@RequestBody List<ItemValue> itemValueList
 			){

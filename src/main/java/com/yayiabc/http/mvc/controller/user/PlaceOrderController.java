@@ -7,6 +7,8 @@ import java.util.HashMap;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
+import net.sf.json.JSONArray;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -20,7 +22,7 @@ import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.service.AliPayService;
 import com.yayiabc.http.mvc.service.PlaceOrderService;
 
-import net.sf.json.JSONArray;
+
 
 
 //下订单

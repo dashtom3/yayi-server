@@ -8,8 +8,8 @@
  		select item_brand_id,item_brand_home,item_brand_logo,item_brand_name from item_brand 
  		<where>
  		 true
- 		 <if test="itemBrandName!=null">and item_brand_name=#{itemBrandName}</if>
- 		 <if test="itemBrandHome!=null">and item_brand_Home=#{itemBrandHome}</if>
+ 		 <if test="itemBrandName!=null">and item_brand_name like '%${itemBrandName}%'</if>
+ 		 <if test="itemBrandHome!=null">and item_brand_Home like '%${itemBrandHome}%'</if>
  		</where>
  	</select>
  	

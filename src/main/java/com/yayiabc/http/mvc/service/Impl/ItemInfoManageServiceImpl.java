@@ -146,7 +146,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 			String video, String itemDesc, String itemUse, String itemRange,
 			String registerId, String storeItemId, String apparatusType,
 			String unit,String producePompany, Date registerDate,
-			String itemPacking,String itemBrandName) {
+			String itemPacking) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		ItemInfo itemInfo=new ItemInfo();
 		itemInfo.setItemId(itemId);
@@ -156,6 +156,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 		itemInfo.setThreeClassify(threeClassify);
 		itemInfo.setIsThrow(isThrow);
 		ItemBrand itemBrand =new ItemBrand();
+		String itemBrandName=itemInfoManageDao.getItemBrandNameByItemId(itemBrandId);
 		itemBrand.setItemBrandName(itemBrandName);
 		itemBrand.setItemBrandId(itemBrandId);
 		ItemDetail itemDetail =new ItemDetail();

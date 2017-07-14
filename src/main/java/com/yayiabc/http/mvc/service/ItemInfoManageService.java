@@ -25,7 +25,7 @@ public interface ItemInfoManageService {
 			String video, String itemDesc, String itemUse, String itemRange,
 			String registerId, String storeItemId, String apparatusType,
 			String unit,String producePompany, Date registerDate,
-			String itemPacking,String itemBrandName);
+			String itemPacking);
 
 	DataWrapper<Void> insert(String itemId,String itemName,
 			Integer itemBrandId, String oneClassify, String itemLevels,

@@ -12,12 +12,12 @@
 			<if test="email !=null and email !=''">email=#{email},</if>
 			<if test="sex !=null and sex !=''">sex=#{sex},</if>
 			<if test="birthday !=null and birthday !=''">birthday=#{birthday},</if>
-			<if test="part !=null and part !=''">part=#{part},</if>
-			<if test="address !=null and address !=''">address=#{address},</if>
-			<if test="education !=null and education !=''">education=#{education},</if>
-			<if test="workUnit !=null and workUnit !=''">work_unit=#{workUnit},</if>
-			<if test="workPosition !=null and workPosition !=''">work_position=#{workPosition},</if>
-			<if test="salePic !=null and salePic !=''">sale_pic=#{salePic}</if>
+			part=#{part},
+			address=#{address},
+			education=#{education},
+			work_unit=#{workUnit},
+			work_position=#{workPosition},
+			sale_pic=#{salePic}
 		</set>
 		WHERE sale_id=#{saleId};	
 	</update>

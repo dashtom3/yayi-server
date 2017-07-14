@@ -41,11 +41,11 @@
 	<update id="updateUser">
 		UPDATE user
 		<set>
-			<if test="trueName !=null">true_name=#{trueName},</if>
-			<if test="sex !=null">sex=#{sex},</if>
-			<if test="birthday !=null">birthday=#{birthday},</if>
-			<if test="qq !=null">qq=#{qq},</if>
-			<if test="userPic !=null">user_pic=#{userPic}</if>
+			<if test="trueName !=null and trueName !=''">true_name=#{trueName},</if>
+			<if test="sex !=null and sex!=''">sex=#{sex},</if>
+			<if test="birthday !=null and birthday !=''">birthday=#{birthday},</if>
+			qq=#{qq},
+			user_pic=#{userPic}
 		</set>
 		WHERE user_id=#{userId};
 	</update>
@@ -53,12 +53,12 @@
 	<update id="updateCertification">
 		UPDATE certification
 		<set>
-			<if test="type != null">type=#{type},</if>
-			<if test="companyName != null">company_name=#{companyName},</if>
-			<if test="part != null">part=#{part},</if>
-			<if test="workAddress != null">work_address=#{workAddress},</if>
-			<if test="doctorPic != null">doctor_pic=#{doctorPic},</if>
-			<if test="judge !=null">judge=#{judge},</if>
+			<if test="type != null and type !=''">type=#{type},</if>
+			<if test="companyName != null and companyName !=''">company_name=#{companyName},</if>
+			part=#{part},
+			work_address=#{workAddress},
+			<if test="doctorPic != null and doctorPic !=''">doctor_pic=#{doctorPic},</if>
+			<if test="judge !=null and judge !=''">judge=#{judge},</if>
 			state=1,fail_reason=NULL
 		</set>
 		WHERE user_id=#{userId};

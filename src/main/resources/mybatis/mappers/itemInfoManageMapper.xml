@@ -15,7 +15,7 @@
  			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
  			<if test="state!=null and state!=''">and state=#{state}</if>
  			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
- 			<if test="oneClassify!=null and oneClassify!=''">or one_classify=#{oneClassify}</if>
+ 			<if test="oneClassify!=null and oneClassify!=''">and one_classify=#{oneClassify}</if>
  		</where>
  		order by a.updated
  	</select>
@@ -31,7 +31,7 @@
  			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
  			<if test="state!=null and state!=''">and state=#{state}</if>
  			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
- 			<if test="oneClassify!=null and oneClassify!=''">or two_classify=#{oneClassify}</if>
+ 			<if test="oneClassify!=null and oneClassify!=''">and two_classify=#{oneClassify}</if>
  		</where>
  		order by a.updated
  	</select>
@@ -47,7 +47,7 @@
  			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
  			<if test="state!=null and state!=''">and state=#{state}</if>
  			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
- 			<if test="oneClassify!=null and oneClassify!=''">or three_classify=#{oneClassify}</if>
+ 			<if test="oneClassify!=null and oneClassify!=''">and three_classify=#{oneClassify}</if>
  		</where>
  		order by a.updated
  	</select>

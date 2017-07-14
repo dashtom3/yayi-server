@@ -36,7 +36,14 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 		itemInfo.setItemBrand(itemBrand);*/
 		itemInfo.setTwoClassify(itemBrandName);
 		itemInfo.setState(state);
-		List<ItemInfo> itemInfoList=itemInfoManageDao.itemInfoList(itemInfo);
+		List<ItemInfo> itemInfoList=null;
+		if(itemInfoManageDao.getItemClassifyGradeByName(itemClassify)!=0){
+			itemInfoList=itemInfoManageDao.itemInfoListOne(itemInfo);
+		}else if(itemInfoManageDao.getItemClassifyGrade(itemClassify)!=0){
+			itemInfoList=itemInfoManageDao.itemInfoListTwo(itemInfo);
+		}else{
+			itemInfoList=itemInfoManageDao.itemInfoListThree(itemInfo);
+		}
 		dataWrapper.setData(itemInfoList);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
@@ -83,7 +90,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 			String itemDesc, String itemUse, String itemRange,String remark,
 			String registerId, String storeItemId, String apparatusType,
 			String unit, String producePompany, Date registerDate,
-			String itemPacking) {
+			String itemPacking,String itemSort) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 			ItemInfo itemInfo=new ItemInfo();
 			itemInfo.setItemId(itemId);
@@ -92,6 +99,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 			itemInfo.setTwoClassify(twoClassify);
 			itemInfo.setThreeClassify(threeClassify);
 			itemInfo.setIsThrow(isThrow);
+			itemInfo.setItemSort(itemSort);
 			ItemBrand itemBrand =new ItemBrand();
 			String itemBrandName=itemInfoManageDao.getItemBrandNameByItemId(itemBrandId);
 			itemBrand.setItemBrandName(itemBrandName);
@@ -146,7 +154,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 			String video, String itemDesc, String itemUse, String itemRange,
 			String registerId, String storeItemId, String apparatusType,
 			String unit,String producePompany, Date registerDate,
-			String itemPacking,String itemBrandName) {
+			String itemPacking,String itemSort) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		ItemInfo itemInfo=new ItemInfo();
 		itemInfo.setItemId(itemId);
@@ -155,7 +163,9 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 		itemInfo.setTwoClassify(twoClassify);
 		itemInfo.setThreeClassify(threeClassify);
 		itemInfo.setIsThrow(isThrow);
+		itemInfo.setItemSort(itemSort);
 		ItemBrand itemBrand =new ItemBrand();
+		String itemBrandName=itemInfoManageDao.getItemBrandNameByItemId(itemBrandId);
 		itemBrand.setItemBrandName(itemBrandName);
 		itemBrand.setItemBrandId(itemBrandId);
 		ItemDetail itemDetail =new ItemDetail();

@@ -8,8 +8,8 @@
  		select item_brand_id,item_brand_home,item_brand_logo,item_brand_name from item_brand 
  		<where>
  		 true
- 		 <if test="itemBrandName!=null">and item_brand_name=#{itemBrandName}</if>
- 		 <if test="itemBrandHome!=null">and item_brand_Home=#{itemBrandHome}</if>
+ 		 <if test="itemBrandName!=null">and item_brand_name like '%${itemBrandName}%'</if>
+ 		 <if test="itemBrandHome!=null">and item_brand_Home like '%${itemBrandHome}%'</if>
  		</where>
  	</select>
  	
@@ -68,6 +68,7 @@ ON d.p_id=c.item_brand_id
 	
 	<resultMap type="ItemInfo" id="itemInfoR" autoMapping="true">
 		<id property="itemId" column="item_id"/>
+		<result property="itemSort" column="item_sort"/>
 		<association property="itemDetail" javaType="ItemDetail" autoMapping="true">
 			<id property="itemId" column="d_id"/>
 		</association>
@@ -92,6 +93,8 @@ ON d.p_id=c.item_brand_id
 			<result property="itemSKU" column="item_sKU"/>
 			<result property="stockNum" column="s_num"/>
 			<result property="canUse" column="can_use"/>
+			<result property="itemQb" column="item_qb"/>
+			<result property="tiChen" column="ti_chen"/>
 		</collection>
 		<collection property="commentList" ofType="Comments">
 			<id property="commentId" column="comment_id"/>
@@ -129,7 +132,7 @@ LEFT JOIN
               ON c.user_id=f.user_id) m
 ON n.item_id=m.s_id ) o
 inner JOIN
-(SELECT item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use FROM item_value) q
+(SELECT item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,item_qb,ti_chen FROM item_value) q
 ON o.item_id=q.prop_id) s
 WHERE s.item_id=#{itemId}
 	</select>

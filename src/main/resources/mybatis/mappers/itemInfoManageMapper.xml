@@ -3,7 +3,7 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.yayiabc.http.mvc.dao.ItemInfoManageDao">
- 	<select id="itemInfoList" resultMap="itemInfoRM">
+ 	<select id="itemInfoListOne" resultMap="itemInfoRM">
  		select a.*,b.item_brand_name from 
  		item_info a
  		inner join
@@ -13,11 +13,41 @@
  			true
  			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
  			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
- 			<if test="oneClassify!=null and oneClassify!=''">and one_classify=#{oneClassify}</if>
- 			<if test="oneClassify!=null and oneClassify!=''">or two_classify=#{oneClassify}</if>
- 			<if test="oneClassify!=null and oneClassify!=''">or three_classify=#{oneClassify}</if>
- 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
  			<if test="state!=null and state!=''">and state=#{state}</if>
+ 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
+ 			<if test="oneClassify!=null and oneClassify!=''">or one_classify=#{oneClassify}</if>
+ 		</where>
+ 		order by a.updated
+ 	</select>
+ 	<select id="itemInfoListTwo" resultMap="itemInfoRM">
+ 		select a.*,b.item_brand_name from 
+ 		item_info a
+ 		inner join
+ 		(select item_brand_id p_id,item_brand_name from item_brand) b
+ 		on a.item_brand_id=b.p_id
+ 		<where>
+ 			true
+ 			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
+ 			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
+ 			<if test="state!=null and state!=''">and state=#{state}</if>
+ 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
+ 			<if test="oneClassify!=null and oneClassify!=''">or two_classify=#{oneClassify}</if>
+ 		</where>
+ 		order by a.updated
+ 	</select>
+ 	<select id="itemInfoListThree" resultMap="itemInfoRM">
+ 		select a.*,b.item_brand_name from 
+ 		item_info a
+ 		inner join
+ 		(select item_brand_id p_id,item_brand_name from item_brand) b
+ 		on a.item_brand_id=b.p_id
+ 		<where>
+ 			true
+ 			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
+ 			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
+ 			<if test="state!=null and state!=''">and state=#{state}</if>
+ 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
+ 			<if test="oneClassify!=null and oneClassify!=''">or three_classify=#{oneClassify}</if>
  		</where>
  		order by a.updated
  	</select>
@@ -68,7 +98,7 @@
  	</insert>
  	
  	<update id="updateItemInfo">
- 		update item_info set is_throw=#{isThrow},item_name=#{itemName},item_brand_id=#{itemBrand.itemBrandId},item_price=#{itemPrice},one_classify=#{oneClassify},two_classify=#{twoClassify},three_classify=#{threeClassify},
+ 		update item_info set is_throw=#{isThrow},item_name=#{itemName},item_brand_id=#{itemBrand.itemBrandId},item_price=#{itemPrice},one_classify=#{oneClassify},two_classify=#{twoClassify},three_classify=#{threeClassify},item_sort=#{itemSort},
  		updated=now() where item_id=#{itemId}
  	</update>
  	
@@ -102,6 +132,12 @@
  		select item_brand_name from item_brand where item_brand_id=#{itemBrandId}
  	</select>
  	
+ 	<select id="getItemClassifyGradeByName" resultType="java.lang.Integer">
+ 		select count(0) from classify where one_classify=#{itemClassify}
+ 	</select>
  	
+ 	<select id="getItemClassifyGrade" resultType="java.lang.Integer">
+ 		select count(0) from classify_two where classify_two_name=#{itemClassify}
+ 	</select>
  	
 </mapper>       

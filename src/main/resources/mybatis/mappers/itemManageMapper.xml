@@ -55,8 +55,8 @@
  		select * from item_classify
  		<where>
  			true
- 			<if test="itemClassifyName!=null"> and item_classify_name=#{itemClassifyName}</if>
- 			<if test="itemPreviousClassify!=null"> and item_previous_classify=#{itemPreviousClassify}</if>
+ 			<if test="itemClassifyName!=null"> and item_classify_name like '%${itemClassifyName}%'</if>
+ 			<if test="itemPreviousClassify!=null"> and item_previous_classify like '%${itemPreviousClassify}%'</if>
  		</where>
  	</select>
  	

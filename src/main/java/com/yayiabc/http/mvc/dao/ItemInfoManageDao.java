@@ -46,6 +46,16 @@ public interface ItemInfoManageDao {
 
 	String getItemBrandNameByItemId(Integer itemBrandId);
 
+	int getItemClassifyGradeByName(String itemClassify);
+
+	int getItemClassifyGrade(String itemClassify);
+
+	List<ItemInfo> itemInfoListOne(ItemInfo itemInfo);
+
+	List<ItemInfo> itemInfoListTwo(ItemInfo itemInfo);
+
+	List<ItemInfo> itemInfoListThree(ItemInfo itemInfo);
+
 
 
 

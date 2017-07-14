@@ -25,7 +25,7 @@ public interface ItemInfoManageService {
 			String video, String itemDesc, String itemUse, String itemRange,
 			String registerId, String storeItemId, String apparatusType,
 			String unit,String producePompany, Date registerDate,
-			String itemPacking,String itemBrandName);
+			String itemPacking,String itemSort);
 
 	DataWrapper<Void> insert(String itemId,String itemName,
 			Integer itemBrandId, String oneClassify, String itemLevels,
@@ -34,7 +34,7 @@ public interface ItemInfoManageService {
 			String video, String itemDesc, String itemUse, String itemRange,String remark,
 			String registerId, String storeItemId, String apparatusType,
 			String unit, String producePompany, Date registerDate,
-			String itemPacking);
+			String itemPacking,String itemSort);
 
 	DataWrapper<Void> insertItemValue(List<ItemValue> itemValueList);
 

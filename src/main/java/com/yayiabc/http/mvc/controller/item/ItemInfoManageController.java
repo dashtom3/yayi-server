@@ -87,10 +87,10 @@ public class ItemInfoManageController {
 			@RequestParam(value="twoClassify",required=true) String twoClassify,
 			@RequestParam(value="threeClassify",required=true) String threeClassify,
 			@RequestParam(value="itemPica",required=true) String itemPica,
-			@RequestParam(value="itemPicb",required=true) String itemPicb,
-			@RequestParam(value="itemPicc",required=true) String itemPicc,
-			@RequestParam(value="itemPicd",required=true) String itemPicd,
-			@RequestParam(value="itemPice",required=true) String itemPice,
+			@RequestParam(value="itemPicb",required=false) String itemPicb,
+			@RequestParam(value="itemPicc",required=false) String itemPicc,
+			@RequestParam(value="itemPicd",required=false) String itemPicd,
+			@RequestParam(value="itemPice",required=false) String itemPice,
 			@RequestParam(value="isThrow",required=true) Integer isThrow,
 			@RequestParam(value="video",required=true) String video,
 			@RequestParam(value="itemDesc",required=true) String itemDesc,
@@ -103,7 +103,8 @@ public class ItemInfoManageController {
 			@RequestParam(value="unit",required=false) String unit,
 			@RequestParam(value="registerDate",required=false) String registerDate,
 			@RequestParam(value="itemPacking",required=false) String itemPacking,
-			@RequestParam(value="itemLevels",required=false) String itemLevels
+			@RequestParam(value="itemLevels",required=false) String itemLevels,
+			@RequestParam(value="itemSort",required=false) String itemSort
 			){
 		Date registerDateChangeDate=null;
 		if(registerDate==null||"".equals(registerDate)){
@@ -152,7 +153,7 @@ public class ItemInfoManageController {
 		return itemInfoManageService.update(itemId,itemName,itemBrandId,oneClassify,itemLevels,
 				twoClassify,threeClassify,itemPica,itemPicb,itemPicc,itemPicd,itemPice,isThrow,
 				video,itemDesc,itemUse,itemRange,registerId,storeItemId,apparatusType,unit,
-				producePompany,registerDateChangeDate,itemPacking);
+				producePompany,registerDateChangeDate,itemPacking,itemSort);
 	}
 	
 	/**
@@ -210,7 +211,8 @@ public class ItemInfoManageController {
 	@RequestParam(value="unit",required=false) String unit,
 	@RequestParam(value="registerDate",required=false) String registerDate,
 	@RequestParam(value="itemPacking",required=false) String itemPacking,
-	@RequestParam(value="itemLevels",required=false) String itemLevels
+	@RequestParam(value="itemLevels",required=false) String itemLevels,
+	@RequestParam(value="itemSort",required=false) String itemSort
 			){
 		Date registerDateChangeDate=null;
 		if(registerDate==null||"".equals(registerDate)){
@@ -263,7 +265,7 @@ public class ItemInfoManageController {
 		return itemInfoManageService.insert(itemId,itemName,itemBrandId,oneClassify,itemLevels,
 				twoClassify,threeClassify,itemPica,itemPicb,itemPicc,itemPicd,itemPice,isThrow,
 				video,itemDesc,itemUse,itemRange,remark,registerId,storeItemId,apparatusType,unit,
-				producePompany,registerDateChangeDate,itemPacking);
+				producePompany,registerDateChangeDate,itemPacking,itemSort);
 	
 	}
 	

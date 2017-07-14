@@ -13,6 +13,7 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -64,26 +65,44 @@ public class AliPayController {
 			e.printStackTrace();
 		}
 	}
+	/**
+	 * ?buyer_email=17621302014&buyer_id=2088612734610853&exterface=create_direct_pay_by_user&is_success=T&
+	 * notify_id=RqPnCoPT3K9%252Fvwbh3InYwJKFDxNZfxZnZBsWXcEyYjtXMPGMPyDqDXSSKy%
+	 * 252Bt7nWcteUB&notify_time=2017-07-13%2016%3A16%3
+	 * A17&notify_type=trade_status_sync&out_trade_no=6c3cf294-51bb-471d-ad43-ddcac48fa79b2095&
+	 * payment_type=1&seller_email=yzm%40yzmedu.com&seller_id=2088221734067901&
+	 * subject=%E6%B5%8B%E8%AF%95%E4%B8%80%E4%B8%8B...
+	 * &total_fee=0.01&trade_no=2017071321001004850242776603&
+	 * trade_status=TRADE_SUCCESS&sign=3ee973ff791b75533176e7aa1749b56a&sign_type=MD5
+	 * @param is_success
+	 * @param sign_type
+	 * @param sign
+	 * @param trade_status
+	 * @param out_trade_no
+	 * @param trade_no
+	 * @param request
+	 * @param response
+	 */
 	//判断订单支付同步跳转
 	@RequestMapping("payVerifica")
 	void ReturnUrl(
-			@RequestParam(value="is_success",required=true) String is_success,//表示接口调用是否成功，并不表明业务处理结果。
+			/*@RequestParam(value="is_success",required=true) String is_success,//表示接口调用是否成功，并不表明业务处理结果。
 			@RequestParam(value="sign_type",required=true) String sign_type,//MD5
 			@RequestParam(value="sign",required=true) String sign,//签名与验签
 			@RequestParam(value="trade_status",required=true) String trade_status,//交易状态
 			@RequestParam(value="out_trade_no",required=true) String out_trade_no,//商户订单号
 			@RequestParam(value="trade_no",required=true) String trade_no,//支付宝交易号
-			HttpServletRequest request,
+*/			HttpServletRequest request,
 			HttpServletResponse response
 			//。。。。下面还可以加一些参数 现在暂时不加
 			){
 		try {
-			System.out.println("is_success: "+is_success);
+			/*System.out.println("is_success: "+is_success);
 			System.out.println("sign_type: "+sign_type);
 			System.out.println("sign: "+sign);
 			System.out.println("交易状态trade_status: "+trade_status);
 			System.out.println("订单号out_trade_no: "+out_trade_no);
-			System.out.println("支付宝交易号trade_no: "+trade_no);
+			System.out.println("支付宝交易号trade_no: "+trade_no);*/
 			//获取支付宝GET过来反馈信息
 			Map<String,String> params = new HashMap<String,String>();
 			Map requestParams = request.getParameterMap();
@@ -97,12 +116,13 @@ public class AliPayController {
 				}
 				//乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
 				valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
-				params.put(name, valueStr);
+				//params.put(name, new String(valueStr).getBytes());
+				params.put(name, new String (valueStr.getBytes("ISO-8859-1"),"UTF-8"));
 			}
 			System.out.println("已经请求到同步方法内");
 			response.setContentType("text/html;charset=UTF-8");  
 			String Sign=alipayService.ReturnUrl(
-					is_success, sign_type, sign, trade_status, out_trade_no, trade_no,params);
+					/*is_success, sign_type, sign, trade_status, out_trade_no, trade_no,*/params);
 			System.out.println(Sign);
 			if("success".equals(Sign)){
 				System.out.println("已经成功  正在跳转");
@@ -122,15 +142,21 @@ public class AliPayController {
 	@RequestMapping("notifyVerifica")
 	void notifyVerifica(
 			@RequestParam(value="is_success",required=true) String is_success,//表示接口调用是否成功，并不表明业务处理结果。
+			
 			@RequestParam(value="sign_type",required=true) String sign_type,//MD5
 			@RequestParam(value="sign",required=true) String sign,//签名与验签
-			@RequestParam(value="trade_status",required=true) String trade_status,//交易状态
-			@RequestParam(value="out_trade_no",required=true) String out_trade_no,//商户订单号
-			@RequestParam(value="trade_no",required=true) String trade_no,//支付宝交易号
+			@RequestParam(value="trade_status",required=false) String trade_status,//交易状态
+			@RequestParam(value="out_trade_no",required=false) String out_trade_no,//商户订单号
+			@RequestParam(value="trade_no",required=false) String trade_no,//支付宝交易号
+			
+			@RequestParam(value="notify_time",required=true) String notify_time,
+			@RequestParam(value="notify_type",required=true) String notify_type,//
+			@RequestParam(value="notify_id",required=true) String notify_id,//
 			HttpServletRequest request,
 			HttpServletResponse response
 			//同上
 			){
+		System.out.println("456as45d54asda6da4s86d486464649648646845555555555555555555555555555555555554989749461619849848644yk46u8k46uk43y1k35y4k45u4k56k46y4ky4kyu4k");
 		//获取支付宝POST过来反馈信息
 		Map<String,String> params = new HashMap<String,String>();
 		Map requestParams = request.getParameterMap();

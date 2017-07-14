@@ -22,13 +22,15 @@ public class AlipayConfig {
 	public static String seller_id = partner;
 
 	// MD5密钥，安全检验码，由数字和字母组成的32位字符串，查看地址：https://b.alipay.com/order/pidAndKey.htm
-    public static String key = "6k7n8kafmda1t22yl066v4o3lxws9u0s";
-
+    public static String key ="6k7n8kafmda1t22yl066v4o3lxws9u0s";
+    
 	// 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String notify_url = "http://47.93.48.111:85/api/pay/notifyVerifica";;
+	public static String notify_url = "http://47.93.48.111:8080/api/pay/notifyVerifica";
 
 	// 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String return_url = "http://47.93.48.111:85/api/pay/payVerifica";
+	public static String return_url = "http://47.93.48.111:8080/api/pay/payVerifica";
+	//public static String return_url = "http://47.93.48.111:85/paySuccess";
+	
 
 	// 签名方式
 	public static String sign_type = "MD5";

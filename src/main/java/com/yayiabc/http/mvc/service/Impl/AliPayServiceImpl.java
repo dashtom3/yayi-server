@@ -69,23 +69,24 @@ public class AliPayServiceImpl implements AliPayService{
 	 */
 	//支付校验结果同步
 	@Override
-	public String ReturnUrl(String is_success, String sign_type, String sign, String trade_statuss, String out_trade_nos,
-			String trade_nos,Map<String,String> params) {
+	public String ReturnUrl(/*String is_success, String sign_type, String sign, String trade_statuss, String out_trade_nos,
+			String trade_nos,*/Map<String,String> params) {
 		// TODO Auto-generated method stub
 		try {
 			//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以下仅供参考)//
 			//商户订单号
-			String out_trade_no = new String(out_trade_nos.getBytes("ISO-8859-1"),"UTF-8");
+			String out_trade_no =params.get("out_trade_no"); /*new String(out_trade_nos.getBytes("ISO-8859-1"),"UTF-8");*/
 
 			//支付宝交易号
 
-			String trade_no = new String(trade_nos.getBytes("ISO-8859-1"),"UTF-8");
+			String trade_no =params.get("trade_no"); /*new String(trade_nos.getBytes("ISO-8859-1"),"UTF-8");*/
 
 			//交易状态
-			String trade_status = new String(trade_statuss.getBytes("ISO-8859-1"),"UTF-8");
+			String trade_status =params.get("trade_status"); /*new String(trade_statuss.getBytes("ISO-8859-1"),"UTF-8");*/
 
 			//计算得出通知验证结果
 			boolean verify_result = AlipayNotify.verify(params);
+			
 			if(verify_result){//验证成功
 				System.out.println("验证成功");
 				//请在这里加上商户的业务逻辑程序代码  明天写
@@ -96,7 +97,9 @@ public class AliPayServiceImpl implements AliPayService{
 					//123
 					//(更改订单状态state).如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 					//如果有做过处理，不执行商户的业务程序
+					System.out.println(out_trade_no);
 					int state=aliPayDao.updateStateAndPayTime(out_trade_no);
+					  System.out.println(state);
 					if(state>0){
 						return "success";
 					}

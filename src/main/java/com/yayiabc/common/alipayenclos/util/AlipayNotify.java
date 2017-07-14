@@ -39,18 +39,28 @@ public class AlipayNotify {
         //判断responsetTxt是否为true，isSign是否为true
         //responsetTxt的结果不是true，与服务器设置问题、合作身份者ID、notify_id一分钟失效有关
         //isSign不是true，与安全校验码、请求时的参数格式（如：带自定义参数等）、编码格式有关
+    	//遍历  这个map
+    	for(String key:params.keySet()){
+    		System.out.println(key+": "+params.get(key));
+    		System.out.println("---------------------");
+    	}
     	String responseTxt = "false";
 		if(params.get("notify_id") != null) {
 			String notify_id = params.get("notify_id");
+			//responseTxt    
 			responseTxt = verifyResponse(notify_id);
+			System.out.println("responseTxt  "+ responseTxt);
 		}
 	    String sign = "";
-	    if(params.get("sign") != null) {sign = params.get("sign");}
+	    if(params.get("sign") != null) 
+	    {
+	    	sign = params.get("sign");
+	    }
 	    boolean isSign = getSignVeryfy(params, sign);
 
         //写日志记录（若要调试，请取消下面两行注释）
-        //String sWord = "responseTxt=" + responseTxt + "\n isSign=" + isSign + "\n 返回回来的参数：" + AlipayCore.createLinkString(params);
-	    //AlipayCore.logResult(sWord);
+       String sWord = "responseTxt=" + responseTxt + "\n isSign=" + isSign + "\n 返回回来的参数：" + AlipayCore.createLinkString(params);
+	    AlipayCore.logResult(sWord);
 
         if (isSign && responseTxt.equals("true")) {
             return true;
@@ -71,10 +81,12 @@ public class AlipayNotify {
         //获取待签名字符串
         String preSignStr = AlipayCore.createLinkString(sParaNew);
         //获得签名验证结果
+        System.out.println("preSignStr :"+preSignStr);
         boolean isSign = false;
         if(AlipayConfig.sign_type.equals("MD5") ) {
         	isSign = MD5.verify(preSignStr, sign, AlipayConfig.key, AlipayConfig.input_charset);
         }
+        System.out.println("isSign: "+isSign);
         return isSign;
     }
 
@@ -89,8 +101,9 @@ public class AlipayNotify {
     */
     private static String verifyResponse(String notify_id) {
         //获取远程服务器ATN结果，验证是否是支付宝服务器发来的请求
-
+         //2088221734067901      partner
         String partner = AlipayConfig.partner;
+        ////https://mapi.alipay.com/gateway.do?service=notify_verify&partner=2088221734067901&notify_id=   notify_id
         String veryfy_url = HTTPS_VERIFY_URL + "partner=" + partner + "&notify_id=" + notify_id;
 
         return checkUrl(veryfy_url);

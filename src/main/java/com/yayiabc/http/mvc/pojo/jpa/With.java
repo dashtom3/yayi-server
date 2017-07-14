@@ -6,7 +6,7 @@ public class With {
 	private Integer cashId;
 	private String realName;
 	private  String phone;
-	private  Integer cashMoney;
+	private  int cashMoney;
 	private  String type;
 	private  String accountUser;
 	private  String bank;
@@ -14,8 +14,14 @@ public class With {
 	private  String appTime;
 	private  String cashState;
 	private Date cashSuTime;
-	
-	
+    private SaleInfo saleInfo;
+    
+	public SaleInfo getSaleInfo() {
+		return saleInfo;
+	}
+	public void setSaleInfo(SaleInfo saleInfo) {
+		this.saleInfo = saleInfo;
+	}
 	public Date getCashSuTime() {
 		return cashSuTime;
 	}

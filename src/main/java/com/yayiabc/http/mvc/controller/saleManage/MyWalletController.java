@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.controller.saleManage;
 
+import java.util.List;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,7 +28,7 @@ public class MyWalletController {
 	//钱包明细
 	@RequestMapping("detail")
 	@ResponseBody
-	public DataWrapper<TreeMap<String, Object>> detail(
+	public DataWrapper<List<TreeMap<String, Object>>> detail(
 			@RequestParam(value="token",required=true)String token,
 			@RequestParam(value="state",required=true)Integer state,
 			@RequestParam(value="starTime",required=false)String starTime,
@@ -66,7 +67,6 @@ public class MyWalletController {
 		dataWrapper.setMsg("验证验证码失败");
 		return dataWrapper;
 	}
-	
 	//查看操作 的订单详情
 	@RequestMapping("queryOrder")
 	@ResponseBody//real_name,type,anumber,cashMoney,phone

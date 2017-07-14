@@ -17,6 +17,26 @@ public class SaleIncome extends BasePojo {
 
 	private Integer getState;
 	private Date updated;
+	private Ordera order;
+	
+    private SaleInfo saleInfo;
+    
+	public SaleInfo getSaleInfo() {
+		return saleInfo;
+	}
+
+	public void setSaleInfo(SaleInfo saleInfo) {
+		this.saleInfo = saleInfo;
+	}
+
+	public Ordera getOrder() {
+		return order;
+	}
+
+	public void setOrder(Ordera order) {
+		this.order = order;
+	}
+
 	public Integer getSaleIncomeId() {
 		return saleIncomeId;
 	}

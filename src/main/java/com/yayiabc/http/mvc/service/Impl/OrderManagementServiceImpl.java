@@ -37,10 +37,12 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		// TODO Auto-generated method stub
 		DataWrapper<List<OrderManagement>> dataWrapper=new DataWrapper<List<OrderManagement>>();
 		//总条数
-				int count=orderManagementDao.queryCount(hMap);
+				int count=orderManagementDao.queryCount(hMap);//totalnumber
 				
-				hMap.put("currentPage", page.getCurrentPage());
+//				hMap.put("currentPage", page.getCurrentPage());
 				hMap.put("numberPerpage", page.getNumberPerPage());
+				Integer currentNum=page.getCurrentNumber();
+				hMap.put("currentNum", currentNum);
 		List<OrderManagement> userOrderList=orderManagementDao.showOrder(hMap);
 		System.out.println(userOrderList);
 		if(userOrderList.isEmpty()){
@@ -97,7 +99,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		if(!list.isEmpty()){
 		String itemIdy=  list.get(0).getItemId();
 		int QbDed= list.get(0).getQbDed();
-		/*price= list.get(0).getPrice();*/
+		price= list.get(0).getPrice();
 		int num = list.get(0).getNum();
 		}
 		//单个商品的退回钱币数

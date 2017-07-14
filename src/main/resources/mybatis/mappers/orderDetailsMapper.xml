@@ -24,7 +24,21 @@
 		<result property="actualPay" column="actual_pay" />
 		<result property="qbDed" column="qb_ded" />
 		<result property="totalFee" column="total_fee" />
+		<result property="postFee" column="post_fee" />
+		<association property="receiver" javaType="com.yayiabc.http.mvc.pojo.jpa.Receiver">
 		
+		<id property="receiverId" column="receiver_id" />
+		<result property="userId" column="user_id" />
+		<result property="receiverName" column="receiver_name" />
+		<result property="province" column="province" />
+		<result property="city" column="city" />
+		<result property="county" column="county" />
+		<result property="receiverDetail" column="receiver_detail" />
+		<result property="phone" column="phone" />
+		<result property="isDefault" column="is_default" />
+		<result property="landlineNumber" column="landline_number" />
+		
+		</association>
 		<!-- //订单商品表 -->
 		<collection property="orderitemList" ofType="OrderItem">
 			<id property="itemId" column="item_id" />
@@ -68,6 +82,7 @@
 		item_f.item_name,orde_it.pic_path,
 		orde_it.item_property_namea,
 		orde_it.item_property_nameb,orde_it.item_property_namec,orde_it.item_id,orde.post_fee,orde.qb_ded,orde.state
+		,rece.*
 		FROM
 		USER us JOIN
 		ordera orde ON us.user_id=orde.user_id JOIN order_item
@@ -75,7 +90,7 @@
 		orde.order_id=orde_it.order_id JOIN
 		item_info item_f ON
 		orde_it.item_id
-		= item_f.item_id
+		= item_f.item_id join receiver rece on rece.receiver_id=orde.receiver_id
 		<where>
 			<if test="phone !=null">
 				us.user_id=#{phone}

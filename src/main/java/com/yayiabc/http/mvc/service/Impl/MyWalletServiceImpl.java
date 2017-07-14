@@ -24,28 +24,38 @@ public class MyWalletServiceImpl implements MyWalletService{
 	//-------
 	//容器
 	TreeMap<String, Object> treeMap=new TreeMap<String,Object>();
+	
+	TreeMap<String, Object> treeMaps=new TreeMap<String,Object>();
+	
+	ArrayList al=new ArrayList<>();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");		
-     ArrayList al=new ArrayList<>();
+     
 	@Override
-	public DataWrapper<TreeMap<String, Object>> myWalletDetails(String token
+	public DataWrapper<List<TreeMap<String, Object>>> myWalletDetails(String token
 			,Integer state,String starTime,String endTime
 			) {
 		
-		DataWrapper<TreeMap<String, Object>> dataWrapper=new DataWrapper<TreeMap<String, Object>>();
+		DataWrapper<List<TreeMap<String, Object>>> dataWrapper=new DataWrapper<List<TreeMap<String, Object>>>();
 	     if(state==0){
 	    	 houston( token,starTime,endTime);
 	    	 withdrawals(token,starTime,endTime);
+	         al.add(treeMap);	
+	         al.add(treeMaps);
 	     }else if(state==1){
 	    	 houston(token,starTime,endTime);
+	    	 al.add(treeMap);	
+	    	 al.add(treeMaps);
 	     }else{
 	    	 withdrawals(token,starTime,endTime);
+	    	 al.add(treeMap);	
+	    	 al.add(treeMaps);
 	     }
        /* //测试
 		for(String key:treeMap.keySet()){
 			System.out.println(key+" :"+treeMap.get(key));
 		}*/
 	     
-		dataWrapper.setData(treeMap);
+		dataWrapper.setData(al);
 		return dataWrapper;
 	}
 	//进账
@@ -59,7 +69,9 @@ public class MyWalletServiceImpl implements MyWalletService{
 				treeMap.put(sdf.format(list.get(i).getUpdated()),list.get(i));
 				houstonJZ+=list.get(i).getGetMoney();
 			}
-			treeMap.put("houstonJZ", houstonJZ);
+			treeMaps.put("houstonJZ", houstonJZ);
+		}else{
+			treeMaps.put("houstonJZ", 0);
 		}
 	}
 	//提现
@@ -73,9 +85,9 @@ public class MyWalletServiceImpl implements MyWalletService{
 				treeMap.put(sdf.format(lists.get(x).getCashSuTime()),lists.get(x));
 				withdrawalsTX+=lists.get(x).getCashMoney();
 			}
-			treeMap.put("withdrawalsTX", withdrawalsTX);
+			treeMaps.put("withdrawalsTX", withdrawalsTX);
 		}else{
-			treeMap.put("withdrawalsTX", 0);
+			treeMaps.put("withdrawalsTX", 0);
 		}
 	}
 	//查看订单详情

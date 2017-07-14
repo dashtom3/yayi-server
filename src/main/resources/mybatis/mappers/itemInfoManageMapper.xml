@@ -49,7 +49,7 @@
  			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
  			<if test="oneClassify!=null and oneClassify!=''">and three_classify=#{oneClassify}</if>
  		</where>
- 		order by a.updated
+ 		order by a.updated desc
  	</select>
  	<resultMap type="ItemInfo" id="itemInfoRM" autoMapping="true">
  		<id column="item_id" property="itemId"/>

@@ -8,7 +8,7 @@
      <result property="phone" column="phone"/>
       <result property="trueName" column="true_name"/>
      <association property="certification" javaType="com.yayiabc.http.mvc.pojo.jpa.Certification">
-      <id property="userId" column="user_id"/>
+     	<id property="userId" column="u_id"/>
        <result property="companyName" column="company_name"/>
         <result property="part" column="part"/>
         <result property="workAddress" column="work_address"/>
@@ -52,16 +52,16 @@
 	  
 	</select>
 	<select id="showsss" resultMap="c">
-	SELECT  cert.company_name,cert.part,cert.work_address,us.phone,us.true_name  FROM USER us join certification cert on us.user_id=cert.user_id 
+ 	SELECT cert.user_id u_id,us.user_id,cert.company_name,cert.part,cert.work_address,us.phone,us.true_name  FROM USER us LEFT JOIN certification cert ON us.user_id=cert.user_id 
 	 <where>
-	   
 	  <if test="state!=null and state!=''">
 	  us.true_name like '%${state}%' and us.sale_id is null  or us.phone like '%${state}%' and us.sale_id is null or  cert.company_name like '%${state}%'
-	  and us.sale_id is null 
+	  and us.sale_id is null and  
 	  </if>
-	and   us.sale_id is null
-	 </where>
+	 us.sale_id is null
+	 </where> 
 	 <!--  true_name ='%${state}%' and sale_id is null  or phone='%${state}%' and sale_id is null -->
-	  
+	  <!-- SELECT  cert.user_id u_id,us.user_id,cert.company_name,cert.part,cert.work_address,us.phone,us.true_name  FROM USER us LEFT JOIN certification cert ON us.user_id=cert.user_id 
+	  WHERE  us.sale_id IS NULL -->
 	</select>
 </mapper>       

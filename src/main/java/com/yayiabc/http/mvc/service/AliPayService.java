@@ -19,13 +19,13 @@ public interface AliPayService {
 			);
 	//同步支付校验
 	String ReturnUrl(
-			String is_success,//表示接口调用是否成功，并不表明业务处理结果。
+			/*String is_success,//表示接口调用是否成功，并不表明业务处理结果。
 			String sign_type,//MD5
 			String sign,//签名与验签
 			String trade_status,//交易状态
 			String out_trade_no,//商户订单号
 			String trade_no,//支付宝交易号
-			Map<String,String> params//获取支付宝GET过来反馈信息
+*/			Map<String,String> params//获取支付宝GET过来反馈信息
 			);
 	//异步支付校验
 	String notifyVerifica(String is_success,

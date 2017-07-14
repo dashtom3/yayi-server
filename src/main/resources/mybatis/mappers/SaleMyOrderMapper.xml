@@ -53,7 +53,7 @@
 	
 	<select id="getCount" resultType="int">
 		SELECT 
-		count(*)
+		count(0)
 		FROM order_item oi
 		LEFT JOIN ordera o
 		ON oi.order_id = o.order_id

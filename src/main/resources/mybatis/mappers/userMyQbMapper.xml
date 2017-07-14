@@ -36,7 +36,7 @@
 		FROM qb_record q
 		LEFT JOIN USER u
 		ON u.user_id=q.user_id
-        where q.user_id=#{userId} 
+        where q.user_id=#{userId}; 
 	</select>
 	
 	<select id="updateUserQb">

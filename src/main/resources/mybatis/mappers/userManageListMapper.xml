@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yayiabc.http.mvc.dao.UserManageListDao">
 	<select id="userlist" resultType="UserAllInfo">
-		SELECT u.true_name,u.phone,c.company_name,c.type,s.true_name AS saleName,IF(u.sale_id IS NOT NULL,1,2) AS isBindSale 
+		SELECT u.true_name,u.phone,c.company_name,c.type,s.true_name AS saleName,IF(u.sale_id IS NOT NULL,1,2) AS isBindSale,s.phone AS salePhone
 		FROM USER u 
 		LEFT JOIN sale_info s ON u.sale_id=s.sale_id
 		LEFT JOIN certification c ON u.user_id=c.user_id

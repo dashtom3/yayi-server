@@ -28,7 +28,7 @@
 	
 	<select id="getCount" resultType="int">
 		SELECT 
-		count(*)
+		count(0)
 		FROM USER u
 		LEFT JOIN sale_info s
 		ON u.sale_id=s.sale_id

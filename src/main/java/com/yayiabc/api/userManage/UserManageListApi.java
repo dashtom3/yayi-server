@@ -28,14 +28,16 @@ public interface UserManageListApi {
      * 		companyName:"XXXX公司",
      * 		type:1,
      * 		isBindSale:1,
-     * 		saleName:"王销售"
+     * 		saleName:"王销售",
+     * 		salePhone:"666"
      * },{
      * 		trueName:"李用户",
      * 		phone:"17668123578",
      * 		companyName:"XXXX公司",
      * 		type:1,
      * 		isBindSale:2,
-     * 		saleName:null
+     * 		saleName:null,
+     * 		salePhone:null
      * }],
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
      * numberPerPage:10,

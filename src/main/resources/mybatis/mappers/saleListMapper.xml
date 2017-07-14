@@ -38,7 +38,7 @@
 	
 	<!-- 总数 -->
 	<select id="getCount" resultType="int">
-		SELECT count(*)
+		SELECT count(0)
 		FROM sale_info  
 		<where>
 			<if test="saleId !=null and saleId !=''">
@@ -97,7 +97,7 @@
 	</select>
 	
 	<select id="userlistCount" resultType="int">
-		SELECT count(*)
+		SELECT count(0)
 		FROM USER u
 		LEFT JOIN certification c
 		ON u.user_id=c.user_id
@@ -133,7 +133,7 @@
 	
 	
 	<select id="bindUserCount" resultType="int">
-		SELECT count(*)
+		SELECT count(0)
 		FROM USER u
 		LEFT JOIN certification c
 		ON u.user_id=c.user_id

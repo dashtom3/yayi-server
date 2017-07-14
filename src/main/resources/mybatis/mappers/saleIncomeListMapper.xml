@@ -45,7 +45,7 @@
 	</resultMap>
 	
 	<select id="query" resultMap="orderVoRM">
-		SELECT s.sale_id,s.true_name AS sale_name,s.phone AS sale_phone,o.order_id,o.state AS order_state,
+		SELECT u.user_id,s.sale_id,s.true_name AS sale_name,s.phone AS sale_phone,o.order_id,o.state AS order_state,
 		o.created AS order_created,IF(DATEDIFF(NOW(),o.end_time)&lt;7,2,1) AS sign_late_seven,u.user_id,
 		si.get_money,si.get_state,si.updated AS get_updated
 		FROM sale_info s

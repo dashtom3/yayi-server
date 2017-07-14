@@ -36,6 +36,7 @@
 		<association property="saleIncomeVo" javaType="com.yayiabc.http.mvc.pojo.model.SaleIncomeVo">
 			<id column="sale_id" property="saleId"/>
 			<result column="sale_name" property="saleName"/>
+			<result column="user_id" property="userId"/>
 			<result column="sale_phone" property="salePhone"/>
 			<result column="sign_late_seven" property="signLateSeven"/>
 			<result column="get_money" property="getMoney"/>
@@ -45,7 +46,7 @@
 	</resultMap>
 	
 	<select id="query" resultMap="orderVoRM">
-		SELECT u.user_id,s.sale_id,s.true_name AS sale_name,s.phone AS sale_phone,o.order_id,o.state AS order_state,
+		SELECT s.sale_id,u.user_id,s.true_name AS sale_name,s.phone AS sale_phone,o.order_id,o.state AS order_state,
 		o.created AS order_created,IF(DATEDIFF(NOW(),o.end_time)&lt;7,2,1) AS sign_late_seven,u.user_id,
 		si.get_money,si.get_state,si.updated AS get_updated
 		FROM sale_info s
@@ -54,7 +55,7 @@
 		LEFT JOIN ordera o
 		ON u.user_id=o.user_id
 		LEFT JOIN sale_income si
-		ON s.sale_id=si.sale_id
+		ON o.order_id=si.order_id
 		<where>
 			<if test="saleId !=null and saleId !=''">
 				s.sale_id LIKE '%${saleId}%'

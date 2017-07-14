@@ -166,7 +166,8 @@ public interface UserPersonalInfoApi {
      * errorCode:"No_Error",
      * data:{
   	 *		isBindSale:1, (1是，2否)
-  	 *		saleName:"销售员一号"
+  	 *		saleName:"销售员一号",
+  	 *		salePhone:"666"
      * },
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
      * numberPerPage:10,

@@ -29,7 +29,22 @@
 		</collection>
 	</resultMap>
 	
-	<select id="query" resultMap="saleIncomeVoRM">
+	<resultMap type="OrderVo" id="orderVoRM">
+		<id column="order_id" property="orderId"/>
+		<result column="order_state" property="orderState"/>
+		<result column="order_created" property="orderCreated"/>
+		<association property="saleIncomeVo" javaType="com.yayiabc.http.mvc.pojo.model.SaleIncomeVo">
+			<id column="sale_id" property="saleId"/>
+			<result column="sale_name" property="saleName"/>
+			<result column="sale_phone" property="salePhone"/>
+			<result column="sign_late_seven" property="signLateSeven"/>
+			<result column="get_money" property="getMoney"/>
+			<result column="get_state" property="getState"/>
+			<result column="get_updated" property="getUpdated"/>
+		</association>
+	</resultMap>
+	
+	<select id="query" resultMap="orderVoRM">
 		SELECT s.sale_id,s.true_name AS sale_name,s.phone AS sale_phone,o.order_id,o.state AS order_state,
 		o.created AS order_created,IF(DATEDIFF(NOW(),o.end_time)&lt;7,2,1) AS sign_late_seven,u.user_id,
 		si.get_money,si.get_state,si.updated AS get_updated

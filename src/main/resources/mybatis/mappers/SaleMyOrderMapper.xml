@@ -27,6 +27,7 @@
 		SELECT 
 		u.sale_id,
 		o.created AS order_created,
+		o.order_id,
 		u.true_name AS user_name,
 		u.phone AS user_phone,
 		oi.item_name,

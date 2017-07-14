@@ -42,7 +42,7 @@ public class SaleIncomeListServiceImpl implements SaleIncomeListService {
 	public DataWrapper<SaleIncomeVo> detail(String saleId, String userId,
 			String orderId) {
 		DataWrapper<SaleIncomeVo> dataWrapper = new DataWrapper<SaleIncomeVo>();
-		SaleIncomeVo saleIncomeVo = saleIncomeListDao.detail(saleId, userId);
+		SaleIncomeVo saleIncomeVo = saleIncomeListDao.detail(saleId, userId, orderId);
 		List<OrderVo> list = saleIncomeListDao.orderList(userId, orderId);
 		if(list==null){
 			saleIncomeVo.setOrderVoList(null);

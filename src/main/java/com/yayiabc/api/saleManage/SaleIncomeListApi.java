@@ -89,13 +89,16 @@ public interface SaleIncomeListApi {
      * {
      * callStatus:"SUCCEED",
      * errorCode:"No_Error",
-     * data:{
+     * data:[{
      * 		saleId:"a123",
      * 		saleName:"真实姓名",
      * 		salePhone:"17668123578",
      * 		userId:"b456",
      * 		userName:"用户姓名",
      * 		userPhone:"1231412512",
+     *		getState:"已结算",
+	 *		getUpdated:"2017-07-11 17:00",
+	 *		getMoney:10,
      * 		order(List){
      *			orderId:"a123",
      * 			orderState:"交易成功",
@@ -108,11 +111,7 @@ public interface SaleIncomeListApi {
 	 *			refundMoney:30,
 	 *			commission:5,		 		
      * }
-	 *		getState:"已结算",
-	 *		getUpdated:"2017-07-11 17:00",
-	 *		getMoney:10
-	 *		
-     * },
+     * ],
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
      * numberPerPage:0,
      * currentPage:0,

@@ -130,29 +130,72 @@
 		</where>
 	</select>
 	
-	<select id="detail" resultMap="saleIncomeVoRM">
-		SELECT s.sale_id,s.true_name AS sale_name,s.phone AS sale_phone, 
-		u.user_id,u.true_name AS user_name,u.phone AS user_phone,
-		si.get_state,si.updated AS get_updated,si.get_money,r.refund_money
+	<resultMap type="SaleIncomeVo" id="saleIncomeRM">
+		<id column="sale_id" property="saleId"/>
+		<result column="sale_name" property="saleName"/>
+		<result column="sale_phone" property="salePhone"/>
+		<result column="user_id" property="userId"/>
+		<result column="user_name" property="userName"/>
+		<result column="user_phone" property="userPhone"/>
+		<result column="get_state" property="getState"/>
+		<result column="get_updated" property="getUpdated"/>
+		<result column="get_money" property="getMoney"/>
+	</resultMap>
+	
+	<select id="detail" resultMap="saleIncomeRM">
+		SELECT 
+		s.sale_id,
+		s.true_name AS sale_name,
+		s.phone AS sale_phone, 
+		u.user_id,
+		u.true_name AS user_name,
+		u.phone AS user_phone,
+		si.get_state,
+		si.updated AS get_updated,
+		si.get_money
 		FROM sale_info s
 		LEFT JOIN USER u
 		ON s.sale_id = u.sale_id
 		LEFT JOIN sale_income si
 		ON s.sale_id =si.sale_id
-		LEFT JOIN refund r
-		ON u.user_id=r.user_id
-		WHERE s.sale_id=#{saleId} AND u.user_id=#{userId}
+		WHERE s.sale_id=#{saleId} AND u.user_id=#{userId} AND si.order_id=#{orderId}
 	</select>
 		
-	<select id="orderList" resultMap="saleIncomeVoRM">
-		SELECT oi.order_id,o.state AS order_state,o.updated AS sign_updated,
-		oi.item_name,oi.itm_SKU,oi.price,oi.num,oi.total_fee,id.commission
+	<resultMap type="OrderVo" id="orderRM">
+		<id column="order_id" property="orderId"/>
+			<result column="order_state" property="orderState"/>
+			<result column="sign_updated" property="signUpdated"/>
+			<result column="item_name" property="itemName"/>
+			<result column="itm_SKU" property="itemSKU"/>
+			<result column="price" property="price"/>
+			<result column="num" property="num"/>
+			<result column="total_fee" property="totalFee"/>
+			<result column="refund_money" property="refundMoney"/>
+			<result column="commission" property="commission"/>
+			<result column="order_created" property="orderCreated"/>
+	</resultMap>	
+		
+	<select id="orderList" resultMap="orderRM">
+		SELECT 
+		oi.order_id,
+		o.state AS order_state,
+		o.updated AS sign_updated,
+		oi.item_name,
+		oi.itm_SKU,
+		oi.price,
+		oi.num,
+		oi.total_fee,
+		r.refund_money,
+		id.commission
 		FROM order_item oi
 		LEFT JOIN ordera o
 		ON oi.order_id = o.order_id
 		LEFT JOIN item_detail id
 		ON oi.item_id=id.item_id
+		LEFT JOIN refund r
+		ON o.order_id=r.order_id
 		WHERE o.user_id=#{userId} AND o.order_id=#{orderId}
+		GROUP BY o.order_id
 	</select>	
 		
 </mapper>

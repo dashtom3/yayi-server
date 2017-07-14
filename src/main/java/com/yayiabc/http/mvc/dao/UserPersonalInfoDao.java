@@ -19,6 +19,5 @@ public interface UserPersonalInfoDao {
 	
 	int add(String userId);
 	
-	
 	List<String> queryBind(String userId);
 }

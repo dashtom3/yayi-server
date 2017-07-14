@@ -78,5 +78,12 @@
 		LEFT JOIN sale_info s
 		ON u.sale_id=s.sale_id
 		WHERE u.user_id=#{userId}
+		UNION ALL
+		SELECT 
+		s.phone AS salePhone
+		FROM USER u
+		LEFT JOIN sale_info s
+		ON u.sale_id=s.sale_id
+		WHERE u.user_id=#{userId}
 	</select>
 </mapper>

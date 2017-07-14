@@ -27,12 +27,14 @@
 				AND true_name LIKE '%${trueName}%'
 			</if>
 			<if test="isBindUser ==1">
-				AND bind_user_num IS NOT NULL
+				AND bind_user_num !=0
 			</if>
 			<if test="isBindUser ==2">
-				AND bind_user_num IS NULL
+				AND bind_user_num =0
 			</if>
 		</where>
+		GROUP BY sale_id
+		ORDER BY created DESC
 		LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
 	
@@ -51,10 +53,10 @@
 				AND true_name LIKE '%${trueName}%'
 			</if>
 			<if test="isBindUser ==1">
-				AND bind_user_num IS NOT NULL
+				AND bind_user_num !=0
 			</if>
 			<if test="isBindUser ==2">
-				AND bind_user_num IS NULL
+				AND bind_user_num =0
 			</if>
 		</where>
 	</select>

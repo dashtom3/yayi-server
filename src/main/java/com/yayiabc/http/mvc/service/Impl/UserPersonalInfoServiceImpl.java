@@ -1,6 +1,5 @@
 package com.yayiabc.http.mvc.service.Impl;
 
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -101,6 +100,7 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 			Map<String, String> map =new HashMap<String, String>();
 			map.put("isBindSale", list.get(0));
 			map.put("saleName", list.get(1));
+			map.put("salePhone",list.get(2));
 			dataWrapper.setData(map);
 		}
 		return dataWrapper;

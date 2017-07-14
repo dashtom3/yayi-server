@@ -55,7 +55,7 @@
 		LEFT JOIN ordera o
 		ON u.user_id=o.user_id
 		LEFT JOIN sale_income si
-		ON s.sale_id=si.sale_id
+		ON o.order_id=si.order_id
 		<where>
 			<if test="saleId !=null and saleId !=''">
 				s.sale_id LIKE '%${saleId}%'

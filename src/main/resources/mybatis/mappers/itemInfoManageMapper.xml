@@ -19,6 +19,7 @@
  			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
  			<if test="state!=null and state!=''">and state=#{state}</if>
  		</where>
+ 		order by a.updated
  	</select>
  	<resultMap type="ItemInfo" id="itemInfoRM" autoMapping="true">
  		<id column="item_id" property="itemId"/>

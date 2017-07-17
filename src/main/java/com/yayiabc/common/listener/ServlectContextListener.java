@@ -19,6 +19,4 @@ import com.yayiabc.common.utils.CheckIsSignUtils;
             // TODO Auto-generated method stub  
               
         }  
-      
-          
     }  

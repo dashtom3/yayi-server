@@ -22,7 +22,7 @@ public class SessionManager {
         return sessionKey;
     }
 
-    public static User getSession(String key) {
+    public static User getSession(String key) {  //叫做getUser  更合理
         if(USER_SESSION_MAP.containsKey(key))
             return USER_SESSION_MAP.get(key);
         else

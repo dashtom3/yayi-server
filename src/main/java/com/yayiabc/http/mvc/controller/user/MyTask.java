@@ -27,6 +27,7 @@ public class MyTask extends TimerTask{
 			if(new Date().getTime()-map.get(key).getTime()>=1*60*1000
 					){
 				//查看该单state  状态 
+				//System.err.println();
 				System.out.println(key);
 				
 				int state=timerChangeStateService.timerQueryState(key);
@@ -34,7 +35,7 @@ public class MyTask extends TimerTask{
 					//  更改数据库交易状态为 交易关闭
 					int sign=timerChangeStateService.changeState(key);
 					if(sign>0){
-						map.remove(key);
+						
 						//把该订单里的 商品 在返回库存表里去啊啊啊啊啊
 					 //根据订单id 查该订单里面的所有商品
 						List<OrderItem> orderItemList=timerChangeStateService.queryOrderItems(key);
@@ -43,7 +44,9 @@ public class MyTask extends TimerTask{
 							timerChangeStateService.stillItemValueNum(orderItemList.get(i).getItemSKU(),
 									orderItemList.get(i).getNum()
 									);
+							
 						}
+						map.remove(key);
 					}
 				}
                  

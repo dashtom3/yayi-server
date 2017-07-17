@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.controller.user;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -11,6 +12,7 @@ import com.yayiabc.http.mvc.service.LogisticsService;
 @Controller
 @RequestMapping("api/Exp")
 public class LogisticsController {
+	@Autowired
 	private LogisticsService logisticsService;
     @RequestMapping("queryExp")
     @ResponseBody

@@ -37,7 +37,7 @@
 		ON rece.user_id=orde.user_id
 		<where>
 			<if test="orderId !=null and orderId!=''">
-				orde.order_id  like '%{orderId}%'
+				orde.order_id  like '%${orderId}%'
 			</if>
 			
 			<if test="buyerInfo != null and buyerInfo!=''">

@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.sessionManager.SessionManager;
 import com.yayiabc.common.utils.CheckIsSignUtils;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.dao.UtilsDao;
@@ -49,17 +50,9 @@ public class UserController {
 	@ResponseBody
 	public DataWrapper<User> noteLogin(
 			@RequestParam(value = "phone", required = true) String phone ,
-			@RequestParam(value = "code", required = true) String code,
-			HttpServletRequest request
+			@RequestParam(value = "code", required = true) String code
 			){
 		DataWrapper<User> dauser=userService.noteLogin(phone,code);
-		User user=dauser.getData();
-		if(user!=null){
-			String userId=user.getUserId();
-			//根据userId查到当前用户的token
-			String token =utilsDao.getToken(userId);
-			request.getSession().setAttribute("token", token);
-		}
 		return dauser;
 		//return userService.noteLogin(phone,code);
 		
@@ -74,13 +67,7 @@ public class UserController {
 			HttpServletRequest request
 			){
 		DataWrapper<User> dauser=userService.pwdLogin(phone,password);
-		User user=dauser.getData();
-		if(user!=null){
-			String userId=user.getUserId();
-			//根据userId查到当前用户的token
-			String token =utilsDao.getToken(userId);
-			request.getSession().setAttribute("token", token);
-		}
+	
 		return dauser;
 	}
 	

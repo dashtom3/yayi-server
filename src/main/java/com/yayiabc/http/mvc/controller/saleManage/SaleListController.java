@@ -75,10 +75,15 @@ public class SaleListController {
 	@RequestMapping(value="bind",method=RequestMethod.POST)
 	@ResponseBody
 	public DataWrapper<Void> bind(
-			@RequestParam(value="salePhone",required=true)String salePhone,
-			@RequestParam(value="userPhone",required=true)String userPhone
+			@RequestParam(value="userPhone",required=true)String[] userPhone,
+			@RequestParam(value="salePhone",required=true)String[] salePhone
 	){
-		return userManageListService.bind(salePhone, userPhone);
+		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		for(int i=0;i<userPhone.length;i++){
+			dataWrapper=userManageListService.bind(salePhone[i], userPhone[i]);	
+			
+		}
+		return dataWrapper;
 	}
 	
 	/**
@@ -87,9 +92,13 @@ public class SaleListController {
 	@RequestMapping(value="disBind",method=RequestMethod.POST)
 	@ResponseBody
 	public DataWrapper<Void> disBind(
-			@RequestParam(value="salePhone",required=true)String salePhone,
-			@RequestParam(value="userPhone",required=true)String userPhone
+			@RequestParam(value="salePhone",required=true)String[] salePhone,
+			@RequestParam(value="userPhone",required=true)String[] userPhone
 	){
-		return userManageListService.disBind(salePhone, userPhone);
+		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		for(int i=0;i<salePhone.length;i++){
+			dataWrapper=userManageListService.disBind(salePhone[i], userPhone[i]);
+		}
+		return dataWrapper;
 	}
 }

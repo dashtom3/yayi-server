@@ -39,10 +39,14 @@ public class CartController {
 	@RequestMapping(value = "delete", method = RequestMethod.POST)
 	@ResponseBody
 	public DataWrapper<Void> delete(
-			@RequestParam(value="itemSKU",required=true)String itemSKU,
+			@RequestParam(value="itemSKU",required=true)String[] itemSKU,
 			@RequestParam(value="token",required=true)String token
 	){
-		return cartService.delete(itemSKU,token);
+		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		for(int i=0;i<itemSKU.length;i++){
+			dataWrapper=cartService.delete(itemSKU[i], token);
+		}
+		return dataWrapper;
 	}
 	
 
@@ -52,11 +56,15 @@ public class CartController {
 	@RequestMapping(value = "star", method = RequestMethod.POST)
 	@ResponseBody
 	public DataWrapper<ItemStar> star(
-			@RequestParam(value="itemId",required=true)String itemId,
-			@RequestParam(value="itemSKU",required=true)String itemSKU,
+			@RequestParam(value="itemId",required=true)String[] itemId,
+			@RequestParam(value="itemSKU",required=true)String[] itemSKU,
 			@RequestParam(value="token",required=true)String token
 	){
-		return cartService.star(itemId,itemSKU,token);
+		DataWrapper<ItemStar> dataWrapper=new DataWrapper<ItemStar>();
+		for(int i=0;i<itemId.length;i++){
+			dataWrapper=cartService.star(itemId[i], itemSKU[i], token);
+		}
+		return dataWrapper;
 	}
 	
 	/**

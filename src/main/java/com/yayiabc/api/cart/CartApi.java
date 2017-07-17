@@ -175,7 +175,7 @@ public interface CartApi {
      * @apiVersion 0.1.0
      * @apiDescription 删除购物车内商品
      *
-     * @apiParam {String} itemSKU 商品SKU代码（必须）
+     * @apiParam {String} itemSKU 商品SKU代码（必须，可传参数数组）
      * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
@@ -217,8 +217,8 @@ public interface CartApi {
      * @apiVersion 0.1.0
      * @apiDescription 收藏商品
      *
-     * @apiParam {String} itemId 商品ID（必须）
-     * @apiParam {String} itemSKU 商品SKU代码（必须）
+     * @apiParam {String} itemId 商品ID（必须，可传参数数组）
+     * @apiParam {String} itemSKU 商品SKU代码（必须，可传参数数组）
      * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:

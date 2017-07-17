@@ -120,8 +120,8 @@ public class SaleListApi {
      * @apiVersion 0.1.0
      * @apiDescription 绑定用户
      *
-     * @apiParam {String} salePhone 销售员手机号码（必须）
-     * @apiParam {String} userPhone 用户手机号码（必须）
+     * @apiParam {String} salePhone 销售员手机号码（必须，可传参数数组）
+     * @apiParam {String} userPhone 用户手机号码（必须，可传参数数组）
      *
      * @apiSuccessExample {json} Success-Response:
      * HTTP/1.1 200 OK
@@ -162,8 +162,8 @@ public class SaleListApi {
      * @apiVersion 0.1.0
      * @apiDescription 取消绑定用户
      *
-     * @apiParam {String} salePhone 销售员手机号码（必须）
-     * @apiParam {String} userPhone 用户手机号码（必须）
+     * @apiParam {String} salePhone 销售员手机号码（必须，可传参数数组）
+     * @apiParam {String} userPhone 用户手机号码（必须，可传参数数组）
      *
      * @apiSuccessExample {json} Success-Response:
      * HTTP/1.1 200 OK

@@ -66,7 +66,6 @@ public class UserManageListServiceImpl implements UserManageListService {
 			int i = userManageListDao.bind(salePhone, userPhone);
 			if (i > 0) {
 				userManageListDao.bindUpdateNum(saleId);
-				dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			} else {
 				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			}

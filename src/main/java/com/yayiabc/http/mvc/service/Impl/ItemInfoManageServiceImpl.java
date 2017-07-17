@@ -6,8 +6,10 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.ItemInfoManageDao;
 import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
 import com.yayiabc.http.mvc.pojo.jpa.ItemDetail;
@@ -26,6 +28,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 	public DataWrapper<List<ItemInfo>> itemInfoList(String itemId,
 			String itemName, String itemClassify, String itemBrandName,
 			Integer state) {
+		
 		DataWrapper<List<ItemInfo>> dataWrapper =new DataWrapper<List<ItemInfo>>();
 		ItemInfo itemInfo =new ItemInfo();
 		itemInfo.setItemId(itemId);

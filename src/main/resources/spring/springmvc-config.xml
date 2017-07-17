@@ -23,12 +23,12 @@
 	<mvc:default-servlet-handler />
 	
 	<!-- 拦截器 -->
-	 <!-- <mvc:interceptors>
+	<!-- <mvc:interceptors>
 		   <mvc:interceptor>
 			<mvc:mapping path="/**" /> 
 			<bean class="com.yayiabc.http.interceptor.LoginInterceptor"></bean>
 		   </mvc:interceptor>
-	   </mvc:interceptors>   -->
+	   </mvc:interceptors>    -->
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
     
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">

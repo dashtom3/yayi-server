@@ -154,7 +154,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 			String video, String itemDesc, String itemUse, String itemRange,
 			String registerId, String storeItemId, String apparatusType,
 			String unit,String producePompany, Date registerDate,
-			String itemPacking,String itemSort) {
+			String itemPacking,String itemSort,String remark) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		ItemInfo itemInfo=new ItemInfo();
 		itemInfo.setItemId(itemId);
@@ -179,6 +179,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 		itemDetail.setItemPicd(itemPicd);
 		itemDetail.setItemPice(itemPice);
 		itemDetail.setStoreItemId(storeItemId);
+		itemDetail.setRemark(remark);
 		itemDetail.setApparatusType(apparatusType);
 		itemDetail.setUnit(unit);
 		itemDetail.setProducePompany(producePompany);

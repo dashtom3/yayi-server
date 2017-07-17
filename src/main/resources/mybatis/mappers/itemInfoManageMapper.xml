@@ -105,7 +105,7 @@
  	<update id="updateItemDetail">
  		update item_detail set item_desc=#{itemDesc},item_use=#{itemUse},video=#{video},item_pica=#{itemPica},item_picb=#{itemPicb},item_picc=#{itemPicc},item_picd=#{itemPicd},
  		item_pice=#{itemPice},store_item_id=#{storeItemId},apparatus_type=#{apparatusType},unit=#{unit},produce_pompany=#{producePompany},register_id=#{registerId},register_date=#{registerDate},
- 		item_packing=#{itemPacking},item_levels=#{itemLevels},item_range=#{itemRange},updated=now() where item_id=#{itemId}
+ 		item_packing=#{itemPacking},item_levels=#{itemLevels},item_range=#{itemRange},updated=now(),remark=#{remark} where item_id=#{itemId}
  	</update>
  	
  	<update id="updateItemValue">

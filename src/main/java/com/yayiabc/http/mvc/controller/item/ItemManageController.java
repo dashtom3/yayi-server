@@ -30,9 +30,11 @@ public class ItemManageController {
 	@ResponseBody
 	public DataWrapper<List<ItemBrand>> queryItemBrand(
 			@RequestParam(value="itemBrandName",required=false) String itemBrandName,
-			@RequestParam(value="itemBrandHome",required=false) String itemBrandHome
+			@RequestParam(value="itemBrandHome",required=false) String itemBrandHome,
+			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
+			@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 			){
-		return itemManageService.queryItemBrand(itemBrandName,itemBrandHome);
+		return itemManageService.queryItemBrand(itemBrandName,itemBrandHome,currentPage,numberPerPage);
 	}
 	/**
 	 * 删除商品品牌
@@ -185,9 +187,11 @@ public class ItemManageController {
 	@ResponseBody
 	public DataWrapper<List<ItemClassify>> showItemClassify(
 			@RequestParam(value="itemClassifyName",required=false) String itemClassifyName,
-			@RequestParam(value="itemPreviousClassify",required=false) String itemPreviousClassify
+			@RequestParam(value="itemPreviousClassify",required=false) String itemPreviousClassify,
+			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
+			@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 			){
-		return itemManageService.showItemClassify(itemClassifyName,itemPreviousClassify);
+		return itemManageService.showItemClassify(itemClassifyName,itemPreviousClassify,currentPage,numberPerPage);
 	}
 	
 	/**

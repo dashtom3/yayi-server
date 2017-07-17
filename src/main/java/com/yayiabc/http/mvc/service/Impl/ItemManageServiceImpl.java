@@ -7,14 +7,17 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.ItemBrandDao;
 import com.yayiabc.http.mvc.dao.ItemManageDao;
 import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
 import com.yayiabc.http.mvc.pojo.jpa.ItemClassify;
 import com.yayiabc.http.mvc.pojo.jpa.ItemProperty;
 import com.yayiabc.http.mvc.pojo.jpa.ItemPropertyd;
+import com.yayiabc.http.mvc.pojo.model.Search;
 import com.yayiabc.http.mvc.service.ItemManageService;
 @Service
 public class ItemManageServiceImpl implements ItemManageService{
@@ -28,12 +31,22 @@ public class ItemManageServiceImpl implements ItemManageService{
 	 */
 	@Override
 	public DataWrapper<List<ItemBrand>> queryItemBrand(String itemBrandName,
-			String itemBrandHome) {
+			String itemBrandHome,Integer currentPage,Integer numberPerPage) {
 		DataWrapper<List<ItemBrand>> dataWrapper=new DataWrapper<List<ItemBrand>>();
 		ItemBrand itemBrand =new ItemBrand();
 		itemBrand.setItemBrandName(itemBrandName);
 		itemBrand.setItemBrandHome(itemBrandHome);
-		List<ItemBrand> itemBrandList=itemBrandDao.queryItemBrand(itemBrand);
+		Page page=new Page();
+		page.setNumberPerPage(numberPerPage);
+		page.setCurrentPage(currentPage);
+		Integer totalNumber=itemBrandDao.getCountOne(itemBrand);
+		dataWrapper.setPage(page, totalNumber);
+		Search search=new Search();
+		search.setItemBrandName(itemBrandName);
+		search.setOneClassify(itemBrandHome);
+		search.setCurrentNumber(page.getCurrentNumber());
+		search.setNumberPerPage(numberPerPage);
+		List<ItemBrand> itemBrandList=itemBrandDao.queryItemBrand(search);
 		dataWrapper.setData(itemBrandList);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
@@ -145,12 +158,22 @@ public class ItemManageServiceImpl implements ItemManageService{
 
 	@Override
 	public DataWrapper<List<ItemClassify>> showItemClassify(
-			String itemClassifyName, String itemPreviousClassify) {
+			String itemClassifyName, String itemPreviousClassify,Integer currentPage,Integer numberPerPage) {
 		DataWrapper<List<ItemClassify>> dataWrapper=new DataWrapper<List<ItemClassify>>();
+		Page page=new Page();
+		page.setNumberPerPage(numberPerPage);
+		page.setCurrentPage(currentPage);
 		ItemClassify itemClassify =new ItemClassify();
 		itemClassify.setItemClassifyName(itemClassifyName);
 		itemClassify.setItemPreviousClassify(itemPreviousClassify);
-		List<ItemClassify> itemClassifyList=itemManageDao.showItemClassify(itemClassify);
+		Integer totalNumber=itemManageDao.getCount(itemClassify);
+		dataWrapper.setPage(page, totalNumber);
+		Search search =new Search();
+		search.setCurrentNumber(page.getCurrentNumber());
+		search.setNumberPerPage(numberPerPage);
+		search.setOneClassify(itemClassifyName);
+		search.setTwoClassify(itemPreviousClassify);
+		List<ItemClassify> itemClassifyList=itemManageDao.showItemClassify(search);
 		dataWrapper.setData(itemClassifyList);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;

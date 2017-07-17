@@ -9,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.yayiabc.http.mvc.pojo.jpa.ItemClassify;
 import com.yayiabc.http.mvc.pojo.jpa.ItemProperty;
 import com.yayiabc.http.mvc.pojo.jpa.ItemPropertyd;
+import com.yayiabc.http.mvc.pojo.model.Search;
 @Repository
 public interface ItemManageDao {
 	
@@ -24,7 +25,7 @@ public interface ItemManageDao {
 
 	void updateProperty(ItemProperty itemProperty);
 
-	List<ItemClassify> showItemClassify(ItemClassify itemClassify);
+	List<ItemClassify> showItemClassify(Search search);
 
 	void deleteItemClassify(String itemClassifyName);
 	//查询该商品分类是否为父类
@@ -80,6 +81,8 @@ public interface ItemManageDao {
 	void addToPropertyd(@Param("itemPid")Integer itemPid,@Param("itemPparam") String itemPparam);
 
 	int getCountByItemPropertyName(String itemPropertyName);
+
+	Integer getCount(ItemClassify itemClassify);
 
 
 	

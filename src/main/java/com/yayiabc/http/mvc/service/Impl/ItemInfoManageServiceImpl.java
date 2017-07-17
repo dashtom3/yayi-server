@@ -27,8 +27,10 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 	@Override
 	public DataWrapper<List<ItemInfo>> itemInfoList(String itemId,
 			String itemName, String itemClassify, String itemBrandName,
-			Integer state) {
-		
+			Integer state,Integer currentPage,Integer numberPerPage) {
+		Page page=new Page();
+		page.setNumberPerPage(numberPerPage);
+		page.setCurrentPage(currentPage);
 		DataWrapper<List<ItemInfo>> dataWrapper =new DataWrapper<List<ItemInfo>>();
 		ItemInfo itemInfo =new ItemInfo();
 		itemInfo.setItemId(itemId);
@@ -40,11 +42,24 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 		itemInfo.setTwoClassify(itemBrandName);
 		itemInfo.setState(state);
 		List<ItemInfo> itemInfoList=null;
+		Integer totalNumber=0;
 		if(itemInfoManageDao.getItemClassifyGradeByName(itemClassify)!=0){
+			totalNumber=itemInfoManageDao.getCountOne(itemInfo);
+			dataWrapper.setPage(page, totalNumber);
+			itemInfo.setSales(page.getCurrentNumber());
+			itemInfo.setItemStockNum(page.getNumberPerPage());
 			itemInfoList=itemInfoManageDao.itemInfoListOne(itemInfo);
 		}else if(itemInfoManageDao.getItemClassifyGrade(itemClassify)!=0){
+			totalNumber=itemInfoManageDao.getCountTwo(itemInfo);
+			dataWrapper.setPage(page, totalNumber);
+			itemInfo.setSales(page.getCurrentNumber());
+			itemInfo.setItemStockNum(page.getNumberPerPage());
 			itemInfoList=itemInfoManageDao.itemInfoListTwo(itemInfo);
 		}else{
+			totalNumber=itemInfoManageDao.getCountThree(itemInfo);
+			dataWrapper.setPage(page, totalNumber);
+			itemInfo.setSales(page.getCurrentNumber());
+			itemInfo.setItemStockNum(page.getNumberPerPage());
 			itemInfoList=itemInfoManageDao.itemInfoListThree(itemInfo);
 		}
 		dataWrapper.setData(itemInfoList);

@@ -10,7 +10,7 @@ import com.yayiabc.http.mvc.pojo.jpa.ItemValue;
 public interface ItemInfoManageService {
 
 	DataWrapper<List<ItemInfo>> itemInfoList(String itemId, String itemName,
-			String itemClassify, String itemBrandName, Integer state);
+			String itemClassify, String itemBrandName, Integer state,Integer currentPage,Integer numberPerPage);
 
 	DataWrapper<Void> up(String itemId);
 

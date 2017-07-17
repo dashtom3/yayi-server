@@ -35,9 +35,11 @@ public class ItemInfoManageController {
 			@RequestParam(value="itemName",required=false) String itemName,
 			@RequestParam(value="itemClassify",required=false) String itemClassify,
 			@RequestParam(value="itemBrandName",required=false) String itemBrandName,
-			@RequestParam(value="state",required=false) Integer state
+			@RequestParam(value="state",required=false) Integer state,
+			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
+			@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 			){
-		return itemInfoManageService.itemInfoList(itemId,itemName,itemClassify,itemBrandName,state);
+		return itemInfoManageService.itemInfoList(itemId,itemName,itemClassify,itemBrandName,state,currentPage,numberPerPage);
 	}
 	
 	/**

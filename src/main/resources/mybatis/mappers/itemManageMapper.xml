@@ -55,9 +55,10 @@
  		select * from item_classify
  		<where>
  			true
- 			<if test="itemClassifyName!=null"> and item_classify_name like '%${itemClassifyName}%'</if>
- 			<if test="itemPreviousClassify!=null"> and item_previous_classify like '%${itemPreviousClassify}%'</if>
+ 			<if test="oneClassify!=null"> and item_classify_name like '%${oneClassify}%'</if>
+ 			<if test="twoClassify!=null"> and item_previous_classify like '%${twoClassify}%'</if>
  		</where>
+ 		limit #{currentNumber},#{numberPerPage}
  	</select>
  	
  	<resultMap type="ItemClassify" id="itemClassify">
@@ -159,5 +160,14 @@
  	
  	<select id="getCountByItemPropertyName" resultType="int">
  		select count(0) from item_property where item_property_name=#{itemPropertyName}
+ 	</select>
+ 	
+ 	<select id="getCount" resultType="java.lang.Integer">
+ 		select count(0) from item_classify
+ 		<where>
+ 			true
+ 			<if test="itemClassifyName!=null"> and item_classify_name like '%${itemClassifyName}%'</if>
+ 			<if test="itemPreviousClassify!=null"> and item_previous_classify like '%${itemPreviousClassify}%'</if>
+ 		</where>
  	</select>
 </mapper>       

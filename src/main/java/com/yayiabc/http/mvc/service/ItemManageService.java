@@ -10,7 +10,7 @@ import com.yayiabc.http.mvc.pojo.jpa.ItemProperty;
 public interface ItemManageService {
 
 	DataWrapper<List<ItemBrand>> queryItemBrand(String itemBrandName,
-			String itemBrandHome);
+			String itemBrandHome,Integer currentPage,Integer numberPerPage);
 
 	DataWrapper<Void> deleteItemBrand(Integer itemBrandId);
 
@@ -31,7 +31,7 @@ public interface ItemManageService {
 			String itemPropertyName);
 
 	DataWrapper<List<ItemClassify>> showItemClassify(String itemClassifyName,
-			String itemPreviousClassify);
+			String itemPreviousClassify,Integer currentPage,Integer numberPerPage);
 
 	DataWrapper<Void> deleteItemClassify(Integer itemClassifyId,String itemClassifyName,Integer itemClassifyGrade);
 

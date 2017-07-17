@@ -22,7 +22,7 @@ public interface ItemBrandDao{
 
 	public int getCount(Search search);
 
-	public List<ItemBrand> queryItemBrand(ItemBrand itemBrand);
+	public List<ItemBrand> queryItemBrand(Search search);
 
 	public int deleteItemBrand(Integer itemBrandId);
 
@@ -71,6 +71,8 @@ public interface ItemBrandDao{
 	public String getItemSKUByPrice(@Param("itemPrice") Double itemPrice,@Param("itemId") String itemId);
 
 	public String getVideoNameByVideoRoute(String video);
+
+	public Integer getCountOne(ItemBrand itemBrand);
 
 }
 

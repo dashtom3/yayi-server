@@ -9,8 +9,9 @@
  		<where>
  		 true
  		 <if test="itemBrandName!=null">and item_brand_name like '%${itemBrandName}%'</if>
- 		 <if test="itemBrandHome!=null">and item_brand_Home like '%${itemBrandHome}%'</if>
+ 		 <if test="oneClassify!=null">and item_brand_Home like '%${oneClassify}%'</if>
  		</where>
+ 		limit #{currentNumber},#{numberPerPage}
  	</select>
  	
  	<!-- 根据商品品牌查询商品id -->
@@ -242,5 +243,14 @@ WHERE s.item_id=#{itemId}
 	
 	<select id="getVideoNameByVideoRoute" resultType="string">
 		select video_name from vid_manage where video_route=#{vedio}
+	</select>
+	
+	<select id="getCountOne" resultType="java.lang.Integer">
+		select count(0) from item_brand 
+ 		<where>
+ 		 true
+ 		 <if test="itemBrandName!=null">and item_brand_name like '%${itemBrandName}%'</if>
+ 		 <if test="itemBrandHome!=null">and item_brand_Home like '%${itemBrandHome}%'</if>
+ 		</where>
 	</select>
 </mapper>       

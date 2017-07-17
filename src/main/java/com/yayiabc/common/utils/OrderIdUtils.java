@@ -9,23 +9,23 @@ import java.util.Random;
  * 订单id:用户id+四位随机数
  */
 public class OrderIdUtils {
-
 	public static   String 	createOrderId(String userId){
 		String str="0123456789";
 		if(userId==null){
 			return "没有查看该用户";
 		}
-		StringBuilder sb=new StringBuilder(userId);
+		String userID=(userId.substring(0,12)+userId.substring(24)).replace("-", "");
+		StringBuilder sb=new StringBuilder(userID);
 		for(int i=0;i<4;i++)
 		{
-		char ch=str.charAt(new Random().nextInt(str.length()));
-		sb.append(ch);
+			char ch=str.charAt(new Random().nextInt(str.length()));
+			sb.append(ch);
 		}
 		///System.out.println(sb.toString());
 		return sb.toString();
 	}
 	/*public static void main(String[] args) {
 		createOrderId("lhdd=888");
-		
+
     }*/
 }

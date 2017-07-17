@@ -165,7 +165,9 @@
 		,#{order.buyerRate} -->
 		)
 	</insert>
-
+   <update id="insertActualPay">
+    update set ordera actual_pay=#{actualPay} where order_id=#{orderId}
+   </update>
 
 	<!-- //更改地址后 -->
 	<select id="upateAddress">
@@ -193,4 +195,13 @@
 	<delete id="cleanCart">
 	delete from cart where user_id=#{userId} and item_SKU=#{itemSKU} 
 	</delete>
+	
+	<!-- //查询商品库存数量 -->
+	<select id="queryItemInventNum" parameterType="int">
+	 select stock_num from item_value where item_sKU=#{itemSKU}
+	</select>
+	<!-- //updateInventNum更改库存数量 -->
+	<update id="updateInventNum">
+	 update item_value  set stock_num=#{NUM} where item_sKU=#{itemSKU}
+	</update>
 </mapper>

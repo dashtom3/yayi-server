@@ -1,0 +1,37 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.TimerChangeStateDao">
+
+	<update id="timerChangeState">
+		update ordera set state =0 where order_id=#{orderId}
+	</update>
+	<select id="timerQueryState" resultType="int">
+		select state from ordera
+		where order_id=#{orderId}
+	</select>
+
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.Ordera" id="resMap">
+		<id property="orderId" column="orderid" />
+		<collection property="orderitemList"
+			ofType="com.yayiabc.http.mvc.pojo.jpa.OrderItem">
+			<id property="orderId" column="order_id" />
+			<result property="itemSKU" column="itm_SKU"/>
+			<result property="num" column="num"/>
+		</collection>
+	</resultMap>
+	<select id="queryOrderItems" resultMap="resMap">
+		SELECT orde.order_id
+		orderid,orde_it.order_id,orde_it.itm_SKU,orde_it.num
+		FROM
+		ordera orde
+		JOIN order_item orde_it ON orde.order_id=orde_it.order_id
+		WHERE
+		orde.order_id=#{orderId}
+	</select>
+	
+	<update id="stillItemValueNum">
+	  update item_value  set stock_num=#{NUMM} where item_sKU=#{itemSKU}
+	</update>
+</mapper>

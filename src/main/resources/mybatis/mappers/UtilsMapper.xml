@@ -10,4 +10,10 @@
 	<select id="getSaleId" parameterType="java.lang.String" resultType="java.lang.String">
 		select sale_id from sale_token where sale_id=#{SaleToken} 
 	</select>
+	<select id="getToken" parameterType="java.lang.String" resultType="java.lang.String">
+		select token from user_token where user_id=#{userId} 
+	</select>
+	<select id="getSaleToken" parameterType="java.lang.String" resultType="java.lang.String">
+		select sale_token from sale_token where sale_id=#{saleId} 
+	</select>
 </mapper>       

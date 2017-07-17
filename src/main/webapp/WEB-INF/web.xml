@@ -77,5 +77,26 @@
 		<welcome-file>index.html</welcome-file>
 		<welcome-file>index.jsp</welcome-file>
 	</welcome-file-list>
+<!--session 的有效时间 -->
+	<session-config>
+		<session-timeout>2</session-timeout>
+	</session-config>
 
+	<!-- <listener>
+		<listener-class>com.yayiabc.common.listener.ServlectContextListener</listener-class>
+	</listener> -->
+	
+	<listener>
+		<listener-class>com.yayiabc.common.listener.SessionListener</listener-class>
+	</listener>
+	<!-- 项目启动加载 -->
+	<servlet>  
+    <servlet-name>testTimer</servlet-name>  
+    <servlet-class>com.yayiabc.http.mvc.controller.user.testTimer</servlet-class>  
+    <load-on-startup>2</load-on-startup><!-- 数字越小，启动的优先级越高，必须大于0 -->  
+</servlet> 
+<servlet-mapping>
+	<servlet-name>testTimer</servlet-name>
+	<url-pattern>/aaa</url-pattern>
+</servlet-mapping>
 </web-app>

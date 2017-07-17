@@ -65,4 +65,13 @@ public interface PlaceOrderDao {
      //放一件轻易间
 	int cleanCart(@Param("userId")String userId,@Param("itemSKU")String itemSKU);
 
+    //放入实际付款
+	int  insertActualPay(@Param("orderId")String orderId,@Param("actualPay") String actualPay);
+
+    //  查询商品库存数量
+	int queryItemInventNum(@Param("itemSKU")String itemSKU);
+
+	//更改库存数量
+	int updateInventNum(@Param("NUM")String NUM,@Param("itemSKU")String itemSKU);
+
 }

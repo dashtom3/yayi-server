@@ -1,12 +1,17 @@
 package com.yayiabc.http.mvc.controller.user;
 
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.utils.CheckIsSignUtils;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.UserService;
 
@@ -18,7 +23,8 @@ public class UserController {
 	    */
 	@Autowired
 	private UserService userService;
-	
+	@Autowired
+	private UtilsDao utilsDao;
 	//获取验证码
 	@RequestMapping("getVerifyCode")
 	@ResponseBody
@@ -43,9 +49,19 @@ public class UserController {
 	@ResponseBody
 	public DataWrapper<User> noteLogin(
 			@RequestParam(value = "phone", required = true) String phone ,
-			@RequestParam(value = "code", required = true) String code
+			@RequestParam(value = "code", required = true) String code,
+			HttpServletRequest request
 			){
-		return userService.noteLogin(phone,code);
+		DataWrapper<User> dauser=userService.noteLogin(phone,code);
+		User user=dauser.getData();
+		if(user!=null){
+			String userId=user.getUserId();
+			//根据userId查到当前用户的token
+			String token =utilsDao.getToken(userId);
+			request.getSession().setAttribute("token", token);
+		}
+		return dauser;
+		//return userService.noteLogin(phone,code);
 		
 	}
 	
@@ -54,17 +70,31 @@ public class UserController {
 	@ResponseBody
 	public DataWrapper<User> pwdLogin(
 			@RequestParam(value = "phone", required = true) String phone ,
-			@RequestParam(value = "password", required = true) String password
+			@RequestParam(value = "password", required = true) String password,
+			HttpServletRequest request
 			){
-		return userService.pwdLogin(phone,password);
+		DataWrapper<User> dauser=userService.pwdLogin(phone,password);
+		User user=dauser.getData();
+		if(user!=null){
+			String userId=user.getUserId();
+			//根据userId查到当前用户的token
+			String token =utilsDao.getToken(userId);
+			request.getSession().setAttribute("token", token);
+		}
+		return dauser;
 	}
 	
 	//退出登录
 	@RequestMapping("reLogin")
 	@ResponseBody
 	public DataWrapper<Void> reLogin(
-			@RequestParam(value = "token", required = true) String token
+			@RequestParam(value = "token", required = true) String token,
+			HttpSession session
 			){
+		//清除session(手工杀会话)
+		session.invalidate();
+		//清除缓存中的 token 
+		CheckIsSignUtils.getInstance().getList().remove(token);
 		return userService.reLogin(token);
 	}
 	

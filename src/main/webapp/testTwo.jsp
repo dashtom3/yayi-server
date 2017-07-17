@@ -6,20 +6,23 @@
  <title>myJSP</title>
  </head>
  <body>
-  <form action="/api/shoppingAdress/insert" method="post">
-		newphone:<input type="text" name="newPhone">
-		<input type="text" name="receiverId">
-		省:<input type="text" name="province"><br>
-		市:<input type="text" name="city"><br>
-			县:<input type="text" name="county">
+  <form action="/Yayi/api/user/pwdLogin" method="post">
 		
-		收货人:<input type="text" name="receiverName"><br>
-		详细地址:<input type="text" name="receiverDetail"><br>
-		手机号码:<input type="text" name="phone"><br>
+		username:<input type="text" name="phone" ><br>
+		password：<input type="password" name="password" >
 		
-		是否为默认地址:<input type="radio" name="isDefault" value="2"><br>
-		否：<input type="radio" name="isDefault" value="1">
+		<input type="submit" value="保存"/>
+	</form>
+	<hr>
+	<form action="/Yayi/api/user/register" method="post">
 		
+		username:<input type="text" name="phone" ><br>
+		password：<input type="text" name="password" >
+		password：<input type="text" name="code" >
+		<input type="submit" value="保存"/>
+	</form>
+	<form action="/Yayi/api/user/getVerifyCode" method="post">
+		username:<input type="text" name="phone" ><br>
 		<input type="submit" value="保存"/>
 	</form>
 	

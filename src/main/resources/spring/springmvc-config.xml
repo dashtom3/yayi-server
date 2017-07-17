@@ -22,6 +22,13 @@
     <!-- 处理静态资源被“/”所拦截的问题 -->
 	<mvc:default-servlet-handler />
 	
+	<!-- 拦截器 -->
+	 <!-- <mvc:interceptors>
+		   <mvc:interceptor>
+			<mvc:mapping path="/**" /> 
+			<bean class="com.yayiabc.http.interceptor.LoginInterceptor"></bean>
+		   </mvc:interceptor>
+	   </mvc:interceptors>   -->
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
     
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">
@@ -32,6 +39,9 @@
             </list>
         </property>
     </bean>
+    <!-- 我的获取bean的工具类 -->
+    <bean id="TimerChangeStateServiceImpl" class="com.yayiabc.http.mvc.service.Impl.TimerChangeStateServiceImpl"></bean>
+    <bean id="BeanUtil" class="com.yayiabc.common.utils.BeanUtil"></bean>
     
     <!-- 配置视图解析器，把控制器的逻辑视频映射为真正的视图 -->
     <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">

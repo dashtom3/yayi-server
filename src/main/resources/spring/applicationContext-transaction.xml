@@ -23,6 +23,7 @@
      		 <tx:method name="del*" propagation="REQUIRED"/>
      		 <tx:method name="update*" propagation="REQUIRED"/>
       		<tx:method name="add*" propagation="REQUIRED"/>
+      		<tx:method name="generaOrder" propagation="REQUIRED"/>
 			<tx:method name="*" />
 		</tx:attributes>
 	</tx:advice>

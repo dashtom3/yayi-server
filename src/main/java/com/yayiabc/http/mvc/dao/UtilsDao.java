@@ -7,4 +7,8 @@ public interface UtilsDao {
 	String getUserID(@Param("token")String token);
 	
 	 String getSaleId(@Param("SaleToken")String saleToken);
+	 
+	 String getToken(@Param("userId")String userId);
+   
+	String getSaleToken(@Param("saleId")String saleId);
 }

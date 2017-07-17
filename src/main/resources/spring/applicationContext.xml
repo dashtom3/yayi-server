@@ -9,4 +9,5 @@
 	<bean id="prop" class="org.springframework.beans.factory.config.PropertiesFactoryBean">  
 	   <property name="locations" value="classpath:log4j.properties"/>   
 	</bean> 
+	
 </beans>

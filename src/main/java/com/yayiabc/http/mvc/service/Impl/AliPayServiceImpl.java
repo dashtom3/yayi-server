@@ -202,6 +202,7 @@ public class AliPayServiceImpl implements AliPayService{
 		hmHashMap.put("WIDtotal_fee", String.valueOf(WIDtotal_fee));
 		hmHashMap.put("WIDsubject", sb.toString());
 		hmHashMap.put("WIDbody", WIDbody);
+		hmHashMap.put("acpPay", WIDbody);
 		return hmHashMap;
 	}
 }

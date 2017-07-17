@@ -2,12 +2,14 @@ package com.yayiabc.http.mvc.service.Impl;
 
 import java.io.UnsupportedEncodingException;
 import java.util.Arrays;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yayiabc.common.cahce.CacheUtils;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.OrderIdUtils;
 import com.yayiabc.http.mvc.dao.PlaceOrderDao;
@@ -297,6 +299,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		// TODO Auto-generated method stub
 		//  get userId
 		DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String,Object>>();
+		HashMap<String, Object> hashMap=new HashMap<String, Object>();
 		try {
 			String userId=utilsDao.getUserID(token);
 	         System.out.println(userId);
@@ -339,6 +342,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			 */
 			//存放 商品名称的 
 			StringBuffer sb=new StringBuffer();
+			
 			//创建订单并保存订单数据
 			placeOrderDao.createOrder(orderId,userId,order);
 			//本单赠送钱币数
@@ -365,6 +369,23 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				orderItemList.get(i).setItemPropertyNamea(itemVlue.getItemPropertyInfo());
 				orderItemList.get(i).setItemPropertyNameb(itemVlue.getItemPropertyTwoValue());
 				orderItemList.get(i).setItemPropertyNamec(itemVlue.getItemPropertyThreeValue());
+				//查询该商品的库存数量
+				int ItemInventNum=placeOrderDao.queryItemInventNum(itemVlue.getItemSKU());
+				//判断
+				if(ItemInventNum>=orderItemList.get(i).getNum()){
+					//如果库存数量大于购买数量  就去库存减去购买数
+					//更改库存数量
+					placeOrderDao.updateInventNum(
+							String.valueOf(ItemInventNum-orderItemList.get(i).getNum()),itemVlue.getItemSKU()
+							);				
+					//---
+				}else{
+					hashMap.put("数量不足", "该商品"+orderItemList.get(i).getItemName()+"数量不足，您最多购买"
+							+String.valueOf(ItemInventNum-orderItemList.get(i).getNum())+"件。"
+							);	
+					  dataWrapper.setData(hashMap);
+					  return dataWrapper;
+				}
 				//订单商品总价
 				sumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
 	            
@@ -381,7 +402,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				}*/
 				//giveQbNum+=0;
 			}
-			HashMap<String, Object> hashMap=new HashMap<String, Object>();
+			
 			/*try {
 				//hashMap.put("itemNames", (sb.toString().getBytes("utf-8")));
 			} catch (UnsupportedEncodingException e) {
@@ -393,14 +414,20 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			
 			Double postFee=getFreight(receiver,sumPrice,itemSum);
 			
+			//订单实际价格的计算
+			Double actualPay=sumPrice+postFee-order.getQbDed();
+			//放入订单表
+			placeOrderDao.insertActualPay(orderId,String.valueOf(actualPay));
 			hashMap.put("OrderId",orderId);
 			hashMap.put("sumPrice",String.valueOf(sumPrice));
 			hashMap.put("giveQbNum", giveQbNum);
 			hashMap.put("itemSum", itemSum);
 			hashMap.put("postFee", postFee);
+			hashMap.put("actualPay", actualPay);
 			//商品描述==
 			//hashMap.put("itemMS", "不错");
-			
+			//将该订单加入到Map缓存中
+			CacheUtils.getInstance().addCache(orderId,new Date());
 			dataWrapper.setData(hashMap);
 			return dataWrapper;
 		} catch (Exception e) {

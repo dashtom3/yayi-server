@@ -239,4 +239,8 @@ WHERE s.item_id=#{itemId}
 	<select id="getItemPropertyInfoF" resultType="string">
 		select item_property_six_value from item_value where item_id=#{itemId} group by item_property_six_value
 	</select>
+	
+	<select id="getVideoNameByVideoRoute" resultType="string">
+		select video_name from vid_manage where video_route=#{vedio}
+	</select>
 </mapper>       

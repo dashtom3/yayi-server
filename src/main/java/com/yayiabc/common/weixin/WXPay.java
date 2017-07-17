@@ -127,7 +127,7 @@ public class WXPay {
      * @throws Exception
      */
     public boolean isPayResultNotifySignatureValid(Map<String, String> reqData) throws Exception {
-        String signTypeInData = reqData.get(WXPayConstants.FIELD_SIGN_TYPE);
+        String signTypeInData = reqData.get(WXPayConstants.FIELD_SIGN);//原来为FIELD_SIGN_TYPE
         SignType signType;
         if (signTypeInData == null) {
             signType = SignType.MD5;
@@ -140,11 +140,8 @@ public class WXPay {
             else if (WXPayConstants.MD5.equals(signTypeInData)) {
                 signType = SignType.MD5;
             }
-            else if (WXPayConstants.HMACSHA256.equals(signTypeInData)) {
-                signType = SignType.HMACSHA256;
-            }
-            else {
-                throw new Exception(String.format("Unsupported sign_type: %s", signTypeInData));
+            else{
+            	signType=SignType.HMACSHA256;
             }
         }
         return WXPayUtil.isSignatureValid(reqData, this.config.getKey(), signType);

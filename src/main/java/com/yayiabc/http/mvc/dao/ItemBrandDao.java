@@ -70,5 +70,7 @@ public interface ItemBrandDao{
 
 	public String getItemSKUByPrice(@Param("itemPrice") Double itemPrice,@Param("itemId") String itemId);
 
+	public String getVideoNameByVideoRoute(String video);
+
 }
 

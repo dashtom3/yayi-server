@@ -19,8 +19,8 @@
 		select * from adminstrator
 		<where>
 			true
-			<if test="phone!=null">and phone=#{phone}</if>
-			<if test="trueName!=null">and true_name=#{trueName}</if>
+			<if test="phone!=null">and phone like '%${phone}%'</if>
+			<if test="trueName!=null">and true_name like '%${trueName}%'</if>
 		</where>
 	</select>
 	

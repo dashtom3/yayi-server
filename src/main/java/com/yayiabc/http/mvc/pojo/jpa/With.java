@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class With {
 	private Integer cashId;
-	private String realName;
+	private String trueName;
 	private  String phone;
 	private  int cashMoney;
 	private  String type;
@@ -15,7 +15,28 @@ public class With {
 	private  String cashState;
 	private Date cashSuTime;
     private SaleInfo saleInfo;
+    private String openName;
+    private String bankName;
+    private String saleId;
     
+	public String getOpenName() {
+		return openName;
+	}
+	public void setOpenName(String openName) {
+		this.openName = openName;
+	}
+	public String getBankName() {
+		return bankName;
+	}
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+	public String getSaleId() {
+		return saleId;
+	}
+	public void setSaleId(String saleId) {
+		this.saleId = saleId;
+	}
 	public SaleInfo getSaleInfo() {
 		return saleInfo;
 	}
@@ -34,11 +55,14 @@ public class With {
 	public void setCashId(Integer cashId) {
 		this.cashId = cashId;
 	}
-	public String getRealName() {
-		return realName;
+	public String getTrueName() {
+		return trueName;
 	}
-	public void setRealName(String realName) {
-		this.realName = realName;
+	public void setTrueName(String trueName) {
+		this.trueName = trueName;
+	}
+	public void setCashMoney(int cashMoney) {
+		this.cashMoney = cashMoney;
 	}
 	public String getPhone() {
 		return phone;

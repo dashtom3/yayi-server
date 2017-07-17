@@ -1,11 +1,13 @@
 package com.yayiabc.http.mvc.service;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.User;
+import com.yayiabc.http.mvc.pojo.model.itemIdList;
 
 public interface OrderDetailsService {
 	DataWrapper<List<User>>  orderDetailsShow(HashMap<String,String> map,String newPhone
@@ -19,7 +21,7 @@ public interface OrderDetailsService {
     //显示评论相关内容
 	DataWrapper<Ordera> showComItem(String orderId);
     //提交评论
-	DataWrapper<Void> makeSureCom(HashMap<String, String> hashMap,String token);
+	DataWrapper<Void> makeSureCom(String token,String orderId,ArrayList<itemIdList> itemIdListy);
 
 	//void queryItemDetails(Integer orderId);
      //结账

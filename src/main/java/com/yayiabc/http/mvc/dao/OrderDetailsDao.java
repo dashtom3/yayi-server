@@ -21,8 +21,8 @@ public interface OrderDetailsDao {
 	int  confirmReceipt(String orderId);
    //显示评论1
 	Ordera showComItem(@Param("orderId")String orderId);
-     //确定评论
-	int makeSureCom(HashMap<String, String> hashMap);
+     //确定评论#{userId},#{itemId} ,#{orderId},#{commentGrade} ,#{commentContent}
+	int makeSureCom(String userId, String itemId,String orderId,String commentGrade,String commentContent);
     //查询出 定下的商品明细
 	Ordera queryItemDetails(Integer orderId);
 	

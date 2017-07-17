@@ -14,23 +14,27 @@ public class LogisticsServiceImpl implements LogisticsService{
 	@Autowired
 	private LogisticsDao logisticsDao;
 	@Override
-	public DataWrapper<String> queryLog(String token, String orderId) {
+	public DataWrapper<String> queryLog(String orderId) {
 		// TODO Auto-generated method stub
 		DataWrapper<String> dataWrapper=new DataWrapper<String>();
 		Ordera order=logisticsDao.queryLog(orderId);
-		String s=null;
-		try {
-			s = new LogisticsMain().getOrderTracesByJson(order.getShippingName(), order.getShippingCode());
-		} catch (Exception e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
+		System.out.println(order);
+		if(order!=null){
+			String s=null;
+			try {
+				s = new LogisticsMain().getOrderTracesByJson(order.getShippingName(), order.getShippingCode());
+			} catch (Exception e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			if(s==null){
+				dataWrapper.setMsg("暂无物流信息");
+			}else{
+				dataWrapper.setData(s);
+			}
+			//	return s;
+			return dataWrapper;
 		}
-		if(s==null){
-			dataWrapper.setMsg("暂无物流信息");
-		}else{
-			dataWrapper.setData(s);
-		}
-		//	return s;
 		return dataWrapper;
-	}
-}
+		}
+		}

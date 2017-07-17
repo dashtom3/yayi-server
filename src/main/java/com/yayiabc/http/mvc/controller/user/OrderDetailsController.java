@@ -75,7 +75,7 @@ public class OrderDetailsController {
     		  @RequestParam(value="token",required=true) String token,
     		  @RequestParam(value="orderId",required=true) String orderId
     		 ){
-    	 return logisticsService.queryLog(token, orderId);
+    	 return logisticsService.queryLog( orderId);
      }
      //确定收货  提示获得钱币数   这个有问题
      @RequestMapping("definiteHints")

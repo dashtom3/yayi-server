@@ -430,9 +430,11 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			CacheUtils.getInstance().addCache(orderId,new Date());
 			dataWrapper.setData(hashMap);
 			return dataWrapper;
-		} catch (Exception e) {
-			dataWrapper.setMsg("订单提交失败");
-			return dataWrapper;
+		} catch (Exception e){
+			throw new RuntimeException(e);
+			//dataWrapper.setMsg("订单提交失败");
+			//return dataWrapper;
 		}
+		//return dataWrapper;
 	}
 }

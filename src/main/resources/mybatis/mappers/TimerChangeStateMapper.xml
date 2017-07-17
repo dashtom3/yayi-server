@@ -12,14 +12,11 @@
 		where order_id=#{orderId}
 	</select>
 
-	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.Ordera" id="resMap">
-		<id property="orderId" column="orderid" />
-		<collection property="orderitemList"
-			ofType="com.yayiabc.http.mvc.pojo.jpa.OrderItem">
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.OrderItem" id="resMap">
+		
 			<id property="orderId" column="order_id" />
 			<result property="itemSKU" column="itm_SKU"/>
 			<result property="num" column="num"/>
-		</collection>
 	</resultMap>
 	<select id="queryOrderItems" resultMap="resMap">
 		SELECT orde.order_id

@@ -5,5 +5,5 @@ import com.yayiabc.common.utils.DataWrapper;
 
 public interface LogisticsService {    //token, orderId
      
-	DataWrapper<String> queryLog(String token,String orderId);
+	DataWrapper<String> queryLog(String orderId);
 }

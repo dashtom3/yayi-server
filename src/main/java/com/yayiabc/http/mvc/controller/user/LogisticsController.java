@@ -15,12 +15,15 @@ public class LogisticsController {
     @RequestMapping("queryExp")
     @ResponseBody
     public DataWrapper<String> queryLogMain(
-    		@RequestParam(value="token",required=true)String  token,
     		@RequestParam(value="orderId",required=true)String  orderId
     		
     		//@RequestParam(value="ShipperCode",required=false) String  ShipperCode,//快递公司编码
     		//@RequestParam(value="LogisticCode",required=false) String  LogisticCode,//物流编号
     		){
-    	return logisticsService.queryLog(token, orderId);
+    	DataWrapper<String>  l=logisticsService.queryLog(orderId);
+    	if(l!=null)
+    	return l;
+    	else
+    		return null;
     }
 }

@@ -101,9 +101,7 @@
 			</if>
 
 		</where>
-		order by orde.created  desc
-		limit ${currentNum},${numberPerpage}
-		
+		 order by  orde.created desc   limit #{currentNum} ,#{numberPerpage}
 	</select>
 
 

@@ -12,6 +12,7 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.HttpUtil;
 import com.yayiabc.common.utils.MD5Util;
 import com.yayiabc.http.mvc.dao.UserDao;
+import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.UserToken;
 import com.yayiabc.http.mvc.service.UserService;
@@ -20,6 +21,8 @@ import com.yayiabc.http.mvc.service.UserService;
 public class UserServiceImpl implements UserService{
 	@Autowired 
 	private UserDao userDao;
+	@Autowired
+	private UtilsDao utilsDao;
 	public DataWrapper<Void> getVerifyCode(String phone) {
 		//浜斿垎閽熶箣鍐呬笉鑳藉啀鍙戠煭淇�
 		DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
@@ -200,6 +203,10 @@ public class UserServiceImpl implements UserService{
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+		//--
+		String userId=utilsDao.getUserID(token);
+		SessionManager.removeSessionByUserId(userId);
+		//---
 		return dataWrapper;
 	}
 

@@ -41,8 +41,8 @@
 			</if>
 			
 			<if test="buyerInfo != null and buyerInfo!=''">
-				and us.phone = #{buyerInfo} or us.true_name =
-				#{buyerInfo}
+				and us.phone = '${buyerInfo}%'  or us.true_name =
+				'${buyerInfo}%'
 			</if>
 			<if test="orderState !=null and orderState!=''">
 				and orde.state=#{orderState}

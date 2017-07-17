@@ -24,8 +24,7 @@ public class UserController {
 	    */
 	@Autowired
 	private UserService userService;
-	@Autowired
-	private UtilsDao utilsDao;
+	
 	//获取验证码
 	@RequestMapping("getVerifyCode")
 	@ResponseBody
@@ -75,13 +74,14 @@ public class UserController {
 	@RequestMapping("reLogin")
 	@ResponseBody
 	public DataWrapper<Void> reLogin(
-			@RequestParam(value = "token", required = true) String token,
-			HttpSession session
+			@RequestParam(value = "token", required = true) String token
 			){
 		//清除session(手工杀会话)
-		session.invalidate();
 		//清除缓存中的 token 
-		CheckIsSignUtils.getInstance().getList().remove(token);
+		//String userId=utilsDao.getUserID(token);
+		/*if(SessionManager.getSessionByUserID(userId)!=null){
+			
+		}*/
 		return userService.reLogin(token);
 	}
 	

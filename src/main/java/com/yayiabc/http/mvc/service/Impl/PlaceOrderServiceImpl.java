@@ -427,14 +427,15 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//商品描述==
 			//hashMap.put("itemMS", "不错");
 			//将该订单加入到Map缓存中
-			CacheUtils.getInstance().addCache(orderId,new Date());
+			CacheUtils.getInstance().getCacheMap().put(orderId, new Date());
+			
 			dataWrapper.setData(hashMap);
 			return dataWrapper;
 		} catch (Exception e){
-			throw new RuntimeException(e);
-			//dataWrapper.setMsg("订单提交失败");
+			//throw new RuntimeException(e);
+			dataWrapper.setMsg("订单提交失败");
 			//return dataWrapper;
 		}
-		//return dataWrapper;
+		return dataWrapper;
 	}
 }

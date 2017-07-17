@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
@@ -16,6 +17,7 @@ import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.Receiver;
 import com.yayiabc.http.mvc.pojo.jpa.User;
+import com.yayiabc.http.mvc.pojo.model.itemIdList;
 import com.yayiabc.http.mvc.service.OrderDetailsService;
 
 @Service
@@ -38,20 +40,30 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 			page.setNumberPerPage(10);
 			page.setCurrentPage(1);
 		}
-		
+/*//		hMap.put("currentPage", page.getCurrentPage());
+		hMap.put("numberPerpage", page.getNumberPerPage());
+		Integer currentNum=page.getCurrentNumber();
+		hMap.put("currentNum", currentNum);*/
         		
 		DataWrapper<List<User>> dataWrapper=new DataWrapper<List<User>>();
 		String userId = null;
 		if(token!=null){
 			 userId=utilsDao.getUserID(token);
 		}
-		String currentNum=String.valueOf(page.getCurrentNumber());
+		/*String currentNum=String.valueOf(page.getCurrentNumber());
 		map.put("currentNum", currentNum);
 		map.put("phone", userId);
 		//map.put("currentPage", String.valueOf(page.getCurrentPage()));
 		map.put("numberPerpage", String.valueOf(page.getNumberPerPage()));
 		//总条数
-				int count=orderdetailsDao.queryCount(map);
+				int count=orderdetailsDao.queryCount(map);*/
+		//总条数
+		int count=orderdetailsDao.queryCount(map);//totalnumber
+		
+//		hMap.put("currentPage", page.getCurrentPage());
+		map.put("numberPerpage", String.valueOf(page.getNumberPerPage()));
+		Integer currentNum=page.getCurrentNumber();
+		map.put("currentNum", String.valueOf(currentNum));
 		List<User> orderDetailsList=orderdetailsDao.orderDetailsShow(map);
 		map.put("orderItemNum", String.valueOf(orderDetailsList.size()));
 		dataWrapper.setPage(page, count);
@@ -105,13 +117,20 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 	}
 
 	@Override   //这里
-	public DataWrapper<Void> makeSureCom(HashMap<String, String> hashMap,String token) {
+	public DataWrapper<Void> makeSureCom(String token,String orderId,ArrayList<itemIdList> itemIdListy) {
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		String userId=utilsDao.getUserID(token);
-		hashMap.put("userId", userId);
-		int state=orderdetailsDao.makeSureCom(hashMap);
-		if(state>0){
+		//user_id,item_id,order_id,comment_grade,comment_content
+		int count =0;
+		for(int i=0;i<itemIdListy.size();i++){
+			orderdetailsDao.makeSureCom(userId,itemIdListy.get(i).getItemId(),orderId,itemIdListy.get(i).getScore(),
+					itemIdListy.get(i).getData()
+					);
+			count++;
+		}
+		
+		if(count>0){
 			dataWrapper.setMsg("操作成功");
 		}else{
 			dataWrapper.setMsg("操作失败");

@@ -91,43 +91,46 @@
 	</select>
 	
 	<select id="getCount" resultType="int">
-		SELECT count(0)
-		FROM sale_info s
-		LEFT JOIN USER u
-		ON s.sale_id=u.sale_id
-		LEFT JOIN ordera o
-		ON u.user_id=o.user_id
-		LEFT JOIN sale_income si
-		ON s.sale_id=si.sale_id
-		<where>
-			<if test="saleId !=null and saleId !=''">
-				s.sale_id LIKE '%${saleId}%'
-			</if>
-			<if test="saleName !=null and saleName !=''">
-				AND s.true_name LIKE '%${saleName}%' 
-			</if>
-			<if test="salePhone !=null and salePhone !=''">
-				AND s.phone LIKE '%${salePhone}%'
-			</if>
-			<if test="orderId !=null and orderId !=''">
-				AND o.order_id LIKE '%${orderId}%'
-			</if>
-			<if test="signLateSeven == 1">
-			<![CDATA[	AND DATEDIFF(NOW(),o.end_time) >= 7 ]]>
-			</if>
-			<if test="signLateSeven == 2">
-				AND DATEDIFF(NOW(),o.end_time) &lt; 7
-			</if>
-			<if test="getState !=null and getState !=''">
-				AND si.get_state = #{getState}
-			</if>
-			<if test="startDate !=null and startDate !=''">
-				AND DATE_FORMAT(si.updated,'%Y-%m-%d') <![CDATA[  >=  ]]>#{startDate}
-			</if>
-			<if test="endDate != null and endDate !=''">
-				AND DATE_FORMAT(si.updated,'%Y-%m-%d') <![CDATA[  <=  ]]>#{endDate}
-			</if>
-		</where>
+		SELECT count(0) FROM (
+			SELECT count(0)
+			FROM sale_info s
+			LEFT JOIN USER u
+			ON s.sale_id=u.sale_id
+			LEFT JOIN ordera o
+			ON u.user_id=o.user_id
+			LEFT JOIN sale_income si
+			ON s.sale_id=si.sale_id
+			<where>
+				<if test="saleId !=null and saleId !=''">
+					s.sale_id LIKE '%${saleId}%'
+				</if>
+				<if test="saleName !=null and saleName !=''">
+					AND s.true_name LIKE '%${saleName}%' 
+				</if>
+				<if test="salePhone !=null and salePhone !=''">
+					AND s.phone LIKE '%${salePhone}%'
+				</if>
+				<if test="orderId !=null and orderId !=''">
+					AND o.order_id LIKE '%${orderId}%'
+				</if>
+				<if test="signLateSeven == 1">
+					<![CDATA[	AND DATEDIFF(NOW(),o.end_time) >= 7 ]]>
+				</if>
+				<if test="signLateSeven == 2">
+					AND DATEDIFF(NOW(),o.end_time) &lt; 7
+				</if>
+				<if test="getState !=null and getState !=''">
+					AND si.get_state = #{getState}
+				</if>
+				<if test="startDate !=null and startDate !=''">
+					AND DATE_FORMAT(si.updated,'%Y-%m-%d') <![CDATA[  >=  ]]>#{startDate}
+				</if>
+				<if test="endDate != null and endDate !=''">
+					AND DATE_FORMAT(si.updated,'%Y-%m-%d') <![CDATA[  <=  ]]>#{endDate}
+				</if>
+			</where>
+			GROUP BY o.order_id
+		) AS a
 	</select>
 	
 	<resultMap type="SaleIncomeVo" id="saleIncomeRM">

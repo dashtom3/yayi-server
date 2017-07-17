@@ -27,17 +27,20 @@
 	</select>
 	
 	<select id="getCount" resultType="int">
-		SELECT 
-		count(0)
-		FROM USER u
-		LEFT JOIN sale_info s
-		ON u.sale_id=s.sale_id
-		LEFT JOIN certification c
-		ON u.user_id=c.user_id
-		WHERE  
-		u.true_name LIKE '%${value}%' AND u.sale_id =#{saleId} OR 
-		u.phone LIKE '%${value}%' AND u.sale_id =#{saleId} OR 
-		c.company_name LIKE '%${value}%' AND u.sale_id =#{saleId}
+		SELECT count(0) FROM (
+			SELECT 
+			count(0)
+			FROM USER u
+			LEFT JOIN sale_info s
+			ON u.sale_id=s.sale_id
+			LEFT JOIN certification c
+			ON u.user_id=c.user_id
+			WHERE  
+			u.true_name LIKE '%${value}%' AND u.sale_id =#{saleId} OR 
+			u.phone LIKE '%${value}%' AND u.sale_id =#{saleId} OR 
+			c.company_name LIKE '%${value}%' AND u.sale_id =#{saleId}
+			GROUP BY u.user_id
+		) AS a
 	</select>
 	
 	<select id="queryCount" resultType="UserStatistics">

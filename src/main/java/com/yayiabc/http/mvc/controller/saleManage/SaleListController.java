@@ -76,11 +76,11 @@ public class SaleListController {
 	@ResponseBody
 	public DataWrapper<Void> bind(
 			@RequestParam(value="userPhone",required=true)String[] userPhone,
-			@RequestParam(value="salePhone",required=true)String[] salePhone
+			@RequestParam(value="salePhone",required=true)String salePhone
 	){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		for(int i=0;i<userPhone.length;i++){
-			dataWrapper=userManageListService.bind(salePhone[i], userPhone[i]);	
+			dataWrapper=userManageListService.bind(salePhone, userPhone[i]);	
 			
 		}
 		return dataWrapper;
@@ -92,12 +92,12 @@ public class SaleListController {
 	@RequestMapping(value="disBind",method=RequestMethod.POST)
 	@ResponseBody
 	public DataWrapper<Void> disBind(
-			@RequestParam(value="salePhone",required=true)String[] salePhone,
+			@RequestParam(value="salePhone",required=true)String salePhone,
 			@RequestParam(value="userPhone",required=true)String[] userPhone
 	){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		for(int i=0;i<salePhone.length;i++){
-			dataWrapper=userManageListService.disBind(salePhone[i], userPhone[i]);
+		for(int i=0;i<userPhone.length;i++){
+			dataWrapper=userManageListService.disBind(salePhone, userPhone[i]);
 		}
 		return dataWrapper;
 	}

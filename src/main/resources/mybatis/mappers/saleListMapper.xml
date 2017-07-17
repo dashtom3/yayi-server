@@ -40,25 +40,25 @@
 	
 	<!-- 总数 -->
 	<select id="getCount" resultType="int">
-		SELECT count(0)
-		FROM sale_info  
-		<where>
-			<if test="saleId !=null and saleId !=''">
-				sale_id LIKE '%${saleId}%'
-			</if>
-			<if test="phone !=null and phone !=''">
-				AND phone LIKE '%${phone}%'
-			</if>
-			<if test="trueName !=null and trueName !=''">
-				AND true_name LIKE '%${trueName}%'
-			</if>
-			<if test="isBindUser ==1">
-				AND bind_user_num !=0
-			</if>
-			<if test="isBindUser ==2">
-				AND bind_user_num =0
-			</if>
-		</where>
+			SELECT count(0)
+			FROM sale_info  
+			<where>
+				<if test="saleId !=null and saleId !=''">
+					sale_id LIKE '%${saleId}%'
+				</if>
+				<if test="phone !=null and phone !=''">
+					AND phone LIKE '%${phone}%'
+				</if>
+				<if test="trueName !=null and trueName !=''">
+					AND true_name LIKE '%${trueName}%'
+				</if>
+				<if test="isBindUser ==1">
+					AND bind_user_num !=0
+				</if>
+				<if test="isBindUser ==2">
+					AND bind_user_num =0
+				</if>
+			</where>
 	</select>
 	
 	<resultMap type="User" id="userRM">

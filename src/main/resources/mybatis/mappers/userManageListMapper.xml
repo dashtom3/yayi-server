@@ -37,33 +37,36 @@
 	</select>
 	
 	<select id="getCount" resultType="int">
-		SELECT COUNT(0)
-		FROM USER u 
-		LEFT JOIN sale_info s ON u.sale_id=s.sale_id
-		LEFT JOIN certification c ON u.user_id=c.user_id
-		<where>
-			<if test="phone != null and phone !=''">
-				u.phone LIKE '%${phone}%'
-			</if>
-			<if test="trueName !=null and trueName !=''">
-				AND u.true_name LIKE '%${trueName}%'
-			</if>
-			<if test="companyName !=null and companyName !=''">
-				AND c.company_name LIKE '%${companyName}%'
-			</if>
-			<if test="isBindSale == 1">
-				AND u.sale_id IS NOT NULL
-			</if>
-			<if test="isBindSale == 2">
-				AND u.sale_id IS NULL
-			</if>
-			<if test="type !=null and type!=''">
-				AND c.type=#{type}
-			</if>
-			<if test="saleName !=null and saleName !=''">
-				AND s.true_name LIKE '%${saleName}%'
-			</if>
-		</where>
+		SELECT COUNT(0) FROM (
+			SELECT COUNT(0)
+			FROM USER u 
+			LEFT JOIN sale_info s ON u.sale_id=s.sale_id
+			LEFT JOIN certification c ON u.user_id=c.user_id
+			<where>
+				<if test="phone != null and phone !=''">
+					u.phone LIKE '%${phone}%'
+				</if>
+				<if test="trueName !=null and trueName !=''">
+					AND u.true_name LIKE '%${trueName}%'
+				</if>
+				<if test="companyName !=null and companyName !=''">
+					AND c.company_name LIKE '%${companyName}%'
+				</if>
+				<if test="isBindSale == 1">
+					AND u.sale_id IS NOT NULL
+				</if>
+				<if test="isBindSale == 2">
+					AND u.sale_id IS NULL
+				</if>
+				<if test="type !=null and type!=''">
+					AND c.type=#{type}
+				</if>
+				<if test="saleName !=null and saleName !=''">
+					AND s.true_name LIKE '%${saleName}%'
+				</if>
+			</where>
+			GROUP BY u.user_id
+			) AS a
 	</select>
 	
 	<resultMap type="SaleInfo" id="saleInfoRM">

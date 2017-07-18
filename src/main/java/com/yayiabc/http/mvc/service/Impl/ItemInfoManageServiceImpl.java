@@ -36,31 +36,41 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 		itemInfo.setItemId(itemId);
 		itemInfo.setItemName(itemName);
 		itemInfo.setOneClassify(itemClassify);
-		/*ItemBrand itemBrand =new ItemBrand();
-		itemBrand.setItemBrandName(itemBrandName);
-		itemInfo.setItemBrand(itemBrand);*/
 		itemInfo.setTwoClassify(itemBrandName);
 		itemInfo.setState(state);
+		System.out.println(itemInfo.getState());
 		List<ItemInfo> itemInfoList=null;
 		Integer totalNumber=0;
-		if(itemInfoManageDao.getItemClassifyGradeByName(itemClassify)!=0){
-			totalNumber=itemInfoManageDao.getCountOne(itemInfo);
+		if(itemClassify!=null){
+			if(itemInfoManageDao.getItemClassifyGradeByName(itemClassify)!=0){
+				totalNumber=itemInfoManageDao.getCountOne(itemInfo);
+				System.out.println(totalNumber);
+				dataWrapper.setPage(page, totalNumber);
+				itemInfo.setSales(page.getCurrentNumber());
+				itemInfo.setItemStockNum(page.getNumberPerPage());
+				itemInfoList=itemInfoManageDao.itemInfoListOne(itemInfo);
+			}else if(itemInfoManageDao.getItemClassifyGrade(itemClassify)!=0){
+				totalNumber=itemInfoManageDao.getCountTwo(itemInfo);
+				System.out.println(totalNumber);
+				dataWrapper.setPage(page, totalNumber);
+				itemInfo.setSales(page.getCurrentNumber());
+				itemInfo.setItemStockNum(page.getNumberPerPage());
+				itemInfoList=itemInfoManageDao.itemInfoListTwo(itemInfo);
+			}else{
+				totalNumber=itemInfoManageDao.getCountThree(itemInfo);
+				System.out.println(totalNumber);
+				dataWrapper.setPage(page, totalNumber);
+				itemInfo.setSales(page.getCurrentNumber());
+				itemInfo.setItemStockNum(page.getNumberPerPage());
+				itemInfoList=itemInfoManageDao.itemInfoListThree(itemInfo);
+			}
+		}else {
+			totalNumber=itemInfoManageDao.getCountFour(itemInfo);
+			System.out.println(itemInfo.getState());
 			dataWrapper.setPage(page, totalNumber);
 			itemInfo.setSales(page.getCurrentNumber());
 			itemInfo.setItemStockNum(page.getNumberPerPage());
-			itemInfoList=itemInfoManageDao.itemInfoListOne(itemInfo);
-		}else if(itemInfoManageDao.getItemClassifyGrade(itemClassify)!=0){
-			totalNumber=itemInfoManageDao.getCountTwo(itemInfo);
-			dataWrapper.setPage(page, totalNumber);
-			itemInfo.setSales(page.getCurrentNumber());
-			itemInfo.setItemStockNum(page.getNumberPerPage());
-			itemInfoList=itemInfoManageDao.itemInfoListTwo(itemInfo);
-		}else{
-			totalNumber=itemInfoManageDao.getCountThree(itemInfo);
-			dataWrapper.setPage(page, totalNumber);
-			itemInfo.setSales(page.getCurrentNumber());
-			itemInfo.setItemStockNum(page.getNumberPerPage());
-			itemInfoList=itemInfoManageDao.itemInfoListThree(itemInfo);
+			itemInfoList=itemInfoManageDao.itemInfoListFour(itemInfo);
 		}
 		dataWrapper.setData(itemInfoList);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);

@@ -131,7 +131,12 @@ public class ItemInfo extends BasePojo {
 	}
 
 	public void setOneClassify(String oneClassify) {
-		this.oneClassify = oneClassify;
+		if(oneClassify==null||"".equals(oneClassify)){
+			oneClassify=null;
+		}else {
+			
+			this.oneClassify = oneClassify;
+		}
 	}
 
 	public String getTwoClassify() {

@@ -13,7 +13,7 @@
  			true
  			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
  			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
- 			<if test="state!=null and state!=''">and state=#{state}</if>
+ 			<if test="state!=null">and state=#{state}</if>
  			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
  			<if test="oneClassify!=null and oneClassify!=''">and one_classify=#{oneClassify}</if>
  		</where>
@@ -30,7 +30,7 @@
  			true
  			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
  			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
- 			<if test="state!=null and state!=''">and state=#{state}</if>
+ 			<if test="state!=null">and state=#{state}</if>
  			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
  			<if test="oneClassify!=null and oneClassify!=''">and two_classify=#{oneClassify}</if>
  		</where>
@@ -47,9 +47,26 @@
  			true
  			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
  			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
- 			<if test="state!=null and state!=''">and state=#{state}</if>
+ 			<if test="state!=null">and state=#{state}</if>
  			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
  			<if test="oneClassify!=null and oneClassify!=''">and three_classify=#{oneClassify}</if>
+ 		</where>
+ 		order by a.updated desc
+ 		limit #{sales},#{itemStockNum}
+ 	</select>
+ 	
+ 	<select id="itemInfoListFour" resultMap="itemInfoRM">
+ 		select a.*,b.item_brand_name from 
+ 		item_info a
+ 		inner join
+ 		(select item_brand_id p_id,item_brand_name from item_brand) b
+ 		on a.item_brand_id=b.p_id
+ 		<where>
+ 			true
+ 			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
+ 			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
+ 			<if test="state!=null">and state=#{state}</if>
+ 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
  		</where>
  		order by a.updated desc
  		limit #{sales},#{itemStockNum}
@@ -153,7 +170,7 @@
  			true
  			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
  			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
- 			<if test="state!=null and state!=''">and state=#{state}</if>
+ 			<if test="state!=null">and state=#{state}</if>
  			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
  			<if test="oneClassify!=null and oneClassify!=''">and one_classify=#{oneClassify}</if>
  		</where>
@@ -169,7 +186,7 @@
  			true
  			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
  			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
- 			<if test="state!=null and state!=''">and state=#{state}</if>
+ 			<if test="state!=null">and state=#{state}</if>
  			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
  			<if test="oneClassify!=null and oneClassify!=''">and two_classify=#{oneClassify}</if>
  		</where>
@@ -185,10 +202,27 @@
  			true
  			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
  			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
- 			<if test="state!=null and state!=''">and state=#{state}</if>
+ 			<if test="state!=null">and state=#{state}</if>
  			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
  			<if test="oneClassify!=null and oneClassify!=''">and three_classify=#{oneClassify}</if>
  		</where>
  	</select>
+ 	
+ 	<select id="getCountFour" resultType="java.lang.Integer">
+ 		select count(0) from 
+ 		item_info a
+ 		inner join
+ 		(select item_brand_id p_id,item_brand_name from item_brand) b
+ 		on a.item_brand_id=b.p_id
+ 		<where>
+ 			true
+ 			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
+ 			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
+ 			<if test="state!=null">and state=#{state}</if>
+ 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
+ 		</where>
+ 	</select>
+ 	
+ 	
  	
 </mapper>       

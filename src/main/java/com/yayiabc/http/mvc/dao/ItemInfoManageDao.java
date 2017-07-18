@@ -62,6 +62,10 @@ public interface ItemInfoManageDao {
 
 	Integer getCountThree(ItemInfo itemInfo);
 
+	Integer getCountFour(ItemInfo itemInfo);
+
+	List<ItemInfo> itemInfoListFour(ItemInfo itemInfo);
+
 
 
 

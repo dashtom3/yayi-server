@@ -48,8 +48,13 @@ public class UserManageListServiceImpl implements UserManageListService {
 
 	@Override
 	public DataWrapper<List<SaleInfo>> salelist(String salePhone,
-			String saleName) {
+			String saleName,Integer currentPage,Integer numberPerPage) {
 		DataWrapper<List<SaleInfo>> dataWrapper = new DataWrapper<List<SaleInfo>>();
+		Page page=new Page();
+		page.setNumberPerPage(numberPerPage);
+	    page.setCurrentPage(currentPage);
+	    int totalNumber = userManageListDao.getSalelistCount(salePhone, saleName);
+	    dataWrapper.setPage(page, totalNumber);
 		List<SaleInfo> list = userManageListDao.salelist(salePhone, saleName);
 		dataWrapper.setData(list);
 		return dataWrapper;

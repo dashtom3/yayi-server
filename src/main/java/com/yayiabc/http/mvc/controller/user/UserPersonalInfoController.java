@@ -1,6 +1,5 @@
 package com.yayiabc.http.mvc.controller.user;
 
-import java.util.List;
 import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -16,6 +15,7 @@ import com.yayiabc.http.mvc.pojo.jpa.Certification;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.UserPersonalInfo;
 import com.yayiabc.http.mvc.service.UserPersonalInfoService;
+
 
 @Controller
 @RequestMapping("api/userPersonalInfo")

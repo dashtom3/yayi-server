@@ -9,7 +9,7 @@ import com.yayiabc.http.mvc.pojo.model.UserAllInfo;
 public interface UserManageListService {
 	DataWrapper<List<UserAllInfo>> userlist(String phone,String trueName,String companyName,Integer isBindSale,Integer type,String saleName,Integer currentPage,Integer numberPerPage);
 
-	DataWrapper<List<SaleInfo>> salelist(String salePhone,String saleName);
+	DataWrapper<List<SaleInfo>> salelist(String salePhone,String saleName,Integer currentPage,Integer numberPerPage);
 	
 	DataWrapper<Void> bind(String salePhone,String userPhone);
 	

@@ -46,9 +46,11 @@ public class UserManageListController {
 	@ResponseBody
 	public DataWrapper<List<SaleInfo>> salelist(
 			@RequestParam(value="salePhone",required=false)String salePhone,
-			@RequestParam(value="saleName",required=false)String saleName
+			@RequestParam(value="saleName",required=false)String saleName,
+			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
-		return userManageListService.salelist(salePhone, saleName);
+		return userManageListService.salelist(salePhone, saleName,currentPage,numberPerPage);
 	}
 	
 	/**

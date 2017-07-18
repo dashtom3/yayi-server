@@ -34,7 +34,7 @@ public class OrderDetailsController {
 	@RequestMapping("show")
 	@ResponseBody
 	public DataWrapper<List<User>> show(
-			@RequestParam(value="token",required=false) String token,
+			@RequestParam(value="token",required=true) String token,
 			@RequestParam(value="state",required=false) String state,
 			@RequestParam(value="currentPage",required=false) Integer currentPage,
 			@RequestParam(value="numberPerpage",required=false) Integer numberPerpage
@@ -120,6 +120,13 @@ public class OrderDetailsController {
 	//确定评论[{'num':1,'price':12,'itemSKU':'1707101359261'}]
 	@RequestMapping("makeSureCom")
 	@ResponseBody
+	/**
+	 *itemIdList [{'itemId':1,'score':12,'data':'1707101359261'}]
+	 * @param token
+	 * @param orderId
+	 * @param itemIdList
+	 * @return
+	 */
 	public DataWrapper<Void> makeSureCom(
 			@RequestParam(value="token",required=true) String token,
 			@RequestParam(value="orderId",required=true) String orderId,

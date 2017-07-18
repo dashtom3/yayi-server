@@ -16,4 +16,7 @@
 	<select id="getSaleToken" parameterType="java.lang.String" resultType="java.lang.String">
 		select sale_token from sale_token where sale_id=#{saleId} 
 	</select>
+	<select id="queryPhone" parameterType="java.lang.String" resultType="java.lang.String">
+		select phone from  user where user_id=#{userId} 
+	</select>
 </mapper>       

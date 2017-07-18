@@ -52,9 +52,11 @@ public class WitManageController {
     		 ){
     	    //这里关于提现金额 没有判断  ，闲下来我会判断的
     	    if(vCode.equals(VerifyCodeManager.getPhoneCode(with.getPhone()))){
+    	    	
     	    	return witManageService.submitWit(with);
     	    }
     	    DataWrapper<Void> dataWrapper= new DataWrapper<Void>();
+    	    dataWrapper.setErrorCode(ErrorCodeEnum.Error);
     	    dataWrapper.setMsg("验证验证码失败");
     	    return dataWrapper;
      }

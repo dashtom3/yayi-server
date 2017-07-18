@@ -24,7 +24,7 @@ public class MyTask extends TimerTask{
 		CacheUtils cache=	CacheUtils.getInstance();
 		Map<String,Date> map=cache.getCacheMap();
 		for(String key:map.keySet()){
-			System.out.println(new Date().getTime()-map.get(key).getTime()+"毫秒");
+			//System.out.println(new Date().getTime()-map.get(key).getTime()+"毫秒");
 			
 			if(new Date().getTime()-map.get(key).getTime()>=1*60*1000
 					){

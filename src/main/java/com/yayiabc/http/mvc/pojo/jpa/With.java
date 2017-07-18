@@ -15,22 +15,8 @@ public class With {
 	private  String cashState;
 	private Date cashSuTime;
     private SaleInfo saleInfo;
-    private String openName;
-    private String bankName;
     private String saleId;
     
-	public String getOpenName() {
-		return openName;
-	}
-	public void setOpenName(String openName) {
-		this.openName = openName;
-	}
-	public String getBankName() {
-		return bankName;
-	}
-	public void setBankName(String bankName) {
-		this.bankName = bankName;
-	}
 	public String getSaleId() {
 		return saleId;
 	}
@@ -114,8 +100,11 @@ public class With {
 	}
 	@Override
 	public String toString() {
-		return "With [cashMoney=" + cashMoney + ", cashSuTime=" + cashSuTime
-				+ "]";
+		return "With [cashId=" + cashId + ", trueName=" + trueName + ", phone=" + phone + ", cashMoney=" + cashMoney
+				+ ", type=" + type + ", accountUser=" + accountUser + ", bank=" + bank + ", anumber=" + anumber
+				+ ", appTime=" + appTime + ", cashState=" + cashState + ", cashSuTime=" + cashSuTime + ", saleInfo="
+				+ saleInfo + ", saleId=" + saleId + "]";
 	}
+	
 
 }

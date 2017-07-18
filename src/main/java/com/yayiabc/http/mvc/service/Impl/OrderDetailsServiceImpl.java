@@ -40,31 +40,22 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 			page.setNumberPerPage(10);
 			page.setCurrentPage(1);
 		}
-/*//		hMap.put("currentPage", page.getCurrentPage());
-		hMap.put("numberPerpage", page.getNumberPerPage());
-		Integer currentNum=page.getCurrentNumber();
-		hMap.put("currentNum", currentNum);*/
+
         		
 		DataWrapper<List<User>> dataWrapper=new DataWrapper<List<User>>();
 		String userId = null;
 		if(token!=null){
 			 userId=utilsDao.getUserID(token);
 		}
-		/*String currentNum=String.valueOf(page.getCurrentNumber());
-		map.put("currentNum", currentNum);
-		map.put("phone", userId);
-		//map.put("currentPage", String.valueOf(page.getCurrentPage()));
-		map.put("numberPerpage", String.valueOf(page.getNumberPerPage()));
-		//总条数
-				int count=orderdetailsDao.queryCount(map);*/
 		//总条数
 		int count=orderdetailsDao.queryCount(map);//totalnumber
-		
 //		hMap.put("currentPage", page.getCurrentPage());
 		map.put("numberPerpage", String.valueOf(page.getNumberPerPage()));
 		Integer currentNum=page.getCurrentNumber();
 		map.put("currentNum", String.valueOf(currentNum));
+		map.put("userId", userId);
 		List<User> orderDetailsList=orderdetailsDao.orderDetailsShow(map);
+		
 		map.put("orderItemNum", String.valueOf(orderDetailsList.size()));
 		dataWrapper.setPage(page, count);
 		dataWrapper.setData(orderDetailsList);
@@ -121,10 +112,12 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		String userId=utilsDao.getUserID(token);
+	   //根据userId  cha  phoen
+		String userPhone=utilsDao.queryPhone(userId);
 		//user_id,item_id,order_id,comment_grade,comment_content
 		int count =0;
 		for(int i=0;i<itemIdListy.size();i++){
-			orderdetailsDao.makeSureCom(userId,itemIdListy.get(i).getItemId(),orderId,itemIdListy.get(i).getScore(),
+			orderdetailsDao.makeSureCom(userPhone,userId,itemIdListy.get(i).getItemId(),orderId,itemIdListy.get(i).getScore(),
 					itemIdListy.get(i).getData()
 					);
 			count++;

@@ -11,4 +11,6 @@ public interface UtilsDao {
 	 String getToken(@Param("userId")String userId);
    
 	String getSaleToken(@Param("saleId")String saleId);
+     
+	String queryPhone(@Param("userId")String userId);
 }

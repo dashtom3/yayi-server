@@ -92,16 +92,16 @@
 		orde_it.item_id
 		= item_f.item_id join receiver rece on rece.receiver_id=orde.receiver_id
 		<where>
-			<if test="phone !=null">
-				us.user_id=#{phone}
+			<if test="userId !=null and userId!=''">
+				us.user_id=#{userId}
 			</if>
 
-			<if test="state !=null">
+			<if test="state !=null and state!=''">
 				and orde.state=#{state}  <!-- 待付款 -->
 			</if>
 
 		</where>
-		 order by  orde.created desc   limit #{currentNum} ,#{numberPerpage}
+		 order by  orde.created desc   limit ${currentNum} , ${numberPerpage}
 	</select>
 
 
@@ -118,8 +118,8 @@
 		orde_it.item_id
 		= item_f.item_id
 		<where>
-			<if test="phone !=null and phone!=''">
-				us.user_id=#{phone}
+			<if test="userId !=null and userId!=''">
+				us.user_id=#{userId}
 			</if>
 
 			<if test="state !=null and state!=''">
@@ -152,9 +152,9 @@
 	</select>
 	<!-- //makeSureCom 确定评论 -->
 	<insert id="makeSureCom">
-		insert into comments(user_id,item_id,order_id,comment_grade,comment_content)
+		insert into comments(user_phone,user_id,item_id,order_id,comment_grade,comment_content)
 		values(
-		#{userId},#{itemId} ,#{orderId},#{commentGrade} ,#{commentContent}
+		#{userPhone},#{userId},#{itemId} ,#{orderId},#{commentGrade} ,#{commentContent}
 		)
 	</insert>
 	 <resultMap type="Ordera" id="q">

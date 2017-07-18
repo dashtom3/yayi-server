@@ -41,7 +41,7 @@
 			</if>
 			
 			<if test="buyerInfo != null and buyerInfo!=''">
-				and us.phone = '${buyerInfo}%'  or us.true_name =
+				and us.phone like  '${buyerInfo}%'  or us.true_name like
 				'${buyerInfo}%'
 			</if>
 			<if test="orderState !=null and orderState!=''">
@@ -222,7 +222,7 @@
 		update ordera
 		<set>
 			<if test="logisticsName!=null">
-				shipping_name=#{logisticsName},
+				shipping_name='STO',
 			</if>
 			<if test="logisticsCode!=null">
 				shipping_code=#{logisticsCode},

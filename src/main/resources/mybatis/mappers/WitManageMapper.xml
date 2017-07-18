@@ -13,8 +13,10 @@
 	</select>
 	
 	<insert id="submitWit" parameterType="With">
-	  insert into cashmanage(real_name,type,anumber,cashMoney,phone,cash_state,account_user,app_time,sale_id) values(#{trueName},#{type},#{anumber},#{cashMoney},#{phone},0,#{openName}
-	  ,#{bankName},now(),#{saleId}
+	  insert into cashmanage(real_name,type,anumber,cashMoney,phone,cash_state,account_user,bank,app_time,sale_id) 
+	  values
+	  (#{trueName},#{type},#{anumber},#{cashMoney},#{phone},0,#{accountUser}
+	  ,#{bank},now(),#{saleId}
 	  )
 	<!--   默认是 审核中   state 为0  -->
 	  
@@ -22,9 +24,23 @@
 	<update id="oper">
 	  update cashmanage set cash_state=1,cash_su_time=now() where cash_id=#{cashId}
 	</update>
-	
+     
+    
 	<!-- //查询+显示 -->
-	<select id="query" resultType="com.yayiabc.http.mvc.pojo.jpa.With">
+	   <resultMap type="com.yayiabc.http.mvc.pojo.jpa.With" id="c">
+	  <id property="cashId" column="cash_id"/>
+	  <result property="trueName"  column="real_name"/>
+	  <result property="phone"  column="phone"/>
+	  <result property="cashMoney"  column="cash_money"/>
+	  <result property="type"  column="type"/>
+	  <result property="accountUser"  column="account_user"/>
+	  <result property="bank"  column="bank"/>
+	  <result property="appTime"  column="app_time"/>
+	  <result property="cashState"  column="cash_state"/>
+	  <result property="cashSuTime"  column="cash_su_time"/>
+	  <result property="saleId"  column="sale_id"/>
+	</resultMap>
+	<select id="query" resultMap="c">
 	   select  * from cashmanage
 	   <where>
 	  
@@ -39,5 +55,16 @@
 	   </where>
 	      order by app_time asc 
 	</select>
-	<!-- select ename,sal from emp where deptno=30 order by sal asc
- --></mapper>
+	
+	<select id="queryMessage" resultMap="c">
+	  select * from cashmanage where cash_id=#{cashId}
+	</select>
+	<select id="queryMoney" resultType="int">
+	 select money from sale_info where sale_id=#{saleId}
+	</select>
+	<!-- //deleteMoney -->
+	
+	<!-- <update id="saveMoney" parameterType="com.yayiabc.http.mvc.pojo.jpa.With">
+	 update set  get_money=(getmoney+cashMoney) where sale_id=#{saleId}
+	</update> -->
+</mapper>

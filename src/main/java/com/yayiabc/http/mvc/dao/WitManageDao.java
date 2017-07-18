@@ -18,4 +18,14 @@ public interface WitManageDao {
 
      //查询+显示
 	List<With> query(@Param("message")String message, @Param("state")String state);
+
+	
+	//查提现的金额 与saleId
+	With queryMessage(@Param("cashId")int cashId);
+
+	int  insertMoney(With w);
+     
+	int queryMoney(String saleId);
+   //deleteMoney
+	int deleteMoney(Integer cashId, Integer cashMoney);
 }

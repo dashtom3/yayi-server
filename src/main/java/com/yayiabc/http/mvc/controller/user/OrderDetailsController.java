@@ -33,7 +33,7 @@ public class OrderDetailsController {
 	private LogisticsService logisticsService;
 	@RequestMapping("show")
 	@ResponseBody
-	public DataWrapper<List<User>> show(
+	public DataWrapper<List<Ordera>> show(
 			@RequestParam(value="token",required=true) String token,
 			@RequestParam(value="state",required=false) String state,
 			@RequestParam(value="currentPage",required=false) Integer currentPage,

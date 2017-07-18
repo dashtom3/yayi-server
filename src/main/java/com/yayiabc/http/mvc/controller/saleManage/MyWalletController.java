@@ -28,7 +28,7 @@ public class MyWalletController {
 	//钱包明细
 	@RequestMapping("detail")
 	@ResponseBody
-	public DataWrapper<List<TreeMap<String, Object>>> detail(
+	public DataWrapper<TreeMap<String, Object>> detail(
 			@RequestParam(value="token",required=true)String token,
 			@RequestParam(value="state",required=true)Integer state,
 			@RequestParam(value="starTime",required=false)String starTime,

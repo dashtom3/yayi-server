@@ -26,7 +26,7 @@ public class MyTask extends TimerTask{
 		for(String key:map.keySet()){
 			//System.out.println(new Date().getTime()-map.get(key).getTime()+"毫秒");
 			
-			if(new Date().getTime()-map.get(key).getTime()>=1*60*1000
+			if(new Date().getTime()-map.get(key).getTime()>=32*60*1000
 					){
 				//查看该单state  状态 
 				//System.err.println();9421c01f-d987-46dd-bcd8-9de8d2b63fd9

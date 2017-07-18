@@ -10,7 +10,7 @@ import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.itemIdList;
 
 public interface OrderDetailsService {
-	DataWrapper<List<User>>  orderDetailsShow(HashMap<String,String> map,String newPhone
+	DataWrapper<List<Ordera>>  orderDetailsShow(HashMap<String,String> map,String newPhone
 			,Integer currentPage,Integer numberPerpage
 			);
 	

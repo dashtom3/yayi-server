@@ -23,43 +23,31 @@ public class MyWalletServiceImpl implements MyWalletService{
 	private UtilsDao utilsDao;
 	//-------
 	//容器
-	TreeMap<String, Object> treeMap=new TreeMap<String,Object>();
+	 TreeMap<String, Object> treeMap=new TreeMap<String,Object>();
 	
 	ArrayList al=new ArrayList<>();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");		
      
 	@Override
-	public DataWrapper<List<TreeMap<String, Object>>> myWalletDetails(String token
+	public DataWrapper<TreeMap<String, Object>> myWalletDetails(String token
 			,Integer state,String starTime,String endTime
 			) {
 		
-		DataWrapper<List<TreeMap<String, Object>>> dataWrapper=new DataWrapper<List<TreeMap<String, Object>>>();
+		DataWrapper<TreeMap<String, Object>> dataWrapper=new DataWrapper<TreeMap<String, Object>>();
 	     if(state==0){
 	    	 houston( token,starTime,endTime);
 	    	 withdrawals(token,starTime,endTime);
-	         al.add(treeMap);
-	         for(String key:treeMap.keySet()){
-	        	 al.add(treeMap.get(key));
-	         }
 	     }else if(state==1){
 	    	 houston(token,starTime,endTime);
-	    	 al.add(treeMap);	
-	    	 for(String key:treeMap.keySet()){
-	        	 al.add(treeMap.get(key));
-	         }
-	     }else{
+	     }else if(state==2){
 	    	 withdrawals(token,starTime,endTime);
-	    	 al.add(treeMap);
-	    	 for(String key:treeMap.keySet()){
-	        	 al.add(treeMap.get(key));
-	         }
 	     }
        /* //测试
 		for(String key:treeMap.keySet()){
 			System.out.println(key+" :"+treeMap.get(key));
 		}*/
 	     
-		dataWrapper.setData(al);
+		dataWrapper.setData(treeMap);
 		return dataWrapper;
 	}
 	//进账

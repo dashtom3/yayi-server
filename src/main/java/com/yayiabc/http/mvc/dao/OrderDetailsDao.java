@@ -9,11 +9,11 @@ import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 
 public interface OrderDetailsDao {
-	List<User> orderDetailsShow(
+	List<Ordera> orderDetailsShow(
 			HashMap<String,String> map
 			);
 
-	int queryCount(HashMap<String, String> map);
+	int queryCount(@Param("userId")String userId,@Param("state")String state);
 	
     //取消订单
 	int  cancel(@Param("orderId")String orderId);
@@ -27,6 +27,8 @@ public interface OrderDetailsDao {
 			@Param("commentGrade")String commentGrade,@Param("commentContent")String commentContent);
     //查询出 定下的商品明细
 	Ordera queryItemDetails(Integer orderId);
+    //
+	int updateState(@Param("orderId")String orderId);
 	
 
 }

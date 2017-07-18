@@ -29,7 +29,7 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 	@Autowired
 	private ShippingAddressDao shippingAddressDao;
 	@Override
-	public DataWrapper<List<User>>  orderDetailsShow(HashMap<String,String> map,String token
+	public DataWrapper<List<Ordera>>  orderDetailsShow(HashMap<String,String> map,String token
 			,Integer currentPage,Integer numberPerpage){
 		// TODO Auto-generated method stub
 		Page page=new Page();
@@ -42,24 +42,23 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		}
 
         		
-		DataWrapper<List<User>> dataWrapper=new DataWrapper<List<User>>();
+		DataWrapper<List<Ordera>> dataWrapper=new DataWrapper<List<Ordera>>();
 		String userId = null;
-		if(token!=null){
+		
 			 userId=utilsDao.getUserID(token);
-		}
-		//总条数
-		int count=orderdetailsDao.queryCount(map);//totalnumber
+		
 //		hMap.put("currentPage", page.getCurrentPage());
 		map.put("numberPerpage", String.valueOf(page.getNumberPerPage()));
 		Integer currentNum=page.getCurrentNumber();
 		map.put("currentNum", String.valueOf(currentNum));
 		map.put("userId", userId);
-		List<User> orderDetailsList=orderdetailsDao.orderDetailsShow(map);
 		
-		map.put("orderItemNum", String.valueOf(orderDetailsList.size()));
+		List<Ordera> orderDetailsList=orderdetailsDao.orderDetailsShow(map);
+		//总条数
+	    int count=orderdetailsDao.queryCount(userId,map.get("state"));//totalnumber
 		dataWrapper.setPage(page, count);
 		dataWrapper.setData(orderDetailsList);
-		
+		System.out.println(count);
 		if(orderDetailsList.isEmpty()){
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			dataWrapper.setMsg("暂订单为空");
@@ -124,7 +123,11 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		}
 		
 		if(count>0){
-			dataWrapper.setMsg("操作成功");
+			//9
+			int state=orderdetailsDao.updateState(orderId);
+			if(state>0){
+				dataWrapper.setMsg("操作成功");
+			}
 		}else{
 			dataWrapper.setMsg("操作失败");
 		}

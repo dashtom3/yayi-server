@@ -41,7 +41,7 @@
 		</association>
 		<!-- //订单商品表 -->
 		<collection property="orderitemList" ofType="OrderItem">
-			<id property="itemId" column="item_id" />
+		<id property="itemId" column="item_id" />
 			<result property="picPath" column="pic_path" />
 			<result property="num" column="num" />
 			<result property="price" column="price" />
@@ -53,24 +53,8 @@
 			<!-- 商品表 信息表 -->
 			<association property="itemInfo"
 				javaType="com.yayiabc.http.mvc.pojo.jpa.ItemInfo">
-				<id property="itemId" column="item_id" />
 				<result property="itemName" column="item_name" />
 				<!-- 商品属性表 -->
-				<!-- <association property="itemPnamea" javaType="com.yayiabc.http.mvc.pojo.jpa.ItemProperty"> 
-					<id property="itemPropertyId" column="item_property_id" /> <result property="itemPropertyName" 
-					column="item_property_name" /> <商品属性详情表 <collection property="itempropertydList" 
-					ofType="ItemPropertyd"> <id property="itemPdid" column="item_pdid" /> <result 
-					property="itemPparam" column="item_pparam" /> </collection> </association> 
-					test1 start 商品属性表 <association property="itemPnameb" javaType="com.yayiabc.http.mvc.pojo.jpa.ItemProperty"> 
-					<result property="itemPropertyName" column="item_property_name" /> <商品属性详情表 
-					<collection property="itempropertydList" ofType="ItemPropertyd"> <id property="itemPdid" 
-					column="item_pdid" /> <result property="itemPparam" column="item_pparam" 
-					/> </collection> </association> end test2 start 商品属性表 <association property="itemPnamec" 
-					javaType="com.yayiabc.http.mvc.pojo.jpa.ItemProperty"> <result property="itemPropertyName" 
-					column="item_property_name" /> <商品属性详情表 <collection property="itempropertydList" 
-					ofType="ItemPropertyd"> <id property="itemPdid" column="item_pdid" /> <result 
-					property="itemPparam" column="item_pparam" /> </collection> </association> -->
-				<!-- end -->
 			</association>
 		<!-- </collection> -->
 		 </collection> 
@@ -78,11 +62,39 @@
 	<select id="orderDetailsShow" parameterType="java.util.Map"
 		resultMap="orderDetailsResultMap">
 		SELECT
-		orde.order_id,orde.created,orde_it.num,orde_it.price,orde_it.total_fee,orde.actual_pay,
+		orde.order_id,orde.created,orde_it.num,orde_it.price,orde.actual_pay,
 		item_f.item_name,orde_it.pic_path,
 		orde_it.item_property_namea,
 		orde_it.item_property_nameb,orde_it.item_property_namec,orde_it.item_id,orde.post_fee,orde.qb_ded,orde.state
 		,rece.*
+		FROM USER us 
+		INNER JOIN ordera orde 
+		ON us.user_id=orde.user_id 
+		INNER JOIN order_item orde_it ON
+		orde.order_id=orde_it.order_id 
+		INNER JOIN item_info item_f 
+		ON orde_it.item_id= item_f.item_id 
+		INNER join receiver rece 
+		on rece.receiver_id=orde.receiver_id
+		<where>
+			<if test="userId !=null and userId!=''">
+				us.user_id=#{userId}
+			</if>
+
+			<if test="state !=null and state!=''">
+				and orde.state=#{state}  <!-- 待付款 -->
+			</if>
+
+		</where>
+		  order by  orde.created desc   limit ${currentNum} , ${numberPerpage} 
+	</select>
+
+
+	<select id="queryCount" parameterType="java.util.Map"
+		resultType="int">
+		select count(0) from
+		(SELECT
+		count(0)
 		FROM
 		USER us JOIN
 		ordera orde ON us.user_id=orde.user_id JOIN order_item
@@ -99,33 +111,8 @@
 			<if test="state !=null and state!=''">
 				and orde.state=#{state}  <!-- 待付款 -->
 			</if>
-
 		</where>
-		 order by  orde.created desc   limit ${currentNum} , ${numberPerpage}
-	</select>
-
-
-	<select id="queryCount" parameterType="java.util.Map"
-		resultType="int">
-		SELECT
-		count(1)
-		FROM
-		USER us JOIN
-		ordera orde ON us.user_id=orde.user_id JOIN order_item
-		orde_it ON
-		orde.order_id=orde_it.order_id JOIN
-		item_info item_f ON
-		orde_it.item_id
-		= item_f.item_id
-		<where>
-			<if test="userId !=null and userId!=''">
-				us.user_id=#{userId}
-			</if>
-
-			<if test="state !=null and state!=''">
-				and orde.state=#{state}  <!-- 待付款 -->
-			</if>
-		</where>
+		group by orde.order_id) a
 	</select>
 	<!-- //取消订单 -->
 	
@@ -182,4 +169,8 @@
 	   where
 	   orde.order_id=#{orderId}
 	</select>
+	
+	<update id="updateState">
+	 update ordera set state=9 where order_id =#{orderId}
+	</update>
 </mapper>

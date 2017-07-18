@@ -43,6 +43,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 				hMap.put("numberPerpage", page.getNumberPerPage());
 				Integer currentNum=page.getCurrentNumber();
 				hMap.put("currentNum", currentNum);
+			System.out.println(hMap.get("orderId"));
 		List<OrderManagement> userOrderList=orderManagementDao.showOrder(hMap);
 		System.out.println(userOrderList);
 		if(userOrderList.isEmpty()){

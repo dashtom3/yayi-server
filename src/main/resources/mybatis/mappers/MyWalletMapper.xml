@@ -4,29 +4,27 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yayiabc.http.mvc.dao.MyWalletDao">
 
-<!-- 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.SaleInfo" id="map">
-		<id property="saleId" column="sale_id"  />
-		<result property="money" column="money" />
-		<collection property="saleincome" ofType="SaleIncome">
-			<id property="saleIncomeId" column="sale_income_id" />
-			<result property="getMoney" column="get_money" />
-		</collection>
-		<collection property="With" column="With">
-			<id property="cashId" column="cash_id" />
-			<result property="cashMoney" column="cash_money" />
-		</collection>
-	</resultMap> -->
-    <resultMap type="com.yayiabc.http.mvc.pojo.jpa.SaleIncome" id="d">
-     <id property="saleIncomeId" column="sale_income_id"/>
-     <result property="getMoney" column="get_money"/>
-     <result property="updated" column="updated"/>
-     <association property="order" javaType="com.yayiabc.http.mvc.pojo.jpa.Ordera">
-       <id property="orderId" column="order_id"/>
-     </association>
-     <association property="saleInfo"  javaType="com.yayiabc.http.mvc.pojo.jpa.SaleInfo">
-      <result property="money" column="money"/>
-     </association>
-    </resultMap>
+	<!-- <resultMap type="com.yayiabc.http.mvc.pojo.jpa.SaleInfo" id="map"> 
+		<id property="saleId" column="sale_id" /> <result property="money" column="money" 
+		/> <collection property="saleincome" ofType="SaleIncome"> <id property="saleIncomeId" 
+		column="sale_income_id" /> <result property="getMoney" column="get_money" 
+		/> </collection> <collection property="With" column="With"> <id property="cashId" 
+		column="cash_id" /> <result property="cashMoney" column="cash_money" /> </collection> 
+		</resultMap> -->
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.SaleIncome"
+		id="d">
+		<id property="saleIncomeId" column="sale_income_id" />
+		<result property="getMoney" column="get_money" />
+		<result property="updated" column="updated" />
+		<association property="order"
+			javaType="com.yayiabc.http.mvc.pojo.jpa.Ordera">
+			<id property="orderId" column="order_id" />
+		</association>
+		<association property="saleInfo"
+			javaType="com.yayiabc.http.mvc.pojo.jpa.SaleInfo">
+			<result property="money" column="money" />
+		</association>
+	</resultMap>
 	<select id="saleInCome" resultMap="d">
 		SELECT
 		come.get_money,come.updated,come.order_id,money FROM
@@ -49,17 +47,18 @@
 
 		<!-- ORDER &lt BY come.created DESC -->
 	</select>
-    <resultMap type="com.yayiabc.http.mvc.pojo.jpa.With" id="cc">
-          <id property="cashId"  column="cash_id"/>
-          <result property="cashMoney" column="cash_money"/>
-          <result property="cashSuTime" column="cash_su_time"/>
-          <association property="saleInfo" javaType="SaleInfo">
-            <result property="money"  column="money"/>
-          </association>
-    </resultMap>
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.With" id="cc">
+		<id property="cashId" column="cash_id" />
+		<result property="cashMoney" column="cash_money" />
+		<result property="cashSuTime" column="cash_su_time" />
+		<association property="saleInfo" javaType="SaleInfo">
+			<result property="money" column="money" />
+		</association>
+	</resultMap>
 	<select id="with" resultMap="cc">
-		SELECT cashMoney,cash_su_time ,sale.money FROM cashmanage cash join sale_info sale on 
-		sale.sale_id =cash.sale_id   
+		SELECT cashMoney,cash_su_time ,sale.money FROM cashmanage cash join
+		sale_info sale on
+		sale.sale_id =cash.sale_id
 		<where>
 			cash.sale_id=#{saleId}
 			<if
@@ -135,5 +134,33 @@
 		LEFT JOIN sale_income sale_in ON
 		orde.order_id=sale_in.order_id
 		where orde.order_id=#{orderId}
+	</select>
+	<!-- 123 -->
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.SaleInfo" id="oo">
+		<id property="saleId" column="sale_id" />
+		<result property="money" column="money" />
+		<collection property="saleincome"
+			ofType="com.yayiabc.http.mvc.pojo.jpa.SaleIncome">
+			<id property="saleIncomeId" column="sale_income_id" />
+			<result property="money" column="money" />
+			<result property="getMoney" column="getMoney" />
+			<result property="orderId" column="orderId" />
+		</collection>
+		<collection property="With" javaType="com.yayiabc.http.mvc.pojo.jpa.With">
+			<id property="saleId" column="cash_id" />
+			<result property="cashMoney" column="cash_money" />
+			<result property="orderId" column="orderId" />
+		</collection>
+	</resultMap>
+	<select id="queryTMD" resultMap="oo">
+		SELECT
+		timea.universal_time,income.get_money,cash.cashMoney,info.money FROM
+		sale_info info
+		LEFT JOIN cashmanage cash ON info.sale_id=cash.sale_id
+		LEFT JOIN sale_income income ON cash.sale_id=income.sale_id
+		LEFT JOIN
+		maker_time timea ON income.sale_id=timea.sale_id
+		ORDER BY
+		timea.universal_time DESC
 	</select>
 </mapper>       

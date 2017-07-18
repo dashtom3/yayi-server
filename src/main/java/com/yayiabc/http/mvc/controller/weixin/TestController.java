@@ -10,7 +10,7 @@ import com.yayiabc.common.utils.DataWrapper;
 @Controller
 public class TestController {
 	
-	@RequestMapping("test")
+	@RequestMapping("api/test")
 	@ResponseBody
 	public DataWrapper<Void> test(
 			@RequestHeader("token") String token,

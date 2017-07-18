@@ -1,6 +1,7 @@
 package com.yayiabc.http.mvc.service.Impl;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -30,17 +31,17 @@ public class UserManageListServiceImpl implements UserManageListService {
 	ShippingAddressDao shippingAddressDao;
 
 	@Override
-	public DataWrapper<List<UserAllInfo>> userlist(String phone,
+	public DataWrapper<List<Map<String,String>>> userlist(String phone,
 			String trueName, String companyName, Integer isBindSale,
 			Integer type, String saleName, Integer currentPage,
 			Integer numberPerPage) {
-		DataWrapper<List<UserAllInfo>> dataWrapper = new DataWrapper<List<UserAllInfo>>();
+		DataWrapper<List<Map<String,String>>> dataWrapper = new DataWrapper<List<Map<String,String>>>();
 		Page page = new Page();
 		page.setNumberPerPage(numberPerPage);
 	    page.setCurrentPage(currentPage);
 		int totalNumber = userManageListDao.getCount(phone, trueName, companyName, isBindSale, type, saleName);
 		dataWrapper.setPage(page, totalNumber);
-		List<UserAllInfo> list = userManageListDao.userlist(phone, trueName,
+		List<Map<String,String>> list = userManageListDao.userlist(phone, trueName,
 				companyName, isBindSale, type, saleName, page);
 		dataWrapper.setData(list);
 		return dataWrapper;
@@ -55,7 +56,7 @@ public class UserManageListServiceImpl implements UserManageListService {
 	    page.setCurrentPage(currentPage);
 	    int totalNumber = userManageListDao.getSalelistCount(salePhone, saleName);
 	    dataWrapper.setPage(page, totalNumber);
-		List<SaleInfo> list = userManageListDao.salelist(salePhone, saleName);
+		List<SaleInfo> list = userManageListDao.salelist(salePhone, saleName,page);
 		dataWrapper.setData(list);
 		return dataWrapper;
 	}

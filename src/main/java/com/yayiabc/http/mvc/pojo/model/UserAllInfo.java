@@ -41,6 +41,15 @@ public class UserAllInfo {
 
 	private Integer bindUserNum;
 
+	private String userCreated;
+
+	private String certifyTime;
+
+	private String latelyOrderDate;
+
+	private Integer orderaCount;
+
+	private Integer orderaMoneyCount;
 	private List<Receiver> receiverList;
 
 	public String getUserId() {
@@ -195,6 +204,46 @@ public class UserAllInfo {
 		this.receiverList = receiverList;
 	}
 
+	public String getUserCreated() {
+		return userCreated;
+	}
+
+	public void setUserCreated(String userCreated) {
+		this.userCreated = userCreated;
+	}
+
+	public String getCertifyTime() {
+		return certifyTime;
+	}
+
+	public void setCertifyTime(String certifyTime) {
+		this.certifyTime = certifyTime;
+	}
+
+	public String getLatelyOrderDate() {
+		return latelyOrderDate;
+	}
+
+	public void setLatelyOrderDate(String latelyOrderDate) {
+		this.latelyOrderDate = latelyOrderDate;
+	}
+
+	public Integer getOrderaCount() {
+		return orderaCount;
+	}
+
+	public void setOrderaCount(Integer orderaCount) {
+		this.orderaCount = orderaCount;
+	}
+
+	public Integer getOrderaMoneyCount() {
+		return orderaMoneyCount;
+	}
+
+	public void setOrderaMoneyCount(Integer orderaMoneyCount) {
+		this.orderaMoneyCount = orderaMoneyCount;
+	}
+
 	public UserAllInfo() {
 		super();
 	}
@@ -204,7 +253,9 @@ public class UserAllInfo {
 			Integer type, String companyName, String part, String workAddress,
 			String doctorPic, Integer isBindSale, String saleId,
 			String saleName, String salePhone, String saleCreated,
-			Integer bindUserNum, List<Receiver> receiverList) {
+			Integer bindUserNum, String userCreated, String certifyTime,
+			String latelyOrderDate, Integer orderaCount,
+			Integer orderaMoneyCount, List<Receiver> receiverList) {
 		super();
 		this.userId = userId;
 		this.trueName = trueName;
@@ -224,6 +275,11 @@ public class UserAllInfo {
 		this.salePhone = salePhone;
 		this.saleCreated = saleCreated;
 		this.bindUserNum = bindUserNum;
+		this.userCreated = userCreated;
+		this.certifyTime = certifyTime;
+		this.latelyOrderDate = latelyOrderDate;
+		this.orderaCount = orderaCount;
+		this.orderaMoneyCount = orderaMoneyCount;
 		this.receiverList = receiverList;
 	}
 
@@ -237,7 +293,11 @@ public class UserAllInfo {
 				+ ", isBindSale=" + isBindSale + ", saleId=" + saleId
 				+ ", saleName=" + saleName + ", salePhone=" + salePhone
 				+ ", saleCreated=" + saleCreated + ", bindUserNum="
-				+ bindUserNum + ", receiverList=" + receiverList + "]";
+				+ bindUserNum + ", userCreated=" + userCreated
+				+ ", certifyTime=" + certifyTime + ", latelyOrderDate="
+				+ latelyOrderDate + ", orderaCount=" + orderaCount
+				+ ", orderaMoneyCount=" + orderaMoneyCount + ", receiverList="
+				+ receiverList + "]";
 	}
 
 }

@@ -1,6 +1,7 @@
 package com.yayiabc.http.mvc.controller.manager;
 
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,7 +27,7 @@ public class UserManageListController {
 	 */
 	@RequestMapping(value="userlist",method=RequestMethod.GET)
 	@ResponseBody
-	public DataWrapper<List<UserAllInfo>> userlist(
+	public DataWrapper<List<Map<String,String>>> userlist(
 			@RequestParam(value="phone",required=false)String phone,
 			@RequestParam(value="trueName",required=false)String trueName,
 			@RequestParam(value="companyName",required=false)String companyName,

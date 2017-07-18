@@ -56,7 +56,9 @@ public class SaleInfo extends BasePojo {
 
 	private Integer bindUserNum; // 绑定用户数
 
-	private Integer isBindUser;
+	private Integer isBindUser; // 是否绑定用户
+
+	private Integer totalGetMoney; // 累计收入
 
 	private List<User> user;
 
@@ -256,6 +258,14 @@ public class SaleInfo extends BasePojo {
 		this.bindUserNum = bindUserNum;
 	}
 
+	public Integer getTotalGetMoney() {
+		return totalGetMoney;
+	}
+
+	public void setTotalGetMoney(Integer totalGetMoney) {
+		this.totalGetMoney = totalGetMoney;
+	}
+
 	public List<User> getUser() {
 		return user;
 	}
@@ -295,7 +305,7 @@ public class SaleInfo extends BasePojo {
 			String address, String weChar, String email, String part,
 			String education, String workUnit, String workPosition,
 			Integer bindUserNum, Integer isBindUser, List<User> user,
-			List<SaleIncome> saleincome,
+			List<SaleIncome> saleincome, Integer totalGetMoney,
 			List<com.yayiabc.http.mvc.pojo.jpa.With> with) {
 		super();
 		this.saleId = saleId;
@@ -322,6 +332,7 @@ public class SaleInfo extends BasePojo {
 		this.bindUserNum = bindUserNum;
 		this.isBindUser = isBindUser;
 		this.user = user;
+		this.totalGetMoney = totalGetMoney;
 		this.saleincome = saleincome;
 		With = with;
 	}
@@ -346,7 +357,8 @@ public class SaleInfo extends BasePojo {
 				+ weChar + ", email=" + email + ", part=" + part
 				+ ", education=" + education + ", workUnit=" + workUnit
 				+ ", workPosition=" + workPosition + ", bindUserNum="
-				+ bindUserNum + ", isBindUser=" + isBindUser + ", user=" + user
+				+ bindUserNum + ", isBindUser=" + isBindUser
+				+ ", totalGetMoney=" + totalGetMoney + ", user=" + user
 				+ ", saleincome=" + saleincome + ", With=" + With + "]";
 	}
 

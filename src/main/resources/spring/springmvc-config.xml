@@ -16,7 +16,7 @@
 	<context:component-scan base-package="com.yayiabc.http.filter"/>
 	<context:component-scan base-package="com.yayiabc.http.mvc"/>
     <context:component-scan base-package="com.yayiabc.http.aop"/>
-
+	<!-- 强制使用cglib代理方式 -->
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
 
     <!-- 处理静态资源被“/”所拦截的问题 -->
@@ -29,6 +29,8 @@
 			<bean class="com.yayiabc.http.interceptor.LoginInterceptor"></bean>
 		   </mvc:interceptor>
 	   </mvc:interceptors>    -->
+	   
+	
 	<bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerMapping"/>
     
     <bean class="org.springframework.web.servlet.mvc.method.annotation.RequestMappingHandlerAdapter">

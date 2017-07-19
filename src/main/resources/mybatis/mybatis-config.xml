@@ -13,6 +13,7 @@
 	<typeAliases>
         <package name="com.yayiabc.http.mvc.pojo.jpa"/>
         <package name="com.yayiabc.http.mvc.pojo.model"/>
+        <package name="com.yayiabc.http.mvc.pojo.log"/>
     </typeAliases>
 
 	

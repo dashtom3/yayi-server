@@ -109,16 +109,8 @@ public class ItemInfoManageController {
 			@RequestParam(value="itemSort",required=false) String itemSort,
 			@RequestParam(value="remark",required=false) String remark
 			){
-		Date registerDateChangeDate=null;
 		if(registerDate==null||"".equals(registerDate)){
 			registerDate=null;
-		}else {
-			try {
-				registerDateChangeDate =TimeUtil.changeStringToDateTwo(registerDate);
-			} catch (ParseException e) {
-				e.printStackTrace();
-				return null;
-			}
 		}
 		if(itemRange==null||"".equals(itemRange)){
 			itemRange=null;
@@ -159,7 +151,8 @@ public class ItemInfoManageController {
 		return itemInfoManageService.update(itemId,itemName,itemBrandId,oneClassify,itemLevels,
 				twoClassify,threeClassify,itemPica,itemPicb,itemPicc,itemPicd,itemPice,isThrow,
 				video,itemDesc,itemUse,itemRange,registerId,storeItemId,apparatusType,unit,
-				producePompany,registerDateChangeDate,itemPacking,itemSort,remark);
+				producePompany,registerDate,itemPacking,itemSort,remark);
+		
 	}
 	
 	/**
@@ -220,16 +213,8 @@ public class ItemInfoManageController {
 	@RequestParam(value="itemLevels",required=false) String itemLevels,
 	@RequestParam(value="itemSort",required=false) String itemSort
 			){
-		Date registerDateChangeDate=null;
 		if(registerDate==null||"".equals(registerDate)){
 			registerDate=null;
-		}else {
-			try {
-				registerDateChangeDate =TimeUtil.changeStringToDateTwo(registerDate);
-			} catch (ParseException e) {
-				e.printStackTrace();
-				return null;
-			}
 		}
 		if(itemRange==null||"".equals(itemRange)){
 			itemRange=null;
@@ -271,7 +256,7 @@ public class ItemInfoManageController {
 		return itemInfoManageService.insert(itemId,itemName,itemBrandId,oneClassify,itemLevels,
 				twoClassify,threeClassify,itemPica,itemPicb,itemPicc,itemPicd,itemPice,isThrow,
 				video,itemDesc,itemUse,itemRange,remark,registerId,storeItemId,apparatusType,unit,
-				producePompany,registerDateChangeDate,itemPacking,itemSort);
+				producePompany,registerDate,itemPacking,itemSort);
 	
 	}
 	

@@ -37,7 +37,7 @@ public class ItemDetail extends BasePojo {
 
 	private String registerId;
 
-	private Date registerDate;
+	private String registerDate;
 
 	private String itemPacking;
 
@@ -188,11 +188,11 @@ public class ItemDetail extends BasePojo {
 		this.registerId = registerId == null ? null : registerId.trim();
 	}
 
-	public Date getRegisterDate() {
+	public String getRegisterDate() {
 		return registerDate;
 	}
 
-	public void setRegisterDate(Date registerDate) {
+	public void setRegisterDate(String registerDate) {
 		this.registerDate = registerDate;
 	}
 
@@ -236,7 +236,7 @@ public class ItemDetail extends BasePojo {
 			String itemPicb, String itemPicc, String itemPicd, String itemPice,
 			Integer commission, Integer isQbBuy, Integer qbNum,
 			String storeItemId, String apparatusType, String unit,
-			String producePompany, String registerId, Date registerDate,
+			String producePompany, String registerId, String registerDate,
 			String itemPacking, String itemLevels, String itemRange,
 			String remark, String itemDesc, String itemUse) {
 		super();

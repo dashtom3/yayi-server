@@ -7,44 +7,16 @@ public class ManagerLog {
 	private String administrator;
 	private String userName;
 	private String operate;
+	private String arguments;
 	private Date created;
-	public Integer getManagerLogId() {
-		return managerLogId;
-	}
-	public void setManagerLogId(Integer managerLogId) {
-		this.managerLogId = managerLogId;
-	}
-	public String getAdministrator() {
-		return administrator;
-	}
-	public void setAdministrator(String administrator) {
-		this.administrator = administrator;
-	}
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
-	public String getOperate() {
-		return operate;
-	}
-	public void setOperate(String operate) {
-		this.operate = operate;
-	}
-	public Date getCreated() {
-		return created;
-	}
-	public void setCreated(Date created) {
-		this.created = created;
-	}
 	public ManagerLog(Integer managerLogId, String administrator,
-			String userName, String operate, Date created) {
+			String userName, String operate, String arguments, Date created) {
 		super();
 		this.managerLogId = managerLogId;
 		this.administrator = administrator;
 		this.userName = userName;
 		this.operate = operate;
+		this.arguments = arguments;
 		this.created = created;
 	}
 	public ManagerLog() {
@@ -55,7 +27,8 @@ public class ManagerLog {
 	public String toString() {
 		return "ManagerLog [managerLogId=" + managerLogId + ", administrator="
 				+ administrator + ", userName=" + userName + ", operate="
-				+ operate + ", created=" + created + "]";
+				+ operate + ", arguments=" + arguments + ", created=" + created
+				+ "]";
 	}
 	
 }

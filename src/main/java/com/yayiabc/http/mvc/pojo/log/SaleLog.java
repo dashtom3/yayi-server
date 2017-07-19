@@ -7,6 +7,7 @@ public class SaleLog {
 	private String administrator;
 	private String userName;
 	private String operate;
+	private String arguments;
 	private Date created;
 	public Integer getSaleLogId() {
 		return saleLogId;
@@ -32,6 +33,12 @@ public class SaleLog {
 	public void setOperate(String operate) {
 		this.operate = operate;
 	}
+	public String getArguments() {
+		return arguments;
+	}
+	public void setArguments(String arguments) {
+		this.arguments = arguments;
+	}
 	public Date getCreated() {
 		return created;
 	}
@@ -39,12 +46,13 @@ public class SaleLog {
 		this.created = created;
 	}
 	public SaleLog(Integer saleLogId, String administrator, String userName,
-			String operate, Date created) {
+			String operate, String arguments, Date created) {
 		super();
 		this.saleLogId = saleLogId;
 		this.administrator = administrator;
 		this.userName = userName;
 		this.operate = operate;
+		this.arguments = arguments;
 		this.created = created;
 	}
 	public SaleLog() {
@@ -55,7 +63,8 @@ public class SaleLog {
 	public String toString() {
 		return "SaleLog [saleLogId=" + saleLogId + ", administrator="
 				+ administrator + ", userName=" + userName + ", operate="
-				+ operate + ", created=" + created + "]";
+				+ operate + ", arguments=" + arguments + ", created=" + created
+				+ "]";
 	}
 	
 }

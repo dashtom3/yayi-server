@@ -5,6 +5,8 @@ import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+
+import com.yayiabc.common.annotation.SystemControllerLog;
 import com.yayiabc.common.utils.DataWrapper;
 
 @Controller
@@ -19,5 +21,14 @@ public class TestController {
 		System.out.println(token);
 		System.out.println(Content_Type);
 		return null;
+	}
+	
+	@RequestMapping("api/demo")
+	@ResponseBody
+	@SystemControllerLog(description="输出helloWorld")
+	public DataWrapper<Void> demo(String name,Integer age){
+		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		dataWrapper.setMsg("helloWorld");
+		return dataWrapper;
 	}
 }

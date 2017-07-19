@@ -2,227 +2,234 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
- <mapper namespace="com.yayiabc.http.mvc.dao.ItemInfoManageDao">
- 	<select id="itemInfoListOne" resultMap="itemInfoRM">
- 		select a.*,b.item_brand_name from 
- 		item_info a
- 		inner join
- 		(select item_brand_id p_id,item_brand_name from item_brand) b
- 		on a.item_brand_id=b.p_id
- 		<where>
- 			true
- 			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
- 			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
- 			<if test="state!=null">and state=#{state}</if>
- 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
- 			<if test="oneClassify!=null and oneClassify!=''">and one_classify=#{oneClassify}</if>
- 		</where>
- 		order by a.updated desc
- 		limit #{sales},#{itemStockNum}
- 	</select>
- 	<select id="itemInfoListTwo" resultMap="itemInfoRM">
- 		select a.*,b.item_brand_name from 
- 		item_info a
- 		inner join
- 		(select item_brand_id p_id,item_brand_name from item_brand) b
- 		on a.item_brand_id=b.p_id
- 		<where>
- 			true
- 			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
- 			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
- 			<if test="state!=null">and state=#{state}</if>
- 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
- 			<if test="oneClassify!=null and oneClassify!=''">and two_classify=#{oneClassify}</if>
- 		</where>
- 		order by a.updated desc
- 		limit #{sales},#{itemStockNum}
- 	</select>
- 	<select id="itemInfoListThree" resultMap="itemInfoRM">
- 		select a.*,b.item_brand_name from 
- 		item_info a
- 		inner join
- 		(select item_brand_id p_id,item_brand_name from item_brand) b
- 		on a.item_brand_id=b.p_id
- 		<where>
- 			true
- 			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
- 			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
- 			<if test="state!=null">and state=#{state}</if>
- 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
- 			<if test="oneClassify!=null and oneClassify!=''">and three_classify=#{oneClassify}</if>
- 		</where>
- 		order by a.updated desc
- 		limit #{sales},#{itemStockNum}
- 	</select>
- 	
- 	<select id="itemInfoListFour" resultMap="itemInfoRM">
- 		select a.*,b.item_brand_name from 
- 		item_info a
- 		inner join
- 		(select item_brand_id p_id,item_brand_name from item_brand) b
- 		on a.item_brand_id=b.p_id
- 		<where>
- 			true
- 			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
- 			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
- 			<if test="state!=null">and state=#{state}</if>
- 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
- 		</where>
- 		order by a.updated desc
- 		limit #{sales},#{itemStockNum}
- 	</select>
- 	<resultMap type="ItemInfo" id="itemInfoRM" autoMapping="true">
- 		<id column="item_id" property="itemId"/>
- 		<association property="itemBrand" javaType="ItemBrand" autoMapping="true">
- 			<id property="itemBrandId" column="item_brand_id"/>
- 		</association>
- 	</resultMap>
- 	
- 	<update id="up">
- 		update item_info set state=1 where item_id=#{itemId}
- 	</update>
- 	
- 	<update id="down">
- 		update item_info set state=0 where item_id=#{itemId}
- 	</update>
- 	
- 	<delete id="deleteItemInfo">
- 		delete from item_info where item_id=#{itemId}
- 	</delete>
- 	
- 	<delete id="deleteItemDetail">
- 		delete from item_detail where item_id=#{itemId}
- 	</delete>
- 	
- 	<delete id="deleteItemValue">
- 		delete from item_value where item_id=#{itemId}
- 	</delete>
- 	
- 	<insert id="insertItemValue">
- 		insert into item_value
- 		values
- 		(#{itemPropertySixValue},#{itemPropertySixName},#{itemPropertyFiveValue},#{itemPropertyFiveName},#{itemPropertyFourValue},#{itemPropertyFourName},#{itemPropertyThreeValue},#{itemPropertyNameThree},#{itemPropertyTwoValue},#{itemPropertyNameTwo},#{canUse},#{stockNum},#{itemQb},#{tiChen},#{itemSkuPrice},#{itemSKU},null,#{itemId},#{itemPropertyName},#{itemPropertyInfo})
- 	</insert>
- 	
- 	<insert id="insertItemInfo">
- 		insert into item_info values(#{itemSort},#{isThrow},#{itemId},#{itemName},#{itemBrand.itemBrandId},#{itemPrice},0,0,#{oneClassify},#{twoClassify},#{threeClassify},now(),now());
- 	</insert>
- 	
- 	<insert id="insertItemDetail">
- 		insert into item_detail 
- 		values
- 		(#{itemId},#{itemDesc},#{itemUse},#{video},#{itemPica},#{itemPicb},
- 		#{itemPicc},#{itemPicd},#{itemPice},null,1,null,#{storeItemId},#{apparatusType},#{unit},#{producePompany},
- 		#{registerId},#{registerDate},#{itemPacking},#{itemLevels},#{itemRange},#{remark},now(),now()
- 		)
- 	</insert>
- 	
- 	<update id="updateItemInfo">
- 		update item_info set is_throw=#{isThrow},item_name=#{itemName},item_brand_id=#{itemBrand.itemBrandId},item_price=#{itemPrice},one_classify=#{oneClassify},two_classify=#{twoClassify},three_classify=#{threeClassify},item_sort=#{itemSort},
- 		updated=now() where item_id=#{itemId}
- 	</update>
- 	
- 	<update id="updateItemDetail">
- 		update item_detail set item_desc=#{itemDesc},item_use=#{itemUse},video=#{video},item_pica=#{itemPica},item_picb=#{itemPicb},item_picc=#{itemPicc},item_picd=#{itemPicd},
- 		item_pice=#{itemPice},store_item_id=#{storeItemId},apparatus_type=#{apparatusType},unit=#{unit},produce_pompany=#{producePompany},register_id=#{registerId},register_date=#{registerDate},
- 		item_packing=#{itemPacking},item_levels=#{itemLevels},item_range=#{itemRange},updated=now(),remark=#{remark} where item_id=#{itemId}
- 	</update>
- 	
- 	<update id="updateItemValue">
- 		update item_value set can_use=#{canUse},stock_num=#{stockNum},item_qb=#{itemQb},ti_chen=#{tiChen},item_sku_price=#{itemSkuPrice} where item_id=#{itemId}
- 	</update>
- 	
- 	<select id="getMinPriceFromItemValue" resultType="java.lang.Double">
- 		SELECT MIN(item_sku_price) FROM item_value WHERE item_id=#{itemId}
- 	</select>
- 	
- 	<delete id="deleteItemStock">
- 		delete from item_stock where item_id =#{itemId}
- 	</delete>
- 	
- 	<delete id="deleteComments">
- 		delete from comments where item_id=#{itemId}
- 	</delete>
- 	
- 	<select id="queryItemNum" resultType="int">
- 		select count(0) from item_value where item_sKU=#{itemSKU}
- 	</select>
- 	
- 	<select id="getItemBrandNameByItemId" resultType="string">
- 		select item_brand_name from item_brand where item_brand_id=#{itemBrandId}
- 	</select>
- 	
- 	<select id="getItemClassifyGradeByName" resultType="java.lang.Integer">
- 		select count(0) from classify where one_classify=#{itemClassify}
- 	</select>
- 	
- 	<select id="getItemClassifyGrade" resultType="java.lang.Integer">
- 		select count(0) from classify_two where classify_two_name=#{itemClassify}
- 	</select>
- 	
- 	<select id="getCountOne" resultType="java.lang.Integer">
- 		select count(0) from 
- 		item_info a
- 		inner join
- 		(select item_brand_id p_id,item_brand_name from item_brand) b
- 		on a.item_brand_id=b.p_id
- 		<where>
- 			true
- 			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
- 			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
- 			<if test="state!=null">and state=#{state}</if>
- 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
- 			<if test="oneClassify!=null and oneClassify!=''">and one_classify=#{oneClassify}</if>
- 		</where>
- 	</select>
- 	
- 	<select id="getCountTwo" resultType="java.lang.Integer">
- 		select count(0) from 
- 		item_info a
- 		inner join
- 		(select item_brand_id p_id,item_brand_name from item_brand) b
- 		on a.item_brand_id=b.p_id
- 		<where>
- 			true
- 			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
- 			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
- 			<if test="state!=null">and state=#{state}</if>
- 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
- 			<if test="oneClassify!=null and oneClassify!=''">and two_classify=#{oneClassify}</if>
- 		</where>
- 	</select>
- 	
- 	<select id="getCountThree" resultType="java.lang.Integer">
- 		select count(0) from 
- 		item_info a
- 		inner join
- 		(select item_brand_id p_id,item_brand_name from item_brand) b
- 		on a.item_brand_id=b.p_id
- 		<where>
- 			true
- 			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
- 			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
- 			<if test="state!=null">and state=#{state}</if>
- 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
- 			<if test="oneClassify!=null and oneClassify!=''">and three_classify=#{oneClassify}</if>
- 		</where>
- 	</select>
- 	
- 	<select id="getCountFour" resultType="java.lang.Integer">
- 		select count(0) from 
- 		item_info a
- 		inner join
- 		(select item_brand_id p_id,item_brand_name from item_brand) b
- 		on a.item_brand_id=b.p_id
- 		<where>
- 			true
- 			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
- 			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
- 			<if test="state!=null">and state=#{state}</if>
- 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
- 		</where>
- 	</select>
- 	
- 	
- 	
+<mapper namespace="com.yayiabc.http.mvc.dao.ItemInfoManageDao">
+	<select id="itemInfoListOne" resultMap="itemInfoRM">
+		select a.*,b.item_brand_name from
+		item_info a
+		inner join
+		(select item_brand_id p_id,item_brand_name from item_brand) b
+		on a.item_brand_id=b.p_id
+		<where>
+			true
+			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
+			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
+			<if test="state!=null">and state=#{state}</if>
+			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
+			<if test="oneClassify!=null and oneClassify!=''">and one_classify=#{oneClassify}</if>
+		</where>
+		order by a.updated desc
+		limit #{sales},#{itemStockNum}
+	</select>
+	<select id="itemInfoListTwo" resultMap="itemInfoRM">
+		select a.*,b.item_brand_name from
+		item_info a
+		inner join
+		(select item_brand_id p_id,item_brand_name from item_brand) b
+		on a.item_brand_id=b.p_id
+		<where>
+			true
+			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
+			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
+			<if test="state!=null">and state=#{state}</if>
+			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
+			<if test="oneClassify!=null and oneClassify!=''">and two_classify=#{oneClassify}</if>
+		</where>
+		order by a.updated desc
+		limit #{sales},#{itemStockNum}
+	</select>
+	<select id="itemInfoListThree" resultMap="itemInfoRM">
+		select a.*,b.item_brand_name from
+		item_info a
+		inner join
+		(select item_brand_id p_id,item_brand_name from item_brand) b
+		on a.item_brand_id=b.p_id
+		<where>
+			true
+			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
+			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
+			<if test="state!=null">and state=#{state}</if>
+			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
+			<if test="oneClassify!=null and oneClassify!=''">and three_classify=#{oneClassify}</if>
+		</where>
+		order by a.updated desc
+		limit #{sales},#{itemStockNum}
+	</select>
+
+	<select id="itemInfoListFour" resultMap="itemInfoRM">
+		select a.*,b.item_brand_name from
+		item_info a
+		inner join
+		(select item_brand_id p_id,item_brand_name from item_brand) b
+		on a.item_brand_id=b.p_id
+		<where>
+			true
+			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
+			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
+			<if test="state!=null">and state=#{state}</if>
+			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
+		</where>
+		order by a.updated desc
+		limit #{sales},#{itemStockNum}
+	</select>
+	<resultMap type="ItemInfo" id="itemInfoRM" autoMapping="true">
+		<id column="item_id" property="itemId" />
+		<association property="itemBrand" javaType="ItemBrand"
+			autoMapping="true">
+			<id property="itemBrandId" column="item_brand_id" />
+		</association>
+	</resultMap>
+
+	<update id="up">
+		update item_info set state=1 where item_id=#{itemId}
+	</update>
+
+	<update id="down">
+		update item_info set state=0 where item_id=#{itemId}
+	</update>
+
+	<delete id="deleteItemInfo">
+		delete from item_info where item_id=#{itemId}
+	</delete>
+
+	<delete id="deleteItemDetail">
+		delete from item_detail where item_id=#{itemId}
+	</delete>
+
+	<delete id="deleteItemValue">
+		delete from item_value where item_id=#{itemId}
+	</delete>
+
+	<insert id="insertItemValue">
+		insert into item_value
+		values
+		(#{itemPropertySixValue},#{itemPropertySixName},#{itemPropertyFiveValue},#{itemPropertyFiveName},#{itemPropertyFourValue},#{itemPropertyFourName},#{itemPropertyThreeValue},#{itemPropertyNameThree},#{itemPropertyTwoValue},#{itemPropertyNameTwo},#{canUse},#{stockNum},#{itemQb},#{tiChen},#{itemSkuPrice},#{itemSKU},null,#{itemId},#{itemPropertyName},#{itemPropertyInfo})
+	</insert>
+
+	<insert id="insertItemInfo">
+		insert into item_info
+		values(#{itemSort},#{isThrow},#{itemId},#{itemName},#{itemBrand.itemBrandId},#{itemPrice},0,0,#{oneClassify},#{twoClassify},#{threeClassify},now(),now());
+	</insert>
+
+	<insert id="insertItemDetail">
+		insert into item_detail
+		values
+		(#{itemId},#{itemDesc},#{itemUse},#{video},#{itemPica},#{itemPicb},
+		#{itemPicc},#{itemPicd},#{itemPice},null,1,null,#{storeItemId},#{apparatusType},#{unit},#{producePompany},
+		#{registerId},#{registerDate},#{itemPacking},#{itemLevels},#{itemRange},#{remark},now(),now()
+		)
+	</insert>
+
+	<update id="updateItemInfo">
+		update item_info set
+		is_throw=#{isThrow},item_name=#{itemName},item_brand_id=#{itemBrand.itemBrandId},item_price=#{itemPrice},one_classify=#{oneClassify},two_classify=#{twoClassify},three_classify=#{threeClassify},item_sort=#{itemSort},
+		updated=now() where item_id=#{itemId}
+	</update>
+
+	<update id="updateItemDetail">
+		update item_detail set
+		item_desc=#{itemDesc},item_use=#{itemUse},video=#{video},item_pica=#{itemPica},item_picb=#{itemPicb},item_picc=#{itemPicc},item_picd=#{itemPicd},
+		item_pice=#{itemPice},store_item_id=#{storeItemId},apparatus_type=#{apparatusType},unit=#{unit},produce_pompany=#{producePompany},register_id=#{registerId},register_date=#{registerDate},
+		item_packing=#{itemPacking},item_levels=#{itemLevels},item_range=#{itemRange},updated=now(),remark=#{remark}
+		where item_id=#{itemId}
+	</update>
+
+	<update id="updateItemValue">
+		update item_value set
+		can_use=#{canUse},stock_num=#{stockNum},item_qb=#{itemQb},ti_chen=#{tiChen},item_sku_price=#{itemSkuPrice}
+		where item_id=#{itemId}
+	</update>
+
+	<select id="getMinPriceFromItemValue" resultType="java.lang.Double">
+		SELECT MIN(item_sku_price) FROM item_value WHERE item_id=#{itemId}
+	</select>
+
+	<delete id="deleteItemStock">
+		delete from item_stock where item_id =#{itemId}
+	</delete>
+
+	<delete id="deleteComments">
+		delete from comments where item_id=#{itemId}
+	</delete>
+
+	<select id="queryItemNum" resultType="int">
+		select count(0) from item_value where item_sKU=#{itemSKU}
+	</select>
+
+	<select id="getItemBrandNameByItemId" resultType="string">
+		select item_brand_name from item_brand where item_brand_id=#{itemBrandId}
+	</select>
+
+	<select id="getItemClassifyGradeByName" resultType="java.lang.Integer">
+		select count(0) from classify where one_classify=#{itemClassify}
+	</select>
+
+	<select id="getItemClassifyGrade" resultType="java.lang.Integer">
+		select count(0) from classify_two where classify_two_name=#{itemClassify}
+	</select>
+
+	<select id="getCountOne" resultType="java.lang.Integer">
+		select count(0) from
+		item_info a
+		inner join
+		(select item_brand_id p_id,item_brand_name from item_brand) b
+		on a.item_brand_id=b.p_id
+		<where>
+			true
+			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
+			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
+			<if test="state!=null">and state=#{state}</if>
+			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
+			<if test="oneClassify!=null and oneClassify!=''">and one_classify=#{oneClassify}</if>
+		</where>
+	</select>
+
+	<select id="getCountTwo" resultType="java.lang.Integer">
+		select count(0) from
+		item_info a
+		inner join
+		(select item_brand_id p_id,item_brand_name from item_brand) b
+		on a.item_brand_id=b.p_id
+		<where>
+			true
+			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
+			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
+			<if test="state!=null">and state=#{state}</if>
+			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
+			<if test="oneClassify!=null and oneClassify!=''">and two_classify=#{oneClassify}</if>
+		</where>
+	</select>
+
+	<select id="getCountThree" resultType="java.lang.Integer">
+		select count(0) from
+		item_info a
+		inner join
+		(select item_brand_id p_id,item_brand_name from item_brand) b
+		on a.item_brand_id=b.p_id
+		<where>
+			true
+			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
+			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
+			<if test="state!=null">and state=#{state}</if>
+			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
+			<if test="oneClassify!=null and oneClassify!=''">and three_classify=#{oneClassify}</if>
+		</where>
+	</select>
+
+	<select id="getCountFour" resultType="java.lang.Integer">
+		select count(0) from
+		item_info a
+		inner join
+		(select item_brand_id p_id,item_brand_name from item_brand) b
+		on a.item_brand_id=b.p_id
+		<where>
+			true
+			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
+			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
+			<if test="state!=null">and state=#{state}</if>
+			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
+		</where>
+	</select>
+
+
+
 </mapper>       

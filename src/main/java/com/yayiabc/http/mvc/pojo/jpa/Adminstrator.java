@@ -5,6 +5,7 @@ public class Adminstrator {
 	private String phone;
 	private String adminstratorPwd;
 	private String trueName;
+	
 	public Integer getAdminstratorId() {
 		return adminstratorId;
 	}

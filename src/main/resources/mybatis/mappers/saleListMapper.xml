@@ -10,55 +10,75 @@
 		<result column="created" property="created"/>
 		<result column="isBindUser" property="isBindUser"/>
 		<result column="bind_user_num" property="bindUserNum"/>
+		<result column="totalGetMoney" property="totalGetMoney"/>
 	</resultMap>
 	
 	<!-- 销售员列表 -->
 	<select id="query" resultMap="saleInfoRM">
-		SELECT sale_id,true_name,phone,created,IF(bind_user_num=0,2,IF(bind_user_num!=0,1,2)) AS isBindUser,bind_user_num 
-		FROM sale_info 
+		SELECT 
+		s.sale_id,
+		s.true_name,
+		s.phone,
+		s.created,
+		IF(s.bind_user_num=0,2,IF(s.bind_user_num!=0,1,2)) AS isBindUser,
+		bind_user_num,
+		IF(SUM(si.get_money) IS NOT NULL,SUM(si.get_money),0) AS totalGetMoney
+		FROM sale_info s
+		LEFT JOIN sale_income si ON s.sale_id=si.sale_id
 		<where>
 			<if test="saleId !=null and saleId !=''">
-				sale_id LIKE '%${saleId}%'
+				s.sale_id LIKE '%${saleId}%'
 			</if>
 			<if test="phone !=null and phone !=''">
-				AND phone LIKE '%${phone}%'
+				AND s.phone LIKE '%${phone}%'
 			</if>
 			<if test="trueName !=null and trueName !=''">
-				AND true_name LIKE '%${trueName}%'
+				AND s.true_name LIKE '%${trueName}%'
 			</if>
 			<if test="isBindUser ==1">
-				AND bind_user_num !=0
+				AND s.bind_user_num !=0
 			</if>
 			<if test="isBindUser ==2">
-				AND bind_user_num =0
+				AND s.bind_user_num =0
 			</if>
 		</where>
-		GROUP BY sale_id
-		ORDER BY created DESC
+		GROUP BY s.sale_id
+		ORDER BY s.created DESC
 		LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
 	
 	<!-- 总数 -->
 	<select id="getCount" resultType="int">
-			SELECT count(0)
-			FROM sale_info  
+		SELECT COUNT(0) FROM (
+			SELECT 
+			s.sale_id,
+			s.true_name,
+			s.phone,
+			s.created,
+			IF(s.bind_user_num=0,2,IF(s.bind_user_num!=0,1,2)) AS isBindUser,
+			bind_user_num,
+			IF(SUM(si.get_money) IS NOT NULL,SUM(si.get_money),0) AS totalGetMoney
+			FROM sale_info s
+			LEFT JOIN sale_income si ON s.sale_id=si.sale_id
 			<where>
 				<if test="saleId !=null and saleId !=''">
-					sale_id LIKE '%${saleId}%'
+					s.sale_id LIKE '%${saleId}%'
 				</if>
 				<if test="phone !=null and phone !=''">
-					AND phone LIKE '%${phone}%'
+					AND s.phone LIKE '%${phone}%'
 				</if>
 				<if test="trueName !=null and trueName !=''">
-					AND true_name LIKE '%${trueName}%'
+					AND s.true_name LIKE '%${trueName}%'
 				</if>
 				<if test="isBindUser ==1">
-					AND bind_user_num !=0
+					AND s.bind_user_num !=0
 				</if>
 				<if test="isBindUser ==2">
-					AND bind_user_num =0
+					AND s.bind_user_num =0
 				</if>
 			</where>
+			GROUP BY s.sale_id
+			) AS a
 	</select>
 	
 	<resultMap type="User" id="userRM">
@@ -174,7 +194,7 @@
 		part,address,id_card,created,money,bind_user_num,
 		sale_pic,postal_type,bank_name,open_name,account_number
 		FROM sale_info
-		WHERE phone = #{phone}
+		WHERE phone = #{phone};
 	</select>
 	
 	<!-- 判断销售员手机号是否存在 -->

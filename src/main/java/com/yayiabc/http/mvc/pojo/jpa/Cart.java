@@ -17,7 +17,7 @@ public class Cart extends BasePojo {
 
 	private Integer num;
 
-	private Integer price;
+	private double price;
 
 	private String itemSKU;
 
@@ -90,11 +90,13 @@ public class Cart extends BasePojo {
 		this.num = num;
 	}
 
-	public Integer getPrice() {
+
+
+	public double getPrice() {
 		return price;
 	}
 
-	public void setPrice(Integer price) {
+	public void setPrice(double price) {
 		this.price = price;
 	}
 
@@ -199,7 +201,7 @@ public class Cart extends BasePojo {
 	}
 
 	public Cart(Integer cartId, String userId, String itemId, String name,
-			String pic, Integer num, Integer price, String itemSKU,
+			String pic, Integer num, double price, String itemSKU,
 			String itemPropertyName, String itemPropertyInfo,
 			String itemPropertyNameTwo, String itemPropertyTwoValue,
 			String itemPropertyNameThree, String itemPropertyThreeValue,

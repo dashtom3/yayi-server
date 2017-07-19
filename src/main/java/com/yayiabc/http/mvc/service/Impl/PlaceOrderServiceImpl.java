@@ -63,7 +63,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		//容器container
 		HashMap<String, Object> hMap=new HashMap<String, Object>();
 
-		Integer sumPrice=0;//商品总价
+		double sumPrice=0;//商品总价
 		DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String, Object>>();
 		// obtain sure shoppingCart item
 		List<Cart> cartList=placeOrderDao.buyNows(userId,itemSKUs);

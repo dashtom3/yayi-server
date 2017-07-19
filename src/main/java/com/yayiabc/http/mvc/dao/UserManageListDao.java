@@ -12,8 +12,12 @@ import com.yayiabc.http.mvc.pojo.model.UserAllInfo;
 
 @Repository
 public interface UserManageListDao {
+	//获取用户信息列表
 	List<Map<String,String>> userlist(@Param("phone")String phone,@Param("trueName")String trueName,@Param("companyName")String companyName,@Param("isBindSale")Integer isBindSale,@Param("type")Integer type,@Param("saleName")String saleName,@Param("page")Page page);
 	
+	int getCount(@Param("phone")String phone,@Param("trueName")String trueName,@Param("companyName")String companyName,@Param("isBindSale")Integer isBindSale,@Param("type")Integer type,@Param("saleName")String saleName);
+	
+	//获取简略销售员信息列表
 	List<SaleInfo> salelist(@Param("salePhone")String salePhone,@Param("saleName")String saleName,@Param("page")Page page);
 	
 	int getSalelistCount(@Param("salePhone")String salePhone,@Param("saleName")String saleName);
@@ -26,5 +30,5 @@ public interface UserManageListDao {
 	
 	UserAllInfo detail(@Param("userId")String userId);
 	
-	int getCount(@Param("phone")String phone,@Param("trueName")String trueName,@Param("companyName")String companyName,@Param("isBindSale")Integer isBindSale,@Param("type")Integer type,@Param("saleName")String saleName);
+	
 }

@@ -115,7 +115,6 @@
 		group by orde.order_id) a
 	</select>
 	<!-- //取消订单 -->
-	
 	<update id="cancel">
 		update  ordera
 		set state=0,close_time=now(),updated=now()

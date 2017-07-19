@@ -18,5 +18,24 @@
 	</select>
 	<select id="queryPhone" parameterType="java.lang.String" resultType="java.lang.String">
 		select phone from  user where user_id=#{userId} 
+	</select>   
+	<select id="querySaleIdByOrderId" resultType="java.lang.String">
+	SELECT sale_id  FROM USER WHERE user_id=(SELECT user_id FROM ordera WHERE order_id=#{orderId})
 	</select>
+	
+	<select id="querySalePhoneBySaleId" resultType="java.lang.String">
+	 select phone from sale_info where sale_id=#{saleId}  
+	</select>
+	<select id="queryCalssSumPrice" resultType="com.yayiabc.http.mvc.pojo.jpa.Ordera">
+	select supplies_sumprice,tooldevices_sumprice from ordera where
+	order_id =#{orderId}
+	</select>
+	
+	
+	<insert id="insert" parameterType="java.lang.String">
+	insert into sale_income(sale_id,order_id,get_money,get_state,state,created)  values
+	(
+	#{saleId},#{orderId},#{d},#{x},#{i} ,now()
+	)
+	</insert>
 </mapper>       

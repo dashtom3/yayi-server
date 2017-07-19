@@ -69,8 +69,27 @@ public class Ordera extends BasePojo {
 
 
 	private User user;
-
+    private double supplies_sumprice;
+	private double tooldevices_sumprice;
 	
+	
+
+	public double getSupplies_sumprice() {
+		return supplies_sumprice;
+	}
+
+	public void setSupplies_sumprice(double supplies_sumprice) {
+		this.supplies_sumprice = supplies_sumprice;
+	}
+
+	public double getTooldevices_sumprice() {
+		return tooldevices_sumprice;
+	}
+
+	public void setTooldevices_sumprice(double tooldevices_sumprice) {
+		this.tooldevices_sumprice = tooldevices_sumprice;
+	}
+
 	public Refund getRefund() {
 		return refund;
 	}

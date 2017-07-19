@@ -18,9 +18,9 @@ public class OrderItem extends BasePojo {
 	private Ordera ordera;
 	private String itemSKU;
 	private Integer qbDed;
-/**
- * cartId,userId
- */
+	/**
+	 * cartId,userId
+	 */
 	private Integer num;
 
 	private Double price;
@@ -29,17 +29,31 @@ public class OrderItem extends BasePojo {
 
 	private String picPath;
 	private List<Comments> commentList;
-	
-    private Refund refund;
-	
-	
+	private Refund refund;
 	private String  itemPropertyNamea;
 	private String  itemPropertyNameb;
 	private String  itemPropertyNamec;
-     
+
+	private String itemType;//商品类型
+
+	private String itemBrandName;//商品品牌
 	
-	
-	
+	public String getItemBrandName() {
+		return itemBrandName;
+	}
+
+	public void setItemBrandName(String itemBrandName) {
+		this.itemBrandName = itemBrandName;
+	}
+
+	public String getItemType() {
+		return itemType;
+	}
+
+	public void setItemType(String itemType) {
+		this.itemType = itemType;
+	}
+
 	public String getItemSKU() {
 		return itemSKU;
 	}
@@ -56,7 +70,7 @@ public class OrderItem extends BasePojo {
 		this.orderId = orderId;
 	}
 
-	
+
 	public String getItemName() {
 		return itemName;
 	}
@@ -73,7 +87,7 @@ public class OrderItem extends BasePojo {
 		this.refund = refund;
 	}
 
-	
+
 	public String getItemPropertyNamea() {
 		return itemPropertyNamea;
 	}
@@ -99,7 +113,7 @@ public class OrderItem extends BasePojo {
 	}
 
 	private ItemInfo itemInfo;//加了一个这个
-	
+
 	public ItemInfo getItemInfo() {
 		return itemInfo;
 	}
@@ -188,6 +202,6 @@ public class OrderItem extends BasePojo {
 		super(created, updated);
 		// TODO Auto-generated constructor stub
 	}
-	
+
 
 }

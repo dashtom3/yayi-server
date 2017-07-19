@@ -45,7 +45,6 @@ public interface PlaceOrderDao {
 			@Param("order")Ordera order
 			);	  
 	
-	 
 	//用户不用默认  使用其他收货地址时
 	public Receiver  upateAddress(@Param("receiverId")Integer receiverId);
 
@@ -73,5 +72,20 @@ public interface PlaceOrderDao {
 
 	//更改库存数量
 	int updateInventNum(@Param("NUM")String NUM,@Param("itemSKU")String itemSKU);
+
+     //根据itemid 取商品表里的商品类型
+	String queryItemsort(@Param("itemId")String itemId);
+
+     //将 本单的商品分类的总价格放入 订单表
+	int insertClassItemsSumMoney(@Param("suppliesSumPrice")String suppliesSumPrice,
+			@Param("tooldevicesSumPrice")String tooldevicesSumPrice
+			,@Param("orderId")String orderId
+			);
+
+	//新 function 本单获得钱币数新规则
+	String queryItemBrandNameByItemId(@Param("itemId")String itemId);
+
+	//本单赠送钱币数保存到数据库
+	void saveGiveQbNum(@Param("giveQbNum")String giveQbNum, @Param("orderId")String orderId);
 
 }

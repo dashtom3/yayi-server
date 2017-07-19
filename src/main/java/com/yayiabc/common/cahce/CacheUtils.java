@@ -3,11 +3,11 @@ package com.yayiabc.common.cahce;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
+import java.util.concurrent.ConcurrentHashMap;
 public class CacheUtils {
 
 	//缓存集合
-	private static Map<String,Date> cacheMap = new HashMap<String,Date>();
-	
+  private static ConcurrentHashMap<String, Date> cacheMap=new ConcurrentHashMap<String, Date>();
 	private  int ContinuedTime=/*24*60**/3*60*1000;//持续时间    一天
 	private CacheUtils() {}  
 	private static CacheUtils single=null;  

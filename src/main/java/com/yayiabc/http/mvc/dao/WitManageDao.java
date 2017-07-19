@@ -28,4 +28,6 @@ public interface WitManageDao {
 	int queryMoney(String saleId);
    //deleteMoney
 	int deleteMoney(Integer cashId, Integer cashMoney);
+    //set
+	int  setTime(String saleId);
 }

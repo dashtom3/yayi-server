@@ -22,4 +22,7 @@ public interface MyWalletDao {
 	
 	//得到userID
 	String queryUserID(@Param("orderId")String orderId);
+	
+	SaleInfo queryTMD(@Param("saleId")String saleId);
+	
 }

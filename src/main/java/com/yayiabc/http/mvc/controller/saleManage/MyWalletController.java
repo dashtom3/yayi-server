@@ -30,13 +30,26 @@ public class MyWalletController {
 	@ResponseBody
 	public DataWrapper<TreeMap<String, Object>> detail(
 			@RequestParam(value="token",required=true)String token,
-			@RequestParam(value="state",required=true)Integer state,
+			@RequestParam(value="state",required=false)Integer state,
 			@RequestParam(value="starTime",required=false)String starTime,
 			@RequestParam(value="endTime",required=false)String endTime
 			){
 		
 		return myWalletService.myWalletDetails(token,state,starTime,endTime);
 	}
+	//钱包明细tmd
+		@RequestMapping("details")
+		@ResponseBody
+		public DataWrapper<SaleInfo> details(
+				@RequestParam(value="token",required=true)String token,
+				@RequestParam(value="state",required=false)Integer state,
+				@RequestParam(value="starTime",required=false)String starTime,
+				@RequestParam(value="endTime",required=false)String endTime
+				){
+			
+			return myWalletService.queryTMD(token);
+		}
+	
 	//提现入口
 	@RequestMapping("showWit")
 	@ResponseBody
@@ -61,7 +74,7 @@ public class MyWalletController {
 			){
 
 		if(vCode.equals(VerifyCodeManager.getPhoneCode(with.getPhone()))){
-			return witManageService.submitWit(with);
+			return witManageService.submitWit(with,token);
 		}
 		DataWrapper<Void> dataWrapper= new DataWrapper<Void>();
 		dataWrapper.setMsg("验证验证码失败");

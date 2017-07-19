@@ -18,12 +18,23 @@ public class SaleIncome extends BasePojo {
 	private Integer getState;
 	private Date updated;
 	private Ordera order;
-	
+	private MakerTime makerTime;
     private SaleInfo saleInfo;
     
 	public SaleInfo getSaleInfo() {
 		return saleInfo;
 	}
+
+
+	public MakerTime getMakerTime() {
+		return makerTime;
+	}
+
+
+	public void setMakerTime(MakerTime makerTime) {
+		this.makerTime = makerTime;
+	}
+
 
 	public void setSaleInfo(SaleInfo saleInfo) {
 		this.saleInfo = saleInfo;

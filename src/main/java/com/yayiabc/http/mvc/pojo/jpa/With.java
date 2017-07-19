@@ -16,7 +16,15 @@ public class With {
 	private Date cashSuTime;
     private SaleInfo saleInfo;
     private String saleId;
+    private MakerTime makerTimey;
     
+	
+	public MakerTime getMakerTimey() {
+		return makerTimey;
+	}
+	public void setMakerTimey(MakerTime makerTimey) {
+		this.makerTimey = makerTimey;
+	}
 	public String getSaleId() {
 		return saleId;
 	}

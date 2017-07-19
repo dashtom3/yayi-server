@@ -32,11 +32,15 @@ public class WitManageServiceImpl implements WitManageService{
 	//提交提现数据
 	@Override
 	public DataWrapper<Void> submitWit(
-			With with
+			With with,String saleToken
 			){ 
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		int state=witManageDao.submitWit(with);
-		if(state>0){
+		//保存时间到    makerTime表里
+		String saleId=utilsDao.getSaleId(saleToken);
+		
+		       int s=witManageDao.setTime(saleId);
+		if(state>0&&s>0){
 			dataWrapper.setMsg("操作成功");
 		}else{
 			dataWrapper.setMsg("操作失败");

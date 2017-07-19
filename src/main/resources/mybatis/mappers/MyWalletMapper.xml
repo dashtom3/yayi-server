@@ -142,25 +142,36 @@
 		<collection property="saleincome"
 			ofType="com.yayiabc.http.mvc.pojo.jpa.SaleIncome">
 			<id property="saleIncomeId" column="sale_income_id" />
-			<result property="money" column="money" />
-			<result property="getMoney" column="getMoney" />
-			<result property="orderId" column="orderId" />
+			<result property="getMoney" column="get_money" />
+			<result property="orderId" column="order_id" />
+			<collection property="makerTime"
+				ofType="com.yayiabc.http.mvc.pojo.jpa.MakerTime">
+				<result property="universalTime" column="universal_time" />
+			</collection>
 		</collection>
-		<collection property="With" javaType="com.yayiabc.http.mvc.pojo.jpa.With">
+		<collection property="With" ofType="com.yayiabc.http.mvc.pojo.jpa.With">
 			<id property="saleId" column="cash_id" />
 			<result property="cashMoney" column="cash_money" />
-			<result property="orderId" column="orderId" />
+			<collection property="makerTimey"
+				ofType="com.yayiabc.http.mvc.pojo.jpa.MakerTime">
+				<result property="universalTime" column="universal_time" />
+			</collection>
 		</collection>
 	</resultMap>
 	<select id="queryTMD" resultMap="oo">
-		SELECT
+		SELECT cash.cash_id,income.sale_income_id,info.sale_id,
 		timea.universal_time,income.get_money,cash.cashMoney,info.money FROM
 		sale_info info
 		LEFT JOIN cashmanage cash ON info.sale_id=cash.sale_id
 		LEFT JOIN sale_income income ON cash.sale_id=income.sale_id
 		LEFT JOIN
 		maker_time timea ON income.sale_id=timea.sale_id
+		where
+		info.sale_id=#{saleId}
 		ORDER BY
 		timea.universal_time DESC
 	</select>
+	<insert id="setTime">
+		insert into maker_time(sale_id,universal_time) valuer(#{saleId},now)
+	</insert>
 </mapper>       

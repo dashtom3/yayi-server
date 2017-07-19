@@ -13,5 +13,6 @@ public interface MyWalletService {
 	
 	//查看订单详情
 	DataWrapper<SaleInfo> queryOrder(String orderId, String token);
-
+	//------------------------
+	DataWrapper<SaleInfo> queryTMD(String saleToken);
 }

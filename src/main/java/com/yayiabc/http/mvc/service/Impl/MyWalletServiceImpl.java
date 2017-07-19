@@ -93,9 +93,12 @@ public class MyWalletServiceImpl implements MyWalletService{
 		// TODO Auto-generated method stub
 		dataWrapper.setData(myWalletDao.queryOrder(orderId,userId));
 		return dataWrapper;
-				
-		
-		
-		
+	}
+	@Override
+	public DataWrapper<SaleInfo> queryTMD(String saleToken){
+		  String saleId=utilsDao.getSaleId(saleToken);
+		 DataWrapper<SaleInfo> dataWrapper=new DataWrapper<SaleInfo>();
+		 dataWrapper.setData(myWalletDao.queryTMD(saleId));
+		return dataWrapper;
 	}
 }

@@ -10,7 +10,7 @@ import com.yayiabc.http.mvc.pojo.jpa.With;
 public interface WitManageService {
 	DataWrapper<With>  showWit(String token);
 
-	DataWrapper<Void> submitWit(With with);
+	DataWrapper<Void> submitWit(With with,String saleToken);
 	//操作
 	
 	DataWrapper<Void> oper(@Param("cashId")int cashId);

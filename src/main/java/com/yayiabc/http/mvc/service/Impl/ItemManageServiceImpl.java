@@ -152,9 +152,13 @@ public class ItemManageServiceImpl implements ItemManageService{
 
 
 	@Override
-	public DataWrapper<Void> updateProperty(Integer itemPropertyId,
+	public DataWrapper<Void> updateProperty(Integer itemPropertyId,String itemPropertyName,
 			List<String> itemPparamList) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		ItemProperty itemProperty =new ItemProperty();
+		itemProperty.setItemPropertyId(itemPropertyId);
+		itemProperty.setItemPropertyName(itemPropertyName);
+		itemManageDao.updateProperty(itemProperty);
 		itemManageDao.deletePro(itemPropertyId);
 		Map<String,Object> map=new HashMap<String,Object>();
 		map.put("itemPropertyId",itemPropertyId);

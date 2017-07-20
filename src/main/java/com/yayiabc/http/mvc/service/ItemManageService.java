@@ -27,7 +27,7 @@ public interface ItemManageService {
 
 
 
-	DataWrapper<Void> updateProperty(Integer itemPropertyId,
+	DataWrapper<Void> updateProperty(Integer itemPropertyId,String itemPropertyName,
 			List<String> itemPparamList);
 
 	DataWrapper<List<ItemClassify>> showItemClassify(String itemClassifyName,

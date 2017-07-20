@@ -130,9 +130,10 @@ public class ItemManageController {
 	@ResponseBody
 	public DataWrapper<Void> updateProperty(
 			@RequestParam(value="itemPropertyId",required=true) Integer itemPropertyId,
+			@RequestParam(value="itemPropertyName",required=true) String itemPropertyName,
 			@RequestParam(value="itemPparamList",required=false) List<String> itemPparamList
 			){
-		return itemManageService.updateProperty(itemPropertyId,itemPparamList);
+		return itemManageService.updateProperty(itemPropertyId,itemPropertyName,itemPparamList);
 	}
 	
 	

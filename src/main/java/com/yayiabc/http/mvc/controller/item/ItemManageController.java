@@ -88,9 +88,12 @@ public class ItemManageController {
 	@RequestMapping("queryProperty")
 	@ResponseBody
 	public DataWrapper<List<ItemProperty>> queryProperty(
-			@RequestParam(value="itemPropertyName",required=false) String itemPropertyName
+			@RequestParam(value="itemPropertyName",required=false) String itemPropertyName,
+			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
+			@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 			){
-		return itemManageService.queryProperty(itemPropertyName);
+		
+		return itemManageService.queryProperty(itemPropertyName,currentPage,numberPerPage);
 	}
 	
 	/**

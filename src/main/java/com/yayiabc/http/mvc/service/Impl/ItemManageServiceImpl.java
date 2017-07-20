@@ -95,14 +95,33 @@ public class ItemManageServiceImpl implements ItemManageService{
 	}
 
 	@Override
-	public DataWrapper<List<ItemProperty>> queryProperty(String itemPropertyName) {
+	public DataWrapper<List<ItemProperty>> queryProperty(String itemPropertyName,Integer currentPage,Integer numberPerPage) {
 		DataWrapper<List<ItemProperty>> dataWrapper =new DataWrapper<List<ItemProperty>>();
+		Page page=new Page();
+		page.setNumberPerPage(numberPerPage);
+		page.setCurrentPage(currentPage);
+		if("".equals(currentPage)){
+			currentPage=null;
+		}
+		if("".equals(numberPerPage)){
+			numberPerPage=null;
+		}
+		Integer totalNumber=itemManageDao.getCountProperty(itemPropertyName);
+		System.out.println(totalNumber);
+		dataWrapper.setPage(page, totalNumber);
+		Integer currentNumber=page.getCurrentNumber();
 		if(itemPropertyName==null||"".equals(itemPropertyName)){
 			itemPropertyName=null;
 		}
-		List<ItemProperty> itemPropertyList=itemManageDao.queryProperty(itemPropertyName);
-		dataWrapper.setData(itemPropertyList);
-		System.out.println(itemPropertyList);
+		Search search =new Search();
+		search.setCurrentNumber(currentNumber);
+		search.setNumberPerPage(numberPerPage);
+		search.setItemBrandName(itemPropertyName);
+		System.out.println(search.getNumberPerPage());//10
+		System.out.println(search.getCurrentNumber());//0
+		List<ItemProperty> itemPropertyList=itemManageDao.queryProperty(search);
+		System.out.println(itemPropertyList.size());
+		dataWrapper.setData(itemPropertyList);//4
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		
 		return dataWrapper;

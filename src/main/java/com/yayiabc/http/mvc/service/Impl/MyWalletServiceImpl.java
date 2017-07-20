@@ -2,6 +2,8 @@ package com.yayiabc.http.mvc.service.Impl;
 
 import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Calendar;
+import java.util.Date;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -11,8 +13,10 @@ import org.springframework.stereotype.Service;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.dao.MyWalletDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
+import com.yayiabc.http.mvc.pojo.jpa.Balance;
 import com.yayiabc.http.mvc.pojo.jpa.SaleIncome;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
+import com.yayiabc.http.mvc.pojo.jpa.SaleMyWalletDetail;
 import com.yayiabc.http.mvc.pojo.jpa.With;
 import com.yayiabc.http.mvc.service.MyWalletService;
 @Service
@@ -28,28 +32,7 @@ public class MyWalletServiceImpl implements MyWalletService{
 	ArrayList al=new ArrayList<>();
 	SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");		
      
-	@Override
-	public DataWrapper<TreeMap<String, Object>> myWalletDetails(String token
-			,Integer state,String starTime,String endTime
-			) {
-		
-		DataWrapper<TreeMap<String, Object>> dataWrapper=new DataWrapper<TreeMap<String, Object>>();
-	     if(state==0){
-	    	 houston( token,starTime,endTime);
-	    	 withdrawals(token,starTime,endTime);
-	     }else if(state==1){
-	    	 houston(token,starTime,endTime);
-	     }else if(state==2){
-	    	 withdrawals(token,starTime,endTime);
-	     }
-       /* //测试
-		for(String key:treeMap.keySet()){
-			System.out.println(key+" :"+treeMap.get(key));
-		}*/
-	     
-		dataWrapper.setData(treeMap);
-		return dataWrapper;
-	}
+	
 	//进账
 	private void houston(String token,String starTime, String endTime){
 		String saleToken=utilsDao.getSaleId(token);
@@ -99,6 +82,74 @@ public class MyWalletServiceImpl implements MyWalletService{
 		  String saleId=utilsDao.getSaleId(saleToken);
 		 DataWrapper<SaleInfo> dataWrapper=new DataWrapper<SaleInfo>();
 		 dataWrapper.setData(myWalletDao.queryTMD(saleId));
+		return dataWrapper;
+	}
+	@Override
+	public DataWrapper<Void> getBalance(String token) {
+		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		String saleId=myWalletDao.getSaleIdByToken(token);
+		Double balance =myWalletDao.getBalanceBySaleId(saleId);
+		dataWrapper.setMsg(balance.toString());
+		return dataWrapper;
+	}
+	@Override
+	public DataWrapper<Void> getAllIn(String token) {
+		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		String saleId=myWalletDao.getSaleIdByToken(token);
+		Double allIn =myWalletDao.getAllIn(saleId);
+		dataWrapper.setMsg(allIn.toString());
+		return dataWrapper;
+	}
+	@Override
+	public DataWrapper<Void> getAllOut(String token) {
+		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		String saleId=myWalletDao.getSaleIdByToken(token);
+		Double allOut =myWalletDao.getAllOut(saleId);
+		dataWrapper.setMsg(allOut.toString());
+		return dataWrapper;
+	}
+	@Override
+	public DataWrapper<List<Balance>> myWalletDetails(String token,
+			Integer state, String starTime, String endTime) {
+		DataWrapper<List<Balance>> dataWrapper =new DataWrapper<List<Balance>>();
+		String saleId=myWalletDao.getSaleIdByToken(token);
+		List<Balance> balanceList=myWalletDao.myWalletDetails(saleId,state,starTime,endTime);
+		dataWrapper.setData(balanceList);
+		return dataWrapper;
+	}
+	@Override
+	public DataWrapper<List<SaleMyWalletDetail>> viewDetail(Integer balanceId) {
+		DataWrapper<List<SaleMyWalletDetail>> dataWrapper=new DataWrapper<List<SaleMyWalletDetail>>();
+		Integer countNum=myWalletDao.getCount(balanceId);
+		List<SaleMyWalletDetail> saleMyWalletDetails=null;
+		if(countNum==0){
+			//耗材类
+			SaleMyWalletDetail saleMyWalletDetail =new SaleMyWalletDetail();
+			saleMyWalletDetail.setItemClassify("耗材类");
+			//查询哪一个月的时间
+			Date date=myWalletDao.getTime(balanceId);
+			Calendar calendar =Calendar.getInstance();
+			calendar.setTime(date);
+			calendar.add(Calendar.MONTH, -1);
+			Date startDate=calendar.getTime();
+			
+			//工具设备类
+			SaleMyWalletDetail saleMyWalletDetailTwo =new SaleMyWalletDetail();
+			saleMyWalletDetail.setItemClassify("工具设备类");
+			//合计
+			SaleMyWalletDetail saleMyWalletDetailThree =new SaleMyWalletDetail();
+			saleMyWalletDetail.setItemClassify("合计");
+			/*myWalletDao.getViewDetailByIn(balanceId);//收入
+*/			
+		}else{
+			Balance balance=myWalletDao.getViewDetailByOut(balanceId);//支出
+			SaleMyWalletDetail saleMyWalletDetail =new SaleMyWalletDetail();
+			saleMyWalletDetail.setChangeTime(balance.getCreated());
+			saleMyWalletDetail.setDescribe(balance.getDescribe());
+			saleMyWalletDetail.setMoney(balance.getBalanceOut());
+			saleMyWalletDetails.add(saleMyWalletDetail);
+		}
+		dataWrapper.setData(saleMyWalletDetails);
 		return dataWrapper;
 	}
 }

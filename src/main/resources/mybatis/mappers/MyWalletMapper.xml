@@ -171,7 +171,50 @@
 		ORDER BY
 		timea.universal_time DESC
 	</select>
+
 	<insert id="setTime">
 		insert into maker_time(sale_id,universal_time) valuer(#{saleId},now)
 	</insert>
+
+	
+	<select id="getSaleIdByToken" resultType="string">
+		select sale_id from sale_token where sale_token=#{token}
+	</select>
+	
+	<select id="getBalanceBySaleId" resultType="java.lang.Double">
+		select balance from balance where sale_id=#{saleId}
+	</select>
+	
+	<select id="getAllIn" resultType="java.lang.Double">
+		select sum(balance_in) from balance where sale_id=#{saleId}
+	</select>
+	
+	<select id="getAllOut" resultType="java.lang.Double">
+		select sum(balance_out) from balance where sale_id=#{saleId}
+	</select>
+	
+	<select id="myWalletDetails" resultType="Balance">
+		select * from balance
+		<where>
+			sale_id=#{saleId}
+			<if test="state==2">and balance_out is null</if>
+			<if test="state==3">and balance_in is null</if>
+			<if test="starTime!=null">and created &lt; #{starTime}</if>
+			<if test="endTime!=null">and created &gt; #{endTime}</if>
+		</where>
+	</select>
+	
+	<select id="getCount" resultType="java.lang.Integer">
+		select count(0) from balance where balance_id=#{balanceId} and balance_in is null
+	</select>
+	
+	<select id="getViewDetailByOut" resultType="Balance">
+		select * from balance where balance_id=#{balanceId}
+	</select>
+	
+	<!-- <select id="getTime" resultType="java.util.Date">
+		select created from balance where balance_id=#{balanceId}
+	</select> -->
+	
+
 </mapper>       

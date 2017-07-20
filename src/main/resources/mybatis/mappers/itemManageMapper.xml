@@ -3,16 +3,15 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.yayiabc.http.mvc.dao.ItemManageDao">
- 	<select id="queryProperty" resultMap="itemProperty">
+ 	<select id="queryProperty" resultMap="itemProperty" parameterType="Search">
  		SELECT a.item_property_id,a.item_property_name,b.item_sku,b.item_sku_price,b.item_pparam,b.is_enable FROM
-			item_property a
+			(select * from item_property
+			<where>
+				<if test="itemBrandName!=null">item_property_name like '%${itemBrandName}%'</if>
+			</where> order by updated limit #{currentNumber},#{numberPerPage}) a
 			LEFT JOIN
 			item_propertyd b
 			ON a.item_property_id=b.item_pid
-			<where>
-				true 
-				<if test="itemPropertyName!=null"> and item_property_name like '%${itemPropertyName}%'</if>
-			</where>
  	</select>
  	
  	<resultMap type="ItemProperty" id="itemProperty">
@@ -25,6 +24,20 @@
  			<result property="itemSkuPrice" column="item_sku_price"/>
  		</collection>
  	</resultMap>
+ 	
+ 	<select id="getCountProperty" resultType="java.lang.Integer">
+ 		select count(0) from
+ 		(SELECT count(0) FROM
+			item_property a
+			LEFT JOIN
+			item_propertyd b
+			ON a.item_property_id=b.item_pid
+			<where>
+				true 
+				<if test="itemPropertyName!=null"> and item_property_name like '%${itemPropertyName}%'</if>
+			</where>
+			group by item_property_id) c
+ 	</select>
  	
  	<delete id="deleteProperty">
  		delete from item_property where item_property_id=#{itemPropertyId}

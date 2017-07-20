@@ -6,13 +6,16 @@ import java.util.TreeMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.pojo.jpa.Balance;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
+import com.yayiabc.http.mvc.pojo.jpa.SaleMyWalletDetail;
 import com.yayiabc.http.mvc.pojo.jpa.With;
 import com.yayiabc.http.mvc.service.MyWalletService;
 import com.yayiabc.http.mvc.service.WitManageService;
@@ -23,33 +26,58 @@ public class MyWalletController {
 	@Autowired
 	private MyWalletService myWalletService;
 	@Autowired
-
 	private WitManageService witManageService;
-	//钱包明细
+	
+	
+	//获取钱包余额
+	@RequestMapping("getBalance")
+	@ResponseBody
+	public DataWrapper<Void> getBalance(@RequestHeader String token){
+		return myWalletService.getBalance(token);
+	}
+	
+	//获取进账总额
+	@RequestMapping("getAllIn")
+	@ResponseBody
+	public DataWrapper<Void> getAllIn(@RequestHeader String token){
+		return myWalletService.getAllIn(token);
+	}
+	
+	//获取出账总额
+	@RequestMapping("getAllOut")
+	@ResponseBody
+	public DataWrapper<Void> getAllOut(@RequestHeader String token){
+		return myWalletService.getAllOut(token);
+	}
+	
+	//钱包明细,1表示全部 2表示进账,3表示出账 
 	@RequestMapping("detail")
 	@ResponseBody
-	public DataWrapper<TreeMap<String, Object>> detail(
+	public DataWrapper<List<Balance>> detail(
 			@RequestParam(value="token",required=true)String token,
 			@RequestParam(value="state",required=false)Integer state,
 			@RequestParam(value="starTime",required=false)String starTime,
 			@RequestParam(value="endTime",required=false)String endTime
 			){
-		
+		if("".equals(starTime)){
+			starTime=null;
+		}
+		if("".equals(endTime)){
+			endTime=null;
+		}
 		return myWalletService.myWalletDetails(token,state,starTime,endTime);
 	}
-	//钱包明细tmd
-		@RequestMapping("details")
-		@ResponseBody
-		public DataWrapper<SaleInfo> details(
-				@RequestParam(value="token",required=true)String token,
-				@RequestParam(value="state",required=false)Integer state,
-				@RequestParam(value="starTime",required=false)String starTime,
-				@RequestParam(value="endTime",required=false)String endTime
-				){
-			
-			return myWalletService.queryTMD(token);
-		}
+
 	
+	@RequestMapping("viewDetail")
+	@ResponseBody
+	public DataWrapper<List<SaleMyWalletDetail>> viewDetail(
+			@RequestParam(value="token",required=true)String token,
+			@RequestParam(value="balanceId",required=true) Integer balanceId
+			){
+		return myWalletService.viewDetail(balanceId);
+	}
+
 	//提现入口
 	@RequestMapping("showWit")
 	@ResponseBody

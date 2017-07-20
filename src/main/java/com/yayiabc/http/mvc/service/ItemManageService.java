@@ -17,7 +17,7 @@ public interface ItemManageService {
 	DataWrapper<Void> updateItemBrand(Integer itemBrandId,String itemBrandName,
 			String itemBrandLogo, String itemBrandHome);
 
-	DataWrapper<List<ItemProperty>> queryProperty(String itemPropertyName);
+	DataWrapper<List<ItemProperty>> queryProperty(String itemPropertyName,Integer currentPage,Integer numberPerPage);
 
 	DataWrapper<Void> deleteProperty(Integer itemPropertyId);
 

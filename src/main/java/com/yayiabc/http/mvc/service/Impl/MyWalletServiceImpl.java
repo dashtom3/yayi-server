@@ -4,11 +4,14 @@ import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.Calendar;
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.dao.MyWalletDao;
@@ -20,12 +23,13 @@ import com.yayiabc.http.mvc.pojo.jpa.SaleMyWalletDetail;
 import com.yayiabc.http.mvc.pojo.jpa.With;
 import com.yayiabc.http.mvc.service.MyWalletService;
 @Service
+@RequestMapping("api/a")
 public class MyWalletServiceImpl implements MyWalletService{
 	@Autowired
 	private MyWalletDao myWalletDao;
 	@Autowired
 	private UtilsDao utilsDao;
-	//-------
+	/*//-------
 	//容器
 	 TreeMap<String, Object> treeMap=new TreeMap<String,Object>();
 	
@@ -139,8 +143,8 @@ public class MyWalletServiceImpl implements MyWalletService{
 			//合计
 			SaleMyWalletDetail saleMyWalletDetailThree =new SaleMyWalletDetail();
 			saleMyWalletDetail.setItemClassify("合计");
-			/*myWalletDao.getViewDetailByIn(balanceId);//收入
-*/			
+			myWalletDao.getViewDetailByIn(balanceId);//收入
+			
 		}else{
 			Balance balance=myWalletDao.getViewDetailByOut(balanceId);//支出
 			SaleMyWalletDetail saleMyWalletDetail =new SaleMyWalletDetail();
@@ -150,6 +154,31 @@ public class MyWalletServiceImpl implements MyWalletService{
 			saleMyWalletDetails.add(saleMyWalletDetail);
 		}
 		dataWrapper.setData(saleMyWalletDetails);
+		return dataWrapper;
+	}*/
+	@Override
+	@RequestMapping("detail")
+	@ResponseBody
+	public DataWrapper<List<Balance>> detail(HashMap<String, String> hm) {
+		// TODO Auto-generated method stub
+		DataWrapper<List<Balance>> dataWrapper=new DataWrapper<List<Balance>>();
+		String saleId=utilsDao.getSaleId(hm.get("token"));
+		hm.put("saleId", saleId);
+		List<Balance> blist= myWalletDao.detail(hm);
+	  if(!blist.isEmpty()){
+			System.out.println(blist);
+			Double jzze=0.0;
+			Double czze=0.0;
+			for(int i=0;i<blist.size();i++){
+				jzze+=blist.get(i).getBalanceIn();
+				czze+=blist.get(i).getBalanceOut();
+				if(i==blist.size()-1){
+					blist.get(0).setJZZE(jzze);
+					blist.get(0).setCZZE(czze);
+				}
+			}
+	  }
+		dataWrapper.setData(blist);
 		return dataWrapper;
 	}
 }

@@ -1,10 +1,12 @@
 package com.yayiabc.http.mvc.dao;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Balance;
 import com.yayiabc.http.mvc.pojo.jpa.SaleIncome;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
@@ -46,5 +48,7 @@ public interface MyWalletDao {
 	Balance getViewDetailByOut(Integer balanceId);
 	
 	Date getTime(Integer balanceId);
+	
+	List<Balance> detail(HashMap<String, String> hm);
 
 }

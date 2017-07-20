@@ -8,15 +8,14 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.With;
 
 public interface WitManageService {
-	DataWrapper<With>  showWit(String token);
 
-	DataWrapper<Void> submitWit(With with,String saleToken);
-	//操作
 	
-	DataWrapper<Void> oper(@Param("cashId")int cashId);
+	DataWrapper<Void> oper(int balacceId);
 	
     //查询+显示
 	DataWrapper<List<With>> query(String message, String state);
+
+	DataWrapper<Void> submitWit(String saleToken, String balanceOut);
      
 
 }

@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.service;
 
+import java.util.HashMap;
 import java.util.List;
 
 
@@ -13,7 +14,7 @@ public interface MyWalletService {
 	
    
 	
-	//查看订单详情
+	/*//查看订单详情
 	DataWrapper<SaleInfo> queryOrder(String orderId, String token);
 
 	//------------------------
@@ -34,7 +35,11 @@ public interface MyWalletService {
 			String starTime, String endTime);
 
 
-	DataWrapper<List<SaleMyWalletDetail>> viewDetail(Integer balanceId);
+	DataWrapper<List<SaleMyWalletDetail>> viewDetail(Integer balanceId);*/
+   
+	
+	//明细
+	DataWrapper<List<Balance>> detail(HashMap<String, String> hm);
 
 
 }

@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.controller.saleManage;
 
+import java.util.HashMap;
 import java.util.List;
 import java.util.TreeMap;
 
@@ -29,7 +30,7 @@ public class MyWalletController {
 	private WitManageService witManageService;
 	
 	
-	//获取钱包余额
+	/*//获取钱包余额
 	@RequestMapping("getBalance")
 	@ResponseBody
 	public DataWrapper<Void> getBalance(@RequestHeader String token){
@@ -92,17 +93,17 @@ public class MyWalletController {
 	public  DataWrapper<Void> submitWit(
 			@RequestParam(value="token") String token,
 			@RequestParam(value="vCode") String vCode,
-			/* @RequestParam(value="phone") String phone,
-   		 @RequestParam(value="moneyNnm") String moneyNnm,*/
-			/*real_name  type   anumber
+			 @RequestParam(value="phone") String phone,
+   		 @RequestParam(value="moneyNnm") String moneyNnm,
+			real_name  type   anumber
    		 @RequestParam(value="phone") String phone,
    		 @RequestParam(value="vCode") String vCode,
-   		 @RequestParam(value="type") String type*/
+   		 @RequestParam(value="type") String type
 			@ModelAttribute With with
 			){
 
 		if(vCode.equals(VerifyCodeManager.getPhoneCode(with.getPhone()))){
-			return witManageService.submitWit(with,token);
+			//return witManageService.submitWit(with,token);
 		}
 		DataWrapper<Void> dataWrapper= new DataWrapper<Void>();
 		dataWrapper.setMsg("验证验证码失败");
@@ -117,5 +118,18 @@ public class MyWalletController {
 				 ){
 		return 	 myWalletService.queryOrder(orderId,token);
 			
-		  }
+		  }*/
+	@RequestMapping("detail")
+	@ResponseBody
+	public  void detail(@RequestParam(value="token",required=true)String token,
+			@RequestParam(value="state",required=false)String state,
+			@RequestParam(value="starTime",required=false)String starTime,
+			@RequestParam(value="endTime",required=false)String endTime){
+		   HashMap<String, String> hm=new HashMap<String,String>();
+		   hm.put("token", token);
+		   hm.put("state", state);
+		   hm.put("starTime", starTime);
+		   hm.put("endTime", endTime);
+		myWalletService.detail(hm);
+	}
 }

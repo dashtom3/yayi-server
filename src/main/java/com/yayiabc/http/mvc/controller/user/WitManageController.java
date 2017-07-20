@@ -28,13 +28,6 @@ public class WitManageController {
      @Autowired
      //显示提现
      private WitManageService witManageService;
-     @RequestMapping("showWit")
-     @ResponseBody
-     public  DataWrapper<With> showWit(
-    		 @RequestParam(value="token") String token
-    		 ){
-    	 return witManageService.showWit(token);
-     }
      
      //提交提现申请
      @RequestMapping("submitWit")
@@ -48,12 +41,14 @@ public class WitManageController {
     		 @RequestParam(value="phone") String phone,
     		 @RequestParam(value="vCode") String vCode,
     		 @RequestParam(value="type") String type*/
-    		 @ModelAttribute With with
+    		// @ModelAttribute With with
+    		 @RequestParam(value="moneyNnm") String moneyNnm,
+    		 @RequestParam(value="phone") String phone
     		 ){
-    	    //这里关于提现金额 没有判断  ，闲下来我会判断的
-    	    if(vCode.equals(VerifyCodeManager.getPhoneCode(with.getPhone()))){
+    	  
+    	   if(vCode.equals(VerifyCodeManager.getPhoneCode(phone))){
     	    	
-    	    	return witManageService.submitWit(with,token);
+    	    	return witManageService.submitWit(token,moneyNnm);
     	    }
     	    DataWrapper<Void> dataWrapper= new DataWrapper<Void>();
     	    dataWrapper.setErrorCode(ErrorCodeEnum.Error);
@@ -95,16 +90,16 @@ public class WitManageController {
      @ResponseBody
      public   DataWrapper<Void> oper(
     		 //@RequestParam(value="token") String token,
-    		 @RequestParam(value="cashId") Integer cashId
+    		 @RequestParam(value="balacceId") Integer balacceId
     		 ){
-    	 return witManageService.oper(cashId);
+    	 return witManageService.oper(balacceId);
      }
      
      //show + query
      @RequestMapping("query")
      @ResponseBody
      public  DataWrapper<List<With>> query(
-    		 //@RequestParam(value="token") String token,
+    		 //@RequestParam(value="token",required=true) String token,
     		 @RequestParam(value="message",required=false) String message ,  //姓名  或者手机号
     		 
     		 @RequestParam(value="state",required=false) String state

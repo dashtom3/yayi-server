@@ -1,29 +1,45 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
 import java.util.Date;
+/**
+ * SELECT sale.true_name,sale.phone,sale.postal_type,sale.open_name,sale.bank_name,sale.account_number
 
+,bala.balance,bala.created,bala.balance_out,bala.describey,bala.balance_id 
+ * @author Administrator
+ *
+ */
 public class With {
-	private Integer cashId;
-	private String trueName;
-	private  String phone;
-	private  int cashMoney;
-	private  String type;
-	private  String accountUser;
-	private  String bank;
-	private  String anumber;
-	private  String appTime;
-	private  String cashState;
-	private Date cashSuTime;
-    private SaleInfo saleInfo;
-    private String saleId;
-    private MakerTime makerTimey;
-    
 	
-	public MakerTime getMakerTimey() {
-		return makerTimey;
+	private Integer balanceId;
+	private String saleId;
+	private String trueName;// 姓名
+
+
+	private String postalType;// 提现类型
+
+	private String bankName;// 银行名称
+
+	private String openName;// 开户者
+
+	private String accountNumber;// 支付宝账号 或 银行卡号
+
+	private Integer type; // 类型
+	private String phone;// 手机号码
+	private Double balanceOut;//提现金额
+	private Date create;    //申请时间
+	private String describey;// 提现状态
+	
+	public String getPostalType() {
+		return postalType;
 	}
-	public void setMakerTimey(MakerTime makerTimey) {
-		this.makerTimey = makerTimey;
+	public void setPostalType(String postalType) {
+		this.postalType = postalType;
+	}
+	public Integer getBalanceId() {
+		return balanceId;
+	}
+	public void setBalanceId(Integer balanceId) {
+		this.balanceId = balanceId;
 	}
 	public String getSaleId() {
 		return saleId;
@@ -31,32 +47,36 @@ public class With {
 	public void setSaleId(String saleId) {
 		this.saleId = saleId;
 	}
-	public SaleInfo getSaleInfo() {
-		return saleInfo;
-	}
-	public void setSaleInfo(SaleInfo saleInfo) {
-		this.saleInfo = saleInfo;
-	}
-	public Date getCashSuTime() {
-		return cashSuTime;
-	}
-	public void setCashSuTime(Date cashSuTime) {
-		this.cashSuTime = cashSuTime;
-	}
-	public Integer getCashId() {
-		return cashId;
-	}
-	public void setCashId(Integer cashId) {
-		this.cashId = cashId;
-	}
 	public String getTrueName() {
 		return trueName;
 	}
 	public void setTrueName(String trueName) {
 		this.trueName = trueName;
 	}
-	public void setCashMoney(int cashMoney) {
-		this.cashMoney = cashMoney;
+	
+	public String getBankName() {
+		return bankName;
+	}
+	public void setBankName(String bankName) {
+		this.bankName = bankName;
+	}
+	public String getOpenName() {
+		return openName;
+	}
+	public void setOpenName(String openName) {
+		this.openName = openName;
+	}
+	public String getAccountNumber() {
+		return accountNumber;
+	}
+	public void setAccountNumber(String accountNumber) {
+		this.accountNumber = accountNumber;
+	}
+	public Integer getType() {
+		return type;
+	}
+	public void setType(Integer type) {
+		this.type = type;
 	}
 	public String getPhone() {
 		return phone;
@@ -64,55 +84,29 @@ public class With {
 	public void setPhone(String phone) {
 		this.phone = phone;
 	}
-	public Integer getCashMoney() {
-		return cashMoney;
+	public Double getBalanceOut() {
+		return balanceOut;
 	}
-	public void setCashMoney(Integer cashMoney) {
-		this.cashMoney = cashMoney;
+	public void setBalanceOut(Double balanceOut) {
+		this.balanceOut = balanceOut;
 	}
-	public String getType() {
-		return type;
+	public Date getCreate() {
+		return create;
 	}
-	public void setType(String type) {
-		this.type = type;
+	public void setCreate(Date create) {
+		this.create = create;
 	}
-	public String getAccountUser() {
-		return accountUser;
+	public String getDescribey() {
+		return describey;
 	}
-	public void setAccountUser(String accountUser) {
-		this.accountUser = accountUser;
-	}
-	public String getBank() {
-		return bank;
-	}
-	public void setBank(String bank) {
-		this.bank = bank;
-	}
-	public String getAnumber() {
-		return anumber;
-	}
-	public void setAnumber(String anumber) {
-		this.anumber = anumber;
-	}
-	public String getAppTime() {
-		return appTime;
-	}
-	public void setAppTime(String appTime) {
-		this.appTime = appTime;
-	}
-	public String getCashState() {
-		return cashState;
-	}
-	public void setCashState(String cashState) {
-		this.cashState = cashState;
+	public void setDescribey(String describey) {
+		this.describey = describey;
 	}
 	@Override
 	public String toString() {
-		return "With [cashId=" + cashId + ", trueName=" + trueName + ", phone=" + phone + ", cashMoney=" + cashMoney
-				+ ", type=" + type + ", accountUser=" + accountUser + ", bank=" + bank + ", anumber=" + anumber
-				+ ", appTime=" + appTime + ", cashState=" + cashState + ", cashSuTime=" + cashSuTime + ", saleInfo="
-				+ saleInfo + ", saleId=" + saleId + "]";
+		return "With [saleId=" + saleId + ", trueName=" + trueName + ", postalType=" + postalType + ", bankName="
+				+ bankName + ", openName=" + openName + ", accountNumber=" + accountNumber + ", type=" + type
+				+ ", phone=" + phone + ", balanceOut=" + balanceOut + ", create=" + create + ", describey=" + describey
+				+ "]";
 	}
-	
-
 }

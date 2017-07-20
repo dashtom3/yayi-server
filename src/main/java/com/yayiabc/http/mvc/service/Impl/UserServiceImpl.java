@@ -179,7 +179,7 @@ public class UserServiceImpl implements UserService{
 			//--
 
 
-			if(SessionManager.getSessionByUserID(seUser.getUserId())==null){
+			/*if(SessionManager.getSessionByUserID(seUser.getUserId())==null){
 				String sessionKey=SessionManager.newSession(seUser);
 				dataWrapper.setToken(token);
 				return dataWrapper;
@@ -187,7 +187,7 @@ public class UserServiceImpl implements UserService{
 				dataWrapper.setMsg("该账户已经登录");
 				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 				return dataWrapper;
-			}
+			}*/
 
 			//--
 		}else{

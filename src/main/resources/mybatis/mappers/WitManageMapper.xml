@@ -2,69 +2,89 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-
 <mapper namespace="com.yayiabc.http.mvc.dao.WitManageDao">
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.Balance" id="x">
+		<id property="balanceId" column="balance_id" />
+		<result property="balanceOut" column="balance_out" />
+		<result property="balance" column="balance" />
+	</resultMap>
+
+
 	<select id="showWit" resultType="With">
-     select real_name,phone,cashMoney,type,anumber from cashmanage where phone=#{phone}
+		select
+		real_name,phone,cashMoney,type,anumber from cashmanage where
+		phone=#{phone}
 	</select>
 	<!-- //根据userId 查phone -->
 	<select id="getPhone" resultType="java.lang.String">
-	select phone from user where user_id=#{userId}
+		select phone from user where
+		user_id=#{userId}
 	</select>
-	
-	<insert id="submitWit" parameterType="With">
-	  insert into cashmanage(real_name,type,anumber,cashMoney,phone,cash_state,account_user,bank,app_time,sale_id) 
-	  values
-	  (#{trueName},#{type},#{anumber},#{cashMoney},#{phone},0,#{accountUser}
-	  ,#{bank},now(),#{saleId}
-	  )
-	<!--   默认是 审核中   state 为0  -->
-	  
+
+	<insert id="submitWit">
+		insert into balance(sale_id,balance_out,balance,created,describey)
+		values
+		(#{saleId},#{balanceOut},#{balance},now(),#{describey}
+		)
+		<!-- 默认是 审核中 state 为0 -->
 	</insert>
 	<update id="oper">
-	  update cashmanage set cash_state=1,cash_su_time=now() where cash_id=#{cashId}
+		update balance set balance=#{dPrice},created=now(),
+		describey=#{describey}
+		where balance_id=#{balanceId}
 	</update>
-     
-    
+	<!--private String saleId; private String trueName;// 姓名 private String 
+		postalType;// 提现类型 private String bankName;// 银行名称 private String openName;// 
+		开户者 private String accountNumber;// 支付宝账号 或 银行卡号 private Integer type; // 
+		类型 private String phone;// 手机号码 private Double balanceOut;//提现金额 private 
+		Date create; //申请时间 private String describey;// 提现状态 -->
+
 	<!-- //查询+显示 -->
-	   <resultMap type="com.yayiabc.http.mvc.pojo.jpa.With" id="c">
-	  <id property="cashId" column="cash_id"/>
-	  <result property="trueName"  column="real_name"/>
-	  <result property="phone"  column="phone"/>
-	  <result property="cashMoney"  column="cash_money"/>
-	  <result property="type"  column="type"/>
-	  <result property="accountUser"  column="account_user"/>
-	  <result property="bank"  column="bank"/>
-	  <result property="appTime"  column="app_time"/>
-	  <result property="cashState"  column="cash_state"/>
-	  <result property="cashSuTime"  column="cash_su_time"/>
-	  <result property="saleId"  column="sale_id"/>
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.With" id="c">
+		<id property="balanceId" column="balance_id" />
+		<result property="saleId" column="sale_id" />
+		<result property="trueName" column="true_name" />
+		<result property="postalType" column="postal_type" />
+		<result property="bankName" column="bank_name" />
+		<result property="openName" column="open_name" />
+		<result property="accountNumber" column="account_number" />
+		<result property="type" column="type" />
+		<result property="phone" column="phone" />
+		<result property="balanceOut" column="balance_out" />
+		<result property="describey" column="describey" />
+		<result property="create" column="created" />
 	</resultMap>
 	<select id="query" resultMap="c">
-	   select  * from cashmanage
-	   <where>
-	  
-	    <if test="message!=null and message!=''">
-	       phone=#{message}  or real_name=#{message}  
-	    </if>
-	     
-	    <if test="state!=null and state!=''">
-	       and  cash_state=#{state}
-	   </if>
-	   
-	   </where>
-	      order by app_time asc 
+		SELECT
+		sale.sale_id,sale.true_name,sale.phone,sale.postal_type,sale.open_name,sale.bank_name,sale.account_number
+		,bala.balance,bala.created,bala.balance_out,bala.describey,bala.balance_id
+		FROM balance bala
+		JOIN sale_info sale ON bala.sale_id=sale.sale_id
+		<where>
+			bala.describey LIKE '%提现%'
+			<if test="message!=null and message!=''">
+				and sale.true_name='${message}%' or
+				sale.phone='${message}%'
+			</if>
+			<if test="state!=null and state!=''">
+				and bala.describey like '${state}%'
+			</if>
+		</where>
 	</select>
-	
+
 	<select id="queryMessage" resultMap="c">
-	  select * from cashmanage where cash_id=#{cashId}
+		select * from cashmanage
+		where cash_id=#{cashId}
 	</select>
-	<select id="queryMoney" resultType="int">
-	 select money from sale_info where sale_id=#{saleId}
+	<select id="queryMoney" resultType="java.lang.Double">
+		select balance from balance
+		where sale_id=#{saleId} order by created desc
 	</select>
-	<!-- //deleteMoney -->
+
+	<select id="queryBalance" resultMap="x">
+		select balance_out,balance
+		from balance where balance_id=#{balanceId}
+	</select>
+	<!--0000000000000000000 -->
 	
-	<!-- <update id="saveMoney" parameterType="com.yayiabc.http.mvc.pojo.jpa.With">
-	 update set  get_money=(getmoney+cashMoney) where sale_id=#{saleId}
-	</update> -->
 </mapper>

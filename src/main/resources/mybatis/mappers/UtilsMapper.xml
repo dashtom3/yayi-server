@@ -8,7 +8,7 @@
 		select user_id from user_token where token=#{token} 
 	</select>
 	<select id="getSaleId" parameterType="java.lang.String" resultType="java.lang.String">
-		select sale_id from sale_token where sale_id=#{SaleToken} 
+		select sale_id from sale_token where sale_token=#{SaleToken} 
 	</select>
 	<select id="getToken" parameterType="java.lang.String" resultType="java.lang.String">
 		select token from user_token where user_id=#{userId} 
@@ -38,4 +38,8 @@
 	#{saleId},#{orderId},#{d},#{x},#{i} ,now()
 	)
 	</insert>
+	
+	<select id="getSaleBySaleId" resultType="com.yayiabc.http.mvc.pojo.jpa.SaleInfo">
+	 select * from sale_info where sale_id=#{saleId}
+	</select>
 </mapper>       

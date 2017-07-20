@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ 
+<mapper namespace="com.yayiabc.http.mvc.dao.PunRewardDao">
+	<!-- <resultMap type="com.yayiabc.http.mvc.pojo.jpa.With" id="punReward">
+      <id   property="" column=""/>
+      <result property="" column=""/>
+      <result property="" column=""/>
+	</resultMap> -->
+
+	<select id="show" resultType="java.lang.Double">
+      select  balance from balance where sale_id=#{saleId} 
+      order by created desc
+	</select>
+	<!-- @Param("saleId")String saleId,
+		  @Param("balanceIn") Double balance_in,
+		  @Param("balanceOut")Double balance_out) -->
+	<insert id="addMoney">
+	insert into balance(sale_id,balance_in,balance,created,describey) 
+	values(#{saleId},#{balanceIn},#{balance},now(),'进账奖励')
+	</insert>
+	<insert id="delMoney">
+	insert into balance(sale_id,balance_in,balance,created,describey) 
+	values(#{saleId},#{balanceIn},#{balance},now(),'出账惩罚')
+	</insert>
+</mapper>

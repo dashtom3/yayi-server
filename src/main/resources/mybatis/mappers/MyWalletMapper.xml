@@ -215,6 +215,25 @@
 	<!-- <select id="getTime" resultType="java.util.Date">
 		select created from balance where balance_id=#{balanceId}
 	</select> -->
+
 	
+    <select id="detail" resultType="com.yayiabc.http.mvc.pojo.jpa.Balance">
+		SELECT * FROM balance
+		<where>
+		describey IS NOT NULL
+		<if test="state!=null and state!='' and state!='全部'">
+		describey like '%${state}%'
+		</if>
+		<if test="starTime !=null and starTime!=''" >
+		      created > #{starTime} 
+		</if> 
+		<if test="endTime !=null  and endTime!=''">
+		   create &lt; #{endTime} <!-- < -->
+		</if>
+		<if test="starTime !=null and starTime!='' and endTime!=null and endTime!=''">
+		   between #{starTime} and #{endTime}
+		</if>
+		</where>
+	</select>
 
 </mapper>       

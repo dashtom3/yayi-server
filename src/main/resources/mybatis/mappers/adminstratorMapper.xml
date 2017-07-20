@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.yayiabc.http.mvc.dao.AdminstratorDao">
 	<insert id="addAdminstrator">
-		insert into adminstrator values(null,#{phone},#{adminstratorPwd},#{trueName})
+		insert into adminstrator values(null,#{phone},#{adminstratorPwd},#{trueName},#{state})
 	</insert>
 	
 	<delete id="deleteAdminstrator">
@@ -26,5 +26,21 @@
 	
 	<select id="loginAdminstrator" resultType="Adminstrator">
 		select * from adminstrator where phone=#{phone} and adminstrator_pwd=#{adminstratorPwd}
+	</select>
+	
+	<select id="getAdminstratorIdByPhone" resultType="java.lang.Integer">
+		select adminstrator_id from adminstrator where phone=#{phone}
+	</select>
+	
+	<insert id="addAdminstratorToken">
+		insert into adminstrator_token values(#{adminstratorId},#{adminstratorToken})
+	</insert>
+	
+	<delete id="deleteAdminstratorToken">
+		delete from adminstrator_token where adminstrator_id=#{adminstratorId}
+	</delete>
+	
+	<select id="getAdminstratorTokenByAdminstratorId" resultType="string">
+		select adminstrator_token from adminstrator_token where adminstrator_id=#{adminstratorId}
 	</select>
 </mapper>       

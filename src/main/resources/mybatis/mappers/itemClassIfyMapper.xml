@@ -46,7 +46,7 @@
     (SELECT item_id x_id,item_pica FROM item_detail) b
     ON a.item_id=b.x_id) c
     INNER JOIN 
-    (SELECT item_brand_id p_id,item_brand_name FROM item_brand) d
+    (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) d
     ON c.item_brand_id=d.p_id
     <where>
     	<if test="oneClassify!=null">one_classify=#{oneClassify}</if>
@@ -64,7 +64,7 @@
     (SELECT item_id x_id,item_pica FROM item_detail) b
     ON a.item_id=b.x_id) c
     INNER JOIN 
-    (SELECT item_brand_id p_id,item_brand_name FROM item_brand) d
+    (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) d
     ON c.item_brand_id=d.p_id
     <where>
     	<if test="oneClassify!=null">one_classify=#{oneClassify}</if>
@@ -90,7 +90,7 @@
     (SELECT item_id x_id,item_pica FROM item_detail) b
     ON a.item_id=b.x_id) c
     INNER JOIN 
-    (SELECT item_brand_id p_id,item_brand_name FROM item_brand) d
+    (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) d
     ON c.item_brand_id=d.p_id
     <where>
     	<if test="oneClassify!=null">one_classify=#{oneClassify}</if>
@@ -108,7 +108,7 @@
     (SELECT item_id x_id,item_pica FROM item_detail) b
     ON a.item_id=b.x_id) c
     INNER JOIN 
-    (SELECT item_brand_id p_id,item_brand_name FROM item_brand) d
+    (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) d
     ON c.item_brand_id=d.p_id
     <where>
     	<if test="oneClassify!=null">one_classify=#{oneClassify}</if>

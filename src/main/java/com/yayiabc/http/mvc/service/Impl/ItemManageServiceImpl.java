@@ -59,9 +59,6 @@ public class ItemManageServiceImpl implements ItemManageService{
 	public DataWrapper<Void> deleteItemBrand(Integer itemBrandId) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		try {
-			String itemId=itemBrandDao.queryItemIdByItemBrandId(itemBrandId);
-			itemBrandDao.deleteItemDetailByItemId(itemId);
-			itemBrandDao.deleteItemInfoByItemId(itemId);
 			int num=itemBrandDao.deleteItemBrand(itemBrandId);
 			if(num!=0){
 				dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);

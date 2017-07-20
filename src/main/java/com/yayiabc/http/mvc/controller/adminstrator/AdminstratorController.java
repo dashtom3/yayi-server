@@ -75,8 +75,9 @@ public class AdminstratorController {
 	@ResponseBody
 	public DataWrapper<Void> loginAdminstrator(
 			@RequestParam(value="phone",required=true) String phone,
-			@RequestParam(value="adminstratorPwd",required=true) String adminstratorPwd
+			@RequestParam(value="adminstratorPwd",required=true) String adminstratorPwd,
+			@RequestParam(value = "code", required = true) String code
 			){
-		return adminstratorService.loginAdminstrator(phone,adminstratorPwd);
+		return adminstratorService.loginAdminstrator(phone,adminstratorPwd,code);
 	}
 }

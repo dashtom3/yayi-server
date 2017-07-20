@@ -18,6 +18,6 @@ public interface AdminstratorService {
 	DataWrapper<List<Adminstrator>> queryAdminstrator(String phone,
 			String trueName);
 
-	DataWrapper<Void> loginAdminstrator(String phone, String adminstratorPwd);
+	DataWrapper<Void> loginAdminstrator(String phone, String adminstratorPwd,String code);
 
 }

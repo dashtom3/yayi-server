@@ -5,7 +5,7 @@ public class Adminstrator {
 	private String phone;
 	private String adminstratorPwd;
 	private String trueName;
-	
+	private Integer state;
 	public Integer getAdminstratorId() {
 		return adminstratorId;
 	}
@@ -30,13 +30,20 @@ public class Adminstrator {
 	public void setTrueName(String trueName) {
 		this.trueName = trueName;
 	}
+	public Integer getState() {
+		return state;
+	}
+	public void setState(Integer state) {
+		this.state = state;
+	}
 	public Adminstrator(Integer adminstratorId, String phone,
-			String adminstratorPwd, String trueName) {
+			String adminstratorPwd, String trueName, Integer state) {
 		super();
 		this.adminstratorId = adminstratorId;
 		this.phone = phone;
 		this.adminstratorPwd = adminstratorPwd;
 		this.trueName = trueName;
+		this.state = state;
 	}
 	public Adminstrator() {
 		super();
@@ -46,7 +53,9 @@ public class Adminstrator {
 	public String toString() {
 		return "Adminstrator [adminstratorId=" + adminstratorId + ", phone="
 				+ phone + ", adminstratorPwd=" + adminstratorPwd
-				+ ", trueName=" + trueName + "]";
+				+ ", trueName=" + trueName + ", state=" + state + "]";
 	}
+	
+	
 	
 }

@@ -7,7 +7,7 @@
  	<select id="queryItemBrand" resultMap="itemBrandRM">
  		select item_brand_id,item_brand_home,item_brand_logo,item_brand_name from item_brand 
  		<where>
- 		 true
+ 		 state=1
  		 <if test="itemBrandName!=null">and item_brand_name like '%${itemBrandName}%'</if>
  		 <if test="oneClassify!=null">and item_brand_Home like '%${oneClassify}%'</if>
  		</where>
@@ -21,7 +21,7 @@
  	
  	
 	<select id="brandList" resultMap="itemBrandRM">
-		select item_brand_id,item_brand_home,item_brand_logo,item_brand_name from item_brand
+		select item_brand_id,item_brand_home,item_brand_logo,item_brand_name from item_brand where state=1
 	</select>
 	<resultMap type="ItemBrand" id="itemBrandRM">
 		<id property="itemBrandId" column="item_brand_id"/>
@@ -44,7 +44,7 @@ INNER JOIN
 (SELECT item_id did,item_pica FROM item_detail) b
 ON a.item_id=b.did) d
 INNER JOIN
-(SELECT * FROM item_brand WHERE item_brand_id=#{itemBrandId}) c
+(SELECT * FROM item_brand WHERE item_brand_id=#{itemBrandId} and state=1) c
 ON d.p_id=c.item_brand_id
         order by 
     <choose>
@@ -63,7 +63,7 @@ INNER JOIN
 (SELECT item_id did,item_pica FROM item_detail) b
 ON a.item_id=b.did) d
 INNER JOIN
-(SELECT * FROM item_brand WHERE item_brand_id=#{itemBrandId}) c
+(SELECT * FROM item_brand WHERE item_brand_id=#{itemBrandId} and state=1) c
 ON d.p_id=c.item_brand_id
 	</select>
 	
@@ -140,9 +140,14 @@ WHERE s.item_id=#{itemId}
 	
 	
 	<!-- 根据品牌id删除品牌 -->
-	<delete id="deleteItemBrand">
+	<!-- <delete id="deleteItemBrand">
 	  delete from item_brand where item_brand_id=#{itemBrandId}
-	</delete>
+	</delete> -->
+	
+	<!-- 根据品牌id删除品牌 -->
+	<update id="deleteItemBrand">
+		update item_brand set state=2 where item_brand_id=#{itemBrandId}
+	</update>
 	
 	<!-- 根据商品Id来删除商品信息 -->
 	<delete id="deleteItemInfoByItemId">
@@ -191,7 +196,7 @@ WHERE s.item_id=#{itemId}
 	</select>
 	
 	<insert id="addItemBrand">
-		insert into item_brand values(null,#{itemBrandLogo},#{itemBrandHome},#{itemBrandName},now(),now())
+		insert into item_brand values(null,#{itemBrandLogo},#{itemBrandHome},#{itemBrandName},now(),now(),1)
 	</insert>
 	
 	<select id="getItemSKUByPrice" resultType="string">
@@ -248,7 +253,7 @@ WHERE s.item_id=#{itemId}
 	<select id="getCountOne" resultType="java.lang.Integer">
 		select count(0) from item_brand 
  		<where>
- 		 true
+ 		 state=1
  		 <if test="itemBrandName!=null">and item_brand_name like '%${itemBrandName}%'</if>
  		 <if test="itemBrandHome!=null">and item_brand_Home like '%${itemBrandHome}%'</if>
  		</where>

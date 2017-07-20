@@ -178,12 +178,6 @@ public class OrderItem extends BasePojo {
 		this.picPath = picPath == null ? null : picPath.trim();
 	}
 
-	@Override
-	public String toString() {
-		return "OrderItem [itemId=" + itemId + ", ordera=" + ordera
-				+ ", qbDed=" + qbDed + ", num=" + num + ", price=" + price
-				+ ", totalFee=" + totalFee + ", picPath=" + picPath + "]";
-	}
 
 	public List<Comments> getCommentList() {
 		return commentList;
@@ -203,5 +197,14 @@ public class OrderItem extends BasePojo {
 		// TODO Auto-generated constructor stub
 	}
 
+	@Override
+	public String toString() {
+		return "OrderItem [itemId=" + itemId + ", itemName=" + itemName + ", orderId=" + orderId + ", ordera=" + ordera
+				+ ", itemSKU=" + itemSKU + ", qbDed=" + qbDed + ", num=" + num + ", price=" + price + ", totalFee="
+				+ totalFee + ", picPath=" + picPath + ", commentList=" + commentList + ", refund=" + refund
+				+ ", itemPropertyNamea=" + itemPropertyNamea + ", itemPropertyNameb=" + itemPropertyNameb
+				+ ", itemPropertyNamec=" + itemPropertyNamec + ", itemType=" + itemType + ", itemBrandName="
+				+ itemBrandName + ", itemInfo=" + itemInfo + "]";
+	}
 
 }

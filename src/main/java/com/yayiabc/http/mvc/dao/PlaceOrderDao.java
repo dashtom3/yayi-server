@@ -86,6 +86,9 @@ public interface PlaceOrderDao {
 	String queryItemBrandNameByItemId(@Param("itemId")String itemId);
 
 	//本单赠送钱币数保存到数据库
-	void saveGiveQbNum(@Param("giveQbNum")String giveQbNum, @Param("orderId")String orderId);
+	void saveGiveQbNum(@Param("giveQbNum")String giveQbNum,
+			@Param("postFee")	String postFee,
+			@Param("sumPrice") String sumPrice,
+			@Param("orderId")String orderId);
 
 }

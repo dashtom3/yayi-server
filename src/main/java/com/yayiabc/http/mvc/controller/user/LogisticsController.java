@@ -28,4 +28,19 @@ public class LogisticsController {
     	else
     		return null;
     }
+    @RequestMapping("queryExpQS")
+    @ResponseBody
+    public String queryExpQS(
+    		/*@RequestParam(value="orderId",required=true)String  orderId*/
+    		
+    		//@RequestParam(value="ShipperCode",required=false) String  ShipperCode,//快递公司编码
+    		//@RequestParam(value="LogisticCode",required=false) String  LogisticCode,//物流编号
+    		){
+    	/*DataWrapper<String>  l=logisticsService.queryLog(orderId);
+    	if(l!=null)
+    	return l;
+    	else*/
+    	System.out.println("回调成功");
+    		return "回调成功";
+    }
 }

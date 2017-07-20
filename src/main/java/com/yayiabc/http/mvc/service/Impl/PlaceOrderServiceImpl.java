@@ -411,13 +411,13 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				}
 				//道邦品牌商品总价格:
 				 daoBnagSumPrice=0;
-				if(orderItemList.get(i).getItemBrandName().equals("道邦")){
+				if("道邦".equals(orderItemList.get(i).getItemBrandName())){
 					daoBnagSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
 				}else{
 					//这里计算除道邦之外的商品分类价格  耗材类  工具设备类
-					if(orderItemList.get(i).getItemType().equals("耗材类")){
+					if("耗材类".equals(orderItemList.get(i).getItemType())){
 						SuppliesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
-					}else if(orderItemList.get(i).getItemType().equals("工具设备类")){
+					}else if("工具设备类".equals(orderItemList.get(i).getItemType())){
 						TooldevicesSumCount++;
 						TooldevicesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
 					}
@@ -432,10 +432,9 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					placeOrderDao.cleanCart(userId,orderItemList.get(i).getItemSKU());
 				}
 				//这里计算除道邦之外的商品分类价格  耗材类  工具设备类
-				if(orderItemList.get(i).getItemType().equals("耗材类")){
+				if("耗材类".equals(orderItemList.get(i).getItemType())){
 					AllSuppliesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
-				}else if(orderItemList.get(i).getItemType().equals("工具设备类")){
-					TooldevicesSumCount++;
+				}else if("工具设备类".equals(orderItemList.get(i).getItemType())){
 					AllTooldevicesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
 				}
 				/*if(i!=orderItemList.size()-1){
@@ -444,35 +443,37 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					sb.append(orderItemList.get(i).getItemName());
 				}*/
 				//giveQbNum+=0;
+				System.out.println(orderItemList.get(i));
 			}
+			
                  //这里计算本单赠送钱币数
 			      //首先道邦品牌
-			    if(daoBnagSumPrice<300){
-			    	giveQbNum+=daoBnagSumPrice*0.03;
+			    if(daoBnagSumPrice>0&&daoBnagSumPrice<300){
+			    	giveQbNum=daoBnagSumPrice*0.03;
 			    }else if(daoBnagSumPrice>=300&&daoBnagSumPrice<600){
-			    	giveQbNum+=daoBnagSumPrice*0.05;
-			    }else if(daoBnagSumPrice<=600&&daoBnagSumPrice<1200){
-			    	giveQbNum+=daoBnagSumPrice*0.08;
+			    	giveQbNum=daoBnagSumPrice*0.05;
+			    }else if(daoBnagSumPrice>=600&&daoBnagSumPrice<1200){
+			    	giveQbNum=daoBnagSumPrice*0.08;
 			    }else if(daoBnagSumPrice>=1200&&daoBnagSumPrice<2500){
-			    	giveQbNum+=daoBnagSumPrice*0.12;
+			    	giveQbNum=daoBnagSumPrice*0.12;
 			    }else if(daoBnagSumPrice>=2500){
-			    	giveQbNum+=daoBnagSumPrice*0.15;
+			    	giveQbNum=daoBnagSumPrice*0.15;
 			    }
 			    //其他品牌 耗材类
-			    if(SuppliesSumPrice<1000){
-			    	giveQbNum+=SuppliesSumPrice*0.05;
+			    if(SuppliesSumPrice>0&&SuppliesSumPrice<1000){
+			    	giveQbNum=SuppliesSumPrice*0.05;
 				}else if(SuppliesSumPrice>=1000&&SuppliesSumPrice<2000){
-					giveQbNum+=SuppliesSumPrice*0.08;
+					giveQbNum=SuppliesSumPrice*0.08;
 				}else if(SuppliesSumPrice>=2000&&SuppliesSumPrice<3000){
-					giveQbNum+=SuppliesSumPrice*0.12;
+					giveQbNum=SuppliesSumPrice*0.12;
 				}else if(SuppliesSumPrice>=3000){
-					giveQbNum+=SuppliesSumPrice*0.16;
+					giveQbNum=SuppliesSumPrice*0.16;
 				}
 			    //其他品牌 工具设配类
 			    if(TooldevicesSumCount==1){
-			    	giveQbNum+=TooldevicesSumPrice*0.05;
+			    	giveQbNum=TooldevicesSumPrice*0.05;
 				}else if(TooldevicesSumCount>=2){
-					giveQbNum+=TooldevicesSumPrice*0.10;
+					giveQbNum=TooldevicesSumPrice*0.10;
 				}
 			    TooldevicesSumCount=0;
 			/*try {
@@ -500,6 +501,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			hashMap.put("AllTooldevicesSumPrice", AllTooldevicesSumPrice);
 			hashMap.put("SuppliesSumPrice", SuppliesSumPrice);
 			hashMap.put("TooldevicesSumPrice", TooldevicesSumPrice);
+			hashMap.put("daoBnagSumPrice", daoBnagSumPrice);
 			/*//此单 耗材类 销售员得到的提成收入，
 			 double SuppliesCommisSumPrice=0;
 			//把销售员此单 根据商品分类应得到的 收入 放入订单表
@@ -509,7 +511,9 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 
 			}*/
 			 //本单赠送钱币数保存到数据库
-			placeOrderDao.saveGiveQbNum(String.valueOf(giveQbNum),orderId);
+			placeOrderDao.saveGiveQbNum(String.valueOf(giveQbNum),String.valueOf(postFee),
+					String.valueOf(sumPrice)
+					,orderId);
 			//这里保存到ordera表里 并没有把赠送钱币数 给到用户余额中  必须等
 			//该用户付款成功再根据orderId 把余额放到该用户的账户余额中。。。。。。。。。。。。。。。。。。。。。。。
 			//直接放入order表

@@ -10,9 +10,12 @@ public class SaleIncomeVo {
 	private String userName; // 用户姓名
 	private String userPhone; // 用户手机号
 	private String getState; // 收入状态
+	private double getMoney;	//收入
 	private String getUpdated; // 结算日期
-	private Integer getMoney; // 销售收入金额
-	private Integer signLateSeven; // 签收是否已过7天
+	private String beYearMonth; // 收入所属月份
+	private String settlementTime; // 结算时间
+	private double allMoney; // 销售额
+	private double allActual; // 实际销售额
 	private List<OrderVo> orderVoList;
 	private SaleDataStatistics saleDataStatistics;
 
@@ -80,22 +83,20 @@ public class SaleIncomeVo {
 		this.getUpdated = getUpdated;
 	}
 
-
-
-	public Integer getGetMoney() {
-		return getMoney;
+	public double getAllMoney() {
+		return allMoney;
 	}
 
-	public void setGetMoney(Integer getMoney) {
-		this.getMoney = getMoney;
+	public void setAllMoney(double allMoney) {
+		this.allMoney = allMoney;
 	}
 
-	public Integer getSignLateSeven() {
-		return signLateSeven;
+	public double getAllActual() {
+		return allActual;
 	}
 
-	public void setSignLateSeven(Integer signLateSeven) {
-		this.signLateSeven = signLateSeven;
+	public void setAllActual(double allActual) {
+		this.allActual = allActual;
 	}
 
 	public List<OrderVo> getOrderVoList() {
@@ -114,25 +115,53 @@ public class SaleIncomeVo {
 		this.saleDataStatistics = saleDataStatistics;
 	}
 
+	public String getBeYearMonth() {
+		return beYearMonth;
+	}
+
+	public void setBeYearMonth(String beYearMonth) {
+		this.beYearMonth = beYearMonth;
+	}
+
+	public String getSettlementTime() {
+		return settlementTime;
+	}
+
+	public void setSettlementTime(String settlementTime) {
+		this.settlementTime = settlementTime;
+	}
+
+	public double getGetMoney() {
+		return getMoney;
+	}
+
+	public void setGetMoney(double getMoney) {
+		this.getMoney = getMoney;
+	}
+
 	public SaleIncomeVo() {
 		super();
 	}
 
 	public SaleIncomeVo(String saleId, String saleName, String salePhone,
 			String userId, String userName, String userPhone, String getState,
-			String getUpdated, Integer getMoney, Integer signLateSeven,
-			List<OrderVo> orderVoList, SaleDataStatistics saleDataStatistics) {
+			String getUpdated, String beYearMonth, String settlementTime,
+			double allMoney,double getMoney, double allActual, List<OrderVo> orderVoList,
+			SaleDataStatistics saleDataStatistics) {
 		super();
 		this.saleId = saleId;
 		this.saleName = saleName;
 		this.salePhone = salePhone;
 		this.userId = userId;
 		this.userName = userName;
+		this.getMoney=getMoney;
 		this.userPhone = userPhone;
 		this.getState = getState;
 		this.getUpdated = getUpdated;
-		this.getMoney = getMoney;
-		this.signLateSeven = signLateSeven;
+		this.beYearMonth = beYearMonth;
+		this.settlementTime = settlementTime;
+		this.allMoney = allMoney;
+		this.allActual = allActual;
 		this.orderVoList = orderVoList;
 		this.saleDataStatistics = saleDataStatistics;
 	}
@@ -143,9 +172,10 @@ public class SaleIncomeVo {
 				+ ", salePhone=" + salePhone + ", userId=" + userId
 				+ ", userName=" + userName + ", userPhone=" + userPhone
 				+ ", getState=" + getState + ", getUpdated=" + getUpdated
-				+ ", getMoney=" + getMoney + ", signLateSeven=" + signLateSeven
-				+ ", orderVoList=" + orderVoList + ", saleDataStatistics="
-				+ saleDataStatistics + "]";
+				+ ", beYearMonth=" + beYearMonth + ", settlementTime="
+				+ settlementTime + ", allMoney=" + allMoney + ", allActual="
+				+ allActual + ", orderVoList=" + orderVoList
+				+ ", saleDataStatistics=" + saleDataStatistics + "]";
 	}
 
 }

@@ -2,109 +2,67 @@ package com.yayiabc.http.mvc.pojo.model;
 
 import java.util.List;
 
-
-
 public class SaleDataStatistics {
-	private Integer overYearHasCommission; // 历年已结算收入
+	private double haocaiMoney; // 耗材销售额
 
-	private Integer allCommission; // 总收入
+	private double haocaiRefund; // 耗材已退款金额
 
-	private Integer stayCommission; // 待结算
+	private double haocaiActual; // 耗材实际销售额
 
-	private Integer hasCommission; // 已结算
+	private Integer gongjuMoney; // 工具销售额
 
-	private Integer sumOrderMoney; // 订单总额
+	private Integer gongjuRefund; // 工具已退款金额
 
-	private Integer orderNum; // 订单量
-
-	private Integer dayCommission; // 日收入
-
-	private Integer dayOrderNum; // 日订单量
-
-	private String getUpdated; // 结算日期
-
-	private List<SaleIncomeVo> saleIncomeVoList;
+	private Integer gongjuActual; // 工具实际销售额
 
 	private List<MyOrderVo> myOrderVoList;
 
-	public Integer getOverYearHasCommission() {
-		return overYearHasCommission;
+	public double getHaocaiMoney() {
+		return haocaiMoney;
 	}
 
-	public void setOverYearHasCommission(Integer overYearHasCommission) {
-		this.overYearHasCommission = overYearHasCommission;
+	public void setHaocaiMoney(double haocaiMoney) {
+		this.haocaiMoney = haocaiMoney;
 	}
 
-	public Integer getAllCommission() {
-		return allCommission;
+	public double getHaocaiRefund() {
+		return haocaiRefund;
 	}
 
-	public void setAllCommission(Integer allCommission) {
-		this.allCommission = allCommission;
+	public void setHaocaiRefund(double haocaiRefund) {
+		this.haocaiRefund = haocaiRefund;
 	}
 
-	public Integer getStayCommission() {
-		return stayCommission;
+	public double getHaocaiActual() {
+		return haocaiActual;
 	}
 
-	public void setStayCommission(Integer stayCommission) {
-		this.stayCommission = stayCommission;
+	public void setHaocaiActual(double haocaiActual) {
+		this.haocaiActual = haocaiActual;
 	}
 
-	public Integer getHasCommission() {
-		return hasCommission;
+	public Integer getGongjuMoney() {
+		return gongjuMoney;
 	}
 
-	public void setHasCommission(Integer hasCommission) {
-		this.hasCommission = hasCommission;
+	public void setGongjuMoney(Integer gongjuMoney) {
+		this.gongjuMoney = gongjuMoney;
 	}
 
-	public Integer getSumOrderMoney() {
-		return sumOrderMoney;
+	public Integer getGongjuRefund() {
+		return gongjuRefund;
 	}
 
-	public void setSumOrderMoney(Integer sumOrderMoney) {
-		this.sumOrderMoney = sumOrderMoney;
+	public void setGongjuRefund(Integer gongjuRefund) {
+		this.gongjuRefund = gongjuRefund;
 	}
 
-	public Integer getOrderNum() {
-		return orderNum;
+	public Integer getGongjuActual() {
+		return gongjuActual;
 	}
 
-	public void setOrderNum(Integer orderNum) {
-		this.orderNum = orderNum;
-	}
-
-	public Integer getDayCommission() {
-		return dayCommission;
-	}
-
-	public void setDayCommission(Integer dayCommission) {
-		this.dayCommission = dayCommission;
-	}
-
-	public Integer getDayOrderNum() {
-		return dayOrderNum;
-	}
-
-	public void setDayOrderNum(Integer dayOrderNum) {
-		this.dayOrderNum = dayOrderNum;
-	}
-
-	public String getGetUpdated() {
-		return getUpdated;
-	}
-
-	public void setGetUpdated(String getUpdated) {
-		this.getUpdated = getUpdated;
-	}
-
-	public List<SaleIncomeVo> getSaleIncomeVoList() {
-		return saleIncomeVoList;
-	}
-
-	public void setSaleIncomeVoList(List<SaleIncomeVo> saleIncomeVoList) {
-		this.saleIncomeVoList = saleIncomeVoList;
+	public void setGongjuActual(Integer gongjuActual) {
+		this.gongjuActual = gongjuActual;
 	}
 
 	public List<MyOrderVo> getMyOrderVoList() {
@@ -119,35 +77,26 @@ public class SaleDataStatistics {
 		super();
 	}
 
-	public SaleDataStatistics(Integer overYearHasCommission,
-			Integer allCommission, Integer stayCommission,
-			Integer hasCommission, Integer sumOrderMoney, Integer orderNum,
-			Integer dayCommission, Integer dayOrderNum, String getUpdated,
-			List<SaleIncomeVo> saleIncomeVoList, List<MyOrderVo> myOrderVoList) {
+	public SaleDataStatistics(double haocaiMoney, double haocaiRefund,
+			double haocaiActual, Integer gongjuMoney, Integer gongjuRefund,
+			Integer gongjuActual, List<MyOrderVo> myOrderVoList) {
 		super();
-		this.overYearHasCommission = overYearHasCommission;
-		this.allCommission = allCommission;
-		this.stayCommission = stayCommission;
-		this.hasCommission = hasCommission;
-		this.sumOrderMoney = sumOrderMoney;
-		this.orderNum = orderNum;
-		this.dayCommission = dayCommission;
-		this.dayOrderNum = dayOrderNum;
-		this.getUpdated = getUpdated;
-		this.saleIncomeVoList = saleIncomeVoList;
+		this.haocaiMoney = haocaiMoney;
+		this.haocaiRefund = haocaiRefund;
+		this.haocaiActual = haocaiActual;
+		this.gongjuMoney = gongjuMoney;
+		this.gongjuRefund = gongjuRefund;
+		this.gongjuActual = gongjuActual;
 		this.myOrderVoList = myOrderVoList;
 	}
 
 	@Override
 	public String toString() {
-		return "SaleDataStatistics [overYearHasCommission="
-				+ overYearHasCommission + ", allCommission=" + allCommission
-				+ ", stayCommission=" + stayCommission + ", hasCommission="
-				+ hasCommission + ", sumOrderMoney=" + sumOrderMoney
-				+ ", orderNum=" + orderNum + ", dayCommission=" + dayCommission
-				+ ", dayOrderNum=" + dayOrderNum + ", getUpdated=" + getUpdated
-				+ ", saleIncomeVoList=" + saleIncomeVoList + ", myOrderVoList="
-				+ myOrderVoList + "]";
+		return "SaleDataStatistics [haocaiMoney=" + haocaiMoney
+				+ ", haocaiRefund=" + haocaiRefund + ", haocaiActual="
+				+ haocaiActual + ", gongjuMoney=" + gongjuMoney
+				+ ", gongjuRefund=" + gongjuRefund + ", gongjuActual="
+				+ gongjuActual + ", myOrderVoList=" + myOrderVoList + "]";
 	}
 
 }

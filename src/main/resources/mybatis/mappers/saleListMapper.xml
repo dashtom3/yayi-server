@@ -22,9 +22,9 @@
 		s.created,
 		IF(s.bind_user_num=0,2,IF(s.bind_user_num!=0,1,2)) AS isBindUser,
 		bind_user_num,
-		IF(SUM(si.get_money) IS NOT NULL,SUM(si.get_money),0) AS totalGetMoney
+		IF(SUM(b.balance_in) IS NOT NULL,SUM(b.balance_in),0) AS totalGetMoney
 		FROM sale_info s
-		LEFT JOIN sale_income si ON s.sale_id=si.sale_id
+		LEFT JOIN balance b ON s.sale_id=b.sale_id
 		<where>
 			<if test="saleId !=null and saleId !=''">
 				s.sale_id LIKE '%${saleId}%'
@@ -50,16 +50,10 @@
 	<!-- 总数 -->
 	<select id="getCount" resultType="int">
 		SELECT COUNT(0) FROM (
-			SELECT 
-			s.sale_id,
-			s.true_name,
-			s.phone,
-			s.created,
-			IF(s.bind_user_num=0,2,IF(s.bind_user_num!=0,1,2)) AS isBindUser,
-			bind_user_num,
-			IF(SUM(si.get_money) IS NOT NULL,SUM(si.get_money),0) AS totalGetMoney
-			FROM sale_info s
-			LEFT JOIN sale_income si ON s.sale_id=si.sale_id
+				SELECT 
+				COUNT(0)
+				FROM sale_info s
+				LEFT JOIN balance b ON s.sale_id=b.sale_id
 			<where>
 				<if test="saleId !=null and saleId !=''">
 					s.sale_id LIKE '%${saleId}%'

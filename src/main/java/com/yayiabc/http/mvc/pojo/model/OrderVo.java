@@ -2,16 +2,18 @@ package com.yayiabc.http.mvc.pojo.model;
 
 public class OrderVo {
 	private String orderId; // 订单编号
-	private String orderState; // 订单状态
-	private String signUpdated; // 签收时间
-	private String itemName; // 商品名称
-	private String itemSKU; // 商品SKU代码
-	private Integer price; // 价格
-	private Integer num; // 数量
-	private Integer totalFee; // 小计
+	private String state; // 订单状态
 	private Integer refundMoney; // 退款金额
 	private Integer commission; // 提成收入
 	private String orderCreated; // 下单时间
+	private String userName;
+	private String userPhone;
+	private double itemSumMoney;	//商品总价
+	private double orderMoneyHaocai;	//耗材类
+	private double orderMoneyGongju;	//工具类
+	private double refundMoneyHaocai;	//已退金额，耗材
+	private double refundMoneyGongju;	//已退金额，工具
+	private double actualMoney;	//实际销售额
 	private SaleIncomeVo saleIncomeVo;
 
 	public String getOrderId() {
@@ -22,60 +24,12 @@ public class OrderVo {
 		this.orderId = orderId;
 	}
 
-	public String getOrderState() {
-		return orderState;
+	public String getState() {
+		return state;
 	}
 
-	public void setOrderState(String orderState) {
-		this.orderState = orderState;
-	}
-
-	public String getSignUpdated() {
-		return signUpdated;
-	}
-
-	public void setSignUpdated(String signUpdated) {
-		this.signUpdated = signUpdated;
-	}
-
-	public String getItemName() {
-		return itemName;
-	}
-
-	public void setItemName(String itemName) {
-		this.itemName = itemName;
-	}
-
-	public String getItemSKU() {
-		return itemSKU;
-	}
-
-	public void setItemSKU(String itemSKU) {
-		this.itemSKU = itemSKU;
-	}
-
-	public Integer getPrice() {
-		return price;
-	}
-
-	public void setPrice(Integer price) {
-		this.price = price;
-	}
-
-	public Integer getNum() {
-		return num;
-	}
-
-	public void setNum(Integer num) {
-		this.num = num;
-	}
-
-	public Integer getTotalFee() {
-		return totalFee;
-	}
-
-	public void setTotalFee(Integer totalFee) {
-		this.totalFee = totalFee;
+	public void setState(String state) {
+		this.state = state;
 	}
 
 	public Integer getRefundMoney() {
@@ -102,6 +56,70 @@ public class OrderVo {
 		this.orderCreated = orderCreated;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserPhone() {
+		return userPhone;
+	}
+
+	public void setUserPhone(String userPhone) {
+		this.userPhone = userPhone;
+	}
+
+	public double getItemSumMoney() {
+		return itemSumMoney;
+	}
+
+	public void setItemSumMoney(double itemSumMoney) {
+		this.itemSumMoney = itemSumMoney;
+	}
+
+	public double getOrderMoneyHaocai() {
+		return orderMoneyHaocai;
+	}
+
+	public void setOrderMoneyHaocai(double orderMoneyHaocai) {
+		this.orderMoneyHaocai = orderMoneyHaocai;
+	}
+
+	public double getOrderMoneyGongju() {
+		return orderMoneyGongju;
+	}
+
+	public void setOrderMoneyGongju(double orderMoneyGongju) {
+		this.orderMoneyGongju = orderMoneyGongju;
+	}
+
+	public double getRefundMoneyHaocai() {
+		return refundMoneyHaocai;
+	}
+
+	public void setRefundMoneyHaocai(double refundMoneyHaocai) {
+		this.refundMoneyHaocai = refundMoneyHaocai;
+	}
+
+	public double getRefundMoneyGongju() {
+		return refundMoneyGongju;
+	}
+
+	public void setRefundMoneyGongju(double refundMoneyGongju) {
+		this.refundMoneyGongju = refundMoneyGongju;
+	}
+
+	public double getActualMoney() {
+		return actualMoney;
+	}
+
+	public void setActualMoney(double actualMoney) {
+		this.actualMoney = actualMoney;
+	}
+
 	public SaleIncomeVo getSaleIncomeVo() {
 		return saleIncomeVo;
 	}
@@ -114,33 +132,40 @@ public class OrderVo {
 		super();
 	}
 
-	public OrderVo(String orderId, String orderState, String signUpdated,
-			String itemName, String itemSKU, Integer price, Integer num,
-			Integer totalFee, Integer refundMoney, Integer commission,
-			String orderCreated, SaleIncomeVo saleIncomeVo) {
+	public OrderVo(String orderId, String state, Integer refundMoney,
+			Integer commission, String orderCreated, String userName,
+			String userPhone, double itemSumMoney, double orderMoneyHaocai,
+			double orderMoneyGongju, double refundMoneyHaocai,
+			double refundMoneyGongju, double actualMoney,
+			SaleIncomeVo saleIncomeVo) {
 		super();
 		this.orderId = orderId;
-		this.orderState = orderState;
-		this.signUpdated = signUpdated;
-		this.itemName = itemName;
-		this.itemSKU = itemSKU;
-		this.price = price;
-		this.num = num;
-		this.totalFee = totalFee;
+		this.state = state;
 		this.refundMoney = refundMoney;
 		this.commission = commission;
 		this.orderCreated = orderCreated;
+		this.userName = userName;
+		this.userPhone = userPhone;
+		this.itemSumMoney = itemSumMoney;
+		this.orderMoneyHaocai = orderMoneyHaocai;
+		this.orderMoneyGongju = orderMoneyGongju;
+		this.refundMoneyHaocai = refundMoneyHaocai;
+		this.refundMoneyGongju = refundMoneyGongju;
+		this.actualMoney = actualMoney;
 		this.saleIncomeVo = saleIncomeVo;
 	}
 
 	@Override
 	public String toString() {
-		return "OrderVo [orderId=" + orderId + ", orderState=" + orderState
-				+ ", signUpdated=" + signUpdated + ", itemName=" + itemName
-				+ ", itemSKU=" + itemSKU + ", price=" + price + ", num=" + num
-				+ ", totalFee=" + totalFee + ", refundMoney=" + refundMoney
-				+ ", commission=" + commission + ", orderCreated="
-				+ orderCreated + ", saleIncomeVo=" + saleIncomeVo + "]";
+		return "OrderVo [orderId=" + orderId + ", state=" + state
+				+ ", refundMoney=" + refundMoney + ", commission=" + commission
+				+ ", orderCreated=" + orderCreated + ", userName=" + userName
+				+ ", userPhone=" + userPhone + ", itemSumMoney=" + itemSumMoney
+				+ ", orderMoneyHaocai=" + orderMoneyHaocai
+				+ ", orderMoneyGongju=" + orderMoneyGongju
+				+ ", refundMoneyHaocai=" + refundMoneyHaocai
+				+ ", refundMoneyGongju=" + refundMoneyGongju + ", actualMoney="
+				+ actualMoney + ", saleIncomeVo=" + saleIncomeVo + "]";
 	}
 
 }

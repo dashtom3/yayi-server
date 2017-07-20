@@ -29,176 +29,207 @@
 		</collection>
 	</resultMap>
 	
-	<resultMap type="OrderVo" id="orderVoRM">
-		<id column="order_id" property="orderId"/>
-		<result column="order_state" property="orderState"/>
-		<result column="order_created" property="orderCreated"/>
-		<association property="saleIncomeVo" javaType="com.yayiabc.http.mvc.pojo.model.SaleIncomeVo">
-			<id column="sale_id" property="saleId"/>
-			<result column="sale_name" property="saleName"/>
-			<result column="user_id" property="userId"/>
-			<result column="sale_phone" property="salePhone"/>
-			<result column="sign_late_seven" property="signLateSeven"/>
-			<result column="get_money" property="getMoney"/>
-			<result column="get_state" property="getState"/>
-			<result column="get_updated" property="getUpdated"/>
-		</association>
+	<resultMap type="SaleIncomeVo" id="achievementRM">
+		<id column="sale_id" property="saleId"/>
+		<result column="saleName" property="saleName"/>
+		<result column="salePhone" property="salePhone"/>
+		<result column="getMoney" property="getMoney"/>
+		<result column="beYearMonth" property="beYearMonth"/>
+		<result column="getState" property="getState"/>
+		<result column="settlementTime" property="settlementTime"/>
+		<result column="allMoney" property="allMoney"/>
+		<result column="allActual" property="allActual"/>
 	</resultMap>
 	
-	<select id="query" resultMap="orderVoRM">
-		SELECT s.sale_id,u.user_id,s.true_name AS sale_name,s.phone AS sale_phone,o.order_id,o.state AS order_state,
-		o.created AS order_created,IF(DATEDIFF(NOW(),o.end_time)&lt;7,2,1) AS sign_late_seven,u.user_id,
-		si.get_money,si.get_state,si.updated AS get_updated
-		FROM sale_info s
-		LEFT JOIN USER u
-		ON s.sale_id=u.sale_id
-		LEFT JOIN ordera o
-		ON u.user_id=o.user_id
-		LEFT JOIN sale_income si
-		ON o.order_id=si.order_id
-		<where>
-			<if test="saleId !=null and saleId !=''">
-				s.sale_id LIKE '%${saleId}%'
-			</if>
+	<select id="queryDone" resultMap="achievementRM">
+		SELECT 
+		s.sale_id,
+		s.true_name AS saleName,
+		s.phone AS salePhone,
+		IF(b.balance_in IS NOT NULL,b.balance_in,0) AS getMoney,
+		DATE_FORMAT(b.created,'%Y-%m') AS beYearMonth,
+		"已结算" AS getState,
+		b.created AS settlementTime,
+		SUM(IF(b.haocai_money IS NOT NULL,b.haocai_money,0)+IF(b.gongju_money IS NOT NULL,b.gongju_money,0)) AS allMoney,
+		SUM(IF(b.haocai_money IS NOT NULL,b.haocai_money,0)+IF(b.gongju_money IS NOT NULL,b.gongju_money,0))-
+		SUM(IF(b.haocai_refund IS NOT NULL,b.haocai_refund,0)+IF(b.gongju_refund IS NOT NULL,b.gongju_refund,0)) AS allActual
+		FROM balance b
+		LEFT JOIN sale_info s ON s.sale_id=b.sale_id
+		WHERE
+		b.haocai_money IS NOT NULL AND b.gongju_money IS NOT NULL
+		<if test="saleName !=null and saleName !=''">
+			AND s.true_name LIKE '%${saleName}%' 
+		</if>
+		<if test="salePhone !=null and salePhone !=''">
+			AND s.phone LIKE '%${salePhone}%'
+		</if>
+		<if test="beYearMonth !=null and beYearMonth !=''">
+			AND DATE_FORMAT(b.created,'%Y-%m') = #{beYearMonth}
+		</if>
+		<if test="settlementTime !=null and settlementTime !=''">
+			AND b.created LIKE '%${settlementTime}%'
+		</if>
+		GROUP BY b.balance_id
+		LIMIT ${page.currentNumber},${page.numberPerPage}
+	</select>
+	
+	<select id="getCountDone" resultType="int">
+	SELECT count(0) FROM (
+		SELECT 
+		count(0)
+		FROM balance b
+		LEFT JOIN sale_info s ON s.sale_id=b.sale_id
+		WHERE
+		b.haocai_money IS NOT NULL AND b.gongju_money IS NOT NULL
+		<if test="saleName !=null and saleName !=''">
+			AND s.true_name LIKE '%${saleName}%' 
+		</if>
+		<if test="salePhone !=null and salePhone !=''">
+			AND s.phone LIKE '%${salePhone}%'
+		</if>
+		<if test="beYearMonth !=null and beYearMonth !=''">
+			AND DATE_FORMAT(b.created,'%Y-%m') = #{beYearMonth}
+		</if>
+		<if test="settlementTime !=null and settlementTime !=''">
+			AND b.created =#{settlementTime}
+		</if>
+	GROUP BY b.balance_id
+	) AS a
+	</select>
+	
+	<select id="queryNot" resultMap="achievementRM">
+		SELECT
+		s.sale_id,
+		s.true_name AS saleName,
+		s.phone AS salePhone,
+		"0" AS getMoney,
+		DATE_FORMAT(si.created,'%Y-%m') AS beYearMonth,
+		"待结算" AS getState,
+		"NULL" AS settlementTime,
+		SUM(IF(si.order_money_haocai IS NOT NULL,si.order_money_haocai,0)+IF(si.order_money_gongju IS NOT NULL,si.order_money_gongju,0)) AS allMoney,
+		SUM(IF(si.order_money_haocai IS NOT NULL,si.order_money_haocai,0)+IF(si.order_money_gongju IS NOT NULL,si.order_money_gongju,0)) - 
+		SUM(IF(si.refund_money_haocai IS NOT NULL,si.refund_money_haocai,0)+IF(si.refund_money_gongju IS NOT NULL,si.refund_money_gongju,0)) AS allActual
+		FROM sale_income si
+		LEFT JOIN sale_info s ON si.sale_id=s.sale_id
+		WHERE 
+		DATE_FORMAT(si.created,'%Y-%m-%d')  BETWEEN #{startDate} AND #{endDate} 
+		<if test="saleName !=null and saleName !=''">
+			AND s.true_name LIKE '%${saleName}%'	
+		</if>
+		<if test="salePhone !=null and salePhone !=''">
+			AND s.phone LIKE '%${salePhone}%'
+		</if>
+		<if test="beYearMonth !=null and beYearMonth !=''">
+			AND DATE_FORMAT(si.created,'%Y-%m') =#{beYearMonth}
+		</if>
+		GROUP BY si.sale_income_id
+		LIMIT ${page.currentNumber},${page.numberPerPage} 
+	</select>
+	
+	<select id="getCountNot" resultType="int">
+		SELECT count(0) FROM (
+			SELECT
+			count(0)
+			FROM sale_income si
+			LEFT JOIN sale_info s ON si.sale_id=s.sale_id
+			WHERE 
+			DATE_FORMAT(si.created,'%m-%d')  BETWEEN #{startDate} AND #{endDate} 
 			<if test="saleName !=null and saleName !=''">
-				AND s.true_name LIKE '%${saleName}%' 
+				AND s.true_name LIKE '%${saleName}%'	
 			</if>
 			<if test="salePhone !=null and salePhone !=''">
 				AND s.phone LIKE '%${salePhone}%'
 			</if>
-			<if test="orderId !=null and orderId !=''">
-				AND o.order_id LIKE '%${orderId}%'
+			<if test="beYearMonth !=null and beYearMonth !=''">
+				AND DATE_FORMAT(si.created,'%Y-%m') =#{beYearMonth}
 			</if>
-			<if test="signLateSeven == 1">
-			<![CDATA[	AND DATEDIFF(NOW(),o.end_time) >= 7 ]]>
-			</if>
-			<if test="signLateSeven == 2">
-				AND DATEDIFF(NOW(),o.end_time) &lt; 7
-			</if>
-			<if test="getState !=null and getState !=''">
-				AND si.get_state = #{getState}
-			</if>
-			<if test="startDate !=null and startDate !=''">
-				AND DATE_FORMAT(si.updated,'%Y-%m-%d') <![CDATA[  >=  ]]>#{startDate}
-			</if>
-			<if test="endDate != null and endDate !=''">
-				AND DATE_FORMAT(si.updated,'%Y-%m-%d') <![CDATA[  <=  ]]>#{endDate}
-			</if>
-		</where>
-		GROUP BY o.order_id
-		ORDER BY o.created
-		LIMIT ${page.currentNumber},${page.numberPerPage}
-	</select>
-	
-	<select id="getCount" resultType="int">
-		SELECT count(0) FROM (
-			SELECT count(0)
-			FROM sale_info s
-			LEFT JOIN USER u
-			ON s.sale_id=u.sale_id
-			LEFT JOIN ordera o
-			ON u.user_id=o.user_id
-			LEFT JOIN sale_income si
-			ON s.sale_id=si.sale_id
-			<where>
-				<if test="saleId !=null and saleId !=''">
-					s.sale_id LIKE '%${saleId}%'
-				</if>
-				<if test="saleName !=null and saleName !=''">
-					AND s.true_name LIKE '%${saleName}%' 
-				</if>
-				<if test="salePhone !=null and salePhone !=''">
-					AND s.phone LIKE '%${salePhone}%'
-				</if>
-				<if test="orderId !=null and orderId !=''">
-					AND o.order_id LIKE '%${orderId}%'
-				</if>
-				<if test="signLateSeven == 1">
-					<![CDATA[	AND DATEDIFF(NOW(),o.end_time) >= 7 ]]>
-				</if>
-				<if test="signLateSeven == 2">
-					AND DATEDIFF(NOW(),o.end_time) &lt; 7
-				</if>
-				<if test="getState !=null and getState !=''">
-					AND si.get_state = #{getState}
-				</if>
-				<if test="startDate !=null and startDate !=''">
-					AND DATE_FORMAT(si.updated,'%Y-%m-%d') <![CDATA[  >=  ]]>#{startDate}
-				</if>
-				<if test="endDate != null and endDate !=''">
-					AND DATE_FORMAT(si.updated,'%Y-%m-%d') <![CDATA[  <=  ]]>#{endDate}
-				</if>
-			</where>
-			GROUP BY o.order_id
+			GROUP BY si.sale_income_id
 		) AS a
 	</select>
 	
 	<resultMap type="SaleIncomeVo" id="saleIncomeRM">
 		<id column="sale_id" property="saleId"/>
-		<result column="sale_name" property="saleName"/>
-		<result column="sale_phone" property="salePhone"/>
-		<result column="user_id" property="userId"/>
-		<result column="user_name" property="userName"/>
-		<result column="user_phone" property="userPhone"/>
-		<result column="get_state" property="getState"/>
-		<result column="get_updated" property="getUpdated"/>
-		<result column="get_money" property="getMoney"/>
+		<result column="saleName" property="saleName"/>
+		<result column="salePhone" property="salePhone"/>
+		<result column="beYearMonth" property="beYearMonth"/>
+		<association property="saleDataStatistics" javaType="com.yayiabc.http.mvc.pojo.model.SaleDataStatistics">
+			<result column="haocai_money" property="haocaiMoney"/>
+			<result column="haocai_refund" property="haocaiRefund"/>
+			<result column="haocaiActual" property="haocaiActual"/>
+			<result column="gongju_money" property="gongjuMoney"/>
+			<result column="gongju_refund" property="gongjuRefund"/>
+			<result column="gongjuActual" property="gongjuActual"/>
+		</association>
 	</resultMap>
 	
 	<select id="detail" resultMap="saleIncomeRM">
-		SELECT 
-		s.sale_id,
-		s.true_name AS sale_name,
-		s.phone AS sale_phone, 
-		u.user_id,
-		u.true_name AS user_name,
-		u.phone AS user_phone,
-		si.get_state,
-		si.updated AS get_updated,
-		si.get_money
+		SELECT
+		s.sale_id, 
+		s.true_name AS saleName,
+		s.phone AS salePhone,
+		DATE_FORMAT(b.created,'%Y-%m') AS beYearMonth,
+		b.haocai_money,
+		b.haocai_refund,
+		IF(b.haocai_money IS NOT NULL,b.haocai_money,0)-
+		IF(b.haocai_refund IS NOT NULL,b.haocai_refund,0) AS haocaiActual,
+		b.gongju_money,
+		b.gongju_refund,
+		IF(b.gongju_money IS NOT NULL,b.gongju_money,0)-
+		IF(b.gongju_refund IS NOT NULL,b.gongju_refund,0) AS gongjuActual
 		FROM sale_info s
-		LEFT JOIN USER u
-		ON s.sale_id = u.sale_id
-		LEFT JOIN sale_income si
-		ON s.sale_id =si.sale_id
-		WHERE s.sale_id=#{saleId} AND u.user_id=#{userId} AND si.order_id=#{orderId}
+		LEFT JOIN balance b ON s.sale_id=b.sale_id
+		WHERE
+		b.haocai_money IS NOT NULL AND b.gongju_money IS NOT NULL 
+		AND s.sale_id=#{saleId} 
+		AND DATE_FORMAT(b.created,'%Y-%m') = #{beYearMonth}
+		LIMIT 1
 	</select>
 		
 	<resultMap type="OrderVo" id="orderRM">
 		<id column="order_id" property="orderId"/>
-			<result column="order_state" property="orderState"/>
-			<result column="sign_updated" property="signUpdated"/>
-			<result column="item_name" property="itemName"/>
-			<result column="itm_SKU" property="itemSKU"/>
-			<result column="price" property="price"/>
-			<result column="num" property="num"/>
-			<result column="total_fee" property="totalFee"/>
-			<result column="refund_money" property="refundMoney"/>
-			<result column="commission" property="commission"/>
-			<result column="order_created" property="orderCreated"/>
+			<result column="userName" property="userName"/>
+			<result column="userPhone" property="userPhone"/>
+			<result column="state" property="state"/>
+			<result column="itemSumMoney" property="itemSumMoney"/>
+			<result column="order_money_haocai" property="orderMoneyHaocai"/>
+			<result column="order_money_gongju" property="orderMoneyGongju"/>
+			<result column="refund_money_haocai" property="refundMoneyHaocai"/>
+			<result column="refund_money_gongju" property="refundMoneyGongju"/>
+			<result column="actualMoney" property="actualMoney"/>
+			<result column="orderCreated" property="orderCreated"/>
 	</resultMap>	
 		
 	<select id="orderList" resultMap="orderRM">
 		SELECT 
-		oi.order_id,
-		o.state AS order_state,
-		o.updated AS sign_updated,
-		oi.item_name,
-		oi.itm_SKU,
-		oi.price,
-		oi.num,
-		oi.total_fee,
-		r.refund_money,
-		id.commission
-		FROM order_item oi
-		LEFT JOIN ordera o
-		ON oi.order_id = o.order_id
-		LEFT JOIN item_detail id
-		ON oi.item_id=id.item_id
-		LEFT JOIN refund r
-		ON o.order_id=r.order_id
-		WHERE o.user_id=#{userId} AND o.order_id=#{orderId}
-		GROUP BY o.order_id
+		si.order_id,
+		u.true_name AS userName,
+		u.phone AS userPhone,
+		o.state,
+		IF(si.order_money_haocai IS NOT NULL,si.order_money_haocai,0)+IF(si.order_money_gongju IS NOT NULL,si.order_money_gongju,0) AS itemSumMoney,
+		si.order_money_haocai,
+		si.order_money_gongju,
+		si.refund_money_haocai,
+		si.refund_money_gongju,
+		SUM(IF(si.order_money_haocai IS NOT NULL,si.order_money_haocai,0)+IF(si.order_money_gongju IS NOT NULL,si.order_money_gongju,0))-
+		SUM(IF(si.refund_money_haocai IS NOT NULL,si.refund_money_haocai,0)+IF(si.refund_money_gongju IS NOT NULL,si.refund_money_gongju,0)) AS actualMoney,
+		o.created AS orderCreated
+		FROM sale_income si 
+		LEFT JOIN ordera o ON si.order_id=o.order_id
+		LEFT JOIN USER u ON o.user_id=o.user_id
+		WHERE si.sale_id=#{saleId} AND DATE_FORMAT(si.created,'%Y-%m-%d')  BETWEEN #{startDate} AND #{endDate}
+		GROUP BY si.sale_income_id
+		LIMIT ${page.currentNumber},${page.numberPerPage} 
 	</select>	
 		
+	<select id="getCountOrderList" resultType="int">
+		SELECT count(0) FROM (
+			SELECT 
+			count(0)
+			FROM sale_income si 
+			LEFT JOIN ordera o ON si.order_id=o.order_id
+			LEFT JOIN USER u ON o.user_id=o.user_id
+			WHERE si.sale_id=#{saleId} AND DATE_FORMAT(si.created,'%Y-%m-%d')  BETWEEN #{startDate} AND #{endDate}
+			GROUP BY si.sale_income_id
+		) AS a
+	</select>	
 </mapper>

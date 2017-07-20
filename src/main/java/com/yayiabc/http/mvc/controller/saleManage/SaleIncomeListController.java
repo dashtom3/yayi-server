@@ -20,23 +20,34 @@ public class SaleIncomeListController {
 	SaleIncomeListService saleIncomeListService;
 	
 	/**
-	 * 收入列表
+	 * 收入已结算,销售员业绩列表
 	 */
-	@RequestMapping("query")
+	@RequestMapping("queryDone")
 	@ResponseBody
-	public DataWrapper<List<SaleIncomeVo>> query(
-			@RequestParam(value="saleId",required=false)String saleId,
+	public DataWrapper<List<SaleIncomeVo>> queryDone(
 			@RequestParam(value="saleName",required=false)String saleName,
 			@RequestParam(value="salePhone",required=false)String salePhone,
-			@RequestParam(value="orderId",required=false)String orderId,
-			@RequestParam(value="signLateSeven",required=false)Integer signLateSeven,
-			@RequestParam(value="getState",required=false)Integer getState,
-			@RequestParam(value="startDate",required=false)String startDate,
-			@RequestParam(value="endDate",required=false)String endDate,
+			@RequestParam(value="beYearMonth",required=false)String beYearMonth,
+			@RequestParam(value="settlementTime",required=false)String settlementTime,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
-		return saleIncomeListService.query(saleId, saleName, salePhone, orderId, signLateSeven, getState, startDate, endDate, currentPage, numberPerPage);
+		return saleIncomeListService.queryDone(saleName, salePhone, beYearMonth, settlementTime, currentPage, numberPerPage);
+	}
+	
+	/**
+	 * 收入未结算,销售员业绩列表
+	 */
+	@RequestMapping("queryNot")
+	@ResponseBody
+	public DataWrapper<List<SaleIncomeVo>> queryNot(
+			@RequestParam(value="saleName",required=false)String saleName,
+			@RequestParam(value="salePhone",required=false)String salePhone,
+			@RequestParam(value="beYearMonth",required=false)String beYearMonth,
+			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
+	){
+		return saleIncomeListService.queryNot(saleName, salePhone, beYearMonth, currentPage, numberPerPage);
 	}
 	
 	/**
@@ -46,9 +57,11 @@ public class SaleIncomeListController {
 	@ResponseBody
 	public DataWrapper<SaleIncomeVo> detail(
 			@RequestParam(value="saleId",required=true)String saleId,
-			@RequestParam(value="userId",required=true)String userId,
-			@RequestParam(value="orderId",required=true)String orderId
+			@RequestParam(value="beYearMonth",required=true)String beYearMonth,
+			@RequestParam(value="getState",required=true)String getState,
+			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
-		return saleIncomeListService.detail(saleId, userId, orderId);
+		return saleIncomeListService.detail(saleId, beYearMonth, getState, currentPage, numberPerPage);
 	}
 }

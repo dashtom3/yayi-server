@@ -6,7 +6,9 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.model.SaleIncomeVo;
 
 public interface SaleIncomeListService {
-	DataWrapper<List<SaleIncomeVo>> query(String saleId,String saleName,String salePhone,String orderId,Integer signLateSeven,Integer getState,String startDate,String endDate,Integer currentPage, Integer numberPerPage);
+	DataWrapper<List<SaleIncomeVo>> queryDone(String saleName,String salePhone,String beYearMonth,String settlementTime,Integer currentPage, Integer numberPerPage);
 	
-	DataWrapper<SaleIncomeVo> detail(String saleId,String userId,String orderId);
+	DataWrapper<List<SaleIncomeVo>> queryNot(String saleName,String salePhone,String beYearMonth,Integer currentPage, Integer numberPerPage);
+	
+	DataWrapper<SaleIncomeVo> detail(String saleId,String beYearMonth,String getState,Integer currentPage, Integer numberPerPage);
 }

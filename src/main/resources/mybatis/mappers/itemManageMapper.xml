@@ -183,4 +183,8 @@
  			<if test="itemPreviousClassify!=null"> and item_previous_classify like '%${itemPreviousClassify}%'</if>
  		</where>
  	</select>
+ 	
+ 	<delete id="deletePro">
+ 		delete from item_propertyd where item_pid=#{itemPropertyId}
+ 	</delete>
 </mapper>       

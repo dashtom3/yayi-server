@@ -149,25 +149,17 @@ public class ItemManageServiceImpl implements ItemManageService{
 		return dataWrapper;
 	}
 
-	@Override
-	public DataWrapper<Void> updatePropertyd(String itemSKU, String itemPparam) {
-		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		ItemPropertyd itemPropertyd=new ItemPropertyd();
-		itemPropertyd.setItemSKU(itemSKU);
-		itemPropertyd.setItemPparam(itemPparam);
-		itemManageDao.updatePropertyd(itemPropertyd);
-		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-		return dataWrapper;
-	}
+
 
 	@Override
 	public DataWrapper<Void> updateProperty(Integer itemPropertyId,
-			String itemPropertyName) {
+			List<String> itemPparamList) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		ItemProperty itemProperty =new ItemProperty();
-		itemProperty.setItemPropertyId(itemPropertyId);
-		itemProperty.setItemPropertyName(itemPropertyName);
-		itemManageDao.updateProperty(itemProperty);
+		itemManageDao.deletePro(itemPropertyId);
+		Map<String,Object> map=new HashMap<String,Object>();
+		map.put("itemPropertyId",itemPropertyId);
+		map.put("itemPparamList", itemPparamList);
+		itemManageDao.addPropertyd(map);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
 	}

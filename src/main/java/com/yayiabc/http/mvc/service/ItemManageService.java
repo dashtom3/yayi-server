@@ -25,10 +25,10 @@ public interface ItemManageService {
 
 	DataWrapper<Void> deletePropertydBySKU(String itemSKU);
 
-	DataWrapper<Void> updatePropertyd(String itemSKU, String itemPparam);
+
 
 	DataWrapper<Void> updateProperty(Integer itemPropertyId,
-			String itemPropertyName);
+			List<String> itemPparamList);
 
 	DataWrapper<List<ItemClassify>> showItemClassify(String itemClassifyName,
 			String itemPreviousClassify,Integer currentPage,Integer numberPerPage);

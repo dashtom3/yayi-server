@@ -121,17 +121,7 @@ public class ItemManageController {
 		return itemManageService.deletePropertydBySKU(itemSKU);
 	}
 	
-	/**
-	 * 修改属性值
-	 */
-	@RequestMapping("updatePropertyd")
-	@ResponseBody
-	public DataWrapper<Void> updatePropertyd(
-			@RequestParam(value="itemSKU",required=true) String itemSKU,
-			@RequestParam(value="itemPparam",required=true) String itemPparam
-			){
-		return itemManageService.updatePropertyd(itemSKU,itemPparam);
-	}
+	
 	
 	/**
 	 * 保存修改属性
@@ -140,33 +130,12 @@ public class ItemManageController {
 	@ResponseBody
 	public DataWrapper<Void> updateProperty(
 			@RequestParam(value="itemPropertyId",required=true) Integer itemPropertyId,
-			@RequestParam(value="itemPropertyName",required=true) String itemPropertyName
+			@RequestParam(value="itemPparamList",required=false) List<String> itemPparamList
 			){
-		return itemManageService.updateProperty(itemPropertyId,itemPropertyName);
+		return itemManageService.updateProperty(itemPropertyId,itemPparamList);
 	}
 	
-	/**
-	 * 添加属性
-	 */
-	@RequestMapping("addProperty")
-	@ResponseBody
-	public DataWrapper<Void> addProperty(
-				@RequestParam(value="itemPropertyName",required=true) String itemPropertyName
-			){
-		return itemManageService.addProperty(itemPropertyName);
-	}
 	
-	/**
-	 * 添加属性值
-	 */
-	@RequestMapping("addToPropertyd")
-	@ResponseBody
-	public DataWrapper<Void> addToPropertyd(
-			@RequestParam(value="itemPid",required=true) Integer itemPid,
-			@RequestParam(value="itemPparam",required=true) String itemPparam
-			){
-		return itemManageService.addToPropertyd(itemPid,itemPparam);
-	}
 	
 	
 	

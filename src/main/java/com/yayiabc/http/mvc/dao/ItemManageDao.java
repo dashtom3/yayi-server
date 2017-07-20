@@ -89,6 +89,8 @@ public interface ItemManageDao {
 
 	Integer getCountProperty(String itemPropertyName);
 
+	void deletePro(Integer itemPropertyId);
+
 
 	
 

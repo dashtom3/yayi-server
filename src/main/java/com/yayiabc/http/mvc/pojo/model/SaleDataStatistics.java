@@ -9,11 +9,11 @@ public class SaleDataStatistics {
 
 	private double haocaiActual; // 耗材实际销售额
 
-	private Integer gongjuMoney; // 工具销售额
+	private double gongjuMoney; // 工具销售额
 
-	private Integer gongjuRefund; // 工具已退款金额
+	private double gongjuRefund; // 工具已退款金额
 
-	private Integer gongjuActual; // 工具实际销售额
+	private double gongjuActual; // 工具实际销售额
 
 	private List<MyOrderVo> myOrderVoList;
 
@@ -41,24 +41,28 @@ public class SaleDataStatistics {
 		this.haocaiActual = haocaiActual;
 	}
 
-	public Integer getGongjuMoney() {
+	public double getGongjuMoney() {
 		return gongjuMoney;
 	}
 
-	public void setGongjuMoney(Integer gongjuMoney) {
+	public void setGongjuMoney(double gongjuMoney) {
 		this.gongjuMoney = gongjuMoney;
 	}
 
-	public Integer getGongjuRefund() {
+	public double getGongjuRefund() {
 		return gongjuRefund;
 	}
 
-	public void setGongjuRefund(Integer gongjuRefund) {
+	public void setGongjuRefund(double gongjuRefund) {
 		this.gongjuRefund = gongjuRefund;
 	}
 
-	public Integer getGongjuActual() {
+	public double getGongjuActual() {
 		return gongjuActual;
+	}
+
+	public void setGongjuActual(double gongjuActual) {
+		this.gongjuActual = gongjuActual;
 	}
 
 	public void setGongjuActual(Integer gongjuActual) {
@@ -78,8 +82,8 @@ public class SaleDataStatistics {
 	}
 
 	public SaleDataStatistics(double haocaiMoney, double haocaiRefund,
-			double haocaiActual, Integer gongjuMoney, Integer gongjuRefund,
-			Integer gongjuActual, List<MyOrderVo> myOrderVoList) {
+			double haocaiActual, double gongjuMoney, double gongjuRefund,
+			double gongjuActual, List<MyOrderVo> myOrderVoList) {
 		super();
 		this.haocaiMoney = haocaiMoney;
 		this.haocaiRefund = haocaiRefund;

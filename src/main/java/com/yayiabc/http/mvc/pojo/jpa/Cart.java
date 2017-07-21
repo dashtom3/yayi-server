@@ -33,6 +33,8 @@ public class Cart extends BasePojo {
 	private String itemPropertyFiveValue;
 	private String itemPropertySixName;
 	private String itemPropertySixValue;
+	private String itemBrandName;
+	private String itemSort;
 
 	public Integer getCartId() {
 		return cartId;
@@ -89,8 +91,6 @@ public class Cart extends BasePojo {
 	public void setNum(Integer num) {
 		this.num = num;
 	}
-
-
 
 	public double getPrice() {
 		return price;
@@ -196,6 +196,24 @@ public class Cart extends BasePojo {
 		this.itemPropertySixValue = itemPropertySixValue;
 	}
 
+	
+
+	public String getItemBrandName() {
+		return itemBrandName;
+	}
+
+	public void setItemBrandName(String itemBrandName) {
+		this.itemBrandName = itemBrandName;
+	}
+
+	public String getItemSort() {
+		return itemSort;
+	}
+
+	public void setItemSort(String itemSort) {
+		this.itemSort = itemSort;
+	}
+
 	public Cart() {
 		super();
 	}
@@ -207,7 +225,8 @@ public class Cart extends BasePojo {
 			String itemPropertyNameThree, String itemPropertyThreeValue,
 			String itemPropertyFourName, String itemPropertyFourValue,
 			String itemPropertyFiveName, String itemPropertyFiveValue,
-			String itemPropertySixName, String itemPropertySixValue) {
+			String itemPropertySixName, String itemPropertySixValue,
+			String itemBrandName, String itemSort) {
 		super();
 		this.cartId = cartId;
 		this.userId = userId;
@@ -229,6 +248,8 @@ public class Cart extends BasePojo {
 		this.itemPropertyFiveValue = itemPropertyFiveValue;
 		this.itemPropertySixName = itemPropertySixName;
 		this.itemPropertySixValue = itemPropertySixValue;
+		this.itemBrandName = itemBrandName;
+		this.itemSort = itemSort;
 	}
 
 	@Override
@@ -247,7 +268,9 @@ public class Cart extends BasePojo {
 				+ ", itemPropertyFiveName=" + itemPropertyFiveName
 				+ ", itemPropertyFiveValue=" + itemPropertyFiveValue
 				+ ", itemPropertySixName=" + itemPropertySixName
-				+ ", itemPropertySixValue=" + itemPropertySixValue + "]";
+				+ ", itemPropertySixValue=" + itemPropertySixValue
+				+ ", itemBrandName=" + itemBrandName + ", itemSort=" + itemSort
+				+ "]";
 	}
 
 }

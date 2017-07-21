@@ -119,6 +119,8 @@ public interface CartApi {
      * 		itemPropertyFiveValue:"值五",
      * 		itemPropertySixName:"属性六",
      * 		itemPropertySixValue:"值六"
+     * 		ietmBrandName:"A品牌",
+     * 		itemSort:"耗材类"
      * 		price:200,
      * 		num:1
      * },{
@@ -139,6 +141,8 @@ public interface CartApi {
      * 		itemPropertyFiveValue:"值五",
      * 		itemPropertySixName:"属性六",
      * 		itemPropertySixValue:"值六"
+     * 		ietmBrandName:"B品牌",
+     * 		itemSort:"工具类" 
      * 		price:300,
      * 		num:2
      * }],

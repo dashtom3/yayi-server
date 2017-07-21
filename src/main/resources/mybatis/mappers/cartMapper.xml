@@ -24,6 +24,8 @@
 		<result column="item_property_five_value" property="itemPropertyFiveValue" />
 		<result column="item_property_six_name" property="itemPropertySixName" />
 		<result column="item_property_six_value" property="itemPropertySixValue" />
+		<result column="item_sort" property="itemSort"/>
+		<result column="item_brand_name" property="itemBrandName"/>
 	</resultMap>
 
 	<select id="list" resultMap="cartRM">
@@ -31,6 +33,8 @@
 		c.cart_id,
 		id.item_id, 
 		ii.item_name AS NAME,
+		ii.item_sort,
+		ib.item_brand_name,
 		id.item_pica AS pic,
 		c.num,
 		iv.item_sku_price AS price,
@@ -42,14 +46,13 @@
 		iv.item_property_five_name,iv.item_property_five_value,
 		iv.item_property_six_name,iv.item_property_six_value
 		FROM cart c
-		LEFT JOIN item_value iv 
-		ON c.item_SKU=iv.item_sKU
-		LEFT JOIN item_info ii
-		ON iv.item_id=ii.item_id
-		LEFT JOIN item_detail id
-		ON iv.item_id=id.item_id
+		LEFT JOIN item_value iv ON c.item_SKU=iv.item_sKU
+		LEFT JOIN item_info ii ON iv.item_id=ii.item_id
+		LEFT JOIN item_detail id ON iv.item_id=id.item_id
+		LEFT JOIN item_brand ib ON ii.item_brand_id=ib.item_brand_id
 		WHERE c.user_id=#{userId}
-		ORDER BY c.created DESC;
+		GROUP BY c.cart_id
+		ORDER BY c.created DESC
 	</select>
 
 	<update id="updateOne">

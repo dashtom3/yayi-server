@@ -185,7 +185,7 @@
 		SELECT 
 		sale_id,true_name,phone,sex,we_char,email,
 		birthday,education,work_unit,work_position,
-		part,address,id_card,created,money,bind_user_num,
+		part,address,id_card,created,bind_user_num,
 		sale_pic,postal_type,bank_name,open_name,account_number
 		FROM sale_info
 		WHERE phone = #{phone};
@@ -194,5 +194,16 @@
 	<!-- 判断销售员手机号是否存在 -->
 	<select id="getSaleId" resultType="String">
 		SELECT sale_id FROM sale_info WHERE phone=#{salePhone};
+	</select> 
+	
+	<select id="queryByBalance" resultType="Double">
+		SELECT 
+		balance 
+		FROM 
+		balance 
+		WHERE 
+		sale_id = (SELECT sale_id FROM sale_info WHERE phone=#{phone}) 		
+		ORDER BY created DESC
+		LIMIT 1	
 	</select>
 </mapper>

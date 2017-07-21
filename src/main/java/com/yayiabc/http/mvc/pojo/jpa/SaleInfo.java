@@ -22,7 +22,7 @@ public class SaleInfo extends BasePojo {
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date birthday;// 出生日期
 
-	private Integer money;// 钱包余额
+	private double money;// 钱包余额
 
 	private String salePic;// 头像
 
@@ -162,8 +162,14 @@ public class SaleInfo extends BasePojo {
 		this.idCard = idCard;
 	}
 
-	public Integer getMoney() {
+
+
+	public double getMoney() {
 		return money;
+	}
+
+	public void setMoney(double money) {
+		this.money = money;
 	}
 
 	public Integer getSex() {
@@ -301,7 +307,7 @@ public class SaleInfo extends BasePojo {
 	}
 
 	public SaleInfo(String saleId, String salePwd, String trueName,
-			String idCard, Date birthday, Integer money, String salePic,
+			String idCard, Date birthday, double money, String salePic,
 			String postalType, String bankName, String openName,
 			String accountNumber, Integer type, String phone, Integer sex,
 			String address, String weChar, String email, String part,

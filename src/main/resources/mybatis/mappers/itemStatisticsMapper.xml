@@ -14,7 +14,14 @@
 	</resultMap>
 	
 	<select id="query" resultMap="itemStatisticsRM">
-		SELECT ii.item_id,ii.item_name,iv.item_sKU,ib.item_brand_name,ii.item_price,ii.sales,ii.item_price*ii.sales AS salesMoney 
+		SELECT 
+		ii.item_id,
+		ii.item_name,
+		iv.item_sKU,
+		ib.item_brand_name,
+		ii.item_price,
+		ii.sales,
+		ii.item_price*ii.sales AS salesMoney 
 		FROM item_info ii
 		LEFT JOIN item_value iv
 		ON ii.item_id=iv.item_id

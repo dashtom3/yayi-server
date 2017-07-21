@@ -28,6 +28,8 @@ public interface SaleListDao {
 	
 	int bindUserCount(@Param("saleId")String saleId);
 	
-	
 	String getSaleId(@Param("salePhone")String salePhone);
+	
+	//查询销售员钱包余额
+	double queryByBalance(@Param("phone")String phone);
 }

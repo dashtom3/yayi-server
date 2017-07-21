@@ -8,10 +8,12 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.IncomUtil;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.common.utils.getTimeUtil;
 import com.yayiabc.http.mvc.dao.SaleIncomeListDao;
 import com.yayiabc.http.mvc.pojo.model.OrderVo;
+import com.yayiabc.http.mvc.pojo.model.SaleDataStatistics;
 import com.yayiabc.http.mvc.pojo.model.SaleIncomeVo;
 import com.yayiabc.http.mvc.service.SaleIncomeListService;
 
@@ -22,30 +24,40 @@ public class SaleIncomeListServiceImpl implements SaleIncomeListService {
 	SaleIncomeListDao saleIncomeListDao;
 
 	@Override
-	public DataWrapper<SaleIncomeVo> detail(String saleId,String beYearMonth,String getState,Integer currentPage, Integer numberPerPage) {
+	public DataWrapper<SaleIncomeVo> detail(String saleId, String beYearMonth,
+			String getState, Integer currentPage, Integer numberPerPage) {
 		DataWrapper<SaleIncomeVo> dataWrapper = new DataWrapper<SaleIncomeVo>();
-		SaleIncomeVo saleIncomeVo = saleIncomeListDao.detail(saleId, beYearMonth);
-		Map<String, String> map =new HashMap<String, String>();
-		String startDate="";
-		String endDate="";
-		if("已结算".equals(getState)){
-			map =getTimeUtil.getLastTime();
-			startDate=map.get("startDate");
-			endDate=map.get("endDate");
-		}else if("未结算".equals(getState)){
-			map =getTimeUtil.getTime();
-			startDate=map.get("startDate");
-			endDate=map.get("endDate");
+		String startDate = "";
+		String endDate = "";
+		SaleIncomeVo saleIncomeVo = new SaleIncomeVo();
+		saleIncomeVo = saleIncomeListDao.detail(saleId, beYearMonth);
+		Map<String, String> map = new HashMap<String, String>();
+		if ("已结算".equals(getState)) {
+			map = getTimeUtil.getLastTime();
+			startDate = map.get("startDate");
+			endDate = map.get("endDate");
+			saleIncomeVo.setHaocaiGetMoney(IncomUtil.getMoneyByHaoCai(
+					saleIncomeVo.getSaleDataStatistics().getHaocaiMoney(), 
+					saleIncomeVo.getSaleDataStatistics().getHaocaiActual()));
+			saleIncomeVo.setGongjuGetMoney(IncomUtil.getMoneyByGongJu(
+					saleIncomeVo.getSaleDataStatistics().getGongjuMoney(), 
+					saleIncomeVo.getSaleDataStatistics().getGongjuActual()));
+		} else if ("未结算".equals(getState)) {
+			map = getTimeUtil.getTime();
+			startDate = map.get("startDate");
+			endDate = map.get("endDate");
 		}
 		Page page = new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		int totalNumber=saleIncomeListDao.getCountOrderList(startDate, endDate, saleId);
+		int totalNumber = saleIncomeListDao.getCountOrderList(startDate,
+				endDate, saleId);
 		dataWrapper.setPage(page, totalNumber);
-		List<OrderVo> list = saleIncomeListDao.orderList(startDate, endDate, saleId, page);
-		if(list==null){
+		List<OrderVo> list = saleIncomeListDao.orderList(startDate, endDate,
+				saleId, page);
+		if (list == null) {
 			saleIncomeVo.setOrderVoList(null);
-		}else{
+		} else {
 			saleIncomeVo.setOrderVoList(list);
 		}
 		dataWrapper.setData(saleIncomeVo);

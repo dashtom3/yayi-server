@@ -39,6 +39,7 @@
 		<result column="settlementTime" property="settlementTime"/>
 		<result column="allMoney" property="allMoney"/>
 		<result column="allActual" property="allActual"/>
+		<result column="moneyRefund" property="moneyRefund"/>
 	</resultMap>
 	
 	<select id="queryDone" resultMap="achievementRM">
@@ -50,6 +51,7 @@
 		DATE_FORMAT(b.created,'%Y-%m') AS beYearMonth,
 		"已结算" AS getState,
 		b.created AS settlementTime,
+		SUM(IF(b.haocai_refund IS NOT NULL,b.haocai_refund,0)+IF(b.gongju_refund IS NOT NULL,b.gongju_refund,0)) AS moneyRefund,
 		SUM(IF(b.haocai_money IS NOT NULL,b.haocai_money,0)+IF(b.gongju_money IS NOT NULL,b.gongju_money,0)) AS allMoney,
 		SUM(IF(b.haocai_money IS NOT NULL,b.haocai_money,0)+IF(b.gongju_money IS NOT NULL,b.gongju_money,0))-
 		SUM(IF(b.haocai_refund IS NOT NULL,b.haocai_refund,0)+IF(b.gongju_refund IS NOT NULL,b.gongju_refund,0)) AS allActual
@@ -112,6 +114,7 @@
 		DATE_FORMAT(si.created,'%Y-%m') AS beYearMonth,
 		"待结算" AS getState,
 		"NULL" AS settlementTime,
+		SUM(IF(si.refund_money_haocai IS NOT NULL,si.refund_money_haocai,0)+IF(si.refund_money_gongju IS NOT NULL,si.refund_money_gongju,0)) AS moneyRefund,
 		SUM(IF(si.order_money_haocai IS NOT NULL,si.order_money_haocai,0)+IF(si.order_money_gongju IS NOT NULL,si.order_money_gongju,0)) AS allMoney,
 		SUM(IF(si.order_money_haocai IS NOT NULL,si.order_money_haocai,0)+IF(si.order_money_gongju IS NOT NULL,si.order_money_gongju,0)) - 
 		SUM(IF(si.refund_money_haocai IS NOT NULL,si.refund_money_haocai,0)+IF(si.refund_money_gongju IS NOT NULL,si.refund_money_gongju,0)) AS allActual
@@ -158,6 +161,8 @@
 		<result column="saleName" property="saleName"/>
 		<result column="salePhone" property="salePhone"/>
 		<result column="beYearMonth" property="beYearMonth"/>
+		<result column="haocaiGetMoney" property="haocaiGetMoney"/>
+			<result column="gongjuGetMoney" property="gongjuGetMoney"/>
 		<association property="saleDataStatistics" javaType="com.yayiabc.http.mvc.pojo.model.SaleDataStatistics">
 			<result column="haocai_money" property="haocaiMoney"/>
 			<result column="haocai_refund" property="haocaiRefund"/>

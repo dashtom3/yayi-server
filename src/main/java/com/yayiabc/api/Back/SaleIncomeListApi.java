@@ -30,7 +30,8 @@ public interface SaleIncomeListApi {
      * 		getState:"已结算",
 	 *		settlementTime:"2017-06-01",
 	 * 		allMoney:5000,	(销售额)
-	 * 		allActual:4000	(实际销售额)
+	 * 		allActual:4000,	(实际销售额)
+	 * 		moneyRefund:100	(已退款金额)
      * },{
      * 		saleId:"b456",
      * 		saleName:"销售员二号",
@@ -40,7 +41,8 @@ public interface SaleIncomeListApi {
      * 		getState:"已结算",
 	 *		settlementTime:"2017-06-01",
 	 * 		allMoney:5000,	(销售额)
-	 * 		allActual:4000	(实际销售额)
+	 * 		allActual:4000,	(实际销售额)
+	 * 		moneyRefund:100	(已退款金额)
      * }],
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
      * numberPerPage:10,
@@ -89,12 +91,14 @@ public interface SaleIncomeListApi {
      * 		saleName:"真实姓名",
      * 		salePhone:"17668123578",
      * 		beYearMonth:"2017-07",
-     * 		haocaiMoney:90,		(耗材销售额)
+     * 		haocaiMoney:90,			(耗材销售额)
      * 		haocaiRefund:30,		(耗材已退款金额)
      * 		haocaiActual:60,		(耗材实际销售额)
-     * 		gongjuMoney:0,	(工具销售额)
-     * 		gongjuRefund:0,	(工具已退款金额)
-     * 		gongjuActual:0,	(工具实际销售额)
+     * 		haocaiGetMoney:10		(耗材收入)
+     * 		gongjuMoney:0,		(工具销售额)
+     * 		gongjuRefund:0,		(工具已退款金额)
+     * 		gongjuActual:0,		(工具实际销售额)
+     * 		gongjuGetMoney:20	(工具收入)
      * 		order(List){
      *			orderId:"a123",
      *			userName:"张三",

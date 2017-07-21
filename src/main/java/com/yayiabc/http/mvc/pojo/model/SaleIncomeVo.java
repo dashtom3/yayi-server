@@ -10,12 +10,15 @@ public class SaleIncomeVo {
 	private String userName; // 用户姓名
 	private String userPhone; // 用户手机号
 	private String getState; // 收入状态
-	private double getMoney;	//收入
+	private double getMoney; // 收入
 	private String getUpdated; // 结算日期
 	private String beYearMonth; // 收入所属月份
 	private String settlementTime; // 结算时间
 	private double allMoney; // 销售额
 	private double allActual; // 实际销售额
+	private double moneyRefund; // 已退款金额
+	private double haocaiGetMoney; // 耗材收入
+	private double gongjuGetMoney;// 工具收入
 	private List<OrderVo> orderVoList;
 	private SaleDataStatistics saleDataStatistics;
 
@@ -139,29 +142,57 @@ public class SaleIncomeVo {
 		this.getMoney = getMoney;
 	}
 
+	public double getMoneyRefund() {
+		return moneyRefund;
+	}
+
+	public void setMoneyRefund(double moneyRefund) {
+		this.moneyRefund = moneyRefund;
+	}
+
+	public double getHaocaiGetMoney() {
+		return haocaiGetMoney;
+	}
+
+	public void setHaocaiGetMoney(double haocaiGetMoney) {
+		this.haocaiGetMoney = haocaiGetMoney;
+	}
+
+	public double getGongjuGetMoney() {
+		return gongjuGetMoney;
+	}
+
+	public void setGongjuGetMoney(double gongjuGetMoney) {
+		this.gongjuGetMoney = gongjuGetMoney;
+	}
+
 	public SaleIncomeVo() {
 		super();
 	}
 
 	public SaleIncomeVo(String saleId, String saleName, String salePhone,
 			String userId, String userName, String userPhone, String getState,
-			String getUpdated, String beYearMonth, String settlementTime,
-			double allMoney,double getMoney, double allActual, List<OrderVo> orderVoList,
-			SaleDataStatistics saleDataStatistics) {
+			double getMoney, String getUpdated, String beYearMonth,
+			String settlementTime, double allMoney, double allActual,
+			double moneyRefund, double haocaiGetMoney, double gongjuGetMoney,
+			List<OrderVo> orderVoList, SaleDataStatistics saleDataStatistics) {
 		super();
 		this.saleId = saleId;
 		this.saleName = saleName;
 		this.salePhone = salePhone;
 		this.userId = userId;
 		this.userName = userName;
-		this.getMoney=getMoney;
 		this.userPhone = userPhone;
 		this.getState = getState;
+		this.getMoney = getMoney;
 		this.getUpdated = getUpdated;
 		this.beYearMonth = beYearMonth;
 		this.settlementTime = settlementTime;
 		this.allMoney = allMoney;
 		this.allActual = allActual;
+		this.moneyRefund = moneyRefund;
+		this.haocaiGetMoney = haocaiGetMoney;
+		this.gongjuGetMoney = gongjuGetMoney;
 		this.orderVoList = orderVoList;
 		this.saleDataStatistics = saleDataStatistics;
 	}
@@ -171,11 +202,14 @@ public class SaleIncomeVo {
 		return "SaleIncomeVo [saleId=" + saleId + ", saleName=" + saleName
 				+ ", salePhone=" + salePhone + ", userId=" + userId
 				+ ", userName=" + userName + ", userPhone=" + userPhone
-				+ ", getState=" + getState + ", getUpdated=" + getUpdated
-				+ ", beYearMonth=" + beYearMonth + ", settlementTime="
-				+ settlementTime + ", allMoney=" + allMoney + ", allActual="
-				+ allActual + ", orderVoList=" + orderVoList
-				+ ", saleDataStatistics=" + saleDataStatistics + "]";
+				+ ", getState=" + getState + ", getMoney=" + getMoney
+				+ ", getUpdated=" + getUpdated + ", beYearMonth=" + beYearMonth
+				+ ", settlementTime=" + settlementTime + ", allMoney="
+				+ allMoney + ", allActual=" + allActual + ", moneyRefund="
+				+ moneyRefund + ", haocaiGetMoney=" + haocaiGetMoney
+				+ ", gongjuGetMoney=" + gongjuGetMoney + ", orderVoList="
+				+ orderVoList + ", saleDataStatistics=" + saleDataStatistics
+				+ "]";
 	}
 
 }

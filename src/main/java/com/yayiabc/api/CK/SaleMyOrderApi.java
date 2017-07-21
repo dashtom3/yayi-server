@@ -2,7 +2,7 @@ package com.yayiabc.api.CK;
 
 public interface SaleMyOrderApi {
 	/**
-     * @api {get} http://47.93.48.111:8080/api/saleMyOrder/myOrder （创客系统）我的订单
+     * @api {get} http://47.93.48.111:8080/api/saleMyOrder/myOrder （创客系统）我的业绩
      * @apiName myOrder
      * @apiGroup saleMyOrder
      * @apiVersion 0.1.0

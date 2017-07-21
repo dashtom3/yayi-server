@@ -11,7 +11,8 @@ public interface SaleIncomeListApi {
      * @apiParam {String} saleName 销售员姓名（非必须）
      * @apiParam {String} salePhone 销售员手机号码（非必须）
      * @apiParam {String} beYearMonth 收入所属年月（非必须，格式'yyyy-MM'）
-     * @apiParam {String} settlementTime 结算日期（非必须，格式'yyyy-MM-dd'）
+     * @apiParam {String} startDate 开始时间（非必须，结算日期，格式'yyyy-MM-dd'）
+     * @apiParam {String} endDate 结束时间（非必须，结算日期，格式'yyyy-MM-dd'）
      * @apiParam {int} currentPage （非必须）
      * @apiParam {int} numberPerPage （非必须）  
      *

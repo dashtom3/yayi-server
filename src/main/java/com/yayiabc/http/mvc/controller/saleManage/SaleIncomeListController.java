@@ -28,11 +28,12 @@ public class SaleIncomeListController {
 			@RequestParam(value="saleName",required=false)String saleName,
 			@RequestParam(value="salePhone",required=false)String salePhone,
 			@RequestParam(value="beYearMonth",required=false)String beYearMonth,
-			@RequestParam(value="settlementTime",required=false)String settlementTime,
+			@RequestParam(value="startDate",required=false)String startDate,
+			@RequestParam(value="endDate",required=false)String endDate,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
-		return saleIncomeListService.queryDone(saleName, salePhone, beYearMonth, settlementTime, currentPage, numberPerPage);
+		return saleIncomeListService.queryDone(saleName, salePhone, beYearMonth, startDate, endDate, currentPage, numberPerPage);
 	}
 	
 	/**

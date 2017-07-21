@@ -17,14 +17,16 @@ public interface SaleIncomeListDao {
 			@Param("saleName") String saleName,
 			@Param("salePhone") String salePhone,
 			@Param("beYearMonth") String beYearMonth,
-			@Param("settlementTime") String settlementTime,
+			@Param("startDate")String startDate,
+			@Param("endDate")String endDate,
 			@Param("page") Page page);
 
 	int getCountDone(
 			@Param("saleName") String saleName,
 			@Param("salePhone") String salePhone,
 			@Param("beYearMonth") String beYearMonth,
-			@Param("settlementTime") String settlementTime);
+			@Param("startDate")String startDate,
+			@Param("endDate")String endDate);
 
 	// 销售员业绩列表,未结算
 	List<SaleIncomeVo> queryNot(

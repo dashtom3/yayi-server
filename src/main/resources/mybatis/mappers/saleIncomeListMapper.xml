@@ -66,8 +66,11 @@
 		<if test="beYearMonth !=null and beYearMonth !=''">
 			AND DATE_FORMAT(b.created,'%Y-%m') = #{beYearMonth}
 		</if>
-		<if test="settlementTime !=null and settlementTime !=''">
-			AND b.created LIKE '%${settlementTime}%'
+		<if test="startDate !=null and startDate !=''">
+			AND DATE_FORMAT(b.created,'%Y-%m-%d') <![CDATA[  >=  ]]>#{startDate}
+		</if>
+		<if test="endDate != null and endDate !=''">
+			AND DATE_FORMAT(b.created,'%Y-%m-%d') <![CDATA[  <=  ]]>#{endDate}
 		</if>
 		GROUP BY b.balance_id
 		LIMIT ${page.currentNumber},${page.numberPerPage}
@@ -90,8 +93,11 @@
 		<if test="beYearMonth !=null and beYearMonth !=''">
 			AND DATE_FORMAT(b.created,'%Y-%m') = #{beYearMonth}
 		</if>
-		<if test="settlementTime !=null and settlementTime !=''">
-			AND b.created =#{settlementTime}
+		<if test="startDate !=null and startDate !=''">
+			AND DATE_FORMAT(b.created,'%Y-%m-%d') <![CDATA[  >=  ]]>#{startDate}
+		</if>
+		<if test="endDate != null and endDate !=''">
+			AND DATE_FORMAT(b.created,'%Y-%m-%d') <![CDATA[  <=  ]]>#{endDate}
 		</if>
 	GROUP BY b.balance_id
 	) AS a

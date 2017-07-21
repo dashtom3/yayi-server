@@ -7,7 +7,6 @@ import java.util.Map;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.common.utils.getTimeUtil;
@@ -21,25 +20,6 @@ public class SaleIncomeListServiceImpl implements SaleIncomeListService {
 
 	@Autowired
 	SaleIncomeListDao saleIncomeListDao;
-
-//	@Override
-//	public DataWrapper<List<SaleIncomeVo>> query(String saleId,
-//			String saleName, String salePhone, String orderId,
-//			Integer signLateSeven, Integer getState, String startDate,
-//			String endDate, Integer currentPage, Integer numberPerPage) {
-//		DataWrapper<List<SaleIncomeVo>> dataWrapper = new DataWrapper<List<SaleIncomeVo>>();
-//		Page page = new Page();
-//		page.setNumberPerPage(numberPerPage);
-//		page.setCurrentPage(currentPage);
-//		int totalNumber = saleIncomeListDao.getCount(saleId, saleName, salePhone, orderId, signLateSeven,
-//						getState, startDate, endDate);
-//		List<SaleIncomeVo> list = saleIncomeListDao.query(saleId, saleName,
-//				salePhone, orderId, signLateSeven, getState, startDate,
-//				endDate, page);
-//			dataWrapper.setPage(page, totalNumber);
-//			dataWrapper.setData(list);
-//		return dataWrapper;
-//	}
 
 	@Override
 	public DataWrapper<SaleIncomeVo> detail(String saleId,String beYearMonth,String getState,Integer currentPage, Integer numberPerPage) {
@@ -74,14 +54,14 @@ public class SaleIncomeListServiceImpl implements SaleIncomeListService {
 
 	@Override
 	public DataWrapper<List<SaleIncomeVo>> queryDone(String saleName,
-			String salePhone, String beYearMonth, String settlementTime,
+			String salePhone, String beYearMonth, String startDate,String endDate,
 			Integer currentPage, Integer numberPerPage) {
 		DataWrapper<List<SaleIncomeVo>> dataWrapper = new DataWrapper<List<SaleIncomeVo>>();
 		Page page = new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		int totalNumber =saleIncomeListDao.getCountDone(saleName, salePhone, beYearMonth, settlementTime);
-		List<SaleIncomeVo> list =saleIncomeListDao.queryDone(saleName, salePhone, beYearMonth, settlementTime, page);
+		int totalNumber =saleIncomeListDao.getCountDone(saleName, salePhone, beYearMonth, startDate, endDate);
+		List<SaleIncomeVo> list =saleIncomeListDao.queryDone(saleName, salePhone, beYearMonth, startDate, endDate, page);
 		dataWrapper.setPage(page, totalNumber);
 		dataWrapper.setData(list);
 		return dataWrapper;

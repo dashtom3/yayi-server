@@ -4,13 +4,16 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
-
 import org.springframework.stereotype.Repository;
 
 import com.yayiabc.http.mvc.pojo.jpa.ItemClassify;
 import com.yayiabc.http.mvc.pojo.jpa.ItemProperty;
 import com.yayiabc.http.mvc.pojo.jpa.ItemPropertyd;
 import com.yayiabc.http.mvc.pojo.model.Search;
+
+
+
+
 
 
 @Repository
@@ -87,7 +90,7 @@ public interface ItemManageDao {
 
 	Integer getCount(ItemClassify itemClassify);
 
-	Integer getCountProperty(String itemPropertyName);
+	Integer getCountProperty(@Param("itemPropertyName")String itemPropertyName);
 
 	void deletePro(Integer itemPropertyId);
 

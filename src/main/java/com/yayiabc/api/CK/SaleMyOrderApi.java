@@ -79,8 +79,7 @@ public interface SaleMyOrderApi {
      * errorCode:"No_Error",
      * data:{[
      * 		dayCommission:1800,
-     * 		dayOrderNum:2,
-     *      getUpdated:"2017-07-11 17:00"
+     * 		dayOrderNum:2
      * ]
      * },
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",

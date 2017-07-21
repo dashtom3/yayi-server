@@ -96,8 +96,14 @@
 	</select>
 	
 	<select id="chart" resultType="SaleDataStatistics">
-		SELECT SUM(get_money) AS dayCommission,COUNT(order_id) AS dayOrderNum 
-		FROM sale_income WHERE sale_id=#{saleId} AND YEAR(created) =#{year} AND MONTH(created)=#{month}
+		SELECT 
+		SUM(IF(order_money_haocai IS NOT NULL,order_money_haocai,0)+
+		IF(order_money_gongju IS NOT NULL,order_money_gongju,0)) AS dayCommission,
+		COUNT(order_id) AS dayOrderNum 
+		FROM sale_income 
+		WHERE sale_id=#{saleId} 
+		AND YEAR(created) =#{year}
+		AND MONTH(created)=#{month}
 		GROUP BY DAY(created)
 	</select>
 	

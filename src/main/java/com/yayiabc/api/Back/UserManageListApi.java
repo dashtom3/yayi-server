@@ -32,15 +32,20 @@ public interface UserManageListApi {
      * 		latelyOrderDate:"2017-05-02",
      * 		orderaMoneyCount:5000,
      * 		orderaCount:30,
-     * 		userCreated:"2017-01-01 10:10:10"
+     * 		userCreated:"2017-01-01 10:10:10",
+     * 		salePhone:"65498321"
      * },{
-     * 		trueName:"李用户",
-     * 		phone:"17668123578",
+     * 		trueName:"XXXX",
+     * 		phone:"17668123984",
      * 		companyName:"XXXX公司",
      * 		type:1,
-     * 		isBindSale:2,
-     * 		saleName:null,
-     * 		salePhone:null
+     * 		isBindSale:1,
+     * 		saleName:"王销售",
+     * 		latelyOrderDate:"2017-05-02",
+     * 		orderaMoneyCount:5000,
+     * 		orderaCount:30,
+     * 		userCreated:"2017-01-01 10:10:10",
+     * 		salePhone:"65498321"
      * }],
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
      * numberPerPage:10,

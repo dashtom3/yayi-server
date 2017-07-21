@@ -1,4 +1,4 @@
-package com.yayiabc.api.adminstrator;
+package com.yayiabc.api.Back;
 
 public interface Adiminstrator {
 	/**

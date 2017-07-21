@@ -1,4 +1,4 @@
-package com.yayiabc.api.user;
+package com.yayiabc.api.Before;
 
 public interface UserPersonalInfoApi {
 	/**

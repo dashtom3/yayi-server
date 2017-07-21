@@ -1,21 +1,19 @@
-package com.yayiabc.api.userManage;
+package com.yayiabc.api.Back;
 
-public interface UserManageListApi {
+public class SaleListApi {
 	/**
-     * @api {get} http://47.93.48.111:8080/api/userManageList/userlist （后台）获取用户信息列表
-     * @apiName userlist
-     * @apiGroup userManageList
+     * @api {get} http://47.93.48.111:8080/api/saleList/query （后台）销售员列表
+     * @apiName query
+     * @apiGroup saleList
      * @apiVersion 0.1.0
-     * @apiDescription 获取用户信息列表
+     * @apiDescription 销售员列表
      *
+     * @apiParam {String} saleId 销售员编号（非必须）
      * @apiParam {String} phone 手机号码（非必须）
      * @apiParam {String} trueName 真实姓名（非必须）
-     * @apiParam {String} companyName 单位名称（非必须）
-     * @apiParam {int} isBindSale 是否绑定销售（非必须，全部传空值，1是，2否）
-     * @apiParam {int} type	类型（非必须，全部传空值，1个人，2机构）
-     * @apiParam {String} saleName 销售名称（非必须）
+     * @apiParam {int} isBindUser 是否绑定客户（非必须，全部传空值，1是，2否）
      * @apiParam {int} currentPage （非必须）
-     * @apiParam {int} numberPerPage （非必须）
+     * @apiParam {int} numberPerPage （非必须）  
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -23,21 +21,21 @@ public interface UserManageListApi {
      * callStatus:"SUCCEED",
      * errorCode:"No_Error",
      * data:[{
-     * 		trueName:"张用户",
+     * 		saleId:"a123",
+     * 		trueName:"真实姓名",
      * 		phone:"17668123578",
-     * 		companyName:"XXXX公司",
-     * 		type:1,
-     * 		isBindSale:1,
-     * 		saleName:"王销售",
-     * 		salePhone:"666"
+     * 		created:"2017-05-01",
+     * 		isBindUser:1,
+     * 		bindUserNum:10,
+     * 		totalGetMoney:800
      * },{
-     * 		trueName:"李用户",
+     * 		saleId:"b456",
+     * 		trueName:"真实姓名a",
      * 		phone:"17668123578",
-     * 		companyName:"XXXX公司",
-     * 		type:1,
-     * 		isBindSale:2,
-     * 		saleName:null,
-     * 		salePhone:null
+     * 		created:"2017-05-01",
+     * 		isBindUser:2,
+     * 		bindUserNum:null,
+     * 		totalGetMoney:0
      * }],
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
      * numberPerPage:10,
@@ -66,27 +64,31 @@ public interface UserManageListApi {
      */
 	
 	/**
-     * @api {get} http://47.93.48.111:8080/api/userManageList/salelist （后台）获取简略销售员信息列表
-     * @apiName salelist
-     * @apiGroup userManageList
+     * @api {get} http://47.93.48.111:8080/api/saleList/userlist （后台）获取简略用户信息列表
+     * @apiName userlist
+     * @apiGroup saleList
      * @apiVersion 0.1.0
-     * @apiDescription 获取简略销售员信息列表
+     * @apiDescription 获取简略用户信息列表
      *
-     * @apiParam {String} salePhone 手机号码（非必须）
-     * @apiParam {String} saleName 真实姓名（非必须）
+     * @apiParam {String} salePhone 销售员手机号码（必须）
+     * @apiParam {int} isBind 是否绑定（必须，1未绑定，2绑定）
+     * @apiParam {String} userPhone 用户手机号码（非必须）
+     * @apiParam {String} trueName 真实姓名（非必须）
+     * @apiParam {String} companyName 公司名称（非必须）
+     * @apiParam {int} currentPage （非必须）
+     * @apiParam {int} numberPerPage （非必须）  
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
      * {
      * callStatus:"SUCCEED",
      * errorCode:"No_Error",
-     * data:[{
-     * 		phone:"17668123578",
-     * 		trueName:"张三" 
-     * },{
+     * data:{
+     * 		userId:"asasd17668123578",
      * 		phone:"17668147515",
-     * 		trueName:"李四" 
-     * }],
+     * 		trueName:"张三",
+     * 		companyName:"XXX公司"
+     * },
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
      * numberPerPage:0,
      * currentPage:0,
@@ -114,14 +116,14 @@ public interface UserManageListApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48.111:8080/api/userManageList/bind （后台）绑定销售员
+     * @api {post} http://47.93.48.111:8080/api/saleList/bind （后台）绑定用户
      * @apiName bind
-     * @apiGroup userManageList
+     * @apiGroup saleList
      * @apiVersion 0.1.0
-     * @apiDescription 绑定销售员
+     * @apiDescription 绑定用户
      *
      * @apiParam {String} salePhone 销售员手机号码（必须）
-     * @apiParam {String} userPhone 用户手机号码（必须）
+     * @apiParam {String} userPhone 用户手机号码（必须，可传参数数组）
      *
      * @apiSuccessExample {json} Success-Response:
      * HTTP/1.1 200 OK
@@ -156,14 +158,14 @@ public interface UserManageListApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48.111:8080/api/userManageList/disBind （后台）取消绑定销售员
+     * @api {post} http://47.93.48.111:8080/api/saleList/disBind （后台）取消绑定用户
      * @apiName disBind
-     * @apiGroup userManageList
+     * @apiGroup saleList
      * @apiVersion 0.1.0
-     * @apiDescription 取消绑定销售员
+     * @apiDescription 取消绑定用户
      *
-     * @apiParam {String} salePhone 销售员手机号码（必须）
-     * @apiParam {String} userPhone 用户手机号码（必须）
+     * @apiParam {String} salePhone 销售员手机号码（必须，可传参数数组）
+     * @apiParam {String} userPhone 用户手机号码（必须，可传参数数组）
      *
      * @apiSuccessExample {json} Success-Response:
      * HTTP/1.1 200 OK
@@ -198,13 +200,15 @@ public interface UserManageListApi {
      */
 	
 	/**
-     * @api {get} http://47.93.48.111:8080/api/userManageList/detail （后台）获取用户详情
+     * @api {get} http://47.93.48.111:8080/api/saleList/detail （后台）获取销售员详情
      * @apiName detail
-     * @apiGroup userManageList
+     * @apiGroup saleList
      * @apiVersion 0.1.0
-     * @apiDescription 获取用户详情
+     * @apiDescription 获取销售员详情
      *
      * @apiParam {String} phone 手机号码（必须）
+     * @apiParam {int} currentPage （非必须）
+     * @apiParam {int} numberPerPage （非必须）  
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -212,43 +216,44 @@ public interface UserManageListApi {
      * callStatus:"SUCCEED",
      * errorCode:"No_Error",
      * data:{
-     * 		userId:"qqqqq",
+     * 		saleId:"qqqqq",
      * 		trueName:"张三" 
      * 		phone:"8888888",
      * 		sex:1,	(1男，2女)
-     * 		birthday:"2000-10-10",
-     * 		qq:"666666",
-     * 		userPic:"image/XX.jpg",
-     * 		type:1,	(1个人，2机构)
-     * 		companyName:"XXXX牙医诊所",
-     * 		part:"浙江省杭州市西湖区",
-     * 		workAddress:"XX路100号",
-     * 		doctorPic:"image/system05.jpg",
-     * 		saleName:"李四",  
-     * 		salePhone:"999999",
-     * 		saleCreated:"2017-01-01",
-     * 		bindUserNum:5,
-     * 		Receiver(list):[{
-     * 			receiverName:"收货人1号",
-     * 			province:"上海",
-     * 			city:"上海市",
-     * 			county:"静安区",
-     * 			receiverDetail:"共和新路街道     洛川中路1100弄31号103（居委会）",
-     * 			receiverPhone:"55555555"
+     * 		weChar:"q123456",
+     * 		email:"123456@qq.com",
+     * 		birthday:"1993-10-10",
+     * 		education:"大学",
+     * 		workUnit:"XXXX公司",
+     * 		workPosition:"销售",
+     * 		part:"上海市杨浦区",
+     * 		address:"XXXX路XXXX号",
+     * 		idCard:"123465789789X",
+     * 		created:"2017-12-12",
+     * 		money:666,
+     * 		bindUserNum:1,
+     * 		salePic:"image/XX.jpg",
+     * 		postalType:"支付宝",
+     * 		bankName:"中国银行",
+     * 		openName:"王某某",
+     * 		accountNumber:"1234657897",
+     * 		user(list):[{
+     * 			userId:"654894354",
+     * 			phone:"138765468",
+     * 			trueName:"李某某",
+     * 			companyName:"XXXX公司"
      * },{
-     * 			receiverName:"收货人2号",
-     * 			province:"上海",
-     * 			city:"上海市",
-     * 			county:"静安区",
-     * 			receiverDetail:"共和新路街道     洛川中路1100弄31号103（居委会）",
-     * 			receiverPhone:"666666666"
+      * 		userId:"172512512",
+     * 			phone:"138765468",
+     * 			trueName:"王某某",
+     * 			companyName:"XXXX公司"
      * }]
      * },
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
-     * numberPerPage:0,
-     * currentPage:0,
-     * totalNumber:0,
-     * totalPage:0,
+     * numberPerPage:10,
+     * currentPage:1,
+     * totalNumber:1,
+     * totalPage:1,
      * num :null,
      * msg :null,
      *  }

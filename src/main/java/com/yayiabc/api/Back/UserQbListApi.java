@@ -1,4 +1,4 @@
-package com.yayiabc.api.userManage;
+package com.yayiabc.api.Back;
 
 public interface UserQbListApi {
 	/**

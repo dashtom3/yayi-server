@@ -1,4 +1,4 @@
-package com.yayiabc.api.saleManage;
+package com.yayiabc.api.CK;
 
 public interface SaleLogApi {
 	 /**

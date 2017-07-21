@@ -31,7 +31,9 @@ import com.yayiabc.http.mvc.dao.AliPayDao;
 import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.WXPayDao;
 import com.yayiabc.http.mvc.pojo.jpa.Charge;
+import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.service.AliPayService;
+import com.yayiabc.http.mvc.service.UserMyQbService;
 
 @Controller
 @RequestMapping("api/weixin")
@@ -48,6 +50,9 @@ public class WXPayController {
 	
 	@Autowired
 	private UserDao userDao;
+	
+	@Autowired
+	private UserMyQbService userMyQbService;
 	
 	/**
 	 * 下订单付款时统一下单接口
@@ -282,9 +287,17 @@ public class WXPayController {
 					System.out.println("支付成功");
 					//给客户的钱包充值
 					String token=wXPayDao.getTokenByChargeId(chargeId);
+					System.out.println(token);
 					String userId=userDao.getUserIdByToken(token);
+					System.out.println(userId);
 					Integer addMoney=QbExchangeUtil.getQbByMoney(money);
-					wXPayDao.addMoney(userId,addMoney);
+					System.out.println(addMoney);
+					/*wXPayDao.addMoney(userId,addMoney);*/
+					QbRecord qbRecord =new QbRecord();
+					qbRecord.setQbRget(addMoney);
+					qbRecord.setRemark("乾币充值"+money);
+					userMyQbService.add(qbRecord, token);
+					System.out.println("成功");
 					wXPayDao.updateChargeState(chargeId);
 					resXml = "<xml>" + "<return_code><" +
 							"![CDATA[SUCCESS]]></return_code>"+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";

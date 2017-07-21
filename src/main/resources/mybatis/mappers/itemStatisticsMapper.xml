@@ -10,6 +10,7 @@
 		<result column="item_brand_name" property="itemBrandName"/>
 		<result column="item_price" property="price"/>
 		<result column="sales" property="sales"/>
+		<result column="refund_num" property="refundNum"/>
 		<result column="salesMoney" property="salesMoney"/>
 	</resultMap>
 	
@@ -21,6 +22,7 @@
 		ib.item_brand_name,
 		ii.item_price,
 		ii.sales,
+		ii.refund_num,
 		ii.item_price*ii.sales AS salesMoney 
 		FROM item_info ii
 		LEFT JOIN item_value iv
@@ -70,11 +72,5 @@
 			</where>
 			GROUP BY iv.item_sKU
 			) AS a
-	</select>
-	
-	<select id="queryRefund" resultType="int">
-		SELECT IF(COUNT(item_id) IS NOT NULL,COUNT(item_id),0) AS refundNum
-		FROM refund
-		WHERE item_id=#{itemId};
 	</select>
 </mapper>

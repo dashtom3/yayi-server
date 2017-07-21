@@ -196,7 +196,7 @@
 		SELECT sale_id FROM sale_info WHERE phone=#{salePhone};
 	</select> 
 	
-	<select id="queryByBalance" resultType="Double">
+	<select id="queryByBalance" resultType="String">
 		SELECT 
 		balance 
 		FROM 

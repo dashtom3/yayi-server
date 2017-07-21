@@ -59,7 +59,12 @@ public class SaleListServiceImpl implements SaleListService {
 		DataWrapper<SaleInfo> dataWrapper = new DataWrapper<SaleInfo>();
 		SaleInfo saleInfo = new SaleInfo();
 		saleInfo =saleListDao.detail(phone);
-		saleInfo.setMoney(saleListDao.queryByBalance(phone));
+		String money=saleListDao.queryByBalance(phone);
+		if(money==null){
+			saleInfo.setMoney(0);
+		}else{
+			saleInfo.setMoney(Double.parseDouble(money));
+		}
 		Page page = new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);

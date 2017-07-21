@@ -29,11 +29,6 @@ public class ItemStatisticsServiceImpl implements ItemStatisticsService {
 		dataWrapper.setPage(page, totalNumber);
 		List<ItemStatistics> list = itemStatisticsDao.query(itemName, itemId,
 				itemSKU, itemBrandName,page);
-		for (ItemStatistics itemStatistics : list) {
-			Integer refundNum = (Integer) itemStatisticsDao
-					.queryRefund(itemStatistics.getItemId());
-			itemStatistics.setRefundNum(refundNum);
-		}
 		dataWrapper.setData(list);
 		return dataWrapper;
 	}

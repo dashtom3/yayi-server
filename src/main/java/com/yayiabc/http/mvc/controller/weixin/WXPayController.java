@@ -77,6 +77,11 @@ public class WXPayController {
 			}
 			wXPayDao.deleteOrderRecord(orderId);
 			String outTradeNo=UUID.randomUUID().toString();
+			String[] str=outTradeNo.split("-");
+			outTradeNo="";
+			for (String string : str) {
+				outTradeNo+=string;
+			}
 			wXPayDao.addOrderRecord(orderId,outTradeNo);
 			reqData.put("out_trade_no",outTradeNo);
 			reqData.put("fee_type", "CNY");
@@ -198,6 +203,11 @@ public class WXPayController {
 			@RequestParam(value="token",required=true) String token,
 			HttpServletResponse response){
 		String chargeId=UUID.randomUUID().toString();
+		String[] str=chargeId.split("-");
+		chargeId="";
+		for (String string : str) {
+			chargeId+=string;
+		}
 		Charge charge=new Charge();
 		charge.setChargeId(chargeId);
 		charge.setMoney(money);

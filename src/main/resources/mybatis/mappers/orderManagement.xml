@@ -6,7 +6,7 @@
 
 	<resultMap type="com.yayiabc.http.mvc.pojo.model.OrderManagement"
 		id="userOrderManageResultMap">
-		
+
 		<id property="orderId" column="order_id" />
 
 		<result property="phone" column="phone" />
@@ -14,9 +14,9 @@
 		<result property="qbDed" column="qb_ded" />
 		<result property="actualPay" column="actual_pay" />
 		<result property="totalFee" column="total_fee" />
-		
+
 		<result property="reName" column="true_name" />
-		
+
 		<result property="created" column="created" />
 		<result property="state" column="state" />
 		<result property="shippingName" column="shipping_name" />
@@ -37,15 +37,15 @@
 		ON rece.user_id=orde.user_id
 		<where>
 			<if test="orderId !=null and orderId !=''">
-				orde.order_id  like '%${orderId}%'
+				orde.order_id like '%${orderId}%'
 			</if>
-			
+
 			<if test="buyerInfo != null and buyerInfo !=''">
-				and us.phone like  '${buyerInfo}%'  or us.true_name like
-				'${buyerInfo}%'
+				and us.phone like '%${buyerInfo}%' or us.true_name like
+				'%${buyerInfo}%'
 			</if>
-			<if test="orderState !=null and orderState !=''">
-				and orde.state=#{orderState}
+			<if test="orderState !=null">
+				and orde.state=${orderState}
 			</if>
 			<if test="isRefund !=null and isRefund !=''">
 				and orde.refund=#{isRefund}
@@ -54,7 +54,6 @@
 				and orde.created
 				BETWEEN #{orderCTime} AND #{orderETime}
 			</if>
-			
 			<if test="orderCTime !=null and orderCTime !=null">
 				and orde.created >#{orderCTime}
 
@@ -62,23 +61,22 @@
 			<if test="orderETime !=null and orderETime !=null">
 				and orde.created &lt;#{orderETime}
 			</if>
-			    
+
 		</where>
-		
-		 order by  orde.created desc   limit #{currentNum} ,#{numberPerpage}
+		order by orde.created desc limit #{currentNum} ,#{numberPerpage}
 	</select>
 
 	<!-- //关闭交易 or确定交易 -->
 	<update id="closeTrading">
 		update ordera set state =${flagBit},
 		<if test="flagBit==0">
-		close_time=now(),
+			close_time=now(),
 		</if>
 		<if test="flagBit==5">
-		end_time=now(),
+			end_time=now(),
 		</if>
 		updated=now()
-		 where
+		where
 		order_id=#{orderId}
 	</update>
 	<!-- //订单详情 resultMap -->
@@ -127,7 +125,7 @@
 		SELECT
 		orde.state,orde.created,orde.payment_time,orde.total_fee,orde.post_fee,
 		orde.qb_ded,orde.order_id,orde.pay_type,orde.invoice_hand,orde.buyer_message,orde.is_register,
-        orde.actual_pay,
+		orde.actual_pay,
 		rece.user_id,rece.receiver_name,rece.province,rece.city,rece.county,rece.receiver_detail,
 
 		orde_it.item_property_namea,orde_it.item_property_nameb,orde_it.item_property_namec,
@@ -152,26 +150,26 @@
 			<result property="itemPropertyNamea" column="item_property_namea" />
 			<result property="itemPropertyNameb" column="item_property_nameb" />
 			<result property="itemPropertyNamec" column="item_property_namec" />
-			<result property="qbDed" column="qb_ded" />
 			<result property="num" column="num" />
 			<result property="price" column="price" />
-			<association property="itemInfo"
-				javaType="com.yayiabc.http.mvc.pojo.jpa.ItemInfo">
-				<id property="itemId" column="item_id" />
-				<result property="itemName" column="item_name" />
-			</association>
+			<result property="itemName" column="item_name" />
 		</collection>
 	</resultMap>
 	<!-- //退款处理 显示 -->
 	<select id="refundProcessing" resultMap="refundProcessingResultMap">
 		SELECT
-		<!-- orde.user_id, -->
-		orde.actual_pay,orde.order_id,orde.post_fee,orde.qb_ded,orde_it.item_property_namea,orde_it.item_property_nameb
-		,orde_it.item_property_namec,orde_it.price,orde_it.num,item_in.item_name,item_in.item_id,orde_it.qb_ded
-		FROM ordera orde JOIN order_item orde_it ON
-		orde.order_id=orde_it.order_id JOIN item_info item_in ON
-		orde_it.item_id=item_in.item_id
-		where orde.order_id=#{orderId}
+
+		orde.actual_pay,
+		orde.order_id,
+		orde.qb_ded,orde_it.item_property_namea,orde_it.item_property_nameb
+		,orde_it.item_property_namec,
+		orde_it.price,orde_it.num,
+		orde_it.item_name,
+		orde_it.itm_SKU
+		FROM ordera orde JOIN order_item
+		orde_it ON
+		orde.order_id=orde_it.order_id
+		WHERE orde.order_id=#{orderId}
 	</select>
 	<!-- 操作退款数据 -->
 	<insert id="makeRefundData" parameterType="com.yayiabc.http.mvc.pojo.jpa.Refund">
@@ -227,7 +225,7 @@
 			<if test="logisticsCode!=null">
 				shipping_code=#{logisticsCode},
 			</if>
-			   updated=now(),state=3
+			updated=now(),state=3
 			<where>
 				user_id=#{userId}
 			</where>
@@ -236,26 +234,29 @@
 	</update>
 
 	<select id="queryUserId" resultType="java.lang.String">
-		select user_id from ordera where order_id=#{orderId}
+		select user_id from ordera
+		where order_id=#{orderId}
 	</select>
 
 	<!-- -->
-	<select id="queryCount" resultType="int">
-		select count(0) from(SELECT
+	<select id="queryCount" resultType="java.lang.Integer"
+		parameterType="hashmap">
+		select count(0) from( SELECT
 		count(0)
-		FROM USER
-		us JOIN ordera orde ON us.user_id=orde.user_id
+		FROM user us
+		JOIN ordera orde
+		ON us.user_id=orde.user_id
 		<where>
 			<if test="orderId !=null and orderId !=''">
-				orde.order_id  like '%${orderId}%'
+				orde.order_id like '%${orderId}%'
 			</if>
-			
+
 			<if test="buyerInfo != null and buyerInfo !=''">
-				and us.phone like  '${buyerInfo}%'  or us.true_name like
+				and us.phone like '${buyerInfo}%' or us.true_name like
 				'${buyerInfo}%'
 			</if>
-			<if test="orderState !=null and orderState !=''">
-				and orde.state=#{orderState}
+			<if test="orderState !=null and orderState !=''"> -->
+				where orde.state=#{orderState}
 			</if>
 			<if test="isRefund !=null and isRefund !=''">
 				and orde.refund=#{isRefund}
@@ -264,7 +265,7 @@
 				and orde.created
 				BETWEEN #{orderCTime} AND #{orderETime}
 			</if>
-			
+
 			<if test="orderCTime !=null and orderCTime !=null">
 				and orde.created >#{orderCTime}
 
@@ -272,7 +273,60 @@
 			<if test="orderETime !=null and orderETime !=null">
 				and orde.created &lt;#{orderETime}
 			</if>
-			    
-		</where>group by orde.order_id) a
+		</where>
+		group by orde.order_id) a
 	</select>
+
+	<select id="queryOrderItemList" resultType="com.yayiabc.http.mvc.pojo.jpa.OrderItem">
+		select * from
+		order_item where order_id=#{orderId}
+	</select>
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.Ordera" id="www">
+		<id property="orderId" column="order_Id" />
+		<result property="actualPay" column="actual_pay" />
+		<result property="giveQb" column="give_qb" />
+	</resultMap>
+	<select id="queryOrder" resultMap="www">
+		select actual_pay,give_qb from ordera where order_id=#{orderId}
+	</select>
+	<update id="dedQbNum">
+		UPDATE USER SET qb_balance =('qb_balance+${dedQbNum}') WHERE
+		user_id=#{userId}
+	</update>
+	<!--saveRefundMessage(@Param("userId")String userId, @Param("haoCaiRefundSumMoney")Double 
+		haoCaiRefundSumMoney, @Param("toolRefundSumMoney")Double toolRefundSumMoney, 
+		@Param("orderId")String orderId); -->
+	<insert id="saveRefundMessage">
+		insert into
+		refund(user_id,refund_money_haocai,refund_money_gongju,state,created,order_id)
+		values
+		(#{userId},#{haoCaiRefundSumMoney},#{toolRefundSumMoney},#{orderId})
+	</insert>
+	<update id="returnQb">
+		update user set qb_balance=('${Qb}+qb_balance') where user_id=#{userId}
+	</update>
+	<!-- //将退款后的订单新参数更新到ordera表中 -->
+	<update id="updateOrderMessage">
+		<!-- @Param("orderId")String orderId, @Param("refundAfterGiveQbNum")Double 
+			refundAfterGiveQbNum, @Param("haoCaiRefundSumMoney")Double haoCaiRefundSumMoney, 
+			@Param("toolRefundSumMoney")Double toolRefundSumMoney -->
+		update ordera
+		set
+		actual_pay=(${haoCaiRefundSumMoney}+${toolRefundSumMoney}+post_fee-qbded),
+		updated=now(),
+		total_fee=(${haoCaiRefundSumMoney}+${toolRefundSumMoney}),
+		supplies_sumprice=${haoCaiRefundSumMoney},
+		tooldevices_sumprice=${toolRefundSumMoney}
+	</update>
+	<insert id="saveRefundMessToSaleIncome">
+		<!--@Param("saleId")String saleId, @Param("orderId")String orderId, @Param("haoCaiRefundSumMoney")Double 
+			haoCaiRefundSumMoney, @Param("toolRefundSumMoney")Double toolRefundSumMoney -->
+		insert into sale_income
+		(
+		sale_id,order_id,refund_money_haocai,refund_money_gongju,created
+		)values
+		(
+          #{saleId},#{orderId},#{haoCaiRefundSumMoney},#{toolRefundSumMoney},now()
+		)
+	</insert>
 </mapper>

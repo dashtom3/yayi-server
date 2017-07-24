@@ -33,7 +33,7 @@ public class OrderItem extends BasePojo {
 	private String  itemPropertyNamea;
 	private String  itemPropertyNameb;
 	private String  itemPropertyNamec;
-
+    private Integer refunNum;
 	private String itemType;//商品类型
 
 	private String itemBrandName;//商品品牌
@@ -41,6 +41,17 @@ public class OrderItem extends BasePojo {
 	public String getItemBrandName() {
 		return itemBrandName;
 	}
+
+	
+	public Integer getRefunNum() {
+		return refunNum;
+	}
+
+
+	public void setRefunNum(Integer refunNum) {
+		this.refunNum = refunNum;
+	}
+
 
 	public void setItemBrandName(String itemBrandName) {
 		this.itemBrandName = itemBrandName;

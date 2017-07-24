@@ -204,8 +204,8 @@ public class UserServiceImpl implements UserService{
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
 		//--
-		String userId=utilsDao.getUserID(token);
-		SessionManager.removeSessionByUserId(userId);
+		/*String userId=utilsDao.getUserID(token);
+		SessionManager.removeSessionByUserId(userId);*/
 		//---
 		return dataWrapper;
 	}

@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.controller.user;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -12,9 +13,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.model.OrderManagement;
 import com.yayiabc.http.mvc.service.OrderManagementService;
+
+import net.sf.json.JSONArray;
 
 @Controller
 @RequestMapping("api/showUserOrderManage")
@@ -35,6 +39,10 @@ public class OrderManagementController {
 		   @RequestParam(value="currentPage",required=false)Integer currentPage,
 		   @RequestParam(value="numberPerpage",required=false)Integer numberPerpage
 		   ){
+	   if("".equals(orderState)){
+		   orderState=null;  
+	   }
+	   
 	       HashMap<String, Object> hMap=new HashMap<String,Object>();
 	       hMap.put("orderId", orderId);
 	       hMap.put("buyerInfo", buyerInfo);
@@ -56,7 +64,7 @@ public class OrderManagementController {
    //显示退款处理
    @RequestMapping("showRefundProcessing")
    @ResponseBody
-   public DataWrapper<List<Ordera>> refundProcessing(
+   public DataWrapper<Ordera> refundProcessing(
 		  @RequestParam(value="orderId") String orderId
 		   ){
 	   return  orderManagementService.refundProcessing(orderId);
@@ -65,11 +73,16 @@ public class OrderManagementController {
    @RequestMapping("makeRefundData")
    @ResponseBody
    public DataWrapper<Void> makeRefundData(
-//		   @RequestBody Ordera ordera,
-		   @RequestBody  Map<String, String> map
-		 /* @ModelAttribute Refund refund*/
+		   @RequestParam("token")String token,
+            @RequestParam("orderItem") String orderItem
+            /**
+             * 一个 orderItem 对象需要传 退货数量 num，还有sku ，orderId
+             */
 		   ){
-	   return  orderManagementService.makeRefundData(map);
+	   JSONArray json = JSONArray.fromObject(orderItem);
+		ArrayList<OrderItem> orderItemList = (ArrayList<OrderItem>)JSONArray.toCollection(json,OrderItem.class);
+		System.out.println(orderItemList);
+	   return  orderManagementService.makeRefundData(orderItemList);
    }
    //模拟失去焦点事件
    @RequestMapping("loseFocus")

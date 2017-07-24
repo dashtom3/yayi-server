@@ -18,11 +18,19 @@ public class PunRewardController {
     private PunRewardService punRewardService;
     @ResponseBody
     @RequestMapping("show")
-    DataWrapper<Double> show(
+    DataWrapper<Object> show(
     		 @RequestParam(value="token",required=true) String token
     		 ){
-       	
+       	 
 		return punRewardService.show(token);
+    }
+    @ResponseBody
+    @RequestMapping("shows")
+    DataWrapper<Object> shows(
+    		 @RequestParam(value="saleId",required=true) String saleId
+    		 ){
+       	 
+		return punRewardService.shows(saleId);
     }
     //增加或减少余额
     @RequestMapping("addOrDelMoney")

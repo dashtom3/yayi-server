@@ -91,4 +91,14 @@ public interface PlaceOrderDao {
 			@Param("sumPrice") String sumPrice,
 			@Param("orderId")String orderId);
 
+    //退款记录放入 iteminfo中
+	void saveRefundRecord(@Param("itemId")String itemId, @Param("refunNum")Integer refunNum);
+
+	//保存该订单的退款商品分类金额到 sale_info中 
+	void saveRefundMessageToSaleIncome(
+			@Param("saleId")String saleId,
+			@Param("orderId")String orderId, 
+			@Param("haoCaiRefundSumMoney")Double haoCaiRefundSumMoney,
+			@Param("toolRefundSumMoney")Double toolRefundSumMoney);
+
 }

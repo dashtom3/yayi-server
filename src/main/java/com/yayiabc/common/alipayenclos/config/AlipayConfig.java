@@ -16,13 +16,14 @@ public class AlipayConfig {
 //↓↓↓↓↓↓↓↓↓↓请在这里配置您的基本信息↓↓↓↓↓↓↓↓↓↓↓↓↓↓↓
 
 	// 合作身份者ID，签约账号，以2088开头由16位纯数字组成的字符串，查看地址：https://b.alipay.com/order/pidAndKey.htm
-	public static String partner = "2088221734067901";
-	
+	//public static String partner = "2088221734067901";
+	  public static String partner = "2088121334701862"; //妆前
 	// 收款支付宝账号，以2088开头由16位纯数字组成的字符串，一般情况下收款账号就是签约账号
 	public static String seller_id = partner;
 
 	// MD5密钥，安全检验码，由数字和字母组成的32位字符串，查看地址：https://b.alipay.com/order/pidAndKey.htm
-    public static String key ="6k7n8kafmda1t22yl066v4o3lxws9u0s";
+    //public static String key ="6k7n8kafmda1t22yl066v4o3lxws9u0s";
+      public static String key ="qk5s6ct89j54syu3v84m32b0s5oie1to";//妆前
     
 	// 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
 	public static String notify_url = "http://47.93.48.111:8080/api/pay/notifyVerifica";
@@ -39,7 +40,7 @@ public class AlipayConfig {
 	public static String log_path = "C:\\";
 		
 	// 字符编码格式 目前支持 gbk 或 utf-8
-	public static String input_charset = "utf-8";
+	public static String input_charset = "UTF-8";
 		
 	// 支付类型 ，无需修改
 	public static String payment_type = "1";

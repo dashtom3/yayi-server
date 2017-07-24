@@ -156,9 +156,7 @@ public class MyWalletServiceImpl implements MyWalletService{
 		dataWrapper.setData(saleMyWalletDetails);
 		return dataWrapper;
 	}*/
-	@Override
-	@RequestMapping("detail")
-	@ResponseBody
+	
 	public DataWrapper<List<Balance>> detail(HashMap<String, String> hm) {
 		// TODO Auto-generated method stub
 		DataWrapper<List<Balance>> dataWrapper=new DataWrapper<List<Balance>>();
@@ -170,8 +168,12 @@ public class MyWalletServiceImpl implements MyWalletService{
 			Double jzze=0.0;
 			Double czze=0.0;
 			for(int i=0;i<blist.size();i++){
-				jzze+=blist.get(i).getBalanceIn();
-				czze+=blist.get(i).getBalanceOut();
+				if(blist.get(i).getBalanceIn()!=null){
+					jzze+=blist.get(i).getBalanceIn();
+				}
+				if(blist.get(i).getBalanceOut()!=null){
+					czze+=blist.get(i).getBalanceOut();
+				}
 				if(i==blist.size()-1){
 					blist.get(0).setJZZE(jzze);
 					blist.get(0).setCZZE(czze);
@@ -179,6 +181,15 @@ public class MyWalletServiceImpl implements MyWalletService{
 			}
 	  }
 		dataWrapper.setData(blist);
+		return dataWrapper;
+	}
+	//详情
+	@Override
+	public DataWrapper<Balance> details(String balanceId) {
+		// TODO Auto-generated method stub
+		DataWrapper<Balance> dataWrapper=new DataWrapper<Balance>();
+		Balance balance=myWalletDao.details(balanceId);
+		dataWrapper.setData(balance);
 		return dataWrapper;
 	}
 }

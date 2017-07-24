@@ -15,7 +15,14 @@ public interface AliPayDao {
 	List<String> queryYitemNames(@Param("orderId")String orderId);
 	
 	//订单留言
-	String queryYorderMessage(@Param("orderId")String orderId);
 	 //查看订单状态码
+	String queryYorderMessage(@Param("orderId")String orderId);
 	int querySatetIsTwo(String out_trade_no);
+	
+	//获取该订单
+	Ordera queryOrder(@Param("orderId")String out_trade_no);
+	//更改用户钱币
+	int updateQb(@Param("qbDed")Integer qbDed,@Param("userId")String userId);
+	//增加销量
+	void addSales(@Param("itemId")String itemId,@Param("num")Integer num);
 }

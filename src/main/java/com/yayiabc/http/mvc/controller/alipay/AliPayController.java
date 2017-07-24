@@ -115,9 +115,9 @@ public class AliPayController {
 							: valueStr + values[i] + ",";
 				}
 				//乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
-				valueStr = new String(valueStr.getBytes("ISO-8859-1"), "utf-8");
+				valueStr = new String(valueStr.getBytes("ISO-8859-1"), "UTF-8");
 				//params.put(name, new String(valueStr).getBytes());
-				params.put(name, new String (valueStr.getBytes("ISO-8859-1"),"UTF-8"));
+				params.put(name, valueStr);
 			}
 			System.out.println("已经请求到同步方法内");
 			response.setContentType("text/html;charset=UTF-8");  
@@ -126,10 +126,10 @@ public class AliPayController {
 			System.out.println(Sign);
 			if("success".equals(Sign)){
 				System.out.println("已经成功  正在跳转");
-				response.sendRedirect("http://47.93.48.111:85/paySuccess");
+				response.sendRedirect("http://www.yayiabc.com/paySuccess");
 			}else{
 				System.out.println("已经失败  正在跳转");
-				response.sendRedirect("http://47.93.48.111:85/payFail");
+				response.sendRedirect("http://www.yayiabc.com/payFail");
 			}
 			/*out.write(
 					);//以UTF-8进行编码  

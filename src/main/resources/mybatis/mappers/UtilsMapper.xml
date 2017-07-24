@@ -30,16 +30,47 @@
 	select supplies_sumprice,tooldevices_sumprice from ordera where
 	order_id =#{orderId}
 	</select>
+	<!-- 
+	@Param("saleId")String saleId,
+			@Param("orderId")String orderId,
+			@Param("refund_money_haocai")String refund_money_haocai,
+			@Param("refund_money_gongju")String refund_money_gongju,
+			@Param("Supplies_sumprice")String Supplies_sumprice,
+			@Param("Tooldevices_sumprice")String Tooldevices_sumprice
+	 -->
 	
-	
-	<insert id="insert" parameterType="java.lang.String">
-	insert into sale_income(sale_id,order_id,get_money,get_state,state,created)  values
+	<insert id="insert" >
+	insert into sale_income(sale_id,order_id,refund_money_haocai
+	,refund_money_gongju,order_money_haocai,order_money_gongju
+	,created)  values
 	(
-	#{saleId},#{orderId},#{d},#{x},#{i} ,now()
+	#{saleId},#{orderId},#{refund_money_haocai},#{refund_money_gongju},#{Supplies_sumprice} ,
+	#{Tooldevices_sumprice},
+	now()
 	)
 	</insert>
 	
 	<select id="getSaleBySaleId" resultType="com.yayiabc.http.mvc.pojo.jpa.SaleInfo">
 	 select * from sale_info where sale_id=#{saleId}
+	</select>
+	
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.Ordera" id="orderReslutMap">
+	<id property="orderId" column="order_id"/>
+	<result property="userId" column="user_id"/>
+	<result property="giveQb" column="give_qb"/>
+	</resultMap>
+	<select id="queryGiveQBNumByOrderId" resultMap="orderReslutMap">
+	 select user_id,give_qb,actual_pay from ordera  where order_id=#{orderId}
+	</select>
+	
+	<select id="queryUserQbNum" resultType="int">
+	select qb_balance from user where user_id=#{userId}
+	</select>
+	<update id="saveQbToUser">
+	  update  user set qb_balance=#{qb} where user_id=#{userId}
+	</update>
+	<select id="queryTokenByOrderId" resultType="java.lang.String">
+	SELECT token FROM user_token WHERE user_id=
+(SELECT user_id FROM  ordera WHERE order_id=#{orderId})
 	</select>
 </mapper>       

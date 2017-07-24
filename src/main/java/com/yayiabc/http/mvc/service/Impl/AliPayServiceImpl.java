@@ -12,12 +12,20 @@ import com.yayiabc.common.alipayenclos.config.AlipayConfig;
 import com.yayiabc.common.alipayenclos.util.AlipayNotify;
 import com.yayiabc.common.alipayenclos.util.AlipaySubmit;
 import com.yayiabc.http.mvc.dao.AliPayDao;
+import com.yayiabc.http.mvc.dao.UtilsDao;
+import com.yayiabc.http.mvc.pojo.jpa.Ordera;
+import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.service.AliPayService;
+import com.yayiabc.http.mvc.service.UserMyQbService;
 
 @Service
 public class AliPayServiceImpl implements AliPayService{
 	@Autowired
 	private AliPayDao aliPayDao;
+	@Autowired
+	private UserMyQbService userMyQbService;
+	@Autowired
+	private UtilsDao utilsDao;
 	@Override
 	public String packingParameter(String WIDout_trade_no, String WIDsubject, String WIDtotal_fee, String WIDbody) {
 		// TODO Auto-generated method stub
@@ -27,13 +35,13 @@ public class AliPayServiceImpl implements AliPayService{
 			//订单名称，必填
 			//String subject = new String(WIDsubject.getBytes("ISO-8859-1"),"UTF-8");
 			String subject=WIDsubject;
-      
+
 			//付款金额，必填
 			String total_fee = new String(WIDtotal_fee.getBytes("ISO-8859-1"),"UTF-8");
 
 			//商品描述，可空
-			//String body = new String(WIDbody.getBytes("ISO-8859-1"),"UTF-8");
-			String body=WIDbody;
+			String body = new String(WIDbody.getBytes("ISO-8859-1"),"UTF-8");
+			//String body=WIDbody;
 			//把请求参数打包成数组
 			Map<String, String> sParaTemp = new HashMap<String, String>();
 			sParaTemp.put("service", AlipayConfig.service);
@@ -65,7 +73,7 @@ public class AliPayServiceImpl implements AliPayService{
 	}
 	/**
 	 * 1同步通知是给用户看的
-     * 2异步通知是给服务器看的
+	 * 2异步通知是给服务器看的
 	 */
 	//支付校验结果同步
 	@Override
@@ -86,7 +94,7 @@ public class AliPayServiceImpl implements AliPayService{
 
 			//计算得出通知验证结果
 			boolean verify_result = AlipayNotify.verify(params);
-			
+
 			if(verify_result){//验证成功
 				System.out.println("验证成功");
 				//请在这里加上商户的业务逻辑程序代码  明天写
@@ -99,14 +107,14 @@ public class AliPayServiceImpl implements AliPayService{
 					//如果有做过处理，不执行商户的业务程序
 					System.out.println(out_trade_no);
 					int state=aliPayDao.updateStateAndPayTime(out_trade_no);
-					  System.out.println(state);
+					System.out.println(state);
 					if(state>0){
 						return "success";
 					}
-					
+
 				}
 				//验证成功  支付失败 123
-               
+
 			}else{
 				//out.println("验证失败");  
 				//转发到验证失败页面
@@ -145,12 +153,12 @@ public class AliPayServiceImpl implements AliPayService{
 					//判断该笔订单是否在商户网站中已经做过处理finished
 					//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 					//请务必判断请求时的total_fee、seller_id与通知时获取的total_fee、seller_id为一致的
-					
+
 					//如果有做过处理，不执行商户的业务程序
 					int  state=aliPayDao.querySatetIsTwo(out_trade_no);
-//					if(2!=state){  这个判断 暂时不加
+					//					if(2!=state){  这个判断 暂时不加
 					aliPayDao.updateStateAndPayTime(out_trade_no);
-	//				}
+					//				}
 					//注意：
 					//退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
 					return "success";
@@ -166,20 +174,20 @@ public class AliPayServiceImpl implements AliPayService{
 				}
 
 				//——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
-                 //notify_url页面只能返回success，异步通知页面上不可有任何HTML代码。支付结果请以异步通知为准。
+				//notify_url页面只能返回success，异步通知页面上不可有任何HTML代码。支付结果请以异步通知为准。
 				//out.print("success");	//请不要修改或删除
-                
+
 				//////////////////////////////////////////////////////////////////////////////////////////
 			}else{//验证失败
 				//out.print("fail");
-				 return "fail";
+				return "fail";
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
 		}
-		 return "fail";
+		return "fail";
 	}
-	
+
 	//根据订单id 查询结账时需要的数据（订单号，商品名称，易交金额）
 	@Override
 	public HashMap<String , String> queryY(String orderId) {
@@ -191,18 +199,20 @@ public class AliPayServiceImpl implements AliPayService{
 		List<String> itemList=aliPayDao.queryYitemNames(orderId);
 		StringBuffer sb=new StringBuffer();
 		for(int i=0;i<itemList.size();i++){
-            if(i<=2){
-            	sb.append(itemList.get(i));
-            }
-            sb.append("...");
+			if(i<=2){
+				sb.append(itemList.get(i));
+			}
+			sb.append("...");
 		}
 		//订单留言
 		String WIDbody=aliPayDao.queryYorderMessage(orderId);
 		hmHashMap.put("WIDout_trade_no", orderId);
-		hmHashMap.put("WIDtotal_fee", String.valueOf(WIDtotal_fee));
+		hmHashMap.put("WIDtotal_fee",String.valueOf(WIDtotal_fee));
 		hmHashMap.put("WIDsubject", sb.toString());
-		hmHashMap.put("WIDbody", WIDbody);
+		hmHashMap.put("WIDbody",WIDbody);
 		hmHashMap.put("acpPay", WIDbody);
+
+
 		return hmHashMap;
 	}
 }

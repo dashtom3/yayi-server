@@ -6,7 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 public interface PunRewardDao {
 	
-  List<Double> show(@Param("saleId")String saleId);
+  List<Object> show(@Param("saleId")String saleId);
   
   
   int addMoney(@Param("saleId")String saleId,
@@ -15,6 +15,9 @@ public interface PunRewardDao {
 
 
    int  delMoney(@Param("saleId")String saleId,
-		  @Param("balanceIn") Double balance_in,
+		  @Param("balanceOut") Double balance_out,
 		  @Param("balance")Double balance);
+
+
+    List<String>  pd(@Param("saleId")String saleId);
 }

@@ -119,9 +119,10 @@ public class MyWalletController {
 		return 	 myWalletService.queryOrder(orderId,token);
 			
 		  }*/
+	//明细
 	@RequestMapping("detail")
 	@ResponseBody
-	public  void detail(@RequestParam(value="token",required=true)String token,
+	public  DataWrapper<List<Balance>>   detail(@RequestParam(value="token",required=true)String token,
 			@RequestParam(value="state",required=false)String state,
 			@RequestParam(value="starTime",required=false)String starTime,
 			@RequestParam(value="endTime",required=false)String endTime){
@@ -130,6 +131,14 @@ public class MyWalletController {
 		   hm.put("state", state);
 		   hm.put("starTime", starTime);
 		   hm.put("endTime", endTime);
-		myWalletService.detail(hm);
+		return myWalletService.detail(hm);
+	}
+	//详情
+	@RequestMapping("details")
+	@ResponseBody
+	public DataWrapper<Balance>  details(
+			@RequestParam(value="balanceId",required=true)String balanceId
+			){
+		return myWalletService.details(balanceId);
 	}
 }

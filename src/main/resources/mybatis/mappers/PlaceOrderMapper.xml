@@ -222,4 +222,16 @@
 	<update id="saveGiveQbNum">
 	  update ordera set  give_qb=#{giveQbNum},post_fee=#{postFee},total_fee=#{sumPrice} where order_id=#{orderId}
 	</update>
+	
+	<update id="saveRefundRecord">
+	 update inem_info set refund_num=(refund_num+${refunNum}) 
+	 where
+	 item_id=#{itemId}
+	</update>
+	<insert id="saveRefundMessageToSaleIncome">
+	 insert into sale_income
+	 (sale_id,order_id,refund_money_haocai,refund_money_gongju,created)
+	 values
+	 (#{saleId},#{orderId},#{haoCaiRefundSumMoney},#{toolRefundSumMoney},now())
+	</insert>
 </mapper>

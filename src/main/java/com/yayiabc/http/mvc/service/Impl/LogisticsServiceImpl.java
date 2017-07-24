@@ -37,4 +37,10 @@ public class LogisticsServiceImpl implements LogisticsService{
 		}
 		return dataWrapper;
 		}
-		}
+	//自动签收
+	@Override
+	public void updateState(String orderId) {
+		// TODO Auto-generated method stub
+		logisticsDao.updateState(orderId);  
+	}
+}

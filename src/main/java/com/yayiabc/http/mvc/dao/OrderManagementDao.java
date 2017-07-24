@@ -16,7 +16,7 @@ public interface OrderManagementDao {
     int  closeTrading(@Param("orderId")String orderId,@Param("flagBit") Integer flagBit);
    
     //显示退款处理
-    List<Ordera> refundProcessing(@Param("orderId")String orderId);
+   Ordera refundProcessing(@Param("orderId")String orderId);
     
     //操作退款数据
     int makeRefundData(Map<String, String> map);
@@ -44,4 +44,34 @@ public interface OrderManagementDao {
 	String queryUserId(@Param("orderId")String orderId);
 
 	int queryCount(HashMap<String, Object> hMap);
+
+	List<OrderItem> queryOrderItemList(@Param("orderId")String orderId);
+	//查看当前订单的赠送铅笔数   实际付款
+	Ordera queryOrder(@Param("orderId")String orderId);
+	  //扣除该用户钱币
+		int dedQbNum(@Param("dedQbNum")double dedQbNum,@Param("userId")String userId);
+     ///数据插入退款表
+	int  saveRefundMessage(@Param("userId")String userId,
+			@Param("haoCaiRefundSumMoney")Double haoCaiRefundSumMoney, 
+			@Param("toolRefundSumMoney")Double toolRefundSumMoney, 
+			@Param("orderId")String orderId);
+	
+	//退金币refundSumPrice-order.getActualPay()
+	int returnQb(@Param("Qb")double Qb, @Param("userId")String userId);
+	
+	//将退款后的记录更新到订单表中
+	void updateOrderMessage(
+			@Param("orderId")String orderId,
+			@Param("refundAfterGiveQbNum")Double refundAfterGiveQbNum,
+			@Param("haoCaiRefundSumMoney")Double haoCaiRefundSumMoney,
+			@Param("toolRefundSumMoney")Double toolRefundSumMoney
+			);
+
+	void saveRefundMessToSaleIncome(
+			@Param("saleId")String saleId,
+			@Param("orderId")String orderId, 
+			@Param("haoCaiRefundSumMoney")Double haoCaiRefundSumMoney,
+			@Param("toolRefundSumMoney")Double toolRefundSumMoney
+			);
+	
 }

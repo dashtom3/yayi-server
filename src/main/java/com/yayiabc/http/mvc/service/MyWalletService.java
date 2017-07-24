@@ -40,6 +40,9 @@ public interface MyWalletService {
 	
 	//明细
 	DataWrapper<List<Balance>> detail(HashMap<String, String> hm);
+    
+	//详情
+	DataWrapper<Balance>  details(String balanceId);
 
 
 }

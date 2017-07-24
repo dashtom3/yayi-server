@@ -159,7 +159,8 @@
 		</collection>
 	</resultMap>
 	<select id="queryTMD" resultMap="oo">
-		SELECT cash.cash_id,income.sale_income_id,info.sale_id,
+		SELECT
+		cash.cash_id,income.sale_income_id,info.sale_id,
 		timea.universal_time,income.get_money,cash.cashMoney,info.money FROM
 		sale_info info
 		LEFT JOIN cashmanage cash ON info.sale_id=cash.sale_id
@@ -173,26 +174,31 @@
 	</select>
 
 	<insert id="setTime">
-		insert into maker_time(sale_id,universal_time) valuer(#{saleId},now)
+		insert into maker_time(sale_id,universal_time)
+		valuer(#{saleId},now)
 	</insert>
 
-	
+
 	<select id="getSaleIdByToken" resultType="string">
-		select sale_id from sale_token where sale_token=#{token}
+		select sale_id from
+		sale_token where sale_token=#{token}
 	</select>
-	
+
 	<select id="getBalanceBySaleId" resultType="java.lang.Double">
-		select balance from balance where sale_id=#{saleId}
+		select balance from
+		balance where sale_id=#{saleId}
 	</select>
-	
+
 	<select id="getAllIn" resultType="java.lang.Double">
-		select sum(balance_in) from balance where sale_id=#{saleId}
+		select sum(balance_in) from
+		balance where sale_id=#{saleId}
 	</select>
-	
+
 	<select id="getAllOut" resultType="java.lang.Double">
-		select sum(balance_out) from balance where sale_id=#{saleId}
+		select sum(balance_out) from
+		balance where sale_id=#{saleId}
 	</select>
-	
+
 	<select id="myWalletDetails" resultType="Balance">
 		select * from balance
 		<where>
@@ -203,37 +209,45 @@
 			<if test="endTime!=null">and created &gt; #{endTime}</if>
 		</where>
 	</select>
-	
-	<select id="getCount" resultType="java.lang.Integer">
-		select count(0) from balance where balance_id=#{balanceId} and balance_in is null
-	</select>
-	
-	<select id="getViewDetailByOut" resultType="Balance">
-		select * from balance where balance_id=#{balanceId}
-	</select>
-	
-	<!-- <select id="getTime" resultType="java.util.Date">
-		select created from balance where balance_id=#{balanceId}
-	</select> -->
 
-	
-    <select id="detail" resultType="com.yayiabc.http.mvc.pojo.jpa.Balance">
+	<select id="getCount" resultType="java.lang.Integer">
+		select count(0) from balance
+		where balance_id=#{balanceId} and balance_in is null
+	</select>
+
+	<select id="getViewDetailByOut" resultType="Balance">
+		select * from balance
+		where balance_id=#{balanceId}
+	</select>
+
+	<!-- <select id="getTime" resultType="java.util.Date"> select created from 
+		balance where balance_id=#{balanceId} </select> -->
+
+
+	<select id="detail" resultType="com.yayiabc.http.mvc.pojo.jpa.Balance">
 		SELECT * FROM balance
 		<where>
-		describey IS NOT NULL
-		<if test="state!=null and state!='' and state!='全部'">
-		describey like '%${state}%'
-		</if>
-		<if test="starTime !=null and starTime!=''" >
-		      created > #{starTime} 
-		</if> 
-		<if test="endTime !=null  and endTime!=''">
-		   create &lt; #{endTime} <!-- < -->
-		</if>
-		<if test="starTime !=null and starTime!='' and endTime!=null and endTime!=''">
-		   between #{starTime} and #{endTime}
-		</if>
+			describey IS NOT NULL
+			<if test="state!=null and state!=''">
+				and describey like '%${state}%'
+			</if>
+			<if test="starTime !=null and starTime !=null">
+				and created >#{starTime}
+			</if>
+			<if test="endTime !=null and endTime !=null">
+				and created &lt;#{endTime}
+			</if>
 		</where>
 	</select>
+	<select id="details" resultType="com.yayiabc.http.mvc.pojo.jpa.Balance">
+		select * from balance
 
+		<where>
+			describey IS NOT NULL
+			<if test="balanceId!=null and balanceId!=''">
+				and balance_id=#{balanceId}
+			</if>
+		</where>
+
+	</select>
 </mapper>       

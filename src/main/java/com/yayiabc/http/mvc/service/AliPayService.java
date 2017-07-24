@@ -14,8 +14,11 @@ import java.util.Map;
 public interface AliPayService {
 
 	//打包参数
-	String packingParameter(String WIDout_trade_no,String WIDsubject,
-			String WIDtotal_fee,String WIDbody
+	String packingParameter(
+			String WIDout_trade_no,
+			String WIDsubject,
+			String WIDtotal_fee,
+			String WIDbody
 			);
 	//同步支付校验
 	String ReturnUrl(

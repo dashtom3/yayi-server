@@ -52,7 +52,7 @@ public class LogisticsMain {
 	 * @throws Exception 
      */
 	public String getOrderTracesByJson(String ShipperCode, String LogisticCode) throws Exception{
-		String requestData= "{'OrderCode':'','ShipperCode':'" + ShipperCode + "','LogisticCode':'" + LogisticCode + "'}";
+		String requestData= "{'OrderCode':','ShipperCode':'" + ShipperCode + "','LogisticCode':'" + LogisticCode + "'}";
 		
 		Map<String, String> params = new HashMap<String, String>();
 		params.put("RequestData", urlEncoder(requestData, "UTF-8"));

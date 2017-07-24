@@ -21,8 +21,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.GetQCode;
+import com.yayiabc.common.utils.PayAfterOrderUtil;
 import com.yayiabc.common.utils.QbExchangeUtil;
 import com.yayiabc.common.weixin.WXPay;
 import com.yayiabc.common.weixin.WXPayConfigImpl;
@@ -166,10 +168,12 @@ public class WXPayController {
 				Integer totalFee=(int)(total*100);
 				Integer totalTwo=Integer.parseInt((String)packageParam.get("total_fee"));
 				if(totalFee==totalTwo){
+					PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
+					   payAfterOrderUtil.universal(orderId);
 					//这里是支付成功
 					System.out.println("支付成功");
 					//改变订单状态
-					aliPayDao.updateStateAndPayTime(orderId);
+					/*aliPayDao.updateStateAndPayTime(orderId);*/
 					resXml = "<xml>" + "<return_code><" +
 							"![CDATA[SUCCESS]]></return_code>"+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
 				}else{

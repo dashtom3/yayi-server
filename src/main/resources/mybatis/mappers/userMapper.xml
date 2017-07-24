@@ -34,4 +34,8 @@
     <insert id="addToken">
     	insert into user_token values (#{token},#{userId})
     </insert>
+    
+    <select id="getUserIdByToken" resultType="string">
+    	select user_id from user_token where token=#{token}
+    </select>
 </mapper>       

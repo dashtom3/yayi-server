@@ -14,9 +14,19 @@ public interface WXPayDao {
 
 	void updateChargeState(String chargeId);
 
-	Integer getStateByChargeId(String chargeId);
+
 
 	String getTokenByChargeId(String chargeId);
+
+	void deleteOrderRecord(String orderId);
+
+	void addOrderRecord(@Param("orderId")String orderId,@Param("outTradeNo") String outTradeNo);
+
+	String getOrderIdByOutTradeNo(String outTradeNo);
+
+	void deleteChargeByToken(String token);
+
+	Integer getStateByToken(String token);
 
 
 

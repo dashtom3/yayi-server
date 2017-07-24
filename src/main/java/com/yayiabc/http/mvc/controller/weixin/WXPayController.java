@@ -75,7 +75,10 @@ public class WXPayController {
 			}else{
 				reqData.put("body", "商品名称");
 			}
-			reqData.put("out_trade_no",orderId);
+			wXPayDao.deleteOrderRecord(orderId);
+			String outTradeNo=UUID.randomUUID().toString();
+			wXPayDao.addOrderRecord(orderId,outTradeNo);
+			reqData.put("out_trade_no",outTradeNo);
 			reqData.put("fee_type", "CNY");
 			if(totalFee!=null&&!"".equals(totalFee)){
 				reqData.put("total_fee",totalFee+"");//必传,总金额,接口中单位为分,对账单中的单位为元,必须为整数,可以通过参数传进来
@@ -150,15 +153,12 @@ public class WXPayController {
 			if("SUCCESS".equals((String)packageParam.get("result_code"))){
 				
 				//判断返回结果中的金额是否和数据库中查出来的订单金额一致
-				String orderId=(String)packageParam.get("out_trade_no");
-				System.out.println(orderId);
+				String outTradeNo=(String)packageParam.get("out_trade_no");
+				String orderId=wXPayDao.getOrderIdByOutTradeNo(outTradeNo);
 				HashMap<String, String> hashMap=aliPayService.queryY(orderId);
-				System.out.println(hashMap);
 				String total_fee=hashMap.get("WIDtotal_fee");//0.01
-				System.out.println(total_fee);
 				Double total=Double.parseDouble(total_fee);
 				Integer totalFee=(int)(total*100);
-				System.out.println(totalFee);
 				Integer totalTwo=Integer.parseInt((String)packageParam.get("total_fee"));
 				if(totalFee==totalTwo){
 					//这里是支付成功
@@ -194,15 +194,16 @@ public class WXPayController {
 	
 	@RequestMapping("unifiedOrderCharge")
 	@ResponseBody
-	public void unifiedOrderCharge(@RequestParam(value="money",required=true) Integer money,@RequestParam(value="chargeId") String chargeId,
+	public void unifiedOrderCharge(@RequestParam(value="money",required=true) Integer money,
 			@RequestParam(value="token",required=true) String token,
 			HttpServletResponse response){
-		
+		String chargeId=UUID.randomUUID().toString();
 		Charge charge=new Charge();
 		charge.setChargeId(chargeId);
 		charge.setMoney(money);
 		charge.setState(1);
 		charge.setToken(token);
+		wXPayDao.deleteChargeByToken(token);
 		wXPayDao.addCharge(charge);
 		try {
 			WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:8080/api/weixin/getChargeReturnUrl");
@@ -287,17 +288,12 @@ public class WXPayController {
 					System.out.println("支付成功");
 					//给客户的钱包充值
 					String token=wXPayDao.getTokenByChargeId(chargeId);
-					System.out.println(token);
 					String userId=userDao.getUserIdByToken(token);
-					System.out.println(userId);
 					Integer addMoney=QbExchangeUtil.getQbByMoney(money);
-					System.out.println(addMoney);
-					/*wXPayDao.addMoney(userId,addMoney);*/
 					QbRecord qbRecord =new QbRecord();
 					qbRecord.setQbRget(addMoney);
 					qbRecord.setRemark("乾币充值"+money);
 					userMyQbService.add(qbRecord, token);
-					System.out.println("成功");
 					wXPayDao.updateChargeState(chargeId);
 					resXml = "<xml>" + "<return_code><" +
 							"![CDATA[SUCCESS]]></return_code>"+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
@@ -319,9 +315,9 @@ public class WXPayController {
 	//下订单成功后付款成功后接受前台的校验
 	@RequestMapping("checkChargeState")
 	@ResponseBody
-	public DataWrapper<Void> checkChargeState(String chargeId){
+	public DataWrapper<Void> checkChargeState(String token){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		Integer num=wXPayDao.getStateByChargeId(chargeId);
+		Integer num=wXPayDao.getStateByToken(token);
 		dataWrapper.setNum(num);
 		return dataWrapper;
 	}

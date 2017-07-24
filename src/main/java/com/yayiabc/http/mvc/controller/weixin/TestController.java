@@ -1,5 +1,7 @@
 package com.yayiabc.http.mvc.controller.weixin;
 
+
+
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -11,6 +13,8 @@ import com.yayiabc.common.utils.DataWrapper;
 
 @Controller
 public class TestController {
+	
+	
 	
 	@RequestMapping("api/test")
 	@ResponseBody
@@ -31,6 +35,8 @@ public class TestController {
 		dataWrapper.setMsg("helloWorld");
 		return dataWrapper;
 	}
+	
+	
 	
 	
 }

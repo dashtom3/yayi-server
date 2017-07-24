@@ -107,7 +107,7 @@
 
 	<insert id="insertItemInfo">
 		insert into item_info
-		values(#{itemSort},#{isThrow},#{itemId},#{itemName},#{itemBrand.itemBrandId},#{itemPrice},0,0,#{oneClassify},#{twoClassify},#{threeClassify},now(),now());
+		values(#{itemSort},#{isThrow},#{itemId},#{itemName},#{itemBrand.itemBrandId},#{itemPrice},0,0,0,#{oneClassify},#{twoClassify},#{threeClassify},now(),now());
 	</insert>
 
 	<insert id="insertItemDetail">

@@ -37,23 +37,21 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 		   }
 		   System.out.println(uri);
 		   
-		   if(token!=null||uri.indexOf("api/user/pwdLogin")!=-1||uri.indexOf("api/user/getVerifyCode")!=-1||
-				   uri.indexOf("/api/user/register")!=-1||uri.indexOf("api/user/noteLogin")!=-1
-				   ||uri.indexOf("api/user/reLogin")!=-1||uri.indexOf("api/user/forgetPwd")!=-1
+		  if(token!=null||uri.indexOf("api/user")!=-1
 				   //创客的登录注册拦截
-				   ||uri.indexOf("api/saleLog/pwdLogin")!=-1||uri.indexOf("api/saleLog/getVerifyCode")!=-1||
-				   uri.indexOf("/api/saleLog/register")!=-1||uri.indexOf("api/saleLog/noteLogin")!=-1
-				   ||uri.indexOf("api/saleLog/reLogin")!=-1||uri.indexOf("api/saleLog/forgetPwd")!=-1
-				   /*||uri.indexOf("api/page.htm")!=-1||uri.indexOf("logreg/log.htm")!=-1||uri.indexOf("logreg/validateCode.htm")!=-1
+				   ||uri.indexOf("api/saleLog")!=-1||
+				   //显示商品
+				   uri.indexOf("api/")!=-1
+				   ||uri.indexOf("api/page.htm")!=-1||uri.indexOf("logreg/log.htm")!=-1||uri.indexOf("logreg/validateCode.htm")!=-1
 				   
-				   ||uri.indexOf("logreg/log.htm")!=-1||uri.indexOf("sys/index.htm")!=-1||uri.indexOf("logreg/findUser")!=-1||uri.indexOf("logreg/reg")!=-1*/){
+				   ||uri.indexOf("logreg/log.htm")!=-1||uri.indexOf("sys/index.htm")!=-1||uri.indexOf("logreg/findUser")!=-1||uri.indexOf("logreg/reg")!=-1){
 			
 			 return true;
 		}else{
 			//request.getRequestDispatcher("/WEB-INF/views/logReg.jsp").forward(request, response);
 			System.out.println("该用户没登录");
 			return false;
-		}	 
+		}
 	}
 
 }

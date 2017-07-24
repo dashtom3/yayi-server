@@ -1,0 +1,68 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.CornDao">
+
+	<sql id="firstDayOfPrevious">
+		(SELECT DATE_SUB(DATE_SUB(DATE_FORMAT(NOW(),'%y-%m-%d'),INTERVAL EXTRACT(DAY FROM NOW())-1 DAY),INTERVAL 1 MONTH))
+	</sql>
+	
+
+	<sql id="lastDayOfPrevious">
+		(SELECT DATE_SUB(DATE_SUB(DATE_FORMAT(NOW(),'%y-%m-%d'),INTERVAL EXTRACT(DAY FROM NOW()) DAY),INTERVAL 0 MONTH) AS DATE)
+	</sql>
+
+	<select id="getSaleIdList" resultType="string">
+		select sale_id from sale_info
+	</select>
+
+
+	<select id="getTotalHaoCaiMoneyBySaleId" resultType="java.lang.Double">
+		SELECT SUM(order_money_haocai) FROM sale_income WHERE created BETWEEN
+		<include refid="firstDayOfPrevious"></include>
+		AND
+		<include refid="lastDayOfPrevious"></include>
+		AND sale_id=#{saleId}
+	</select>
+
+	<select id="getTotalGongJuMoneyBySaleId" resultType="java.lang.Double">
+		SELECT SUM(order_money_gongju) FROM sale_income WHERE created BETWEEN
+		<include refid="firstDayOfPrevious"></include>
+		AND
+		<include refid="lastDayOfPrevious"></include>
+		AND sale_id=#{saleId}
+	</select>
+
+	<select id="getTotalHaoCaiRefundBySaleId" resultType="java.lang.Double">
+		SELECT SUM(refund_money_haocai) FROM sale_income WHERE created BETWEEN
+		<include refid="firstDayOfPrevious"></include>
+		AND
+		<include refid="lastDayOfPrevious"></include>
+		AND sale_id=#{saleId}
+	</select>
+
+	<select id="getTotalGongJuRefundBySaleId" resultType="java.lang.Double">
+		SELECT SUM(refund_money_gongju) FROM sale_income WHERE created BETWEEN
+		<include refid="firstDayOfPrevious"></include>
+		AND
+		<include refid="lastDayOfPrevious"></include>
+		AND sale_id=#{saleId}
+	</select>
+
+	<select id="getLatestBalanceBySaleId" resultType="java.lang.Double">
+		SELECT balance
+		FROM balance WHERE sale_id=#{saleId} ORDER BY created DESC LIMIT 1
+	</select>
+
+	<insert id="addBalancePerMonth">
+		insert into balance
+		values(null,#{saleId},#{haocaiMoney},#{gongjuMoney},#{haocaiRefund},#{gongjuRefund},#{balanceIn},0,#{balance},#{created},#{describey})
+	</insert>
+	
+	<update id="updateSaleInfo">
+		update sale_info set money=#{money} where sale_id=#{saleId}
+	</update>
+
+
+</mapper>       

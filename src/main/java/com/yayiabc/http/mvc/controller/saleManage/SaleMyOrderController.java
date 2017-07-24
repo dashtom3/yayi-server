@@ -10,8 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.http.mvc.pojo.model.SaleDataStatistics;
-import com.yayiabc.http.mvc.pojo.model.SaleIncomeVo;
+import com.yayiabc.http.mvc.pojo.model.MyOrderVo;
+import com.yayiabc.http.mvc.pojo.model.OrderVo;
+import com.yayiabc.http.mvc.pojo.model.SaleDataVo;
 import com.yayiabc.http.mvc.service.SaleMyOrderService;
 
 @Controller
@@ -21,17 +22,27 @@ public class SaleMyOrderController {
 	SaleMyOrderService saleMyOrderService;
 	
 	/**
-	 * 我的订单
+	 * 我的业绩统计数据
 	 */
-	@RequestMapping(value="myOrder",method=RequestMethod.GET)
+	@RequestMapping(value="myOrderData",method=RequestMethod.GET)
 	@ResponseBody
-	public DataWrapper<SaleDataStatistics> myOrder(
-			
+	public DataWrapper<SaleDataVo> myOrderData(
+    		@RequestParam(value="token",required=true) String token
+	){
+		return saleMyOrderService.myOrderData(token);
+	}
+	
+	/**
+	 * 我的业绩订单列表
+	 */
+	@RequestMapping(value="myOrderList",method=RequestMethod.GET)
+	@ResponseBody
+	public DataWrapper<List<MyOrderVo>> myOrderList(
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-    		@RequestParam(value="token",required=true,defaultValue="10") String token
+    		@RequestParam(value="token",required=true) String token
 	){
-		return saleMyOrderService.myOrder(token, currentPage, numberPerPage);
+		return saleMyOrderService.myOrderList(token, currentPage, numberPerPage);
 	}
 	
 	/**
@@ -39,11 +50,11 @@ public class SaleMyOrderController {
 	 */
 	@RequestMapping(value="chart",method=RequestMethod.GET)
 	@ResponseBody
-	public DataWrapper<List<SaleDataStatistics>> chart(
+	public DataWrapper<List<SaleDataVo>> chart(
 			
 			@RequestParam(value="year",required=true,defaultValue="1") String year,
     		@RequestParam(value="month",required=true,defaultValue="10") String month,
-    		@RequestParam(value="token",required=true,defaultValue="10") String token
+    		@RequestParam(value="token",required=true) String token
 	){
 		return saleMyOrderService.chart(token, year, month);
 	}
@@ -54,12 +65,10 @@ public class SaleMyOrderController {
 	 */
 	@RequestMapping(value="detail",method=RequestMethod.GET)
 	@ResponseBody
-	public DataWrapper<SaleIncomeVo> detail(
-			
-			@RequestParam(value="userPhone",required=true,defaultValue="1") String userPhone,
+	public DataWrapper<OrderVo> detail(
     		@RequestParam(value="orderId",required=true,defaultValue="10") String orderId,
-    		@RequestParam(value="token",required=true,defaultValue="10") String token
+    		@RequestParam(value="token",required=true) String token
 	){
-		return saleMyOrderService.detail(userPhone, orderId, token);
+		return saleMyOrderService.detail(token, orderId);
 	}
 }

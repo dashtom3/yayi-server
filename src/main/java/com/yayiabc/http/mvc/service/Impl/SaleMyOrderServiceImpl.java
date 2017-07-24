@@ -12,9 +12,9 @@ import com.yayiabc.http.mvc.dao.SaleLogDao;
 import com.yayiabc.http.mvc.dao.SaleMyOrderDao;
 import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.pojo.model.MyOrderVo;
+import com.yayiabc.http.mvc.pojo.model.OrderInfoVo;
 import com.yayiabc.http.mvc.pojo.model.OrderVo;
-import com.yayiabc.http.mvc.pojo.model.SaleDataStatistics;
-import com.yayiabc.http.mvc.pojo.model.SaleIncomeVo;
+import com.yayiabc.http.mvc.pojo.model.SaleDataVo;
 import com.yayiabc.http.mvc.service.SaleMyOrderService;
 
 @Service
@@ -27,68 +27,68 @@ public class SaleMyOrderServiceImpl implements SaleMyOrderService {
 	@Autowired
 	UserDao userDao;
 
-	@Override
-	public DataWrapper<SaleDataStatistics> myOrder(String token,
-			Integer currentPage, Integer numberPerPage) {
-		DataWrapper<SaleDataStatistics> dataWrapper = new DataWrapper<SaleDataStatistics>();
-		SaleDataStatistics saleDataStatistics = new SaleDataStatistics();
-		String saleId = saleLogDao.getSaleIdByToken(token);
-		if (saleId == null) {
-			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
-		} else {
-			saleDataStatistics = saleMyOrderDao.myOrderData(saleId);
-			saleDataStatistics = saleMyOrderDao.myOrderOrder(saleId);
-			Page page = new Page();
-			page.setNumberPerPage(numberPerPage);
-			page.setCurrentPage(currentPage);
-			int totalNumber = saleMyOrderDao.getCount(saleId);
-			List<MyOrderVo> list = saleMyOrderDao.myOrder(saleId, page);
-			dataWrapper.setPage(page, totalNumber);
-			saleDataStatistics.setMyOrderVoList(list);
-			dataWrapper.setData(saleDataStatistics);
-		}
-		return dataWrapper;
-	}
 
 	@Override
-	public DataWrapper<List<SaleDataStatistics>> chart(String token,
+	public DataWrapper<List<SaleDataVo>> chart(String token,
 			String year, String month) {
-		DataWrapper<List<SaleDataStatistics>> dataWrapper = new DataWrapper<List<SaleDataStatistics>>();
+		DataWrapper<List<SaleDataVo>> dataWrapper = new DataWrapper<List<SaleDataVo>>();
 		String saleId = saleLogDao.getSaleIdByToken(token);
 		if (saleId == null) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
 		} else {
-			List<SaleDataStatistics> list = saleMyOrderDao.chart(saleId, year,
+			List<SaleDataVo> list = saleMyOrderDao.chart(saleId, year,
 					month);
 			dataWrapper.setData(list);
 		}
 		return dataWrapper;
 	}
 
+
 	@Override
-	public DataWrapper<SaleIncomeVo> detail(String userPhone, String orderId,
-			String token) {
-		DataWrapper<SaleIncomeVo> dataWrapper = new DataWrapper<SaleIncomeVo>();
+	public DataWrapper<SaleDataVo> myOrderData(String token) {
+		DataWrapper<SaleDataVo> dataWrapper=new DataWrapper<SaleDataVo>();
 		String saleId = saleLogDao.getSaleIdByToken(token);
-		String userId = userDao.getUserId(userPhone);
-		if (saleId == null || userId == null) {
-			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
-		} else {
-			SaleIncomeVo saleIncomeVo = saleMyOrderDao.detailS(userId, orderId,saleId);
-			if (saleIncomeVo == null) {
-				dataWrapper.setData(null);
-			} else {
-				List<OrderVo> list = saleMyOrderDao.detailO(userId, orderId,
-						saleId);
-				if (list == null) {
-					saleIncomeVo.setOrderVoList(null);
-				} else {
-					saleIncomeVo.setOrderVoList(list);
-				}
-				dataWrapper.setData(saleIncomeVo);
-			}
+		SaleDataVo saleDataVo=new SaleDataVo();
+		String allcommission=saleMyOrderDao.allCommission(saleId);
+		saleDataVo=saleMyOrderDao.queryData(saleId);
+		if(allcommission==null){
+			saleDataVo.setAllCommission(0);
+		}else{
+			saleDataVo.setAllCommission(Double.parseDouble(saleMyOrderDao.allCommission(saleId)));
 		}
+		dataWrapper.setData(saleDataVo);
 		return dataWrapper;
 	}
+
+
+	@Override
+	public DataWrapper<List<MyOrderVo>> myOrderList(String token,
+			Integer currentPage, Integer numberPerPage) {
+		DataWrapper<List<MyOrderVo>> dataWrapper=new DataWrapper<List<MyOrderVo>>();
+		String saleId = saleLogDao.getSaleIdByToken(token);
+		Page page = new Page();
+		page.setNumberPerPage(numberPerPage);
+		page.setCurrentPage(currentPage);
+		int totalNumber=saleMyOrderDao.getCountOrderList(saleId);
+		dataWrapper.setPage(page, totalNumber);
+		List<MyOrderVo> list=saleMyOrderDao.queryOrderList(saleId, page);
+		dataWrapper.setData(list);
+		return dataWrapper;
+	}
+
+
+	@Override
+	public DataWrapper<OrderVo> detail(String token, String orderId) {
+		DataWrapper<OrderVo> dataWrapper=new DataWrapper<OrderVo>();
+		String saleId = saleLogDao.getSaleIdByToken(token);
+		List<OrderInfoVo> list=saleMyOrderDao.detailOrderList(saleId, orderId);
+		OrderVo orderVo=new OrderVo();
+		orderVo=saleMyOrderDao.detail(saleId, orderId);
+		orderVo.setOrderInfoVoList(list);
+		dataWrapper.setData(orderVo);
+		return dataWrapper;
+	}
+
+
 
 }

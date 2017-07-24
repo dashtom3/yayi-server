@@ -9,17 +9,17 @@ public class MyOrderVo {
 
 	private String userPhone;
 
-	private String itemName;
+	private String orderId;
+	
+	private double allMoney; // 销售额
 
-	private String totalFee;
+	private double haocaiMoney; // 耗材销售额
 
-	private String refundMoney;
+	private double gongjuMoney; // 工具销售额
 
-	private String getMoney;
+	private double refundMoney; // 已退金额
 
-	private String getState;
-
-	private String getUpdated;
+	private double actualMoney; // 实际销售额
 
 	private SaleDataStatistics saleDataStatistics;
 
@@ -55,56 +55,56 @@ public class MyOrderVo {
 		this.userPhone = userPhone;
 	}
 
-	public String getItemName() {
-		return itemName;
+	public double getAllMoney() {
+		return allMoney;
 	}
 
-	public void setItemName(String itemName) {
-		this.itemName = itemName;
+	public void setAllMoney(double allMoney) {
+		this.allMoney = allMoney;
 	}
 
-	public String getTotalFee() {
-		return totalFee;
+	public double getHaocaiMoney() {
+		return haocaiMoney;
 	}
 
-	public void setTotalFee(String totalFee) {
-		this.totalFee = totalFee;
+	public void setHaocaiMoney(double haocaiMoney) {
+		this.haocaiMoney = haocaiMoney;
 	}
 
-	public String getRefundMoney() {
+	public double getGongjuMoney() {
+		return gongjuMoney;
+	}
+
+	public void setGongjuMoney(double gongjuMoney) {
+		this.gongjuMoney = gongjuMoney;
+	}
+
+	public double getRefundMoney() {
 		return refundMoney;
 	}
 
-	public void setRefundMoney(String refundMoney) {
+	public void setRefundMoney(double refundMoney) {
 		this.refundMoney = refundMoney;
 	}
 
-	public String getGetMoney() {
-		return getMoney;
+	public double getActualMoney() {
+		return actualMoney;
 	}
 
-	public void setGetMoney(String getMoney) {
-		this.getMoney = getMoney;
-	}
-
-	public String getGetState() {
-		return getState;
-	}
-
-	public void setGetState(String getState) {
-		this.getState = getState;
-	}
-
-	public String getGetUpdated() {
-		return getUpdated;
-	}
-
-	public void setGetUpdated(String getUpdated) {
-		this.getUpdated = getUpdated;
+	public void setActualMoney(double actualMoney) {
+		this.actualMoney = actualMoney;
 	}
 
 	public SaleDataStatistics getSaleDataStatistics() {
 		return saleDataStatistics;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
 	}
 
 	public void setSaleDataStatistics(SaleDataStatistics saleDataStatistics) {
@@ -115,21 +115,21 @@ public class MyOrderVo {
 		super();
 	}
 
-	public MyOrderVo(String saleId, String orderCreated, String userName,
-			String userPhone, String itemName, String totalFee,
-			String refundMoney, String getMoney, String getState,
-			String getUpdated, SaleDataStatistics saleDataStatistics) {
+	public MyOrderVo(String saleId,String orderId, String orderCreated, String userName,
+			String userPhone, double allMoney, double haocaiMoney,
+			double gongjuMoney, double refundMoney, double actualMoney,
+			SaleDataStatistics saleDataStatistics) {
 		super();
+		this.orderId=orderId;
 		this.saleId = saleId;
 		this.orderCreated = orderCreated;
 		this.userName = userName;
 		this.userPhone = userPhone;
-		this.itemName = itemName;
-		this.totalFee = totalFee;
+		this.allMoney = allMoney;
+		this.haocaiMoney = haocaiMoney;
+		this.gongjuMoney = gongjuMoney;
 		this.refundMoney = refundMoney;
-		this.getMoney = getMoney;
-		this.getState = getState;
-		this.getUpdated = getUpdated;
+		this.actualMoney = actualMoney;
 		this.saleDataStatistics = saleDataStatistics;
 	}
 
@@ -137,9 +137,9 @@ public class MyOrderVo {
 	public String toString() {
 		return "MyOrderVo [saleId=" + saleId + ", orderCreated=" + orderCreated
 				+ ", userName=" + userName + ", userPhone=" + userPhone
-				+ ", itemName=" + itemName + ", totalFee=" + totalFee
-				+ ", refundMoney=" + refundMoney + ", getMoney=" + getMoney
-				+ ", getState=" + getState + ", getUpdated=" + getUpdated
+				+ ", allMoney=" + allMoney + ", haocaiMoney=" + haocaiMoney
+				+ ", gongjuMoney=" + gongjuMoney + ", refundMoney="
+				+ refundMoney + ", actualMoney=" + actualMoney
 				+ ", saleDataStatistics=" + saleDataStatistics + "]";
 	}
 

@@ -1,20 +1,23 @@
 package com.yayiabc.http.mvc.pojo.model;
 
+import java.util.List;
+
 public class OrderVo {
 	private String orderId; // 订单编号
-	private String state; // 订单状态
-	private Integer refundMoney; // 退款金额
-	private Integer commission; // 提成收入
+	private String orderState; // 订单状态
 	private String orderCreated; // 下单时间
 	private String userName;
 	private String userPhone;
-	private double itemSumMoney;	//商品总价
-	private double orderMoneyHaocai;	//耗材类
-	private double orderMoneyGongju;	//工具类
-	private double refundMoneyHaocai;	//已退金额，耗材
-	private double refundMoneyGongju;	//已退金额，工具
-	private double actualMoney;	//实际销售额
+	private double itemSumMoney; // 商品总价
+	private double orderMoneyHaocai; // 耗材类
+	private double orderMoneyGongju; // 工具类
+	private double refundMoneyHaocai; // 已退金额，耗材
+	private double refundMoneyGongju; // 已退金额，工具
+	private double actualMoneyHaocai; // 实际销售额耗材
+	private double actualMoneyGongju; // 实际销售额工具
+	private double actualMoney; // 实际销售额
 	private SaleIncomeVo saleIncomeVo;
+	private List<OrderInfoVo> orderInfoVoList;
 
 	public String getOrderId() {
 		return orderId;
@@ -24,28 +27,12 @@ public class OrderVo {
 		this.orderId = orderId;
 	}
 
-	public String getState() {
-		return state;
+	public String getOrderState() {
+		return orderState;
 	}
 
-	public void setState(String state) {
-		this.state = state;
-	}
-
-	public Integer getRefundMoney() {
-		return refundMoney;
-	}
-
-	public void setRefundMoney(Integer refundMoney) {
-		this.refundMoney = refundMoney;
-	}
-
-	public Integer getCommission() {
-		return commission;
-	}
-
-	public void setCommission(Integer commission) {
-		this.commission = commission;
+	public void setOrderState(String orderState) {
+		this.orderState = orderState;
 	}
 
 	public String getOrderCreated() {
@@ -112,6 +99,22 @@ public class OrderVo {
 		this.refundMoneyGongju = refundMoneyGongju;
 	}
 
+	public double getActualMoneyHaocai() {
+		return actualMoneyHaocai;
+	}
+
+	public void setActualMoneyHaocai(double actualMoneyHaocai) {
+		this.actualMoneyHaocai = actualMoneyHaocai;
+	}
+
+	public double getActualMoneyGongju() {
+		return actualMoneyGongju;
+	}
+
+	public void setActualMoneyGongju(double actualMoneyGongju) {
+		this.actualMoneyGongju = actualMoneyGongju;
+	}
+
 	public double getActualMoney() {
 		return actualMoney;
 	}
@@ -128,21 +131,28 @@ public class OrderVo {
 		this.saleIncomeVo = saleIncomeVo;
 	}
 
+	public List<OrderInfoVo> getOrderInfoVoList() {
+		return orderInfoVoList;
+	}
+
+	public void setOrderInfoVoList(List<OrderInfoVo> orderInfoVoList) {
+		this.orderInfoVoList = orderInfoVoList;
+	}
+
 	public OrderVo() {
 		super();
 	}
 
-	public OrderVo(String orderId, String state, Integer refundMoney,
-			Integer commission, String orderCreated, String userName,
-			String userPhone, double itemSumMoney, double orderMoneyHaocai,
-			double orderMoneyGongju, double refundMoneyHaocai,
-			double refundMoneyGongju, double actualMoney,
-			SaleIncomeVo saleIncomeVo) {
+	public OrderVo(String orderId, String orderState, String orderCreated,
+			String userName, String userPhone, double itemSumMoney,
+			double orderMoneyHaocai, double orderMoneyGongju,
+			double refundMoneyHaocai, double refundMoneyGongju,
+			double actualMoneyHaocai, double actualMoneyGongju,
+			double actualMoney, SaleIncomeVo saleIncomeVo,
+			List<OrderInfoVo> orderInfoVoList) {
 		super();
 		this.orderId = orderId;
-		this.state = state;
-		this.refundMoney = refundMoney;
-		this.commission = commission;
+		this.orderState = orderState;
 		this.orderCreated = orderCreated;
 		this.userName = userName;
 		this.userPhone = userPhone;
@@ -151,21 +161,26 @@ public class OrderVo {
 		this.orderMoneyGongju = orderMoneyGongju;
 		this.refundMoneyHaocai = refundMoneyHaocai;
 		this.refundMoneyGongju = refundMoneyGongju;
+		this.actualMoneyHaocai = actualMoneyHaocai;
+		this.actualMoneyGongju = actualMoneyGongju;
 		this.actualMoney = actualMoney;
 		this.saleIncomeVo = saleIncomeVo;
+		this.orderInfoVoList = orderInfoVoList;
 	}
 
 	@Override
 	public String toString() {
-		return "OrderVo [orderId=" + orderId + ", state=" + state
-				+ ", refundMoney=" + refundMoney + ", commission=" + commission
+		return "OrderVo [orderId=" + orderId + ", orderState=" + orderState
 				+ ", orderCreated=" + orderCreated + ", userName=" + userName
 				+ ", userPhone=" + userPhone + ", itemSumMoney=" + itemSumMoney
 				+ ", orderMoneyHaocai=" + orderMoneyHaocai
 				+ ", orderMoneyGongju=" + orderMoneyGongju
 				+ ", refundMoneyHaocai=" + refundMoneyHaocai
-				+ ", refundMoneyGongju=" + refundMoneyGongju + ", actualMoney="
-				+ actualMoney + ", saleIncomeVo=" + saleIncomeVo + "]";
+				+ ", refundMoneyGongju=" + refundMoneyGongju
+				+ ", actualMoneyHaocai=" + actualMoneyHaocai
+				+ ", actualMoneyGongju=" + actualMoneyGongju + ", actualMoney="
+				+ actualMoney + ", saleIncomeVo=" + saleIncomeVo
+				+ ", orderInfoVoList=" + orderInfoVoList + "]";
 	}
 
 }

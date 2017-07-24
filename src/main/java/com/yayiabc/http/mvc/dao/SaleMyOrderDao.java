@@ -7,29 +7,40 @@ import org.springframework.stereotype.Repository;
 
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.pojo.model.MyOrderVo;
+import com.yayiabc.http.mvc.pojo.model.OrderInfoVo;
 import com.yayiabc.http.mvc.pojo.model.OrderVo;
-import com.yayiabc.http.mvc.pojo.model.SaleDataStatistics;
-import com.yayiabc.http.mvc.pojo.model.SaleIncomeVo;
-
+import com.yayiabc.http.mvc.pojo.model.SaleDataVo;
 @Repository
 public interface SaleMyOrderDao {
-	//查询我的订单
-	List<MyOrderVo> myOrder(@Param("saleId")String saleId,@Param("page")Page page);
-	
-	int getCount(@Param("saleId")String saleId);
-	
-	//销售员收入等数据
-	SaleDataStatistics myOrderData(@Param("saleId")String saleId);
-	
-	//销售员订单等数据
-	SaleDataStatistics myOrderOrder(@Param("saleId")String saleId);
 	
 	//折线图
-	List<SaleDataStatistics> chart(@Param("saleId")String saleId,@Param("year")String year,@Param("month")String month);
+	List<SaleDataVo> chart(
+			@Param("saleId")String saleId,
+			@Param("year")String year,
+			@Param("month")String month);
 
-	//查看详情客户
-	SaleIncomeVo detailS(@Param("userId")String userId,@Param("orderId")String orderId,@Param("saleId")String saleId);
+	//统计数据查询
+	SaleDataVo	queryData(
+			@Param("saleId")String saleId);
 	
-	//查看详情订单
-	List<OrderVo> detailO(@Param("userId")String userId,@Param("orderId")String orderId,@Param("saleId")String saleId);
+	//累计收入
+	String allCommission(
+			@Param("saleId")String saleId);
+	
+	//订单列表信息查询
+	List<MyOrderVo> queryOrderList(
+			@Param("saleId")String saleId,
+			@Param("page") Page page);
+
+	int getCountOrderList(
+			@Param("saleId")String saleId);
+	
+	//我的业绩详情
+	OrderVo detail(
+			@Param("saleId")String saleId,
+			@Param("orderId")String orderId); 
+	
+	List<OrderInfoVo> detailOrderList(
+			@Param("saleId")String saleId,
+			@Param("orderId")String orderId);
 }

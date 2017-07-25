@@ -48,7 +48,7 @@
 		s.true_name AS saleName,
 		s.phone AS salePhone,
 		IF(b.balance_in IS NOT NULL,b.balance_in,0) AS getMoney,
-		DATE_FORMAT(b.created,'%Y-%m') AS beYearMonth,
+		DATE_FORMAT(DATE_SUB(b.created,INTERVAL 1 MONTH),'%Y-%m') AS beYearMonth,
 		"已结算" AS getState,
 		b.created AS settlementTime,
 		SUM(IF(b.haocai_refund IS NOT NULL,b.haocai_refund,0)+IF(b.gongju_refund IS NOT NULL,b.gongju_refund,0)) AS moneyRefund,
@@ -66,7 +66,7 @@
 			AND s.phone LIKE '%${salePhone}%'
 		</if>
 		<if test="beYearMonth !=null and beYearMonth !=''">
-			AND DATE_FORMAT(b.created,'%Y-%m') = #{beYearMonth}
+			AND DATE_FORMAT(DATE_SUB(b.created,INTERVAL 1 MONTH),'%Y-%m') = #{beYearMonth}
 		</if>
 		<if test="startDate !=null and startDate !=''">
 			AND DATE_FORMAT(b.created,'%Y-%m-%d') <![CDATA[  >=  ]]>#{startDate}
@@ -93,7 +93,7 @@
 			AND s.phone LIKE '%${salePhone}%'
 		</if>
 		<if test="beYearMonth !=null and beYearMonth !=''">
-			AND DATE_FORMAT(b.created,'%Y-%m') = #{beYearMonth}
+			AND DATE_FORMAT(DATE_SUB(b.created,INTERVAL 1 MONTH),'%Y-%m') = #{beYearMonth}
 		</if>
 		<if test="startDate !=null and startDate !=''">
 			AND DATE_FORMAT(b.created,'%Y-%m-%d') <![CDATA[  >=  ]]>#{startDate}
@@ -113,9 +113,8 @@
 		"0" AS getMoney,
 		DATE_FORMAT(si.created,'%Y-%m') AS beYearMonth,
 		"待结算" AS getState,
-		"NULL" AS settlementTime,
-		SUM(IF(si.refund_money_haocai IS NOT NULL,si.refund_money_haocai,0)+IF(si.refund_money_gongju IS NOT NULL,si.refund_money_gongju,0)) AS moneyRefund,
 		SUM(IF(si.order_money_haocai IS NOT NULL,si.order_money_haocai,0)+IF(si.order_money_gongju IS NOT NULL,si.order_money_gongju,0)) AS allMoney,
+		SUM(IF(si.refund_money_haocai IS NOT NULL,si.refund_money_haocai,0)+IF(si.refund_money_gongju IS NOT NULL,si.refund_money_gongju,0)) AS moneyRefund,
 		SUM(IF(si.order_money_haocai IS NOT NULL,si.order_money_haocai,0)+IF(si.order_money_gongju IS NOT NULL,si.order_money_gongju,0)) - 
 		SUM(IF(si.refund_money_haocai IS NOT NULL,si.refund_money_haocai,0)+IF(si.refund_money_gongju IS NOT NULL,si.refund_money_gongju,0)) AS allActual
 		FROM sale_income si
@@ -127,9 +126,6 @@
 		</if>
 		<if test="salePhone !=null and salePhone !=''">
 			AND s.phone LIKE '%${salePhone}%'
-		</if>
-		<if test="beYearMonth !=null and beYearMonth !=''">
-			AND DATE_FORMAT(si.created,'%Y-%m') =#{beYearMonth}
 		</if>
 		GROUP BY si.sale_id
 		LIMIT ${page.currentNumber},${page.numberPerPage} 
@@ -148,9 +144,6 @@
 			</if>
 			<if test="salePhone !=null and salePhone !=''">
 				AND s.phone LIKE '%${salePhone}%'
-			</if>
-			<if test="beYearMonth !=null and beYearMonth !=''">
-				AND DATE_FORMAT(si.created,'%Y-%m') =#{beYearMonth}
 			</if>
 			GROUP BY si.sale_id
 		) AS a
@@ -173,12 +166,12 @@
 		</association>
 	</resultMap>
 	
-	<select id="detail" resultMap="saleIncomeRM">
+	<select id="detailDone" resultMap="saleIncomeRM">
 		SELECT
 		s.sale_id, 
 		s.true_name AS saleName,
 		s.phone AS salePhone,
-		DATE_FORMAT(b.created,'%Y-%m') AS beYearMonth,
+		DATE_FORMAT(DATE_SUB(b.created,INTERVAL 1 MONTH),'%Y-%m') AS beYearMonth,
 		b.haocai_money,
 		b.haocai_refund,
 		IF(b.haocai_money IS NOT NULL,b.haocai_money,0)-
@@ -192,7 +185,17 @@
 		WHERE
 		b.haocai_money IS NOT NULL AND b.gongju_money IS NOT NULL 
 		AND s.sale_id=#{saleId} 
-		AND DATE_FORMAT(b.created,'%Y-%m') = #{beYearMonth}
+		AND DATE_FORMAT(DATE_SUB(b.created,INTERVAL 1 MONTH),'%Y-%m') = #{beYearMonth}
+		LIMIT 1
+	</select>
+	
+	<select id="detailNot" resultMap="saleIncomeRM">
+		SELECT
+		sale_id, 
+		true_name AS saleName,
+		phone AS salePhone
+		FROM sale_info
+		WHERE sale_id=#{saleId}
 		LIMIT 1
 	</select>
 		

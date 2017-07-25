@@ -162,7 +162,6 @@ public interface SaleIncomeListApi {
      *
      * @apiParam {String} saleName 销售员姓名（非必须）
      * @apiParam {String} salePhone 销售员手机号码（非必须）
-     * @apiParam {String} beYearMonth 收入所属年月（非必须，格式'yyyy-MM'）
      * @apiParam {int} currentPage （非必须）
      * @apiParam {int} numberPerPage （非必须）  
      *
@@ -172,15 +171,15 @@ public interface SaleIncomeListApi {
      * callStatus:"SUCCEED",
      * errorCode:"No_Error",
      * data:[{
-     * 		saleId:"a123",
-     * 		saleName:"真实姓名",
-     * 		salePhone:"17668123578",
+     * 		saleId:"b456",
+     * 		saleName:"销售员二号",
+     * 		salePhone:"17668129874",
      * 		getMoney:0,
      *      beYearMonth:"2017-06",
      * 		getState:"待结算",
-	 *		settlementTime:NULL,
-	 * 		allMoney:5000,	(销售额)
-	 * 		allActual:4000	(实际销售额)
+	 * 		allMoney:5000,		(销售额)
+	 * 		moneyRefund:100,	(已退款金额)
+	 * 		allActual:4000		(实际销售额)
      * },{
      * 		saleId:"b456",
      * 		saleName:"销售员二号",
@@ -188,9 +187,9 @@ public interface SaleIncomeListApi {
      * 		getMoney:0,
      *      beYearMonth:"2017-06",
      * 		getState:"待结算",
-	 *		settlementTime:NULL,
-	 * 		allMoney:5000,	(销售额)
-	 * 		allActual:4000	(实际销售额)
+	 * 		allMoney:5000,		(销售额)
+	 * 		moneyRefund:100,	(已退款金额)
+	 * 		allActual:4000		(实际销售额)
      * }],
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
      * numberPerPage:10,

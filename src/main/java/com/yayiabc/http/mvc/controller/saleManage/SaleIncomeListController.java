@@ -44,11 +44,10 @@ public class SaleIncomeListController {
 	public DataWrapper<List<SaleIncomeVo>> queryNot(
 			@RequestParam(value="saleName",required=false)String saleName,
 			@RequestParam(value="salePhone",required=false)String salePhone,
-			@RequestParam(value="beYearMonth",required=false)String beYearMonth,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
-		return saleIncomeListService.queryNot(saleName, salePhone, beYearMonth, currentPage, numberPerPage);
+		return saleIncomeListService.queryNot(saleName, salePhone, currentPage, numberPerPage);
 	}
 	
 	/**

@@ -13,7 +13,6 @@ import com.yayiabc.common.utils.Page;
 import com.yayiabc.common.utils.getTimeUtil;
 import com.yayiabc.http.mvc.dao.SaleIncomeListDao;
 import com.yayiabc.http.mvc.pojo.model.OrderVo;
-import com.yayiabc.http.mvc.pojo.model.SaleDataStatistics;
 import com.yayiabc.http.mvc.pojo.model.SaleIncomeVo;
 import com.yayiabc.http.mvc.service.SaleIncomeListService;
 
@@ -24,25 +23,28 @@ public class SaleIncomeListServiceImpl implements SaleIncomeListService {
 	SaleIncomeListDao saleIncomeListDao;
 
 	@Override
-	public DataWrapper<SaleIncomeVo> detail(String saleId, String beYearMonth,
-			String getState, Integer currentPage, Integer numberPerPage) {
+	public DataWrapper<SaleIncomeVo> detail(String saleId, String beYearMonth,String getState,
+			 Integer currentPage, Integer numberPerPage) {
 		DataWrapper<SaleIncomeVo> dataWrapper = new DataWrapper<SaleIncomeVo>();
 		String startDate = "";
 		String endDate = "";
+		Map<String, String> map = new HashMap<String, String>();		
 		SaleIncomeVo saleIncomeVo = new SaleIncomeVo();
-		saleIncomeVo = saleIncomeListDao.detail(saleId, beYearMonth);
-		Map<String, String> map = new HashMap<String, String>();
 		if ("已结算".equals(getState)) {
-			map = getTimeUtil.getLastTime();
-			startDate = map.get("startDate");
-			endDate = map.get("endDate");
-			saleIncomeVo.setHaocaiGetMoney(IncomUtil.getMoneyByHaoCai(
-					saleIncomeVo.getSaleDataStatistics().getHaocaiMoney(), 
-					saleIncomeVo.getSaleDataStatistics().getHaocaiActual()));
-			saleIncomeVo.setGongjuGetMoney(IncomUtil.getMoneyByGongJu(
-					saleIncomeVo.getSaleDataStatistics().getGongjuMoney(), 
-					saleIncomeVo.getSaleDataStatistics().getGongjuActual()));
-		} else if ("未结算".equals(getState)) {
+		saleIncomeVo = saleIncomeListDao.detailDone(saleId, beYearMonth);	//收入已结算的业绩统计信息	
+		Integer year=Integer.parseInt(beYearMonth.substring(0, 4));
+		Integer month=Integer.parseInt(beYearMonth.substring(5, 7));
+		map = getTimeUtil.getYearMonthTime(year, month);
+		startDate = map.get("startDate");
+		endDate = map.get("endDate");
+		saleIncomeVo.setHaocaiGetMoney(IncomUtil.getMoneyByHaoCai(			//耗材类收入
+				saleIncomeVo.getSaleDataStatistics().getHaocaiMoney(), 
+				saleIncomeVo.getSaleDataStatistics().getHaocaiActual()));
+		saleIncomeVo.setGongjuGetMoney(IncomUtil.getMoneyByGongJu(
+				saleIncomeVo.getSaleDataStatistics().getGongjuMoney(), 		//工具类收入
+				saleIncomeVo.getSaleDataStatistics().getGongjuActual()));
+		} else if ("待结算".equals(getState)) {
+			saleIncomeVo =saleIncomeListDao.detailNot(saleId);
 			map = getTimeUtil.getTime();
 			startDate = map.get("startDate");
 			endDate = map.get("endDate");
@@ -50,11 +52,9 @@ public class SaleIncomeListServiceImpl implements SaleIncomeListService {
 		Page page = new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		int totalNumber = saleIncomeListDao.getCountOrderList(startDate,
-				endDate, saleId);
+		int totalNumber = saleIncomeListDao.getCountOrderList(startDate,endDate, saleId);
 		dataWrapper.setPage(page, totalNumber);
-		List<OrderVo> list = saleIncomeListDao.orderList(startDate, endDate,
-				saleId, page);
+		List<OrderVo> list = saleIncomeListDao.orderList(startDate, endDate,saleId, page);
 		if (list == null) {
 			saleIncomeVo.setOrderVoList(null);
 		} else {
@@ -81,7 +81,7 @@ public class SaleIncomeListServiceImpl implements SaleIncomeListService {
 
 	@Override
 	public DataWrapper<List<SaleIncomeVo>> queryNot(String saleName, String salePhone,
-			String beYearMonth, Integer currentPage, Integer numberPerPage) {
+			 Integer currentPage, Integer numberPerPage) {
 		DataWrapper<List<SaleIncomeVo>> dataWrapper = new DataWrapper<List<SaleIncomeVo>>();
 		Map<String, String> map =new HashMap<String, String>();
 		map =getTimeUtil.getTime();
@@ -90,8 +90,8 @@ public class SaleIncomeListServiceImpl implements SaleIncomeListService {
 		Page page = new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		int totalNumber=saleIncomeListDao.getCountNot(startDate,endDate, saleName, salePhone, beYearMonth);
-		List<SaleIncomeVo> list =saleIncomeListDao.queryNot(startDate, endDate, saleName, salePhone, beYearMonth, page);
+		int totalNumber=saleIncomeListDao.getCountNot(startDate,endDate, saleName, salePhone);
+		List<SaleIncomeVo> list =saleIncomeListDao.queryNot(startDate, endDate, saleName, salePhone, page);
 		dataWrapper.setPage(page, totalNumber);
 		dataWrapper.setData(list);
 		return dataWrapper;

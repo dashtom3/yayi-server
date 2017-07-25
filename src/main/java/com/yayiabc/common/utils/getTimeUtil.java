@@ -21,12 +21,9 @@ public class getTimeUtil {
 		}
 	
 	
-	//获得上月起止时间
-	public static Map<String,String> getLastTime(){
-		  Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));    //获取东八区时间
+	//获得指定月份的起止时间
+	public static Map<String,String> getYearMonthTime(int year,int month){
 		  Map<String, String> map =new HashMap<String, String>(); 
-		  int year = cal.get(Calendar.YEAR);    //获取年
-		  int month =Integer.parseInt(getLastMonth());
 		  String startDate=getFirstDayOfMonth(year, month);
 		  String endDate=getLastDayOfMonth(year, month);
 		  map.put("startDate",startDate);
@@ -83,7 +80,7 @@ public class getTimeUtil {
     * @return 
     */  
     public static String getFirstDayOfMonth(int year,int month){  
-            Calendar cal = Calendar.getInstance();  
+            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));  
             //设置年份  
             cal.set(Calendar.YEAR,year);  
             //设置月份  
@@ -105,7 +102,7 @@ public class getTimeUtil {
     * @return 
     */  
     public static String getLastDayOfMonth(int year,int month){  
-            Calendar cal = Calendar.getInstance();  
+            Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));  
             //设置年份  
             cal.set(Calendar.YEAR,year);  
             //设置月份  

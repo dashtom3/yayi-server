@@ -28,26 +28,28 @@ public interface SaleIncomeListDao {
 			@Param("startDate")String startDate,
 			@Param("endDate")String endDate);
 
-	// 销售员业绩列表,未结算
+	// 销售员业绩列表,待结算
 	List<SaleIncomeVo> queryNot(
 			@Param("startDate") String startDate,
 			@Param("endDate") String endDate,
 			@Param("saleName") String saleName,
 			@Param("salePhone") String salePhone,
-			@Param("beYearMonth") String beYearMonth, 
 			@Param("page") Page page);
 	
 	int getCountNot(
 			@Param("startDate") String startDate,
 			@Param("endDate") String endDate,
 			@Param("saleName") String saleName,
-			@Param("salePhone") String salePhone,
-			@Param("beYearMonth") String beYearMonth);
+			@Param("salePhone") String salePhone);
 	
-	//详情
-	SaleIncomeVo detail(
+	//详情，已结算
+	SaleIncomeVo detailDone(
 			@Param("saleId")String saleId,
 			@Param("beYearMonth") String beYearMonth);
+	
+	//详情，待结算
+	SaleIncomeVo detailNot(
+			@Param("saleId")String saleId);
 	
 	List<OrderVo> orderList(
 			@Param("startDate") String startDate,

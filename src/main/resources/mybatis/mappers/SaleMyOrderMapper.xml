@@ -19,8 +19,8 @@
 	<select id="queryData" resultType="SaleDataVo">
 		SELECT 
 		SUM(IF(order_money_gongju IS NOT NULL,order_money_gongju,0))+SUM(IF(order_money_haocai IS NOT NULL,order_money_haocai,0)) AS  saleAllMoney,
-		SUM(IF(order_money_gongju IS NOT NULL,order_money_gongju,0)) AS haocaiAllMoney,
-		SUM(IF(order_money_haocai IS NOT NULL,order_money_haocai,0)) AS gongjuAllMoney,
+		SUM(IF(order_money_gongju IS NOT NULL,order_money_gongju,0)) AS gongjuAllMoney,
+		SUM(IF(order_money_haocai IS NOT NULL,order_money_haocai,0)) AS haocaiAllMoney
 		COUNT(order_id) AS orderNum
 		FROM sale_income
 		WHERE sale_id=#{saleId};

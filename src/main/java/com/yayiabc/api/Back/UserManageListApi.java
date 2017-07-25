@@ -14,6 +14,7 @@ public interface UserManageListApi {
      * @apiParam {int} isBindSale 是否绑定销售（非必须，全部传空值，1是，2否）
      * @apiParam {int} type	类型（非必须，全部传空值，1个人，2机构）
      * @apiParam {String} saleName 销售名称（非必须）
+     * @apiParam {String} salePhone 销售员手机号（非必须）
      * @apiParam {int} currentPage （非必须）
      * @apiParam {int} numberPerPage （非必须）
      *

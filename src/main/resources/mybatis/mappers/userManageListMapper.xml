@@ -157,12 +157,13 @@
 		c.part,
 		c.work_address,
 		c.doctor_pic,
-		o.created AS latelyOrderDate,
-		IF(COUNT(o.user_id) IS NOT NULL,COUNT(o.user_id),0) AS orderaCount,
-		IF(SUM(o.actual_pay) IS NOT NULL,SUM(o.actual_pay),0) AS orderaMoneyCount
+		si.true_name AS saleName,
+		si.phone AS salePhone,
+		si.created AS saleCreated,
+		si.bind_user_num
 		FROM USER u
 		LEFT JOIN certification c ON u.user_id=c.user_id
-		LEFT JOIN ordera o ON u.user_id=o.user_id
-		WHERE u.user_id=#{userId};
+		LEFT JOIN sale_info si ON u.sale_id=si.sale_id
+		WHERE u.user_id=#{userId}
 	</select>
 </mapper>

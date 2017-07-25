@@ -25,7 +25,7 @@
     
 <bean id="billsCheckJobTrigger" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
      <property name="jobDetail" ref="jobDetail"></property>  
-     <property name="cronExpression" value="0 0/1 * * * ?"></property>  
+     <property name="cronExpression" value="0 0/10 * * * ?"></property>  
      <property name="startDelay" value="3000"></property>  
  </bean>
 

@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.dao;
 
 import org.apache.ibatis.annotations.Param;
 
+
 import com.yayiabc.http.mvc.pojo.jpa.Charge;
 
 public interface WXPayDao {
@@ -22,7 +23,7 @@ public interface WXPayDao {
 
 	void addOrderRecord(@Param("orderId")String orderId,@Param("outTradeNo") String outTradeNo);
 
-	String getOrderIdByOutTradeNo(String outTradeNo);
+	String getOrderIdByOutTradeNo(@Param("outTradeNo") String outTradeNo);
 
 	void deleteChargeByToken(String token);
 

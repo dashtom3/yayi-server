@@ -136,7 +136,7 @@
 	<update id="updateItemValue">
 		update item_value set
 		can_use=#{canUse},stock_num=#{stockNum},item_qb=#{itemQb},ti_chen=#{tiChen},item_sku_price=#{itemSkuPrice}
-		where item_id=#{itemId}
+		where item_sKU=#{itemSKU}
 	</update>
 
 	<select id="getMinPriceFromItemValue" resultType="java.lang.Double">

@@ -345,6 +345,17 @@ public class SaleInfo extends BasePojo {
 		With = with;
 	}
 
+	public SaleInfo(String saleId, String trueName, String phone,
+			Integer bindUserNum, Integer isBindUser, double totalGetMoney) {
+		super();
+		this.saleId = saleId;
+		this.trueName = trueName;
+		this.phone = phone;
+		this.bindUserNum = bindUserNum;
+		this.isBindUser = isBindUser;
+		this.totalGetMoney = totalGetMoney;
+	}
+
 	public List<With> getWith() {
 		return With;
 	}

@@ -131,7 +131,7 @@
 		<if test="beYearMonth !=null and beYearMonth !=''">
 			AND DATE_FORMAT(si.created,'%Y-%m') =#{beYearMonth}
 		</if>
-		GROUP BY si.sale_income_id
+		GROUP BY si.sale_id
 		LIMIT ${page.currentNumber},${page.numberPerPage} 
 	</select>
 	
@@ -152,7 +152,7 @@
 			<if test="beYearMonth !=null and beYearMonth !=''">
 				AND DATE_FORMAT(si.created,'%Y-%m') =#{beYearMonth}
 			</if>
-			GROUP BY si.sale_income_id
+			GROUP BY si.sale_id
 		) AS a
 	</select>
 	

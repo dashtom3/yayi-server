@@ -43,6 +43,9 @@
 			<if test="saleName !=null and saleName !=''">
 				AND s.true_name LIKE '%${saleName}%'
 			</if>
+			<if test="salePhone !=null and salePhone !=''">
+				AND s.phone LIKE '%${salePhone}%'
+			</if>
 		</where>
 			GROUP BY u.user_id
 	   		ORDER BY u.created DESC	

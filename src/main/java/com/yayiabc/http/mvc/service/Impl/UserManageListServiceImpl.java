@@ -33,7 +33,7 @@ public class UserManageListServiceImpl implements UserManageListService {
 	@Override
 	public DataWrapper<List<Map<String,String>>> userlist(String phone,
 			String trueName, String companyName, Integer isBindSale,
-			Integer type, String saleName, Integer currentPage,
+			Integer type, String saleName,String salePhone, Integer currentPage,
 			Integer numberPerPage) {
 		DataWrapper<List<Map<String,String>>> dataWrapper = new DataWrapper<List<Map<String,String>>>();
 		Page page = new Page();
@@ -41,8 +41,7 @@ public class UserManageListServiceImpl implements UserManageListService {
 	    page.setCurrentPage(currentPage);
 		int totalNumber = userManageListDao.getCount(phone, trueName, companyName, isBindSale, type, saleName);
 		dataWrapper.setPage(page, totalNumber);
-		List<Map<String,String>> list = userManageListDao.userlist(phone, trueName,
-				companyName, isBindSale, type, saleName, page);
+		List<Map<String,String>> list = userManageListDao.userlist(phone, trueName, companyName, isBindSale, type, saleName, salePhone, page);
 		dataWrapper.setData(list);
 		return dataWrapper;
 	}

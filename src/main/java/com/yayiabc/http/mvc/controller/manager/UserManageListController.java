@@ -34,10 +34,11 @@ public class UserManageListController {
 			@RequestParam(value="isBindSale",required=false)Integer isBindSale,
 			@RequestParam(value="type",required=false)Integer type,
 			@RequestParam(value="saleName",required=false)String saleName,
+			@RequestParam(value="salePhone",required=false)String salePhone,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
-		return userManageListService.userlist(phone, trueName, companyName, isBindSale, type, saleName,currentPage,numberPerPage);
+		return userManageListService.userlist(phone, trueName, companyName, isBindSale, type, saleName, salePhone, currentPage, numberPerPage);
 	}
 	
 	/**

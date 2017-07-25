@@ -1,0 +1,33 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+ <mapper namespace="com.yayiabc.http.mvc.dao.TokenValidateDao">
+	<select id="getUserCountByLoginToken" resultType="java.lang.Integer">
+		select count(0) from user_token where login_token=#{loginToken}
+	</select>
+	
+	<select id="getUserStateByLoginToken" resultType="java.lang.Integer">
+		select state from user_token where login_token=#{loginToken}
+	</select>
+	
+	<update id="updateUserLoginState">
+		update user_token set state=1 where login_token=#{loginToken}
+	</update>
+	
+	<select id="getSaleCountByLoginToken" resultType="java.lang.Integer">
+		select count(0) from sale_token where login_token=#{loginToken}
+	</select>
+	
+	<select id="getSaleStateByLoginToken" resultType="java.lang.Integer">
+		select state from sale_token where login_token=#{loginToken}
+	</select>
+	
+	<update id="updateSaleState">
+		update sale_token set state=1 where login_token=#{loginToken}
+	</update>
+	
+	<select id="getAdminCountByLoginToken" resultType="java.lang.Integer">
+		select count(0) from adminstrator_token where login_token=#{loginToken}
+	</select>
+</mapper>       

@@ -1,6 +1,6 @@
-package com.yayiabc.http.mvc.service;
+package com.yayiabc.http.mvc.dao;
 
-public interface TokenValidateService {
+public interface TokenValidateDao {
 
 	Integer getUserCountByLoginToken(String loginToken);
 

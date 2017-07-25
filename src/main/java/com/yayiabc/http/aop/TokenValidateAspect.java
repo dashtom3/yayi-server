@@ -1,7 +1,6 @@
 package com.yayiabc.http.aop;
 
 /*import javax.servlet.http.HttpServletRequest;
-
 import org.aopalliance.intercept.Joinpoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -10,15 +9,13 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
-
-import com.yayiabc.common.utils.TokenUtil;
 import com.yayiabc.http.mvc.service.TokenValidateService;
 
 @Aspect
 @Component*/
 public class TokenValidateAspect {
-	
-	/*@Autowired
+	/*
+	@Autowired
 	private TokenValidateService tokenValidateService;
 	
 	//token验证层controller切入点
@@ -43,39 +40,45 @@ public class TokenValidateAspect {
 		*//*
 		if(loginToken.indexOf("user")!=-1){
 			Integer count=tokenValidateService.getUserCountByLoginToken(loginToken);
-			Integer state=tokenValidateService.getUserStateByLoginToken(loginToken);
-			if(state==2){
-				String token=TokenUtil.getUserToken(loginToken);
-				if((nowTime-timeStamp)<30*60*1000){
-					try {
-						Object object=joinpoint.proceed();//放行
-					} catch (Throwable e) {
-						e.printStackTrace();
+			if(count!=0){
+				Integer state=tokenValidateService.getUserStateByLoginToken(loginToken);
+				if(state==2){
+					if((nowTime-timeStamp)<30*60*1000){
+						try {
+							Object object=joinpoint.proceed();//放行
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
+					}else{
+						tokenValidateService.updateUserLoginState(loginToken);//修改登录状态为未登录
 					}
-				}else{
-					tokenValidateService.updateState(token);//修改登录状态为未登录
 				}
 			}
 		}else if(loginToken.indexOf("sale")!=-1){
-			Integer state=tokenValidateService.getSaleStateByLoginToken(loginToken);
-			if(state==2){
-				String token=TokenUtil.getSaleToken(loginToken);
-				if((nowTime-timeStamp)<30*60*1000){
-					try {
-						Object object=joinpoint.proceed();//放行
-					} catch (Throwable e) {
-						e.printStackTrace();
+			Integer count=tokenValidateService.getSaleCountByLoginToken(loginToken);
+			if(count!=0){
+				Integer state=tokenValidateService.getSaleStateByLoginToken(loginToken);
+				if(state==2){
+					if((nowTime-timeStamp)<30*60*1000){
+						try {
+							Object object=joinpoint.proceed();//放行
+						} catch (Throwable e) {
+							e.printStackTrace();
+						}
+					}else{
+						tokenValidateService.updateSaleState(loginToken);//修改登录状态为未登录
 					}
-				}else{
-					tokenValidateService.updateState(token);//修改登录状态为未登录
 				}
 			}
 		}else if(loginToken.indexOf("admin")!=-1){
-			String token =
-		}else {
-			String token=null;
+			Integer count=tokenValidateService.getAdminCountByLoginToken(loginToken);
+			if(count!=0){
+				try {
+					Object object=joinpoint.proceed();//放行
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+			}
 		}
-			
-			
-		*/
+	}	*/
 }

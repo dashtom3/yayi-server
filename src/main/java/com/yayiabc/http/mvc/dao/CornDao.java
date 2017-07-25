@@ -22,6 +22,6 @@ public interface CornDao {
 
 	void addBalancePerMonth(Balance balanceMonthCash);
 
-	void updateSaleInfo(@Param("saleId")String saleId,@Param("balance")Integer money);
+	void updateSaleInfo(@Param("saleId")String saleId,@Param("money")Integer money);
 
 }

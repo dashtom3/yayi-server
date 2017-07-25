@@ -34,11 +34,11 @@ public class SystemControllerLog {
 	
 	//controller层切入点
 	@Pointcut("@annotation(com.yayiabc.common.annotation.SystemControllerLog)")
-	public void ControllerAspect(){
+	public void controllerAspect(){
 		
 	}
 	
-	@Before("ControllerAspect()")
+	@Before("controllerAspect()")
 	public void doBefore(JoinPoint joinPoint) throws Exception{
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		System.out.println(joinPoint.getSignature().getName());

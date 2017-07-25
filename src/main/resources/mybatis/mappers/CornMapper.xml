@@ -19,7 +19,7 @@
 
 
 	<select id="getTotalHaoCaiMoneyBySaleId" resultType="java.lang.Double">
-		SELECT SUM(order_money_haocai) FROM sale_income WHERE created BETWEEN
+		SELECT SUM(IFNULL(order_money_haocai,0)) FROM sale_income WHERE created BETWEEN
 		<include refid="firstDayOfPrevious"></include>
 		AND
 		<include refid="lastDayOfPrevious"></include>
@@ -27,7 +27,7 @@
 	</select>
 
 	<select id="getTotalGongJuMoneyBySaleId" resultType="java.lang.Double">
-		SELECT SUM(order_money_gongju) FROM sale_income WHERE created BETWEEN
+		SELECT SUM(IFNULL(order_money_gongju)) FROM sale_income WHERE created BETWEEN
 		<include refid="firstDayOfPrevious"></include>
 		AND
 		<include refid="lastDayOfPrevious"></include>
@@ -35,7 +35,7 @@
 	</select>
 
 	<select id="getTotalHaoCaiRefundBySaleId" resultType="java.lang.Double">
-		SELECT SUM(refund_money_haocai) FROM sale_income WHERE created BETWEEN
+		SELECT SUM(IFNULL(refund_money_haocai)) FROM sale_income WHERE created BETWEEN
 		<include refid="firstDayOfPrevious"></include>
 		AND
 		<include refid="lastDayOfPrevious"></include>
@@ -43,7 +43,7 @@
 	</select>
 
 	<select id="getTotalGongJuRefundBySaleId" resultType="java.lang.Double">
-		SELECT SUM(refund_money_gongju) FROM sale_income WHERE created BETWEEN
+		SELECT SUM(IFNULL(refund_money_gongju)) FROM sale_income WHERE created BETWEEN
 		<include refid="firstDayOfPrevious"></include>
 		AND
 		<include refid="lastDayOfPrevious"></include>

@@ -196,6 +196,8 @@ public class WXPayController {
 	@ResponseBody
 	public DataWrapper<Void> checkOrderState(String out_trade_no){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		String outTradeNo=out_trade_no;
+		out_trade_no=wXPayDao.getOrderIdByOutTradeNo(outTradeNo);
 		Integer num=aliPayDao.querySatetIsTwo(out_trade_no);
 		dataWrapper.setNum(num);
 		return dataWrapper;

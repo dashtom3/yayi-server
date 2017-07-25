@@ -167,6 +167,9 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 	public DataWrapper<Void> insertItemValue(List<ItemValue> itemValueList) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		for (ItemValue itemValue : itemValueList) {
+			if(itemValue.getStockNum()==null){
+				itemValue.setStockNum(0);
+			}
 			itemInfoManageDao.insertItemValue(itemValue);
 		}
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);

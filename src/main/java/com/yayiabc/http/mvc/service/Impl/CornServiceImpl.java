@@ -73,7 +73,7 @@ public class CornServiceImpl implements CornService{
 			balanceMonthCash.setGongjuMoney(totalGongJuMoney.intValue()+0.0);
 			balanceMonthCash.setHaocaiRefund(totalHaoCaiRefund.intValue()+0.0);
 			balanceMonthCash.setGongjuRefund(totalGongJuRefund.intValue()+0.0);
-			balanceMonthCash.setBalanceIn(balanceIn);
+			balanceMonthCash.setBalanceIn(balanceIn.intValue()+0.0);
 			balanceMonthCash.setBalance(balance.intValue()+0.0);
 			balanceMonthCash.setDescribey("每月结算");
 			balanceMonthCash.setCreated(new Date());

@@ -29,20 +29,25 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("token错误");
 		} else {
-			
 			qbRecord.setUserId(userId);
-			if (qbRecord.getQbRget() != null && qbRecord.getQbRget() > 0) {
-				userMyQbDao.updateUserQb(qbRecord.getQbRget(), userId);
-			} else if (qbRecord.getQbRout() != null && qbRecord.getQbRout() < 0) {
-				userMyQbDao.updateUserQb(qbRecord.getQbRout(), userId);
-			}
-			
-			qbRecord.setQbBalances(userMyQbDao.queryQbbalance(userId));
-			int id = userMyQbDao.add(qbRecord);
-			if (id > 0) {
-				dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-			} else {
+			Integer qb=userMyQbDao.queryQbbalance(userId);
+			if(Math.abs(qbRecord.getQbRout())>qb){					//判断支出乾币数是否大于已有余额
 				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+				dataWrapper.setMsg("乾币增减错误！");
+			}else{
+				if (qbRecord.getQbRget() != null && qbRecord.getQbRget() > 0) {
+					userMyQbDao.updateUserQb(qbRecord.getQbRget(), userId);
+					qbRecord.setQbBalances(qb+qbRecord.getQbRget());
+				}else if (qbRecord.getQbRout() != null && qbRecord.getQbRout() < 0) {
+					userMyQbDao.updateUserQb(qbRecord.getQbRout(), userId);
+					qbRecord.setQbBalances(qb+qbRecord.getQbRout());
+				}
+				int id = userMyQbDao.add(qbRecord);
+				if (id > 0) {
+					dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+				} else {
+					dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+				}
 			}
 		}
 		return dataWrapper;

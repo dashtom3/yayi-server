@@ -46,15 +46,16 @@ public class UserQbListServiceImpl implements UserQbListService {
 		String userId = userDao.getUserId(phone);		
 		int i = userQbListDao.update(qbBalance, phone);
 		if (i > 0) {
-			
 			QbRecord qbRecord=new QbRecord();
 			qbRecord.setUserId(userId);
-			Integer newQb = userQbListDao.queryQb(phone);
+			Integer newQb = userQbListDao.queryQb(phone);	//用户表乾币余额
 			Integer oldQb=userQbListDao.queryQbBalances(userId);
-			if(newQb > oldQb){
-				qbRecord.setQbRget(newQb-oldQb);
+			if(newQb==0 || newQb<0 || oldQb==null){			//判断用户刚注册时，没有乾币加减记录
+					qbRecord.setQbRget(qbBalance);
+			}else if(newQb > oldQb){
+					qbRecord.setQbRget(newQb-oldQb);
 			}else if(newQb < oldQb){
-				qbRecord.setQbRout(newQb-oldQb);
+					qbRecord.setQbRout(newQb-oldQb);
 			}
 			qbRecord.setQbBalances(qbBalance);
 			qbRecord.setRemark("管理员修改乾币余额");
@@ -62,7 +63,6 @@ public class UserQbListServiceImpl implements UserQbListService {
 			if(sign > 0){
 				dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			}
-		
 		} else {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 		}

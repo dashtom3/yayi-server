@@ -17,7 +17,7 @@ public class QbRecord extends BasePojo {
 
 	private Integer qbRout;
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
 	private Date qbTime;
 
 	private Integer qbBalances;

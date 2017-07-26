@@ -10,7 +10,7 @@ import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 
 @Repository
 public interface UserMyQbDao {
-	int add(QbRecord qbRecord);
+	void add(QbRecord qbRecord);
 
 	List<QbRecord> query(@Param("userId") String userId,@Param("page") Page page);
 

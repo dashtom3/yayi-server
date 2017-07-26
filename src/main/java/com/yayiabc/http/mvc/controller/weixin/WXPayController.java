@@ -162,7 +162,8 @@ public class WXPayController {
 				String outTradeNo=(String)packageParam.get("out_trade_no");
 				String orderId=wXPayDao.getOrderIdByOutTradeNo(outTradeNo);
 				HashMap<String, String> hashMap=aliPayService.queryY(orderId);
-				if(aliPayDao.querySatetIsTwo(orderId)==2){
+				System.out.println(hashMap);
+				if(aliPayDao.querySatetIsTwo(orderId)==2) {
 					resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>"+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
 				}else{
 					String total_fee=hashMap.get("WIDtotal_fee");//0.01

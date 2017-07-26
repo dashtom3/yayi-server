@@ -7,7 +7,7 @@
 		<id column="qb_rid" property="qbRid"/>
 			<result column="qb_rget" property="qbRget"/>
 			<result column="qb_rout" property="qbRout"/>
-			<result column="qb_time" property="qbTime"/>
+			<result column="qb_time" property="qbTime" javaType="java.sql.Timestamp" jdbcType="TIMESTAMP"/>
 			<result column="qb_balances" property="qbBalances"/>
 			<result column="remark" property="remark"/>
 		<association property="user" javaType="com.yayiabc.http.mvc.pojo.jpa.User">

@@ -4,6 +4,8 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  * 
  * @author xiaojiang 乾币记录表
@@ -17,7 +19,7 @@ public class QbRecord extends BasePojo {
 
 	private Integer qbRout;
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd hh:mm:ss")
+	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
 	private Date qbTime;
 
 	private Integer qbBalances;
@@ -58,6 +60,7 @@ public class QbRecord extends BasePojo {
 		this.qbRout = qbRout;
 	}
 
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
 	public Date getQbTime() {
 		return qbTime;
 	}

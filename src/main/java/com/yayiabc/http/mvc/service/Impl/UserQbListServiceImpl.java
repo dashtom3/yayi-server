@@ -36,7 +36,7 @@ public class UserQbListServiceImpl implements UserQbListService {
 		dataWrapper.setPage(page, totalNumber);
 		List<QbRecord> list = userQbListDao.list(phone, startDate, endDate,
 				page);
-			dataWrapper.setData(list);
+		dataWrapper.setData(list);
 		return dataWrapper;
 	}
 

@@ -1,12 +1,13 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yayiabc.http.mvc.dao.TokenValidateDao;
 import com.yayiabc.http.mvc.service.TokenValidateService;
 @Service
 public class TokenValidateServiceImpl implements TokenValidateService{
-	
+	@Autowired
 	private TokenValidateDao tokenValidateDao;
 	
 

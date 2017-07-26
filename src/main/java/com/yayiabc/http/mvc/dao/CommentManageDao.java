@@ -22,4 +22,6 @@ public interface CommentManageDao{
 	int reply(@Param("orderId")String orderId,
 			@Param("itemId")String itemId,
 			@Param("data")String data);
+
+	Integer queryCount(@Param("orderId")String orderId,@Param("recoveryState") Integer recoveryState,@Param("phone") String phone);
 }

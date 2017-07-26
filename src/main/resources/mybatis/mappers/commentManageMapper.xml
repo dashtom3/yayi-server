@@ -59,5 +59,15 @@
 		update comments set reply_content=#{data},recovery_state=1,recover_state=now() where
 		item_id=#{itemId} and order_id=#{orderId}
 	</insert>
+	
+	<select id="queryCount" resultType="java.lang.Integer">
+		select count(0) from comments 
+		<where>
+			<if test="orderId!=null">order_id like '%${orderId}%'</if>
+			<if test="phone!=null">and user_name like '%${phone}%'</if>
+			<if test="recoveryState==2">and reply_content is null</if>
+			<if test="recoveryState==3">and reply_content is not null</if>
+		</where>
+	</select>
 
 </mapper>

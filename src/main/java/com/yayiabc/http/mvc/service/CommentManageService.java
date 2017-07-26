@@ -7,7 +7,7 @@ import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 
 
 public interface CommentManageService {
-	DataWrapper<List<Ordera>>  commentM(String orderId,String recoveryState,String phone,
+	DataWrapper<List<Ordera>>  commentM(String orderId,Integer recoveryState,String phone,
 			Integer currentPage,Integer numberPerpage);
 
 	DataWrapper<Void> reply(String orderId, String itemId,

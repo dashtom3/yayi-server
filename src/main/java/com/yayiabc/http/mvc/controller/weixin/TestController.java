@@ -3,15 +3,13 @@ package com.yayiabc.http.mvc.controller.weixin;
 
 
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
 import com.yayiabc.common.annotation.SystemControllerLog;
-import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.common.utils.PayAfterOrderUtil;
 
 @Controller
 public class TestController {
@@ -21,11 +19,11 @@ public class TestController {
 	@RequestMapping("api/test")
 	@ResponseBody
 	public DataWrapper<Void> test(
-			@RequestHeader("token") String token,
-			@RequestHeader("Content-Type") String Content_Type
+			@RequestParam("token") String token
+			
 			){
 		System.out.println(token);
-		System.out.println(Content_Type);
+		System.out.println("helloWorld");
 		return null;
 	}
 	

@@ -18,17 +18,31 @@ public class CommentManageController {
       @Autowired 
       private CommentManageService commentManage;
      
-      @RequestMapping("show")
-      @ResponseBody
-      //显示评论
+      /**
+       * 显示评论列表 recoveryState 1表示全部2表示已回复 3表示未回复
+       * @param orderid
+       * @param phone
+       * @param recoveryState
+       * @param currentPage
+       * @param numberPerpage
+       * @return
+       */
+     @RequestMapping("show")
+     @ResponseBody
      public DataWrapper<List<Ordera>> show(
-    		 @RequestParam(value="orderId",required=false) String orderid,
+    		 @RequestParam(value="orderId",required=false) String orderId,
     		 @RequestParam(value="phone",required=false) String phone,
-    		 @RequestParam(value="recoveryState",required=false) String recoveryState,
-    		 @RequestParam(value="currentPage",required=false) Integer currentPage,
-    		 @RequestParam(value="numberPerpage",required=false) Integer numberPerpage
+    		 @RequestParam(value="recoveryState",required=false) Integer recoveryState,
+    		 @RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
+    		 @RequestParam(value="numberPerpage",required=false,defaultValue="10") Integer numberPerpage
     		 ){
-		return commentManage.commentM(orderid,recoveryState,phone,currentPage,numberPerpage);
+    	 if("".equals(orderId)){
+    		 orderId=null;
+    	 }
+    	 if("".equals(phone)){
+    		 phone=null;
+    	 }
+		return commentManage.commentM(orderId,recoveryState,phone,currentPage,numberPerpage);
       }
       //回复评论
       @RequestMapping("reply")

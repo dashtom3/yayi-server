@@ -11,7 +11,7 @@ public class TokenUtil {
 	 * 获取电商平台的token,规则是在token之前加user
 	 */
 	public static String getUserToken(String token){
-		String userToken=token.substring(4,36);
+		String userToken=token.substring(4,40);
 		return userToken;
 	}
 	
@@ -19,7 +19,7 @@ public class TokenUtil {
 	 * 获取管理员的token,规则是在token之前加admin
 	 */
 	public static String getAdminToken(String token){
-		String adminToken=token.substring(5,37);
+		String adminToken=token.substring(5,41);
 		return adminToken;
 	}
 	
@@ -27,7 +27,7 @@ public class TokenUtil {
 	 * 获取创客系统的token,规则是在token之前加sale
 	 */
 	public static String getSaleToken(String token){
-		String saleToken =token.substring(4,36);
+		String saleToken =token.substring(4,40);
 		return saleToken;
 	}
 	

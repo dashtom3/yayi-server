@@ -20,7 +20,7 @@
 		SELECT 
 		SUM(IF(order_money_gongju IS NOT NULL,order_money_gongju,0))+SUM(IF(order_money_haocai IS NOT NULL,order_money_haocai,0)) AS  saleAllMoney,
 		SUM(IF(order_money_gongju IS NOT NULL,order_money_gongju,0)) AS gongjuAllMoney,
-		SUM(IF(order_money_haocai IS NOT NULL,order_money_haocai,0)) AS haocaiAllMoney
+		SUM(IF(order_money_haocai IS NOT NULL,order_money_haocai,0)) AS haocaiAllMoney,
 		COUNT(order_id) AS orderNum
 		FROM sale_income
 		WHERE sale_id=#{saleId};
@@ -101,5 +101,19 @@
 		LEFT JOIN sale_income si ON u.sale_id=si.sale_id
 		WHERE o.order_id=#{orderId} AND si.sale_id=#{saleId}
 		GROUP BY oi.item_name
+		LIMIT ${page.currentNumber},${page.numberPerPage}
+	</select>
+	
+	<select id="getCountDetailOrderList" resultType="int">
+		SELECT count(0) FROM (
+			SELECT 
+			count(0)
+			FROM ordera o
+			LEFT JOIN order_item oi ON o.order_id=oi.order_id
+			LEFT JOIN USER u ON o.user_id=u.user_id
+			LEFT JOIN sale_income si ON u.sale_id=si.sale_id
+			WHERE o.order_id=#{orderId} AND si.sale_id=#{saleId}
+			GROUP BY oi.item_name
+		) AS a
 	</select>
 </mapper>

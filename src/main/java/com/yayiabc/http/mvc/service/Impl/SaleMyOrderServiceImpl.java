@@ -78,13 +78,22 @@ public class SaleMyOrderServiceImpl implements SaleMyOrderService {
 
 
 	@Override
-	public DataWrapper<OrderVo> detail(String token, String orderId) {
+	public DataWrapper<OrderVo> detail(String token, String orderId,Integer currentPage, Integer numberPerPage) {
 		DataWrapper<OrderVo> dataWrapper=new DataWrapper<OrderVo>();
 		String saleId = saleLogDao.getSaleIdByToken(token);
-		List<OrderInfoVo> list=saleMyOrderDao.detailOrderList(saleId, orderId);
+		Page page = new Page();
+		page.setNumberPerPage(numberPerPage);
+		page.setCurrentPage(currentPage);
+		int totalNumber=saleMyOrderDao.getCountDetailOrderList(saleId, orderId);
+		List<OrderInfoVo> list=saleMyOrderDao.detailOrderList(saleId, orderId, page);
+		dataWrapper.setPage(page, totalNumber);
 		OrderVo orderVo=new OrderVo();
 		orderVo=saleMyOrderDao.detail(saleId, orderId);
-		orderVo.setOrderInfoVoList(list);
+		if(list==null){
+			orderVo.setOrderInfoVoList(null);
+		}else {
+			orderVo.setOrderInfoVoList(list);
+		}		
 		dataWrapper.setData(orderVo);
 		return dataWrapper;
 	}

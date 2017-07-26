@@ -67,8 +67,10 @@ public class SaleMyOrderController {
 	@ResponseBody
 	public DataWrapper<OrderVo> detail(
     		@RequestParam(value="orderId",required=true,defaultValue="10") String orderId,
+    		@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
     		@RequestParam(value="token",required=true) String token
 	){
-		return saleMyOrderService.detail(token, orderId);
+		return saleMyOrderService.detail(token, orderId, currentPage, numberPerPage);
 	}
 }

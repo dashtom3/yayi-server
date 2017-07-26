@@ -31,7 +31,7 @@ public class AliPayServiceImpl implements AliPayService{
 		// TODO Auto-generated method stub
 		try {
 			//订单编号
-			String out_trade_no = new String(WIDout_trade_no.getBytes("ISO-8859-1"),"UTF-8");
+			/*String out_trade_no = new String(WIDout_trade_no.getBytes("ISO-8859-1"),"UTF-8");
 			//订单名称，必填
 			//String subject = new String(WIDsubject.getBytes("ISO-8859-1"),"UTF-8");
 			String subject=WIDsubject;
@@ -40,7 +40,12 @@ public class AliPayServiceImpl implements AliPayService{
 			String total_fee = new String(WIDtotal_fee.getBytes("ISO-8859-1"),"UTF-8");
 
 			//商品描述，可空
-			String body = new String(WIDbody.getBytes("ISO-8859-1"),"UTF-8");
+			String body = new String(WIDbody.getBytes("ISO-8859-1"),"UTF-8");*/
+			String out_trade_no=WIDout_trade_no;
+			String subject=WIDsubject;
+			String total_fee=WIDtotal_fee;
+			String body=WIDbody;
+			
 			//String body=WIDbody;
 			//把请求参数打包成数组
 			Map<String, String> sParaTemp = new HashMap<String, String>();
@@ -51,12 +56,9 @@ public class AliPayServiceImpl implements AliPayService{
 			sParaTemp.put("payment_type", AlipayConfig.payment_type);
 			sParaTemp.put("notify_url", AlipayConfig.notify_url);
 			sParaTemp.put("return_url", AlipayConfig.return_url);
-			sParaTemp.put("anti_phishing_key", AlipayConfig.anti_phishing_key);
-			sParaTemp.put("exter_invoke_ip", AlipayConfig.exter_invoke_ip);
 			sParaTemp.put("out_trade_no", out_trade_no);
 			sParaTemp.put("subject", subject);
 			sParaTemp.put("total_fee", total_fee);
-			sParaTemp.put("body", body);
 			//其他业务参数根据在线开发文档，添加参数.文档地址:https://doc.open.alipay.com/doc2/detail.htm?spm=a219a.7629140.0.0.O9yorI&treeId=62&articleId=103740&docType=1
 			//如sParaTemp.put("参数名","参数值");
 
@@ -65,7 +67,7 @@ public class AliPayServiceImpl implements AliPayService{
 			//out.println(sHtmlText);
 			System.out.println(sHtmlText);
 			return sHtmlText;
-		} catch (UnsupportedEncodingException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
@@ -91,7 +93,7 @@ public class AliPayServiceImpl implements AliPayService{
 
 			//交易状态
 			String trade_status =params.get("trade_status"); /*new String(trade_statuss.getBytes("ISO-8859-1"),"UTF-8");*/
-
+			
 			//计算得出通知验证结果
 			boolean verify_result = AlipayNotify.verify(params);
 
@@ -210,7 +212,6 @@ public class AliPayServiceImpl implements AliPayService{
 		hmHashMap.put("WIDtotal_fee",String.valueOf(WIDtotal_fee));
 		hmHashMap.put("WIDsubject", sb.toString());
 		hmHashMap.put("WIDbody",WIDbody);
-		hmHashMap.put("acpPay", WIDbody);
 
 
 		return hmHashMap;

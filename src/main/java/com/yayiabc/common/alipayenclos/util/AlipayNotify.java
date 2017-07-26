@@ -56,6 +56,7 @@ public class AlipayNotify {
 	    {
 	    	sign = params.get("sign");
 	    }
+	    System.out.println(sign);
 	    boolean isSign = getSignVeryfy(params, sign);
 
         //写日志记录（若要调试，请取消下面两行注释）

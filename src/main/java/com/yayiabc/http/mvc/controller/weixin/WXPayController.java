@@ -158,26 +158,28 @@ public class WXPayController {
 			//处理业务开始
 			String resXml="";
 			if("SUCCESS".equals((String)packageParam.get("result_code"))){
-				
 				//判断返回结果中的金额是否和数据库中查出来的订单金额一致
 				String outTradeNo=(String)packageParam.get("out_trade_no");
 				String orderId=wXPayDao.getOrderIdByOutTradeNo(outTradeNo);
 				HashMap<String, String> hashMap=aliPayService.queryY(orderId);
-				String total_fee=hashMap.get("WIDtotal_fee");//0.01
-				Double total=Double.parseDouble(total_fee);
-				Integer totalFee=(int)(total*100);
-				Integer totalTwo=Integer.parseInt((String)packageParam.get("total_fee"));
-				if(totalFee==totalTwo){
-					PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-					   payAfterOrderUtil.universal(orderId);
-					//这里是支付成功
-					System.out.println("支付成功");
-					//改变订单状态
-					/*aliPayDao.updateStateAndPayTime(orderId);*/
-					resXml = "<xml>" + "<return_code><" +
-							"![CDATA[SUCCESS]]></return_code>"+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
+				if(aliPayDao.querySatetIsTwo(orderId)==2){
+					resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>"+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
 				}else{
-					resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"+ "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
+					String total_fee=hashMap.get("WIDtotal_fee");//0.01
+					Double total=Double.parseDouble(total_fee);
+					Integer totalFee=(int)(total*100);
+					Integer totalTwo=Integer.parseInt((String)packageParam.get("total_fee"));
+					if(totalFee==totalTwo){
+						PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
+						   payAfterOrderUtil.universal(orderId);
+						//这里是支付成功
+						System.out.println("支付成功");
+						//改变订单状态
+						/*aliPayDao.updateStateAndPayTime(orderId);*/
+						resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>"+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
+					}else{
+						resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"+ "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
+					}
 				}
 			}else{
 				resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"+ "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";

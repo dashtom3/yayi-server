@@ -115,12 +115,13 @@ public class AliPayController {
 							: valueStr + values[i] + ",";
 				}
 				//乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
-				valueStr = new String(valueStr.getBytes("ISO-8859-1"), "UTF-8");
+//				valueStr = new String(valueStr.getBytes("ISO-8859-1"), "UTF-8");
 				//params.put(name, new String(valueStr).getBytes());
 				params.put(name, valueStr);
 			}
 			System.out.println("已经请求到同步方法内");
-			response.setContentType("text/html;charset=UTF-8");  
+			response.setContentType("text/html;charset=UTF-8"); 
+			
 			String Sign=alipayService.ReturnUrl(
 					/*is_success, sign_type, sign, trade_status, out_trade_no, trade_no,*/params);
 			System.out.println(Sign);

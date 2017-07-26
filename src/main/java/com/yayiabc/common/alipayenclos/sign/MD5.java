@@ -43,7 +43,6 @@ public class MD5 {
     	/**
     	 * md5Hex 里面放入一个字节数组，
     	 * text 就是这个待签名的字符串preSignStr
-    	 * 这里的sign就是 配置的key 6k7n8kafmda1t22yl066v4o3lxws9u0s
     	 *  
     	 */
     	String mysign = DigestUtils.md5Hex(getContentBytes(text, input_charset));

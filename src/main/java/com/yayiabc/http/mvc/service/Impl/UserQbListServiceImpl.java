@@ -24,7 +24,7 @@ public class UserQbListServiceImpl implements UserQbListService {
 	UserDao userDao;
 	@Autowired
 	UserMyQbDao userMyQbDao;
-
+	
 	@Override
 	public DataWrapper<List<QbRecord>> list(String phone, String startDate,
 			String endDate, Integer currentPage, Integer numberPerPage) {
@@ -43,27 +43,32 @@ public class UserQbListServiceImpl implements UserQbListService {
 	@Override
 	public DataWrapper<Void> update(Integer qbBalance, String phone) {
 		DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
-		String userId = userDao.getUserId(phone);		
-		int i = userQbListDao.update(qbBalance, phone);
-		if (i > 0) {
-			QbRecord qbRecord=new QbRecord();
-			qbRecord.setUserId(userId);
-			Integer newQb = userQbListDao.queryQb(phone);	//用户表乾币余额
-			Integer oldQb=userQbListDao.queryQbBalances(userId);
-			if(newQb==0 || newQb<0 || oldQb==null){			//判断用户刚注册时，没有乾币加减记录
-					qbRecord.setQbRget(qbBalance);
-					qbRecord.setRemark("管理员修改用户"+phone+"乾币余额，新增乾币"+qbBalance);
-			}else if(newQb > oldQb){
-					qbRecord.setQbRget(newQb-oldQb);
-					qbRecord.setRemark("管理员修改用户"+phone+"乾币余额，新增乾币"+qbRecord.getQbRget());
-			}else if(newQb < oldQb){
-					qbRecord.setQbRout(newQb-oldQb);
-					qbRecord.setRemark("管理员修改用户"+phone+"乾币余额，扣除乾币"+qbRecord.getQbRout());
-			}
-			qbRecord.setQbBalances(qbBalance);
-			userMyQbDao.add(qbRecord);
-		} else {
+		String userId = userDao.getUserId(phone);
+		if(qbBalance < 0){
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+			dataWrapper.setMsg("请填写正确的乾币数");
+		}else{
+			int i = userQbListDao.update(qbBalance, phone);
+			if (i > 0) {
+				QbRecord qbRecord=new QbRecord();
+				qbRecord.setUserId(userId);
+				Integer newQb = userQbListDao.queryQb(phone);	//用户表乾币余额
+				Integer oldQb=userQbListDao.queryQbBalances(userId);
+				if(newQb==0 || newQb<0 || oldQb==null){			//判断用户刚注册时，没有乾币加减记录
+						qbRecord.setQbRget(qbBalance);
+						qbRecord.setRemark("管理员修改用户"+phone+"乾币余额，新增乾币"+qbBalance);
+				}else if(newQb > oldQb){
+						qbRecord.setQbRget(newQb-oldQb);
+						qbRecord.setRemark("管理员修改用户"+phone+"乾币余额，新增乾币"+qbRecord.getQbRget());
+				}else if(newQb < oldQb){
+						qbRecord.setQbRout(newQb-oldQb);
+						qbRecord.setRemark("管理员修改用户"+phone+"乾币余额，扣除乾币"+qbRecord.getQbRout());
+				}
+				qbRecord.setQbBalances(qbBalance);
+				userMyQbDao.add(qbRecord);
+			} else {
+				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+			}
 		}
 		return dataWrapper;
 	}

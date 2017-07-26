@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -27,6 +28,7 @@ public class UserQbListController {
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	@ResponseBody
 	public DataWrapper<List<QbRecord>> list(
+			//@RequestHeader(value="token") String token,
 			@RequestParam(value = "phone", required = false) String phone,
 			@RequestParam(value = "startDate", required = false) String startDate,
 			@RequestParam(value = "endDate", required = false) String endDate,

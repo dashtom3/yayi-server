@@ -91,12 +91,9 @@ public class CartServiceImpl implements CartService {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("token错误");
 		} else {
-			
 			int isItem = cartDao.getCountItemSKU(userId,itemSKU);	//判断购物车内是否已存在该商品
-			System.out.println("isItem"+isItem);
 			if (isItem == 0) {
 				int id = cartDao.add(userId, num, itemSKU);
-				System.out.println("Id"+id);
 				if (id > 0) {
 					dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 				} else {
@@ -125,7 +122,6 @@ public class CartServiceImpl implements CartService {
 				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			}
 		}
-
 		return dataWrapper;
 	}
 

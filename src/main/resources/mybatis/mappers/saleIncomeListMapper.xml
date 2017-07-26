@@ -203,7 +203,7 @@
 		<id column="order_id" property="orderId"/>
 			<result column="userName" property="userName"/>
 			<result column="userPhone" property="userPhone"/>
-			<result column="state" property="state"/>
+			<result column="orderState" property="orderState"/>
 			<result column="itemSumMoney" property="itemSumMoney"/>
 			<result column="order_money_haocai" property="orderMoneyHaocai"/>
 			<result column="order_money_gongju" property="orderMoneyGongju"/>
@@ -218,7 +218,7 @@
 		si.order_id,
 		u.true_name AS userName,
 		u.phone AS userPhone,
-		o.state,
+		o.state AS orderState,
 		IF(si.order_money_haocai IS NOT NULL,si.order_money_haocai,0)+IF(si.order_money_gongju IS NOT NULL,si.order_money_gongju,0) AS itemSumMoney,
 		si.order_money_haocai,
 		si.order_money_gongju,

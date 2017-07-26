@@ -103,7 +103,7 @@ public interface SaleIncomeListApi {
      *			orderId:"a123",
      *			userName:"张三",
      *			userPhone:"123456798",
-     * 			state:1,
+     * 			orderState:1,
      * 			itemSumMoney:1000,	(商品总价)
      * 			orderMoneyHaocai:600,	(耗材类)
      * 			orderMoneyGongju:400,	(工具类)
@@ -116,7 +116,7 @@ public interface SaleIncomeListApi {
     *			orderId:"a123",
      *			userName:"张三",
      *			userPhone:"123456798",
-     * 			state:1,
+     * 			orderState:1,
      * 			itemSumMoney:1000,	(商品总价)
      * 			orderMoneyHaocai:600,	(耗材类)
      * 			orderMoneyGongju:400,	(工具类)

@@ -6,8 +6,8 @@
 	
 	<select id="chart" resultType="SaleDataVo">
 		SELECT 
-		SUM(IF(order_money_haocai IS NOT NULL,order_money_haocai,0)+
-		IF(order_money_gongju IS NOT NULL,order_money_gongju,0)) AS dayCommission,
+		IF(ROUND(SUM(order_money_haocai),2) IS NOT NULL,ROUND(SUM(order_money_haocai),2),0)+
+		IF(ROUND(SUM(order_money_gongju),2) IS NOT NULL,ROUND(SUM(order_money_gongju),2),0) AS dayCommission,
 		COUNT(order_id) AS dayOrderNum 
 		FROM sale_income 
 		WHERE sale_id=#{saleId} 
@@ -18,9 +18,10 @@
 	
 	<select id="queryData" resultType="SaleDataVo">
 		SELECT 
-		SUM(IF(order_money_gongju IS NOT NULL,order_money_gongju,0))+SUM(IF(order_money_haocai IS NOT NULL,order_money_haocai,0)) AS  saleAllMoney,
-		SUM(IF(order_money_gongju IS NOT NULL,order_money_gongju,0)) AS gongjuAllMoney,
-		SUM(IF(order_money_haocai IS NOT NULL,order_money_haocai,0)) AS haocaiAllMoney,
+		IF(ROUND(SUM(order_money_gongju),2) IS NOT NULL,ROUND(SUM(order_money_gongju),2),0)+
+		IF(ROUND(SUM(order_money_haocai),2) IS NOT NULL,ROUND(SUM(order_money_haocai),2),0) AS saleAllMoney,
+		IF(ROUND(SUM(order_money_gongju),2) IS NOT NULL,ROUND(SUM(order_money_gongju),2),0) AS gongjuAllMoney,		
+		IF(ROUND(SUM(order_money_haocai),2) IS NOT NULL,ROUND(SUM(order_money_haocai),2),0) AS haocaiAllMoney,	
 		COUNT(order_id) AS orderNum
 		FROM sale_income
 		WHERE sale_id=#{saleId};
@@ -28,7 +29,7 @@
 	
 	<select id="allCommission" resultType="String">
 		SELECT 
-		IF(SUM(balance_in) IS NOT NULL,SUM(balance_in),0) AS allCommission 
+		IF(ROUND(SUM(balance_in),2) IS NOT NULL,ROUND(SUM(balance_in),2),0) AS allCommission
 		FROM balance 
 		WHERE 
 		haocai_money IS NOT NULL 
@@ -45,12 +46,12 @@
 		o.created AS orderCreated,
 		u.true_name AS userName,
 		u.phone AS userPhone,
-		IF(si.order_money_haocai IS NOT NULL,si.order_money_haocai,0)+IF(si.order_money_gongju IS NOT NULL,si.order_money_gongju,0) AS allMoney,
-		IF(si.order_money_haocai IS NOT NULL,si.order_money_haocai,0) AS haocaiMoney,
-		IF(si.order_money_gongju IS NOT NULL,si.order_money_gongju,0) AS gongjuMoney,
-		IF(si.refund_money_gongju IS NOT NULL,si.refund_money_gongju,0)+IF(si.refund_money_haocai IS NOT NULL,si.refund_money_haocai,0) AS refundMoney,
-		SUM(IF(si.order_money_haocai IS NOT NULL,si.order_money_haocai,0)+IF(si.order_money_gongju IS NOT NULL,si.order_money_gongju,0))-
-		SUM(IF(si.refund_money_gongju IS NOT NULL,si.refund_money_gongju,0)+IF(si.refund_money_haocai IS NOT NULL,si.refund_money_haocai,0)) AS actualMoney
+		IF(ROUND(si.order_money_haocai,2) IS NOT NULL,ROUND(si.order_money_haocai,2),0)+IF(ROUND(si.order_money_gongju,2) IS NOT NULL,ROUND(si.order_money_gongju,2),0) AS allMoney,		
+		IF(ROUND(si.refund_money_gongju,2) IS NOT NULL,ROUND(si.refund_money_gongju,2),0)+IF(ROUND(si.refund_money_haocai,2) IS NOT NULL,ROUND(si.refund_money_haocai,2),0) AS refundMoney,	
+		IF(ROUND(si.order_money_haocai,2) IS NOT NULL,ROUND(si.order_money_haocai,2),0) AS haocaiMoney,
+		IF(ROUND(si.order_money_gongju,2) IS NOT NULL,ROUND(si.order_money_gongju,2),0) AS gongjuMoney,
+		(IF(ROUND(si.order_money_haocai,2) IS NOT NULL,ROUND(si.order_money_haocai,2),0)+IF(ROUND(si.order_money_gongju,2) IS NOT NULL,ROUND(si.order_money_gongju,2),0))-
+		(IF(ROUND(si.refund_money_gongju,2) IS NOT NULL,ROUND(si.refund_money_gongju,2),0)+IF(ROUND(si.refund_money_haocai,2) IS NOT NULL,ROUND(si.refund_money_haocai,2),0)) AS actualMoney
 		FROM sale_income si
 		LEFT JOIN ordera o  ON o.order_id=si.order_id
 		LEFT JOIN USER u ON si.sale_id=u.sale_id
@@ -77,14 +78,14 @@
 		u.phone AS userPhone,
 		o.created AS orderCreated,
 		o.state AS orderState,
-		IF(si.order_money_haocai IS NOT NULL,si.order_money_haocai,0) AS orderMoneyHaocai,
-		IF(si.order_money_gongju IS NOT NULL,si.order_money_gongju,0) AS orderMoneyGongju,
-		IF(si.refund_money_haocai IS NOT NULL,si.refund_money_haocai,0) AS refundMoneyHaocai,
-		IF(si.refund_money_gongju IS NOT NULL,si.refund_money_gongju,0) AS refundMoneyGongju,
-		IF(si.order_money_haocai IS NOT NULL,si.order_money_haocai,0)-
-		IF(si.refund_money_haocai IS NOT NULL,si.refund_money_haocai,0) AS actualMoneyHaocai,
-		IF(si.order_money_gongju IS NOT NULL,si.order_money_gongju,0)-
-		IF(si.refund_money_gongju IS NOT NULL,si.refund_money_gongju,0) AS actualMoneyGongju 
+		IF(ROUND(si.order_money_haocai,2) IS NOT NULL,ROUND(si.order_money_haocai,2),0) AS orderMoneyHaocai,		
+		IF(ROUND(si.order_money_gongju,2) IS NOT NULL,ROUND(si.order_money_gongju,2),0) AS orderMoneyGongju,
+		IF(ROUND(si.refund_money_haocai,2) IS NOT NULL,ROUND(si.refund_money_haocai,2),0) AS refundMoneyHaocai,		
+		IF(ROUND(si.refund_money_gongju,2) IS NOT NULL,ROUND(si.refund_money_gongju,2),0) AS refundMoneyGongju,	
+		(IF(ROUND(si.order_money_haocai,2) IS NOT NULL,ROUND(si.order_money_haocai,2),0))-
+		(IF(ROUND(si.refund_money_haocai,2) IS NOT NULL,ROUND(si.refund_money_haocai,2),0)) AS actualMoneyHaocai,
+		(IF(ROUND(si.order_money_gongju,2) IS NOT NULL,ROUND(si.order_money_gongju,2),0))-
+		(IF(ROUND(si.refund_money_gongju,2) IS NOT NULL,ROUND(si.refund_money_gongju,2),0)) AS actualMoneyGongju 	
 		FROM sale_income si
 		LEFT JOIN ordera o  ON o.order_id=si.order_id
 		LEFT JOIN USER u ON si.sale_id=u.sale_id

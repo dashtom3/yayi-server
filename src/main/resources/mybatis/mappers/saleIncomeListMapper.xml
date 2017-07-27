@@ -51,10 +51,10 @@
 		DATE_FORMAT(DATE_SUB(b.created,INTERVAL 1 MONTH),'%Y-%m') AS beYearMonth,
 		"已结算" AS getState,
 		b.created AS settlementTime,
-		SUM(IF(b.haocai_refund IS NOT NULL,b.haocai_refund,0)+IF(b.gongju_refund IS NOT NULL,b.gongju_refund,0)) AS moneyRefund,
-		SUM(IF(b.haocai_money IS NOT NULL,b.haocai_money,0)+IF(b.gongju_money IS NOT NULL,b.gongju_money,0)) AS allMoney,
-		SUM(IF(b.haocai_money IS NOT NULL,b.haocai_money,0)+IF(b.gongju_money IS NOT NULL,b.gongju_money,0))-
-		SUM(IF(b.haocai_refund IS NOT NULL,b.haocai_refund,0)+IF(b.gongju_refund IS NOT NULL,b.gongju_refund,0)) AS allActual
+		IF(ROUND(SUM(b.haocai_refund),2) IS NOT NULL,ROUND(SUM(b.haocai_refund),2),0)+IF(ROUND(SUM(b.gongju_refund),2) IS NOT NULL,ROUND(SUM(b.gongju_refund),2),0) AS moneyRefund,
+		IF(ROUND(SUM(b.haocai_money),2) IS NOT NULL,ROUND(SUM(b.haocai_money),2),0)+IF(ROUND(SUM(b.gongju_money),2) IS NOT NULL,ROUND(SUM(b.gongju_money),2),0) AS allMoney,
+		(IF(ROUND(SUM(b.haocai_money),2) IS NOT NULL,ROUND(SUM(b.haocai_money),2),0)+IF(ROUND(SUM(b.gongju_money),2) IS NOT NULL,ROUND(SUM(b.gongju_money),2),0))-
+		(IF(ROUND(SUM(b.haocai_refund),2) IS NOT NULL,ROUND(SUM(b.haocai_refund),2),0)+IF(ROUND(SUM(b.gongju_refund),2) IS NOT NULL,ROUND(SUM(b.gongju_refund),2),0)) AS allActual		 
 		FROM balance b
 		LEFT JOIN sale_info s ON s.sale_id=b.sale_id
 		WHERE
@@ -113,10 +113,10 @@
 		"0" AS getMoney,
 		DATE_FORMAT(si.created,'%Y-%m') AS beYearMonth,
 		"待结算" AS getState,
-		SUM(IF(si.order_money_haocai IS NOT NULL,si.order_money_haocai,0)+IF(si.order_money_gongju IS NOT NULL,si.order_money_gongju,0)) AS allMoney,
-		SUM(IF(si.refund_money_haocai IS NOT NULL,si.refund_money_haocai,0)+IF(si.refund_money_gongju IS NOT NULL,si.refund_money_gongju,0)) AS moneyRefund,
-		SUM(IF(si.order_money_haocai IS NOT NULL,si.order_money_haocai,0)+IF(si.order_money_gongju IS NOT NULL,si.order_money_gongju,0)) - 
-		SUM(IF(si.refund_money_haocai IS NOT NULL,si.refund_money_haocai,0)+IF(si.refund_money_gongju IS NOT NULL,si.refund_money_gongju,0)) AS allActual
+		IF(ROUND(SUM(si.order_money_haocai),2) IS NOT NULL,ROUND(SUM(si.order_money_haocai),2),0)+IF(ROUND(SUM(si.order_money_gongju),2) IS NOT NULL,ROUND(SUM(si.order_money_gongju),2),0) AS allMoney,	
+		IF(ROUND(SUM(si.refund_money_haocai),2) IS NOT NULL,ROUND(SUM(si.refund_money_haocai),2),0)+IF(ROUND(SUM(si.refund_money_gongju),2) IS NOT NULL,ROUND(SUM(si.refund_money_gongju),2),0) AS moneyRefund,
+		(IF(ROUND(SUM(si.order_money_haocai),2) IS NOT NULL,ROUND(SUM(si.order_money_haocai),2),0)+IF(ROUND(SUM(si.order_money_gongju),2) IS NOT NULL,ROUND(SUM(si.order_money_gongju),2),0))-
+		(IF(ROUND(SUM(si.refund_money_haocai),2) IS NOT NULL,ROUND(SUM(si.refund_money_haocai),2),0)+IF(ROUND(SUM(si.refund_money_gongju),2) IS NOT NULL,ROUND(SUM(si.refund_money_gongju),2),0)) AS allActual
 		FROM sale_income si
 		LEFT JOIN sale_info s ON si.sale_id=s.sale_id
 		WHERE 

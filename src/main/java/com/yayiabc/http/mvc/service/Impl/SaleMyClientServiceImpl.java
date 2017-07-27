@@ -42,7 +42,7 @@ public class SaleMyClientServiceImpl implements SaleMyClientService {
 			}else{
 				userStatistics.setOrderaCount(us.getOrderaCount());
 				userStatistics.setOrderaMoneyCount(us.getOrderaMoneyCount());
-				userStatistics.setLatelyOrderDate(us.getLatelyOrderDate());
+				userStatistics.setLatelyOrderDate(saleMyClientDao.getLatelyOrderDate(userStatistics.getUserId()));
 			}
 		}
 		dataWrapper.setData(list);

@@ -11,7 +11,7 @@
 		u.true_name,
 		u.phone,
 		c.company_name,
-		u.bind_sale_time,
+		DATE_FORMAT(u.bind_sale_time, '%Y-%c-%e %T') AS bind_sale_time,
 		c.work_address
 		FROM USER u
 		LEFT JOIN sale_info s
@@ -46,11 +46,17 @@
 	<select id="queryCount" resultType="UserStatistics">
 		SELECT
 		IF(COUNT(user_id) IS NOT NULL,COUNT(user_id),0) AS orderaCount,
-		IF(SUM(actual_pay) IS NOT NULL,SUM(actual_pay),0) AS orderaMoneyCount,
-		updated AS latelyOrderDate 
+		IF(ROUND(SUM(actual_pay),2) IS NOT NULL,ROUND(SUM(actual_pay),2),0) AS orderaMoneyCount
 		FROM ordera 
 		WHERE user_id=#{userId} 
-		ORDER BY updated DESC  
+	</select>
+	
+	<select id="getLatelyOrderDate" resultType="String">
+		SELECT 
+		created AS latelyOrderDate  
+		FROM ordera 
+		WHERE user_id=#{userId}
+		ORDER BY created DESC 
 		LIMIT 1
 	</select>
 </mapper>

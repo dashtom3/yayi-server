@@ -207,7 +207,7 @@
 	<!-- 查询销售员累计收入 -->
 	<select id="getTotalGetMoney" resultType="String">
 		SELECT 
-		IF(SUM(balance_in) IS NOT NULL,SUM(balance_in),0) AS totalGetMoney 
+		IF(ROUND(SUM(balance_in),2) IS NOT NULL,ROUND(SUM(balance_in),2),0) AS totalGetMoney 	 
 		FROM balance 
 		WHERE 
 		haocai_money IS NOT NULL 

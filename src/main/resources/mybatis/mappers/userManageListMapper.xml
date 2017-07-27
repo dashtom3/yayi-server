@@ -9,11 +9,11 @@
 				u.true_name AS trueName,
 				u.phone AS phone,
 				c.company_name AS companyName,
-				c.type AS type,
+				c.type AS TYPE,
 				IF(u.sale_id IS NOT NULL,1,2) AS isBindSale,		
 				s.true_name AS saleName,
 				o.created AS latelyOrderDate,
-				IF(SUM(o.actual_pay) IS NOT NULL,SUM(o.actual_pay),0) AS orderaMoneyCount,
+				IF(ROUND(SUM(o.actual_pay),2) IS NOT NULL,ROUND(SUM(o.actual_pay),2),0) AS orderaMoneyCount,
 				IF(COUNT(o.user_id) IS NOT NULL,COUNT(o.user_id),0) AS orderaCount,
 				u.created AS userCreated,
 				s.phone AS salePhone

@@ -190,9 +190,6 @@ public class SaleLogServiceImpl implements SaleLogService {
 
 	private String getToken(String id) {
 		String token = UUID.randomUUID().toString();
-		UserToken userToken = new UserToken();
-		userToken.setUserId(id);
-		userToken.setToken(token);
 		String oldToken = saleLogDao.getTokenBySaleId(id);
 		if (oldToken == null) {
 			saleLogDao.addSaleToken(id,token);

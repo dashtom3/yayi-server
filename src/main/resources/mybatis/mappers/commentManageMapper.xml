@@ -4,14 +4,11 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 
 <mapper namespace="com.yayiabc.http.mvc.dao.CommentManageDao">
-	
-	
-
 	<select id="commentM" resultType="Comments">
 		select * from comments
 		<where>
 		 <if test="orderId!=null">
-			orde.order_id like '%${orderId}%'
+			order_id like '%${orderId}%'
 		</if> 
 		<if test="recoveryState==2">and state=1</if>
 		<if test="recoveryState==3">and state=2</if>

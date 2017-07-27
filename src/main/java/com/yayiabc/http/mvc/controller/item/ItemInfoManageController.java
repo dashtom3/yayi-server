@@ -203,7 +203,7 @@ public class ItemInfoManageController {
 	@RequestParam(value="itemUse",required=true) String itemUse,
 	@RequestParam(value="itemRange",required=false) String itemRange,
 	@RequestParam(value="remark",required=false) String remark,
-	@RequestParam(value="registerId",required=true) String registerId,
+	@RequestParam(value="registerId",required=false) String registerId,
 	@RequestParam(value="storeItemId",required=false) String storeItemId,
 	@RequestParam(value="apparatusType",required=false) String apparatusType,
 	@RequestParam(value="producePompany",required=false) String producePompany,
@@ -251,6 +251,9 @@ public class ItemInfoManageController {
 		}
 		if(remark==null||"".equals(remark)){
 			remark=null;
+		}
+		if(registerId==null||"".equals(registerId)){
+			registerId=null;
 		}
 		
 		return itemInfoManageService.insert(itemId,itemName,itemBrandId,oneClassify,itemLevels,

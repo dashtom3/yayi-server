@@ -21,8 +21,7 @@ public class CommentManageController {
      
       /**
        * 显示评论列表 recoveryState 1表示全部2表示未回复 3表示已回复
-       * @param orderid
-       * @param phone
+       * @param orderId
        * @param recoveryState
        * @param currentPage
        * @param numberPerpage
@@ -39,7 +38,7 @@ public class CommentManageController {
     	 if("".equals(orderId)){
     		 orderId=null;
     	 }
-    	 
+    	 System.out.println(recoveryState);
 		return commentManage.commentM(orderId,recoveryState,currentPage,numberPerpage);
       }
       //回复评论

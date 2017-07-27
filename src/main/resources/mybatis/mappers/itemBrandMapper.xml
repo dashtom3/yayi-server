@@ -130,7 +130,7 @@ LEFT JOIN
                   (SELECT comment_id,user_id,item_id s_id,order_id,comment_grade,comment_content,reply_content,created co_created,updated co_updated FROM comments) c
               inner JOIN
               USER f
-              ON c.user_id=f.user_id) m
+              ON c.user_id=f.user_id order by c.co_created) m
 ON n.item_id=m.s_id ) o
 inner JOIN
 (SELECT item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,item_qb,item_value_id FROM item_value) q

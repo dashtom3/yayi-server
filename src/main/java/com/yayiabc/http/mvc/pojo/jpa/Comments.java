@@ -26,6 +26,10 @@ public class Comments extends BasePojo {
 	private Date created;
 	
 	private Date updated;
+	
+	private String userName;
+	
+	private String userPhone;
 
 	public Integer getCommentId() {
 		return commentId;
@@ -107,9 +111,26 @@ public class Comments extends BasePojo {
 		this.updated = updated;
 	}
 
+	public String getUserName() {
+		return userName;
+	}
+
+	public void setUserName(String userName) {
+		this.userName = userName;
+	}
+
+	public String getUserPhone() {
+		return userPhone;
+	}
+
+	public void setUserPhone(String userPhone) {
+		this.userPhone = userPhone;
+	}
+
 	public Comments(Integer commentId, String sku, String describey,
 			String commentContent, Integer commentGrade, String orderId,
-			Integer state, String replyContent, Date created, Date updated) {
+			Integer state, String replyContent, Date created, Date updated,
+			String userName, String userPhone) {
 		super();
 		this.commentId = commentId;
 		this.sku = sku;
@@ -121,6 +142,8 @@ public class Comments extends BasePojo {
 		this.replyContent = replyContent;
 		this.created = created;
 		this.updated = updated;
+		this.userName = userName;
+		this.userPhone = userPhone;
 	}
 
 	public Comments() {
@@ -140,10 +163,10 @@ public class Comments extends BasePojo {
 				+ commentContent + ", commentGrade=" + commentGrade
 				+ ", orderId=" + orderId + ", state=" + state
 				+ ", replyContent=" + replyContent + ", created=" + created
-				+ ", updated=" + updated + "]";
+				+ ", updated=" + updated + ", userName=" + userName
+				+ ", userPhone=" + userPhone + "]";
 	}
 
-	
 	
 	
 }

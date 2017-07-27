@@ -214,7 +214,7 @@ public class ItemInfoManageController {
 	@RequestParam(value="itemSort",required=false) String itemSort
 			){
 		if(registerDate==null||"".equals(registerDate)){
-			registerDate=null;
+			registerDate="暂无";
 		}
 		if(itemRange==null||"".equals(itemRange)){
 			itemRange="暂无";

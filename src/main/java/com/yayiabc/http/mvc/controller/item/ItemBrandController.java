@@ -45,7 +45,7 @@ public class ItemBrandController{
 
     @RequestMapping(value={"itemDetailDes"})
     @ResponseBody
-    @TokenValidate(description="商品详情")
+    /*@TokenValidate(description="商品详情")*/
     public DataWrapper<ItemInfo> itemDetailDes(
     		@RequestParam(value="itemId") String itemId,
     		@RequestParam(value="token",required=false) String token)

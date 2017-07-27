@@ -9,44 +9,23 @@ import java.util.Date;
 public class Comments extends BasePojo {
 	private Integer commentId;
 	
-	private String userName;
+	private String sku;
 	
-	private String userPhone;
-
-	private String userId;
+	private String describey;
+	
+	private String commentContent;
+	
+	private Integer commentGrade;
 	
 	private String orderId;
-
-	private ItemInfo itemInfo;
-
-	private Ordera ordera;
-
-	private Integer commentGrade;
-
-	private String commentContent;
-
+	
+	private Integer state;
+	
 	private String replyContent;
 	
-	private String recoveryState;
-
+	private Date created;
 	
-	
-	
-	public String getUserPhone() {
-		return userPhone;
-	}
-
-	public void setUserPhone(String userPhone) {
-		this.userPhone = userPhone;
-	}
-
-	public String getUserName() {
-		return userName;
-	}
-
-	public void setUserName(String userName) {
-		this.userName = userName;
-	}
+	private Date updated;
 
 	public Integer getCommentId() {
 		return commentId;
@@ -56,44 +35,20 @@ public class Comments extends BasePojo {
 		this.commentId = commentId;
 	}
 
-	public String getUserId() {
-		return userId;
+	public String getSku() {
+		return sku;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
+	public void setSku(String sku) {
+		this.sku = sku;
 	}
 
-	public String getOrderId() {
-		return orderId;
+	public String getDescribey() {
+		return describey;
 	}
 
-	public void setOrderId(String orderId) {
-		this.orderId = orderId;
-	}
-
-	public ItemInfo getItemInfo() {
-		return itemInfo;
-	}
-
-	public void setItemInfo(ItemInfo itemInfo) {
-		this.itemInfo = itemInfo;
-	}
-
-	public Ordera getOrdera() {
-		return ordera;
-	}
-
-	public void setOrdera(Ordera ordera) {
-		this.ordera = ordera;
-	}
-
-	public Integer getCommentGrade() {
-		return commentGrade;
-	}
-
-	public void setCommentGrade(Integer commentGrade) {
-		this.commentGrade = commentGrade;
+	public void setDescribey(String describey) {
+		this.describey = describey;
 	}
 
 	public String getCommentContent() {
@@ -104,6 +59,30 @@ public class Comments extends BasePojo {
 		this.commentContent = commentContent;
 	}
 
+	public Integer getCommentGrade() {
+		return commentGrade;
+	}
+
+	public void setCommentGrade(Integer commentGrade) {
+		this.commentGrade = commentGrade;
+	}
+
+	public String getOrderId() {
+		return orderId;
+	}
+
+	public void setOrderId(String orderId) {
+		this.orderId = orderId;
+	}
+
+	public Integer getState() {
+		return state;
+	}
+
+	public void setState(Integer state) {
+		this.state = state;
+	}
+
 	public String getReplyContent() {
 		return replyContent;
 	}
@@ -112,30 +91,36 @@ public class Comments extends BasePojo {
 		this.replyContent = replyContent;
 	}
 
-	public String getRecoveryState() {
-		return recoveryState;
+	public Date getCreated() {
+		return created;
 	}
 
-	public void setRecoveryState(String recoveryState) {
-		this.recoveryState = recoveryState;
+	public void setCreated(Date created) {
+		this.created = created;
 	}
 
-	public Comments(Integer commentId, String userName, String userPhone,
-			String userId, String orderId, ItemInfo itemInfo, Ordera ordera,
-			Integer commentGrade, String commentContent, String replyContent,
-			String recoveryState) {
+	public Date getUpdated() {
+		return updated;
+	}
+
+	public void setUpdated(Date updated) {
+		this.updated = updated;
+	}
+
+	public Comments(Integer commentId, String sku, String describey,
+			String commentContent, Integer commentGrade, String orderId,
+			Integer state, String replyContent, Date created, Date updated) {
 		super();
 		this.commentId = commentId;
-		this.userName = userName;
-		this.userPhone = userPhone;
-		this.userId = userId;
-		this.orderId = orderId;
-		this.itemInfo = itemInfo;
-		this.ordera = ordera;
-		this.commentGrade = commentGrade;
+		this.sku = sku;
+		this.describey = describey;
 		this.commentContent = commentContent;
+		this.commentGrade = commentGrade;
+		this.orderId = orderId;
+		this.state = state;
 		this.replyContent = replyContent;
-		this.recoveryState = recoveryState;
+		this.created = created;
+		this.updated = updated;
 	}
 
 	public Comments() {
@@ -150,12 +135,12 @@ public class Comments extends BasePojo {
 
 	@Override
 	public String toString() {
-		return "Comments [commentId=" + commentId + ", userName=" + userName
-				+ ", userPhone=" + userPhone + ", userId=" + userId
-				+ ", orderId=" + orderId + ", itemInfo=" + itemInfo
-				+ ", ordera=" + ordera + ", commentGrade=" + commentGrade
-				+ ", commentContent=" + commentContent + ", replyContent="
-				+ replyContent + ", recoveryState=" + recoveryState + "]";
+		return "Comments [commentId=" + commentId + ", sku=" + sku
+				+ ", describey=" + describey + ", commentContent="
+				+ commentContent + ", commentGrade=" + commentGrade
+				+ ", orderId=" + orderId + ", state=" + state
+				+ ", replyContent=" + replyContent + ", created=" + created
+				+ ", updated=" + updated + "]";
 	}
 
 	

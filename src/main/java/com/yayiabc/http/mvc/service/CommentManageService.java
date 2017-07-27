@@ -3,13 +3,14 @@ package com.yayiabc.http.mvc.service;
 import java.util.List;
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.pojo.jpa.Comments;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 
 
 public interface CommentManageService {
-	DataWrapper<List<Ordera>>  commentM(String orderId,Integer recoveryState,String phone,
+	DataWrapper<List<Comments>>  commentM(String orderId,Integer recoveryState,
 			Integer currentPage,Integer numberPerpage);
 
-	DataWrapper<Void> reply(String orderId, String itemId,
+	DataWrapper<Void> reply(Integer commentId,
 			String data);
 }

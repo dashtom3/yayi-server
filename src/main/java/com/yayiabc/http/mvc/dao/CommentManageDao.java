@@ -4,24 +4,23 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.yayiabc.http.mvc.pojo.jpa.Comments;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 
 
 public interface CommentManageDao{
 	 List<String> showClassifyOne();
 
-	List<Ordera> commentM(
+	List<Comments> commentM(
 			@Param("orderId")String  orderId,
-			@Param("recoveryState")String  recoveryState,
-			@Param("phone")String  phone,
-			@Param("currentPage")Integer currentPage,
+			@Param("recoveryState")Integer  recoveryState,
+			@Param("currentNumber")Integer currentNumber,
 			@Param("numberPerPage")Integer numberPerpage
 			 
 			);
 
-	int reply(@Param("orderId")String orderId,
-			@Param("itemId")String itemId,
+	int reply(@Param("commentId")Integer commentId,
 			@Param("data")String data);
 
-	Integer queryCount(@Param("orderId")String orderId,@Param("recoveryState") Integer recoveryState,@Param("phone") String phone);
+	Integer queryCount(@Param("orderId")String orderId,@Param("recoveryState") Integer recoveryState);
 }

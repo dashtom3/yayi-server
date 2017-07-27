@@ -15,6 +15,14 @@
 	<insert id="addSaleToken">
 		insert into sale_token values(#{saleId},#{saleToken})
 	</insert>
+
+	<update id="updateSaleToken">
+		UPDATE sale_token SET sale_token = #{1} WHERE sale_id = #{0}
+	</update>
+
+	<delete id="deleteSaleToken">
+		DELETE FROM sale_token WHERE sale_token = #{0}
+	</delete>
 	
 	<select id="getTokenBySaleId" resultType="string">
 		select sale_token from sale_token where sale_id=#{saleId}

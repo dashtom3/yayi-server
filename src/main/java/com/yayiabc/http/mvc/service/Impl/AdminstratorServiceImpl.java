@@ -1,6 +1,8 @@
 package com.yayiabc.http.mvc.service.Impl;
 
 import java.util.List;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,12 +35,7 @@ public class AdminstratorServiceImpl implements AdminstratorService{
 		adminstrator.setAdminstratorPwd(adminstratorPwd);
 		adminstrator.setState(1);//1代表普通管理员2代表超级管理员
 		adminstratorDao.addAdminstrator(adminstrator);
-		String token=UUID.randomUUID().toString();//生成管理员token
-		Integer adminstratorId=adminstratorDao.getAdminstratorIdByPhone(phone);//通过phone获取id
-		AdminstratorToken adminstratorToken=new AdminstratorToken();
-		adminstratorToken.setAdminstratorId(adminstratorId);
-		adminstratorToken.setAdminstratorToken(token);
-		adminstratorDao.addAdminstratorToken(adminstratorToken);
+
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
 	}
@@ -46,7 +43,6 @@ public class AdminstratorServiceImpl implements AdminstratorService{
 	@Override
 	public DataWrapper<Void> deleteAdminstrator(Integer adminstratorId) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		adminstratorDao.deleteAdminstratorToken(adminstratorId);
 		adminstratorDao.deleteAdminstrator(adminstratorId);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
@@ -98,7 +94,7 @@ public class AdminstratorServiceImpl implements AdminstratorService{
 		} else if (serverCode.equals(code)) {
 			Adminstrator adminstrator =adminstratorDao.loginAdminstrator(phone,adminstratorPwd);
 			if (adminstrator!=null) {
-				String token=adminstratorDao.getAdminstratorTokenByAdminstratorId(adminstrator.getAdminstratorId());
+				String token=getToken(adminstrator.getAdminstratorId());
 				dataWrapper.setToken(token);
 				dataWrapper.setNum(adminstrator.getState());
 				dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
@@ -116,5 +112,33 @@ public class AdminstratorServiceImpl implements AdminstratorService{
 			dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
 		}
 	return dataWrapper;
+	}
+
+	private String getToken(int id){
+		String token=UUID.randomUUID().toString();//生成管理员token
+		AdminstratorToken adminstratorToken=new AdminstratorToken();
+		adminstratorToken.setAdminstratorId(id);
+		adminstratorToken.setAdminstratorToken(token);
+		String oldToken = adminstratorDao.getAdminstratorTokenByAdminstratorId(id);
+		if (oldToken == null){
+			adminstratorDao.addAdminstratorToken(adminstratorToken);
+		}else {
+			adminstratorDao.updateAdminstratorToken(adminstratorToken);
+		}
+		new Timer().schedule(new TokenTask(token),2*3600);
+		return token;
+	}
+
+	private class TokenTask extends TimerTask {
+		private String token;
+
+		public TokenTask(String token) {
+			this.token = token;
+		}
+
+		@Override
+		public void run() {
+			adminstratorDao.deleteAdminstratorToken(token);
+		}
 	}
 }

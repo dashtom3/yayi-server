@@ -2,39 +2,47 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
- <mapper namespace="com.yayiabc.http.mvc.dao.UserDao">
+<mapper namespace="com.yayiabc.http.mvc.dao.UserDao">
 
     <insert id="register" parameterType="User">
     	insert into user(user_id,phone,pwd,created,updated) values(#{userId},#{phone},#{pwd},now(),now())
     </insert>
-	<select id="getUserByUser" resultMap="userMap">
+    <select id="getUserByUser" resultMap="userMap">
 		select * from user where phone=#{phone}
 	</select>
-	<resultMap type="User" id="userMap" autoMapping="true">
-		<id column="user_id" property="userId" jdbcType="VARCHAR"/>
-		<association property="certification" javaType="Certification">  
-            <id property="certificationId" column="certification_id"/>                                
-       </association> 
-	</resultMap>
+    <resultMap type="User" id="userMap" autoMapping="true">
+        <id column="user_id" property="userId" jdbcType="VARCHAR"/>
+        <association property="certification" javaType="Certification">
+            <id property="certificationId" column="certification_id"/>
+        </association>
+    </resultMap>
     <select id="getCartNum" resultType="int">
     	select count(*) from cart where user_id=#{userId}
     </select>
     <update id="updatePwd">
     	update user set pwd=#{pwd} where phone=#{phone}
     </update>
-    
+
     <select id="getUserId" resultType="String">
     	select user_id from user where phone=#{phone};
     </select>
-    
+
     <select id="getTokenByUserId" resultType="string">
     	select token from user_token where user_id=#{userId}
     </select>
-    
+
     <insert id="addToken">
     	insert into user_token values (#{token},#{userId})
     </insert>
-    
+
+    <update id="updateToken">
+        UPDATE user_token SET token = #{token} WHERE user_id = #{userId}
+    </update>
+
+    <delete id="deleteToken">
+        DELETE FROM user_token WHERE token = #{_parameter}
+    </delete>
+
     <select id="getUserIdByToken" resultType="string">
     	select user_id from user_token where token=#{token}
     </select>

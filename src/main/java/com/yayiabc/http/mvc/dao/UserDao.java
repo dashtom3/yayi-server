@@ -32,4 +32,8 @@ public interface UserDao {
 	String getUserIdByToken(String token);
 
 	User getUserByUserId(String userId);
+
+	void updateToken(UserToken userToken);
+
+	void deleteToken(String token);
 }

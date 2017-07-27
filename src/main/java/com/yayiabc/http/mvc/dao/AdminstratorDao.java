@@ -24,8 +24,9 @@ public interface AdminstratorDao {
 
 	void addAdminstratorToken(AdminstratorToken adminstratorToken);
 
-	void deleteAdminstratorToken(Integer adminstratorId);
+	void deleteAdminstratorToken(String token);
 
 	String getAdminstratorTokenByAdminstratorId(Integer adminstratorId);
 
+	void updateAdminstratorToken(AdminstratorToken adminstratorToken);
 }

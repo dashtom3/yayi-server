@@ -1,8 +1,11 @@
 package com.yayiabc.http.mvc.service.Impl;
 
 import java.util.Date;
+import java.util.Timer;
+import java.util.TimerTask;
 import java.util.UUID;
 
+import com.yayiabc.http.mvc.pojo.model.UserToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -63,9 +66,6 @@ public class SaleLogServiceImpl implements SaleLogService {
                 if (1 == saleLogDao.register(saleInfoTwo)) {
                     VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
                     dataWrapper.setData(saleInfoTwo);
-                    String saleToken=UUID.randomUUID().toString();
-                    saleLogDao.addSaleToken(saleInfoTwo.getSaleId(),saleToken);
- 	                dataWrapper.setToken(saleToken);
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 } else {
@@ -101,11 +101,7 @@ public class SaleLogServiceImpl implements SaleLogService {
 		           dataWrapper.setData(saleInfo);
 		           dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		           dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-		           String saleToken=saleLogDao.getTokenBySaleId(saleInfo.getSaleId());
-                   if(saleToken==null||"".equals(saleToken)){
-                   	saleToken=UUID.randomUUID().toString();
-                   	saleLogDao.addSaleToken(saleInfo.getSaleId(),saleToken);
-                   }
+		           String saleToken=getToken(saleInfo.getSaleId());
 	                dataWrapper.setToken(saleToken);
 		        } else {
 		            System.out.println("code:" + code);
@@ -132,13 +128,8 @@ public class SaleLogServiceImpl implements SaleLogService {
 				dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
 				String saleId=saleInfo.getSaleId();
 				if(saleId!=null){
-					saleToken=saleLogDao.getTokenBySaleId(saleId);
+					saleToken=getToken(saleId);
 				}
-                if(saleToken==null||"".equals(saleToken)){
-                	saleToken=UUID.randomUUID().toString();
-                	saleLogDao.addSaleToken(saleInfo.getSaleId(),saleToken);
-                }
-	                
 			}else{
 				dataWrapper.setErrorCode(ErrorCodeEnum.Password_error);
 				dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
@@ -154,6 +145,7 @@ public class SaleLogServiceImpl implements SaleLogService {
 	@Override
 	public DataWrapper<Void> reLogin(String token) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		saleLogDao.deleteSaleToken(token);
         dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
         dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
 		return dataWrapper;
@@ -196,4 +188,31 @@ public class SaleLogServiceImpl implements SaleLogService {
 		return dataWrapper;
 	}
 
+	private String getToken(String id) {
+		String token = UUID.randomUUID().toString();
+		UserToken userToken = new UserToken();
+		userToken.setUserId(id);
+		userToken.setToken(token);
+		String oldToken = saleLogDao.getTokenBySaleId(id);
+		if (oldToken == null) {
+			saleLogDao.addSaleToken(id,token);
+		} else {
+			saleLogDao.updateSaleToken(id,token);
+		}
+		new Timer().schedule(new TokenTask(token), 2 * 3600);
+		return token;
+	}
+
+	private class TokenTask extends TimerTask {
+		private String token;
+
+		public TokenTask(String token) {
+			this.token = token;
+		}
+
+		@Override
+		public void run() {
+			saleLogDao.deleteSaleToken(token);
+		}
+	}
 }

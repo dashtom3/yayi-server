@@ -30,6 +30,10 @@ public class SaleListServiceImpl implements SaleListService {
 				isBindUser);
 		List<SaleInfo> list = saleListDao.query(saleId, phone, trueName,
 				isBindUser, page);
+		for (SaleInfo saleInfo :list) {
+			double totalGetMoney=Double.parseDouble(saleListDao.getTotalGetMoney(saleInfo.getSaleId()));
+			saleInfo.setTotalGetMoney(totalGetMoney);
+		}
 		dataWrapper.setPage(page, totalNumber);
 		dataWrapper.setData(list);
 		return dataWrapper;

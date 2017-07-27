@@ -10,40 +10,37 @@
 		<result column="created" property="created"/>
 		<result column="isBindUser" property="isBindUser"/>
 		<result column="bind_user_num" property="bindUserNum"/>
-		<result column="totalGetMoney" property="totalGetMoney"/>
 	</resultMap>
 	
 	<!-- 销售员列表 -->
 	<select id="query" resultMap="saleInfoRM">
 		SELECT 
-		s.sale_id,
-		s.true_name,
-		s.phone,
-		s.created,
-		IF(s.bind_user_num=0,2,IF(s.bind_user_num!=0,1,2)) AS isBindUser,
-		bind_user_num,
-		IF(SUM(b.balance_in) IS NOT NULL,SUM(b.balance_in),0) AS totalGetMoney
-		FROM sale_info s
-		LEFT JOIN balance b ON s.sale_id=b.sale_id
+		sale_id,
+		true_name,
+		phone,
+		created,
+		IF(bind_user_num=0,2,IF(bind_user_num!=0,1,2)) AS isBindUser,
+		bind_user_num
+		FROM sale_info
 		<where>
 			<if test="saleId !=null and saleId !=''">
-				s.sale_id LIKE '%${saleId}%'
+				sale_id LIKE '%${saleId}%'
 			</if>
 			<if test="phone !=null and phone !=''">
-				AND s.phone LIKE '%${phone}%'
+				AND phone LIKE '%${phone}%'
 			</if>
 			<if test="trueName !=null and trueName !=''">
-				AND s.true_name LIKE '%${trueName}%'
+				AND true_name LIKE '%${trueName}%'
 			</if>
 			<if test="isBindUser ==1">
-				AND s.bind_user_num !=0
+				AND bind_user_num !=0
 			</if>
 			<if test="isBindUser ==2">
-				AND s.bind_user_num =0
+				AND bind_user_num =0
 			</if>
 		</where>
-		GROUP BY s.sale_id
-		ORDER BY s.created DESC
+		GROUP BY sale_id
+		ORDER BY created DESC
 		LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
 	
@@ -205,5 +202,18 @@
 		sale_id = (SELECT sale_id FROM sale_info WHERE phone=#{phone}) 		
 		ORDER BY created DESC
 		LIMIT 1	
+	</select>
+	
+	<!-- 查询销售员累计收入 -->
+	<select id="getTotalGetMoney" resultType="String">
+		SELECT 
+		IF(SUM(balance_in) IS NOT NULL,SUM(balance_in),0) AS totalGetMoney 
+		FROM balance 
+		WHERE 
+		haocai_money IS NOT NULL 
+		AND sale_id=#{saleId}
+		OR 
+		gongju_money IS NOT NULL 
+		AND sale_id=#{saleId} 
 	</select>
 </mapper>

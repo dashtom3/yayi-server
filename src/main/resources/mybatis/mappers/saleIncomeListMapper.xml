@@ -224,8 +224,8 @@
 		si.order_money_gongju,
 		si.refund_money_haocai,
 		si.refund_money_gongju,
-		SUM(IF(si.order_money_haocai IS NOT NULL,si.order_money_haocai,0)+IF(si.order_money_gongju IS NOT NULL,si.order_money_gongju,0))-
-		SUM(IF(si.refund_money_haocai IS NOT NULL,si.refund_money_haocai,0)+IF(si.refund_money_gongju IS NOT NULL,si.refund_money_gongju,0)) AS actualMoney,
+		IF(si.order_money_haocai IS NOT NULL,si.order_money_haocai,0)+IF(si.order_money_gongju IS NOT NULL,si.order_money_gongju,0)-
+		IF(si.refund_money_haocai IS NOT NULL,si.refund_money_haocai,0)+IF(si.refund_money_gongju IS NOT NULL,si.refund_money_gongju,0) AS actualMoney,
 		o.created AS orderCreated
 		FROM sale_income si 
 		LEFT JOIN ordera o ON si.order_id=o.order_id

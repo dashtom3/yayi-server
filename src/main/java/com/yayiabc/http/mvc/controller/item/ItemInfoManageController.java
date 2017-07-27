@@ -217,22 +217,22 @@ public class ItemInfoManageController {
 			registerDate=null;
 		}
 		if(itemRange==null||"".equals(itemRange)){
-			itemRange=null;
+			itemRange="暂无";
 		}
 		if(storeItemId==null||"".equals(storeItemId)){
-			storeItemId=null;
+			storeItemId="暂无";
 		}
 		if(apparatusType==null||"".equals(apparatusType)){
-			apparatusType=null;
+			apparatusType="暂无";
 		}
 		if(producePompany==null||"".equals(producePompany)){
-			producePompany=null;
+			producePompany="暂无";
 		}
 		if(itemLevels==null||"".equals(itemLevels)){
-			itemLevels=null;
+			itemLevels="暂无";
 		}
 		if(itemPacking==null||"".equals(itemPacking)){
-			itemPacking=null;
+			itemPacking="暂无";
 		}
 		if(itemPicb==null||"".equals(itemPicb)){
 			itemPicb=null;
@@ -247,13 +247,13 @@ public class ItemInfoManageController {
 			itemPice=null;
 		}
 		if(unit==null||"".equals(unit)){
-			unit=null;
+			unit="暂无";
 		}
 		if(remark==null||"".equals(remark)){
-			remark=null;
+			remark="暂无";
 		}
 		if(registerId==null||"".equals(registerId)){
-			registerId=null;
+			registerId="暂无";
 		}
 		
 		return itemInfoManageService.insert(itemId,itemName,itemBrandId,oneClassify,itemLevels,

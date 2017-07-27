@@ -27,9 +27,15 @@
 	</select>
 	
 	<select id="allCommission" resultType="String">
-		SELECT SUM(IF(balance_in IS NOT NULL,balance_in,0)) AS allCommission
+		SELECT 
+		IF(SUM(balance_in) IS NOT NULL,SUM(balance_in),0) AS allCommission 
 		FROM balance 
-		WHERE sale_id=#{saleId};
+		WHERE 
+		haocai_money IS NOT NULL 
+		AND sale_id=#{saleId}
+		OR 
+		gongju_money IS NOT NULL 
+		AND sale_id=#{saleId} 
 	</select>
 	
 	<select id="queryOrderList" resultType="MyOrderVo">

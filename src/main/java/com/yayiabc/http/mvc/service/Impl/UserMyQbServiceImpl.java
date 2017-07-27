@@ -33,7 +33,7 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 			Integer qb = userMyQbDao.queryQbbalance(userId);
 			if (qbRecord.getQbRget() != null && qbRecord.getQbRget() > 0) {
 				userMyQbDao.updateUserQb(qbRecord.getQbRget(), userId);
-				qbRecord.setQbBalances(qb + qbRecord.getQbRget());
+				qbRecord.setQbBalances(qb+qbRecord.getQbRget());
 				userMyQbDao.add(qbRecord);
 			} else if (qbRecord.getQbRout() != null && qbRecord.getQbRout() < 0) {
 				if (Math.abs(qbRecord.getQbRout()) > qb) { // 判断支出乾币数是否大于已有余额
@@ -41,7 +41,7 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 					dataWrapper.setMsg("乾币增减错误！");
 				} else {
 					userMyQbDao.updateUserQb(qbRecord.getQbRout(), userId);
-					qbRecord.setQbBalances(qb + qbRecord.getQbRout());
+					qbRecord.setQbBalances(qb+qbRecord.getQbRout());
 					userMyQbDao.add(qbRecord);
 				}
 			} else  {

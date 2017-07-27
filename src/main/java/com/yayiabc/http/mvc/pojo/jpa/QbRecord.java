@@ -2,10 +2,6 @@ package com.yayiabc.http.mvc.pojo.jpa;
 
 import java.util.Date;
 
-import org.springframework.format.annotation.DateTimeFormat;
-
-import com.fasterxml.jackson.annotation.JsonFormat;
-
 /**
  * 
  * @author xiaojiang 乾币记录表
@@ -19,8 +15,7 @@ public class QbRecord extends BasePojo {
 
 	private Integer qbRout;
 
-	@DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
-	private Date qbTime;
+	private String qbTime;
 
 	private Integer qbBalances;
 
@@ -60,12 +55,12 @@ public class QbRecord extends BasePojo {
 		this.qbRout = qbRout;
 	}
 
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss")
-	public Date getQbTime() {
+
+	public String getQbTime() {
 		return qbTime;
 	}
 
-	public void setQbTime(Date qbTime) {
+	public void setQbTime(String qbTime) {
 		this.qbTime = qbTime;
 	}
 
@@ -99,7 +94,7 @@ public class QbRecord extends BasePojo {
 	}
 
 	public QbRecord(Integer qbRid, String userId, Integer qbRget,
-			Integer qbRout, Date qbTime, String remark, Integer qbBalances) {
+			Integer qbRout, String qbTime, String remark, Integer qbBalances) {
 		super();
 		this.qbRid = qbRid;
 		this.userId = userId;
@@ -111,7 +106,7 @@ public class QbRecord extends BasePojo {
 	}
 
 	public QbRecord(Integer qbRid, String userId, Integer qbRget,
-			Integer qbRout, Date qbTime, String remark, Integer qbBalances,
+			Integer qbRout, String qbTime, String remark, Integer qbBalances,
 			User user) {
 		super();
 		this.qbRid = qbRid;

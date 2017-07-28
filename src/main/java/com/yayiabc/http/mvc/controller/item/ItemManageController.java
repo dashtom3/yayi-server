@@ -94,7 +94,6 @@ public class ItemManageController {
 	 */
 	@RequestMapping("queryProperty")
 	@ResponseBody
-	@AdminTokenValidate(description="管理员查询属性")
 	public DataWrapper<List<ItemProperty>> queryProperty(
 			@RequestParam(value="itemPropertyName",required=false) String itemPropertyName,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,

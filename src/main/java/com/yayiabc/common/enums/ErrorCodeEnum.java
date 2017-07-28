@@ -18,7 +18,8 @@ public enum ErrorCodeEnum implements Serializable {
     Username_NOT_Exist("用户不存在",8),
     Password_error("密码错误",9),
     Limitation_error("无操作权限",10),
-    NO_MESSAGE("没有查找到商品",11);
+    NO_MESSAGE("没有查找到商品",11),
+    RE_LOGIN("请重新登录",12);
 
     private String label;
     private Integer code;

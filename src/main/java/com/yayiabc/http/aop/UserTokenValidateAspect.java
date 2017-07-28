@@ -35,9 +35,7 @@ public class UserTokenValidateAspect {
 	public Object around(ProceedingJoinPoint joinpoint){
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		String loginToken=request.getParameter("token");
-		//判断登录表中是否包含此token;
-		/*Long timeStamp=Long.valueOf(loginToken.substring(loginToken.length()-13,loginToken.length()));
-		Long nowTime=System.currentTimeMillis();*/
+		
 		Object result=null;
 		/**
 		* 1.验证该用户是否已登录，通过是否包含此token来判断
@@ -52,7 +50,7 @@ public class UserTokenValidateAspect {
 		
 		}else {
 			DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+			dataWrapper.setErrorCode(ErrorCodeEnum.RE_LOGIN);
 			dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
 			result=dataWrapper;
 		}

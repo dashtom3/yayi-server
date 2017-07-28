@@ -66,6 +66,8 @@ public interface ItemInfoManageDao {
 
 	List<ItemInfo> itemInfoListFour(ItemInfo itemInfo);
 
+	void deleteCart(String itemId);
+
 
 
 

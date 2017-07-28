@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.SaleTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.model.UserStatistics;
 import com.yayiabc.http.mvc.service.SaleMyClientService;
@@ -24,11 +25,12 @@ public class SaleMyClientController {
 	 */
 	@RequestMapping(value="myClient",method=RequestMethod.GET)
 	@ResponseBody
+	@SaleTokenValidate(description="销售员查询我的客户")
 	public DataWrapper<List<UserStatistics>> myClient(
 			@RequestParam(value="value",required=false)String value,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-    		@RequestParam(value="token",required=true)String token
+    		@RequestParam(value="saleToken",required=true)String token
 	){
 		return saleMyClientService.myClient(value, token, currentPage, numberPerPage);
 	}

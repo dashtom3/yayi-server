@@ -6,7 +6,7 @@
 	
 	<select id="chart" resultType="SaleDataVo">
 		SELECT
-		created, 
+		DATE_FORMAT(created, '%Y-%c-%e %T') AS created,
 		IF(ROUND(SUM(order_money_haocai),2) IS NOT NULL,ROUND(SUM(order_money_haocai),2),0)+
 		IF(ROUND(SUM(order_money_gongju),2) IS NOT NULL,ROUND(SUM(order_money_gongju),2),0) AS dayCommission,
 		COUNT(order_id) AS dayOrderNum 

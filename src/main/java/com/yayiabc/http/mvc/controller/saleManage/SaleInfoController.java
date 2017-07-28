@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.SaleTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.service.SaleInfoService;
@@ -24,9 +25,10 @@ public class SaleInfoController {
 	 */
 	@RequestMapping(value="updateSale",method=RequestMethod.POST)
 	@ResponseBody
+	@SaleTokenValidate(description="销售员编辑个人信息基础资料")
 	public DataWrapper<Void> updateSale(
 			@ModelAttribute SaleInfo saleInfo,
-			@RequestParam(value = "token", required = true) String token
+			@RequestParam(value = "saleToken", required = true) String token
 	){
 		return saleInfoService.updateSale(saleInfo, token);
 	}
@@ -36,12 +38,13 @@ public class SaleInfoController {
 	 */
 	@RequestMapping(value="updatePostal",method=RequestMethod.POST)
 	@ResponseBody
+	@SaleTokenValidate(description="销售员编辑个人信息提现设置")
 	public DataWrapper<Void> updatePostal(
 			@RequestParam(value = "postalType", required = true) String postalType,
 			@RequestParam(value = "bankName", required = false) String bankName,
 			@RequestParam(value = "openName", required = true) String openName,
 			@RequestParam(value = "accountNumber", required = true) String accountNumber,
-			@RequestParam(value = "token", required = true) String token
+			@RequestParam(value = "saleToken", required = true) String token
 	){
 		return saleInfoService.updatePostal(postalType, bankName, openName, accountNumber, token);
 	}
@@ -51,8 +54,9 @@ public class SaleInfoController {
 	 */
 	@RequestMapping(value="query",method=RequestMethod.GET)
 	@ResponseBody
+	@SaleTokenValidate(description="销售员查询个人信息")
 	public DataWrapper<SaleInfo> query(
-			@RequestParam(value = "token", required = true) String token
+			@RequestParam(value = "saleToken", required = true) String token
 	){
 		return saleInfoService.query(token);
 	}

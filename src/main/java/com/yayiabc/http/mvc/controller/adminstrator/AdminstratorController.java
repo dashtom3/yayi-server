@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -29,7 +30,7 @@ public class AdminstratorController {
 			@RequestParam(value="phone",required=true) String phone,
 			@RequestParam(value="adminstratorPwd",required=true) String adminstratorPwd,
 			@RequestParam(value="trueName",required=true) String trueName,
-			@RequestParam(value="adminToken",required=true)String adminToken
+			@RequestHeader(value="adminToken",required=true)String adminToken
 			){
 		return adminstratorService.addAdminstrator(phone,adminstratorPwd,trueName);
 	}
@@ -42,7 +43,7 @@ public class AdminstratorController {
 	@AdminTokenValidate(description="超级管理员删除普通管理员")
 	public DataWrapper<Void> deleteAdminstrator(
 			@RequestParam(value="adminstratorId",required=true) Integer adminstratorId,
-			@RequestParam(value="adminToken",required=true)String adminToken
+			@RequestHeader(value="adminToken",required=true)String adminToken
 			){
 		return adminstratorService.deleteAdminstrator(adminstratorId);
 	}
@@ -58,7 +59,7 @@ public class AdminstratorController {
 			@RequestParam(value="phone",required=true) String phone,
 			@RequestParam(value="adminstratorPwd",required=true) String adminstratorPwd,
 			@RequestParam(value="trueName",required=true) String trueName,
-			@RequestParam(value="adminToken",required=true)String adminToken
+			@RequestHeader(value="adminToken",required=true)String adminToken
 			){
 		return adminstratorService.updateAdminstrator(adminstratorId,phone,adminstratorPwd,trueName);
 	}
@@ -71,7 +72,8 @@ public class AdminstratorController {
 	@AdminTokenValidate(description="超级管理员查询管理员列表")
 	public DataWrapper<List<Adminstrator>> queryAdminstrator(
 			@RequestParam(value="phone",required=false) String phone,
-			@RequestParam(value="trueName",required=false) String trueName
+			@RequestParam(value="trueName",required=false) String trueName,
+			@RequestHeader(value="adminToken",required=true)String adminToken
 			){
 		return adminstratorService.queryAdminstrator(phone,trueName);
 	}

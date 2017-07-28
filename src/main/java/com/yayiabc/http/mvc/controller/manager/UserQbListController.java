@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.service.UserQbListService;
@@ -27,13 +28,14 @@ public class UserQbListController {
 	 */
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	@ResponseBody
+	@AdminTokenValidate(description="管理员查询用户乾币信息列表")
 	public DataWrapper<List<QbRecord>> list(
-			//@RequestHeader(value="token") String token,
 			@RequestParam(value = "phone", required = false) String phone,
 			@RequestParam(value = "startDate", required = false) String startDate,
 			@RequestParam(value = "endDate", required = false) String endDate,
 			@RequestParam(value = "currentPage", required = false, defaultValue = "1") Integer currentPage,
-			@RequestParam(value = "numberPerPage", required = false, defaultValue = "10") Integer numberPerPage
+			@RequestParam(value = "numberPerPage", required = false, defaultValue = "10") Integer numberPerPage,
+			@RequestHeader(value="adminToken",required=true)String adminToken
 			) {
 		return userQbListService.list(phone, startDate, endDate, currentPage,
 				numberPerPage);
@@ -44,9 +46,11 @@ public class UserQbListController {
 	 */
 	@RequestMapping(value = "update", method = RequestMethod.POST)
 	@ResponseBody
+	@AdminTokenValidate(description="管理员修改用户乾币")
 	public DataWrapper<Void> update(
 			@RequestParam(value = "phone", required = true) String phone,
-			@RequestParam(value = "qbBalance", required = true) Integer qbBalance
+			@RequestParam(value = "qbBalance", required = true) Integer qbBalance,
+			@RequestHeader(value="adminToken",required=true)String adminToken
 			) {
 		return userQbListService.update(qbBalance, phone);
 	}
@@ -56,8 +60,10 @@ public class UserQbListController {
 	 */
 	@RequestMapping(value = "queryQb", method = RequestMethod.GET)
 	@ResponseBody
+	@AdminTokenValidate(description="管理员查询具体用户乾币余额")
 	public DataWrapper<Map<String, Integer>> queryQb(
-			@RequestParam(value = "userPhone", required = true) String userPhone
+			@RequestParam(value = "userPhone", required = true) String userPhone,
+			@RequestHeader(value="adminToken",required=true)String adminToken
 			) {
 		return userQbListService.queryQb(userPhone);
 	}

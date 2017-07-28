@@ -229,6 +229,10 @@
 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
 		</where>
 	</select>
+	
+	<delete id="deleteCart">
+		delete from cart where item_SKU like '${itemId}%'
+	</delete>
 
 
 

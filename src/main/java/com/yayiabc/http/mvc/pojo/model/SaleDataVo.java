@@ -2,7 +2,9 @@ package com.yayiabc.http.mvc.pojo.model;
 
 import java.util.List;
 
-public class SaleDataVo {
+public class SaleDataVo{
+	private String created;
+	
 	private double dayCommission; // 日销售额
 
 	private double dayOrderNum; // 日订单量
@@ -83,15 +85,24 @@ public class SaleDataVo {
 		this.myOrderVoList = myOrderVoList;
 	}
 
+	public String getCreated() {
+		return created;
+	}
+
+	public void setCreated(String created) {
+		this.created = created;
+	}
+
 	public SaleDataVo() {
 		super();
 	}
 
-	public SaleDataVo(double dayCommission, double dayOrderNum,
+	public SaleDataVo(String created,double dayCommission, double dayOrderNum,
 			double allCommission, double saleAllMoney, double haocaiAllMoney,
 			double gongjuAllMoney, double orderNum,
 			List<MyOrderVo> myOrderVoList) {
 		super();
+		this.created=created;
 		this.dayCommission = dayCommission;
 		this.dayOrderNum = dayOrderNum;
 		this.allCommission = allCommission;

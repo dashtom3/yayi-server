@@ -35,6 +35,8 @@ public class AdminTokenValidateAspect {
 	public Object around(ProceedingJoinPoint joinpoint){
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		String loginToken=request.getParameter("adminToken");
+		System.out.println(loginToken);
+		System.out.println("接受成功");
 		//判断登录表中是否包含此token;
 		/*Long timeStamp=Long.valueOf(loginToken.substring(loginToken.length()-13,loginToken.length()));
 		Long nowTime=System.currentTimeMillis();*/
@@ -44,6 +46,7 @@ public class AdminTokenValidateAspect {
 		*/
 		Integer adminCount=tokenValidateService.getAdminCountByLoginToken(loginToken);
 		if(adminCount!=0){
+			
 			try {
 				result=joinpoint.proceed();//放行
 			} catch (Throwable e) {
@@ -52,7 +55,7 @@ public class AdminTokenValidateAspect {
 		
 		}else {
 			DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+			dataWrapper.setErrorCode(ErrorCodeEnum.RE_LOGIN);
 			dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
 			result=dataWrapper;
 		}

@@ -4,11 +4,13 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.model.ItemStatistics;
 import com.yayiabc.http.mvc.service.ItemStatisticsService;
@@ -25,13 +27,15 @@ public class ItemStatisticsController {
 	 */
 	@RequestMapping(value="query",method=RequestMethod.GET)
 	@ResponseBody
+	@AdminTokenValidate(description="管理员查询商品统计")
 	public DataWrapper<List<ItemStatistics>> query(
 			@RequestParam(value="itemName",required=false)String itemName,
 			@RequestParam(value="itemId",required=false)String itemId,
 			@RequestParam(value="itemSKU",required=false)String itemSKU,
 			@RequestParam(value="itemBrandName",required=false)String itemBrandName,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
-    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
+    		@RequestHeader(value="adminToken",required=true)String adminToken
 	){
 		return itemStatisticsService.query(itemName, itemId, itemSKU, itemBrandName,currentPage,numberPerPage);
 	}

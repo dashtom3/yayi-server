@@ -57,7 +57,7 @@ public class TestController {
 	@ResponseBody
 	@AdminTokenValidate(description="dfjgioldkmng")
 	public DataWrapper<Void> demoThree(
-			@RequestParam(value="token")String token
+			@RequestParam(value="adminToken")String adminToken
 			){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		dataWrapper.setMsg("helloWorld");

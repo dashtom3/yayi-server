@@ -7,6 +7,7 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestBody;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -40,7 +41,7 @@ public class ItemInfoManageController {
 			@RequestParam(value="state",required=false) Integer state,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
 			@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-			@RequestParam(value="adminToken",required=true)String adminToken
+			@RequestHeader(value="adminToken",required=true)String adminToken
 			){
 		return itemInfoManageService.itemInfoList(itemId,itemName,itemClassify,itemBrandName,state,currentPage,numberPerPage);
 	}
@@ -53,7 +54,7 @@ public class ItemInfoManageController {
 	@AdminTokenValidate(description="管理员上架商品")
 	public DataWrapper<Void> up(
 			@RequestParam(value="itemId") String itemId,
-			@RequestParam(value="adminToken",required=true)String adminToken
+			@RequestHeader(value="adminToken",required=true)String adminToken
 			){
 		return itemInfoManageService.up(itemId);
 	}
@@ -66,7 +67,7 @@ public class ItemInfoManageController {
 	@AdminTokenValidate(description="管理员下架商品")
 	public DataWrapper<Void> down(
 			@RequestParam(value="itemId") String itemId,
-			@RequestParam(value="adminToken",required=true)String adminToken
+			@RequestHeader(value="adminToken",required=true)String adminToken
 			){
 		return itemInfoManageService.down(itemId);
 	}
@@ -79,7 +80,7 @@ public class ItemInfoManageController {
 	@AdminTokenValidate(description="管理员删除商品")
 	public DataWrapper<Void> delete(
 			@RequestParam(value="itemId") String itemId,
-			@RequestParam(value="adminToken",required=true)String adminToken
+			@RequestHeader(value="adminToken",required=true)String adminToken
 			){
 		return itemInfoManageService.delete(itemId);
 	}
@@ -118,7 +119,7 @@ public class ItemInfoManageController {
 			@RequestParam(value="itemLevels",required=false) String itemLevels,
 			@RequestParam(value="itemSort",required=false) String itemSort,
 			@RequestParam(value="remark",required=false) String remark,
-			@RequestParam(value="adminToken",required=true)String adminToken
+			@RequestHeader(value="adminToken",required=true)String adminToken
 			){
 		if(registerDate==null||"".equals(registerDate)){
 			registerDate=null;
@@ -223,7 +224,8 @@ public class ItemInfoManageController {
 	@RequestParam(value="registerDate",required=false) String registerDate,
 	@RequestParam(value="itemPacking",required=false) String itemPacking,
 	@RequestParam(value="itemLevels",required=false) String itemLevels,
-	@RequestParam(value="itemSort",required=false) String itemSort
+	@RequestParam(value="itemSort",required=false) String itemSort,
+	@RequestHeader(value="adminToken",required=true)String adminToken
 			){
 		if(registerDate==null||"".equals(registerDate)){
 			registerDate="暂无";

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.ItemIdUtils;
 import com.yayiabc.common.utils.TimeUtil;
@@ -30,6 +31,7 @@ public class ItemInfoManageController {
 	 */
 	@RequestMapping("itemInfoList")
 	@ResponseBody
+	@AdminTokenValidate(description="管理员查询商品列表")
 	public DataWrapper<List<ItemInfo>> itemInfoList(
 			@RequestParam(value="itemId",required=false) String itemId,
 			@RequestParam(value="itemName",required=false) String itemName,
@@ -37,7 +39,8 @@ public class ItemInfoManageController {
 			@RequestParam(value="itemBrandName",required=false) String itemBrandName,
 			@RequestParam(value="state",required=false) Integer state,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
-			@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
+			@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 		return itemInfoManageService.itemInfoList(itemId,itemName,itemClassify,itemBrandName,state,currentPage,numberPerPage);
 	}
@@ -47,8 +50,10 @@ public class ItemInfoManageController {
 	 */
 	@RequestMapping("up")
 	@ResponseBody
+	@AdminTokenValidate(description="管理员上架商品")
 	public DataWrapper<Void> up(
-			@RequestParam(value="itemId") String itemId
+			@RequestParam(value="itemId") String itemId,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 		return itemInfoManageService.up(itemId);
 	}
@@ -58,8 +63,10 @@ public class ItemInfoManageController {
 	 */
 	@RequestMapping("down")
 	@ResponseBody
+	@AdminTokenValidate(description="管理员下架商品")
 	public DataWrapper<Void> down(
-			@RequestParam(value="itemId") String itemId
+			@RequestParam(value="itemId") String itemId,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 		return itemInfoManageService.down(itemId);
 	}
@@ -69,8 +76,10 @@ public class ItemInfoManageController {
 	 */
 	@RequestMapping("delete")
 	@ResponseBody
+	@AdminTokenValidate(description="管理员删除商品")
 	public DataWrapper<Void> delete(
-			@RequestParam(value="itemId") String itemId
+			@RequestParam(value="itemId") String itemId,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 		return itemInfoManageService.delete(itemId);
 	}
@@ -81,6 +90,7 @@ public class ItemInfoManageController {
 	 */
 	@RequestMapping("update")
 	@ResponseBody
+	@AdminTokenValidate(description="管理员修改商品")
 	public DataWrapper<Void> update(
 			@RequestParam(value="itemId",required=true) String itemId ,
 			@RequestParam(value="itemName",required=true) String itemName,
@@ -107,7 +117,8 @@ public class ItemInfoManageController {
 			@RequestParam(value="itemPacking",required=false) String itemPacking,
 			@RequestParam(value="itemLevels",required=false) String itemLevels,
 			@RequestParam(value="itemSort",required=false) String itemSort,
-			@RequestParam(value="remark",required=false) String remark
+			@RequestParam(value="remark",required=false) String remark,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 		if(registerDate==null||"".equals(registerDate)){
 			registerDate=null;
@@ -185,6 +196,7 @@ public class ItemInfoManageController {
 	 */
 	@RequestMapping("insert")
 	@ResponseBody
+	@AdminTokenValidate(description="管理员新增商品")
 	public DataWrapper<Void> insert(                                 
 	@RequestParam(value="itemId",required=true) String itemId ,
 	@RequestParam(value="itemName",required=true) String itemName,

@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
 import com.yayiabc.http.mvc.pojo.jpa.ItemClassify;
@@ -43,8 +44,10 @@ public class ItemManageController {
 	 */
 	@RequestMapping("deleteItemBrand")
 	@ResponseBody
+	@AdminTokenValidate(description="管理员删除品牌")
 	public DataWrapper<Void> deleteItemBrand(
-			@RequestParam(value="itemBrandId",required=true)Integer itemBrandId
+			@RequestParam(value="itemBrandId",required=true)Integer itemBrandId,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 		return itemManageService.deleteItemBrand(itemBrandId);
 	}
@@ -54,10 +57,12 @@ public class ItemManageController {
 	 */
 	@RequestMapping("addItemBrand")
 	@ResponseBody
+	@AdminTokenValidate(description="管理员添加品牌")
 	public DataWrapper<Void> addItemBrand(
 			@RequestParam(value="itemBrandName",required=true) String itemBrandName,
 			@RequestParam(value="itemBrandHome",required=true) String itemBrandHome,
-			@RequestParam(value="itemBrandLogo",required=true) String itemBrandLogo
+			@RequestParam(value="itemBrandLogo",required=true) String itemBrandLogo,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 		return itemManageService.addItemBrand(itemBrandName,itemBrandHome,itemBrandLogo);
 	}
@@ -72,11 +77,13 @@ public class ItemManageController {
 	 */
 	@RequestMapping("updateItemBrand")
 	@ResponseBody
+	@AdminTokenValidate(description="管理员修改品牌")
 	public DataWrapper<Void> updateItemBrand(
 			@RequestParam(value="itemBrandId",required=true)Integer itemBrandId,
 			@RequestParam(value="itemBrandName",required=true)String itemBrandName,
 			@RequestParam(value="itemBrandLogo",required=true)String itemBrandLogo,
-			@RequestParam(value="itemBrandHome",required=true)String itemBrandHome
+			@RequestParam(value="itemBrandHome",required=true)String itemBrandHome,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 	return itemManageService.updateItemBrand(itemBrandId,itemBrandName,itemBrandLogo,itemBrandHome);
 	}
@@ -87,10 +94,12 @@ public class ItemManageController {
 	 */
 	@RequestMapping("queryProperty")
 	@ResponseBody
+	@AdminTokenValidate(description="管理员查询属性")
 	public DataWrapper<List<ItemProperty>> queryProperty(
 			@RequestParam(value="itemPropertyName",required=false) String itemPropertyName,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
-			@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
+			@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 		
 		return itemManageService.queryProperty(itemPropertyName,currentPage,numberPerPage);
@@ -103,8 +112,10 @@ public class ItemManageController {
 	 */
 	@RequestMapping("deleteProperty")
 	@ResponseBody
+	@AdminTokenValidate(description="管理员删除属性")
 	public DataWrapper<Void> deleteProperty(
-			@RequestParam(value="itemPropertyId",required=true)Integer itemPropertyId
+			@RequestParam(value="itemPropertyId",required=true)Integer itemPropertyId,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 		return itemManageService.deleteProperty(itemPropertyId);
 	}
@@ -115,8 +126,10 @@ public class ItemManageController {
 	 */
 	@RequestMapping("deletePropertyd")
 	@ResponseBody
+	@AdminTokenValidate(description="管理员删除属性值")
 	public DataWrapper<Void> deletePropertyd(
-			@RequestParam(value="itemSKU",required=true) String itemSKU
+			@RequestParam(value="itemSKU",required=true) String itemSKU,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 		return itemManageService.deletePropertydBySKU(itemSKU);
 	}
@@ -128,10 +141,12 @@ public class ItemManageController {
 	 */
 	@RequestMapping("updateProperty")
 	@ResponseBody
+	@AdminTokenValidate(description="管理员修改属性")
 	public DataWrapper<Void> updateProperty(
 			@RequestParam(value="itemPropertyId",required=true) Integer itemPropertyId,
 			@RequestParam(value="itemPropertyName",required=true) String itemPropertyName,
-			@RequestParam(value="itemPparamList",required=false) List<String> itemPparamList
+			@RequestParam(value="itemPparamList",required=false) List<String> itemPparamList,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 		return itemManageService.updateProperty(itemPropertyId,itemPropertyName,itemPparamList);
 	}
@@ -145,9 +160,11 @@ public class ItemManageController {
 	 */
 	@RequestMapping("addPropertydAndPropertyName")
 	@ResponseBody
+	@AdminTokenValidate(description="管理员添加属性和属性值")
 	public DataWrapper<Void> addPropertydAndPropertyName(
 			@RequestParam(value="itemPropertyName",required=true) String itemPropertyName,
-			@RequestParam(value="itemPparamList",required=false) List<String> itemPparamList
+			@RequestParam(value="itemPparamList",required=false) List<String> itemPparamList,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 		System.out.println(itemPparamList);
 		return itemManageService.addPropertyAndPropertyName(itemPropertyName,itemPparamList);
@@ -172,10 +189,12 @@ public class ItemManageController {
 	 */
 	@RequestMapping("deleteItemClassify")
 	@ResponseBody
+	@AdminTokenValidate(description="管理员删除分类")
 	public DataWrapper<Void> deleteItemClassify(
 			@RequestParam(value="itemClassifyId",required=true) Integer itemClassifyId,
 			@RequestParam(value="itemClassifyName",required=true) String itemClassifyName,
-			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade
+			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 		return itemManageService.deleteItemClassify(itemClassifyId,itemClassifyName,itemClassifyGrade);
 	}
@@ -185,11 +204,13 @@ public class ItemManageController {
 	 */
 	@RequestMapping("updateItemClassify")
 	@ResponseBody
+	@AdminTokenValidate(description="管理员修改分类")
 	public DataWrapper<Void> updateItemClassify(
 			@RequestParam(value="itemClassifyId",required=true) Integer itemClassifyId,
 			@RequestParam(value="itemClassifyName",required=true) String itemClassifyName,
 			@RequestParam(value="itemOldName",required=true) String itemOldName,
-			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade
+			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 		return itemManageService.updateItemClassify(itemClassifyId,itemClassifyName,itemOldName,itemClassifyGrade);
 	}
@@ -199,11 +220,12 @@ public class ItemManageController {
 	 */
 	@RequestMapping("addItemClassify")
 	@ResponseBody
+	@AdminTokenValidate(description="管理员添加分类")
 	public DataWrapper<Void> addItemClassify(
 			@RequestParam(value="itemClassifyName",required=true) String itemClassifyName,
 			@RequestParam(value="itemPreviousClassify",required=true) String itemPreviousClassify,
-			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade
-			
+			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 		return itemManageService.addItemClassify(itemClassifyName,itemPreviousClassify,itemClassifyGrade);
 	}

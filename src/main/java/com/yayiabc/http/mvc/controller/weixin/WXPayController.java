@@ -21,6 +21,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.GetQCode;
@@ -62,7 +63,10 @@ public class WXPayController {
 	 */
 	@RequestMapping("unifiedOrderReturnUrl")
 	@ResponseBody
-	public void unifiedOrderReturnUrl(String orderId,HttpServletResponse response){
+	@UserTokenValidate(description="微信下订单生成二维码")
+	public void unifiedOrderReturnUrl(
+			@RequestParam("token") String token,
+			@RequestParam("orderId") String orderId,HttpServletResponse response){
 		System.out.println("开始处理回调");
 		HashMap<String, String> hashMap=aliPayService.queryY(orderId);
 		String total_fee=hashMap.get("WIDtotal_fee");//0.01
@@ -206,6 +210,7 @@ public class WXPayController {
 	
 	@RequestMapping("unifiedOrderCharge")
 	@ResponseBody
+	@UserTokenValidate(description="微信充值乾币")
 	public void unifiedOrderCharge(@RequestParam(value="money",required=true) Integer money,
 			@RequestParam(value="token",required=true) String token,
 			HttpServletResponse response){

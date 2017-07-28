@@ -13,12 +13,12 @@
 		<if test="recoveryState==2">and state=1</if>
 		<if test="recoveryState==3">and state=2</if>
 		</where>
-		order by created
+		order by updated
 		limit #{currentNumber},#{numberPerPage}
 	</select>
 	<!-- 回复 -->
 	<insert id="reply">
-		update comments set reply_content=#{data},state=2 where comment_id=#{commentId}
+		update comments set reply_content=#{data},state=2,updated=now() where comment_id=#{commentId}
 	</insert>
 	
 	<select id="queryCount" resultType="java.lang.Integer">

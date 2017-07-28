@@ -53,7 +53,7 @@
 	
 	<select id="getLatelyOrderDate" resultType="String">
 		SELECT 
-		created AS latelyOrderDate  
+		DATE_FORMAT(created, '%Y-%c-%e %T') AS latelyOrderDate  
 		FROM ordera 
 		WHERE user_id=#{userId}
 		ORDER BY created DESC 

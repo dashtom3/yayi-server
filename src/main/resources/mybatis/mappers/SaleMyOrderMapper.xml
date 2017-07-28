@@ -5,7 +5,8 @@
 <mapper namespace="com.yayiabc.http.mvc.dao.SaleMyOrderDao">
 	
 	<select id="chart" resultType="SaleDataVo">
-		SELECT 
+		SELECT
+		created, 
 		IF(ROUND(SUM(order_money_haocai),2) IS NOT NULL,ROUND(SUM(order_money_haocai),2),0)+
 		IF(ROUND(SUM(order_money_gongju),2) IS NOT NULL,ROUND(SUM(order_money_gongju),2),0) AS dayCommission,
 		COUNT(order_id) AS dayOrderNum 
@@ -54,8 +55,8 @@
 		(IF(ROUND(si.refund_money_gongju,2) IS NOT NULL,ROUND(si.refund_money_gongju,2),0)+IF(ROUND(si.refund_money_haocai,2) IS NOT NULL,ROUND(si.refund_money_haocai,2),0)) AS actualMoney
 		FROM sale_income si
 		LEFT JOIN ordera o  ON o.order_id=si.order_id
-		LEFT JOIN USER u ON si.sale_id=u.sale_id
-		WHERE si.sale_id=#{saleId}
+		LEFT JOIN USER u ON u.user_id=o.user_id
+		WHERE si.sale_id=#{saleId} AND u.bind_sale_time &lt; o.created AND o.state !=0
 		GROUP BY si.order_id
 		LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>

@@ -9,13 +9,13 @@
 				u.true_name AS trueName,
 				u.phone AS phone,
 				c.company_name AS companyName,
-				c.type AS TYPE,
+				c.type AS type,
 				IF(u.sale_id IS NOT NULL,1,2) AS isBindSale,		
 				s.true_name AS saleName,
 				o.created AS latelyOrderDate,
 				IF(ROUND(SUM(o.actual_pay),2) IS NOT NULL,ROUND(SUM(o.actual_pay),2),0) AS orderaMoneyCount,
 				IF(COUNT(o.user_id) IS NOT NULL,COUNT(o.user_id),0) AS orderaCount,
-				u.created AS userCreated,
+				DATE_FORMAT(u.created, '%Y-%c-%e %T') AS userCreated,
 				s.phone AS salePhone
 				FROM USER u 
 				LEFT JOIN sale_info s ON u.sale_id=s.sale_id
@@ -147,7 +147,7 @@
 		u.true_name,
 		u.phone,
 		u.sex,
-		u.birthday,
+		DATE_FORMAT(u.birthday, '%Y-%m-%d') AS birthday,
 		u.qq,
 		u.user_pic,
 		u.created AS userCreated,
@@ -159,7 +159,7 @@
 		c.doctor_pic,
 		si.true_name AS saleName,
 		si.phone AS salePhone,
-		si.created AS saleCreated,
+		DATE_FORMAT(si.created, '%Y-%c-%e %T') AS saleCreated,
 		si.bind_user_num
 		FROM USER u
 		LEFT JOIN certification c ON u.user_id=c.user_id

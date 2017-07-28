@@ -15,11 +15,11 @@ public class ItemStatistics {
 
 	private String itemBrandName;
 
-	private Integer price;
+	private double price;
 
 	private Integer sales;
 
-	private Integer salesMoney;
+	private double salesMoney;
 
 	private Integer refundNum;
 
@@ -47,14 +47,6 @@ public class ItemStatistics {
 		this.itemSKU = itemSKU;
 	}
 
-	public Integer getPrice() {
-		return price;
-	}
-
-	public void setPrice(Integer price) {
-		this.price = price;
-	}
-
 	public Integer getSales() {
 		return sales;
 	}
@@ -63,11 +55,19 @@ public class ItemStatistics {
 		this.sales = sales;
 	}
 
-	public Integer getSalesMoney() {
+	public double getPrice() {
+		return price;
+	}
+
+	public void setPrice(double price) {
+		this.price = price;
+	}
+
+	public double getSalesMoney() {
 		return salesMoney;
 	}
 
-	public void setSalesMoney(Integer salesMoney) {
+	public void setSalesMoney(double salesMoney) {
 		this.salesMoney = salesMoney;
 	}
 
@@ -92,8 +92,8 @@ public class ItemStatistics {
 	}
 
 	public ItemStatistics(String itemId, String itemName, String itemSKU,
-			String itemBrandName, Integer price, Integer sales,
-			Integer salesMoney, Integer refundNum) {
+			String itemBrandName, double price, Integer sales,
+			double salesMoney, Integer refundNum) {
 		super();
 		this.itemId = itemId;
 		this.itemName = itemName;

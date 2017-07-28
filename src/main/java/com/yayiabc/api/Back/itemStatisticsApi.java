@@ -30,7 +30,7 @@ public interface itemStatisticsApi {
      * 		salesMoney:2000,
      * 		refundNum:10
      * },{
-      * 	itemId:"2",
+     * 	itemId:"2",
      * 		itemName:"种植体",
      * 		itemSKU:"aaa123",
      * 		itemBrandName:"品牌2",

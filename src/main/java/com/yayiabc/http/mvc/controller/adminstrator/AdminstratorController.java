@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Adminstrator;
 import com.yayiabc.http.mvc.service.AdminstratorService;
@@ -23,10 +24,12 @@ public class AdminstratorController {
 	 */
 	@RequestMapping("add")
 	@ResponseBody
+	@AdminTokenValidate(description="超级管理员添加普通管理员")
 	public DataWrapper<Void> addAdminstrator(
 			@RequestParam(value="phone",required=true) String phone,
 			@RequestParam(value="adminstratorPwd",required=true) String adminstratorPwd,
-			@RequestParam(value="trueName",required=true) String trueName
+			@RequestParam(value="trueName",required=true) String trueName,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 		return adminstratorService.addAdminstrator(phone,adminstratorPwd,trueName);
 	}
@@ -36,8 +39,10 @@ public class AdminstratorController {
 	 */
 	@RequestMapping("delete")
 	@ResponseBody
+	@AdminTokenValidate(description="超级管理员删除普通管理员")
 	public DataWrapper<Void> deleteAdminstrator(
-			@RequestParam(value="adminstratorId",required=true) Integer adminstratorId
+			@RequestParam(value="adminstratorId",required=true) Integer adminstratorId,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 		return adminstratorService.deleteAdminstrator(adminstratorId);
 	}
@@ -47,11 +52,13 @@ public class AdminstratorController {
 	 */
 	@RequestMapping("update")
 	@ResponseBody
+	@AdminTokenValidate(description="超级管理员修改普通管理员信息")
 	public DataWrapper<Void> updateAdminstrator(
 			@RequestParam(value="adminstratorId",required=true) Integer adminstratorId,
 			@RequestParam(value="phone",required=true) String phone,
 			@RequestParam(value="adminstratorPwd",required=true) String adminstratorPwd,
-			@RequestParam(value="trueName",required=true) String trueName
+			@RequestParam(value="trueName",required=true) String trueName,
+			@RequestParam(value="adminToken",required=true)String adminToken
 			){
 		return adminstratorService.updateAdminstrator(adminstratorId,phone,adminstratorPwd,trueName);
 	}
@@ -61,6 +68,7 @@ public class AdminstratorController {
 	 */
 	@RequestMapping("query")
 	@ResponseBody
+	@AdminTokenValidate(description="超级管理员查询管理员列表")
 	public DataWrapper<List<Adminstrator>> queryAdminstrator(
 			@RequestParam(value="phone",required=false) String phone,
 			@RequestParam(value="trueName",required=false) String trueName

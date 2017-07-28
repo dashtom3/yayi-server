@@ -75,6 +75,7 @@
 			AND DATE_FORMAT(b.created,'%Y-%m-%d') <![CDATA[  <=  ]]>#{endDate}
 		</if>
 		GROUP BY b.balance_id
+		ORDER BY beYearMonth DESC,getMoney DESC
 		LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
 	

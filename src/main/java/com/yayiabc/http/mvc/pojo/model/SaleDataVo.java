@@ -1,9 +1,10 @@
 package com.yayiabc.http.mvc.pojo.model;
 
+import java.util.Date;
 import java.util.List;
 
 public class SaleDataVo{
-	private String created;
+	private Date created;
 	
 	private double dayCommission; // 日销售额
 
@@ -85,11 +86,11 @@ public class SaleDataVo{
 		this.myOrderVoList = myOrderVoList;
 	}
 
-	public String getCreated() {
+	public Date getCreated() {
 		return created;
 	}
 
-	public void setCreated(String created) {
+	public void setCreated(Date created) {
 		this.created = created;
 	}
 
@@ -97,7 +98,7 @@ public class SaleDataVo{
 		super();
 	}
 
-	public SaleDataVo(String created,double dayCommission, double dayOrderNum,
+	public SaleDataVo(Date created,double dayCommission, double dayOrderNum,
 			double allCommission, double saleAllMoney, double haocaiAllMoney,
 			double gongjuAllMoney, double orderNum,
 			List<MyOrderVo> myOrderVoList) {

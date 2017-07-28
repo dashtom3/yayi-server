@@ -1,12 +1,5 @@
 package com.yayiabc.http.mvc.service.Impl;
 
-import java.util.Timer;
-import java.util.TimerTask;
-import java.util.UUID;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.sessionManager.SessionManager;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
@@ -14,17 +7,20 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.HttpUtil;
 import com.yayiabc.common.utils.MD5Util;
 import com.yayiabc.http.mvc.dao.UserDao;
-import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.UserToken;
 import com.yayiabc.http.mvc.service.UserService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
 
 @Service("userService")
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
-    @Autowired
-    private UtilsDao utilsDao;
 
     public DataWrapper<Void> getVerifyCode(String phone) {
         //浜斿垎閽熶箣鍐呬笉鑳藉啀鍙戠煭淇�
@@ -187,7 +183,7 @@ public class UserServiceImpl implements UserService {
         dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
         dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
         //--
-		/*String userId=utilsDao.getUserID(token);
+        /*String userId=utilsDao.getUserID(token);
 		SessionManager.removeSessionByUserId(userId);*/
         //---
         return dataWrapper;
@@ -241,7 +237,7 @@ public class UserServiceImpl implements UserService {
         } else {
             userDao.updateToken(userToken);
         }
-        new Timer().schedule(new TokenTask(token), 2 * 3600);
+        new Timer().schedule(new TokenTask(token), 2 * 3600 * 1000);
         return token;
     }
 

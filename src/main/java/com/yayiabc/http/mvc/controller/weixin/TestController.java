@@ -8,7 +8,11 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
+import com.yayiabc.common.annotation.AdminTokenValidate;
+import com.yayiabc.common.annotation.SaleTokenValidate;
 import com.yayiabc.common.annotation.SystemControllerLog;
+import com.yayiabc.common.annotation.UserTokenValidate;
+
 import com.yayiabc.common.utils.DataWrapper;
 
 @Controller
@@ -29,8 +33,32 @@ public class TestController {
 	
 	@RequestMapping("api/demo")
 	@ResponseBody
-	@SystemControllerLog(description="输出helloWorld")
-	public DataWrapper<Void> demo(String name,Integer age){
+	@UserTokenValidate(description="dfjgioldkmng")
+	public DataWrapper<Void> demo(
+			@RequestParam(value="token")String token
+			){
+		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		dataWrapper.setMsg("helloWorld");
+		return dataWrapper;
+	}
+	
+	@RequestMapping("api/demoTwo")
+	@ResponseBody
+	@SaleTokenValidate(description="dfjgioldkmng")
+	public DataWrapper<Void> demoTwo(
+			@RequestParam(value="token")String token
+			){
+		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		dataWrapper.setMsg("helloWorld");
+		return dataWrapper;
+	}
+	
+	@RequestMapping("api/demoThree")
+	@ResponseBody
+	@AdminTokenValidate(description="dfjgioldkmng")
+	public DataWrapper<Void> demoThree(
+			@RequestParam(value="token")String token
+			){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		dataWrapper.setMsg("helloWorld");
 		return dataWrapper;

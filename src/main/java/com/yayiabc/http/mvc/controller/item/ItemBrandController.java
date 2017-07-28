@@ -8,10 +8,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yayiabc.common.annotation.SystemControllerLog;
-import com.yayiabc.common.annotation.TokenValidate;
+
 import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.common.utils.TokenUtil;
+
 import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
 import com.yayiabc.http.mvc.service.ItemBrandService;

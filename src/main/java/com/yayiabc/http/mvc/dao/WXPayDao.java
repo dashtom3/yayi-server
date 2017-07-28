@@ -29,6 +29,8 @@ public interface WXPayDao {
 
 	Integer getStateByToken(String token);
 
+	Integer getChargeStateByChargeId(String chargeId);
+
 
 
 }

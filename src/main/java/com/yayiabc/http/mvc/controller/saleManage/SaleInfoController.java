@@ -3,6 +3,7 @@ package com.yayiabc.http.mvc.controller.saleManage;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -28,7 +29,7 @@ public class SaleInfoController {
 	@SaleTokenValidate(description="销售员编辑个人信息基础资料")
 	public DataWrapper<Void> updateSale(
 			@ModelAttribute SaleInfo saleInfo,
-			@RequestParam(value = "saleToken", required = true) String token
+			@RequestHeader(value = "saleToken", required = true) String token
 	){
 		return saleInfoService.updateSale(saleInfo, token);
 	}
@@ -44,7 +45,7 @@ public class SaleInfoController {
 			@RequestParam(value = "bankName", required = false) String bankName,
 			@RequestParam(value = "openName", required = true) String openName,
 			@RequestParam(value = "accountNumber", required = true) String accountNumber,
-			@RequestParam(value = "saleToken", required = true) String token
+			@RequestHeader(value = "saleToken", required = true) String token
 	){
 		return saleInfoService.updatePostal(postalType, bankName, openName, accountNumber, token);
 	}
@@ -56,7 +57,7 @@ public class SaleInfoController {
 	@ResponseBody
 	@SaleTokenValidate(description="销售员查询个人信息")
 	public DataWrapper<SaleInfo> query(
-			@RequestParam(value = "saleToken", required = true) String token
+			@RequestHeader(value = "saleToken", required = true) String token
 	){
 		return saleInfoService.query(token);
 	}

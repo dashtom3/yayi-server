@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,7 +30,7 @@ public class SaleMyOrderController {
 	@ResponseBody
 	@SaleTokenValidate(description="销售员查询我的业绩")
 	public DataWrapper<SaleDataVo> myOrderData(
-    		@RequestParam(value="saleToken",required=true) String token
+			@RequestHeader(value="saleToken",required=true) String token
 	){
 		return saleMyOrderService.myOrderData(token);
 	}
@@ -43,7 +44,7 @@ public class SaleMyOrderController {
 	public DataWrapper<List<MyOrderVo>> myOrderList(
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-    		@RequestParam(value="saleToken",required=true) String token
+    		@RequestHeader(value="saleToken",required=true) String token
 	){
 		return saleMyOrderService.myOrderList(token, currentPage, numberPerPage);
 	}
@@ -57,7 +58,7 @@ public class SaleMyOrderController {
 	public DataWrapper<List<SaleDataVo>> chart(
 			@RequestParam(value="year",required=true,defaultValue="1") String year,
     		@RequestParam(value="month",required=true,defaultValue="10") String month,
-    		@RequestParam(value="saleToken",required=true) String token
+    		@RequestHeader(value="saleToken",required=true) String token
 	){
 		return saleMyOrderService.chart(token, year, month);
 	}
@@ -73,7 +74,7 @@ public class SaleMyOrderController {
     		@RequestParam(value="orderId",required=true,defaultValue="10") String orderId,
     		@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-    		@RequestParam(value="saleToken",required=true) String token
+    		@RequestHeader(value="saleToken",required=true) String token
 	){
 		return saleMyOrderService.detail(token, orderId, currentPage, numberPerPage);
 	}

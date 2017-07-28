@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -39,7 +40,7 @@ public class UserManageListController {
 			@RequestParam(value="salePhone",required=false)String salePhone,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-    		@RequestParam(value="adminToken",required=true)String adminToken
+    		@RequestHeader(value="adminToken",required=true)String adminToken
 	){
 		return userManageListService.userlist(phone, trueName, companyName, isBindSale, type, saleName, salePhone, currentPage, numberPerPage);
 	}
@@ -55,7 +56,7 @@ public class UserManageListController {
 			@RequestParam(value="saleName",required=false)String saleName,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-    		@RequestParam(value="adminToken",required=true)String adminToken
+    		@RequestHeader(value="adminToken",required=true)String adminToken
 	){
 		return userManageListService.salelist(salePhone, saleName,currentPage,numberPerPage);
 	}
@@ -69,7 +70,7 @@ public class UserManageListController {
 	public DataWrapper<Void> bind(
 			@RequestParam(value="salePhone",required=true)String salePhone,
 			@RequestParam(value="userPhone",required=true)String userPhone,
-			@RequestParam(value="adminToken",required=true)String adminToken
+			@RequestHeader(value="adminToken",required=true)String adminToken
 	){
 		return userManageListService.bind(salePhone, userPhone);
 	}
@@ -84,7 +85,7 @@ public class UserManageListController {
 	public DataWrapper<Void> disBind(
 			@RequestParam(value="salePhone",required=true)String salePhone,
 			@RequestParam(value="userPhone",required=true)String userPhone,
-			@RequestParam(value="adminToken",required=true)String adminToken
+			@RequestHeader(value="adminToken",required=true)String adminToken
 	){
 		return userManageListService.disBind(salePhone, userPhone);
 	}
@@ -97,7 +98,7 @@ public class UserManageListController {
 	@AdminTokenValidate(description="管理员查询用户详情")
 	public DataWrapper<UserAllInfo> detail(
 			@RequestParam(value="phone",required=true)String phone,
-			@RequestParam(value="adminToken",required=true)String adminToken
+			@RequestHeader(value="adminToken",required=true)String adminToken
 	){
 		return userManageListService.detail(phone);
 	}

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +35,7 @@ public class SaleIncomeListController {
 			@RequestParam(value="endDate",required=false)String endDate,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-    		@RequestParam(value="adminToken",required=true)String adminToken
+    		@RequestHeader(value="adminToken",required=true)String adminToken
 	){
 		return saleIncomeListService.queryDone(saleName, salePhone, beYearMonth, startDate, endDate, currentPage, numberPerPage);
 	}
@@ -50,7 +51,7 @@ public class SaleIncomeListController {
 			@RequestParam(value="salePhone",required=false)String salePhone,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-    		@RequestParam(value="adminToken",required=true)String adminToken
+    		@RequestHeader(value="adminToken",required=true)String adminToken
 
 	){
 		return saleIncomeListService.queryNot(saleName, salePhone, currentPage, numberPerPage);
@@ -68,7 +69,7 @@ public class SaleIncomeListController {
 			@RequestParam(value="getState",required=true)String getState,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-    		@RequestParam(value="adminToken",required=true)String adminToken
+    		@RequestHeader(value="adminToken",required=true)String adminToken
 	){
 		return saleIncomeListService.detail(saleId, beYearMonth, getState, currentPage, numberPerPage);
 	}

@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -37,7 +38,7 @@ public class SaleListController {
 			@RequestParam(value="isBindUser",required=false)Integer isBindUser,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-    		@RequestParam(value="adminToken",required=true)String adminToken
+    		@RequestHeader(value="adminToken",required=true)String adminToken
 	){
 		return saleListService.query(saleId, phone, trueName,isBindUser, currentPage, numberPerPage);
 	}
@@ -56,7 +57,7 @@ public class SaleListController {
 			@RequestParam(value="isBind",required=true)Integer isBind,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-    		@RequestParam(value="adminToken",required=true)String adminToken
+    		@RequestHeader(value="adminToken",required=true)String adminToken
 	){
 		return saleListService.userlist(salePhone,userPhone, trueName, companyName, isBind, currentPage, numberPerPage);
 	}
@@ -71,7 +72,7 @@ public class SaleListController {
 			@RequestParam(value="phone",required=true)String phone,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-    		@RequestParam(value="adminToken")String adminToken
+    		@RequestHeader(value="adminToken")String adminToken
 	){
 		return saleListService.detail(phone, currentPage, numberPerPage);
 	}
@@ -85,7 +86,7 @@ public class SaleListController {
 	public DataWrapper<Void> bind(
 			@RequestParam(value="userPhone",required=true)String[] userPhone,
 			@RequestParam(value="salePhone",required=true)String salePhone,
-			@RequestParam(value="adminToken")String adminToken
+			@RequestHeader(value="adminToken")String adminToken
 	){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		for(int i=0;i<userPhone.length;i++){
@@ -104,7 +105,7 @@ public class SaleListController {
 	public DataWrapper<Void> disBind(
 			@RequestParam(value="salePhone",required=true)String salePhone,
 			@RequestParam(value="userPhone",required=true)String[] userPhone,
-			@RequestParam(value="adminToken")String adminToken
+			@RequestHeader(value="adminToken")String adminToken
 	){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		for(int i=0;i<userPhone.length;i++){

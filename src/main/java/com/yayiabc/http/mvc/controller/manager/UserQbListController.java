@@ -5,6 +5,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -34,7 +35,7 @@ public class UserQbListController {
 			@RequestParam(value = "endDate", required = false) String endDate,
 			@RequestParam(value = "currentPage", required = false, defaultValue = "1") Integer currentPage,
 			@RequestParam(value = "numberPerPage", required = false, defaultValue = "10") Integer numberPerPage,
-			@RequestParam(value="adminToken",required=true)String adminToken
+			@RequestHeader(value="adminToken",required=true)String adminToken
 			) {
 		return userQbListService.list(phone, startDate, endDate, currentPage,
 				numberPerPage);
@@ -49,7 +50,7 @@ public class UserQbListController {
 	public DataWrapper<Void> update(
 			@RequestParam(value = "phone", required = true) String phone,
 			@RequestParam(value = "qbBalance", required = true) Integer qbBalance,
-			@RequestParam(value="adminToken",required=true)String adminToken
+			@RequestHeader(value="adminToken",required=true)String adminToken
 			) {
 		return userQbListService.update(qbBalance, phone);
 	}
@@ -62,7 +63,7 @@ public class UserQbListController {
 	@AdminTokenValidate(description="管理员查询具体用户乾币余额")
 	public DataWrapper<Map<String, Integer>> queryQb(
 			@RequestParam(value = "userPhone", required = true) String userPhone,
-			@RequestParam(value="adminToken",required=true)String adminToken
+			@RequestHeader(value="adminToken",required=true)String adminToken
 			) {
 		return userQbListService.queryQb(userPhone);
 	}

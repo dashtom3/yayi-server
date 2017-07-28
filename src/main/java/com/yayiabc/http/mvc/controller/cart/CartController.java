@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -29,7 +30,7 @@ public class CartController {
 	@ResponseBody
 	@UserTokenValidate(description="获取购物车列表")
 	public DataWrapper<List<Cart>> list(
-			@RequestParam(value = "token", required = true) String token
+			@RequestHeader(value = "token", required = true) String token
 	){
 		return cartService.list(token);
 	}
@@ -42,7 +43,7 @@ public class CartController {
 	@UserTokenValidate(description="删除购物车内商品")
 	public DataWrapper<Void> delete(
 			@RequestParam(value="itemSKU",required=true)String[] itemSKU,
-			@RequestParam(value="token",required=true)String token
+			@RequestHeader(value="token",required=true)String token
 	){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		for(int i=0;i<itemSKU.length;i++){
@@ -61,7 +62,7 @@ public class CartController {
 	public DataWrapper<ItemStar> star(
 			@RequestParam(value="itemId",required=true)String[] itemId,
 			@RequestParam(value="itemSKU",required=true)String[] itemSKU,
-			@RequestParam(value="token",required=true)String token
+			@RequestHeader(value="token",required=true)String token
 	){
 		DataWrapper<ItemStar> dataWrapper=new DataWrapper<ItemStar>();
 		for(int i=0;i<itemId.length;i++){
@@ -79,7 +80,7 @@ public class CartController {
 	public DataWrapper<Void> add(
 			@RequestParam(value="num",required=true)Integer num,
 			@RequestParam(value="itemSKU",required=true)String itemSKU,
-			@RequestParam(value="token",required=true)String token
+			@RequestHeader(value="token",required=true)String token
 	){
 		return cartService.add(num, itemSKU, token);
 	}
@@ -93,7 +94,7 @@ public class CartController {
 	public DataWrapper<Void> updateNum(
 			@RequestParam(value="num",required=true)Integer num,
 			@RequestParam(value="itemSKU",required=true)String itemSKU,
-			@RequestParam(value="token",required=true)String token
+			@RequestHeader(value="token",required=true)String token
 	){
 		return cartService.updateNum(num, itemSKU, token);
 	}

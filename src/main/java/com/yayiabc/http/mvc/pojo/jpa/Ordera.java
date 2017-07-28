@@ -44,7 +44,7 @@ public class Ordera extends BasePojo {
 
 	private String refundInfo;
 
-	private Integer totalFee;
+	private Double totalFee;
 	private  Integer qbDed;
 	private  Refund   refund;
 	
@@ -120,11 +120,11 @@ public class Ordera extends BasePojo {
 		this.qbDed = qbDed;
 	}
 
-	public Integer getTotalFee() {
+	public Double getTotalFee() {
 		return totalFee;
 	}
 
-	public void setTotalFee(Integer totalFee) {
+	public void setTotalFee(Double totalFee) {
 		this.totalFee = totalFee;
 	}
 
@@ -333,22 +333,16 @@ public class Ordera extends BasePojo {
 
 	@Override
 	public String toString() {
-		return "Ordera [orderId=" + orderId + ", userId=" + userId
-				+ ", actualPay=" + actualPay + ", payType=" + payType
-				+ ", postFee=" + postFee + ", paymentTime=" + paymentTime
-				+ ", consignTime=" + consignTime + ", endTime=" + endTime
-				+ ", closeTime=" + closeTime + ", buyerMessage=" + buyerMessage
-				+ ", buyerNick=" + buyerNick + ", buyerRate=" + buyerRate
-				+ ", state=" + state + ", shippingName=" + shippingName
-				+ ", shippingCode=" + shippingCode + ", invoiceHand="
-				+ invoiceHand + ", isRegister=" + isRegister + ", giveQb="
-				+ giveQb + ", refundInfo=" + refundInfo + ", totalFee="
-				+ totalFee + ", qbDed=" + qbDed + ", refund=" + refund
-				+ ", receiver=" + receiver + ", receiverId=" + receiverId
-				+ ", user=" + user + ", orderitemList=" + orderitemList
-				+ ", commentList=" + commentList + "]";
+		return "Ordera [orderId=" + orderId + ", userId=" + userId + ", actualPay=" + actualPay + ", payType=" + payType
+				+ ", postFee=" + postFee + ", paymentTime=" + paymentTime + ", consignTime=" + consignTime
+				+ ", endTime=" + endTime + ", closeTime=" + closeTime + ", buyerMessage=" + buyerMessage
+				+ ", buyerNick=" + buyerNick + ", buyerRate=" + buyerRate + ", state=" + state + ", shippingName="
+				+ shippingName + ", shippingCode=" + shippingCode + ", invoiceHand=" + invoiceHand + ", isRegister="
+				+ isRegister + ", giveQb=" + giveQb + ", refundInfo=" + refundInfo + ", totalFee=" + totalFee
+				+ ", qbDed=" + qbDed + ", refund=" + refund + ", receiver=" + receiver + ", receiverId=" + receiverId
+				+ ", user=" + user + ", supplies_sumprice=" + supplies_sumprice + ", tooldevices_sumprice="
+				+ tooldevices_sumprice + ", orderitemList=" + orderitemList + ", commentList=" + commentList + "]";
 	}
 
-	
 
 }

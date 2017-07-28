@@ -20,4 +20,7 @@ public interface PunRewardDao {
 
 
     List<String>  pd(@Param("saleId")String saleId);
+
+
+	Integer shows(String saleId);
 }

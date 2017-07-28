@@ -28,12 +28,12 @@ public class OrderItem extends BasePojo {
 	private String totalFee;
 
 	private String picPath;
-	private List<Comments> commentList;
+	private Comments commentList;
 	private Refund refund;
 	private String  itemPropertyNamea;
 	private String  itemPropertyNameb;
 	private String  itemPropertyNamec;
-    private Integer refunNum;
+    private String refunNum;
 	private String itemType;//商品类型
 
 	private String itemBrandName;//商品品牌
@@ -43,14 +43,20 @@ public class OrderItem extends BasePojo {
 	}
 
 	
-	public Integer getRefunNum() {
+
+
+	public String getRefunNum() {
 		return refunNum;
 	}
 
 
-	public void setRefunNum(Integer refunNum) {
+
+
+	public void setRefunNum(String refunNum) {
 		this.refunNum = refunNum;
 	}
+
+
 
 
 	public void setItemBrandName(String itemBrandName) {
@@ -190,13 +196,16 @@ public class OrderItem extends BasePojo {
 	}
 
 
-	public List<Comments> getCommentList() {
+
+	public Comments getCommentList() {
 		return commentList;
 	}
 
-	public void setCommentList(List<Comments> commentList) {
+
+	public void setCommentList(Comments commentList) {
 		this.commentList = commentList;
 	}
+
 
 	public OrderItem() {
 		super();
@@ -208,14 +217,17 @@ public class OrderItem extends BasePojo {
 		// TODO Auto-generated constructor stub
 	}
 
+
+
+
 	@Override
 	public String toString() {
 		return "OrderItem [itemId=" + itemId + ", itemName=" + itemName + ", orderId=" + orderId + ", ordera=" + ordera
 				+ ", itemSKU=" + itemSKU + ", qbDed=" + qbDed + ", num=" + num + ", price=" + price + ", totalFee="
 				+ totalFee + ", picPath=" + picPath + ", commentList=" + commentList + ", refund=" + refund
 				+ ", itemPropertyNamea=" + itemPropertyNamea + ", itemPropertyNameb=" + itemPropertyNameb
-				+ ", itemPropertyNamec=" + itemPropertyNamec + ", itemType=" + itemType + ", itemBrandName="
-				+ itemBrandName + ", itemInfo=" + itemInfo + "]";
+				+ ", itemPropertyNamec=" + itemPropertyNamec + ", refunNum=" + refunNum + ", itemType=" + itemType
+				+ ", itemBrandName=" + itemBrandName + ", itemInfo=" + itemInfo + "]";
 	}
 
 }

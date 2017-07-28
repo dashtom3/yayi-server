@@ -4,6 +4,7 @@ import java.util.HashMap;
 import java.util.List;
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.pojo.jpa.Invoice;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 
@@ -31,5 +32,7 @@ public interface PlaceOrderService {
 	
 	
 	//1234
-	DataWrapper<HashMap<String, Object>> generaOrder(String token, List<OrderItem> orderItem, Ordera order);
+	DataWrapper<HashMap<String, Object>> generaOrder(String token, List<OrderItem> orderItem, Ordera order,
+			 Invoice  invoice
+			);
 }

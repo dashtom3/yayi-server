@@ -14,7 +14,6 @@ import com.yayiabc.http.mvc.service.TimerChangeStateService;
 @Component
 public class MyTask extends TimerTask{
 	/*@Autowired*/
-	private TimerChangeStateService timerChangeStateService;
 	@Override
 	public void run() {
 		kk();
@@ -26,7 +25,7 @@ public class MyTask extends TimerTask{
 		for(String key:map.keySet()){
 			//System.out.println(new Date().getTime()-map.get(key).getTime()+"毫秒");
 			   System.out.println(key);
-			if(new Date().getTime()-map.get(key).getTime()>=2*60*1000
+			if(new Date().getTime()-map.get(key).getTime()>=10*60*1000
 					){
 				  System.out.println("该订单已经关闭1:"+key);
 				//查看该单state  状态 

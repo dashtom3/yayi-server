@@ -23,7 +23,8 @@ public interface WitManageDao {
 			);
 
      //查询+显示
-	List<With> query(@Param("message")String message, @Param("state")String state);
+	List<With> query(@Param("message")String message, @Param("state")String state,
+			@Param("currentNum")String currentPage, @Param("numberPerpage")String numberPerpage);
 
 	//查提现的金额 与saleId
 	With queryMessage(@Param("cashId")int cashId);
@@ -37,4 +38,6 @@ public interface WitManageDao {
 	int  setTime(String saleId);
      //查询
 	Balance queryBalance(@Param("balanceId")int balanceId);
+
+	int queryCounts(@Param("message")String message, @Param("state")String state);
 }

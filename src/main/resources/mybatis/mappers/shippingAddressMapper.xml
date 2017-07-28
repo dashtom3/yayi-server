@@ -10,10 +10,10 @@
 	<insert id="addUserAddress">
 		<if test="receiver != null">
 			insert into
-			receiver(user_id,receiver_name,province,city,county,receiver_detail,phone,is_default,landline_number)
-			values(
+			receiver(signs,user_id,receiver_name,province,city,county,receiver_detail,phone,is_default,created,updated,landline_number)
+			values(1,
 			#{receiver.userId},#{receiver.receiverName},#{receiver.province},#{receiver.city},#{receiver.county},#{receiver.receiverDetail}
-			,#{receiver.phone},#{receiver.isDefault},#{receiver.landlineNumber}
+			,#{receiver.phone},#{receiver.isDefault},now(),now(),#{receiver.landlineNumber}
 			)
 			
 		</if>
@@ -70,7 +70,7 @@
 		<if test="userId!=null">
 			user_id =#{userId} and
 		</if>
-		 is_default= true
+		 is_default= true and  signs=1
 	</select>
 
 	<update id="updateIsdefault">
@@ -85,15 +85,18 @@
 
 	<!-- 显示收货地址 -->
 	<select id="showShoppingAddress" resultType="com.yayiabc.http.mvc.pojo.jpa.Receiver">
-		SELECT * FROM receiver where user_id =#{userId}
+		SELECT * FROM receiver where user_id =#{userId} and signs=1 
 	</select>
 
 	<!-- 删除收货地址 -->
-	<delete id="deleteShoppingAddress">
+	<update id="deleteShoppingAddress">
+	    update  receiver set signs=0 where receiver_id=#{receiverId}
+	</update>
+	<!-- <delete id="deleteShoppingAddress">
       delete  from receiver where receiver_id=#{receiverId}
-	</delete>
+	</delete> -->
 	
 	<select id="queryShoppingAddress" resultType="com.yayiabc.http.mvc.pojo.jpa.Receiver">
-	  select * from receiver  where  receiver_id=#{receiverId}
+	  select * from receiver  where  receiver_id=#{receiverId} and signs=1
 	</select>
 </mapper>  

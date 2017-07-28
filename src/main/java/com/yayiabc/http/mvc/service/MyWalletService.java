@@ -6,8 +6,6 @@ import java.util.List;
 
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Balance;
-import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
-import com.yayiabc.http.mvc.pojo.jpa.SaleMyWalletDetail;
 
 public interface MyWalletService {
 
@@ -39,10 +37,16 @@ public interface MyWalletService {
    
 	
 	//明细
-	DataWrapper<List<Balance>> detail(HashMap<String, String> hm);
+	DataWrapper<List<Balance>> detail(HashMap<String, Object> hm,
+			Integer currentPage,
+			Integer numberPerpage,
+			String token
+			);
     
 	//详情
 	DataWrapper<Balance>  details(String balanceId);
+
+	DataWrapper<List<Balance>> detailsss(HashMap<String, Object> hm, Integer currentPage, Integer numberPerpage);
 
 
 }

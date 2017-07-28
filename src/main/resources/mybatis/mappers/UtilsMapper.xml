@@ -2,75 +2,103 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
- <mapper namespace="com.yayiabc.http.mvc.dao.UtilsDao">
-	
-	<select id="getUserID" parameterType="java.lang.String" resultType="java.lang.String">
-		select user_id from user_token where token=#{token} 
+<mapper namespace="com.yayiabc.http.mvc.dao.UtilsDao">
+
+	<select id="getUserID" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		select user_id from user_token where token=#{token}
 	</select>
-	<select id="getSaleId" parameterType="java.lang.String" resultType="java.lang.String">
-		select sale_id from sale_token where sale_token=#{SaleToken} 
+	<select id="getSaleId" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		select sale_id from sale_token where
+		sale_token=#{SaleToken}
 	</select>
-	<select id="getToken" parameterType="java.lang.String" resultType="java.lang.String">
-		select token from user_token where user_id=#{userId} 
+	<select id="getToken" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		select token from user_token where user_id=#{userId}
 	</select>
-	<select id="getSaleToken" parameterType="java.lang.String" resultType="java.lang.String">
-		select sale_token from sale_token where sale_id=#{saleId} 
+	<select id="getSaleToken" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		select sale_token from sale_token where sale_id=#{saleId}
 	</select>
-	<select id="queryPhone" parameterType="java.lang.String" resultType="java.lang.String">
-		select phone from  user where user_id=#{userId} 
-	</select>   
-	<select id="querySaleIdByOrderId" resultType="java.lang.String">
-	SELECT sale_id  FROM USER WHERE user_id=(SELECT user_id FROM ordera WHERE order_id=#{orderId})
+	<select id="queryPhone" parameterType="java.lang.String"
+		resultType="java.lang.String">
+		select phone from user where user_id=#{userId}
 	</select>
-	
+	<select id="getSaleIdByOrderId" resultType="java.lang.String">
+		SELECT sale_id FROM USER WHERE user_id=(SELECT user_id FROM ordera WHERE
+		order_id=#{orderId})
+	</select>
+
 	<select id="querySalePhoneBySaleId" resultType="java.lang.String">
-	 select phone from sale_info where sale_id=#{saleId}  
+		select phone from sale_info where sale_id=#{saleId}
 	</select>
-	<select id="queryCalssSumPrice" resultType="com.yayiabc.http.mvc.pojo.jpa.Ordera">
-	select supplies_sumprice,tooldevices_sumprice from ordera where
-	order_id =#{orderId}
+	<resultMap type="Ordera" id="queryClass">
+		<id property="orderId" column="order_id" />
+		<result property="supplies_sumprice" column="supplies_sumprice" />
+		<result property="tooldevices_sumprice" column="tooldevices_sumprice" />
+	</resultMap>
+
+	<select id="queryCalssSumPrice" resultMap="queryClass">
+		select * from ordera where
+		order_id =#{orderId}
 	</select>
-	<!-- 
-	@Param("saleId")String saleId,
-			@Param("orderId")String orderId,
-			@Param("refund_money_haocai")String refund_money_haocai,
-			@Param("refund_money_gongju")String refund_money_gongju,
-			@Param("Supplies_sumprice")String Supplies_sumprice,
-			@Param("Tooldevices_sumprice")String Tooldevices_sumprice
-	 -->
-	
-	<insert id="insert" >
-	insert into sale_income(sale_id,order_id,refund_money_haocai
-	,refund_money_gongju,order_money_haocai,order_money_gongju
-	,created)  values
-	(
-	#{saleId},#{orderId},#{refund_money_haocai},#{refund_money_gongju},#{Supplies_sumprice} ,
-	#{Tooldevices_sumprice},
-	now()
-	)
+	<!-- @Param("saleId")String saleId, @Param("orderId")String orderId, @Param("refund_money_haocai")String 
+		refund_money_haocai, @Param("refund_money_gongju")String refund_money_gongju, 
+		@Param("Supplies_sumprice")String Supplies_sumprice, @Param("Tooldevices_sumprice")String 
+		Tooldevices_sumprice saleId, orderId, 0.0,0.0,order.getSupplies_sumprice(), 
+		order.getTooldevices_sumprice()); System.out.println("order.getTooldevices_sumprice()" 
+		+order.getTooldevices_sumprice() -->
+
+	<insert id="insert">
+		insert into sale_income(sale_id,order_id,refund_money_haocai
+		,refund_money_gongju,order_money_haocai,order_money_gongju
+		,created) values
+		(
+		#{saleId},#{orderId},#{refund_money_haocai},#{refund_money_gongju},#{Supplies_sumprice}
+		,
+		#{Tooldevices_sumprice},
+		now()
+		)
 	</insert>
-	
+
 	<select id="getSaleBySaleId" resultType="com.yayiabc.http.mvc.pojo.jpa.SaleInfo">
-	 select * from sale_info where sale_id=#{saleId}
+		select * from sale_info where sale_id=#{saleId}
 	</select>
-	
+
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.Ordera" id="orderReslutMap">
-	<id property="orderId" column="order_id"/>
-	<result property="userId" column="user_id"/>
-	<result property="giveQb" column="give_qb"/>
+		<id property="orderId" column="order_id" />
+		<result property="userId" column="user_id" />
+		<result property="giveQb" column="give_qb" />
 	</resultMap>
 	<select id="queryGiveQBNumByOrderId" resultMap="orderReslutMap">
-	 select user_id,give_qb,actual_pay from ordera  where order_id=#{orderId}
+		select user_id,give_qb,actual_pay from ordera where order_id=#{orderId}
 	</select>
-	
+
 	<select id="queryUserQbNum" resultType="int">
-	select qb_balance from user where user_id=#{userId}
+		select qb_balance from user where user_id=#{userId}
 	</select>
-	<update id="saveQbToUser">
-	  update  user set qb_balance=#{qb} where user_id=#{userId}
-	</update>
+	<!-- <update id="saveQbToUser">
+		update user set qb_balance=#{qb} where user_id=#{userId}
+	</update> -->
 	<select id="queryTokenByOrderId" resultType="java.lang.String">
-	SELECT token FROM user_token WHERE user_id=
-(SELECT user_id FROM  ordera WHERE order_id=#{orderId})
+		SELECT token FROM user_token WHERE user_id=
+		(SELECT user_id FROM ordera WHERE order_id=#{orderId})
 	</select>
+	<select id="queryNameByUserId" resultType="java.lang.String">
+		select true_name from user where user_id=#{userId}
+	</select>
+
+	<select id="queryIt" resultType="com.yayiabc.http.mvc.pojo.jpa.OrderItem">
+		select item_property_namea,item_property_nameb,item_property_namec,item_name
+		from order_item
+		where order_id=#{orderId} AND itm_SKU=#{itemSKU}
+	</select>
+	<!--@Param("codeId")String codeId,
+			@Param("userID")String userID,
+			@Param("money")String money);  -->
+	<insert id="saveRechargeMessage">
+	  insert  into  charge(charge_id,token,money,state,1)values
+	  (#{codeId},#{userID},#{money})
+	</insert>
 </mapper>       

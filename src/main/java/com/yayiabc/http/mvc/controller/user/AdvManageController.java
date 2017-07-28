@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.sdk.LogisticsMain;
+import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.PayAfterOrderUtil;
 import com.yayiabc.http.mvc.pojo.jpa.AdvChart;
 import com.yayiabc.http.mvc.service.AdvManageService;
 
@@ -74,5 +76,13 @@ public class AdvManageController {
 			e.printStackTrace();
 		}
 		return LogisticCode;
+    }
+    @RequestMapping("test")
+    @ResponseBody
+    public void da(
+    		String orderId
+    		){
+    	PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("payAfterOrderUtil");
+ 	   payAfterOrderUtil.universal(orderId);
     }
 }

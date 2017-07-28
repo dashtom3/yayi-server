@@ -28,7 +28,7 @@ public class ShippingAddressController {
 		//request.setCharacterEncoding("UTF-8");
 		DataWrapper<Void> dataWrapper=null;
 	      if(receiver.getIsDefault()==true){
-	    	  //根据电话号码  查询出当前登录人user_ID
+	    	  //根据token  查询出当前登录人user_ID
 	    	  Integer receiverId=shippingAddressService.addConditions(token);
 	    	  System.out.println(receiverId);
 	    	  if(receiverId==null||receiverId==0){

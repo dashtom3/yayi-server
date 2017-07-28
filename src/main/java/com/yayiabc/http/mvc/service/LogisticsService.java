@@ -7,5 +7,5 @@ public interface LogisticsService {    //token, orderId
      
 	DataWrapper<String> queryLog(String orderId);
 
-	void updateState(String orderId);
+	int updateState(String orderId);
 }

@@ -45,7 +45,7 @@ public class CornServiceImpl implements CornService{
 			if(totalGongJuRefund==null){
 				totalGongJuRefund=0.0;
 			}
-			Double getMoneyByHaoCai;
+			Double getMoneyByHaoCai=0.0;
 			if(totalHaoCaiMoney<1000){
 				getMoneyByHaoCai=(totalHaoCaiMoney-totalHaoCaiRefund)*0.05;
 			}else if(totalHaoCaiMoney<2000){

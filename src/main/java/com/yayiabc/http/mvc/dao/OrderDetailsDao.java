@@ -22,9 +22,23 @@ public interface OrderDetailsDao {
    //显示评论1
 	Ordera showComItem(@Param("orderId")String orderId);
      //确定评论#{userId},#{itemId} ,#{orderId},#{commentGrade} ,#{commentContent}
-	int makeSureCom(@Param("userPhone")String userPhone,@Param("userId")String userId, @Param("itemId")String itemId,@Param("orderId")String orderId,
+	/**
+	 * 
+	 * @param userPhone
+	 * @param userId
+	 * @param itemId
+	 * @param orderId
+	 * @param commentGrade
+	 * @param commentContent
+	 * @param userName
+	 * @return
+	 * userId,itemIdListy.get(i).getItemId(),orderId,itemIdListy.get(i).getScore(),
+					itemIdListy.get(i).getData(),itemIdListy.get(i).getItemSKU(),sb.toString()
+	 */
+	int makeSureCom(@Param("userId")String userId, @Param("itemId")String itemId,@Param("orderId")String orderId,
 			
-			@Param("commentGrade")String commentGrade,@Param("commentContent")String commentContent);
+			@Param("commentGrade")String commentGrade,@Param("commentContent")String commentContent,
+			@Param("itemSku")String itemSku,@Param("sb")String sb);
     //查询出 定下的商品明细
 	Ordera queryItemDetails(Integer orderId);
     //

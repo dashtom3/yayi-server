@@ -4,6 +4,14 @@ public class itemIdList {
 	private  String itemId;
 	private  String score;
 	private  String data;
+	private String itemSKU;
+	
+	public String getItemSKU() {
+		return itemSKU;
+	}
+	public void setItemSKU(String itemSKU) {
+		this.itemSKU = itemSKU;
+	}
 	public String getItemId() {
 		return itemId;
 	}

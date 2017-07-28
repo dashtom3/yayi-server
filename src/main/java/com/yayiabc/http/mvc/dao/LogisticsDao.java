@@ -8,5 +8,5 @@ public interface LogisticsDao {
 	//获取   快递单号  公司编码
 	Ordera queryLog(@Param("orderId")String orderId);
     //更改订单状态
-	void updateState(@Param("orderId")String orderId);
+	int updateState(@Param("orderId")String orderId);
 }

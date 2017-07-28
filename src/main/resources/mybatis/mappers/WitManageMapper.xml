@@ -61,16 +61,17 @@
 		FROM balance bala
 		JOIN sale_info sale ON bala.sale_id=sale.sale_id
 		<where>
-			bala.describey LIKE '%提现%'
-			<if test="message!=null and message!=''">
-				and sale.true_name='${message}%' or
-				sale.phone='${message}%'
-			</if>
+		bala.describey LIKE '%提现%'
 			<if test="state!=null and state!=''">
-				and bala.describey like '${state}%'
+				and bala.describey like '%${state}%' 
+			</if>
+			<if test="message!=null and message!=''">
+				and sale.true_name like'%${message}%' and  bala.describey LIKE '%提现%'  or
+				sale.phone like'%${message}%'  and  bala.describey LIKE '%提现%'
 			</if>
 		</where>
-		order by bala.created desc
+		order by bala.created desc   
+		limit ${currentNum} ,${numberPerpage}
 	</select>
 
 	<select id="queryMessage" resultMap="c">
@@ -86,6 +87,22 @@
 		select balance_out,balance
 		from balance where balance_id=#{balanceId}
 	</select>
-	<!--0000000000000000000 -->
+	<select id="queryCounts" resultType="java.lang.Integer">
+		SELECT
+		count(1)
+		FROM balance bala
+		JOIN sale_info sale ON bala.sale_id=sale.sale_id
+		<where>
+			bala.describey LIKE '%提现%'
+			<if test="state!=null and state!=''">
+				and bala.describey like '${state}%'
+			</if>
+			<if test="message!=null and message!=''">
+				and sale.true_name like'${message}%' or
+				sale.phone like'${message}%'
+			</if>
+		</where>
+		
+	</select>
 	
 </mapper>

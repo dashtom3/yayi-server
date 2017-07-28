@@ -25,85 +25,87 @@ import com.yayiabc.http.mvc.service.WitManageService;
 @Controller
 @RequestMapping("api/witManage")
 public class WitManageController {
-     @Autowired
-     //显示提现
-     private WitManageService witManageService;
-     
-     //提交提现申请
-     @RequestMapping("submitWit")
-     @ResponseBody//real_name,type,anumber,cashMoney,phone
-     public  DataWrapper<Void> submitWit(
-    		 @RequestParam(value="token") String token,
-    		 @RequestParam(value="vCode") String vCode,
-    		/* @RequestParam(value="phone") String phone,
+	@Autowired
+	//显示提现
+	private WitManageService witManageService;
+
+	//提交提现申请
+	@RequestMapping("submitWit")
+	@ResponseBody//real_name,type,anumber,cashMoney,phone
+	public  DataWrapper<Void> submitWit(
+			@RequestParam(value="token") String token,
+			@RequestParam(value="vCode") String vCode,
+			/* @RequestParam(value="phone") String phone,
     		 @RequestParam(value="moneyNnm") String moneyNnm,*/
-    		 /*real_name  type   anumber
+			/*real_name  type   anumber
     		 @RequestParam(value="phone") String phone,
     		 @RequestParam(value="vCode") String vCode,
     		 @RequestParam(value="type") String type*/
-    		// @ModelAttribute With with
-    		 @RequestParam(value="moneyNnm") String moneyNnm,
-    		 @RequestParam(value="phone") String phone
-    		 ){
-    	  
-    	   if(vCode.equals(VerifyCodeManager.getPhoneCode(phone))){
-    	    	
-    	    	return witManageService.submitWit(token,moneyNnm);
-    	    }
-    	    DataWrapper<Void> dataWrapper= new DataWrapper<Void>();
-    	    dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-    	    dataWrapper.setMsg("验证验证码失败");
-    	    return dataWrapper;
-     }
-     
-     //获取验证码
-     @ResponseBody
-     @RequestMapping("gitVcode")
-     public  DataWrapper<String> gitVcode(
-    		 //@RequestParam(value="token") String token,
-    		 @RequestParam(value="phone") String phone
-    		 ){
-    	 return getVerifyCode(phone);
-     }
-     
-     public DataWrapper<String> getVerifyCode(String phone) {
-         String code = VerifyCodeManager.newPhoneCode(phone);
-         System.out.println(code);
-         DataWrapper<String>  dataWrapper=new DataWrapper<String>();
-         if (code == null) {
-        	 dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-        	 dataWrapper.setData(code);
-        	 return dataWrapper;
-         }
-         System.out.println(phone);
-         boolean result = HttpUtil.sendPhoneVerifyCode(code, phone);
-         if (result){
-        	 dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-        	 return dataWrapper;
-         } else {
-        	 dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-        	 return dataWrapper;
-         }
-  	}
-     //
-     @RequestMapping("oper")
-     @ResponseBody
-     public   DataWrapper<Void> oper(
-    		 //@RequestParam(value="token") String token,
-    		 @RequestParam(value="balacceId") Integer balacceId
-    		 ){
-    	 return witManageService.oper(balacceId);
-     }
-     
-     //show + query
-     @RequestMapping("query")
-     @ResponseBody
-     public  DataWrapper<List<With>> query(
-    		 //@RequestParam(value="token",required=true) String token,
-    		 @RequestParam(value="message",required=false) String message ,  //姓名  或者手机号
-    		 
-    		 @RequestParam(value="state",required=false) String state
-    		 ){
-    	 return witManageService.query(message,state);
-     }
+			// @ModelAttribute With with
+			@RequestParam(value="moneyNnm") String moneyNnm,
+			@RequestParam(value="phone") String phone
+			){
+
+		if(vCode.equals(VerifyCodeManager.getPhoneCode(phone))){
+
+			return witManageService.submitWit(token,moneyNnm);
+		}
+		DataWrapper<Void> dataWrapper= new DataWrapper<Void>();
+		dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+		dataWrapper.setMsg("验证验证码失败");
+		return dataWrapper;
+	}
+
+	//获取验证码
+	@ResponseBody
+	@RequestMapping("gitVcode")
+	public  DataWrapper<String> gitVcode(
+			//@RequestParam(value="token") String token,
+			@RequestParam(value="phone") String phone
+			){
+		return getVerifyCode(phone);
+	}
+
+	public DataWrapper<String> getVerifyCode(String phone) {
+		String code = VerifyCodeManager.newPhoneCode(phone);
+		System.out.println(code);
+		DataWrapper<String>  dataWrapper=new DataWrapper<String>();
+		if (code == null) {
+			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+			dataWrapper.setData(code);
+			return dataWrapper;
+		}
+		System.out.println(phone);
+		boolean result = HttpUtil.sendPhoneVerifyCode(code, phone);
+		if (result){
+			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+			return dataWrapper;
+		} else {
+			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+			return dataWrapper;
+		}
+	}
+	//
+	@RequestMapping("oper")
+	@ResponseBody
+	public   DataWrapper<Void> oper(
+			//@RequestParam(value="token") String token,
+			@RequestParam(value="balacceId") Integer balacceId
+			){
+		return witManageService.oper(balacceId);
+	}
+
+	//show + query
+	@RequestMapping("query")
+	@ResponseBody
+	public  DataWrapper<List<With>> query(
+			//@RequestParam(value="token",required=true) String token,
+			@RequestParam(value="message",required=false) String message ,  //姓名  或者手机号
+
+			@RequestParam(value="state",required=false) String state,
+			@RequestParam(value="currentPage",required=false)Integer currentPage,
+			@RequestParam(value="numberPerpage",required=false)Integer numberPerpage
+			){
+		return witManageService.query(message,state,currentPage,numberPerpage);
+	}
 }

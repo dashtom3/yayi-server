@@ -21,7 +21,7 @@ public class LogisticsServiceImpl implements LogisticsService{
 		System.out.println(order);
 		if(order!=null){
 			String s=null;
-			try {
+			try {                                                 //快递公司编码                                 //快递单号
 				s = new LogisticsMain().getOrderTracesByJson(order.getShippingName(), order.getShippingCode());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
@@ -39,8 +39,8 @@ public class LogisticsServiceImpl implements LogisticsService{
 		}
 	//自动签收
 	@Override
-	public void updateState(String orderId) {
+	public int updateState(String orderId) {
 		// TODO Auto-generated method stub
-		logisticsDao.updateState(orderId);  
+		return logisticsDao.updateState(orderId);  
 	}
 }

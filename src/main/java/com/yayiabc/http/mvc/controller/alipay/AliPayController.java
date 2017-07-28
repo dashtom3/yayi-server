@@ -86,23 +86,11 @@ public class AliPayController {
 	//判断订单支付同步跳转
 	@RequestMapping("payVerifica")
 	void ReturnUrl(
-			/*@RequestParam(value="is_success",required=true) String is_success,//表示接口调用是否成功，并不表明业务处理结果。
-			@RequestParam(value="sign_type",required=true) String sign_type,//MD5
-			@RequestParam(value="sign",required=true) String sign,//签名与验签
-			@RequestParam(value="trade_status",required=true) String trade_status,//交易状态
-			@RequestParam(value="out_trade_no",required=true) String out_trade_no,//商户订单号
-			@RequestParam(value="trade_no",required=true) String trade_no,//支付宝交易号
-*/			HttpServletRequest request,
+			HttpServletRequest request,
 			HttpServletResponse response
 			//。。。。下面还可以加一些参数 现在暂时不加
 			){
 		try {
-			/*System.out.println("is_success: "+is_success);
-			System.out.println("sign_type: "+sign_type);
-			System.out.println("sign: "+sign);
-			System.out.println("交易状态trade_status: "+trade_status);
-			System.out.println("订单号out_trade_no: "+out_trade_no);
-			System.out.println("支付宝交易号trade_no: "+trade_no);*/
 			//获取支付宝GET过来反馈信息
 			Map<String,String> params = new HashMap<String,String>();
 			Map requestParams = request.getParameterMap();
@@ -115,16 +103,14 @@ public class AliPayController {
 							: valueStr + values[i] + ",";
 				}
 				//乱码解决，这段代码在出现乱码时使用。如果mysign和sign不相等也可以使用这段代码转化
-//				valueStr = new String(valueStr.getBytes("ISO-8859-1"), "UTF-8");
+				//valueStr = new String(valueStr.getBytes("ISO-8859-1"), "UTF-8");
 				//params.put(name, new String(valueStr).getBytes());
 				params.put(name, valueStr);
 			}
-			System.out.println("已经请求到同步方法内");
-			response.setContentType("text/html;charset=UTF-8"); 
-			
-			String Sign=alipayService.ReturnUrl(
-					/*is_success, sign_type, sign, trade_status, out_trade_no, trade_no,*/params);
-			System.out.println(Sign);
+			for(String key:params.keySet()){
+				System.out.println("key: "+key+ " , value:"+params.get(key));
+			}
+			String Sign=alipayService.ReturnUrl(params);
 			if("success".equals(Sign)){
 				System.out.println("已经成功  正在跳转");
 				response.sendRedirect("http://www.yayiabc.com/paySuccess");
@@ -176,9 +162,12 @@ public class AliPayController {
 		OutputStream out;
 		try {
 			out = response.getOutputStream();
-			response.setContentType("text/html;charset=UTF-8");  
+			/*response.setContentType("text/html;charset=UTF-8");  */
+			/*response.getWriter().write(alipayService.notifyVerifica(
+					is_success, sign_type, sign, trade_status, out_trade_no, trade_no,params));
+			out.w*/
 			out.write(alipayService.notifyVerifica(
-					is_success, sign_type, sign, trade_status, out_trade_no, trade_no,params).getBytes("UTF-8")
+					is_success, sign_type, sign, trade_status, out_trade_no, trade_no,params).getBytes()
 					);//以UTF-8进行编码  0
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

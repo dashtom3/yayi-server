@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.yayiabc.http.mvc.pojo.jpa.Charge;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 
 public interface AliPayDao {
@@ -25,4 +26,6 @@ public interface AliPayDao {
 	int updateQb(@Param("qbDed")Integer qbDed,@Param("userId")String userId);
 	//增加销量
 	void addSales(@Param("itemId")String itemId,@Param("num")Integer num);
+	Charge queryUserId(@Param("out_trade_no")String out_trade_no);
+	int  updateState(@Param("out_trade_no")String out_trade_no);
 }

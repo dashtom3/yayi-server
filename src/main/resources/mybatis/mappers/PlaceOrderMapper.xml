@@ -224,7 +224,7 @@
 	</update>
 	
 	<update id="saveRefundRecord">
-	 update inem_info set refund_num=(refund_num+${refunNum}) 
+	 update item_info set refund_num=(refund_num+${refunNum}) 
 	 where
 	 item_id=#{itemId}
 	</update>
@@ -233,5 +233,23 @@
 	 (sale_id,order_id,refund_money_haocai,refund_money_gongju,created)
 	 values
 	 (#{saleId},#{orderId},#{haoCaiRefundSumMoney},#{toolRefundSumMoney},now())
+	</insert>
+	<!-- private Integer InvoiceId;
+	private String companyName;
+	private Integer taxpayerNum;
+	private String registeredAddress;
+	private Integer registeredPhone;
+	private String opneBank;
+	private String bankNumber;
+	private String stickNanme;
+	private String stickPhone;
+	private String stickaddress; -->
+	<insert id="saveInvoiced" parameterType="com.yayiabc.http.mvc.pojo.jpa.Invoice">
+	  insert into invoice(company_name,taxpayer_num,registered_address,
+	  registered_phone,opne_bank,bank_number,stick_nanme,stick_phone,stick_address,order_id
+	  ) values(#{companyName},#{taxpayerNum},#{registeredAddress},
+	  #{registeredPhone},#{opneBank},#{bankNumber},#{stickNanme},
+	  #{stickPhone},#{stickaddress},#{orderId}
+	  )
 	</insert>
 </mapper>

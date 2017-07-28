@@ -72,7 +72,7 @@ public class OrderManagementController {
  //退款数据处理
    @RequestMapping("makeRefundData")
    @ResponseBody
-   public DataWrapper<Void> makeRefundData(
+   public DataWrapper<HashMap<String, Object>> makeRefundData(
 		   @RequestParam("token")String token,
             @RequestParam("orderItem") String orderItem
             /**

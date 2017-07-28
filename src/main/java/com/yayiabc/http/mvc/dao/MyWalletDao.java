@@ -49,9 +49,12 @@ public interface MyWalletDao {
 	
 	Date getTime(Integer balanceId);
 	
-	List<Balance> detail(HashMap<String, String> hm);
+	List<Balance> detail(HashMap<String, Object> hm);
 	
 	//查询出一条一个月的详情记录
 	Balance details(@Param("balanceId")String balanceId);
-
+	
+	int queryCount(HashMap<String, Object> hm);
+	
+	List<Balance> getTotal(HashMap<String, Object> hms);
 }

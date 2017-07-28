@@ -40,7 +40,6 @@ public class PunRewardController {
     		 @RequestParam(value="sign",required=true) Integer sign,
     		 @RequestParam(value="money",required=true) String money
     		 ){
-    	
     	return punRewardService.addOrDelMoney(saleId,sign,money);
      }
 }

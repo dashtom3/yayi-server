@@ -16,6 +16,23 @@ public class Balance {
 	private String describey;
 	private Double JZZE;
 	private Double CZZE;
+	private double haoCaiIncome;
+	private double gongJuIncome;
+	public Double getHaoCaiIncome() {
+		return haoCaiIncome;
+	}
+	public void setHaoCaiIncome(Double haoCaiIncome) {
+		this.haoCaiIncome = haoCaiIncome;
+	}
+	public Double getGongJuIncome() {
+		return gongJuIncome;
+	}
+	public void setGongJuIncome(Double gongJuIncome) {
+		this.gongJuIncome = gongJuIncome;
+	}
+	public Double getGongjuMoney() {
+		return gongjuMoney;
+	}
 	public Integer getBalanceId() {
 		return balanceId;
 	}
@@ -70,7 +87,7 @@ public class Balance {
 	public void setGongjuRefund(Double gongjuRefund) {
 		this.gongjuRefund = gongjuRefund;
 	}
-	public Double getGongjuMoney() {
+	public Double balance() {
 		return gongjuMoney;
 	}
 	public void setGongjuMoney(Double gongjuMoney) {
@@ -119,15 +136,11 @@ public class Balance {
 	}
 	@Override
 	public String toString() {
-		return "Balance [balanceId=" + balanceId + ", saleId=" + saleId
-				+ ", balanceIn=" + balanceIn + ", balanceOut=" + balanceOut
-				+ ", balance=" + balance + ", created=" + created
-				+ ", haocaiMoney=" + haocaiMoney + ", haocaiRefund="
-				+ haocaiRefund + ", gongjuRefund=" + gongjuRefund
-				+ ", gongjuMoney=" + gongjuMoney + ", describey=" + describey
-				+ ", JZZE=" + JZZE + ", CZZE=" + CZZE + "]";
+		return "Balance [balanceId=" + balanceId + ", saleId=" + saleId + ", balanceIn=" + balanceIn + ", balanceOut="
+				+ balanceOut + ", balance=" + balance + ", created=" + created + ", haocaiMoney=" + haocaiMoney
+				+ ", haocaiRefund=" + haocaiRefund + ", gongjuRefund=" + gongjuRefund + ", gongjuMoney=" + gongjuMoney
+				+ ", describey=" + describey + ", JZZE=" + JZZE + ", CZZE=" + CZZE + ", haoCaiIncome=" + haoCaiIncome
+				+ ", gongJuIncome=" + gongJuIncome + "]";
 	}
-	
-	
 	
 }

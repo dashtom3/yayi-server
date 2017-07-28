@@ -53,7 +53,7 @@ public class KDN {
 	public String orderTracesSubByJson(String orderId,String logisticsName,
 			String  logisticsCode
 			) throws Exception{
-		String requestData="{'OrderCode': '"+orderId+"'," +
+		String requestData="{'OrderCode':'"+orderId+"'," +
                                 "'ShipperCode':'"+logisticsName+"'," +
                                 "'LogisticCode':'"+logisticsCode+"'}";
 		

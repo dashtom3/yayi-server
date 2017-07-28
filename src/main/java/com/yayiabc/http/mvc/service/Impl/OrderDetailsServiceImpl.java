@@ -71,7 +71,7 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 	
 	//取消订单
 	@Override
-	public DataWrapper<Void> cancel(String orderId) {
+	public DataWrapper<Void> cancel(String orderId){
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		int state=orderdetailsDao.cancel(orderId);
@@ -113,11 +113,24 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		String userId=utilsDao.getUserID(token);
 	   //根据userId  cha  phoen
 		String userPhone=utilsDao.queryPhone(userId);
+		String userName=utilsDao.queryNameByUserId(userId);
 		//user_id,item_id,order_id,comment_grade,comment_content
+	
 		int count =0;
 		for(int i=0;i<itemIdListy.size();i++){
-			orderdetailsDao.makeSureCom(userPhone,userId,itemIdListy.get(i).getItemId(),orderId,itemIdListy.get(i).getScore(),
-					itemIdListy.get(i).getData()
+		    OrderItem ItemShuXing=utilsDao.queryIt(itemIdListy.get(i).getItemSKU(),orderId);
+		    StringBuffer sb=new StringBuffer(ItemShuXing.getItemName());
+		      if(ItemShuXing.getItemPropertyNamea()!=null){
+                      sb.append(ItemShuXing.getItemPropertyNamea());
+		      }
+		      if(ItemShuXing.getItemPropertyNameb()!=null){
+                  sb.append(ItemShuXing.getItemPropertyNameb());
+	      }
+		      if(ItemShuXing.getItemPropertyNamec()!=null){
+                  sb.append(ItemShuXing.getItemPropertyNamec());
+	      }
+			orderdetailsDao.makeSureCom(userId,itemIdListy.get(i).getItemId(),orderId,itemIdListy.get(i).getScore(),
+					itemIdListy.get(i).getData(),itemIdListy.get(i).getItemSKU(),sb.toString()
 					);
 			count++;
 		}

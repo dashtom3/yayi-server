@@ -6,6 +6,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.yayiabc.http.mvc.pojo.jpa.Cart;
 import com.yayiabc.http.mvc.pojo.jpa.FreeShipping;
+import com.yayiabc.http.mvc.pojo.jpa.Invoice;
 import com.yayiabc.http.mvc.pojo.jpa.ItemValue;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
@@ -100,5 +101,8 @@ public interface PlaceOrderDao {
 			@Param("orderId")String orderId, 
 			@Param("haoCaiRefundSumMoney")Double haoCaiRefundSumMoney,
 			@Param("toolRefundSumMoney")Double toolRefundSumMoney);
+
+   //保存发票性质
+	int saveInvoiced(Invoice invoice);
 
 }

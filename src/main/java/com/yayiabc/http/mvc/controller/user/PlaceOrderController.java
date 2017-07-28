@@ -1,13 +1,7 @@
 package com.yayiabc.http.mvc.controller.user;
 
-import java.io.IOException;
 import java.util.ArrayList;
 import java.util.HashMap;
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import net.sf.json.JSONArray;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -17,10 +11,13 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.pojo.jpa.Invoice;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.service.AliPayService;
 import com.yayiabc.http.mvc.service.PlaceOrderService;
+
+import net.sf.json.JSONArray;
 
 
 
@@ -116,7 +113,7 @@ public class PlaceOrderController {
 			@RequestParam(value="token",required=true) String token,
 			@RequestParam(value="orderItem",required=true) String  orderItem,
 			@ModelAttribute Ordera order,
-			HttpServletResponse response 
+			@ModelAttribute Invoice  invoice
 			){
 		//System.out.println(token+"  orderItem:"+orderItem+" order:"+order);
 		//return placeOrderService.generaOrder(token,orderItem,order);
@@ -133,7 +130,7 @@ public class PlaceOrderController {
 		hashMap.put("giveQbNum", giveQbNum);
 		hashMap.put("itemSum", itemSum);
 		 */
-		DataWrapper<HashMap<String, Object>> hm=placeOrderService.generaOrder(token,orderItemList,order);
+		DataWrapper<HashMap<String, Object>> hm=placeOrderService.generaOrder(token,orderItemList,order,invoice);
 		                return hm;                                                                                                             
 		/*  这里先放下
 		 * String  str=aliPayService.packingParameter((String)hm.get("OrderId"), (String)hm.get("itemNames"), 

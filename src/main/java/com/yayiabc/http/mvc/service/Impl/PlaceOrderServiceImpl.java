@@ -19,6 +19,7 @@ import com.yayiabc.http.mvc.dao.PlaceOrderDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Cart;
 import com.yayiabc.http.mvc.pojo.jpa.FreeShipping;
+import com.yayiabc.http.mvc.pojo.jpa.Invoice;
 import com.yayiabc.http.mvc.pojo.jpa.ItemValue;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
@@ -170,13 +171,17 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	}
 	//钱币抵扣
 	@Override
-	public DataWrapper<Void> ded(String token, int num) {
+	public DataWrapper<Void> ded(String token, int num/*,Integer  receiverId*/) {
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		// TODO Auto-generated method stub
+		//该单计算运费
+		/*Receiver receiver=placeOrderDao.queryReceiver(receiverId);
+
+		Double postFee=getFreight(receiver,sumPrice,itemSum);*/
 		String userId=utilsDao.getUserID(token);
 		//查询当前用户的钱币剩余
 		int su= placeOrderDao.ded(userId);
-		if(su>num){
+		if(su>=num){
 			dataWrapper.setMsg("余额充足");
 		}else{
 			dataWrapper.setMsg("余额不足");
@@ -298,7 +303,9 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 
 	//1234
 	@Override
-	public DataWrapper<HashMap<String, Object>> generaOrder(String token, List<OrderItem> orderItemList, Ordera order) {
+	public DataWrapper<HashMap<String, Object>> generaOrder(String token, List<OrderItem> orderItemList, Ordera order,
+			 Invoice  invoice
+			) {
 		//记录工具设备类的商品 个数
 		 int TooldevicesSumCount=0;
 		// TODO Auto-generated method stub
@@ -311,12 +318,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//obtain orderId 
 			String orderId=OrderIdUtils.createOrderId(userId);
 			//将订单信息保存在订单里 你如是否需要发表  留言等。。。 
-			/**
-			 * state,order_id,user_id,qb_ded,
-			 * invoice_hand, is_register, buyer_message, total_fee,
-			 * actual_pay，post_fee,give_qb,created,
-			 * buyer_nick,buyer_rate
-			 */
 			if(order!=null){
 				if(order.getQbDed()==null){
 					order.setQbDed(0);
@@ -329,22 +330,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					order.setBuyerRate(0);
 				}
 			}
-			/**
-			 * itm_SKU   varbinary(100) NULL
-	item_id    varchar(50) NULL
-	order_id   varchar(100) NULL
-	item_name     varchar(50) NULL
-	qb_ded     int(10) NULL
-	num     int(10) NULL
-	price   int(10) NULL
-	total_fee   varchar(50) NULL
-	pic_path   varchar(100) NULL
-	item_property_namea    varchar(50) NULL
-	item_property_nameb    varchar(50) NULL
-	item_property_namec   varchar(50) NULL
-	created   datetime NULL
-	updated    datetime NULL 
-			 */
 			//本单赠送钱币百分比
 			double giveQbNum=0;
 			//道邦总价
@@ -409,16 +394,15 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					dataWrapper.setData(hashMap);
 					return dataWrapper;
 				}
-				//道邦品牌商品总价格:
-				 daoBnagSumPrice=0;
-				if("道邦".equals(orderItemList.get(i).getItemBrandName())){
+				
+				if("上海道邦".equals(orderItemList.get(i).getItemBrandName())){
 					daoBnagSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
 				}else{
 					//这里计算除道邦之外的商品分类价格  耗材类  工具设备类
 					if("耗材类".equals(orderItemList.get(i).getItemType())){
 						SuppliesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
 					}else if("工具设备类".equals(orderItemList.get(i).getItemType())){
-						TooldevicesSumCount++;
+						TooldevicesSumCount+=orderItemList.get(i).getNum();
 						TooldevicesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
 					}
 				}
@@ -443,39 +427,37 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					sb.append(orderItemList.get(i).getItemName());
 				}*/
 				//giveQbNum+=0;
-				System.out.println(orderItemList.get(i));
+				/*System.out.println(orderItemList.get(i));*/
 			}
-			
                  //这里计算本单赠送钱币数
 			      //首先道邦品牌
 			    if(daoBnagSumPrice>0&&daoBnagSumPrice<300){
-			    	giveQbNum=daoBnagSumPrice*0.03;
+			    	giveQbNum=giveQbNum+daoBnagSumPrice*0.03;
 			    }else if(daoBnagSumPrice>=300&&daoBnagSumPrice<600){
-			    	giveQbNum=daoBnagSumPrice*0.05;
+			    	giveQbNum=giveQbNum+daoBnagSumPrice*0.05;
 			    }else if(daoBnagSumPrice>=600&&daoBnagSumPrice<1200){
-			    	giveQbNum=daoBnagSumPrice*0.08;
+			    	giveQbNum=giveQbNum+daoBnagSumPrice*0.08;
 			    }else if(daoBnagSumPrice>=1200&&daoBnagSumPrice<2500){
-			    	giveQbNum=daoBnagSumPrice*0.12;
+			    	giveQbNum=giveQbNum+daoBnagSumPrice*0.12;
 			    }else if(daoBnagSumPrice>=2500){
-			    	giveQbNum=daoBnagSumPrice*0.15;
+			    	giveQbNum=giveQbNum+daoBnagSumPrice*0.15;
 			    }
 			    //其他品牌 耗材类
-			    if(SuppliesSumPrice>0&&SuppliesSumPrice<1000){
-			    	giveQbNum=SuppliesSumPrice*0.05;
-				}else if(SuppliesSumPrice>=1000&&SuppliesSumPrice<2000){
-					giveQbNum=SuppliesSumPrice*0.08;
-				}else if(SuppliesSumPrice>=2000&&SuppliesSumPrice<3000){
-					giveQbNum=SuppliesSumPrice*0.12;
+			    if(SuppliesSumPrice>0&&SuppliesSumPrice<500){
+			    	giveQbNum=giveQbNum+SuppliesSumPrice*0.03;
+				}else if(SuppliesSumPrice>=500&&SuppliesSumPrice<1000){
+					giveQbNum=giveQbNum+SuppliesSumPrice*0.05;
+				}else if(SuppliesSumPrice>=1000&&SuppliesSumPrice<3000){
+					giveQbNum=giveQbNum+SuppliesSumPrice*0.08;
 				}else if(SuppliesSumPrice>=3000){
-					giveQbNum=SuppliesSumPrice*0.16;
+					giveQbNum=giveQbNum+SuppliesSumPrice*0.12;
 				}
 			    //其他品牌 工具设配类
 			    if(TooldevicesSumCount==1){
-			    	giveQbNum=TooldevicesSumPrice*0.05;
+			    	giveQbNum=giveQbNum+TooldevicesSumPrice*0.05;
 				}else if(TooldevicesSumCount>=2){
-					giveQbNum=TooldevicesSumPrice*0.10;
+					giveQbNum=giveQbNum+TooldevicesSumPrice*0.10;
 				}
-			    TooldevicesSumCount=0;
 			/*try {
 				//hashMap.put("itemNames", (sb.toString().getBytes("utf-8")));
 			} catch (UnsupportedEncodingException e) {
@@ -487,6 +469,15 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 
 			Double postFee=getFreight(receiver,sumPrice,itemSum);
 
+			//生产发票性质
+			if("1".equals(order.getInvoiceHand())){
+				invoice.setOrderId(orderId);
+				int  sign=placeOrderDao.saveInvoiced(invoice);
+				if(sign<0){
+					dataWrapper.setMsg("发票生产失败");
+					return dataWrapper;
+				}
+			}
 			//订单实际价格的计算
 			Double actualPay=sumPrice+postFee-order.getQbDed();
 			//放入订单表
@@ -502,14 +493,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			hashMap.put("SuppliesSumPrice", SuppliesSumPrice);
 			hashMap.put("TooldevicesSumPrice", TooldevicesSumPrice);
 			hashMap.put("daoBnagSumPrice", daoBnagSumPrice);
-			/*//此单 耗材类 销售员得到的提成收入，
-			 double SuppliesCommisSumPrice=0;
-			//把销售员此单 根据商品分类应得到的 收入 放入订单表
-			
-			//此单 工具设备类 销售员得到的提成收入
-			if(TooldevicesSumPrice<10000){
-
-			}*/
+		    
 			 //本单赠送钱币数保存到数据库
 			placeOrderDao.saveGiveQbNum(String.valueOf(giveQbNum),String.valueOf(postFee),
 					String.valueOf(sumPrice)
@@ -528,7 +512,10 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//hashMap.put("itemMS", "不错");
 			//将该订单加入到Map缓存中
 			CacheUtils.getInstance().getCacheMap().put(orderId, new Date());
-
+			//判断 actualPay 是否是0付款
+			/*if(actualPay==0){
+				hashMap.put("zeroPayState", daoBnagSumPrice);
+			}*/
 			dataWrapper.setData(hashMap);
 			return dataWrapper;
 		} catch (Exception e){

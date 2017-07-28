@@ -22,7 +22,7 @@ public interface OrderManagementService {
 	DataWrapper<Ordera> refundProcessing(String orderId);
     
     //操作退款数据
-    DataWrapper<Void> makeRefundData(ArrayList<OrderItem> list);
+	DataWrapper<HashMap<String, Object>> makeRefundData(ArrayList<OrderItem> list);
     
     //模拟失去焦点事件
     public  DataWrapper<Map<String, Object>> loseFocus(int refundNum,String OrederId,String itemId);

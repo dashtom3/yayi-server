@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.dao;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 
@@ -17,9 +18,8 @@ public interface UtilsDao {
      
 	String queryPhone(@Param("userId")String userId);
 
-	String querySaleIdByOrderId(@Param("orderId")String orderId);
      
-	String getSaleIdByOrderId(String orderId);
+	String getSaleIdByOrderId(@Param("orderId")String orderId);
 
 	String querySalePhoneBySaleId(@Param("saleId")String saleId);
    
@@ -44,6 +44,14 @@ public interface UtilsDao {
 	int saveQbToUser(@Param("userId")String userId,@Param("qb")String qb);
        //根据orderId  查 user_token
 	String queryTokenByOrderId(@Param("orderId")String orderId);
+
+	String queryNameByUserId(@Param("userId")String userId);
+
+	OrderItem queryIt(@Param("itemSKU")String itemSKU, @Param("orderId")String orderId);
+
+	int saveRechargeMessage(@Param("codeId")String codeId,
+			@Param("userID")String userID,
+			@Param("money")String money);
 	
 
 }

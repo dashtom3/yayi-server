@@ -37,7 +37,7 @@ public interface OrderManagementDao {
 	Integer userBalance(String userId); //
 	
     //仓库发货
-	int warehouseDelivery(@Param("userId")String userId,
+	int warehouseDelivery(@Param("orderId")String orderId,
 			@Param("logisticsName")String logisticsName,
 			@Param("logisticsCode")String  logisticsCode);
     //根据//通过orderId查找到userId
@@ -54,17 +54,15 @@ public interface OrderManagementDao {
 	int  saveRefundMessage(@Param("userId")String userId,
 			@Param("haoCaiRefundSumMoney")Double haoCaiRefundSumMoney, 
 			@Param("toolRefundSumMoney")Double toolRefundSumMoney, 
-			@Param("orderId")String orderId);
+			@Param("dedQbNum")double dedQbNum, @Param("returnMoney")double d, 
+			 @Param("orderId")String orderId);
 	
 	//退金币refundSumPrice-order.getActualPay()
 	int returnQb(@Param("Qb")double Qb, @Param("userId")String userId);
 	
 	//将退款后的记录更新到订单表中
 	void updateOrderMessage(
-			@Param("orderId")String orderId,
-			@Param("refundAfterGiveQbNum")Double refundAfterGiveQbNum,
-			@Param("haoCaiRefundSumMoney")Double haoCaiRefundSumMoney,
-			@Param("toolRefundSumMoney")Double toolRefundSumMoney
+		@Param("orderId") String orderId
 			);
 
 	void saveRefundMessToSaleIncome(
@@ -73,5 +71,9 @@ public interface OrderManagementDao {
 			@Param("haoCaiRefundSumMoney")Double haoCaiRefundSumMoney,
 			@Param("toolRefundSumMoney")Double toolRefundSumMoney
 			);
+
+	int saveRefundMessages(@Param("userId")String userId,@Param("haoCaiRefundSumMoney") Double haoCaiRefundSumMoney, 
+			@Param("toolRefundSumMoney")Double toolRefundSumMoney, @Param("dedQbNum")double dedQbNum,
+			@Param("returnMoney")double d, @Param("returnQbNum")double e,  @Param("orderId")String orderId);
 	
 }

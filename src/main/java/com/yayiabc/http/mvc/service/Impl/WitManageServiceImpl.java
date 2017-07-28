@@ -9,6 +9,7 @@ import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.HttpUtil;
+import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.dao.WitManageDao;
 import com.yayiabc.http.mvc.pojo.jpa.Balance;
@@ -38,7 +39,7 @@ public class WitManageServiceImpl implements WitManageService{
 		int state=0;
 		if(saleNowMoney.get(0)>=Double.parseDouble(balanceOut)){
 			state=witManageDao.submitWit(saleId,Double.parseDouble(balanceOut),saleNowMoney.get(0)
-					,"出账提现中:"+balanceOut
+					,"提现申请中:"+balanceOut
 					);
 			if(state>0){
 				dataWrapper.setMsg("请求已发送");
@@ -83,7 +84,7 @@ public class WitManageServiceImpl implements WitManageService{
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		Balance balance=witManageDao.queryBalance(balacceId);
 		Double dPrice=balance.getBalance()-balance.getBalanceOut();
-		int sign=witManageDao.oper(balacceId,dPrice,"出账提现完成:"+balance.getBalanceOut());
+		int sign=witManageDao.oper(balacceId,dPrice,"出账提现成功:"+balance.getBalanceOut());
 		if(sign>0){
 			dataWrapper.setMsg("操作成功");
 		}else{
@@ -95,14 +96,31 @@ public class WitManageServiceImpl implements WitManageService{
 
 	//查询+显示
 	@Override
-	public DataWrapper<List<With>> query(String message, String state) {
+	public DataWrapper<List<With>> query(String message, String state,
+			Integer currentPage,
+			Integer numberPerpage
+			) {
 		// TODO Auto-generated method stub
 		DataWrapper<List<With>> dataWrapper =new DataWrapper<List<With>>();
-		List<With> l= witManageDao.query(message,state);
+		Page page=new Page();
+
+		if(currentPage!=null&numberPerpage!=null){
+			page.setNumberPerPage(numberPerpage);
+			page.setCurrentPage(currentPage);
+		}else{
+			page.setNumberPerPage(10);
+			page.setCurrentPage(1);
+		}
+		//总条数
+		int count=witManageDao.queryCounts(message,state);
+		Integer currentNum=page.getCurrentNumber();
+		
+		List<With> l= witManageDao.query(message,state,String.valueOf(currentNum),String.valueOf(page.getNumberPerPage()));
 		if(l.isEmpty()){
-			dataWrapper.setErrorCode(ErrorCodeEnum.Error.Error);
+			dataWrapper.setData(l);
 			dataWrapper.setMsg("暂无数据");
 		}else{
+			dataWrapper.setPage(page, count);
 			dataWrapper.setData(l);
 		}
 		return dataWrapper;

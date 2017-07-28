@@ -297,26 +297,33 @@ public class WXPayController {
 				
 				//判断返回结果中的金额是否和数据库中查出来的订单金额一致
 				String chargeId=(String)packageParam.get("out_trade_no");
-				Integer money=wXPayDao.getMoneyByChargeId(chargeId);
-				Integer totalTwo=money*100;
-				Integer totalFee=Integer.parseInt((String)packageParam.get("total_fee"));
-				if(totalFee==totalTwo){
-					//这里是支付成功
-					System.out.println("支付成功");
-					//给客户的钱包充值
-					String token=wXPayDao.getTokenByChargeId(chargeId);
-					String userId=userDao.getUserIdByToken(token);
-					Integer addMoney=QbExchangeUtil.getQbByMoney(money);
-					QbRecord qbRecord =new QbRecord();
-					qbRecord.setQbRget(addMoney);
-					qbRecord.setRemark("乾币充值"+money);
-					userMyQbService.add(qbRecord, token);
-					wXPayDao.updateChargeState(chargeId);
+				Integer chargeState=wXPayDao.getChargeStateByChargeId(chargeId);
+				if(chargeState==1){
+					Integer money=wXPayDao.getMoneyByChargeId(chargeId);
+					Integer totalTwo=money*100;
+					Integer totalFee=Integer.parseInt((String)packageParam.get("total_fee"));
+					if(totalFee==totalTwo){
+						//这里是支付成功
+						System.out.println("支付成功");
+						//给客户的钱包充值
+						String token=wXPayDao.getTokenByChargeId(chargeId);
+						String userId=userDao.getUserIdByToken(token);
+						Integer addMoney=QbExchangeUtil.getQbByMoney(money);
+						QbRecord qbRecord =new QbRecord();
+						qbRecord.setQbRget(addMoney);
+						qbRecord.setRemark("乾币充值"+money);
+						userMyQbService.add(qbRecord, token);
+						wXPayDao.updateChargeState(chargeId);
+						resXml = "<xml>" + "<return_code><" +
+								"![CDATA[SUCCESS]]></return_code>"+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
+					}else{
+						resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"+ "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
+					}
+				}else{
 					resXml = "<xml>" + "<return_code><" +
 							"![CDATA[SUCCESS]]></return_code>"+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
-				}else{
-					resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"+ "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
 				}
+				
 			}else{
 				resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"+ "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
 			}

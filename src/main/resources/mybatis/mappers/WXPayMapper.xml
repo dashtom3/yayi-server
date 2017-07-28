@@ -44,4 +44,8 @@
 	<select id="getStateByToken" resultType="java.lang.Integer">
 		select state from charge where token=#{token}
 	</select>
+	
+	<select id="getChargeStateByChargeId" resultType="java.lang.Integer">
+		select state from charge where charge_id=#{chargeId}
+	</select>
 </mapper>       

@@ -41,7 +41,7 @@ public class ItemInfoManageController {
 			@RequestParam(value="state",required=false) Integer state,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
 			@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-			@RequestHeader(value="adminToken",required=true)String adminToken
+			@RequestHeader(value="admintoken",required=true)String adminToken
 			){
 		return itemInfoManageService.itemInfoList(itemId,itemName,itemClassify,itemBrandName,state,currentPage,numberPerPage);
 	}
@@ -64,10 +64,10 @@ public class ItemInfoManageController {
 	 */
 	@RequestMapping("down")
 	@ResponseBody
-	@AdminTokenValidate(description="管理员下架商品")
+	/*@AdminTokenValidate(description="管理员下架商品")*/
 	public DataWrapper<Void> down(
-			@RequestParam(value="itemId") String itemId,
-			@RequestHeader(value="adminToken",required=true)String adminToken
+			@RequestParam(value="itemId") String itemId
+			/*@RequestHeader(value="adminToken",required=true)String adminToken*/
 			){
 		return itemInfoManageService.down(itemId);
 	}

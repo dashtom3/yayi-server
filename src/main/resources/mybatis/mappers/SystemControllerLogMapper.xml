@@ -4,6 +4,26 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yayiabc.http.mvc.dao.SystemControllerLogDao">
 	<insert id="addLog">
-		insert into user_log values(null,#{administrator},#{userName},#{operate},#{arguments},#{created})
+		insert into user_log values(null,#{userId},#{operate},#{arguments},#{created})
+	</insert>
+	
+	<select id="getUserIdByToken" resultType="string">
+		select user_id from user_token where token=#{token} 
+	</select>
+	
+	<select id="getSaleIdBySaleToken" resultType="string">
+		select sale_id from sale_token where sale_token=#{saleToken}
+	</select>
+	
+	<insert id="addSaleLog">
+		insert into sale_log values(null,#{saleId},#{operate},#{arguments},#{created})
+	</insert>
+	
+	<select id="getAdminstratorIdByAdminstratorToken" resultType="string">
+		select adminstrator_id from adminstrator_token where adminstrator_token=#{adminstratorToken}
+	</select>
+	
+	<insert id="addAdminstratorLog">
+		insert into adminstrator_log values(null,#{adminstratorId},#{operate},#{arguments},#{created})
 	</insert>
 </mapper>

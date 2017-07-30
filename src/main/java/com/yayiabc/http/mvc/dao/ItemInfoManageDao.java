@@ -2,6 +2,8 @@ package com.yayiabc.http.mvc.dao;
 
 import java.util.List;
 
+
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.yayiabc.http.mvc.pojo.jpa.ItemDetail;
@@ -14,7 +16,7 @@ public interface ItemInfoManageDao {
 
 	void up(String itemId);
 
-	void down(String itemId);
+	void down(@Param("itemId")String itemId);
 
 	void deleteItemInfo(String itemId);
 
@@ -66,7 +68,7 @@ public interface ItemInfoManageDao {
 
 	List<ItemInfo> itemInfoListFour(ItemInfo itemInfo);
 
-	void deleteCart(String itemId);
+	void deleteCart(@Param("itemId")String itemId);
 
 
 

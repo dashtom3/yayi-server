@@ -3,14 +3,17 @@ package com.yayiabc.http.mvc.controller.weixin;
 
 
 import org.springframework.stereotype.Controller;
+
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 
-import com.yayiabc.common.annotation.AdminTokenValidate;
+
 import com.yayiabc.common.annotation.SaleTokenValidate;
-import com.yayiabc.common.annotation.SystemControllerLog;
+
+import com.yayiabc.common.annotation.UserLog;
 import com.yayiabc.common.annotation.UserTokenValidate;
 
 import com.yayiabc.common.utils.DataWrapper;
@@ -55,9 +58,10 @@ public class TestController {
 	
 	@RequestMapping("api/demoThree")
 	@ResponseBody
-	@AdminTokenValidate(description="dfjgioldkmng")
+	@UserLog(description="验证通知")
+	@UserTokenValidate(description="身份验证通知")
 	public DataWrapper<Void> demoThree(
-			@RequestParam(value="adminToken")String adminToken
+			@RequestHeader(value="token")String token
 			){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		dataWrapper.setMsg("helloWorld");

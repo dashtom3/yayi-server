@@ -6,12 +6,12 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 销售员身份验证
+ * 销售员操作日志
  * @author 小月亮
  *
  */
 @Target(ElementType.METHOD)
 @Retention(RetentionPolicy.RUNTIME)
-public @interface SaleTokenValidate {
+public @interface SaleLog {
 	String description() default "";
 }

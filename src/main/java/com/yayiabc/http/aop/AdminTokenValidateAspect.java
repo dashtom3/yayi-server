@@ -34,7 +34,7 @@ public class AdminTokenValidateAspect {
 	@Around("tokenAspect()")
 	public Object around(ProceedingJoinPoint joinpoint){
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		String loginToken=request.getParameter("adminToken");
+		String loginToken=request.getHeader("admintoken");
 		System.out.println(loginToken);
 		System.out.println("接受成功");
 		//判断登录表中是否包含此token;

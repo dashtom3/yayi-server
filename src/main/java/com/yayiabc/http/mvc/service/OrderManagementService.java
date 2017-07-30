@@ -33,4 +33,6 @@ public interface OrderManagementService {
 			@Param("logisticsCode")String  logisticsCode);
 	//显示订单详情
 	DataWrapper<Ordera> queryOrderDetails(String orderId);
+	//   //显示已经退款数据的订单信息
+	DataWrapper<Ordera> showRefundOrderMessage(String orderId);
 }

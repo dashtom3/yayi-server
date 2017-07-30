@@ -39,6 +39,7 @@ public class PunRewardServiceImpl implements PunRewardService {
 		// TODO Auto-generated method stub
 		DataWrapper<Void>  dataWrapper=new DataWrapper<Void>();
 		//判断sign   1为加  2为减
+		//  String saleId=utis.getSaleId(saleToken);
 				Double moneys=Double.parseDouble(money);
 		Integer count =punRewardDao.shows(saleId);
 		if(count==0){
@@ -62,7 +63,12 @@ public class PunRewardServiceImpl implements PunRewardService {
 		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
 		// TODO Auto-generated method stub
 		List<Object> w=punRewardDao.show(saleId);
-		dataWrapper.setData(w.get(0));
-		return dataWrapper;
+		if(!w.isEmpty()){
+			dataWrapper.setData(w.get(0));
+			return dataWrapper;
+		}else{
+			dataWrapper.setMsg("为空");
+			return dataWrapper;
+		}
 	}
 }

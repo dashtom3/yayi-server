@@ -4,10 +4,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.SaleTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.CusResources;
 import com.yayiabc.http.mvc.pojo.jpa.User;
@@ -20,7 +22,9 @@ public class FindCusController {
 	//未注册客户
 	@RequestMapping("unregistered")
 	@ResponseBody
+	@SaleTokenValidate(description="发现客户资源:未注册客户")
 	public DataWrapper<List<CusResources>>  unregistered(
+			@RequestHeader(value="saleToken",required=false)String saleToken,
 			@RequestParam(value="state",required=false)String state,
 			@RequestParam(value = "currentPage",required=false) Integer currentPage,//当前页
   		  @RequestParam(value = "numberPerPage",required=false) Integer numberPerPage//取多少
@@ -30,7 +34,9 @@ public class FindCusController {
 	//已注册客户 待绑定
 	@RequestMapping("registered")
 	@ResponseBody
+	@SaleTokenValidate(description="发现客户资源:已注册客户 待绑定")
 	public DataWrapper<List<User>>  registered(
+			@RequestHeader(value="saleToken",required=false)String saleToken,
 		@RequestParam(value="state",required=false)String state,
 		@RequestParam(value = "currentPage",required=false) Integer currentPage,//当前页
 		  @RequestParam(value = "numberPerPage",required=false) Integer numberPerPage//取多少
@@ -42,8 +48,9 @@ public class FindCusController {
 	//调用张鹏接口
 	@RequestMapping("me")
 	@ResponseBody
+	@SaleTokenValidate(description="发现客户资源:我已绑定客户 ")
 	public DataWrapper<List<User>>  me(
-			@RequestParam(value="saleToken",required=true)String saleToken     		  
+			@RequestHeader(value="saleToken",required=true)String saleToken     		  
 			){
 		return  findCusService.showMyCus(saleToken);
 	}

@@ -162,7 +162,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		Double  ToolRefundSumMoney=0.0;
 		//标记退款商品的总数
 		int countItem=0;
-		//查看当前订单的赠送铅笔数  与 实际付款!!!!
+		//查看当前订单
 		Ordera order= orderManagementDao.queryOrder(SendorderItemList.get(0).getOrderId());
 		for(int i=0;i<SendorderItemList.size();i++){
 			//根据当前的sku 得到 该商品价格
@@ -179,6 +179,12 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			placeOrderDao.saveRefundRecord(itemVlue.getItemId(),Integer.parseInt(SendorderItemList.get(i).getRefunNum()));
 			//记录退款数量  是否与订单里的商品数量一致 如果一致就订单改变状态关闭
 			countItem+=Integer.parseInt(SendorderItemList.get(i).getRefunNum());
+			//把退货数量放入order_item表中
+			orderManagementDao.saveRefundNumToOrderItem(
+					SendorderItemList.get(i).getItemSKU(),
+					SendorderItemList.get(i).getOrderId(),
+					SendorderItemList.get(i).getRefunNum()
+					);
 		}
 		//保存该订单的退款商品分类金额到 sale_income中 
 		String saleId=utilsDao.getSaleIdByOrderId(SendorderItemList.get(0).getOrderId());
@@ -378,6 +384,14 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 	public DataWrapper<Ordera> queryOrderDetails(String orderId) {
 		DataWrapper<Ordera> dataWrapper=new DataWrapper<Ordera>();
 		Ordera ordera= orderManagementDao.queryOrderDetails(orderId);
+		dataWrapper.setData(ordera);
+		return dataWrapper;
+	}
+	//   //显示已经退款数据的订单信息
+	@Override
+	public DataWrapper<Ordera> showRefundOrderMessage(String orderId) {
+		DataWrapper<Ordera> dataWrapper=new DataWrapper<Ordera>();
+		Ordera ordera= orderManagementDao.showRefundOrderMessage(orderId);
 		dataWrapper.setData(ordera);
 		return dataWrapper;
 	}

@@ -98,7 +98,7 @@
 			@Param("userID")String userID,
 			@Param("money")String money);  -->
 	<insert id="saveRechargeMessage">
-	  insert  into  charge(charge_id,token,money,state,1)values
-	  (#{codeId},#{userID},#{money})
+	  insert  into  charge(charge_id,token,money,state)values
+	  (#{codeId},#{userID},#{money},1)
 	</insert>
 </mapper>       

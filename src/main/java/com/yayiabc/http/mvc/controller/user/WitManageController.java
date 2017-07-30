@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.SaleTokenValidate;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
@@ -32,8 +34,9 @@ public class WitManageController {
 	//提交提现申请
 	@RequestMapping("submitWit")
 	@ResponseBody//real_name,type,anumber,cashMoney,phone
+	@SaleTokenValidate(description="提交提现申请")
 	public  DataWrapper<Void> submitWit(
-			@RequestParam(value="token") String token,
+			@RequestHeader(value="saleToken") String saleToken,
 			@RequestParam(value="vCode") String vCode,
 			/* @RequestParam(value="phone") String phone,
     		 @RequestParam(value="moneyNnm") String moneyNnm,*/
@@ -48,7 +51,7 @@ public class WitManageController {
 
 		if(vCode.equals(VerifyCodeManager.getPhoneCode(phone))){
 
-			return witManageService.submitWit(token,moneyNnm);
+			return witManageService.submitWit(saleToken,moneyNnm);
 		}
 		DataWrapper<Void> dataWrapper= new DataWrapper<Void>();
 		dataWrapper.setErrorCode(ErrorCodeEnum.Error);
@@ -59,8 +62,9 @@ public class WitManageController {
 	//获取验证码
 	@ResponseBody
 	@RequestMapping("gitVcode")
+	@SaleTokenValidate(description="获取验证码")
 	public  DataWrapper<String> gitVcode(
-			//@RequestParam(value="token") String token,
+			@RequestHeader(value="saleToken") String saleToken,
 			@RequestParam(value="phone") String phone
 			){
 		return getVerifyCode(phone);
@@ -88,8 +92,9 @@ public class WitManageController {
 	//
 	@RequestMapping("oper")
 	@ResponseBody
+	@SaleTokenValidate(description="通过提现按钮")
 	public   DataWrapper<Void> oper(
-			//@RequestParam(value="token") String token,
+			@RequestHeader(value="saleToken") String saleToken,
 			@RequestParam(value="balacceId") Integer balacceId
 			){
 		return witManageService.oper(balacceId);
@@ -98,10 +103,10 @@ public class WitManageController {
 	//show + query
 	@RequestMapping("query")
 	@ResponseBody
+	@SaleTokenValidate(description="对提现列表进行查询显示")
 	public  DataWrapper<List<With>> query(
-			//@RequestParam(value="token",required=true) String token,
+			@RequestHeader(value="adminToken",required=true) String adminToken,
 			@RequestParam(value="message",required=false) String message ,  //姓名  或者手机号
-
 			@RequestParam(value="state",required=false) String state,
 			@RequestParam(value="currentPage",required=false)Integer currentPage,
 			@RequestParam(value="numberPerpage",required=false)Integer numberPerpage

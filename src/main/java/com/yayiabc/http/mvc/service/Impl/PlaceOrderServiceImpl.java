@@ -13,8 +13,10 @@ import org.springframework.stereotype.Service;
 import com.yayiabc.common.cahce.CacheUtils;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.help.ClassificationHelpUtils;
+import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.OrderIdUtils;
+import com.yayiabc.common.utils.PayAfterOrderUtil;
 import com.yayiabc.http.mvc.dao.PlaceOrderDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Cart;
@@ -317,7 +319,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			System.out.println(userId);
 			//obtain orderId 
 			String orderId=OrderIdUtils.createOrderId(userId);
-			//将订单信息保存在订单里 你如是否需要发表  留言等。。。 
+			//将订单信息保存在订单里 你如是否需要发表  留言等。。2[=。 
 			if(order!=null){
 				if(order.getQbDed()==null){
 					order.setQbDed(0);
@@ -513,15 +515,14 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//将该订单加入到Map缓存中
 			CacheUtils.getInstance().getCacheMap().put(orderId, new Date());
 			//判断 actualPay 是否是0付款
-			/*if(actualPay==0){
-				hashMap.put("zeroPayState", daoBnagSumPrice);
-			}*/
+			if(actualPay==0){
+				PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
+				payAfterOrderUtil.universal(orderId);
+			}
 			dataWrapper.setData(hashMap);
 			return dataWrapper;
 		} catch (Exception e){
-			dataWrapper.setMsg("订单提交失败");
 			throw new RuntimeException(e);
-			//return dataWrapper;
 		}
 	}
 }

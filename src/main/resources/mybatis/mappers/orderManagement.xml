@@ -43,7 +43,7 @@
 				and orde.state=#{orderState}
 			</if>
 			<if test="isRefund !=null and isRefund !=''">
-				and orde.refund=#{isRefund}
+				and orde.refund_info=#{isRefund}
 			</if>
 			<!-- <if test="orderCTime !=null and orderETime !=null"> and orde.created 
 				BETWEEN #{orderCTime} AND #{orderETime} </if> -->
@@ -83,12 +83,13 @@
 		<result property="totalFee" column="total_fee" />
 		<result property="postFee" column="post_fee" />
 		<result property="qbDed" column="qb_ded" />
-		<result property="orderId" column="order_id" />
 		<result property="payType" column="pay_type" />
 		<result property="invoiceHand" column="invoice_hand" />
 		<result property="buyerMessage" column="buyer_message" />
 		<result property="isRegister" column="is_register" />
-<result property="actualPay" column="actual_pay" />
+		<result property="actualPay" column="actual_pay" />
+		<result property="giveQb" column="give_qb" />
+		<result property="refundInfo" column="refund_info" />
 		<association property="receiver"
 			javaType="com.yayiabc.http.mvc.pojo.jpa.Receiver">
 			<id property="receiverId" column="receiver_id" />
@@ -98,7 +99,6 @@
 			<result property="county" column="county" />
 			<result property="receiverDetail" column="receiver_detail" />
 		</association>
-
 		<collection property="orderitemList" ofType="OrderItem">
 			<id property="itemId" column="item_id" />
 			<result property="itemPropertyNamea" column="item_property_namea" />
@@ -108,6 +108,7 @@
 			<result property="price" column="price" />
 			<result property="num" column="num" />
 			<result property="itemSKU" column="itm_SKU" />
+			<result property="refunNum" column="refund_num" />
 			<association property="itemInfo"
 				javaType="com.yayiabc.http.mvc.pojo.jpa.ItemInfo">
 				<result property="itemName" column="item_name" />
@@ -119,14 +120,15 @@
 	<!-- //订单详情 -->
 	<select id="queryOrderDetails" resultMap="details">
 		SELECT
-		orde.state,orde.created,orde.payment_time,orde.total_fee,orde.post_fee,
+		orde.state,orde.created,orde.payment_time,orde.total_fee,orde.post_fee,orde.give_qb,
 		orde.qb_ded,orde.order_id,orde.pay_type,orde.invoice_hand,orde.buyer_message,orde.is_register,
-		orde.actual_pay,
+		orde.actual_pay,orde.refund_info,
 		rece.user_id,rece.receiver_name,rece.province,rece.city,rece.county,rece.receiver_detail,
 
 		orde_it.item_property_namea,orde_it.item_property_nameb,orde_it.item_property_namec,
 
-		orde_it.pic_path,orde_it.price,orde_it.num,item_de.register_id,item_in.item_name,orde_it.itm_SKU
+		orde_it.pic_path,orde_it.price,orde_it.num,item_de.register_id,item_in.item_name,orde_it.itm_SKU,orde_it.refund_num
+
 		FROM ordera orde JOIN receiver rece ON
 		orde.receiver_id=rece.receiver_id JOIN order_item orde_it ON
 		orde_it.order_id=orde.order_id JOIN item_detail item_de ON
@@ -297,16 +299,16 @@
 		group by orde.order_id) a
 	</select>
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.OrderItem" id="ttt">
-		<result property="itemSKU" column="itm_SKU"/>
-		<result property="orderId" column="order_id"/>
-		<result property="num" column="num"/>
-		<result property="price" column="price"/>
-		<result property="itemId" column="item_id"/>
-		<result property="qbDed" column="qb_ded"/>
-		<result property="itemBrandName" column="item_brand_name"/>
-		<result property="refundNum" column="refund_num"/>
-		<result property="itemType" column="item_type"/>
-		<result property="totalFee" column="total_fee"/>
+		<result property="itemSKU" column="itm_SKU" />
+		<result property="orderId" column="order_id" />
+		<result property="num" column="num" />
+		<result property="price" column="price" />
+		<result property="itemId" column="item_id" />
+		<result property="qbDed" column="qb_ded" />
+		<result property="itemBrandName" column="item_brand_name" />
+		<result property="refundNum" column="refund_num" />
+		<result property="itemType" column="item_type" />
+		<result property="totalFee" column="total_fee" />
 	</resultMap>
 	<select id="queryOrderItemList" resultMap="ttt">
 		select * from
@@ -319,7 +321,7 @@
 		<result property="qb_ded" column="qbDed" />
 		<result property="supplies_sumprice" column="supplies_sumprice" />
 		<result property="tooldevices_sumprice" column="tooldevices_sumprice" />
-		
+
 		<result property="actualPay" column="actual_pay" />
 		<result property="giveQb" column="give_qb" />
 	</resultMap>
@@ -328,10 +330,8 @@
 		ordera where
 		order_id=#{orderId}
 	</select>
-	<!-- <update id="dedQbNum">
-		UPDATE USER SET qb_balance
-		=(qb_balance-${dedQbNum})
-	</update> -->
+	<!-- <update id="dedQbNum"> UPDATE USER SET qb_balance =(qb_balance-${dedQbNum}) 
+		</update> -->
 	<!--@Param("userId")String userId, @Param("haoCaiRefundSumMoney")Double 
 		haoCaiRefundSumMoney, @Param("toolRefundSumMoney")Double toolRefundSumMoney, 
 		@Param("dedQbNum")double dedQbNum, @Param("returnMoney")double d, @Param("orderId")String 
@@ -348,10 +348,8 @@
 		values
 		(#{userId},#{haoCaiRefundSumMoney},#{toolRefundSumMoney},now(),#{dedQbNum},#{returnQbNum},#{returnMoney},#{orderId})
 	</insert>
-	<!-- <update id="returnQb">
-		update user set qb_balance=(${Qb}+qb_balance) where
-		user_id=#{userId}
-	</update> -->
+	<!-- <update id="returnQb"> update user set qb_balance=(${Qb}+qb_balance) 
+		where user_id=#{userId} </update> -->
 	<!-- //将退款后的订单新参数更新到ordera表中 -->
 	<update id="updateOrderMessage">
 		<!-- @Param("orderId")String orderId, @Param("refundAfterGiveQbNum")Double 
@@ -367,16 +365,56 @@
 	<insert id="saveRefundMessToSaleIncome">
 		<!--@Param("saleId")String saleId, @Param("orderId")String orderId, @Param("haoCaiRefundSumMoney")Double 
 			haoCaiRefundSumMoney, @Param("toolRefundSumMoney")Double toolRefundSumMoney -->
-		<!-- insert into sale_income
-		(
-		sale_id,order_id,refund_money_haocai,refund_money_gongju,created
-		)values
-		(
-		#{saleId},#{orderId},#{haoCaiRefundSumMoney},#{toolRefundSumMoney},now()
-		) -->
+		<!-- insert into sale_income ( sale_id,order_id,refund_money_haocai,refund_money_gongju,created 
+			)values ( #{saleId},#{orderId},#{haoCaiRefundSumMoney},#{toolRefundSumMoney},now() 
+			) -->
 		update sale_income set refund_money_haocai =#{haoCaiRefundSumMoney},
 		refund_money_gongju=#{toolRefundSumMoney},updated=now()
-		where 
+		where
 		sale_id=#{saleId} and order_id=#{orderId}
 	</insert>
+
+	<update id="saveRefundNumToOrderItem">
+		update order_item set refund_num=#{refunNum} where
+		order_id={orderId} and itm_SKU=#{itemSKU}
+	</update>
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.Ordera" id="ppp">
+		<id property="orderId" column="order_id" />
+		<result property="actualPay" column="actual_pay" />
+		<result property="postFee" column="post_fee" />
+		<result property="state" column="state" />
+		<result property="paymentTime" column="payment_time" />
+		<result property="giveQb" column="give_qb" />
+		<result property="refundInfo" column="refund_info" />
+		<result property="qbDed" column="qb_ded" />
+		<result property="supplies_sumprice" column="supplies_sumprice" />
+		<result property="tooldevices_sumprice" column="tooldevices_sumprice" />
+		<association property="refund"
+			javaType="com.yayiabc.http.mvc.pojo.jpa.Refund">
+			<id property="refundId" column="refund_id" />
+			<result property="refund_money_haocai" column="refund_money_haocai" />
+			<result property="refund_money_gongju" column="refund_money_gongju" />
+			<result property="dedQb" column="ded_qb" />
+			<result property="returnQb" column="return_qb" />
+			<result property="returnMoney" column="return_money" />
+		</association>
+		<collection property="orderitemList"
+			ofType="com.yayiabc.http.mvc.pojo.jpa.OrderItem">
+			<result property="itemSKU" column="itm_SKU" />
+			<result property="num" column="num" />
+			<result property="price" column="price" />
+			<result property="item_property_namea" column="item_property_namea" />
+			<result property="itemPropertyNameb" column="item_property_nameb" />
+			<result property="refunNum" column="refund_num" />
+			<result property="itemBrandName" column="item_brand_name" />
+		</collection>
+	</resultMap>
+	<select id="showRefundOrderMessage" resultMap="ppp">
+		select * from
+		ordera orde join order_item orde_it on
+		orde.order_id=orde_it.order_id
+		join refund refu
+		on refu.order_id=orde_it.order_id
+		where  orde.order_id=#{orderId}
+	</select>
 </mapper>

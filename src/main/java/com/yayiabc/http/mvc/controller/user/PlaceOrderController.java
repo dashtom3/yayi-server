@@ -6,10 +6,12 @@ import java.util.HashMap;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Invoice;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
@@ -34,8 +36,9 @@ public class PlaceOrderController {
 	//多个商品时 
 	@RequestMapping("buyNows")
 	@ResponseBody
+	
 	public 	DataWrapper<HashMap<String, Object>> buyNows(
-			@RequestParam(value="token") String token,
+			@RequestHeader(value="token") String token,
 			@RequestParam(value="itemSKUs",required=true) String[] itemSKUs,
 			/*@RequestParam(value="itemId") String itemId,
 			@RequestParam(value="userId") String userId,
@@ -53,8 +56,9 @@ public class PlaceOrderController {
 	//  使用钱币抵扣时  onChange
 	@RequestMapping("Ded")
 	@ResponseBody
+	@UserTokenValidate(description="使用钱币抵扣")
 	public DataWrapper<Void> Ded(
-			@RequestParam(value="token") String token,
+			@RequestHeader(value="token") String token,
 			@RequestParam(value="qbnum") Integer num
 			){
 		return placeOrderService.ded(token,num);
@@ -62,7 +66,9 @@ public class PlaceOrderController {
 	//选择地址
 	@RequestMapping("upateAddress")
 	@ResponseBody   //ipi需要文档修改
+	@UserTokenValidate(description="下单前 选择收货地址")
 	public DataWrapper<HashMap<String, Object>> upateAddress(
+			@RequestHeader(value="token") String token,
 			@RequestParam(value="receiverId") Integer receiverId
 			,@RequestParam(value="sumPrice") Double sumPrice,
 			@RequestParam(value="itemSum") Integer itemSum
@@ -81,7 +87,7 @@ public class PlaceOrderController {
 			@RequestParam(value="actualPay",required=false)String actualPay,
 			@RequestParam(value="actualPay",required=false)String actualPay*/
 			@ModelAttribute Ordera order,
-			@RequestParam(value="token",required=true)String token
+			@RequestHeader(value="token",required=true)String token
 			){
 		//将信息保存到订单表里
 
@@ -92,7 +98,7 @@ public class PlaceOrderController {
 	@ResponseBody
 	public 	DataWrapper<HashMap<String, Object>> buyNow(
 			@ModelAttribute OrderItem orderItem,
-			@RequestParam(value="token",required=true) String token,
+			@RequestHeader(value="token",required=true) String token,
 			@ModelAttribute Ordera order
 			){
 
@@ -109,8 +115,9 @@ public class PlaceOrderController {
 	//1234
 	@RequestMapping("generaOrder")
 	@ResponseBody
+	@UserTokenValidate(description="提交订单")
 	public DataWrapper<HashMap<String, Object>> generaOrder(
-			@RequestParam(value="token",required=true) String token,
+			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderItem",required=true) String  orderItem,
 			@ModelAttribute Ordera order,
 			@ModelAttribute Invoice  invoice

@@ -5,10 +5,12 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
@@ -32,8 +34,9 @@ public class OrderDetailsController {
 	private LogisticsService logisticsService;
 	@RequestMapping("show")
 	@ResponseBody
+	@UserTokenValidate(description="前台订单显示")
 	public DataWrapper<List<Ordera>> show(
-			@RequestParam(value="token",required=true) String token,
+			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="state",required=false) String state,
 			@RequestParam(value="currentPage",required=false) Integer currentPage,
 			@RequestParam(value="numberPerpage",required=false) Integer numberPerpage
@@ -66,8 +69,9 @@ public class OrderDetailsController {
 	//取消订单
 	@RequestMapping("cancel")
 	@ResponseBody
+	@UserTokenValidate(description="前台取消订单")
 	public DataWrapper<Void> cancel(
-			@RequestParam(value="token",required=true) String token,
+			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderId",required=true) String orderId
 			){
 		return orderDetailsService.cancel(orderId);
@@ -75,8 +79,10 @@ public class OrderDetailsController {
 	//查看物流
 	@RequestMapping("seeLog")
 	@ResponseBody
+	@UserTokenValidate(description="查看物流")
+	
 	public DataWrapper<String> seeLog(
-			@RequestParam(value="token",required=true) String token,
+			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderId",required=true) String orderId
 			){
 		return logisticsService.queryLog( orderId);
@@ -85,7 +91,7 @@ public class OrderDetailsController {
 	@RequestMapping("definiteHints")
 	@ResponseBody
 	public DataWrapper<HashMap<String, Object>> definiteHints(
-			@RequestParam(value="token",required=true) String token,
+			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderItemNum",required=true) String orderItemNum,
 			@RequestParam(value="orderId",required=true) String orderId
 			){
@@ -101,8 +107,9 @@ public class OrderDetailsController {
 	//确定收货
 	@RequestMapping("confirmReceipt")
 	@ResponseBody
+	@UserTokenValidate(description="确定收货")
 	public DataWrapper<Void> confirmReceipt(
-			@RequestParam(value="token",required=true) String token,
+			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderId",required=true) String orderId
 			){
 		return orderDetailsService.confirmReceipt(orderId);
@@ -110,8 +117,9 @@ public class OrderDetailsController {
 	//显示评论相关内容
 	@RequestMapping("showComItem")
 	@ResponseBody
+	@UserTokenValidate(description="显示评论相关内容")
 	public DataWrapper<Ordera> showComItem(
-			@RequestParam(value="token",required=true) String token,
+			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderId",required=true) String orderId
 			){
 		return orderDetailsService.showComItem(orderId);
@@ -126,8 +134,9 @@ public class OrderDetailsController {
 	 * @param itemIdList
 	 * @return
 	 */
+	@UserTokenValidate(description="前台确定评论")
 	public DataWrapper<Void> makeSureCom(
-			@RequestParam(value="token",required=true) String token,
+			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderId",required=true) String orderId,
 			@RequestParam(value="itemIdList",required=true) String itemIdList
 			/* @RequestParam(value="itemId",required=true) String itemId,

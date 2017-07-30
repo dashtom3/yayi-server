@@ -5,10 +5,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Receiver;
 import com.yayiabc.http.mvc.service.ShippingAddressService;
@@ -20,9 +22,10 @@ public class ShippingAddressController {
 	private ShippingAddressService shippingAddressService;
 	@RequestMapping("insert")
 	@ResponseBody
+	@UserTokenValidate(description="新增收货地址")
 	public DataWrapper<Void> insert(
 			@ModelAttribute Receiver receiver,
-			@RequestParam(value=("token"),required=true) String token
+			@RequestHeader(value=("token"),required=true) String token
 			) {
 		
 		//request.setCharacterEncoding("UTF-8");
@@ -48,10 +51,11 @@ public class ShippingAddressController {
 	}
 	@RequestMapping("update")
 	@ResponseBody
+	@UserTokenValidate(description="更改收货地址")
 	public  DataWrapper<Void> update(
 			@ModelAttribute Receiver receiver,
 			@RequestParam(value="receiverId",required=true) String receiverIds,
-			@RequestParam(value="token",required=true) String token
+			@RequestHeader(value="token",required=true) String token
 			){
 		/*System.out.println(receiver);
 		DataWrapper<Void> dataWrapper=shippingAddressService.updateUserAddress(receiver);
@@ -64,8 +68,6 @@ public class ShippingAddressController {
 		if(receiver.getIsDefault()==true){
 			//if y
 			Integer receiverIdcopy=shippingAddressService.addConditions(token);
-			System.out.println("收货地址id"+receiverId);
-			System.out.println("收receiverIdcopyid"+receiverIdcopy);
 			 if(receiverIdcopy==null){
 				 dataWrapper = shippingAddressService.updateUserAddress(receiver,token);
 				 return dataWrapper;
@@ -82,15 +84,18 @@ public class ShippingAddressController {
 	//xianshi默认收货地址逻辑
 	   @RequestMapping("showShippingAddress")
 	   @ResponseBody
+	   @UserTokenValidate(description="显示收货地址")
 	   public DataWrapper<List<Receiver>> showShippingAddress(
-			   @RequestParam(value="token",required=true) String token
+			   @RequestHeader(value="token",required=true) String token
 			   ){
 		      return shippingAddressService.showShoppingAddress(token);
 	   }
 	   //删除收货地址
 	   @RequestMapping("deleteShippingAddress")
 	   @ResponseBody
+	   @UserTokenValidate(description="删除收货地址")
 	   public DataWrapper<Integer>  deleteShoppingAddress(
+			   @RequestHeader(value="token",required=true) String token,
 			   @RequestParam(value="receiverId",required=true) String receiverId
 			   ){
 		       return shippingAddressService.deleteShoppingAddress(receiverId);

@@ -7,10 +7,13 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminTokenValidate;
+import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.service.LogisticsService;
 
@@ -22,9 +25,10 @@ public class LogisticsController {
 	private LogisticsService logisticsService;
 	@RequestMapping("queryExp")
 	@ResponseBody
+    @UserTokenValidate(description="查看物流")
 	public DataWrapper<String> queryLogMain(
-			@RequestParam(value="orderId",required=true)String  orderId
-
+			@RequestParam(value="orderId",required=true)String  orderId,
+			@RequestHeader(value="token",required=true)String  token
 			//@RequestParam(value="ShipperCode",required=false) String  ShipperCode,//快递公司编码
 			//@RequestParam(value="LogisticCode",required=false) String  LogisticCode,//物流编号
 			){

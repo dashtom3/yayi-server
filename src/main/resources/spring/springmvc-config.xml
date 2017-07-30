@@ -44,7 +44,7 @@
     <!-- 我的获取bean的工具类 -->
     <bean id="TimerChangeStateServiceImpl" class="com.yayiabc.http.mvc.service.Impl.TimerChangeStateServiceImpl"></bean>
     <bean id="BeanUtil" class="com.yayiabc.common.utils.BeanUtil"></bean>
-    
+    <bean id="PayAfterOrderUtil" class="com.yayiabc.common.utils.PayAfterOrderUtil"></bean>
     <!-- 配置视图解析器，把控制器的逻辑视频映射为真正的视图 -->
     <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>

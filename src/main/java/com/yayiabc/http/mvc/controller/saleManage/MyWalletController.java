@@ -12,8 +12,10 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.SaleTokenValidate;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Balance;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.SaleMyWalletDetail;
@@ -28,11 +30,14 @@ public class MyWalletController {
 	private MyWalletService myWalletService;
 	@Autowired
 	private WitManageService witManageService;
+	@Autowired
+	private UtilsDao u;
 	//明细
 	@RequestMapping("detail")
 	@ResponseBody
+	@SaleTokenValidate(description="我的钱包:明细 ")
 	public  DataWrapper<List<Balance>>   detail(
-			@RequestParam(value="token",required=true)String token,
+			@RequestHeader(value="saleToken",required=true)String saleToken,
 			@RequestParam(value="state",required=false)String state,
 			@RequestParam(value="starTime",required=false)String starTime,
 			@RequestParam(value="endTime",required=false)String endTime,
@@ -44,12 +49,14 @@ public class MyWalletController {
 		hm.put("state", state);
 		hm.put("starTime", starTime);
 		hm.put("endTime", endTime);
-		return myWalletService.detail(hm,currentPage,numberPerpage,token);
+		return myWalletService.detail(hm,currentPage,numberPerpage,saleToken);
 	}
 	//详情
 	@RequestMapping("details")
 	@ResponseBody
+	@SaleTokenValidate(description="我的钱包:详情 ")
 	public DataWrapper<Balance>  details(
+			@RequestHeader(value="saleToken",required=true)String saleToken,
 			@RequestParam(value="balanceId",required=true)String balanceId
 			){
 		return myWalletService.details(balanceId);
@@ -57,12 +64,14 @@ public class MyWalletController {
 	//详情
 		@RequestMapping("detailss")
 		@ResponseBody
+		@SaleTokenValidate(description="我的钱包:详情 ")
 		public DataWrapper<List<Balance>>  detailss(
-				@RequestParam(value="saleId",required=true)String saleId,
+				@RequestHeader(value="saleToken",required=true)String saleToken,
 				@RequestParam(value="currentPage",required=false)Integer currentPage,
 				@RequestParam(value="numberPerpage",required=false)Integer numberPerpage
 				){
 			HashMap<String, Object> hm=new HashMap<String,Object>();
+			String saleId=u.getSaleId(saleToken);
 			hm.put("saleId", saleId);
 			return myWalletService.detailsss(hm,currentPage,numberPerpage);
 		}

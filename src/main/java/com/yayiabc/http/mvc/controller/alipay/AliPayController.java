@@ -12,11 +12,13 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.http.mvc.service.AliPayService;
 /**
  * 
@@ -46,7 +48,9 @@ public class AliPayController {
 	
 	// 14.29  点击选择类型确定支付宝支付时
 	@RequestMapping("payParames")
+	
 	void paParames(
+			
 			@RequestParam(value="orderId",required=true) String orderId,//订单号
 			 HttpServletResponse response
 			){

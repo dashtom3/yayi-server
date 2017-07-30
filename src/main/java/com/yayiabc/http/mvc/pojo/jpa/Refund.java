@@ -11,14 +11,13 @@ public class Refund extends BasePojo {
 
 	private String itemId;
 
-	private Integer refundNum;
 
 	private String refundReason;
 
 	private Integer refundMoney;
 
-	private String refundPic;
-
+   private Double refund_money_haocai;
+   private Double refund_money_gongju;
 	private Integer state;
 
 	private String failReason;
@@ -74,13 +73,6 @@ public class Refund extends BasePojo {
 		this.itemId = itemId;
 	}
 
-	public Integer getRefundNum() {
-		return refundNum;
-	}
-
-	public void setRefundNum(Integer refundNum) {
-		this.refundNum = refundNum;
-	}
 
 	public String getRefundReason() {
 		return refundReason;
@@ -98,13 +90,6 @@ public class Refund extends BasePojo {
 		this.refundMoney = refundMoney;
 	}
 
-	public String getRefundPic() {
-		return refundPic;
-	}
-
-	public void setRefundPic(String refundPic) {
-		this.refundPic = refundPic == null ? null : refundPic.trim();
-	}
 
 	public Integer getState() {
 		return state;
@@ -122,32 +107,21 @@ public class Refund extends BasePojo {
 		this.failReason = failReason == null ? null : failReason.trim();
 	}
 
-	public Refund() {
-		super();
+	public Double getRefund_money_haocai() {
+		return refund_money_haocai;
 	}
 
-	public Refund(String refundId, String userId, String itemId,
-			Integer refundNum, String refundReason, Integer refundMoney,
-			String refundPic, Integer state, String failReason) {
-		super();
-		this.refundId = refundId;
-		this.userId = userId;
-		this.itemId = itemId;
-		this.refundNum = refundNum;
-		this.refundReason = refundReason;
-		this.refundMoney = refundMoney;
-		this.refundPic = refundPic;
-		this.state = state;
-		this.failReason = failReason;
+	public void setRefund_money_haocai(Double refund_money_haocai) {
+		this.refund_money_haocai = refund_money_haocai;
 	}
 
-	@Override
-	public String toString() {
-		return "Refund [refundId=" + refundId + ", userId=" + userId
-				+ ", itemId=" + itemId + ", refundNum=" + refundNum
-				+ ", refundReason=" + refundReason + ", refundMoney="
-				+ refundMoney + ", refundPic=" + refundPic + ", state=" + state
-				+ ", failReason=" + failReason + "]";
+	public Double getRefund_money_gongju() {
+		return refund_money_gongju;
 	}
+
+	public void setRefund_money_gongju(Double refund_money_gongju) {
+		this.refund_money_gongju = refund_money_gongju;
+	}
+
 
 }

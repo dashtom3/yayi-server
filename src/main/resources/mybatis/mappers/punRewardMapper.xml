@@ -19,7 +19,7 @@
 		values(#{saleId},#{balanceIn},#{balance},now(),'进账管理员增加')
 	</insert>
 	<insert id="delMoney">
-		insert into balance(sale_id,balance_in,balance,created,describey)
+		insert into balance(sale_id,balance_out,balance,created,describey)
 		values(#{saleId},#{balanceOut},#{balance},now(),'出账管理员减少')
 	</insert>
 

@@ -56,7 +56,7 @@ public class PayAfterOrderUtil {
 	}
 	//private static UserDao userDao = SpringContextHolder.getBean(UserDao.class);
 	//结账时放入到SaleIncome表里的数据 并把 到账到该销售员
-		private boolean SetSaleInCome(String orderId){
+		private void SetSaleInCome(String orderId){
 			 //销售员id
 		String saleId=utilsDao.getSaleIdByOrderId(orderId);
 			
@@ -83,6 +83,5 @@ public class PayAfterOrderUtil {
 		/*int signs=utilsDao.saveQbToUser(o.getUserId(),String.valueOf(qbNum+o.getGiveQb()));*/
 		System.out.println("一切执行完毕");
 	
-		   return true;
 		} 
 }

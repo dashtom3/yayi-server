@@ -75,5 +75,13 @@ public interface OrderManagementDao {
 	int saveRefundMessages(@Param("userId")String userId,@Param("haoCaiRefundSumMoney") Double haoCaiRefundSumMoney, 
 			@Param("toolRefundSumMoney")Double toolRefundSumMoney, @Param("dedQbNum")double dedQbNum,
 			@Param("returnMoney")double d, @Param("returnQbNum")double e,  @Param("orderId")String orderId);
+
+	//把退货数量放入order_item表中
+	int  saveRefundNumToOrderItem(@Param("itemSKU")String itemSKU, 
+			@Param("orderId")String orderId, 
+			@Param("refunNum")String refunNum);
+
+//  //显示已经退款数据的订单信息
+	Ordera showRefundOrderMessage(@Param("orderId")String orderId);
 	
 }

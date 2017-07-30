@@ -17,6 +17,7 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -63,9 +64,9 @@ public class WXPayController {
 	 */
 	@RequestMapping("unifiedOrderReturnUrl")
 	@ResponseBody
-	@UserTokenValidate(description="微信下订单生成二维码")
+	
 	public void unifiedOrderReturnUrl(
-			@RequestParam("token") String token,
+			
 			@RequestParam("orderId") String orderId,HttpServletResponse response){
 		System.out.println("开始处理回调");
 		HashMap<String, String> hashMap=aliPayService.queryY(orderId);
@@ -210,7 +211,7 @@ public class WXPayController {
 	
 	@RequestMapping("unifiedOrderCharge")
 	@ResponseBody
-	@UserTokenValidate(description="微信充值乾币")
+
 	public void unifiedOrderCharge(@RequestParam(value="money",required=true) Integer money,
 			@RequestParam(value="token",required=true) String token,
 			HttpServletResponse response){
@@ -344,7 +345,8 @@ public class WXPayController {
 	//下订单成功后付款成功后接受前台的校验
 	@RequestMapping("checkChargeState")
 	@ResponseBody
-	public DataWrapper<Void> checkChargeState(String token){
+	public DataWrapper<Void> checkChargeState(
+			@RequestParam(value="token",required=true) String token){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		Integer num=wXPayDao.getStateByToken(token);
 		dataWrapper.setNum(num);

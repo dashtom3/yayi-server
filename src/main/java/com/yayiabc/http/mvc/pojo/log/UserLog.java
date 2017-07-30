@@ -4,29 +4,21 @@ import java.util.Date;
 
 public class UserLog {
 	private Integer userLogId;
-	private String administrator;
-	private String userName;
+	private String userId;
 	private String operate;
 	private String arguments;
 	private Date created;
-	
 	public Integer getUserLogId() {
 		return userLogId;
 	}
 	public void setUserLogId(Integer userLogId) {
 		this.userLogId = userLogId;
 	}
-	public String getAdministrator() {
-		return administrator;
+	public String getUserId() {
+		return userId;
 	}
-	public void setAdministrator(String administrator) {
-		this.administrator = administrator;
-	}
-	public String getUserName() {
-		return userName;
-	}
-	public void setUserName(String userName) {
-		this.userName = userName;
+	public void setUserId(String userId) {
+		this.userId = userId;
 	}
 	public String getOperate() {
 		return operate;
@@ -46,12 +38,11 @@ public class UserLog {
 	public void setCreated(Date created) {
 		this.created = created;
 	}
-	public UserLog(Integer userLogId, String administrator, String userName,
-			String operate, String arguments, Date created) {
+	public UserLog(Integer userLogId, String userId, String operate,
+			String arguments, Date created) {
 		super();
 		this.userLogId = userLogId;
-		this.administrator = administrator;
-		this.userName = userName;
+		this.userId = userId;
 		this.operate = operate;
 		this.arguments = arguments;
 		this.created = created;
@@ -62,10 +53,11 @@ public class UserLog {
 	}
 	@Override
 	public String toString() {
-		return "UserLog [userLogId=" + userLogId + ", administrator="
-				+ administrator + ", userName=" + userName + ", operate="
-				+ operate + ", arguments=" + arguments + ", created=" + created
-				+ "]";
+		return "UserLog [userLogId=" + userLogId + ", userId=" + userId
+				+ ", operate=" + operate + ", arguments=" + arguments
+				+ ", created=" + created + "]";
 	}
+	
+	
 	
 }

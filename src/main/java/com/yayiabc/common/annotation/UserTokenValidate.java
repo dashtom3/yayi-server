@@ -6,7 +6,7 @@ import java.lang.annotation.RetentionPolicy;
 import java.lang.annotation.Target;
 
 /**
- * 电商用户的用户token验证
+ * 电商用户的用户身份验证
  * @author 小月亮
  *
  */

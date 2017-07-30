@@ -58,6 +58,7 @@
 		LEFT JOIN USER u ON u.user_id=o.user_id
 		WHERE si.sale_id=#{saleId} AND u.bind_sale_time &lt; o.created AND o.state !=0
 		GROUP BY si.order_id
+		ORDER BY o.created DESC
 		LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
 	

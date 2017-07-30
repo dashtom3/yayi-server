@@ -82,9 +82,10 @@ public class CornServiceImpl implements CornService{
 			balanceMonthCash.setDescribey("每月结算");
 			balanceMonthCash.setCreated(new Date());
 			System.out.println(balanceMonthCash);
+			
 			cornDao.addBalancePerMonth(balanceMonthCash);
 			Integer money=balance.intValue();
-			cornDao.updateSaleInfo(saleId,money);
+			/*cornDao.updateSaleInfo(saleId,money);*/
 			}
 		}
 		

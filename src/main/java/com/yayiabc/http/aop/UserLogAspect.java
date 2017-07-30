@@ -80,7 +80,7 @@ public class UserLogAspect {
 			if (method.getName().equals(methodName)) {  
 				Class[] clazzs = method.getParameterTypes();  
 				if (clazzs.length == arguments.length) {  
-					description = method.getAnnotation(com.yayiabc.common.annotation.SystemControllerLog.class).description();  
+					description = method.getAnnotation(com.yayiabc.common.annotation.UserLog.class).description();  
 					break;  
 				}  
 		    }  

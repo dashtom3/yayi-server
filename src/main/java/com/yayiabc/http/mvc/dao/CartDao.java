@@ -20,6 +20,8 @@ public interface CartDao {
 	
 	int getCountItemSKU(@Param("userId")String userId,@Param("itemSKU")String itemSKU);
 	
+	void clear(@Param("userId")String userId);
+	
 	//每次数量+
 	void updateOne(@Param("userId")String userId,@Param("itemSKU")String itemSKU,@Param("num")Integer num);
 	

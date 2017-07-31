@@ -32,11 +32,13 @@
 		SELECT
 		c.cart_id,
 		id.item_id, 
-		ii.item_name AS NAME,
+		ii.item_name AS name,
 		ii.item_sort,
+		ii.state,
 		ib.item_brand_name,
 		id.item_pica AS pic,
 		c.num,
+		iv.stock_num AS goodLeaveNum,
 		iv.item_sku_price AS price,
 		iv.item_sKU AS item_SKU,
 		iv.item_property_name,iv.item_property_info,
@@ -64,6 +66,13 @@
 		UPDATE cart SET num=#{num} 
 		WHERE item_SKU=#{itemSKU} AND user_id=#{userId};
 	</update>
+
+	<select id="clear">
+		DELETE cart FROM cart 
+    	LEFT JOIN item_value ON cart.item_SKU=item_value.item_sKU
+   	 	LEFT JOIN item_info  ON item_value.item_id=item_info.item_id
+    	WHERE item_info.state=0 AND cart.user_id=#{userId}
+	</select>
 
 	<delete id="delete">
 		DELETE FROM cart 

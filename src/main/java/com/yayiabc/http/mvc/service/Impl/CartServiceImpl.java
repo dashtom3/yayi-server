@@ -41,7 +41,6 @@ public class CartServiceImpl implements CartService {
 	public DataWrapper<Void> delete(String itemSKU,String token) {
 		DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
 		String userId=utilsDao.getUserID(token);
-		
 		if (userId == null) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("token错误");
@@ -121,6 +120,19 @@ public class CartServiceImpl implements CartService {
 			} else {
 				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			}
+		}
+		return dataWrapper;
+	}
+
+	@Override
+	public DataWrapper<Void> clear(String token) {
+		DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
+		String userId = utilsDao.getUserID(token);
+		if (userId == null) {
+			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+			dataWrapper.setMsg("token错误");
+		} else {
+			cartDao.clear(userId);
 		}
 		return dataWrapper;
 	}

@@ -106,6 +106,7 @@ public interface CartApi {
      * 		itemId:"a123465",
      * 		name:"假牙",
      * 		pic:"image/abcdef.jpg",
+     * 		state:0,
      * 		itemSKU:"1707101359261",
      * 		itemPropertyName:"属性一",
      * 		itemPropertyInfo:"值一",
@@ -128,6 +129,7 @@ public interface CartApi {
      * 		itemId:"a465798",
      * 		name:"种植体",
      * 		pic:"image/XXXX.jpg",
+     * 		state:0,
      * 		itemSKU:"1707101359261",
      * 		itemPropertyName:"属性一",
      * 		itemPropertyInfo:"值一",
@@ -146,6 +148,47 @@ public interface CartApi {
      * 		price:300,
      * 		num:2
      * }],
+     * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
+     * numberPerPage:10,
+     * currentPage:1,
+     * totalNumber:1,
+     * totalPage:1,
+     * num :null,
+     * msg :null,
+     *  }
+     *
+     * @apiSuccessExample {json} Error-Response:
+     * HTTP/1.1 200 OK
+     * {
+     * callStatus:"FAILED",
+     * errorCode:"Error",
+     * data:null,
+     * token:null,
+     * numberPerPage:0,
+     * currentPage:0,
+     * totalNumber:0,
+     * totalPage:0,
+     * num :null,
+     * msg :null,
+     *  }
+     *
+     */
+	
+	/**
+     * @api {post} http://47.93.48.111:8080/api/cart/clear （前台）清空购物车内失效商品
+     * @apiName clear
+     * @apiGroup cart
+     * @apiVersion 0.1.0
+     * @apiDescription 清空购物车内失效商品
+     *
+     * @apiParam {String} token 身份凭证（必须）
+     *
+     * @apiSuccessExample {json} Success-Response:
+     * HTTP/1.1 200 OK
+     * {
+     * callStatus:"SUCCEED",
+     * errorCode:"No_Error",
+     * data:null,
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
      * numberPerPage:10,
      * currentPage:1,

@@ -52,6 +52,17 @@ public class CartController {
 		return dataWrapper;
 	}
 	
+	/**
+	 * 清空购物车内失效商品
+	 */
+	@RequestMapping(value = "clear" ,method=RequestMethod.POST)
+	@ResponseBody
+	@UserTokenValidate(description="清空购物车内失效商品")
+	public DataWrapper<Void> clear(
+			@RequestHeader(value="token",required=true)String token
+	){
+		return cartService.clear(token);
+	}
 
 	/**
 	 * 收藏购物车内商品

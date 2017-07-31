@@ -11,6 +11,8 @@ public interface CartService {
 	
 	DataWrapper<Void> delete(String itemSKU,String token);
 	
+	DataWrapper<Void> clear(String token);
+	
 	DataWrapper<ItemStar> star(String itemId,String itemSKU,String token);
 	
 	DataWrapper<Void> add(Integer num,String itemSKU,String token);

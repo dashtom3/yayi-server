@@ -21,6 +21,10 @@ public class Cart extends BasePojo {
 
 	private String itemSKU;
 
+	private Integer state;
+
+	private Integer goodLeaveNum;
+
 	private String itemPropertyName;
 	private String itemPropertyInfo;
 	private String itemPropertyNameTwo;
@@ -50,6 +54,22 @@ public class Cart extends BasePojo {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public Integer getGoodLeaveNum() {
+		return goodLeaveNum;
+	}
+
+	public void setGoodLeaveNum(Integer goodLeaveNum) {
+		this.goodLeaveNum = goodLeaveNum;
+	}
+
+	public Integer getState() {
+		return state;
+	}
+
+	public void setState(Integer state) {
+		this.state = state;
 	}
 
 	public String getItemId() {
@@ -196,8 +216,6 @@ public class Cart extends BasePojo {
 		this.itemPropertySixValue = itemPropertySixValue;
 	}
 
-	
-
 	public String getItemBrandName() {
 		return itemBrandName;
 	}
@@ -220,13 +238,13 @@ public class Cart extends BasePojo {
 
 	public Cart(Integer cartId, String userId, String itemId, String name,
 			String pic, Integer num, double price, String itemSKU,
-			String itemPropertyName, String itemPropertyInfo,
-			String itemPropertyNameTwo, String itemPropertyTwoValue,
-			String itemPropertyNameThree, String itemPropertyThreeValue,
-			String itemPropertyFourName, String itemPropertyFourValue,
-			String itemPropertyFiveName, String itemPropertyFiveValue,
-			String itemPropertySixName, String itemPropertySixValue,
-			String itemBrandName, String itemSort) {
+			Integer state, Integer goodLeaveNum, String itemPropertyName,
+			String itemPropertyInfo, String itemPropertyNameTwo,
+			String itemPropertyTwoValue, String itemPropertyNameThree,
+			String itemPropertyThreeValue, String itemPropertyFourName,
+			String itemPropertyFourValue, String itemPropertyFiveName,
+			String itemPropertyFiveValue, String itemPropertySixName,
+			String itemPropertySixValue, String itemBrandName, String itemSort) {
 		super();
 		this.cartId = cartId;
 		this.userId = userId;
@@ -236,6 +254,8 @@ public class Cart extends BasePojo {
 		this.num = num;
 		this.price = price;
 		this.itemSKU = itemSKU;
+		this.state = state;
+		this.goodLeaveNum = goodLeaveNum;
 		this.itemPropertyName = itemPropertyName;
 		this.itemPropertyInfo = itemPropertyInfo;
 		this.itemPropertyNameTwo = itemPropertyNameTwo;
@@ -256,7 +276,8 @@ public class Cart extends BasePojo {
 	public String toString() {
 		return "Cart [cartId=" + cartId + ", userId=" + userId + ", itemId="
 				+ itemId + ", name=" + name + ", pic=" + pic + ", num=" + num
-				+ ", price=" + price + ", itemSKU=" + itemSKU
+				+ ", price=" + price + ", itemSKU=" + itemSKU + ", state="
+				+ state + ", goodLeaveNum=" + goodLeaveNum
 				+ ", itemPropertyName=" + itemPropertyName
 				+ ", itemPropertyInfo=" + itemPropertyInfo
 				+ ", itemPropertyNameTwo=" + itemPropertyNameTwo

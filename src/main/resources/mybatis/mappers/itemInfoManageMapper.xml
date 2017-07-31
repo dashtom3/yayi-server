@@ -230,9 +230,7 @@
 		</where>
 	</select>
 	
-	<delete id="deleteCart">
-		delete from cart where item_SKU like '${itemId}%'
-	</delete>
+	
 
 
 

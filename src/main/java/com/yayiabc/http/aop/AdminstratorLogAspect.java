@@ -6,8 +6,7 @@ import java.util.Date;
 import javax.servlet.http.HttpServletRequest;
 
 import org.aspectj.lang.JoinPoint;
-import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
+
 import org.aspectj.lang.annotation.Aspect;
 import org.aspectj.lang.annotation.Before;
 import org.aspectj.lang.annotation.Pointcut;
@@ -16,12 +15,9 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.yayiabc.common.enums.ErrorCodeEnum;
-import com.yayiabc.common.utils.DataWrapper;
+
 import com.yayiabc.http.mvc.pojo.log.AdminstratorLog;
-import com.yayiabc.http.mvc.pojo.log.UserLog;
 import com.yayiabc.http.mvc.service.SystemControllerLogService;
-import com.yayiabc.http.mvc.service.TokenValidateService;
 
 /**
  * 用户操作日志的

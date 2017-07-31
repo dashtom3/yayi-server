@@ -89,7 +89,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 	public DataWrapper<Void> down(String itemId) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		itemInfoManageDao.down(itemId);
-		itemInfoManageDao.deleteCart(itemId);
+		
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
 	}

@@ -5,6 +5,8 @@ import java.util.Date;
 public class AdminstratorLog {
 	private Integer adminstratorLogId;
 	private String adminstratorId;
+	private String phone;
+	private String userName;
 	private String operate;
 	private String arguments;
 	private Date created;
@@ -19,6 +21,18 @@ public class AdminstratorLog {
 	}
 	public void setAdminstratorId(String adminstratorId) {
 		this.adminstratorId = adminstratorId;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	public String getOperate() {
 		return operate;
@@ -39,10 +53,13 @@ public class AdminstratorLog {
 		this.created = created;
 	}
 	public AdminstratorLog(Integer adminstratorLogId, String adminstratorId,
-			String operate, String arguments, Date created) {
+			String phone, String userName, String operate, String arguments,
+			Date created) {
 		super();
 		this.adminstratorLogId = adminstratorLogId;
 		this.adminstratorId = adminstratorId;
+		this.phone = phone;
+		this.userName = userName;
 		this.operate = operate;
 		this.arguments = arguments;
 		this.created = created;
@@ -54,9 +71,11 @@ public class AdminstratorLog {
 	@Override
 	public String toString() {
 		return "AdminstratorLog [adminstratorLogId=" + adminstratorLogId
-				+ ", adminstratorId=" + adminstratorId + ", operate=" + operate
+				+ ", adminstratorId=" + adminstratorId + ", phone=" + phone
+				+ ", userName=" + userName + ", operate=" + operate
 				+ ", arguments=" + arguments + ", created=" + created + "]";
 	}
+	
 	
 	
 }

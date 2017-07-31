@@ -5,6 +5,8 @@ import java.util.Date;
 public class SaleLog {
 	private Integer saleLogId;
 	private String saleId;
+	private String phone;
+	private String userName;
 	private String operate;
 	private String arguments;
 	private Date created;
@@ -19,6 +21,18 @@ public class SaleLog {
 	}
 	public void setSaleId(String saleId) {
 		this.saleId = saleId;
+	}
+	public String getPhone() {
+		return phone;
+	}
+	public void setPhone(String phone) {
+		this.phone = phone;
+	}
+	public String getUserName() {
+		return userName;
+	}
+	public void setUserName(String userName) {
+		this.userName = userName;
 	}
 	public String getOperate() {
 		return operate;
@@ -38,11 +52,13 @@ public class SaleLog {
 	public void setCreated(Date created) {
 		this.created = created;
 	}
-	public SaleLog(Integer saleLogId, String saleId, String operate,
-			String arguments, Date created) {
+	public SaleLog(Integer saleLogId, String saleId, String phone,
+			String userName, String operate, String arguments, Date created) {
 		super();
 		this.saleLogId = saleLogId;
 		this.saleId = saleId;
+		this.phone = phone;
+		this.userName = userName;
 		this.operate = operate;
 		this.arguments = arguments;
 		this.created = created;
@@ -54,9 +70,11 @@ public class SaleLog {
 	@Override
 	public String toString() {
 		return "SaleLog [saleLogId=" + saleLogId + ", saleId=" + saleId
-				+ ", operate=" + operate + ", arguments=" + arguments
-				+ ", created=" + created + "]";
+				+ ", phone=" + phone + ", userName=" + userName + ", operate="
+				+ operate + ", arguments=" + arguments + ", created=" + created
+				+ "]";
 	}
+	
 	
 	
 	

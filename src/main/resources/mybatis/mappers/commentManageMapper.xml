@@ -13,7 +13,7 @@
 		<if test="recoveryState==2">and state=1</if>
 		<if test="recoveryState==3">and state=2</if>
 		</where>
-		order by created
+		order by created desc
 		limit #{currentNumber},#{numberPerPage}
 	</select>
 	<!-- 回复 -->

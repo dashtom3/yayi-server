@@ -56,8 +56,8 @@ public class SaleMyOrderController {
 	@ResponseBody
 	@SaleTokenValidate(description="销售员查询折线图")
 	public DataWrapper<List<SaleDataVo>> chart(
-			@RequestParam(value="year",required=true,defaultValue="1") String year,
-    		@RequestParam(value="month",required=true,defaultValue="10") String month,
+			@RequestParam(value="year",required=true) String year,
+    		@RequestParam(value="month",required=true) String month,
     		@RequestHeader(value="saleToken",required=true) String token
 	){
 		return saleMyOrderService.chart(token, year, month);
@@ -71,7 +71,7 @@ public class SaleMyOrderController {
 	@ResponseBody
 	@SaleTokenValidate(description="销售员查询我的业绩详情")
 	public DataWrapper<OrderVo> detail(
-    		@RequestParam(value="orderId",required=true,defaultValue="10") String orderId,
+    		@RequestParam(value="orderId",required=true) String orderId,
     		@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
     		@RequestHeader(value="saleToken",required=true) String token

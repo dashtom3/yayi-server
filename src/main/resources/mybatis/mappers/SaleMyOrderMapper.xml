@@ -8,16 +8,17 @@
 		SELECT
 		si.created,
 		(IF(ROUND(SUM(si.order_money_haocai),2) IS NOT NULL,ROUND(SUM(si.order_money_haocai),2),0)+IF(ROUND(SUM(si.order_money_gongju),2) IS NOT NULL,ROUND(SUM(si.order_money_gongju),2),0))-
-		(IF(ROUND(SUM(si.refund_money_haocai),2) IS NOT NULL,ROUND(SUM(si.refund_money_haocai),2),0)+IF(ROUND(SUM(si.refund_money_gongju),2) IS NOT NULL,ROUND(SUM(si.refund_money_gongju),2),0))
-		AS dayCommission,
+		(IF(ROUND(SUM(si.refund_money_haocai),2) IS NOT NULL,ROUND(SUM(si.refund_money_haocai),2),0)+IF(ROUND(SUM(si.refund_money_gongju),2) IS NOT NULL,ROUND(SUM(si.refund_money_gongju),2),0)) AS dayCommission,
 		COUNT(si.order_id) AS dayOrderNum 
 		FROM sale_income si
 		LEFT JOIN ordera o ON o.order_id=si.order_id
 		LEFT JOIN USER u ON u.user_id=o.user_id
-		WHERE sale_id=#{saleId} AND u.bind_sale_time &lt; o.created AND o.state !=0 
-		AND YEAR(created) =#{year}
-		AND MONTH(created)=#{month}
-		GROUP BY DAY(created)
+		WHERE si.sale_id=#{saleId} 
+		AND u.bind_sale_time &lt; o.created 
+		AND o.state !=0
+		AND YEAR(si.created) =#{year}
+		AND MONTH(si.created)=#{month}
+		GROUP BY DAY(si.created)
 	</select>
 	
 	<select id="queryData" resultType="SaleDataVo">

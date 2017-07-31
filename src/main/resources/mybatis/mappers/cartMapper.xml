@@ -54,7 +54,7 @@
 		LEFT JOIN item_brand ib ON ii.item_brand_id=ib.item_brand_id
 		WHERE c.user_id=#{userId}
 		GROUP BY c.cart_id
-		ORDER BY c.created DESC
+		ORDER BY ii.state DESC,c.created DESC
 	</select>
 
 	<update id="updateOne">

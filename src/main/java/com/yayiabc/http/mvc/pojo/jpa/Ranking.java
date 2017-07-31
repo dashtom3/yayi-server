@@ -1,12 +1,18 @@
 package com.yayiabc.http.mvc.pojo.jpa;
-//排名表
+
+/**
+ * 月排名表
+ * 
+ * @author me
+ * 
+ */
 public class Ranking extends BasePojo {
 	private String rankingId;
-	private String phone;	//销售员手机号
-	private Integer bindUserNum;	//客户数
-	private Integer orderCount;		//订单总数
-	private double saleMoney;		//销售额
-	private Integer rowNum;			//排名
+	private String phone; // 销售员手机号
+	private Integer bindUserNum; // 客户数
+	private Integer orderCount; // 订单总数
+	private double saleMoney; // 销售额
+	private Integer rowNum; // 排名
 
 	public String getRankingId() {
 		return rankingId;

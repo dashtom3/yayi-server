@@ -1,0 +1,83 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.LogDao">
+	<select id="showUserLogList" resultType="UserLog">
+		SELECT a.*,b.user_name,b.phone FROM
+		user_log a
+		INNER JOIN 
+		(SELECT true_name user_name,phone,user_id u_id FROM USER)  b
+		ON a.user_id=b.u_id
+		<where>
+			<if test="operate!=null">a.operate like '%${operate}%'</if>
+			<if test="phone!=null">and b.phone like '%${phone}%'</if>
+		</where>
+		ORDER BY a.created desc
+		limit #{currentNumber},#{numberPerPage}
+	</select>
+	
+	<select id="getUserLogTotalNumber" resultType="java.lang.Integer">
+		select count(0) from 
+		user_log a
+		INNER JOIN 
+		(SELECT true_name user_name,phone,user_id u_id FROM USER)  b
+		ON a.user_id=b.u_id
+		<where>
+			<if test="operate!=null">a.operate like '%${operate}%'</if>
+			<if test="phone!=null">and b.phone like '%${phone}%'</if>
+		</where>
+	</select>
+	
+	<select id="showSaleLogList" resultType="SaleLog">
+		SELECT a.*,b.user_name,b.phone FROM
+		sale_log a
+		INNER JOIN 
+		(SELECT true_name user_name,phone,sale_id u_id FROM sale_info)  b
+		ON a.sale_id=b.u_id
+		<where>
+			<if test="operate!=null">a.operate like '%${operate}%'</if>
+			<if test="phone!=null">and b.phone like '%${phone}%'</if>
+		</where>
+		ORDER BY a.created desc
+		limit #{currentNumber},#{numberPerPage}
+	</select>
+	
+	<select id="getSaleLogTotalNumber" resultType="java.lang.Integer">
+		select count(0) from 
+		sale_log a
+		INNER JOIN 
+		(SELECT true_name user_name,phone,sale_id u_id FROM sale_info)  b
+		ON a.sale_id=b.u_id
+		<where>
+			<if test="operate!=null">a.operate like '%${operate}%'</if>
+			<if test="phone!=null">and b.phone like '%${phone}%'</if>
+		</where>
+	</select>
+	
+	<select id="showAdminstratorLogList" resultType="AdminstratorLog">
+		SELECT a.*,b.user_name,b.phone FROM
+		adminstrator_log a
+		INNER JOIN 
+		(SELECT true_name user_name,phone,sale_id u_id FROM adminstrator)  b
+		ON a.sale_id=b.u_id
+		<where>
+			<if test="operate!=null">a.operate like '%${operate}%'</if>
+			<if test="phone!=null">and b.phone like '%${phone}%'</if>
+		</where>
+		ORDER BY a.created desc
+		limit #{currentNumber},#{numberPerPage}
+	</select>
+	
+	<select id="getAdminstratorLogTotalNumber" resultType="java.lang.Integer">
+		select count(0) from 
+		adminstrator_log a
+		INNER JOIN 
+		(SELECT true_name user_name,phone,adminstrator_id u_id FROM adminstrator)  b
+		ON a.adminstrator_id=b.u_id
+		<where>
+			<if test="operate!=null">a.operate like '%${operate}%'</if>
+			<if test="phone!=null">and b.phone like '%${phone}%'</if>
+		</where>
+	</select>
+</mapper>       

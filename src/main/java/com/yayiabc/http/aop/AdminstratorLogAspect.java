@@ -35,7 +35,7 @@ public class AdminstratorLogAspect {
 	
 	
 	//controller层切入点
-	@Pointcut("@annotation(com.yayiabc.common.annotation.UserLog)")
+	@Pointcut("@annotation(com.yayiabc.common.annotation.AdminLog)")
 	public void controllerAspect(){
 		
 	}

@@ -74,7 +74,7 @@ public interface ItemManageDao {
 
 	void deleteItemClassifyTwoSon(ItemClassify itemClassify);
 
-	String queryItemClassifyByName(ItemClassify itemClassify);
+	List<String> queryItemClassifyByName(ItemClassify itemClassify);
 
 	void deleteItemClassifyOne(ItemClassify itemClassify);
 
@@ -93,6 +93,12 @@ public interface ItemManageDao {
 	Integer getCountProperty(@Param("itemPropertyName")String itemPropertyName);
 
 	void deletePro(Integer itemPropertyId);
+
+	void deleteItemClassifySon(List<String> itemClassifyTwo);
+
+	void deleteClassify(List<String> itemClassifySon);
+
+	List<String> queryItemClassifyByNameOne(ItemClassify itemClassify);
 
 
 	

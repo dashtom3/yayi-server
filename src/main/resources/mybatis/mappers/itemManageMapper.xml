@@ -187,4 +187,23 @@
  	<delete id="deletePro">
  		delete from item_propertyd where item_pid=#{itemPropertyId}
  	</delete>
+ 	
+ 	<delete id="deleteItemClassifySon">
+ 		delete from classify_three where classify_two_name in
+ 		<foreach collection="list" item="item" separator="," index="index" close=")" open="(">
+ 			#{item}
+ 		</foreach>
+ 	</delete>
+ 	
+ 	<delete id="deleteClassify">
+ 		delete from item_classify where item_previous_classify in
+ 		<foreach collection="list" item="item" separator="," index="index" close=")" open="(">
+ 			#{item}
+ 		</foreach>
+ 		
+ 	</delete>
+ 	
+ 	<select id="queryItemClassifyByNameOne" resultType="string">
+ 		select item_classify_name from item_classify where item_previous_classify=#{itemClassifyName}
+ 	</select>
 </mapper>       

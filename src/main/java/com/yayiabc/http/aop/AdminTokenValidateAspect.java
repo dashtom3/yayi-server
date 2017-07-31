@@ -1,5 +1,7 @@
 package com.yayiabc.http.aop;
 
+import java.util.Enumeration;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.aspectj.lang.ProceedingJoinPoint;
@@ -37,6 +39,9 @@ public class AdminTokenValidateAspect {
 		String loginToken=request.getHeader("admintoken");
 		System.out.println(loginToken);
 		System.out.println("接受成功");
+		
+		
+		
 		//判断登录表中是否包含此token;
 		/*Long timeStamp=Long.valueOf(loginToken.substring(loginToken.length()-13,loginToken.length()));
 		Long nowTime=System.currentTimeMillis();*/

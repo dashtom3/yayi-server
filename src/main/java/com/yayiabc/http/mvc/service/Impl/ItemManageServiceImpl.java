@@ -200,22 +200,23 @@ public class ItemManageServiceImpl implements ItemManageService{
 		itemClassify.setItemClassifyGrade(itemClassifyGrade);
 		if(itemClassifyGrade==1){
 			itemManageDao.deleteItemClassifyOne(itemClassify);
-			String itemClassifyTwo=itemManageDao.queryItemClassifyByName(itemClassify);
-			itemClassify.setItemClassifyName(itemClassifyTwo);
-			itemManageDao.deleteItemClassifyTwoSon(itemClassify);
+			List<String> itemClassifyTwo=itemManageDao.queryItemClassifyByName(itemClassify);
 			itemManageDao.deleteItemClassifyOneSon(itemClassify);
-
+			if(itemClassifyTwo!=null&&itemClassifyTwo.size()!=0){
+				itemManageDao.deleteItemClassifySon(itemClassifyTwo);
+			}
 		}else if(itemClassifyGrade==2){
 			itemManageDao.deleteItemClassifyTwo(itemClassify);
 			itemManageDao.deleteItemClassifyTwoSon(itemClassify);
 
 		}else if(itemClassifyGrade==3){
 			itemManageDao.deleteItemClassifyThree(itemClassify);
-
 		}
 		String itemClassifyNameA =itemManageDao.queryItemClassifyName(itemClassifyId);
-		String itemClassifyNameB=itemManageDao.queryItemClassifySonName(itemClassifyNameA);
-		itemManageDao.deleteItemClassify(itemClassifyNameB);
+		List<String> itemClassifySon=itemManageDao.queryItemClassifyByNameOne(itemClassify);
+		if(itemClassifySon!=null&&itemClassifySon.size()!=0){
+			itemManageDao.deleteClassify(itemClassifySon);
+		}
 		itemManageDao.deleteItemClassify(itemClassifyNameA);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		String msg=dataWrapper.getErrorCode().getLabel();

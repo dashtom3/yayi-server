@@ -19,6 +19,8 @@
 	
 <bean id="SpringQtzJobOne" class="com.yayiabc.common.utils.CornUtil"/> 
 <bean id="SpringQtzJobTwo" class="com.yayiabc.common.utils.RankUtil"/> 
+<bean id="SpringQtzJobFour" class="com.yayiabc.common.utils.RankPerDay"/> 
+ 
     
  <bean id="jobDetailOne" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
      <property name="targetObject" ref="SpringQtzJobOne"></property>  
@@ -30,6 +32,11 @@
      <property name="targetMethod" value="rank"></property>  
      <property name="concurrent" value="true"></property>  
  </bean>
+ <bean id="jobDetailFour" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
+     <property name="targetObject" ref="SpringQtzJobFour"></property>  
+     <property name="targetMethod" value="rankPerDay"></property>  
+     <property name="concurrent" value="true"></property>  
+ </bean>
       
     
 <bean id="billsCheckJobTriggerOne" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
@@ -39,7 +46,12 @@
  </bean>
  <bean id="billsCheckJobTriggerTwo" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
      <property name="jobDetail" ref="jobDetailTwo"></property>  
-     <property name="cronExpression" value="0 0 0 1 * ?"></property>  
+     <property name="cronExpression" value="1 0 0 1 * ?"></property>  
+     <property name="startDelay" value="3000"></property>  
+ </bean>
+ <bean id="billsCheckJobTriggerFour" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
+     <property name="jobDetail" ref="jobDetailFour"></property>  
+     <property name="cronExpression" value="0 0 1 * * ?"></property>  
      <property name="startDelay" value="3000"></property>  
  </bean>
 
@@ -50,6 +62,7 @@
          <list>  
             <ref bean="billsCheckJobTriggerOne"/> 
             <ref bean="billsCheckJobTriggerTwo"/> 
+            <ref bean="billsCheckJobTriggerFour"/> 
             <!-- <ref bean="simpleTrigger"/>  --> 
          </list>  
      </property>   

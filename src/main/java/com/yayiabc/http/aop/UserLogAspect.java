@@ -77,6 +77,7 @@ public class UserLogAspect {
 		Method[] methods = targetClass.getMethods();  
 		String description = "";  
 		for (Method method : methods) {  
+			
 			if (method.getName().equals(methodName)) {  
 				Class[] clazzs = method.getParameterTypes();  
 				if (clazzs.length == arguments.length) {  

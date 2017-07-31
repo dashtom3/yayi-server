@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.ItemIdUtils;
@@ -33,6 +34,7 @@ public class ItemInfoManageController {
 	@RequestMapping("itemInfoList")
 	@ResponseBody
 	@AdminTokenValidate(description="管理员查询商品列表")
+	@AdminLog(description="管理员查询商品列表")
 	public DataWrapper<List<ItemInfo>> itemInfoList(
 			@RequestParam(value="itemId",required=false) String itemId,
 			@RequestParam(value="itemName",required=false) String itemName,
@@ -64,10 +66,10 @@ public class ItemInfoManageController {
 	 */
 	@RequestMapping("down")
 	@ResponseBody
-	/*@AdminTokenValidate(description="管理员下架商品")*/
+	@AdminTokenValidate(description="管理员下架商品")
 	public DataWrapper<Void> down(
-			@RequestParam(value="itemId") String itemId
-			/*@RequestHeader(value="adminToken",required=true)String adminToken*/
+			@RequestParam(value="itemId") String itemId,
+			@RequestHeader(value="adminToken",required=true)String adminToken
 			){
 		return itemInfoManageService.down(itemId);
 	}

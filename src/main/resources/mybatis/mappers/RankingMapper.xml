@@ -4,6 +4,8 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yayiabc.http.mvc.dao.RankingDao">
 
+	
+
 	<!-- 查询月排行榜，从sale_income表 -->
 	<select id="queryMonthRanking" resultType="Ranking">
 		SELECT
@@ -80,18 +82,25 @@
     ) AS a WHERE phone =(SELECT phone FROM sale_info WHERE sale_id=#{saleId})
 	</select>
 	
-	<select id="getSaleCountNow" resultType="int">
+	<select id="getSaleCountNow" resultType="java.lang.Integer">
 		SELECT COUNT(0) FROM sale_info;
 	</select>
 	
 	<insert id="saveSaleNum">
 		 INSERT INTO sale_num(sale_num,created,updated) 
-   	 	 VALUE(#{saleNum},NOW(),NOW());
+   	 	 VALUE(#{saleNum},#{now},NOW());
 	</insert>
 	
-	<select id="getSaleCount" resultType="int">
+	<select id="getSaleCount" resultType="java.lang.Integer">
 		SELECT sale_num FROM sale_num 
     	WHERE YEAR(created) =#{year}
     	AND MONTH(created)=#{month}
 	</select>
+	
+	<insert id="addRecord" statementType="STATEMENT">
+		insert into ${tableName} values
+		<foreach collection="rankingList" item="item" index="index" separator="," >
+			(null,${item.phone},${item.bindUserNum},${item.orderCount},${item.saleMoney},${item.rowNum},now(),now())
+		</foreach> 
+	</insert>
 </mapper>        

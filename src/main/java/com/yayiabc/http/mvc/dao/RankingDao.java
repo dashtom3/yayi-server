@@ -1,5 +1,7 @@
 package com.yayiabc.http.mvc.dao;
 
+import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -14,12 +16,20 @@ public interface RankingDao {
 	//销售员当前排名数据实时
 	Ranking getSaleRankingNow(@Param("saleId")String saleId,@Param("startDate")String startDate,@Param("endDate")String endDate);
 
+
 	//查询销售员总人数，实时
-	int getSaleCountNow();
+	Integer getSaleCountNow();
 	
 	//保存每月销售员人数
-	void saveSaleNum(@Param("saleNum")Integer saleNum);
+	void saveSaleNum(@Param("saleNum")Integer saleNum,@Param("now")Date now);
 	
 	//查询销售员总人数，往月
-	int getSaleCount(@Param("year")String year,@Param("month")String month);
+	Integer getSaleCount(@Param("year")String year,@Param("month")String month);
+
+	
+	
+	
+
+	void addRecord(HashMap<String, Object> map);
+
 }

@@ -55,7 +55,7 @@ public class RankingServiceImpl implements RankingService {
 		Integer nowMonth = cal.get(Calendar.MONTH); // 获取当前月份
 		Integer year = Integer.parseInt(beYearMonth.substring(0, 4)); // 获取输入的年份
 		Integer month = Integer.parseInt(beYearMonth.substring(5, 7)); // 获取输入的月份
-		if (nowYear.equals(year) == true && nowMonth.equals(month) == true) { // 判断接收的年月是否为当前年月
+		if (nowYear==year && nowMonth==month) { // 判断接收的年月是否为当前年月
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("当前排行榜未结算");
 		} else {
@@ -74,6 +74,15 @@ public class RankingServiceImpl implements RankingService {
 			String endDate) {
 		
 		return null;
+	}
+
+	@Override
+	public void addRecord(String tableName, List<Ranking> rankingList) {
+		HashMap<String, Object> map =new HashMap<String,Object>();
+		map.put("tableName", tableName);
+		map.put("rankingList", rankingList);
+		rankingDao.addRecord(map);
+		
 	}
 
 	

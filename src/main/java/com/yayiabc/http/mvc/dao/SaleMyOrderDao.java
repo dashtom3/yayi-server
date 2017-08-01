@@ -21,7 +21,9 @@ public interface SaleMyOrderDao {
 
 	//统计数据查询
 	SaleDataVo	queryData(
-			@Param("saleId")String saleId);
+			@Param("saleId")String saleId,
+			@Param("year")String year,
+			@Param("month")String month);
 	
 	//累计收入
 	String allCommission(

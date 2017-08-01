@@ -29,7 +29,7 @@
 		(IF(ROUND(SUM(order_money_haocai),2) IS NOT NULL,ROUND(SUM(order_money_haocai),2),0)-IF(ROUND(SUM(refund_money_haocai),2) IS NOT NULL,ROUND(SUM(refund_money_haocai),2),0)) AS haocaiAllMoney,	
 		COUNT(order_id) AS orderNum
 		FROM sale_income
-		WHERE sale_id=#{saleId};
+		WHERE sale_id=#{saleId} AND YEAR(created) =#{year} AND MONTH(created)=#{month};
 	</select>
 	
 	<select id="allCommission" resultType="String">
@@ -41,7 +41,7 @@
 		AND sale_id=#{saleId}
 		OR 
 		gongju_money IS NOT NULL 
-		AND sale_id=#{saleId} 
+		AND sale_id=#{saleId};
 	</select>
 	
 	<select id="queryOrderList" resultType="MyOrderVo">

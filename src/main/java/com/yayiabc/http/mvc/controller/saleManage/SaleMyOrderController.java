@@ -32,9 +32,11 @@ public class SaleMyOrderController {
 	@SaleTokenValidate
 	@SaleLog(description="销售员查询我的业绩")
 	public DataWrapper<SaleDataVo> myOrderData(
+			@RequestParam(value="year",required=true) String year,
+    		@RequestParam(value="month",required=true) String month,
 			@RequestHeader(value="saleToken",required=true) String token
 	){
-		return saleMyOrderService.myOrderData(token);
+		return saleMyOrderService.myOrderData(token, year, month);
 	}
 	
 	/**

@@ -45,12 +45,12 @@ public class SaleMyOrderServiceImpl implements SaleMyOrderService {
 
 
 	@Override
-	public DataWrapper<SaleDataVo> myOrderData(String token) {
+	public DataWrapper<SaleDataVo> myOrderData(String token,String year, String month) {
 		DataWrapper<SaleDataVo> dataWrapper=new DataWrapper<SaleDataVo>();
 		String saleId = saleLogDao.getSaleIdByToken(token);
 		SaleDataVo saleDataVo=new SaleDataVo();
 		String allcommission=saleMyOrderDao.allCommission(saleId);
-		saleDataVo=saleMyOrderDao.queryData(saleId);
+		saleDataVo=saleMyOrderDao.queryData(saleId, year, month);
 		if(allcommission==null){
 			saleDataVo.setAllCommission(0);
 		}else{

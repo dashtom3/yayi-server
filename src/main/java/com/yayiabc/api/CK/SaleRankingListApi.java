@@ -2,15 +2,13 @@ package com.yayiabc.api.CK;
 
 public class SaleRankingListApi {
 	/**
-     * @api {get} http://47.93.48.111:8080/api/rankingList/salelist （创客系统）销售排行榜
+     * @api {get} http://47.93.48.111:8080/api/rankingList/list （创客系统）销售排行榜
      * @apiName salelist
      * @apiGroup rankingList
      * @apiVersion 0.1.0
      * @apiDescription 销售排行榜
      *
-     * @apiParam {int} currentPage （非必须）
-     * @apiParam {int} numberPerPage （非必须）  
-     * @apiParam {String} saleToken 身份凭证（必须）
+     * @apiParam {String} beYearMonth 年月（必须，格式"yyyy-MM"）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -60,14 +58,13 @@ public class SaleRankingListApi {
      */
 	
 	/**
-     * @api {get} http://47.93.48.111:8080/api/rankingList/compareData （创客系统）销售排行榜比较数据
+     * @api {get} http://47.93.48.111:8080/api/rankingList/compareData （创客系统）销售员排行榜排名信息
      * @apiName compareData
      * @apiGroup rankingList
      * @apiVersion 0.1.0
      * @apiDescription 销售排行榜比较数据
      *
-     * @apiParam {int} currentPage （非必须）
-     * @apiParam {int} numberPerPage （非必须）  
+     * @apiParam {String} beYearMonth 年月（必须，格式"yyyy-MM"）
      * @apiParam {String} saleToken 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
@@ -79,7 +76,6 @@ public class SaleRankingListApi {
      * {
      * 	    saleSum:5000,
      *		rankNow:2,
-     *		rankUp:5,
      *		bindUserNum:101,
      *		orderCount:6,
      *		saleMoney:5000

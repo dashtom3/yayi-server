@@ -33,7 +33,7 @@ public class ItemInfoManageController {
 	 */
 	@RequestMapping("itemInfoList")
 	@ResponseBody
-	@AdminTokenValidate(description="管理员查询商品列表")
+	@AdminTokenValidate
 	@AdminLog(description="管理员查询商品列表")
 	public DataWrapper<List<ItemInfo>> itemInfoList(
 			@RequestParam(value="itemId",required=false) String itemId,
@@ -53,7 +53,8 @@ public class ItemInfoManageController {
 	 */
 	@RequestMapping("up")
 	@ResponseBody
-	@AdminTokenValidate(description="管理员上架商品")
+	@AdminTokenValidate
+	@AdminLog(description="管理员上架商品")
 	public DataWrapper<Void> up(
 			@RequestParam(value="itemId") String itemId,
 			@RequestHeader(value="adminToken",required=true)String adminToken
@@ -66,7 +67,8 @@ public class ItemInfoManageController {
 	 */
 	@RequestMapping("down")
 	@ResponseBody
-	@AdminTokenValidate(description="管理员下架商品")
+	@AdminTokenValidate
+	@AdminLog(description="管理员下架商品")
 	public DataWrapper<Void> down(
 			@RequestParam(value="itemId") String itemId,
 			@RequestHeader(value="adminToken",required=true)String adminToken
@@ -79,7 +81,8 @@ public class ItemInfoManageController {
 	 */
 	@RequestMapping("delete")
 	@ResponseBody
-	@AdminTokenValidate(description="管理员删除商品")
+	@AdminTokenValidate
+	@AdminLog(description="管理员删除商品")
 	public DataWrapper<Void> delete(
 			@RequestParam(value="itemId") String itemId,
 			@RequestHeader(value="adminToken",required=true)String adminToken
@@ -93,7 +96,8 @@ public class ItemInfoManageController {
 	 */
 	@RequestMapping("update")
 	@ResponseBody
-	@AdminTokenValidate(description="管理员修改商品")
+	@AdminTokenValidate
+	@AdminLog(description="管理员修改商品")
 	public DataWrapper<Void> update(
 			@RequestParam(value="itemId",required=true) String itemId ,
 			@RequestParam(value="itemName",required=true) String itemName,
@@ -199,7 +203,8 @@ public class ItemInfoManageController {
 	 */
 	@RequestMapping("insert")
 	@ResponseBody
-	@AdminTokenValidate(description="管理员新增商品")
+	@AdminTokenValidate
+	@AdminLog(description="管理员新增商品")
 	public DataWrapper<Void> insert(                                 
 	@RequestParam(value="itemId",required=true) String itemId ,
 	@RequestParam(value="itemName",required=true) String itemName,

@@ -1,0 +1,86 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.RankingDao">
+
+	<!-- 查询月排行榜，从sale_income表 -->
+	<select id="queryMonthRanking" resultType="Ranking">
+		SELECT
+    	obj_new.phone,
+    	obj_new.bind_user_num,
+    	obj_new.order_count,
+    	obj_new.sale_money,
+    	obj_new.rownum
+		FROM
+    	(
+        	SELECT
+            	obj.phone,
+            	obj.bind_user_num,
+            	obj.order_count,
+            	obj.sale_money,
+            	@rownum := @rownum + 1 AS num_tmp,
+            	@incrnum := CASE
+        	WHEN @rowtotal = obj.sale_money THEN
+            	@incrnum
+        	WHEN @rowtotal := obj.sale_money THEN
+            	@rownum
+        	END AS rownum
+        	FROM
+            (
+	     	SELECT s.phone,s.bind_user_num,COUNT(si.order_id) AS order_count,
+	     	(IF(ROUND(SUM(si.order_money_haocai),2) IS NOT NULL,ROUND(SUM(si.order_money_haocai),2),0)+IF(ROUND(SUM(si.order_money_gongju),2) IS NOT NULL,ROUND(SUM(si.order_money_gongju),2),0))-
+	     	(IF(ROUND(SUM(si.refund_money_haocai),2) IS NOT NULL,ROUND(SUM(si.refund_money_haocai),2),0)+IF(ROUND(SUM(si.refund_money_gongju),2) IS NOT NULL,ROUND(SUM(si.refund_money_gongju),2),0)) AS sale_money	
+             FROM sale_income si 
+             LEFT JOIN sale_info s ON s.sale_id=si.sale_id
+             WHERE DATE_FORMAT(si.created,'%Y-%m-%d')  BETWEEN #{startDate} AND #{endDate}  
+             GROUP BY si.sale_id ORDER BY sale_money DESC
+             <if test="state == 1">
+             	LIMIT 20
+             </if>
+             ) AS obj,
+            (SELECT @rownum := 0 ,@rowtotal := NULL ,@incrnum := 0) r
+    ) AS obj_new
+	</select>
+	
+	<select id="getSaleRanking" resultType="Ranking">
+		SELECT phone,bind_user_num,order_count,sale_money,rownum FROM (
+		SELECT
+    	obj_new.phone,
+    	obj_new.bind_user_num,
+    	obj_new.order_count,
+    	obj_new.sale_money,
+    	obj_new.rownum
+	FROM
+    	(
+        SELECT
+            obj.phone,
+            obj.bind_user_num,
+            obj.order_count,
+            obj.sale_money,
+            @rownum := @rownum + 1 AS num_tmp,
+            @incrnum := CASE
+        WHEN @rowtotal = obj.sale_money THEN
+            @incrnum
+        WHEN @rowtotal := obj.sale_money THEN
+            @rownum
+        END AS rownum
+        FROM
+            (
+	     SELECT s.phone,s.bind_user_num,COUNT(si.order_id) AS order_count,
+	     (IF(ROUND(SUM(si.order_money_haocai),2) IS NOT NULL,ROUND(SUM(si.order_money_haocai),2),0)+IF(ROUND(SUM(si.order_money_gongju),2) IS NOT NULL,ROUND(SUM(si.order_money_gongju),2),0))-
+	     (IF(ROUND(SUM(si.refund_money_haocai),2) IS NOT NULL,ROUND(SUM(si.refund_money_haocai),2),0)+IF(ROUND(SUM(si.refund_money_gongju),2) IS NOT NULL,ROUND(SUM(si.refund_money_gongju),2),0)) AS sale_money	
+             FROM sale_income si 
+             LEFT JOIN sale_info s ON s.sale_id=si.sale_id
+             WHERE DATE_FORMAT(si.created,'%Y-%m-%d')  BETWEEN #{startDate} AND #{endDate}  
+             GROUP BY si.sale_id ORDER BY sale_money DESC
+             ) AS obj,
+            (SELECT @rownum := 0 ,@rowtotal := NULL ,@incrnum := 0) r
+    ) AS obj_new
+    ) AS a WHERE phone =(SELECT phone FROM sale_info WHERE sale_id=#{saleId})
+	</select>
+	
+	<select id="getSaleCount" resultType="int">
+		SELECT COUNT(0) FROM sale_info
+	</select>
+</mapper>        

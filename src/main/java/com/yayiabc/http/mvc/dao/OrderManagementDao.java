@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.yayiabc.http.mvc.pojo.jpa.Invoice;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.model.OrderManagement;
@@ -74,7 +75,7 @@ public interface OrderManagementDao {
 
 	int saveRefundMessages(@Param("userId")String userId,@Param("haoCaiRefundSumMoney") Double haoCaiRefundSumMoney, 
 			@Param("toolRefundSumMoney")Double toolRefundSumMoney, @Param("dedQbNum")double dedQbNum,
-			@Param("returnMoney")double d, @Param("returnQbNum")double e,  @Param("orderId")String orderId);
+			@Param("returnQb")double d, @Param("refundMoney")double e,  @Param("orderId")String orderId);
 
 	//把退货数量放入order_item表中
 	int  saveRefundNumToOrderItem(@Param("itemSKU")String itemSKU, 
@@ -83,5 +84,7 @@ public interface OrderManagementDao {
 
 //  //显示已经退款数据的订单信息
 	Ordera showRefundOrderMessage(@Param("orderId")String orderId);
+
+	Invoice queryOrderInvoice(@Param("orderId")String orderId);
 	
 }

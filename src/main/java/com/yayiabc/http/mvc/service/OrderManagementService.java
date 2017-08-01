@@ -8,6 +8,7 @@ import java.util.Map;
 import org.apache.ibatis.annotations.Param;
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.pojo.jpa.Invoice;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.model.OrderManagement;
@@ -35,4 +36,6 @@ public interface OrderManagementService {
 	DataWrapper<Ordera> queryOrderDetails(String orderId);
 	//   //显示已经退款数据的订单信息
 	DataWrapper<Ordera> showRefundOrderMessage(String orderId);
+	
+	DataWrapper<Invoice> queryOrderInvoice(String orderId);
 }

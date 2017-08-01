@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.annotation.SaleTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
@@ -25,26 +26,30 @@ public class CusResoController {
     //show+query
     @RequestMapping("show")
     @ResponseBody
-    @SaleTokenValidate(description="客户资源显示")
+    @AdminTokenValidate
+    @AdminLog(description="客户资源显示")
     public DataWrapper<List<CusResources>> show(
-    		@RequestHeader(value="saleToken") String saleToken,
+    		   @RequestHeader(value="adminToken") String adminToken,
     		   @RequestParam(value="companyName",required=false) String companyName,
     		   @RequestParam(value="companyAdd",required=false) String companyAdd,
-    		   @RequestParam(value="linkMan",required=false) String linkMan
+    		   @RequestParam(value="linkMan",required=false) String linkMan,
+    		   @RequestParam(value="currentPage",required=false) Integer currentPage,
+   			@RequestParam(value="numberPerpage",required=false) Integer numberPerpage
     		){
     	 HashMap<String, String> hashMap =new HashMap<String,String>();
     	 hashMap.put("companyName", companyName);
     	 hashMap.put("companyAdd", companyAdd);
     	 hashMap.put("linkMan", linkMan);
-    	return cusResoService.show(hashMap);
+    	return cusResoService.show(hashMap,currentPage,numberPerpage);
     }
      //insert
     @RequestMapping("insert")
     @ResponseBody
-    @SaleTokenValidate(description="客户资源添加")
+    @AdminTokenValidate
+    @AdminLog(description="客户资源添加")
     public DataWrapper<Void> insert(
     		//@RequestParam(value="state",required=true)String state 
-    		@RequestHeader(value="saleToken") String saleToken,
+    		@RequestHeader(value="adminToken") String adminToken,
     		@ModelAttribute CusResources cus
     		//四个参数全必须
     		){
@@ -53,10 +58,11 @@ public class CusResoController {
     //update
     @RequestMapping("update")
     @ResponseBody
-    @SaleTokenValidate(description="客户资源更改")
+    @AdminTokenValidate
+    @AdminLog(description="客户资源更改")
     public DataWrapper<Void> update(
     		//@RequestParam(value="state",required=true)String state 
-    		@RequestHeader(value="saleToken") String saleToken,
+    		@RequestHeader(value="adminToken") String adminToken,
     		@ModelAttribute CusResources cus
     		//四个参数非必须     但id是必须
     		){
@@ -65,9 +71,10 @@ public class CusResoController {
     //delete
     @RequestMapping("delete")
     @ResponseBody
-    @SaleTokenValidate(description="客户资源删除")
+    @AdminTokenValidate
+    @AdminLog(description="客户资源删除")
     public DataWrapper<Void> delete(
-    		@RequestHeader(value="saleToken") String saleToken,
+    		@RequestHeader(value="adminToken") String adminToken,
     		@RequestParam(value="cusId",required=true)Integer id 
     		
     		//四个参数非必须     但id是必须

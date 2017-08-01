@@ -115,6 +115,9 @@ public class AliPayController {
 				System.out.println("key: "+key+ " , value:"+params.get(key));
 			}
 			String Sign=alipayService.ReturnUrl(params);
+			if("successQB".equals(Sign)){
+				response.sendRedirect("http://www.yayiabc.com/center/myMoney");
+			}
 			if("success".equals(Sign)){
 				System.out.println("已经成功  正在跳转");
 				response.sendRedirect("http://www.yayiabc.com/paySuccess");
@@ -147,7 +150,6 @@ public class AliPayController {
 			HttpServletResponse response
 			//同上
 			){
-		System.out.println("456as45d54asda6da4s86d486464649648646845555555555555555555555555555555555554989749461619849848644yk46u8k46uk43y1k35y4k45u4k56k46y4ky4kyu4k");
 		//获取支付宝POST过来反馈信息
 		Map<String,String> params = new HashMap<String,String>();
 		Map requestParams = request.getParameterMap();

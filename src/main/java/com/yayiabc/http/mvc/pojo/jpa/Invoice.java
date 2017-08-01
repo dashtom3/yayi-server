@@ -11,7 +11,23 @@ public class Invoice {
 	private String stickNanme;
 	private String stickPhone;
 	private String stickaddress;
+	private String invoiceHead;
 	private String orderId;
+	private String invoiceStyle;
+	private String  InvoiceState;
+	
+	public String getInvoiceStyle() {
+		return invoiceStyle;
+	}
+	public void setInvoiceStyle(String invoiceStyle) {
+		this.invoiceStyle = invoiceStyle;
+	}
+	public String getInvoiceState() {
+		return InvoiceState;
+	}
+	public void setInvoiceState(String invoiceState) {
+		InvoiceState = invoiceState;
+	}
 	public String getOrderId() {
 		return orderId;
 	}
@@ -78,6 +94,12 @@ public class Invoice {
 	}
 	public void setStickaddress(String stickaddress) {
 		this.stickaddress = stickaddress;
+	}
+	public String getInvoiceHead() {
+		return invoiceHead;
+	}
+	public void setInvoiceHead(String invoiceHead) {
+		this.invoiceHead = invoiceHead;
 	}
 
 }

@@ -7,6 +7,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.CusResoDao;
 import com.yayiabc.http.mvc.pojo.jpa.CusResources;
 import com.yayiabc.http.mvc.service.CusResoService;
@@ -15,13 +16,30 @@ public class CusResoServiceImpl  implements CusResoService{
    @Autowired
    private  CusResoDao cuResoDao;
 	@Override
-	public DataWrapper<List<CusResources>> show(HashMap<String, String> hashMap) {
+	public DataWrapper<List<CusResources>> show(HashMap<String, String> hashMap,
+			Integer currentPage,
+   			Integer numberPerpage
+			) {
 		// TODO Auto-generated method stub
 		DataWrapper<List<CusResources>>  dataWrapper=new DataWrapper<List<CusResources>>();
+		Page page=new Page();
+		if(currentPage!=null&numberPerpage!=null){
+		page.setNumberPerPage(numberPerpage);
+		page.setCurrentPage(currentPage);
+		}else{
+			page.setNumberPerPage(10);
+			page.setCurrentPage(1);
+		}
+		hashMap.put("numberPerpage", String.valueOf(page.getNumberPerPage()));
+		Integer currentNum=page.getCurrentNumber();
+		hashMap.put("currentNum", String.valueOf(currentNum));
+		//  总条数
+		int count=cuResoDao.queryCount(hashMap);
 		List<CusResources> list=cuResoDao.show(hashMap);
 		if(list.isEmpty()){
 			dataWrapper.setMsg("暂无数据");
 		}else{
+			dataWrapper.setPage(page, count);
 			dataWrapper.setData(list);
 		}
 		return dataWrapper;

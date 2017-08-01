@@ -26,7 +26,7 @@ public class SaleIncomeListController {
 	 */
 	@RequestMapping("queryDone")
 	@ResponseBody
-	@AdminTokenValidate(description="管理员查询销售员业绩列表（已结算）")
+	@AdminTokenValidate
 	public DataWrapper<List<SaleIncomeVo>> queryDone(
 			@RequestParam(value="saleName",required=false)String saleName,
 			@RequestParam(value="salePhone",required=false)String salePhone,

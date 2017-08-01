@@ -37,74 +37,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	private UtilsDao utilsDao;
 
 
-	//本单可获得钱币数
-
-	@Override
-	public DataWrapper<HashMap<String, Object>> buyNows(String token,String[] itemSKUs
-			,Ordera order
-			) {
-		//  get userId
-		String userId=utilsDao.getUserID(token);
-
-		//obtain orderId 
-		String orderId=OrderIdUtils.createOrderId(userId);
-		//将订单信息保存在订单里 你如是否需要发表  留言等。。。 
-		/**
-		 * state,order_id,user_id,qb_ded,
-		 * invoice_hand, is_register, buyer_message, total_fee,
-		 * actual_pay，post_fee,give_qb,created,
-		 * buyer_nick,buyer_rate
-		 */
-		if(order.getQbDed()==null|order.getQbDed()==0){
-			order.setQbDed(0);
-		}if(order.getInvoiceHand()==null){
-			order.setInvoiceHand("没买价没有输入发票抬头");
-		}if(order.getIsRegister()==null){
-			order.setIsRegister(0);
-		}if(order.getBuyerMessage()==null){
-			order.setBuyerMessage("该单暂时未被评价呢");
-			order.setBuyerRate(0);
-		}
-		placeOrderDao.createOrder(orderId,userId,order);
-		//容器container
-		HashMap<String, Object> hMap=new HashMap<String, Object>();
-
-		double sumPrice=0;//商品总价
-		DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String, Object>>();
-		// obtain sure shoppingCart item
-		List<Cart> cartList=placeOrderDao.buyNows(userId,itemSKUs);
-		System.out.println(cartList);
-		//下单赠送钱币数：
-		int giveQbNum=0;
-		int itemSum=cartList.size();//商品总数量
-		for(int i=0;i<cartList.size();i++){
-			//订单商品总价
-			sumPrice+=cartList.get(i).getNum()*cartList.get(i).getPrice();
-
-			//query钱币赠送百分比
-			Integer qbPercentage=placeOrderDao.queryQbPercentage(cartList.get(i).getItemSKU());
-			giveQbNum+=cartList.get(i).getNum()*cartList.get(i).getPrice()*qbPercentage;
-			//将购物车的商品 同步到 订单商品表里
-			//placeOrderDao.synchronization(cartList.get(i),orderId);
-
-			//giveQbNum+=0;
-		}
-		//运费计算
-		//int yunfei=getFreight(receiver, sumPrice, itemSum);//运费
-		hMap.put("sumPrice", sumPrice);
-		hMap.put("itemSum", itemSum);
-		//hMap.put("yunfei", yunfei);
-		hMap.put("giveQbNum", giveQbNum);
-		//hMap.put("ConsigneeName",receiver.getReceiverName());
-		//hMap.put("ConsigneePhone",receiver.getPhone());
-		//hMap.put("receiver",receiver);
-		hMap.put("orderId",orderId);
-
-		hMap.put("cartList",cartList);
-		dataWrapper.setData(hMap);
-		//System.out.println(cartList);
-		return dataWrapper;
-	}
 
 
 	public Double getFreight(Receiver receiver,Double sumPrice,Integer itemSum){
@@ -116,7 +48,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			System.out.println(receiver);
 			System.out.println(sumPrice);
 			System.out.println(itemSum);
-
 			for(int i=0;i<list.size();i++){
 
 				String[] citys=list.get(i).getPostCity().split(",");
@@ -205,87 +136,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		return  dataWrapper;
 	}
 
-
-
-	//提交订单
-	public DataWrapper<Void>  placeOrder(){
-		return null;
-	}
-
-
-	//单个商品的购买
-	@Override
-	public DataWrapper<HashMap<String, Object>> buyNow(OrderItem orderItem,
-			String token,Ordera order) {
-		DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String,Object>>();
-		// 192.168.1.103
-		String userId=utilsDao.getUserID(token);
-		//  考虑一下  用户没有登陆直接下订单的情况
-		String orderId=OrderIdUtils.createOrderId(userId);
-		/**
-		 * state,order_id,user_id,qb_ded,
-		 * invoice_hand, is_register, buyer_message, total_fee,
-		 * actual_pay，post_fee,give_qb,created,
-		 * buyer_nick,buyer_rate
-		 */
-		if(order.getQbDed()==null|order.getQbDed()==0){
-			order.setQbDed(0);
-		}if(order.getInvoiceHand()==null){
-			order.setInvoiceHand("没买价没有输入发票抬头");
-		}if(order.getIsRegister()==null){
-			order.setIsRegister(0);
-		}if(order.getBuyerMessage()==null){
-			order.setBuyerMessage("该单暂时未被评价呢");
-			order.setBuyerRate(0);
-		}
-		//create Order and 填写 数据(orderid userid 是否需要残品注册证，留言等等 )
-		placeOrderDao.createOrder(orderId,userId,order);
-
-		orderItem.setOrderId(orderId);
-		//把商品更新到   订单商品表
-		//  测试加上的 
-		//orderItem.setItemId("5");
-		int state=placeOrderDao.synchronizationOne(orderItem);
-		if(state>0){
-			emptyCart(token);
-			System.out.println("订单已生成，购物车已经清空");
-		}
-		//购买商品数
-		int itemNum=orderItem.getNum();
-		//商品单价
-		Double itemPrice=orderItem.getPrice()*orderItem.getNum();
-		//赠送钱币数
-		Double giveQbNum=orderItem.getPrice()*orderItem.getNum()*placeOrderDao.queryQbPercentage(orderItem.getItemSKU());
-		HashMap<String, Object> hmHashMap=new HashMap<String, Object>();
-		/*hmHashMap.put("giveQbNum", giveQbNum);
-		hmHashMap.put("sumPrice", itemPrice);*/
-		hmHashMap.put("OrderItem", orderItem);
-		//hmHashMap.put("yunfei", yunfei);
-		hmHashMap.put("ItemNum", itemNum);
-		//hmHashMap.put("receiver", receiver);
-		dataWrapper.setData(hmHashMap);
-		return dataWrapper;
-	}
-	//保存到订单表
-	@Override  //low!!
-	public DataWrapper<Void> saveMessage(Ordera order,String token) {
-		order.setUserId(utilsDao.getUserID(token));
-		System.out.println(order);
-		System.out.println(token);
-		System.out.println(utilsDao.getUserID(token));
-		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
-		int state=placeOrderDao.saveMessage(order);
-		if(state>0){
-			dataWrapper.setMsg("cg购物车清空了");
-			emptyCart(token);
-
-		}else{
-			dataWrapper.setMsg("sb购物车没清空哦");
-		}
-		return dataWrapper;
-		//return util(state);
-	}
-
 	//清空购物车
 	@Override
 	public DataWrapper<Void> emptyCart(String token) {
@@ -306,10 +156,10 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	//1234
 	@Override
 	public DataWrapper<HashMap<String, Object>> generaOrder(String token, List<OrderItem> orderItemList, Ordera order,
-			 Invoice  invoice
+			Invoice  invoice
 			) {
 		//记录工具设备类的商品 个数
-		 int TooldevicesSumCount=0;
+		int TooldevicesSumCount=0;
 		// TODO Auto-generated method stub
 		//  get userId
 		DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String,Object>>();
@@ -332,24 +182,25 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					order.setBuyerRate(0);
 				}
 			}
+			//创建订单并保存订单数据
+			placeOrderDao.createOrder(orderId,userId,order);
 			//本单赠送钱币百分比
 			double giveQbNum=0;
 			//道邦总价
 			double daoBnagSumPrice=0;
-			
+
 			//除道邦之外的耗材类总价格 
 			double SuppliesSumPrice=0;
 			//除道邦之外的工具设备类总价格
 			double TooldevicesSumPrice=0;	
 			//存放 商品名称的 
 			StringBuffer sb=new StringBuffer();
-            //全部的耗材类总价格
+			//全部的耗材类总价格
 			double AllSuppliesSumPrice=0;
 			//全部的工具设备类总价格
 			double AllTooldevicesSumPrice=0;	
-			//创建订单并保存订单数据
-			placeOrderDao.createOrder(orderId,userId,order);
-			
+
+
 			//把传过来的 List<OrderItem> 遍历到order_item 表中
 			Double sumPrice=0.0;
 			int itemSum=orderItemList.size();//商品总数量
@@ -396,7 +247,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					dataWrapper.setData(hashMap);
 					return dataWrapper;
 				}
-				
+
 				if("上海道邦".equals(orderItemList.get(i).getItemBrandName())){
 					daoBnagSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
 				}else{
@@ -431,35 +282,36 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				//giveQbNum+=0;
 				/*System.out.println(orderItemList.get(i));*/
 			}
-                 //这里计算本单赠送钱币数
-			      //首先道邦品牌
-			    if(daoBnagSumPrice>0&&daoBnagSumPrice<300){
-			    	giveQbNum=giveQbNum+daoBnagSumPrice*0.03;
-			    }else if(daoBnagSumPrice>=300&&daoBnagSumPrice<600){
-			    	giveQbNum=giveQbNum+daoBnagSumPrice*0.05;
-			    }else if(daoBnagSumPrice>=600&&daoBnagSumPrice<1200){
-			    	giveQbNum=giveQbNum+daoBnagSumPrice*0.08;
-			    }else if(daoBnagSumPrice>=1200&&daoBnagSumPrice<2500){
-			    	giveQbNum=giveQbNum+daoBnagSumPrice*0.12;
-			    }else if(daoBnagSumPrice>=2500){
-			    	giveQbNum=giveQbNum+daoBnagSumPrice*0.15;
-			    }
-			    //其他品牌 耗材类
-			    if(SuppliesSumPrice>0&&SuppliesSumPrice<500){
-			    	giveQbNum=giveQbNum+SuppliesSumPrice*0.03;
-				}else if(SuppliesSumPrice>=500&&SuppliesSumPrice<1000){
-					giveQbNum=giveQbNum+SuppliesSumPrice*0.05;
-				}else if(SuppliesSumPrice>=1000&&SuppliesSumPrice<3000){
-					giveQbNum=giveQbNum+SuppliesSumPrice*0.08;
-				}else if(SuppliesSumPrice>=3000){
-					giveQbNum=giveQbNum+SuppliesSumPrice*0.12;
-				}
-			    //其他品牌 工具设配类
-			    if(TooldevicesSumCount==1){
-			    	giveQbNum=giveQbNum+TooldevicesSumPrice*0.05;
-				}else if(TooldevicesSumCount>=2){
-					giveQbNum=giveQbNum+TooldevicesSumPrice*0.10;
-				}
+			
+			//这里计算本单赠送钱币数
+			//首先道邦品牌
+			if(daoBnagSumPrice>0&&daoBnagSumPrice<300){
+				giveQbNum=giveQbNum+daoBnagSumPrice*0.03;
+			}else if(daoBnagSumPrice>=300&&daoBnagSumPrice<600){
+				giveQbNum=giveQbNum+daoBnagSumPrice*0.05;
+			}else if(daoBnagSumPrice>=600&&daoBnagSumPrice<1200){
+				giveQbNum=giveQbNum+daoBnagSumPrice*0.08;
+			}else if(daoBnagSumPrice>=1200&&daoBnagSumPrice<2500){
+				giveQbNum=giveQbNum+daoBnagSumPrice*0.12;
+			}else if(daoBnagSumPrice>=2500){
+				giveQbNum=giveQbNum+daoBnagSumPrice*0.15;
+			}
+			//其他品牌 耗材类
+			if(SuppliesSumPrice>0&&SuppliesSumPrice<500){
+				giveQbNum=giveQbNum+SuppliesSumPrice*0.03;
+			}else if(SuppliesSumPrice>=500&&SuppliesSumPrice<1000){
+				giveQbNum=giveQbNum+SuppliesSumPrice*0.05;
+			}else if(SuppliesSumPrice>=1000&&SuppliesSumPrice<3000){
+				giveQbNum=giveQbNum+SuppliesSumPrice*0.08;
+			}else if(SuppliesSumPrice>=3000){
+				giveQbNum=giveQbNum+SuppliesSumPrice*0.12;
+			}
+			//其他品牌 工具设配类
+			if(TooldevicesSumCount==1){
+				giveQbNum=giveQbNum+TooldevicesSumPrice*0.05;
+			}else if(TooldevicesSumCount>=2){
+				giveQbNum=giveQbNum+TooldevicesSumPrice*0.10;
+			}
 			/*try {
 				//hashMap.put("itemNames", (sb.toString().getBytes("utf-8")));
 			} catch (UnsupportedEncodingException e) {
@@ -495,8 +347,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			hashMap.put("SuppliesSumPrice", SuppliesSumPrice);
 			hashMap.put("TooldevicesSumPrice", TooldevicesSumPrice);
 			hashMap.put("daoBnagSumPrice", daoBnagSumPrice);
-		    
-			 //本单赠送钱币数保存到数据库
+
+			//本单赠送钱币数保存到数据库
 			placeOrderDao.saveGiveQbNum(String.valueOf(giveQbNum),String.valueOf(postFee),
 					String.valueOf(sumPrice)
 					,orderId);

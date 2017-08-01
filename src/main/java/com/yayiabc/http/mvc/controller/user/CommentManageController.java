@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Comments;
@@ -30,7 +31,8 @@ public class CommentManageController {
        */
      @RequestMapping("show")
      @ResponseBody
-     @AdminTokenValidate(description="显示评论管理")
+     @AdminTokenValidate
+     @AdminLog(description="显示评论管理")
      public DataWrapper<List<Comments>> show(
     		 @RequestHeader(value="adminToken")String adminToken,
     		 @RequestParam(value="orderId",required=false) String orderId,
@@ -47,7 +49,8 @@ public class CommentManageController {
       //回复评论
       @RequestMapping("reply")
       @ResponseBody
-      @AdminTokenValidate(description="回复评论")
+      @AdminTokenValidate
+      @AdminLog(description="回复评论")
       public DataWrapper<Void> reply(
     		  @RequestHeader(value="adminToken")String adminToken,
     		  @RequestParam(value="commentId",required=true) Integer commentId,

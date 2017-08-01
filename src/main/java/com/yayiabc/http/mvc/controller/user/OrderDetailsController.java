@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.UserLog;
 import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
@@ -34,7 +35,8 @@ public class OrderDetailsController {
 	private LogisticsService logisticsService;
 	@RequestMapping("show")
 	@ResponseBody
-	@UserTokenValidate(description="前台订单显示")
+	@UserTokenValidate
+	@UserLog(description="前台订单显示")
 	public DataWrapper<List<Ordera>> show(
 			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="state",required=false) String state,
@@ -69,7 +71,8 @@ public class OrderDetailsController {
 	//取消订单
 	@RequestMapping("cancel")
 	@ResponseBody
-	@UserTokenValidate(description="前台取消订单")
+	@UserTokenValidate
+	@UserLog(description="前台取消订单")
 	public DataWrapper<Void> cancel(
 			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderId",required=true) String orderId
@@ -79,8 +82,8 @@ public class OrderDetailsController {
 	//查看物流
 	@RequestMapping("seeLog")
 	@ResponseBody
-	@UserTokenValidate(description="查看物流")
-	
+	@UserTokenValidate
+	@UserLog(description="查看物流")
 	public DataWrapper<String> seeLog(
 			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderId",required=true) String orderId
@@ -107,7 +110,8 @@ public class OrderDetailsController {
 	//确定收货
 	@RequestMapping("confirmReceipt")
 	@ResponseBody
-	@UserTokenValidate(description="确定收货")
+	@UserTokenValidate
+	@UserLog(description="确定收货")
 	public DataWrapper<Void> confirmReceipt(
 			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderId",required=true) String orderId
@@ -117,7 +121,8 @@ public class OrderDetailsController {
 	//显示评论相关内容
 	@RequestMapping("showComItem")
 	@ResponseBody
-	@UserTokenValidate(description="显示评论相关内容")
+	@UserTokenValidate
+	@UserLog(description="显示评论相关内容")
 	public DataWrapper<Ordera> showComItem(
 			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderId",required=true) String orderId
@@ -134,7 +139,8 @@ public class OrderDetailsController {
 	 * @param itemIdList
 	 * @return
 	 */
-	@UserTokenValidate(description="前台确定评论")
+	@UserTokenValidate
+	@UserLog(description="前台确定评论")
 	public DataWrapper<Void> makeSureCom(
 			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderId",required=true) String orderId,

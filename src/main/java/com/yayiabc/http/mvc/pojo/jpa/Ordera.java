@@ -10,7 +10,7 @@ import java.util.List;
 public class Ordera extends BasePojo {
 	private String orderId;
 	private String userId;
-	private Integer actualPay;
+	private Double actualPay;
 
 	private Integer payType;
 
@@ -50,7 +50,15 @@ public class Ordera extends BasePojo {
 	
 	private  Receiver receiver;
 	private  Integer receiverId;
-	
+
+	private User user;
+    private double supplies_sumprice;
+	private double tooldevices_sumprice;
+
+	private List<OrderItem> orderitemList;
+
+	private List<Comments> commentList;
+
 	public Integer getReceiverId() {
 		return receiverId;
 	}
@@ -66,43 +74,6 @@ public class Ordera extends BasePojo {
 	public void setReceiver(Receiver receiver) {
 		this.receiver = receiver;
 	}
-
-
-	private User user;
-    private double supplies_sumprice;
-	private double tooldevices_sumprice;
-	
-	
-
-	public double getSupplies_sumprice() {
-		return supplies_sumprice;
-	}
-
-	public void setSupplies_sumprice(double supplies_sumprice) {
-		this.supplies_sumprice = supplies_sumprice;
-	}
-
-	public double getTooldevices_sumprice() {
-		return tooldevices_sumprice;
-	}
-
-	public void setTooldevices_sumprice(double tooldevices_sumprice) {
-		this.tooldevices_sumprice = tooldevices_sumprice;
-	}
-
-	public Refund getRefund() {
-		return refund;
-	}
-
-	public void setRefund(Refund refund) {
-		this.refund = refund;
-	}
-
-
-	private List<OrderItem> orderitemList;
-
-	private List<Comments> commentList;
-
 
 	public String getUserId() {
 		return userId;
@@ -160,7 +131,7 @@ public class Ordera extends BasePojo {
 		this.orderId = orderId;
 	}
 
-	public Integer getActualPay() {
+	public Double getActualPay() {
 		return actualPay;
 	}
 
@@ -172,7 +143,7 @@ public class Ordera extends BasePojo {
 		this.user = user;
 	}
 
-	public void setActualPay(Integer actualPay) {
+	public void setActualPay(Double actualPay) {
 		this.actualPay = actualPay;
 	}
 
@@ -296,53 +267,30 @@ public class Ordera extends BasePojo {
 		this.giveQb = giveQb;
 	}
 
-	public Ordera() {
-		super();
+	public double getSupplies_sumprice() {
+		return supplies_sumprice;
 	}
 
-	public Ordera(String orderId, Integer actualPay, Integer payType,
-			String postFee, Date paymentTime, Date consignTime, Date endTime,
-			Date closeTime, String buyerMessage, String buyerNick,
-			Integer buyerRate, Integer state, String shippingName,
-			String shippingCode, String invoiceHand, Integer isRegister,
-			Integer giveQb, String refundInfo, User user,
-			List<OrderItem> orderitemList, List<Comments> commentList) {
-		super();
-		this.orderId = orderId;
-		this.actualPay = actualPay;
-		this.payType = payType;
-		this.postFee = postFee;
-		this.paymentTime = paymentTime;
-		this.consignTime = consignTime;
-		this.endTime = endTime;
-		this.closeTime = closeTime;
-		this.buyerMessage = buyerMessage;
-		this.buyerNick = buyerNick;
-		this.buyerRate = buyerRate;
-		this.state = state;
-		this.shippingName = shippingName;
-		this.shippingCode = shippingCode;
-		this.invoiceHand = invoiceHand;
-		this.isRegister = isRegister;
-		this.giveQb = giveQb;
-		this.refundInfo = refundInfo;
-		this.user = user;
-		this.orderitemList = orderitemList;
-		this.commentList = commentList;
+	public void setSupplies_sumprice(double supplies_sumprice) {
+		this.supplies_sumprice = supplies_sumprice;
 	}
 
-	@Override
-	public String toString() {
-		return "Ordera [orderId=" + orderId + ", userId=" + userId + ", actualPay=" + actualPay + ", payType=" + payType
-				+ ", postFee=" + postFee + ", paymentTime=" + paymentTime + ", consignTime=" + consignTime
-				+ ", endTime=" + endTime + ", closeTime=" + closeTime + ", buyerMessage=" + buyerMessage
-				+ ", buyerNick=" + buyerNick + ", buyerRate=" + buyerRate + ", state=" + state + ", shippingName="
-				+ shippingName + ", shippingCode=" + shippingCode + ", invoiceHand=" + invoiceHand + ", isRegister="
-				+ isRegister + ", giveQb=" + giveQb + ", refundInfo=" + refundInfo + ", totalFee=" + totalFee
-				+ ", qbDed=" + qbDed + ", refund=" + refund + ", receiver=" + receiver + ", receiverId=" + receiverId
-				+ ", user=" + user + ", supplies_sumprice=" + supplies_sumprice + ", tooldevices_sumprice="
-				+ tooldevices_sumprice + ", orderitemList=" + orderitemList + ", commentList=" + commentList + "]";
+	public double getTooldevices_sumprice() {
+		return tooldevices_sumprice;
+	}
+
+	public void setTooldevices_sumprice(double tooldevices_sumprice) {
+		this.tooldevices_sumprice = tooldevices_sumprice;
+	}
+
+	public Refund getRefund() {
+		return refund;
+	}
+
+	public void setRefund(Refund refund) {
+		this.refund = refund;
 	}
 
 
+	
 }

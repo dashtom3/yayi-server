@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Invoice;
@@ -33,30 +34,11 @@ public class PlaceOrderController {
 	
 	@Autowired
 	private AliPayService aliPayService;
-	//多个商品时 
-	@RequestMapping("buyNows")
-	@ResponseBody
-	
-	public 	DataWrapper<HashMap<String, Object>> buyNows(
-			@RequestHeader(value="token") String token,
-			@RequestParam(value="itemSKUs",required=true) String[] itemSKUs,
-			/*@RequestParam(value="itemId") String itemId,
-			@RequestParam(value="userId") String userId,
-			@RequestParam(value="receiverId") String receiver_id,
-			@RequestParam(value="itemPropertyNamea") String itemPropertyNamea,
-			@RequestParam(value="itemPropertyNameb") String itemPropertyNameb,
-			@RequestParam(value="itemPropertyNamec") String itemPropertyNamec,
-			@RequestParam(value="num") String num*/
-			@ModelAttribute Ordera order
-			){
-		/*System.out.println(Arrays.toString(itemSKU));
-		return null;*/
-		return placeOrderService.buyNows(token,itemSKUs,order);
-	}
 	//  使用钱币抵扣时  onChange
 	@RequestMapping("Ded")
 	@ResponseBody
-	@UserTokenValidate(description="使用钱币抵扣")
+	@UserTokenValidate
+	 @AdminLog(description="使用钱币抵扣")
 	public DataWrapper<Void> Ded(
 			@RequestHeader(value="token") String token,
 			@RequestParam(value="qbnum") Integer num
@@ -66,7 +48,8 @@ public class PlaceOrderController {
 	//选择地址
 	@RequestMapping("upateAddress")
 	@ResponseBody   //ipi需要文档修改
-	@UserTokenValidate(description="下单前 选择收货地址")
+	@UserTokenValidate
+	 @AdminLog(description="下单前 选择收货地址")
 	public DataWrapper<HashMap<String, Object>> upateAddress(
 			@RequestHeader(value="token") String token,
 			@RequestParam(value="receiverId") Integer receiverId
@@ -75,39 +58,11 @@ public class PlaceOrderController {
 			){
 		return placeOrderService.upateAddress(receiverId,sumPrice,itemSum);
 	}
-	//提交订单//将信息保存到订单表里
-	@RequestMapping("saveMessage")
-	@ResponseBody
-	public DataWrapper<Void>  saveMessage(
-			/*	@RequestParam(value="orderId")String orderId,
-			@RequestParam(value="inHead",required=false)String inHead,
-			@RequestParam(value="registerNum",required=false)String registerNum,
-			@RequestParam(value="orderMessage",required=false)String orderMessage,
-			@RequestParam(value="phone",required=false)String phone,
-			@RequestParam(value="actualPay",required=false)String actualPay,
-			@RequestParam(value="actualPay",required=false)String actualPay*/
-			@ModelAttribute Ordera order,
-			@RequestHeader(value="token",required=true)String token
-			){
-		//将信息保存到订单表里
 
-		return placeOrderService.saveMessage(order,token);
-	}
-	//当用户点击商品图片购买时:
-	@RequestMapping("buyNow")
-	@ResponseBody
-	public 	DataWrapper<HashMap<String, Object>> buyNow(
-			@ModelAttribute OrderItem orderItem,
-			@RequestHeader(value="token",required=true) String token,
-			@ModelAttribute Ordera order
-			){
-
-		//Integer receiverId= Integer.parseInt(receiverIds);
-		return placeOrderService.buyNow(orderItem,token,order);
-	}
 	//伪清空 购物车
 	@ResponseBody
 	@RequestMapping("emptyCart")
+	 @AdminLog
 	public DataWrapper<Void> emptyCart(@RequestParam(value="token")String token){
 		return placeOrderService.emptyCart(token);
 	}
@@ -115,7 +70,8 @@ public class PlaceOrderController {
 	//1234
 	@RequestMapping("generaOrder")
 	@ResponseBody
-	@UserTokenValidate(description="提交订单")
+	@UserTokenValidate
+	 @AdminLog(description="提交订单")
 	public DataWrapper<HashMap<String, Object>> generaOrder(
 			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderItem",required=true) String  orderItem,

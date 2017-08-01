@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminLog;
+import com.yayiabc.common.annotation.UserLog;
 import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Receiver;
@@ -22,7 +24,8 @@ public class ShippingAddressController {
 	private ShippingAddressService shippingAddressService;
 	@RequestMapping("insert")
 	@ResponseBody
-	@UserTokenValidate(description="新增收货地址")
+	@UserTokenValidate
+	 @UserLog(description="新增收货地址")
 	public DataWrapper<Void> insert(
 			@ModelAttribute Receiver receiver,
 			@RequestHeader(value=("token"),required=true) String token
@@ -51,7 +54,8 @@ public class ShippingAddressController {
 	}
 	@RequestMapping("update")
 	@ResponseBody
-	@UserTokenValidate(description="更改收货地址")
+	@UserTokenValidate
+	 @UserLog(description="更改收货地址")
 	public  DataWrapper<Void> update(
 			@ModelAttribute Receiver receiver,
 			@RequestParam(value="receiverId",required=true) String receiverIds,
@@ -84,7 +88,8 @@ public class ShippingAddressController {
 	//xianshi默认收货地址逻辑
 	   @RequestMapping("showShippingAddress")
 	   @ResponseBody
-	   @UserTokenValidate(description="显示收货地址")
+	   @UserTokenValidate
+	   @UserLog(description="显示收货地址")
 	   public DataWrapper<List<Receiver>> showShippingAddress(
 			   @RequestHeader(value="token",required=true) String token
 			   ){
@@ -93,7 +98,8 @@ public class ShippingAddressController {
 	   //删除收货地址
 	   @RequestMapping("deleteShippingAddress")
 	   @ResponseBody
-	   @UserTokenValidate(description="删除收货地址")
+	   @UserTokenValidate
+	   @UserLog(description="删除收货地址")
 	   public DataWrapper<Integer>  deleteShoppingAddress(
 			   @RequestHeader(value="token",required=true) String token,
 			   @RequestParam(value="receiverId",required=true) String receiverId

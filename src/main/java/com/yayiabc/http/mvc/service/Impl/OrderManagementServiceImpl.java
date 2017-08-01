@@ -16,6 +16,7 @@ import com.yayiabc.http.mvc.dao.OrderDetailsDao;
 import com.yayiabc.http.mvc.dao.OrderManagementDao;
 import com.yayiabc.http.mvc.dao.PlaceOrderDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
+import com.yayiabc.http.mvc.pojo.jpa.Invoice;
 import com.yayiabc.http.mvc.pojo.jpa.ItemValue;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
@@ -220,7 +221,6 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 				//内层全部购买商品详情
 				if(SendorderItemList.get(x).getItemSKU().equals(itemList.get(i).getItemSKU())){
 					if(SendorderItemList.get(x).getRefunNum().equals(itemList.get(i).getNum())){
-					System.out.println("进来了啊啊啊啊啊");
 						itemList.remove(i);
 						//i--;
 						//为订单商品表里的refundNum 更改
@@ -282,7 +282,8 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		count=0;
 		//扣除钱币数
 		System.out.println(order);
-		double dedQbNum=order.getGiveQb()-refundAfterGiveQbNum;
+		double dedQbNums=order.getGiveQb()-refundAfterGiveQbNum;
+		Integer dedQbNum=(int) Math.round(dedQbNums);
 		System.err.println(order.getGiveQb()+"  ----- "+refundAfterGiveQbNum);
 		//扣除该用户钱币
 		System.out.println(order);
@@ -290,15 +291,15 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		/*int sign=orderManagementDao.dedQbNum(dedQbNum,order.getUserId());*/
 		
 			QbRecord q=new QbRecord();
-			q.setRemark("退款乾币扣除");
-			q.setQbRout(-(int)dedQbNum);
+			q.setRemark("订单有退款，下单时赠送的乾币需扣除："+dedQbNum+"。（订单编号:"+SendorderItemList.get(0).getOrderId()+"）");
+			q.setQbRout(-dedQbNum);
 			String token= utilsDao.queryTokenByOrderId(SendorderItemList.get(0).getOrderId());
 			//放入钱币记录表
 			userMyQbService.add(q, token);
              		
 		System.out.println(haoCaiRefundSumMoney+"System.out.println(haoCaiRefundSumMoney);System.out.println(haoCaiRefundSumMoney);System.out.println(haoCaiRefundSumMoney);");
 		//退回钱币数
-		if(order.getActualPay()-refundSumPrice>=0){
+		if(order.getActualPay()>refundSumPrice){
 			//退钱refundSumPrice
 			 
 			int state=orderManagementDao.saveRefundMessage(order.getUserId(),haoCaiRefundSumMoney,ToolRefundSumMoney,
@@ -318,13 +319,15 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			
 			
 			//退金币0
-		}else if(order.getActualPay()-refundSumPrice<0){
+		}else if(order.getActualPay()<refundSumPrice){
 			//退钱order.getActualPay()
 			//保存到退款表里
+			Integer a=(int) Math.round(refundSumPrice-order.getActualPay()); //退回钱币数
 			int state=orderManagementDao.saveRefundMessages(order.getUserId(),haoCaiRefundSumMoney,ToolRefundSumMoney,
-					dedQbNum,(refundSumPrice-order.getActualPay()),
-					(haoCaiRefundSumMoney+ToolRefundSumMoney),SendorderItemList.get(0).getOrderId()
+					dedQbNum,a,
+					(order.getActualPay()),SendorderItemList.get(0).getOrderId()
 					);
+		
 			 //退款信息保存到 sale_income 里
 			orderManagementDao.saveRefundMessToSaleIncome(
 					saleId,SendorderItemList.get(0).getOrderId(),
@@ -338,11 +341,11 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			//退金币refundSumPrice-order.getActualPay()
 			/*int states=orderManagementDao.returnQb(refundSumPrice-order.getActualPay(),order.getUserId());*/
 			QbRecord w=new QbRecord();
-			w.setRemark("退款乾币退回");
+			w.setRemark("订单有退款，下单时使用的乾币需退回："+a+"。（订单编号:"+SendorderItemList.get(0).getOrderId()+"）");
 			w.setQbRget((int)(refundSumPrice-order.getActualPay()));
 			String token1= utilsDao.queryTokenByOrderId(SendorderItemList.get(0).getOrderId());
 			//放入钱币记录表
-			userMyQbService.add(q, token1);
+			userMyQbService.add(w, token1);
 		}
 		afterRefundSumMoney=afterDaoBangSumMoney+afterhaoCaiSumMoney+aftergongJuSumMoney;
 	/*	System.out.println("测试:"+"道邦:"+afterDaoBangSumMoney+" "
@@ -352,8 +355,8 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 				);*/
 		HashMap<String, Object> hm=new HashMap<String, Object>();
 		hm.put("扣除钱币数", dedQbNum);
-		hm.put("退回钱币数", (refundSumPrice-order.getActualPay()));
-		hm.put("总价", refundSumPrice);
+		hm.put("退回钱币数", Math.round((refundSumPrice-order.getActualPay())));
+		hm.put("退款总价", refundSumPrice);
 		dataWrapper.setData(hm);
 		return dataWrapper;
 	}
@@ -388,11 +391,21 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		return dataWrapper;
 	}
 	//   //显示已经退款数据的订单信息
+	 private Double dedQb;
+	    private Double returnQb;
+	    private Double returnMoney;
 	@Override
 	public DataWrapper<Ordera> showRefundOrderMessage(String orderId) {
 		DataWrapper<Ordera> dataWrapper=new DataWrapper<Ordera>();
 		Ordera ordera= orderManagementDao.showRefundOrderMessage(orderId);
 		dataWrapper.setData(ordera);
+		return dataWrapper;
+	}
+	@Override
+	public DataWrapper<Invoice> queryOrderInvoice(String orderId) {
+		// TODO Auto-generated method stub
+		DataWrapper<Invoice> dataWrapper=new DataWrapper<Invoice>();
+		dataWrapper.setData(orderManagementDao.queryOrderInvoice(orderId));
 		return dataWrapper;
 	}
 }

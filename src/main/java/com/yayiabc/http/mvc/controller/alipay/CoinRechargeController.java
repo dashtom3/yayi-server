@@ -1,7 +1,10 @@
 package com.yayiabc.http.mvc.controller.alipay;
 
+import java.io.IOException;
 import java.util.Date;
 import java.util.Random;
+
+import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -28,12 +31,19 @@ public class CoinRechargeController {
    // @UserTokenValidate(description="开始支付宝充值乾币")
     public void recharge(
     		@RequestParam(value="token",required=true)String token,
-    		@RequestParam(value="money",required=true)String money
+    		@RequestParam(value="money",required=true)String money,
+    		 HttpServletResponse response
     		){
     	String codeId=createId(token);
     	utilsdao.saveRechargeMessage(codeId,utilsdao.getUserID(token),money);
     	    //调用支付宝
-    	alipay.packingParameter(codeId, "购买铅笔", money,"钱币");
+    String sHtmlText=	alipay.packingParameter(codeId, "乾币充值", money,"乾币");
+    	try {
+			response.getWriter().write(sHtmlText);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
     }
      //生成 id的方法
      String createId(String token){

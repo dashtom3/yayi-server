@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.annotation.AdminTokenValidate;
+import com.yayiabc.common.annotation.SaleLog;
 import com.yayiabc.common.annotation.SaleTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.With;
@@ -21,7 +22,8 @@ public class PunRewardController {
     private PunRewardService punRewardService;
     @ResponseBody
     @RequestMapping("show")
-    @SaleTokenValidate(description="创客:显示钱包余额 ")
+    @SaleTokenValidate
+    @SaleLog(description="创客:显示钱包余额 ")
     DataWrapper<Object> show(
     		@RequestHeader(value="saleToken",required=true) String saleToken
     		 ){
@@ -30,7 +32,19 @@ public class PunRewardController {
     }
     @ResponseBody
     @RequestMapping("shows")
+    @SaleTokenValidate
+    @SaleLog(description="后台:显示钱包余额 ")
     DataWrapper<Object> shows(
+    		@RequestHeader(value="saleToken",required=true) String saleToken,
+    		@RequestParam(value="saleId",required=true) String saleId
+    		 ){
+		return punRewardService.shows(saleId);
+    }
+    @ResponseBody
+    @RequestMapping("adminShows")
+    @AdminTokenValidate(description="后台:显示钱包余额 ")
+    DataWrapper<Object> adminshows(
+    		@RequestHeader(value="adminToken",required=true) String adminToken,
     		@RequestParam(value="saleId",required=true) String saleId
     		 ){
 		return punRewardService.shows(saleId);
@@ -38,7 +52,8 @@ public class PunRewardController {
     //增加或减少余额
     @RequestMapping("addOrDelMoney")
     @ResponseBody
-    @AdminTokenValidate(description="创客:管理员增加或者减少余额 ")
+    @AdminTokenValidate
+    @SaleLog(description="创客:管理员增加或者减少余额 ")
      DataWrapper<Void> addOrDelMoney(
     		 @RequestHeader(value="adminToken",required=true)String adminToken,
     		 @RequestParam(value="saleId",required=true)String saleId,

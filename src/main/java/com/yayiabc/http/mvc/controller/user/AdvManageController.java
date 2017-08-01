@@ -10,7 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
+import com.yayiabc.common.annotation.UserLog;
 import com.yayiabc.common.sdk.LogisticsMain;
 import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
@@ -27,6 +29,7 @@ public class AdvManageController {
     @RequestMapping("showAdv")
     @ResponseBody
    // @AdminTokenValidate(description="显示广告设置内容")
+   
     public DataWrapper<List<AdvChart>> showAdv(
     		//@RequestHeader(value="adminToken",required=true)String adminToken
     		){
@@ -36,7 +39,8 @@ public class AdvManageController {
   //update
     @RequestMapping("updateAdv")
     @ResponseBody
-    @AdminTokenValidate(description="更改广告设置")
+    @AdminTokenValidate
+    @AdminLog(description="更改广告设置")
     public DataWrapper<Void> updateAdv(
     		@RequestHeader(value="adminToken",required=true)String adminToken,
     		@ModelAttribute AdvChart advChart,
@@ -49,7 +53,8 @@ public class AdvManageController {
     //insert
     @RequestMapping("insertAdv")
     @ResponseBody
-    @AdminTokenValidate(description="添加广告设置")
+    @AdminTokenValidate
+    @AdminLog(description="添加广告设置")
     public DataWrapper<Void> insertAdv(
     		@RequestHeader(value="adminToken",required=true)String adminToken,
     		@ModelAttribute AdvChart advChart
@@ -63,9 +68,10 @@ public class AdvManageController {
      * @param advId
      * @return
      */
-    @AdminTokenValidate(description="删除广告设置")
+    @AdminTokenValidate
     @RequestMapping("deleteAdv")
     @ResponseBody
+    @AdminLog(description="删除广告设置")
     public DataWrapper<Void> deleteAdv(
     		@RequestHeader(value="adminToken")String adminToken,
     		@RequestParam(value="advId") Integer advId

@@ -117,7 +117,7 @@ public class AliPayServiceImpl implements AliPayService{
 						q.setQbRget(charge.getMoney());
 						q.setRemark("乾币充值(支付宝)");
 						userMyQbService.add(q, token);
-						return "success";
+						return "successQB";
 					}
 					PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 					payAfterOrderUtil.universal(out_trade_no);

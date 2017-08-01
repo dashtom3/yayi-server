@@ -10,6 +10,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminLog;
+import com.yayiabc.common.annotation.AdminTokenValidate;
+import com.yayiabc.common.annotation.SaleLog;
 import com.yayiabc.common.annotation.SaleTokenValidate;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
@@ -34,7 +37,8 @@ public class WitManageController {
 	//提交提现申请
 	@RequestMapping("submitWit")
 	@ResponseBody//real_name,type,anumber,cashMoney,phone
-	@SaleTokenValidate(description="提交提现申请")
+	@SaleTokenValidate
+	@SaleLog(description="提交提现申请")
 	public  DataWrapper<Void> submitWit(
 			@RequestHeader(value="saleToken") String saleToken,
 			@RequestParam(value="vCode") String vCode,
@@ -62,7 +66,8 @@ public class WitManageController {
 	//获取验证码
 	@ResponseBody
 	@RequestMapping("gitVcode")
-	@SaleTokenValidate(description="获取验证码")
+	@SaleTokenValidate
+	@SaleLog(description="获取验证码")
 	public  DataWrapper<String> gitVcode(
 			@RequestHeader(value="saleToken") String saleToken,
 			@RequestParam(value="phone") String phone
@@ -92,9 +97,10 @@ public class WitManageController {
 	//
 	@RequestMapping("oper")
 	@ResponseBody
-	@SaleTokenValidate(description="通过提现按钮")
+	@AdminTokenValidate
+	@AdminLog(description="通过提现按钮")
 	public   DataWrapper<Void> oper(
-			@RequestHeader(value="saleToken") String saleToken,
+			@RequestHeader(value="adminToken") String adminToken,
 			@RequestParam(value="balacceId") Integer balacceId
 			){
 		return witManageService.oper(balacceId);
@@ -103,7 +109,8 @@ public class WitManageController {
 	//show + query
 	@RequestMapping("query")
 	@ResponseBody
-	@SaleTokenValidate(description="对提现列表进行查询显示")
+	@AdminTokenValidate
+	@AdminLog(description="对提现列表进行查询显示")
 	public  DataWrapper<List<With>> query(
 			@RequestHeader(value="adminToken",required=true) String adminToken,
 			@RequestParam(value="message",required=false) String message ,  //姓名  或者手机号

@@ -16,4 +16,6 @@ public interface CusResoDao {
 	public int update(CusResources cus);
 	
 	public int delete(@Param("cusId")int id);
+
+	public int queryCount(HashMap<String, String> hashMap);
 }

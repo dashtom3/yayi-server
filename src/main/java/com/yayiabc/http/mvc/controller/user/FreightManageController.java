@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.FreeShipping;
@@ -24,7 +25,8 @@ public class FreightManageController {
 	//显示
     @RequestMapping("show")
     @ResponseBody
-    @AdminTokenValidate(description="运费管理显示")
+    @AdminTokenValidate
+    @AdminLog(description="运费管理显示")
     public DataWrapper< List<PostFee>> show(
     		@RequestHeader(value="adminToken") String adminToken
     		){
@@ -33,7 +35,8 @@ public class FreightManageController {
     //更改自定义运费
     @RequestMapping("customFreight")
     @ResponseBody
-    @AdminTokenValidate(description="更改自定义运费")
+    @AdminTokenValidate
+    @AdminLog(description="更改自定义运费")
     public DataWrapper< Void> customFreight(
     		@RequestParam(value="postFeeId",required=true) String postFeeId,
     		@RequestHeader(value="adminToken") String adminToken,
@@ -56,7 +59,8 @@ public class FreightManageController {
     //add
     @RequestMapping("addCustomFreight")
     @ResponseBody
-    @AdminTokenValidate(description="增加自定义运费管理")
+    @AdminTokenValidate
+    @AdminLog(description="增加自定义运费管理")
     public DataWrapper< Void> addCustomFreight(
     		@RequestHeader(value="adminToken") String adminToken,
     		//@RequestParam(value="postFeeId",required=true) Integer postFeeId,
@@ -79,7 +83,8 @@ public class FreightManageController {
     //删除
     @RequestMapping("deleteCustomFreight")
     @ResponseBody
-    @AdminTokenValidate(description="删除自定义运费")
+    @AdminTokenValidate
+    @AdminLog(description="删除自定义运费")
     public DataWrapper< Void> customFreight(
     		@RequestHeader(value="adminToken") String adminToken,
     		//@RequestParam(value="postFeeId",required=true)
@@ -101,9 +106,10 @@ public class FreightManageController {
 		return list;
 	}
 	//包邮Add
-    @AdminTokenValidate(description="插入包邮数据")
+    @AdminTokenValidate
 	 @RequestMapping("insertFreeShipp")
 	    @ResponseBody
+	    @AdminLog(description="插入包邮数据")
 		public DataWrapper<Void> insertFreeShipp(
 				//freeShipping f
 				@RequestParam(value="postCity",required=true) String postCity,
@@ -120,7 +126,8 @@ public class FreightManageController {
 	//包邮update
 		 @RequestMapping("updateFreeShipp")
 		    @ResponseBody
-		    @AdminTokenValidate(description="更改包邮数据")
+		    @AdminTokenValidate
+		 @AdminLog(description="更改包邮数据")
 			public DataWrapper<Void> updateFreeShipp(
 					//freeShipping f
 					@RequestParam(value="postCity",required=false) String postCity,

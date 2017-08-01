@@ -1,11 +1,13 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
+import java.util.Date;
+
 /**
  * 
  * @author xiaojiang 退货信息表
  */
 public class Refund extends BasePojo {
-	private String refundId;
+	private Integer refundId;
 
 	private String userId;
 
@@ -49,12 +51,13 @@ public class Refund extends BasePojo {
 		this.returnMoney = returnMoney;
 	}
 
-	public String getRefundId() {
+	
+	public Integer getRefundId() {
 		return refundId;
 	}
 
-	public void setRefundId(String refundId) {
-		this.refundId = refundId == null ? null : refundId.trim();
+	public void setRefundId(Integer refundId) {
+		this.refundId = refundId;
 	}
 
 	public String getUserId() {
@@ -72,8 +75,6 @@ public class Refund extends BasePojo {
 	public void setItemId(String itemId) {
 		this.itemId = itemId;
 	}
-
-
 	public String getRefundReason() {
 		return refundReason;
 	}
@@ -122,6 +123,11 @@ public class Refund extends BasePojo {
 	public void setRefund_money_gongju(Double refund_money_gongju) {
 		this.refund_money_gongju = refund_money_gongju;
 	}
-
-
+	@Override
+	public String toString() {
+		return "Refund [refundId=" + refundId + ", userId=" + userId + ", itemId=" + itemId + ", refundReason="
+				+ refundReason + ", refundMoney=" + refundMoney + ", refund_money_haocai=" + refund_money_haocai
+				+ ", refund_money_gongju=" + refund_money_gongju + ", state=" + state + ", failReason=" + failReason
+				+ ", dedQb=" + dedQb + ", returnQb=" + returnQb + ", returnMoney=" + returnMoney + "]";
+	}
 }

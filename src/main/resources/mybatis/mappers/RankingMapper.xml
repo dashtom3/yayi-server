@@ -43,7 +43,7 @@
     ) AS obj_new
 	</select>
 	
-	<select id="getSaleRanking" resultType="Ranking">
+	<select id="getSaleRankingNow" resultType="Ranking">
 		SELECT phone,bind_user_num,order_count,sale_money,rownum FROM (
 		SELECT
     	obj_new.phone,
@@ -80,7 +80,18 @@
     ) AS a WHERE phone =(SELECT phone FROM sale_info WHERE sale_id=#{saleId})
 	</select>
 	
+	<select id="getSaleCountNow" resultType="int">
+		SELECT COUNT(0) FROM sale_info;
+	</select>
+	
+	<insert id="saveSaleNum">
+		 INSERT INTO sale_num(sale_num,created,updated) 
+   	 	 VALUE(#{saleNum},NOW(),NOW());
+	</insert>
+	
 	<select id="getSaleCount" resultType="int">
-		SELECT COUNT(0) FROM sale_info
+		SELECT sale_num FROM sale_num 
+    	WHERE YEAR(created) =#{year}
+    	AND MONTH(created)=#{month}
 	</select>
 </mapper>        

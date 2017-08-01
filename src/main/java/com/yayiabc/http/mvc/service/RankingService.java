@@ -6,9 +6,9 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Ranking;
 
 public interface RankingService {
-	DataWrapper<List<Ranking>> queryMonthRanking(String beYearMonth);
+	DataWrapper<List<Ranking>> queryMonthRanking(String beYearMonth);	//排行榜
 	
-	DataWrapper<List<Ranking>> queryMonthRankingAll(String beYearMonth);
+	DataWrapper<List<Ranking>> queryMonthRankingAll(String beYearMonth);	//每月结算查询方法
 	
 	DataWrapper<Ranking> getSaleRanking(String token,String startDate,String endDate);
 	

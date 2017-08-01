@@ -72,7 +72,7 @@ public class RankingServiceImpl implements RankingService {
 	@Override
 	public DataWrapper<Ranking> getSaleRanking(String token, String startDate,
 			String endDate) {
-
+		
 		return null;
 	}
 

@@ -29,7 +29,6 @@ public class AdminstratorController {
 	@RequestMapping("add")
 	@ResponseBody
 	@AdminTokenValidate
-	@AdminLog(description="超级管理员添加普通管理员")
 	public DataWrapper<Void> addAdminstrator(
 			@RequestParam(value="phone",required=true) String phone,
 			@RequestParam(value="adminstratorPwd",required=true) String adminstratorPwd,
@@ -45,7 +44,6 @@ public class AdminstratorController {
 	@RequestMapping("delete")
 	@ResponseBody
 	@AdminTokenValidate
-	@AdminLog(description="超级管理员删除普通管理员")
 	public DataWrapper<Void> deleteAdminstrator(
 			@RequestParam(value="adminstratorId",required=true) Integer adminstratorId,
 			@RequestHeader(value="adminToken",required=true)String adminToken
@@ -59,7 +57,6 @@ public class AdminstratorController {
 	@RequestMapping("update")
 	@ResponseBody
 	@AdminTokenValidate
-	@AdminLog(description="超级管理员修改普通管理员信息")
 	public DataWrapper<Void> updateAdminstrator(
 			@RequestParam(value="adminstratorId",required=true) Integer adminstratorId,
 			@RequestParam(value="phone",required=true) String phone,
@@ -76,7 +73,6 @@ public class AdminstratorController {
 	@RequestMapping("query")
 	@ResponseBody
 	@AdminTokenValidate
-	@AdminLog(description="超级管理员查询管理员列表")
 	public DataWrapper<List<Adminstrator>> queryAdminstrator(
 			@RequestParam(value="phone",required=false) String phone,
 			@RequestParam(value="trueName",required=false) String trueName,

@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
@@ -28,7 +29,8 @@ public class UserQbListController {
 	 */
 	@RequestMapping(value = "list", method = RequestMethod.GET)
 	@ResponseBody
-	@AdminTokenValidate(description="管理员查询用户乾币信息列表")
+	@AdminTokenValidate
+	@AdminLog(description="管理员获取用户乾币信息列表")
 	public DataWrapper<List<QbRecord>> list(
 			@RequestParam(value = "phone", required = false) String phone,
 			@RequestParam(value = "startDate", required = false) String startDate,
@@ -46,7 +48,8 @@ public class UserQbListController {
 	 */
 	@RequestMapping(value = "update", method = RequestMethod.POST)
 	@ResponseBody
-	@AdminTokenValidate(description="管理员修改用户乾币")
+	@AdminTokenValidate
+	@AdminLog(description="管理员修改用户乾币")
 	public DataWrapper<Void> update(
 			@RequestParam(value = "phone", required = true) String phone,
 			@RequestParam(value = "qbBalance", required = true) Integer qbBalance,
@@ -60,7 +63,7 @@ public class UserQbListController {
 	 */
 	@RequestMapping(value = "queryQb", method = RequestMethod.GET)
 	@ResponseBody
-	@AdminTokenValidate(description="管理员查询具体用户乾币余额")
+	@AdminTokenValidate
 	public DataWrapper<Map<String, Integer>> queryQb(
 			@RequestParam(value = "userPhone", required = true) String userPhone,
 			@RequestHeader(value="adminToken",required=true)String adminToken

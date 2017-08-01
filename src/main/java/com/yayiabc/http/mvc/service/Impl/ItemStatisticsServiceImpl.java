@@ -20,15 +20,14 @@ public class ItemStatisticsServiceImpl implements ItemStatisticsService {
 	@Override
 	public DataWrapper<List<ItemStatistics>> query(String itemName,
 			String itemId, String itemSKU, String itemBrandName,
-			Integer currentPage, Integer numberPerPage) {
+			Integer currentPage, Integer numberPerPage,Integer state) {
 		DataWrapper<List<ItemStatistics>> dataWrapper = new DataWrapper<List<ItemStatistics>>();
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
 		int totalNumber =itemStatisticsDao.getCount(itemName, itemId, itemSKU, itemBrandName);
 		dataWrapper.setPage(page, totalNumber);
-		List<ItemStatistics> list = itemStatisticsDao.query(itemName, itemId,
-				itemSKU, itemBrandName,page);
+		List<ItemStatistics> list = itemStatisticsDao.query(itemName, itemId, itemSKU, itemBrandName, page, state);
 		dataWrapper.setData(list);
 		return dataWrapper;
 	}

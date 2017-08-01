@@ -9,6 +9,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.SaleLog;
 import com.yayiabc.common.annotation.SaleTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Ranking;
@@ -37,7 +38,8 @@ public class RankingController {
 	 */
 	@RequestMapping("compareData")
 	@ResponseBody
-	@SaleTokenValidate(description="销售员排行榜排名信息")
+	@SaleTokenValidate
+	@SaleLog(description="销售员查询排行榜")
 	public DataWrapper<Ranking> compareData(
 			@RequestParam(value="beYearMonth",required=true)String beYearMonth,
 			@RequestHeader(value="saleToken",required=true)String token

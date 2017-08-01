@@ -11,6 +11,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
@@ -29,7 +30,7 @@ public class UserManageListController {
 	 */
 	@RequestMapping(value="userlist",method=RequestMethod.GET)
 	@ResponseBody
-	@AdminTokenValidate(description="管理员查询用户信息列表")
+	@AdminTokenValidate
 	public DataWrapper<List<Map<String,String>>> userlist(
 			@RequestParam(value="phone",required=false)String phone,
 			@RequestParam(value="trueName",required=false)String trueName,
@@ -50,7 +51,7 @@ public class UserManageListController {
 	 */
 	@RequestMapping(value="salelist",method=RequestMethod.GET)
 	@ResponseBody
-	@AdminTokenValidate(description="获取简略销售员信息列表")
+	@AdminTokenValidate
 	public DataWrapper<List<SaleInfo>> salelist(
 			@RequestParam(value="salePhone",required=false)String salePhone,
 			@RequestParam(value="saleName",required=false)String saleName,
@@ -66,7 +67,8 @@ public class UserManageListController {
 	 */
 	@RequestMapping(value="bind",method=RequestMethod.POST)
 	@ResponseBody
-	@AdminTokenValidate(description="用户绑定销售员")
+	@AdminTokenValidate
+	@AdminLog(description="管理员操作，用户绑定销售员")
 	public DataWrapper<Void> bind(
 			@RequestParam(value="salePhone",required=true)String salePhone,
 			@RequestParam(value="userPhone",required=true)String userPhone,
@@ -81,7 +83,8 @@ public class UserManageListController {
 	 */
 	@RequestMapping(value="disBind",method=RequestMethod.POST)
 	@ResponseBody
-	@AdminTokenValidate(description="用户取消绑定销售员")
+	@AdminTokenValidate
+	@AdminLog(description="管理员操作，用户取消绑定销售员")
 	public DataWrapper<Void> disBind(
 			@RequestParam(value="salePhone",required=true)String salePhone,
 			@RequestParam(value="userPhone",required=true)String userPhone,
@@ -95,7 +98,8 @@ public class UserManageListController {
 	 */
 	@RequestMapping(value="detail",method=RequestMethod.GET)
 	@ResponseBody
-	@AdminTokenValidate(description="管理员查询用户详情")
+	@AdminTokenValidate
+	@AdminLog(description="管理员查询用户详情")
 	public DataWrapper<UserAllInfo> detail(
 			@RequestParam(value="phone",required=true)String phone,
 			@RequestHeader(value="adminToken",required=true)String adminToken

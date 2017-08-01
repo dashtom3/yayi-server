@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
@@ -30,7 +31,8 @@ public class SaleListController {
 	 */
 	@RequestMapping(value="query",method=RequestMethod.GET)
 	@ResponseBody
-	@AdminTokenValidate(description="管理员查询销售员列表")
+	@AdminTokenValidate
+	@AdminLog(description="管理员查询销售员列表")
 	public DataWrapper<List<SaleInfo>> query(
 			@RequestParam(value="saleId",required=false)String saleId,
 			@RequestParam(value="phone",required=false)String phone,
@@ -48,7 +50,7 @@ public class SaleListController {
 	 */
 	@RequestMapping(value="userlist",method=RequestMethod.GET)
 	@ResponseBody
-	@AdminTokenValidate(description="获取简略用户信息列表")
+	@AdminTokenValidate
 	public DataWrapper<List<User>> userlist(
 			@RequestParam(value="salePhone",required=true)String salePhone,
 			@RequestParam(value="userPhone",required=false)String userPhone,
@@ -67,7 +69,8 @@ public class SaleListController {
 	 */
 	@RequestMapping(value="detail",method=RequestMethod.GET)
 	@ResponseBody
-	@AdminTokenValidate(description="管理员查询销售员详情")
+	@AdminTokenValidate
+	@AdminLog(description="管理员查询销售员详情")
 	public DataWrapper<SaleInfo> datail(
 			@RequestParam(value="phone",required=true)String phone,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
@@ -82,7 +85,8 @@ public class SaleListController {
 	 */
 	@RequestMapping(value="bind",method=RequestMethod.POST)
 	@ResponseBody
-	@AdminTokenValidate(description="销售员绑定用户")
+	@AdminTokenValidate
+	@AdminLog(description="管理员操作，销售员绑定用户")
 	public DataWrapper<Void> bind(
 			@RequestParam(value="userPhone",required=true)String[] userPhone,
 			@RequestParam(value="salePhone",required=true)String salePhone,
@@ -101,7 +105,8 @@ public class SaleListController {
 	 */
 	@RequestMapping(value="disBind",method=RequestMethod.POST)
 	@ResponseBody
-	@AdminTokenValidate(description="销售员取消绑定用户")
+	@AdminTokenValidate
+	@AdminLog(description="管理员操作，销售员取消绑定用户")
 	public DataWrapper<Void> disBind(
 			@RequestParam(value="salePhone",required=true)String salePhone,
 			@RequestParam(value="userPhone",required=true)String[] userPhone,

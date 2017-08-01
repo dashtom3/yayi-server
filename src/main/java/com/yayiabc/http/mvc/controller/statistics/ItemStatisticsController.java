@@ -10,6 +10,7 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.model.ItemStatistics;
@@ -27,7 +28,8 @@ public class ItemStatisticsController {
 	 */
 	@RequestMapping(value="query",method=RequestMethod.GET)
 	@ResponseBody
-	@AdminTokenValidate(description="管理员查询商品统计")
+	@AdminTokenValidate
+	@AdminLog(description="管理员查询商品统计")
 	public DataWrapper<List<ItemStatistics>> query(
 			@RequestParam(value="itemName",required=false)String itemName,
 			@RequestParam(value="itemId",required=false)String itemId,
@@ -35,8 +37,9 @@ public class ItemStatisticsController {
 			@RequestParam(value="itemBrandName",required=false)String itemBrandName,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
+    		@RequestParam(value="state",required=false,defaultValue="0") Integer state,
     		@RequestHeader(value="adminToken",required=true)String adminToken
 	){
-		return itemStatisticsService.query(itemName, itemId, itemSKU, itemBrandName,currentPage,numberPerPage);
+		return itemStatisticsService.query(itemName, itemId, itemSKU, itemBrandName, currentPage, numberPerPage, state);	
 	}
 }

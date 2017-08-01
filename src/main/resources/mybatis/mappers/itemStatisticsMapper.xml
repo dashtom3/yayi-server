@@ -44,7 +44,15 @@
 			</if>
 		</where>
 		GROUP BY iv.item_sKU
-		ORDER BY ii.created DESC 
+		<if test="state == 0">
+			ORDER BY ii.created DESC 
+		</if>
+		<if test="state == 1">
+			ORDER BY ii.sales DESC
+		</if>
+		<if test="state ==2">
+			ORDER BY ii.refund_num DESC
+		</if>
         LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
 	

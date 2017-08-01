@@ -8,9 +8,9 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.UserLog;
 import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Certification;
@@ -31,7 +31,8 @@ public class UserPersonalInfoController {
 	 */
 	@RequestMapping(value="detail",method=RequestMethod.GET)
 	@ResponseBody
-	@UserTokenValidate(description="获取个人资料详情")
+	@UserTokenValidate
+	@UserLog(description="用户获取个人资料详情")
 	public DataWrapper<UserPersonalInfo> detail(
 			@RequestHeader(value="token",required=true)String token
 	){
@@ -43,7 +44,8 @@ public class UserPersonalInfoController {
 	 */
 	@RequestMapping(value = "updateUser", method = RequestMethod.POST)
 	@ResponseBody
-	@UserTokenValidate(description="编辑个人资料个人信息")
+	@UserTokenValidate
+	@UserLog(description="用户编辑个人资料个人信息")
 	public DataWrapper<User> updateUser(
 			@ModelAttribute User user,
 			@RequestHeader(value = "token", required = true) String token
@@ -56,7 +58,8 @@ public class UserPersonalInfoController {
 	 */
 	@RequestMapping(value = "updateCertification", method = RequestMethod.POST)
 	@ResponseBody
-	@UserTokenValidate(description="编辑个人资料资质认证")
+	@UserTokenValidate
+	@UserLog(description="用户编辑个人资料资质认证")
 	public DataWrapper<Certification> updateCertification(
 			@ModelAttribute Certification certification,
 			@RequestHeader(value = "token", required = true) String token
@@ -69,7 +72,7 @@ public class UserPersonalInfoController {
 	 */
 	@RequestMapping(value="queryBind",method=RequestMethod.GET)
 	@ResponseBody
-	@UserTokenValidate(description="查询用户是否已绑定销售员")
+	@UserTokenValidate
 	public DataWrapper<Map<String, String>> queryBind(
 			@RequestHeader(value="token",required=true)String token
 	){

@@ -12,7 +12,7 @@ public interface SaleMyOrderService {
 	
 	DataWrapper<SaleDataVo> myOrderData(String token);
 	
-	DataWrapper<List<MyOrderVo>> myOrderList(String token,Integer currentPage, Integer numberPerPage);
+	DataWrapper<List<MyOrderVo>> myOrderList(String token,String year,String month,Integer currentPage, Integer numberPerPage);
 	
 	DataWrapper<OrderVo> detail(String token,String orderId,Integer currentPage, Integer numberPerPage);
 }

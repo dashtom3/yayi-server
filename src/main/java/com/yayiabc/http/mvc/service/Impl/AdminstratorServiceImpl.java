@@ -122,7 +122,7 @@ public class AdminstratorServiceImpl implements AdminstratorService {
         } else {
             adminstratorDao.updateAdminstratorToken(adminstratorToken);
         }
-        new Timer().schedule(new TokenTask(token), 2 * 3600 * 1000);
+//        new Timer().schedule(new TokenTask(token), 2 * 3600 * 1000);
         return token;
     }
 

@@ -274,30 +274,25 @@
 			<if test="orderId !=null and orderId !=''">
 				orde.order_id like '%${orderId}%'
 			</if>
-
-
-			<if test="orderState !=null and orderState !=''">
-				and orde.state=${orderState}
+			<if test="orderState !=null and orderState !=4">
+				and orde.state=#{orderState}
 			</if>
 			<if test="isRefund !=null and isRefund !=''">
-				and orde.refund=#{isRefund}
+				and orde.refund_info=#{isRefund}
 			</if>
-			<if test="orderCTime !=null and orderETime !=null">
-				and orde.created
-				BETWEEN #{orderCTime} AND #{orderETime}
-			</if>
-
+			
 			<if test="orderCTime !=null and orderCTime !=null">
 				and orde.created >#{orderCTime}
-
 			</if>
 			<if test="orderETime !=null and orderETime !=null">
 				and orde.created &lt;#{orderETime}
 			</if>
 			<if test="buyerInfo != null and buyerInfo !=''">
-
-				and us.phone like '${buyerInfo}%' or us.true_name like
-				'${buyerInfo}%'
+				and us.phone like '%${buyerInfo}%' or us.true_name like
+				'%${buyerInfo}%'
+			</if>
+			<if test="orderState==4">
+			  and orde.state  in (4,9)
 			</if>
 		</where>
 		group by orde.order_id) a

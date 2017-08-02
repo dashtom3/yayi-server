@@ -128,7 +128,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		Receiver receiver=placeOrderDao.queryReceiver(receiverId);
 
 		double yunfei=getFreight(receiver, sumPrice, itemSum);
-		System.out.println(yunfei);
 		HashMap<String, Object> hashMap=new HashMap<String,Object>();
 		hashMap.put("postFee", yunfei);
 		hashMap.put("Receiver", receiver);
@@ -243,6 +242,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					hashMap.put("数量不足", "该商品"+orderItemList.get(i).getItemName()+"数量不足，您最多购买"
 							+String.valueOf(ItemInventNum-orderItemList.get(i).getNum())+"件。"
 							);	
+					//删除该订单   和订单商品表里的信息
 					dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 					dataWrapper.setData(hashMap);
 					return dataWrapper;

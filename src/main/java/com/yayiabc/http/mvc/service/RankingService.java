@@ -9,7 +9,9 @@ public interface RankingService {
 	DataWrapper<List<Ranking>> queryMonthRanking(String beYearMonth);	//排行榜
 	
 	DataWrapper<List<Ranking>> queryMonthRankingAll(String beYearMonth);	//每月结算查询方法
+
+	void addRecord(String tableName,List<Ranking> rankingList);
 	
-	DataWrapper<Ranking> getSaleRanking(String token,String startDate,String endDate);
-	
+	DataWrapper<Ranking> getSaleRanking(String beYearMonth,String token);
+
 }

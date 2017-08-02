@@ -64,6 +64,8 @@ public class UserServiceImpl implements UserService {
                 if (1 == userDao.register(newUser)) {
                     //绉婚櫎楠岃瘉鐮�
                     VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
+                    String token = getToken(newUser.getUserId());
+                    dataWrapper.setToken(token);
                     dataWrapper.setData(newUser);
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());

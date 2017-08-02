@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.utils.QbExchangeUtil;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.service.AliPayService;
 import com.yayiabc.http.mvc.service.CoinRechargeService;
@@ -31,13 +32,14 @@ public class CoinRechargeController {
    // @UserTokenValidate(description="开始支付宝充值乾币")
     public void recharge(
     		@RequestParam(value="token",required=true)String token,
-    		@RequestParam(value="money",required=true)String money,
+    		@RequestParam(value="money",required=true)String moneys,
     		 HttpServletResponse response
     		){
     	String codeId=createId(token);
-    	utilsdao.saveRechargeMessage(codeId,utilsdao.getUserID(token),money);
+    	Integer money=QbExchangeUtil.getQbByMoney(Integer.parseInt(moneys));
+    	utilsdao.saveRechargeMessage(codeId,utilsdao.getUserID(token),String.valueOf(money));
     	    //调用支付宝
-    String sHtmlText=	alipay.packingParameter(codeId, "乾币充值", money,"乾币");
+       String sHtmlText=	alipay.packingParameter(codeId, "乾币充值", String.valueOf(money),"乾币");
     	try {
 			response.getWriter().write(sHtmlText);
 		} catch (IOException e) {

@@ -14,7 +14,7 @@ public class OrderIdUtils {
 		if(userId==null){
 			return "没有查看该用户";
 		}
-		String userID=(userId.substring(0,12)+userId.substring(24)).replace("-", "");
+		String userID=(userId.substring(0,8)+userId.substring(12)).replace("-", "");
 		StringBuilder sb=new StringBuilder(userID);
 		for(int i=0;i<4;i++)
 		{
@@ -26,6 +26,5 @@ public class OrderIdUtils {
 	}
 	/*public static void main(String[] args) {
 		createOrderId("lhdd=888");
-
     }*/
 }

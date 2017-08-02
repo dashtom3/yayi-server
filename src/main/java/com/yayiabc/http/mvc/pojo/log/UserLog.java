@@ -8,7 +8,6 @@ public class UserLog {
 	private String phone;
 	private String userName;
 	private String operate;
-	private String arguments;
 	private Date created;
 	public Integer getUserLogId() {
 		return userLogId;
@@ -40,12 +39,6 @@ public class UserLog {
 	public void setOperate(String operate) {
 		this.operate = operate;
 	}
-	public String getArguments() {
-		return arguments;
-	}
-	public void setArguments(String arguments) {
-		this.arguments = arguments;
-	}
 	public Date getCreated() {
 		return created;
 	}
@@ -53,14 +46,13 @@ public class UserLog {
 		this.created = created;
 	}
 	public UserLog(Integer userLogId, String userId, String phone,
-			String userName, String operate, String arguments, Date created) {
+			String userName, String operate, Date created) {
 		super();
 		this.userLogId = userLogId;
 		this.userId = userId;
 		this.phone = phone;
 		this.userName = userName;
 		this.operate = operate;
-		this.arguments = arguments;
 		this.created = created;
 	}
 	public UserLog() {
@@ -71,9 +63,9 @@ public class UserLog {
 	public String toString() {
 		return "UserLog [userLogId=" + userLogId + ", userId=" + userId
 				+ ", phone=" + phone + ", userName=" + userName + ", operate="
-				+ operate + ", arguments=" + arguments + ", created=" + created
-				+ "]";
+				+ operate + ", created=" + created + "]";
 	}
+	
 	
 	
 	

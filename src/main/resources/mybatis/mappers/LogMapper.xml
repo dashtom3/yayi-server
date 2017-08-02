@@ -59,8 +59,8 @@
 		SELECT a.*,b.user_name,b.phone FROM
 		adminstrator_log a
 		INNER JOIN 
-		(SELECT true_name user_name,phone,sale_id u_id FROM adminstrator)  b
-		ON a.sale_id=b.u_id
+		(SELECT true_name user_name,phone,adminstrator_id u_id FROM adminstrator)  b
+		ON a.adminstrator_id=b.u_id
 		<where>
 			<if test="operate!=null">a.operate like '%${operate}%'</if>
 			<if test="phone!=null">and b.phone like '%${phone}%'</if>

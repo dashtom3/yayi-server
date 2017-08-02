@@ -21,7 +21,9 @@ public interface SaleMyOrderDao {
 
 	//统计数据查询
 	SaleDataVo	queryData(
-			@Param("saleId")String saleId);
+			@Param("saleId")String saleId,
+			@Param("year")String year,
+			@Param("month")String month);
 	
 	//累计收入
 	String allCommission(
@@ -30,10 +32,14 @@ public interface SaleMyOrderDao {
 	//订单列表信息查询
 	List<MyOrderVo> queryOrderList(
 			@Param("saleId")String saleId,
-			@Param("page") Page page);
+			@Param("page") Page page,
+			@Param("year")String year,
+			@Param("month")String month);
 
 	int getCountOrderList(
-			@Param("saleId")String saleId);
+			@Param("saleId")String saleId,
+			@Param("year")String year,
+			@Param("month")String month);
 	
 	//我的业绩详情
 	OrderVo detail(

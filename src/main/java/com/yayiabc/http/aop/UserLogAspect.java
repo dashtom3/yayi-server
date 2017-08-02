@@ -54,16 +54,16 @@ public class UserLogAspect {
 		String userId =systemControllerLogService.getUserIdByToken(token);
 		if(userId!=null){
 			String operate=getControllerMethodDescription(joinPoint);
-			String params = "";  
+			/*String params = "";  
 			if (joinPoint.getArgs() !=  null && joinPoint.getArgs().length > 0) {  
 			   for ( int i = 0; i < joinPoint.getArgs().length; i++) {  
 			        params +=joinPoint.getArgs()[i] + ";";  
 			   }  
-			}
+			}*/
 			UserLog userLog=new UserLog();
 			userLog.setUserId(userId);
 			userLog.setOperate(operate);
-			userLog.setArguments(params);
+			/*userLog.setArguments(params);*/
 			userLog.setCreated(new Date());
 			systemControllerLogService.addLog(userLog);
 		}

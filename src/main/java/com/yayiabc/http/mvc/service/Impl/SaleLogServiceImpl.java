@@ -63,8 +63,11 @@ public class SaleLogServiceImpl implements SaleLogService {
                 saleInfoTwo.setSalePwd(MD5Util.getMD5String(password));
                 saleInfoTwo.setUpdated(new Date());
                 saleInfoTwo.setCreated(new Date());
+
                 if (1 == saleLogDao.register(saleInfoTwo)) {
                     VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
+                    String token = getToken(saleInfo.getSaleId());
+                    dataWrapper.setToken(token);
                     dataWrapper.setData(saleInfoTwo);
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());

@@ -9,10 +9,13 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Adminstrator;
 import com.yayiabc.http.mvc.service.AdminstratorService;
+
+
 
 @Controller
 @RequestMapping("api/adminstrator")
@@ -25,7 +28,7 @@ public class AdminstratorController {
 	 */
 	@RequestMapping("add")
 	@ResponseBody
-	@AdminTokenValidate(description="超级管理员添加普通管理员")
+	@AdminTokenValidate
 	public DataWrapper<Void> addAdminstrator(
 			@RequestParam(value="phone",required=true) String phone,
 			@RequestParam(value="adminstratorPwd",required=true) String adminstratorPwd,
@@ -40,7 +43,7 @@ public class AdminstratorController {
 	 */
 	@RequestMapping("delete")
 	@ResponseBody
-	@AdminTokenValidate(description="超级管理员删除普通管理员")
+	@AdminTokenValidate
 	public DataWrapper<Void> deleteAdminstrator(
 			@RequestParam(value="adminstratorId",required=true) Integer adminstratorId,
 			@RequestHeader(value="adminToken",required=true)String adminToken
@@ -53,7 +56,7 @@ public class AdminstratorController {
 	 */
 	@RequestMapping("update")
 	@ResponseBody
-	@AdminTokenValidate(description="超级管理员修改普通管理员信息")
+	@AdminTokenValidate
 	public DataWrapper<Void> updateAdminstrator(
 			@RequestParam(value="adminstratorId",required=true) Integer adminstratorId,
 			@RequestParam(value="phone",required=true) String phone,
@@ -69,7 +72,7 @@ public class AdminstratorController {
 	 */
 	@RequestMapping("query")
 	@ResponseBody
-	@AdminTokenValidate(description="超级管理员查询管理员列表")
+	@AdminTokenValidate
 	public DataWrapper<List<Adminstrator>> queryAdminstrator(
 			@RequestParam(value="phone",required=false) String phone,
 			@RequestParam(value="trueName",required=false) String trueName,

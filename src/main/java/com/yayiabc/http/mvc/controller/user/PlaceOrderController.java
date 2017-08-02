@@ -22,9 +22,6 @@ import com.yayiabc.http.mvc.service.PlaceOrderService;
 
 import net.sf.json.JSONArray;
 
-
-
-
 //下订单
 @Controller
 @RequestMapping("api/po")
@@ -78,40 +75,12 @@ public class PlaceOrderController {
 			@ModelAttribute Ordera order,
 			@ModelAttribute Invoice  invoice
 			){
-		//System.out.println(token+"  orderItem:"+orderItem+" order:"+order);
-		//return placeOrderService.generaOrder(token,orderItem,order);
 		JSONArray json = JSONArray.fromObject(orderItem);
-		System.out.println(token);
 		ArrayList<OrderItem> orderItemList = (ArrayList<OrderItem>)JSONArray.toCollection(json,OrderItem.class);
-		System.out.println(orderItemList);
-		System.out.println(order);
 		//接入 支付   订单号  商品名称    付款金额    商品描述
-		/**
-		 * hashMap.put("itemNames", sb.toString());
-		hashMap.put("OrderId",orderId);
-		hashMap.put("sumPrice",sumPrice);
-		hashMap.put("giveQbNum", giveQbNum);
-		hashMap.put("itemSum", itemSum);
-		 */
+		
 		DataWrapper<HashMap<String, Object>> hm=placeOrderService.generaOrder(token,orderItemList,order,invoice);
 		                return hm;                                                                                                             
-		/*  这里先放下
-		 * String  str=aliPayService.packingParameter((String)hm.get("OrderId"), (String)hm.get("itemNames"), 
-				                                           //描述
-				(String)hm.get("sumPrice"),(String)hm.get("itemMS") );
-		try {
-			response.getWriter().write(str);
-			
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}*/
-		//return str;
+		
 	}
-	/***
-	 * String personstr="[{'itemId':'170564878','num':1,'price':12,'itemSKU':123543543543'}]";
-	  JSONArray json = JSONArray.fromObject(personstr);
-	  List persons = (List) JSONArray.toCollection(json, OrderItem.class);
-	  System.out.println(persons.get(0));
-	 */
 }

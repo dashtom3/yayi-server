@@ -16,6 +16,7 @@
 			 and contacts like '%${companyAdd}%'
 			</if>
 		</where>
+		limit ${currentNum} , ${numberPerpage}
 	</select>
 	
 
@@ -45,4 +46,18 @@
 	<delete id="delete">
 		delete from cus_resources where cus_id=#{cusId}
 	</delete>
+	<select id="queryCount" resultType="int">
+		select count(1) from cus_resources
+		<where>
+			<if test="companyName!=null and companyName!=''">
+				unit_name like '%${companyName}%'
+			</if>
+			<if test="linkMan!=null and linkMan!=''">
+		    and  	contacts_phone  like '%${linkMan}%'
+			</if>
+			<if test="companyAdd!=null and companyAdd!=''">
+			 and contacts like '%${companyAdd}%'
+			</if>
+		</where>
+	</select>
 </mapper>       

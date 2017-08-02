@@ -36,7 +36,7 @@ public class OrderManagementController {
    @AdminTokenValidate
    @AdminLog(description="后台订单显示")
    public DataWrapper<List<OrderManagement>> showOrder(
-		   @RequestHeader(value="adminToken",required=false) String adminToken,
+		   @RequestHeader(value="adminToken",required=true) String adminToken,
 		   @RequestParam(value="orderId",required=false) String orderId,
 		   @RequestParam(value="buyerInfo",required=false)String buyerInfo,
 		   @RequestParam(value="orderState",required=false)String orderState,

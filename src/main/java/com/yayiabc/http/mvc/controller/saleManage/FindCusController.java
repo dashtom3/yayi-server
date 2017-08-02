@@ -36,8 +36,8 @@ public class FindCusController {
 	//已注册客户 待绑定
 	@RequestMapping("registered")
 	@ResponseBody
-	@SaleTokenValidate(description="发现客户资源:已注册客户 待绑定")
-	@SaleLog
+	@SaleTokenValidate
+	@SaleLog(description="发现客户资源:已注册客户 待绑定")
 	public DataWrapper<List<User>>  registered(
 			@RequestHeader(value="saleToken",required=false)String saleToken,
 		@RequestParam(value="state",required=false)String state,

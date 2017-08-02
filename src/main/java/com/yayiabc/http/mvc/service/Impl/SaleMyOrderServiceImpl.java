@@ -45,12 +45,12 @@ public class SaleMyOrderServiceImpl implements SaleMyOrderService {
 
 
 	@Override
-	public DataWrapper<SaleDataVo> myOrderData(String token) {
+	public DataWrapper<SaleDataVo> myOrderData(String token,String year, String month) {
 		DataWrapper<SaleDataVo> dataWrapper=new DataWrapper<SaleDataVo>();
 		String saleId = saleLogDao.getSaleIdByToken(token);
 		SaleDataVo saleDataVo=new SaleDataVo();
 		String allcommission=saleMyOrderDao.allCommission(saleId);
-		saleDataVo=saleMyOrderDao.queryData(saleId);
+		saleDataVo=saleMyOrderDao.queryData(saleId, year, month);
 		if(allcommission==null){
 			saleDataVo.setAllCommission(0);
 		}else{
@@ -62,16 +62,15 @@ public class SaleMyOrderServiceImpl implements SaleMyOrderService {
 
 
 	@Override
-	public DataWrapper<List<MyOrderVo>> myOrderList(String token,
-			Integer currentPage, Integer numberPerPage) {
+	public DataWrapper<List<MyOrderVo>> myOrderList(String token,String year,String month,Integer currentPage, Integer numberPerPage) {
 		DataWrapper<List<MyOrderVo>> dataWrapper=new DataWrapper<List<MyOrderVo>>();
 		String saleId = saleLogDao.getSaleIdByToken(token);
 		Page page = new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		int totalNumber=saleMyOrderDao.getCountOrderList(saleId);
+		int totalNumber=saleMyOrderDao.getCountOrderList(saleId, year, month);
 		dataWrapper.setPage(page, totalNumber);
-		List<MyOrderVo> list=saleMyOrderDao.queryOrderList(saleId, page);
+		List<MyOrderVo> list=saleMyOrderDao.queryOrderList(saleId, page, year, month);
 		dataWrapper.setData(list);
 		return dataWrapper;
 	}

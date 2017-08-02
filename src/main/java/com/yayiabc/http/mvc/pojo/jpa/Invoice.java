@@ -3,9 +3,9 @@ package com.yayiabc.http.mvc.pojo.jpa;
 public class Invoice {
 	private Integer InvoiceId;
 	private String companyName;
-	private Integer taxpayerNum;
+	private String taxpayerNum;
 	private String registeredAddress;
-	private Integer registeredPhone;
+	private String registeredPhone;
 	private String opneBank;
 	private String bankNumber;
 	private String stickNanme;
@@ -46,24 +46,11 @@ public class Invoice {
 	public void setCompanyName(String companyName) {
 		this.companyName = companyName;
 	}
-	
-	public Integer getTaxpayerNum() {
-		return taxpayerNum;
-	}
-	public void setTaxpayerNum(Integer taxpayerNum) {
-		this.taxpayerNum = taxpayerNum;
-	}
 	public String getRegisteredAddress() {
 		return registeredAddress;
 	}
 	public void setRegisteredAddress(String registeredAddress) {
 		this.registeredAddress = registeredAddress;
-	}
-	public Integer getRegisteredPhone() {
-		return registeredPhone;
-	}
-	public void setRegisteredPhone(Integer registeredPhone) {
-		this.registeredPhone = registeredPhone;
 	}
 	public String getOpneBank() {
 		return opneBank;
@@ -100,6 +87,18 @@ public class Invoice {
 	}
 	public void setInvoiceHead(String invoiceHead) {
 		this.invoiceHead = invoiceHead;
+	}
+	public String getTaxpayerNum() {
+		return taxpayerNum;
+	}
+	public void setTaxpayerNum(String taxpayerNum) {
+		this.taxpayerNum = taxpayerNum;
+	}
+	public String getRegisteredPhone() {
+		return registeredPhone;
+	}
+	public void setRegisteredPhone(String registeredPhone) {
+		this.registeredPhone = registeredPhone;
 	}
 
 }

@@ -9,7 +9,7 @@ import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.pojo.model.ItemStatistics;
 @Repository
 public interface ItemStatisticsDao {
-	List<ItemStatistics> query(@Param("itemName")String itemName,@Param("itemId")String itemId,@Param("itemSKU")String itemSKU,@Param("itemBrandName")String itemBrandName,@Param("page")Page page);
+	List<ItemStatistics> query(@Param("itemName")String itemName,@Param("itemId")String itemId,@Param("itemSKU")String itemSKU,@Param("itemBrandName")String itemBrandName,@Param("page")Page page,@Param("state")Integer state);
 	
 	int getCount(@Param("itemName")String itemName,@Param("itemId")String itemId,@Param("itemSKU")String itemSKU,@Param("itemBrandName")String itemBrandName);
 }

@@ -94,7 +94,7 @@
 			and	orde.state=#{state} 
 			</if>
 			<if test="state==2">
-			  and	orde.state=2 or orde.state=5 
+			  and	orde.state in(2,5)
 			</if>
 		</where>
 		order by orde.created desc limit ${currentNum} , ${numberPerpage}

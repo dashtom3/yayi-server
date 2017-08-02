@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yayiabc.http.mvc.dao.RankingDao">
 
-	<!-- 查询月排行榜，从sale_income表 -->
+	<!-- 查询月排行榜，从sale_income表，实时 -->
 	<select id="queryMonthRanking" resultType="Ranking">
 		SELECT
     	obj_new.phone,
@@ -80,18 +80,43 @@
     ) AS a WHERE phone =(SELECT phone FROM sale_info WHERE sale_id=#{saleId})
 	</select>
 	
-	<select id="getSaleCountNow" resultType="int">
+	<select id="getSaleCountNow" resultType="java.lang.Integer">
 		SELECT COUNT(0) FROM sale_info;
 	</select>
 	
 	<insert id="saveSaleNum">
 		 INSERT INTO sale_num(sale_num,created,updated) 
-   	 	 VALUE(#{saleNum},NOW(),NOW());
+   	 	 VALUE(#{saleNum},#{now},NOW());
 	</insert>
 	
-	<select id="getSaleCount" resultType="int">
+	<select id="getSaleCount" resultType="java.lang.Integer">
 		SELECT sale_num FROM sale_num 
-    	WHERE YEAR(created) =#{year}
-    	AND MONTH(created)=#{month}
+    	WHERE 
+    	DATE_FORMAT(created,'%Y-%m')=#{beYearMonth}
+    	LIMIT 1;
+	</select>
+	
+	<insert id="addRecord" statementType="STATEMENT">
+		insert into ${tableName} values
+		<foreach collection="rankingList" item="item" index="index" separator="," >
+			(null,${item.phone},${item.bindUserNum},${item.orderCount},${item.saleMoney},${item.rowNum},now(),now())
+		</foreach> 
+	</insert>
+	
+	<select id="queryMonthRankingOld" resultType="Ranking">
+		SELECT phone,bind_user_num,order_count,sale_money,row_num 
+		FROM ${tableName}
+		ORDER BY row_num ASC
+		LIMIT 20 
+	</select>
+	
+	<select id="queryRankingExist" resultType="java.lang.Integer">
+		SELECT COUNT(0) FROM information_schema.TABLES WHERE table_schema ='yayiabc' AND table_name = #{tableName};
+	</select>
+	
+	<select id="getSaleRankingOld" resultType="Ranking">
+		SELECT phone,bind_user_num,order_count,sale_money,row_num
+		FROM ${tableName} WHERE phone IN (SELECT phone FROM sale_info WHERE sale_id=#{saleId})
+		LIMIT 1;
 	</select>
 </mapper>        

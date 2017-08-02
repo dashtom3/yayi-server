@@ -12,7 +12,6 @@ import java.util.TimeZone;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.getTimeUtil;
 import com.yayiabc.http.mvc.dao.RankingDao;
@@ -47,7 +46,7 @@ public class RankingServiceImpl implements RankingService {
 			String tableName="rank_"+beYearMonth.substring(0, 4)+"_"+beYearMonth.substring(5, 7);
 			int sign=rankingDao.queryRankingExist(tableName);
 			if(sign==0){
-				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+				dataWrapper.setData(null);
 				dataWrapper.setMsg("无该月排行榜数据");
 			}else{
 				list = rankingDao.queryMonthRankingOld(tableName);
@@ -67,7 +66,6 @@ public class RankingServiceImpl implements RankingService {
 		Integer year = Integer.parseInt(beYearMonth.substring(0, 4)); // 获取输入的年份
 		Integer month = Integer.parseInt(beYearMonth.substring(5, 7)); // 获取输入的月份
 		if (nowYear.equals(year) && nowMonth.equals(month)) { // 判断接收的年月是否为当前年月
-			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("当前排行榜未结算");
 		} else {
 			map = getTimeUtil.getYearMonthTime(year, month);
@@ -97,7 +95,6 @@ public class RankingServiceImpl implements RankingService {
 			ranking = rankingDao.getSaleRankingNow(saleId, startDate,endDate);
 			Integer saleNum = rankingDao.getSaleCountNow();	//返回实时销售员人数信息
 			if (ranking == null) {
-				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 				dataWrapper.setMsg("当前销售员未上榜"+year+month);
 				dataWrapper.setNum(saleNum);
 			} else {
@@ -109,12 +106,10 @@ public class RankingServiceImpl implements RankingService {
 			Integer saleNum=rankingDao.getSaleCount(beYearMonth);
 			int sign=rankingDao.queryRankingExist(tableName);
 			if(sign==0){
-				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 				dataWrapper.setMsg("无该月排行榜数据");
 			}else{
 				ranking = rankingDao.getSaleRankingOld(saleId, tableName);
 				if(ranking == null){
-					dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 					dataWrapper.setMsg("当前销售员未上榜"+year+month);
 					dataWrapper.setNum(saleNum);
 				}else{

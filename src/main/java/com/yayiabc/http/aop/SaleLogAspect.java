@@ -55,16 +55,16 @@ public class SaleLogAspect {
 		String saleId =systemControllerLogService.getSaleIdBySaleToken(saleToken);
 		if(saleId!=null){
 			String operate=getControllerMethodDescription(joinPoint);
-			String params = "";  
+			/*String params = "";  
 			if (joinPoint.getArgs() !=  null && joinPoint.getArgs().length > 0) {  
 			   for ( int i = 0; i < joinPoint.getArgs().length; i++) {  
 			        params +=joinPoint.getArgs()[i] + ";";  
 			   }  
-			}
+			}*/
 			SaleLog saleLog=new SaleLog();
 			saleLog.setSaleId(saleId);
 			saleLog.setOperate(operate);
-			saleLog.setArguments(params);
+			/*saleLog.setArguments(params);*/
 			saleLog.setCreated(new Date());
 			systemControllerLogService.addSaleLog(saleLog);
 		}

@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yayiabc.http.mvc.dao.SystemControllerLogDao">
 	<insert id="addLog">
-		insert into user_log values(null,#{userId},#{operate},#{arguments},#{created})
+		insert into user_log values(null,#{userId},#{operate},#{created})
 	</insert>
 	
 	<select id="getUserIdByToken" resultType="string">
@@ -16,7 +16,7 @@
 	</select>
 	
 	<insert id="addSaleLog">
-		insert into sale_log values(null,#{saleId},#{operate},#{arguments},#{created})
+		insert into sale_log values(null,#{saleId},#{operate},#{created})
 	</insert>
 	
 	<select id="getAdminstratorIdByAdminstratorToken" resultType="string">
@@ -24,6 +24,6 @@
 	</select>
 	
 	<insert id="addAdminstratorLog">
-		insert into adminstrator_log values(null,#{adminstratorId},#{operate},#{arguments},#{created})
+		insert into adminstrator_log values(null,#{adminstratorId},#{operate},#{created})
 	</insert>
 </mapper>

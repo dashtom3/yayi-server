@@ -16,6 +16,10 @@ import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
 
+
+
+
+import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.http.mvc.pojo.log.AdminstratorLog;
 import com.yayiabc.http.mvc.service.SystemControllerLogService;
 
@@ -51,16 +55,17 @@ public class AdminstratorLogAspect {
 		String adminstratorId =systemControllerLogService.getAdminstratorIdByAdminstratorToken(adminstratorToken);
 		if(adminstratorId!=null){
 			String operate=getControllerMethodDescription(joinPoint);
-			String params = "";  
+			/*String params = "";  
 			if (joinPoint.getArgs() !=  null && joinPoint.getArgs().length > 0) {  
 			   for ( int i = 0; i < joinPoint.getArgs().length; i++) {  
 			        params +=joinPoint.getArgs()[i] + ";";  
 			   }  
-			}
+			}*/
 			AdminstratorLog adminstratorLog=new AdminstratorLog();
 			adminstratorLog.setAdminstratorId(adminstratorId);
 			adminstratorLog.setOperate(operate);
-			adminstratorLog.setArguments(params);
+			/*adminstratorLog.setArguments(params);*/
+			
 			adminstratorLog.setCreated(new Date());
 			systemControllerLogService.addAdminstratorLog(adminstratorLog);
 		}
@@ -77,7 +82,7 @@ public class AdminstratorLogAspect {
 			if (method.getName().equals(methodName)) {  
 				Class[] clazzs = method.getParameterTypes();  
 				if (clazzs.length == arguments.length) {  
-					description = method.getAnnotation(com.yayiabc.common.annotation.AdminLog.class).description();  
+					description = method.getAnnotation(AdminLog.class).description();
 					break;  
 				}  
 		    }  

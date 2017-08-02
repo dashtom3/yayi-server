@@ -19,6 +19,8 @@ import com.yayiabc.http.mvc.pojo.model.UserPersonalInfo;
 import com.yayiabc.http.mvc.service.UserPersonalInfoService;
 
 
+
+
 @Controller
 @RequestMapping("api/userPersonalInfo")
 public class UserPersonalInfoController {

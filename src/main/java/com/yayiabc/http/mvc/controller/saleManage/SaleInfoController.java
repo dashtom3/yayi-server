@@ -15,6 +15,8 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.service.SaleInfoService;
 
+
+
 @Controller
 @RequestMapping("api/saleInfo")
 public class SaleInfoController {

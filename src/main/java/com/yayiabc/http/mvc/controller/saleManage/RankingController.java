@@ -15,6 +15,11 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Ranking;
 import com.yayiabc.http.mvc.service.RankingService;
 
+
+
+
+
+
 @Controller
 @RequestMapping("api/rankingList")
 public class RankingController {

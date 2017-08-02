@@ -191,11 +191,21 @@
 	
 	<select id="detailNot" resultMap="saleIncomeRM">
 		SELECT
-		sale_id, 
-		true_name AS saleName,
-		phone AS salePhone
-		FROM sale_info
-		WHERE sale_id=#{saleId}
+		s.sale_id, 
+		s.true_name AS saleName,
+		s.phone AS salePhone,
+		IF(ROUND(SUM(si.order_money_haocai),2) IS NOT NULL,ROUND(SUM(si.order_money_haocai),2),0) AS haocai_money,
+		IF(ROUND(SUM(si.refund_money_haocai),2) IS NOT NULL,ROUND(SUM(si.refund_money_haocai),2),0) AS haocai_refund,
+		(IF(ROUND(SUM(si.order_money_haocai),2) IS NOT NULL,ROUND(SUM(si.order_money_haocai),2),0))-
+		(IF(ROUND(SUM(si.refund_money_haocai),2) IS NOT NULL,ROUND(SUM(si.refund_money_haocai),2),0)) AS haocaiActual,
+		IF(ROUND(SUM(si.order_money_gongju),2) IS NOT NULL,ROUND(SUM(si.order_money_gongju),2),0) AS gongju_money,
+		IF(ROUND(SUM(si.refund_money_gongju),2) IS NOT NULL,ROUND(SUM(si.refund_money_gongju),2),0) AS gongju_refund,
+		(IF(ROUND(SUM(si.order_money_gongju),2) IS NOT NULL,ROUND(SUM(si.order_money_gongju),2),0))-
+		(IF(ROUND(SUM(si.refund_money_gongju),2) IS NOT NULL,ROUND(SUM(si.refund_money_gongju),2),0)) AS gongjuActual
+		FROM sale_income si
+		LEFT JOIN sale_info s ON s.sale_id=si.sale_id 
+		WHERE s.sale_id=#{saleId}
+		AND DATE_FORMAT(si.created,'%Y-%m') = #{beYearMonth}
 		LIMIT 1
 	</select>
 		
@@ -230,7 +240,7 @@
 		FROM sale_income si 
 		INNER JOIN ordera o ON si.order_id=o.order_id
 		INNER JOIN USER u ON o.user_id=u.user_id 
-		WHERE si.sale_id=#{saleId} AND DATE_FORMAT(si.created,'%Y-%m-%d')  BETWEEN #{startDate} AND #{endDate} AND u.bind_sale_time &lt; o.created AND o.state !=0
+		WHERE si.sale_id=#{saleId} AND DATE_FORMAT(si.created,'%Y-%m-%d')  BETWEEN #{startDate} AND #{endDate} AND u.bind_sale_time &lt; o.created
 		GROUP BY si.sale_income_id
 		ORDER BY o.created DESC
 		LIMIT ${page.currentNumber},${page.numberPerPage} 
@@ -243,7 +253,7 @@
 			FROM sale_income si 
 			INNER JOIN ordera o ON si.order_id=o.order_id
 			INNER JOIN USER u ON o.user_id=u.user_id 
-			WHERE si.sale_id=#{saleId} AND DATE_FORMAT(si.created,'%Y-%m-%d')  BETWEEN #{startDate} AND #{endDate} AND u.bind_sale_time &lt; o.created AND o.state !=0
+			WHERE si.sale_id=#{saleId} AND DATE_FORMAT(si.created,'%Y-%m-%d')  BETWEEN #{startDate} AND #{endDate} AND u.bind_sale_time &lt; o.created
 			GROUP BY si.sale_income_id
 		) AS a
 	</select>	

@@ -44,7 +44,7 @@ public class SaleIncomeListServiceImpl implements SaleIncomeListService {
 				saleIncomeVo.getSaleDataStatistics().getGongjuMoney(), 		//工具类收入
 				saleIncomeVo.getSaleDataStatistics().getGongjuActual()));
 		} else if ("待结算".equals(getState)) {
-			saleIncomeVo =saleIncomeListDao.detailNot(saleId);
+			saleIncomeVo =saleIncomeListDao.detailNot(saleId,beYearMonth);
 			map = getTimeUtil.getTime();
 			startDate = map.get("startDate");
 			endDate = map.get("endDate");

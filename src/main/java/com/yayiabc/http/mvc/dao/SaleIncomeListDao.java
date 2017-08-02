@@ -49,7 +49,8 @@ public interface SaleIncomeListDao {
 	
 	//详情，待结算
 	SaleIncomeVo detailNot(
-			@Param("saleId")String saleId);
+			@Param("saleId")String saleId,
+			@Param("beYearMonth") String beYearMonth);
 	
 	List<OrderVo> orderList(
 			@Param("startDate") String startDate,

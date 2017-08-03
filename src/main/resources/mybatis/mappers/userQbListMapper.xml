@@ -33,7 +33,7 @@
 				AND DATE_FORMAT(q.qb_time,'%Y-%m-%d') <![CDATA[  <=  ]]>#{endDate}
 			</if>
 		</where>
-		ORDER BY q.qb_time DESC
+		ORDER BY q.qb_time DESC,q.millisecond DESC
         LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
 	
@@ -61,7 +61,7 @@
 	
 	<select id="queryQbBalances" resultType="java.lang.Integer">
 		SELECT qb_balances FROM qb_record WHERE user_id = #{userId}
-		ORDER BY qb_time DESC LIMIT 1
+		ORDER BY qb_time DESC,q.millisecond DESC LIMIT 1
 	</select>
 	
 	<update id="update">

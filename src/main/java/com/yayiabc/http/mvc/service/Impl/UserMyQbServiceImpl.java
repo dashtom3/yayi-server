@@ -1,11 +1,11 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import java.util.Calendar;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.UserMyQbDao;
@@ -23,10 +23,11 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 
 	@Override
 	public DataWrapper<Void> add(QbRecord qbRecord, String token) {
+		Calendar Cld = Calendar.getInstance();
+		int MI = Cld.get(Calendar.MILLISECOND);		//获取毫秒
 		DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
 		String userId = utilsDao.getUserID(token);
 		if (userId == null) {
-			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("token错误");
 		} else {
 			qbRecord.setUserId(userId);
@@ -34,18 +35,18 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 			if (qbRecord.getQbRget() != null && qbRecord.getQbRget() > 0) {
 				userMyQbDao.updateUserQb(qbRecord.getQbRget(), userId);
 				qbRecord.setQbBalances(qb+qbRecord.getQbRget());
+				qbRecord.setMillisecond(MI);
 				userMyQbDao.add(qbRecord);
 			} else if (qbRecord.getQbRout() != null && qbRecord.getQbRout() < 0) {
 				if (Math.abs(qbRecord.getQbRout()) > qb) { // 判断支出乾币数是否大于已有余额
-					dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 					dataWrapper.setMsg("乾币增减错误！");
 				} else {
 					userMyQbDao.updateUserQb(qbRecord.getQbRout(), userId);
 					qbRecord.setQbBalances(qb+qbRecord.getQbRout());
+					qbRecord.setMillisecond(MI);
 					userMyQbDao.add(qbRecord);
 				}
 			} else  {
-				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 				dataWrapper.setMsg("请正确填写的乾币增减数额！");
 			}
 		}
@@ -57,7 +58,6 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 		DataWrapper<List<QbRecord>> dataWrapper = new DataWrapper<List<QbRecord>>();
 		String userId = utilsDao.getUserID(token);
 		if (userId == null) {
-			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("token错误");
 		} else {
 			Page page = new Page();

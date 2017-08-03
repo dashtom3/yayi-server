@@ -89,19 +89,24 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 	}
 
 	@Override
-	public DataWrapper<Map<String, String>> queryBind(String token) {
+	public DataWrapper<Map<String, String>> queryBind(Integer state,String salePhone,String token) {
 		DataWrapper<Map<String, String>> dataWrapper =new DataWrapper<Map<String, String>>();
 		String userId=utilsDao.getUserID(token);
+		Map<String, String> map =new HashMap<String, String>();
 		if(userId==null){
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("token错误");
 		}else{
-			List<String> list=userPersonalInfoDao.queryBind(userId);
-			Map<String, String> map =new HashMap<String, String>();
-			map.put("isBindSale", list.get(0));
-			map.put("saleName", list.get(1));
-			map.put("salePhone",list.get(2));
-			dataWrapper.setData(map);
+			if(state==1){
+				List<String> list=userPersonalInfoDao.queryBind(userId);
+				map.put("isBindSale", list.get(0));
+				map.put("saleName", list.get(1));
+				map.put("salePhone",list.get(2));
+				dataWrapper.setData(map);
+			}else{
+				map=userPersonalInfoDao.querySale(salePhone);
+				dataWrapper.setData(map);
+			}
 		}
 		return dataWrapper;
 	}

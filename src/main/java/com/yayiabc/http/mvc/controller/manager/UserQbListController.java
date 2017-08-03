@@ -39,8 +39,7 @@ public class UserQbListController {
 			@RequestParam(value = "numberPerPage", required = false, defaultValue = "10") Integer numberPerPage,
 			@RequestHeader(value="adminToken",required=true)String adminToken
 			) {
-		return userQbListService.list(phone, startDate, endDate, currentPage,
-				numberPerPage);
+		return userQbListService.list(phone, startDate, endDate, currentPage,numberPerPage);
 	}
 
 	/**

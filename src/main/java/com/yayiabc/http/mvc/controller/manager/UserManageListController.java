@@ -51,13 +51,11 @@ public class UserManageListController {
 	 */
 	@RequestMapping(value="salelist",method=RequestMethod.GET)
 	@ResponseBody
-	@AdminTokenValidate
 	public DataWrapper<List<SaleInfo>> salelist(
 			@RequestParam(value="salePhone",required=false)String salePhone,
 			@RequestParam(value="saleName",required=false)String saleName,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
-    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-    		@RequestHeader(value="adminToken",required=true)String adminToken
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
 		return userManageListService.salelist(salePhone, saleName,currentPage,numberPerPage);
 	}
@@ -67,12 +65,9 @@ public class UserManageListController {
 	 */
 	@RequestMapping(value="bind",method=RequestMethod.POST)
 	@ResponseBody
-	@AdminTokenValidate
-	@AdminLog(description="管理员操作，用户绑定销售员")
 	public DataWrapper<Void> bind(
 			@RequestParam(value="salePhone",required=true)String salePhone,
-			@RequestParam(value="userPhone",required=true)String userPhone,
-			@RequestHeader(value="adminToken",required=true)String adminToken
+			@RequestParam(value="userPhone",required=true)String userPhone
 	){
 		return userManageListService.bind(salePhone, userPhone);
 	}
@@ -83,12 +78,9 @@ public class UserManageListController {
 	 */
 	@RequestMapping(value="disBind",method=RequestMethod.POST)
 	@ResponseBody
-	@AdminTokenValidate
-	@AdminLog(description="管理员操作，用户取消绑定销售员")
 	public DataWrapper<Void> disBind(
 			@RequestParam(value="salePhone",required=true)String salePhone,
-			@RequestParam(value="userPhone",required=true)String userPhone,
-			@RequestHeader(value="adminToken",required=true)String adminToken
+			@RequestParam(value="userPhone",required=true)String userPhone
 	){
 		return userManageListService.disBind(salePhone, userPhone);
 	}

@@ -5,8 +5,8 @@
        
 <mapper namespace="com.yayiabc.http.mvc.dao.UserMyQbDao">
 	<insert id="add" parameterType="QbRecord">
-			INSERT INTO qb_record(user_id,qb_rget,qb_rout,qb_time,qb_balances,remark,created,updated)
-			VALUE(#{userId},#{qbRget},#{qbRout},NOW(),#{qbBalances},#{remark},NOW(),NOW());
+			INSERT INTO qb_record(user_id,qb_rget,qb_rout,qb_time,qb_balances,remark,created,millisecond)
+			VALUE(#{userId},#{qbRget},#{qbRout},NOW(),#{qbBalances},#{remark},NOW(),#{millisecond});
 	</insert>
 	
 	<resultMap type="QbRecord" id="qbRecordRM">
@@ -27,7 +27,7 @@
 		LEFT JOIN USER u
 		ON u.user_id=q.user_id
         where q.user_id=#{userId} 
-        ORDER BY q.qb_time DESC
+        ORDER BY q.qb_time DESC,q.millisecond DESC 
         LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
 	

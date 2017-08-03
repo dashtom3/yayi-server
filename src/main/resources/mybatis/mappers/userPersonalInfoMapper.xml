@@ -86,4 +86,8 @@
 		ON u.sale_id=s.sale_id
 		WHERE u.user_id=#{userId}
 	</select>
+	
+	<select id="querySale" resultType="java.util.Map">
+		SELECT phone,true_name FROM sale_info WHERE phone=#{salePhone};
+	</select>
 </mapper>

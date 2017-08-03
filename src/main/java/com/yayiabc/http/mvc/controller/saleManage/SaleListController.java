@@ -50,7 +50,6 @@ public class SaleListController {
 	 */
 	@RequestMapping(value="userlist",method=RequestMethod.GET)
 	@ResponseBody
-	@AdminTokenValidate
 	public DataWrapper<List<User>> userlist(
 			@RequestParam(value="salePhone",required=true)String salePhone,
 			@RequestParam(value="userPhone",required=false)String userPhone,
@@ -58,8 +57,7 @@ public class SaleListController {
 			@RequestParam(value="companyName",required=false)String companyName,
 			@RequestParam(value="isBind",required=true)Integer isBind,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
-    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-    		@RequestHeader(value="adminToken",required=true)String adminToken
+    		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 	){
 		return saleListService.userlist(salePhone,userPhone, trueName, companyName, isBind, currentPage, numberPerPage);
 	}
@@ -85,17 +83,13 @@ public class SaleListController {
 	 */
 	@RequestMapping(value="bind",method=RequestMethod.POST)
 	@ResponseBody
-	@AdminTokenValidate
-	@AdminLog(description="管理员操作，销售员绑定用户")
 	public DataWrapper<Void> bind(
 			@RequestParam(value="userPhone",required=true)String[] userPhone,
-			@RequestParam(value="salePhone",required=true)String salePhone,
-			@RequestHeader(value="adminToken")String adminToken
+			@RequestParam(value="salePhone",required=true)String salePhone
 	){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		for(int i=0;i<userPhone.length;i++){
 			dataWrapper=userManageListService.bind(salePhone, userPhone[i]);	
-			
 		}
 		return dataWrapper;
 	}
@@ -105,12 +99,9 @@ public class SaleListController {
 	 */
 	@RequestMapping(value="disBind",method=RequestMethod.POST)
 	@ResponseBody
-	@AdminTokenValidate
-	@AdminLog(description="管理员操作，销售员取消绑定用户")
 	public DataWrapper<Void> disBind(
 			@RequestParam(value="salePhone",required=true)String salePhone,
-			@RequestParam(value="userPhone",required=true)String[] userPhone,
-			@RequestHeader(value="adminToken")String adminToken
+			@RequestParam(value="userPhone",required=true)String[] userPhone
 	){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		for(int i=0;i<userPhone.length;i++){

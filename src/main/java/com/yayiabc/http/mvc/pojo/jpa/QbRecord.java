@@ -21,6 +21,8 @@ public class QbRecord extends BasePojo {
 
 	private String remark;
 
+	private Integer millisecond; // 毫秒
+
 	private User user;
 
 	public Integer getQbRid() {
@@ -55,7 +57,6 @@ public class QbRecord extends BasePojo {
 		this.qbRout = qbRout;
 	}
 
-
 	public String getQbTime() {
 		return qbTime;
 	}
@@ -80,7 +81,6 @@ public class QbRecord extends BasePojo {
 		this.user = user;
 	}
 
-
 	public Integer getQbBalances() {
 		return qbBalances;
 	}
@@ -89,12 +89,23 @@ public class QbRecord extends BasePojo {
 		this.qbBalances = qbBalances;
 	}
 
+
+
+	public Integer getMillisecond() {
+		return millisecond;
+	}
+
+	public void setMillisecond(Integer millisecond) {
+		this.millisecond = millisecond;
+	}
+
 	public QbRecord() {
 		super();
 	}
 
 	public QbRecord(Integer qbRid, String userId, Integer qbRget,
-			Integer qbRout, String qbTime, String remark, Integer qbBalances) {
+			Integer qbRout, String qbTime, String remark, Integer qbBalances,
+			Integer millisecond) {
 		super();
 		this.qbRid = qbRid;
 		this.userId = userId;
@@ -103,6 +114,7 @@ public class QbRecord extends BasePojo {
 		this.qbTime = qbTime;
 		this.remark = remark;
 		this.qbBalances = qbBalances;
+		this.millisecond = millisecond;
 	}
 
 	public QbRecord(Integer qbRid, String userId, Integer qbRget,
@@ -123,8 +135,8 @@ public class QbRecord extends BasePojo {
 	public String toString() {
 		return "QbRecord [qbRid=" + qbRid + ", userId=" + userId + ", qbRget="
 				+ qbRget + ", qbRout=" + qbRout + ", qbTime=" + qbTime
-				+ ", qbBalances=" + qbBalances + ", remark=" + remark + ", user="
-				+ user + "]";
+				+ ", qbBalances=" + qbBalances + ", remark=" + remark
+				+ ", millisecond=" + millisecond + ", user=" + user + "]";
 	}
 
 	public QbRecord(Date created, Date updated) {

@@ -1,6 +1,8 @@
 package com.yayiabc.http.mvc.dao;
 
 import java.util.List;
+import java.util.Map;
+
 import org.springframework.stereotype.Repository;
 
 import com.yayiabc.http.mvc.pojo.jpa.Certification;
@@ -20,4 +22,6 @@ public interface UserPersonalInfoDao {
 	int add(String userId);
 	
 	List<String> queryBind(String userId);
+	
+	Map<String,String> querySale(String salePhone);
 }

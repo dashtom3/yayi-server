@@ -14,5 +14,5 @@ public interface UserPersonalInfoService {
 	
 	DataWrapper<Certification> updateCertification(Certification certification,String token);
 	
-	DataWrapper<Map<String, String>> queryBind(String token);
+	DataWrapper<Map<String, String>> queryBind(Integer state,String salePhone,String token);
 }

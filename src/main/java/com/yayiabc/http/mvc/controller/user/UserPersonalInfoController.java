@@ -8,6 +8,7 @@ import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestMethod;
+import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.annotation.UserLog;
@@ -72,12 +73,14 @@ public class UserPersonalInfoController {
 	/**
 	 * 查询用户是否已绑定销售员
 	 */
-	@RequestMapping(value="queryBind",method=RequestMethod.GET)
+	@RequestMapping(value = "queryBind", method = RequestMethod.GET)
 	@ResponseBody
 	@UserTokenValidate
 	public DataWrapper<Map<String, String>> queryBind(
-			@RequestHeader(value="token",required=true)String token
+			@RequestParam(value = "state", required = false, defaultValue = "1") Integer state,
+			@RequestParam(value = "salePhone", required = false) String salePhone,
+			@RequestHeader(value = "token", required = true) String token
 	){
-		return userPersonalInfoService.queryBind(token);
+		return userPersonalInfoService.queryBind(state,salePhone,token);
 	}
 }

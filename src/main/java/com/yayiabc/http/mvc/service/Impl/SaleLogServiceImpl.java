@@ -66,7 +66,7 @@ public class SaleLogServiceImpl implements SaleLogService {
 
                 if (1 == saleLogDao.register(saleInfoTwo)) {
                     VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
-                    String token = getToken(saleInfo.getSaleId());
+                    String token = getToken(saleInfoTwo.getSaleId());
                     dataWrapper.setToken(token);
                     dataWrapper.setData(saleInfoTwo);
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);

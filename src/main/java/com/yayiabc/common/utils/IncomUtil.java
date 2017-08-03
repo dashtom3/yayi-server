@@ -1,5 +1,7 @@
 package com.yayiabc.common.utils;
 
+import java.text.DecimalFormat;
+
 
 
 
@@ -32,6 +34,8 @@ public class IncomUtil {
 		}else{
 			money=realMoney*0.16;
 		}
+		DecimalFormat df = new DecimalFormat("#.00");
+		money=Double.parseDouble(df.format(money));
 		return money;
 	}
 	
@@ -47,6 +51,8 @@ public class IncomUtil {
 		}else {
 			money=realMoney*0.15;
 		}
+		DecimalFormat df = new DecimalFormat("#.00");
+		money=Double.parseDouble(df.format(money));
 		return money;
 	}
 }

@@ -9,7 +9,6 @@
 	<bean id="prop" class="org.springframework.beans.factory.config.PropertiesFactoryBean">  
 	   <property name="locations" value="classpath:log4j.properties"/>   
 	</bean> 
-	<bean id="systemControllerLog" class="com.yayiabc.http.aop.SystemControllerLog"/>
 	<bean id="userTokenValidateAspect" class="com.yayiabc.http.aop.UserTokenValidateAspect"/>
 	<bean id="saleTokenValidateAspect" class="com.yayiabc.http.aop.SaleTokenValidateAspect"/>
 	<bean id="adminTokenValidateAspect" class="com.yayiabc.http.aop.AdminTokenValidateAspect"/>
@@ -41,7 +40,7 @@
     
 <bean id="billsCheckJobTriggerOne" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
      <property name="jobDetail" ref="jobDetailOne"></property>  
-     <property name="cronExpression" value="0 0 0 1 * ?"></property>  
+     <property name="cronExpression" value="1 0 0 18 * ?"></property>  
      <property name="startDelay" value="3000"></property>  
  </bean>
  <bean id="billsCheckJobTriggerTwo" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  

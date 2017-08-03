@@ -1,6 +1,7 @@
 package com.yayiabc.http.mvc.service.Impl;
 
 
+import java.text.DecimalFormat;
 import java.util.Date;
 import java.util.List;
 
@@ -65,26 +66,32 @@ public class CornServiceImpl implements CornService{
 			/*Double balanceIn=this.getMoneyByHaoCai(totalHaoCaiMoney, totalHaoCaiMoney-totalHaoCaiRefund)
 					+this.getMoneyByGongJu(totalGongJuMoney,totalGongJuMoney-totalGongJuRefund);*/
 			if(balanceIn!=0){
-			Double balance=cornDao.getLatestBalanceBySaleId(saleId);
-			System.out.println(balance);
-			if(balance==null){
-				balance=0.0;
-			}
-			balance+=balanceIn;
-			Balance balanceMonthCash=new Balance();
-			balanceMonthCash.setSaleId(saleId);
-			balanceMonthCash.setHaocaiMoney(totalHaoCaiMoney.intValue()+0.0);
-			balanceMonthCash.setGongjuMoney(totalGongJuMoney.intValue()+0.0);
-			balanceMonthCash.setHaocaiRefund(totalHaoCaiRefund.intValue()+0.0);
-			balanceMonthCash.setGongjuRefund(totalGongJuRefund.intValue()+0.0);
-			balanceMonthCash.setBalanceIn(balanceIn.intValue()+0.0);
-			balanceMonthCash.setBalance(balance.intValue()+0.0);
-			balanceMonthCash.setDescribey("进账每月结算");
-			balanceMonthCash.setCreated(new Date());
-			System.out.println(balanceMonthCash);
-			cornDao.addBalancePerMonth(balanceMonthCash);
-			Integer money=balance.intValue();
-			/*cornDao.updateSaleInfo(saleId,money);*/
+				Double balance=cornDao.getLatestBalanceBySaleId(saleId);
+				System.out.println(balance);
+				if(balance==null){
+					balance=0.00;
+				}
+				balance+=0.00;
+				DecimalFormat df = new DecimalFormat("#.00");
+				balanceIn=Double.parseDouble(df.format(balanceIn));
+				balance+=balanceIn;
+				Balance balanceMonthCash=new Balance();
+				balanceMonthCash.setSaleId(saleId);
+				System.out.println(totalHaoCaiMoney);
+				System.out.println(totalGongJuMoney);
+				System.out.println(totalHaoCaiRefund);
+				System.out.println(totalGongJuRefund);
+				balanceMonthCash.setHaocaiMoney(totalHaoCaiMoney);
+				balanceMonthCash.setGongjuMoney(totalGongJuMoney);
+				balanceMonthCash.setHaocaiRefund(totalHaoCaiRefund);
+				balanceMonthCash.setGongjuRefund(totalGongJuRefund);
+				balanceMonthCash.setBalanceIn(balanceIn);
+				balanceMonthCash.setBalance(balance);
+				balanceMonthCash.setDescribey("进账每月结算");
+				balanceMonthCash.setCreated(new Date());
+				System.out.println(balanceMonthCash);
+				cornDao.addBalancePerMonth(balanceMonthCash);
+				
 			}
 		}
 		

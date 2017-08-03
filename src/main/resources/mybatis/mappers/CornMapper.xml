@@ -5,12 +5,12 @@
 <mapper namespace="com.yayiabc.http.mvc.dao.CornDao">
 
 	<sql id="firstDayOfPrevious">
-		(SELECT DATE_SUB(DATE_SUB(DATE_FORMAT(NOW(),'%y-%m-%d'),INTERVAL EXTRACT(DAY FROM NOW())-1 DAY),INTERVAL 1 MONTH))
+		(SELECT DATE_SUB(DATE_SUB(DATE_FORMAT(NOW(),'%y-%m-%d 00:00:01'),INTERVAL EXTRACT(DAY FROM NOW())-1 DAY),INTERVAL 1 MONTH))
 	</sql>
 	
 
 	<sql id="lastDayOfPrevious">
-		(SELECT DATE_SUB(DATE_SUB(DATE_FORMAT(NOW(),'%y-%m-%d'),INTERVAL EXTRACT(DAY FROM NOW()) DAY),INTERVAL 0 MONTH) AS DATE)
+		(SELECT DATE_SUB(DATE_SUB(DATE_FORMAT(NOW(),'%y-%m-%d 23:59:59'),INTERVAL EXTRACT(DAY FROM NOW()) DAY),INTERVAL 0 MONTH) AS DATE)
 	</sql>
 
 	<select id="getSaleIdList" resultType="string">

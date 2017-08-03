@@ -8,6 +8,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.IncomUtil;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.MyWalletDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
@@ -95,11 +96,13 @@ public class MyWalletServiceImpl implements MyWalletService{
 		Double gongJuIncome=0.0;
 		if(balance!=null){
 			if(balance.getHaocaiMoney()!=null&&balance.getHaocaiRefund()!=null){
-				 haoCaiIncome=balance.getHaocaiMoney()-balance.getHaocaiRefund();
+				 haoCaiIncome= IncomUtil.getMoneyByHaoCai(balance.getHaocaiMoney(),balance.getHaocaiMoney()-balance.getHaocaiRefund());
+				 haoCaiIncome=(double)Math.round(haoCaiIncome*100)/100;
 			}
 			 gongJuIncome=0.0;
 			if(balance.balance()!=null&&balance.getGongjuRefund()!=null){
-				 gongJuIncome=balance.balance()-balance.getGongjuRefund();
+				 gongJuIncome=IncomUtil.getMoneyByGongJu(balance.balance(), balance.balance()-balance.getGongjuRefund());
+				 gongJuIncome=(double)Math.round(gongJuIncome*100)/100;
 			}
 			balance.setHaoCaiIncome(haoCaiIncome);
 			balance.setGongJuIncome(gongJuIncome);

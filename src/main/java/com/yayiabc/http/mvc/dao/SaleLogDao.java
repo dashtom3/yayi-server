@@ -22,4 +22,6 @@ public interface SaleLogDao {
 	void deleteSaleToken(String token);
 
 	void updateSaleToken(String id, String token);
+
+	SaleInfo getSaleInfoById(String userId);
 }

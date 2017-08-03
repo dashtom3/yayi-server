@@ -39,9 +39,10 @@ public class UserController {
 	public DataWrapper<User> register(
 			@RequestParam(value = "phone", required = true) String phone,
 			@RequestParam(value = "password", required = true) String password,
-			@RequestParam(value = "code", required = true) String code
+			@RequestParam(value = "code", required = true) String code,
+			@RequestParam(value = "openid", required = false) String openid
 			){
-		return userService.register(phone,password,code);
+		return userService.register(phone,password,code,openid);
 	}
 	
 	//短信登录

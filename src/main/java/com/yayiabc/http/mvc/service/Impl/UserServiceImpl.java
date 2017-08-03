@@ -7,6 +7,7 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.HttpUtil;
 import com.yayiabc.common.utils.MD5Util;
 import com.yayiabc.http.mvc.dao.UserDao;
+import com.yayiabc.http.mvc.dao.WxAppDao;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.UserToken;
 import com.yayiabc.http.mvc.service.UserService;
@@ -21,6 +22,8 @@ import java.util.UUID;
 public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
+    @Autowired
+    WxAppDao wxAppDao;
 
     public DataWrapper<Void> getVerifyCode(String phone) {
         //浜斿垎閽熶箣鍐呬笉鑳藉啀鍙戠煭淇�
@@ -43,7 +46,7 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public DataWrapper<User> register(String phone, String password, String code) {
+    public DataWrapper<User> register(String phone, String password, String code,String openid) {
         DataWrapper<User> dataWrapper = new DataWrapper<User>();
         User neUser = new User();
         neUser.setPhone(phone);
@@ -69,6 +72,7 @@ public class UserServiceImpl implements UserService {
                     dataWrapper.setData(newUser);
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+                    if (openid != null) wxAppDao.addUser(newUser.getUserId(),openid);
                 } else {
                     dataWrapper.setErrorCode(ErrorCodeEnum.Register_Error);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
@@ -151,7 +155,7 @@ public class UserServiceImpl implements UserService {
                 dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 String userId = seUser.getUserId();
                 token = getToken(userId);
-
+                dataWrapper.setToken(token);
             } else {
                 dataWrapper.setErrorCode(ErrorCodeEnum.Password_error);
                 dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
@@ -174,7 +178,6 @@ public class UserServiceImpl implements UserService {
             dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
             dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
         }
-        dataWrapper.setToken(token);
         return dataWrapper;
     }
 

@@ -6,6 +6,7 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.HttpUtil;
 import com.yayiabc.common.utils.MD5Util;
 import com.yayiabc.http.mvc.dao.SaleLogDao;
+import com.yayiabc.http.mvc.dao.WxAppDao;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.model.UserToken;
 import com.yayiabc.http.mvc.service.SaleLogService;
@@ -22,6 +23,8 @@ public class SaleLogServiceImpl implements SaleLogService {
 
     @Autowired
     private SaleLogDao saleLogDao;
+    @Autowired
+    WxAppDao wxAppDao;
 
     @Override
     public DataWrapper<Void> getVerifyCode(String phone) {
@@ -45,7 +48,7 @@ public class SaleLogServiceImpl implements SaleLogService {
 
     @Override
     public DataWrapper<SaleInfo> register(String phone, String password,
-                                          String code) {
+                                          String code, String openid) {
         DataWrapper<SaleInfo> dataWrapper = new DataWrapper<SaleInfo>();
         SaleInfo saleInfo = saleLogDao.getSaleInfoByPhone(phone);
         if (saleInfo == null) {
@@ -67,6 +70,10 @@ public class SaleLogServiceImpl implements SaleLogService {
                 if (1 == saleLogDao.register(saleInfoTwo)) {
                     VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
                     String token = getToken(saleInfoTwo.getSaleId());
+<<<<<<< HEAD
+                    if (openid != null) wxAppDao.addUser(saleInfoTwo.getSaleId(), openid);
+=======
+>>>>>>> 3dfc1f0d23fec6d938b95318f7021295ec52d0b5
                     dataWrapper.setToken(token);
                     dataWrapper.setData(saleInfoTwo);
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);

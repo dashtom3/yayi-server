@@ -14,8 +14,7 @@
 		LEFT JOIN ordera o ON o.order_id=si.order_id
 		LEFT JOIN USER u ON u.user_id=o.user_id
 		WHERE si.sale_id=#{saleId} 
-		AND u.bind_sale_time &lt; o.created 
-		AND o.state !=0
+		AND u.bind_sale_time &lt; o.created
 		AND YEAR(si.created) =#{year}
 		AND MONTH(si.created)=#{month}
 		GROUP BY DAY(si.created)
@@ -60,7 +59,7 @@
 		FROM sale_income si
 		LEFT JOIN ordera o  ON o.order_id=si.order_id
 		LEFT JOIN USER u ON u.user_id=o.user_id
-		WHERE si.sale_id=#{saleId} AND u.bind_sale_time &lt; o.created AND o.state !=0 AND YEAR(si.created) =#{year} AND MONTH(si.created)=#{month}
+		WHERE si.sale_id=#{saleId} AND u.bind_sale_time &lt; o.created AND YEAR(si.created) =#{year} AND MONTH(si.created)=#{month}
 		GROUP BY si.order_id
 		ORDER BY o.created DESC
 		LIMIT ${page.currentNumber},${page.numberPerPage}
@@ -73,7 +72,7 @@
 			FROM sale_income si
 			LEFT JOIN ordera o  ON o.order_id=si.order_id
 			LEFT JOIN USER u ON u.user_id=o.user_id
-			WHERE si.sale_id=#{saleId} AND u.bind_sale_time &lt; o.created AND o.state !=0 AND YEAR(si.created) =#{year} AND MONTH(si.created)=#{month}
+			WHERE si.sale_id=#{saleId} AND u.bind_sale_time &lt; o.created AND YEAR(si.created) =#{year} AND MONTH(si.created)=#{month}
 			GROUP BY si.order_id
 			ORDER BY o.created DESC
 		) AS a

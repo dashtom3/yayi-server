@@ -12,6 +12,7 @@ public interface itemStatisticsApi {
      * @apiParam {String} itemId 商品ID（非必须）
      * @apiParam {String} itemSKU 商品SKU代码（非必须）
      * @apiParam {String} itemBrandName 品牌名称（非必须，全部传空值）
+     * @apiParam {int} state 排序方式（非必须，1销量降序，2退货数降序）
      * @apiParam {int} currentPage （非必须）
      * @apiParam {int} numberPerPage （非必须） 
      *

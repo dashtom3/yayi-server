@@ -59,6 +59,8 @@ public interface SaleMyOrderApi {
      *
      * @apiParam {int} currentPage （非必须）
      * @apiParam {int} numberPerPage （非必须）  
+     * @apiParam {String} year 年（必须,格式"yyyy"）
+     * @apiParam {String} month 月（必须，格式"MM"）
      * @apiParam {String} token 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:

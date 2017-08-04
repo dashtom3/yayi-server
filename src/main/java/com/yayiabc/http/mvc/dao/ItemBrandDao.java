@@ -74,5 +74,7 @@ public interface ItemBrandDao{
 
 	public Integer getCountOne(ItemBrand itemBrand);
 
+	public Integer getCommentNumber(@Param("itemId")String itemId);
+
 }
 

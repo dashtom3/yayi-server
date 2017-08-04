@@ -100,6 +100,8 @@ public interface ItemManageDao {
 
 	List<String> queryItemClassifyByNameOne(ItemClassify itemClassify);
 
+	Integer getCountItemClassify(@Param("itemClassifyName")String itemClassifyName);
+
 
 	
 

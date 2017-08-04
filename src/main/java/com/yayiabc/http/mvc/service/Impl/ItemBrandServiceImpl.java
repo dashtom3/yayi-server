@@ -115,6 +115,8 @@ public class ItemBrandServiceImpl implements ItemBrandService{
         String msg=itemBrandDao.getItemSKUByPrice(itemInfo.getItemPrice(),itemId);
         String videoName=itemBrandDao.getVideoNameByVideoRoute(itemInfo.getItemDetail().getVideo());
         itemInfo.setItemPnamea(videoName);
+        Integer commentNumber =itemBrandDao.getCommentNumber(itemId);
+        itemInfo.setItemStockNum(commentNumber);
         dataWrapper.setData(itemInfo);
         dataWrapper.setMsg(msg);
         dataWrapper.setNum(num);

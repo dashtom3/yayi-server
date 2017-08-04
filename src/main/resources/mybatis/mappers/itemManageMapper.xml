@@ -206,4 +206,8 @@
  	<select id="queryItemClassifyByNameOne" resultType="string">
  		select item_classify_name from item_classify where item_previous_classify=#{itemClassifyName}
  	</select>
+ 	
+ 	<select id="getCountItemClassify" resultType="java.lang.Integer">
+ 		select count(0) from item_info where one_classify=#{itemClassifyName} or two_classify=#{itemClassifyName} or three_classify=#{itemClassifyName}
+ 	</select>
 </mapper>       

@@ -198,27 +198,32 @@ public class ItemManageServiceImpl implements ItemManageService{
 		itemClassify.setItemClassifyId(itemClassifyId);
 		itemClassify.setItemClassifyName(itemClassifyName);
 		itemClassify.setItemClassifyGrade(itemClassifyGrade);
-		if(itemClassifyGrade==1){
-			itemManageDao.deleteItemClassifyOne(itemClassify);
-			List<String> itemClassifyTwo=itemManageDao.queryItemClassifyByName(itemClassify);
-			itemManageDao.deleteItemClassifyOneSon(itemClassify);
-			if(itemClassifyTwo!=null&&itemClassifyTwo.size()!=0){
-				itemManageDao.deleteItemClassifySon(itemClassifyTwo);
-			}
-		}else if(itemClassifyGrade==2){
-			itemManageDao.deleteItemClassifyTwo(itemClassify);
-			itemManageDao.deleteItemClassifyTwoSon(itemClassify);
+		Integer count =itemManageDao.getCountItemClassify(itemClassifyName);
+		if(count==0){
+			if(itemClassifyGrade==1){
+				itemManageDao.deleteItemClassifyOne(itemClassify);
+				List<String> itemClassifyTwo=itemManageDao.queryItemClassifyByName(itemClassify);
+				itemManageDao.deleteItemClassifyOneSon(itemClassify);
+				if(itemClassifyTwo!=null&&itemClassifyTwo.size()!=0){
+					itemManageDao.deleteItemClassifySon(itemClassifyTwo);
+				}
+			}else if(itemClassifyGrade==2){
+				itemManageDao.deleteItemClassifyTwo(itemClassify);
+				itemManageDao.deleteItemClassifyTwoSon(itemClassify);
 
-		}else if(itemClassifyGrade==3){
-			itemManageDao.deleteItemClassifyThree(itemClassify);
+			}else if(itemClassifyGrade==3){
+				itemManageDao.deleteItemClassifyThree(itemClassify);
+			}
+			String itemClassifyNameA =itemManageDao.queryItemClassifyName(itemClassifyId);
+			List<String> itemClassifySon=itemManageDao.queryItemClassifyByNameOne(itemClassify);
+			if(itemClassifySon!=null&&itemClassifySon.size()!=0){
+				itemManageDao.deleteClassify(itemClassifySon);
+			}
+			itemManageDao.deleteItemClassify(itemClassifyNameA);
+			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+		}else{
+			dataWrapper.setErrorCode(ErrorCodeEnum.ITEM_LEAVE);
 		}
-		String itemClassifyNameA =itemManageDao.queryItemClassifyName(itemClassifyId);
-		List<String> itemClassifySon=itemManageDao.queryItemClassifyByNameOne(itemClassify);
-		if(itemClassifySon!=null&&itemClassifySon.size()!=0){
-			itemManageDao.deleteClassify(itemClassifySon);
-		}
-		itemManageDao.deleteItemClassify(itemClassifyNameA);
-		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		String msg=dataWrapper.getErrorCode().getLabel();
 		dataWrapper.setMsg(msg);
 		return dataWrapper;

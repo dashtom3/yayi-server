@@ -258,4 +258,8 @@ WHERE s.item_id=#{itemId}
  		 <if test="itemBrandHome!=null">and item_brand_Home like '%${itemBrandHome}%'</if>
  		</where>
 	</select>
+	
+	<select id="getCommentNumber" resultType="java.lang.Integer">
+		select count(0) from comments where item_id=#{itemId}
+	</select>
 </mapper>       

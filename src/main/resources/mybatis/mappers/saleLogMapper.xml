@@ -36,7 +36,7 @@
 		update sale_info set sale_pwd=#{password} where sale_id=#{saleId}
 	</update>
 
-	<select id="getSaleInfoByPhone" resultType="SaleInfo">
+	<select id="getSaleInfoById" resultType="SaleInfo">
 		select * from sale_info where sale_id=#{_parameter}
 	</select>
 </mapper>

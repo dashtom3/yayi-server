@@ -16,8 +16,6 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.model.UserStatistics;
 import com.yayiabc.http.mvc.service.SaleMyClientService;
 
-
-
 @Controller
 @RequestMapping("api/saleMyClient")
 public class SaleMyClientController {
@@ -38,5 +36,15 @@ public class SaleMyClientController {
     		@RequestHeader(value="saleToken",required=true)String token
 	){
 		return saleMyClientService.myClient(value, token, currentPage, numberPerPage);
+	}
+
+	@RequestMapping(value="getInvitation",method=RequestMethod.GET)
+	@ResponseBody
+	@SaleTokenValidate
+	@SaleLog(description="销售员获取邀请码")
+	public DataWrapper<String> getInvitation(
+			@RequestHeader(value="saleToken",required=true)String token
+	){
+		return saleMyClientService.getInvitation(token);
 	}
 }

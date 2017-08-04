@@ -8,4 +8,6 @@ import com.yayiabc.http.mvc.pojo.model.UserStatistics;
 public interface SaleMyClientService {
 	DataWrapper<List<UserStatistics>> myClient(String value, String token,
 			Integer currentPage, Integer numberPerPage);
+
+    DataWrapper<String> getInvitation(String token);
 }

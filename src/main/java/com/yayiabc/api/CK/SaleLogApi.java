@@ -11,6 +11,7 @@ public interface SaleLogApi {
      * @apiParam {String} phone 手机号码（必须，11位手机号码，可作为登录名）
      * @apiParam {String} password 密码（必须）
      * @apiParam {String} code 短信验证码（必须）
+     * @apiParam {String} openid 微信身份标识（非必须）
      * @apiSuccessExample Success-Response:
      *  HTTP/1.1 200 OK
      *  {

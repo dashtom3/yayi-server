@@ -49,4 +49,12 @@ public class SaleMyClientServiceImpl implements SaleMyClientService {
 		return dataWrapper;
 	}
 
+	@Override
+	public DataWrapper<String> getInvitation(String token) {
+		DataWrapper<String> dataWrapper = new DataWrapper<String>();
+		String saleId = saleLogDao.getSaleIdByToken(token);
+		dataWrapper.setData(saleId);
+		return dataWrapper;
+	}
+
 }

@@ -1,6 +1,7 @@
 package com.yayiabc.http.mvc.service.Impl;
 
 import com.yayiabc.common.enums.ErrorCodeEnum;
+import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.HttpUtil;
 import com.yayiabc.common.utils.MD5Util;
@@ -64,14 +65,15 @@ public class WxLoginServiceImpl implements WxLoginService {
     }
 
     @Override
-    public DataWrapper<Object> bandUser(String phone, String password, String openid,String type) {
+    public DataWrapper<Object> bindUser(String phone, String verifyCode, String openid,String type) {
         DataWrapper<Object> dataWrapper = new DataWrapper<Object>();
         if ("1".equals(type)){
             User user = new User();
             user.setPhone(phone);
             User seUser = userDao.getUserByUser(user);
             if (seUser != null) {
-                if (MD5Util.getMD5String(password).equals(seUser.getPwd())) {
+                String serverCode = VerifyCodeManager.getPhoneCode(phone);
+                if (verifyCode.equals(serverCode)) {
                     dataWrapper.setData(seUser);
                     int num = userDao.getCartNum(seUser);
                     dataWrapper.setNum(num);
@@ -82,7 +84,7 @@ public class WxLoginServiceImpl implements WxLoginService {
                     dataWrapper.setToken(token);
                     wxAppDao.addUser(userId,openid);
                 } else {
-                    dataWrapper.setErrorCode(ErrorCodeEnum.Password_error);
+                    dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_Error);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 }
             } else {
@@ -92,7 +94,8 @@ public class WxLoginServiceImpl implements WxLoginService {
         }else if ("2".equals(type)){
             SaleInfo saleInfo = saleLogDao.getSaleInfoByPhone(phone);
             if (saleInfo != null) {
-                if (MD5Util.getMD5String(password).equals(saleInfo.getSalePwd())) {
+                String serverCode = VerifyCodeManager.getPhoneCode(phone);
+                if (verifyCode.equals(serverCode)) {
                     dataWrapper.setData(saleInfo);
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
@@ -103,7 +106,7 @@ public class WxLoginServiceImpl implements WxLoginService {
                         wxAppDao.addUser(saleId,openid);
                     }
                 } else {
-                    dataWrapper.setErrorCode(ErrorCodeEnum.Password_error);
+                    dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_Error);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 }
             } else {

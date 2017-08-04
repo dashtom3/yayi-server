@@ -43,14 +43,14 @@ public interface WxLogApi {
      */
 
     /**
-     * @api {get} http://47.93.48.111:8080/api/wxLogin/bandUser 网页微信绑定已有用户
+     * @api {get} http://47.93.48.111:8080/api/wxLogin/bindUser 网页微信绑定已有用户
      * @apiName bandUser
      * @apiGroup wxLogin
      * @apiVersion 0.1.0
      * @apiDescription 网页微信绑定已有用户
      *
      * @apiParam {String} phone 手机号（必须）
-     * @apiParam {String} password 密码（必须）
+     * @apiParam {String} verifyCode 短信验证码（必须）
      * @apiParam {String} openid 扫码登录失败返回值（必须）
      * @apiParam {String} type (1消费者用户,2创客)（必须）
      *

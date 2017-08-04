@@ -31,4 +31,6 @@ public interface UserDao {
 	void deleteToken(String token);
 
     void addSale(String saleId);
+
+	int bindSale(String userId, String saleId);
 }

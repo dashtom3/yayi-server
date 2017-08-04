@@ -10,8 +10,7 @@
 	<insert id="register" parameterType="SaleInfo">
 		insert into sale_info(sale_pwd,sale_id,phone,created,updated) values(#{salePwd},#{saleId},#{phone},#{created},#{updated})
 	</insert>
-	
-	
+
 	<insert id="addSaleToken">
 		insert into sale_token values(#{saleId},#{saleToken})
 	</insert>
@@ -38,5 +37,9 @@
 
 	<select id="getSaleInfoById" resultType="SaleInfo">
 		select * from sale_info where sale_id=#{_parameter}
+	</select>
+
+	<select id="getPhoneById">
+		SELECT phone FROM sale_info WHERE sale_id = #{_parameter}
 	</select>
 </mapper>

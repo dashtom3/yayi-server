@@ -6,8 +6,10 @@ import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.HttpUtil;
 import com.yayiabc.common.utils.MD5Util;
+import com.yayiabc.http.mvc.dao.SaleLogDao;
 import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.WxAppDao;
+import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.UserToken;
 import com.yayiabc.http.mvc.service.UserService;
@@ -23,7 +25,10 @@ public class UserServiceImpl implements UserService {
     @Autowired
     private UserDao userDao;
     @Autowired
-    WxAppDao wxAppDao;
+    private WxAppDao wxAppDao;
+    @Autowired
+    SaleLogDao saleLogDao;
+
 
     public DataWrapper<Void> getVerifyCode(String phone) {
         //浜斿垎閽熶箣鍐呬笉鑳藉啀鍙戠煭淇�
@@ -227,6 +232,18 @@ public class UserServiceImpl implements UserService {
         } else {
             dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
             dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+        }
+        return dataWrapper;
+    }
+
+    @Override
+    public DataWrapper<Void> bindSale(String token, String salePhone) {
+        DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
+        String userId = userDao.getUserIdByToken(token);
+        SaleInfo saleInfo = saleLogDao.getSaleInfoByPhone(salePhone);
+        int i = userDao.bindSale(userId,saleInfo.getSaleId());
+        if (i != 1){
+            dataWrapper.setErrorCode(ErrorCodeEnum.Error);
         }
         return dataWrapper;
     }

@@ -9,5 +9,5 @@ import com.yayiabc.common.utils.DataWrapper;
 public interface WxLoginService {
     DataWrapper<Object> login(String code);
 
-    DataWrapper<Object> bandUser(String phone, String password, String openid, String type);
+    DataWrapper<Object> bindUser(String phone, String verifyCode, String openid, String type);
 }

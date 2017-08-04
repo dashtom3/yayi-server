@@ -53,7 +53,8 @@ public class SaleMyClientServiceImpl implements SaleMyClientService {
 	public DataWrapper<String> getInvitation(String token) {
 		DataWrapper<String> dataWrapper = new DataWrapper<String>();
 		String saleId = saleLogDao.getSaleIdByToken(token);
-		dataWrapper.setData(saleId);
+		String phone = saleLogDao.getPhoneById(saleId);
+		dataWrapper.setData(phone);
 		return dataWrapper;
 	}
 

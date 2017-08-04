@@ -24,4 +24,6 @@ public interface SaleLogDao {
 	void updateSaleToken(String id, String token);
 
 	SaleInfo getSaleInfoById(String userId);
+
+	String getPhoneById(String saleId);
 }

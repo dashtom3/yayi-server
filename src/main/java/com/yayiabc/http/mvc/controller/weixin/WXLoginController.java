@@ -27,15 +27,15 @@ public class WXLoginController {
         return wxLoginService.login(code);
     }
 
-    @RequestMapping(value = "bandUser",method = RequestMethod.POST)
+    @RequestMapping(value = "bindUser",method = RequestMethod.POST)
     @ResponseBody
-    public DataWrapper<Object> bandUser(
+    public DataWrapper<Object> bindUser(
             @RequestParam("phone") String phone,
-            @RequestParam("password") String password,
+            @RequestParam("verifyCode") String verifyCode,
             @RequestParam("openid") String openid,
             @RequestParam("type") String type
     ){
-        return wxLoginService.bandUser(phone,password,openid,type);
+        return wxLoginService.bindUser(phone,verifyCode,openid,type);
     }
 
 }

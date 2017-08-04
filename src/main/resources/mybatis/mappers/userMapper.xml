@@ -46,4 +46,8 @@
     <select id="getUserIdByToken" resultType="string">
     	select user_id from user_token where token=#{token}
     </select>
+
+    <update id="bindSale">
+        UPDATE user SET sale_id = #{1} WHERE user_id = #{0}
+    </update>
 </mapper>       

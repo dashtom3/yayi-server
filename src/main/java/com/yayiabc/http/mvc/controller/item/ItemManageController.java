@@ -61,7 +61,6 @@ public class ItemManageController {
 	@RequestMapping("addItemBrand")
 	@ResponseBody
 	@AdminTokenValidate
-	@AdminLog(description="管理员添加品牌")
 	public DataWrapper<Void> addItemBrand(
 			@RequestParam(value="itemBrandName",required=true) String itemBrandName,
 			@RequestParam(value="itemBrandHome",required=true) String itemBrandHome,
@@ -82,7 +81,6 @@ public class ItemManageController {
 	@RequestMapping("updateItemBrand")
 	@ResponseBody
 	@AdminTokenValidate
-	@AdminLog(description="管理员修改品牌")
 	public DataWrapper<Void> updateItemBrand(
 			@RequestParam(value="itemBrandId",required=true)Integer itemBrandId,
 			@RequestParam(value="itemBrandName",required=true)String itemBrandName,

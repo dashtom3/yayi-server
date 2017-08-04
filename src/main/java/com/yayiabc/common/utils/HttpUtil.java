@@ -11,7 +11,7 @@ import java.net.URLConnection;
 import java.text.SimpleDateFormat;
 import java.util.Date;
 import java.util.HashMap;
-<<<<<<< .merge_file_a10636
+
 import java.util.Map;
 import java.util.Set;
 
@@ -25,7 +25,7 @@ import org.apache.http.client.methods.HttpGet;
 import org.apache.http.impl.client.CloseableHttpClient;
 import org.apache.http.impl.client.HttpClients;
 import org.apache.http.util.EntityUtils;
-=======
+
 import java.util.Set;
 
 import com.cloopen.rest.sdk.CCPRestSmsSDK;
@@ -34,7 +34,7 @@ import com.cloopen.rest.sdk.CCPRestSmsSDK;
 
 
 
->>>>>>> .merge_file_a12980
+
 
 
 /**
@@ -95,7 +95,7 @@ public class HttpUtil {
         }
         return result;
     }
-<<<<<<< .merge_file_a10636
+
     public static Map<String, Object> sendGet(String url) {
         CloseableHttpClient httpclient = HttpClients.createDefault();
         Map<String, Object> resultMap = null;
@@ -132,8 +132,7 @@ public class HttpUtil {
         }
         return resultMap;
     }
-=======
->>>>>>> .merge_file_a12980
+
     public String sendPhoneCode(String code,String phoneNum){
         String accountSid = "8a48b551512459880151339497b02f2b";
         String token = "a2780e18732b43ba9b9974c824f8cf19";

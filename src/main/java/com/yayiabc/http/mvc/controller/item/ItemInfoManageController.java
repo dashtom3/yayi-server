@@ -34,7 +34,6 @@ public class ItemInfoManageController {
 	@RequestMapping("itemInfoList")
 	@ResponseBody
 	@AdminTokenValidate
-	@AdminLog(description="管理员查询商品列表")
 	public DataWrapper<List<ItemInfo>> itemInfoList(
 			@RequestParam(value="itemId",required=false) String itemId,
 			@RequestParam(value="itemName",required=false) String itemName,

@@ -97,4 +97,13 @@ public class ItemClassifyServiceImpl implements ItemClassifyService {
 		dataWrapper.setData(itemInfoList);
 		return dataWrapper;
 	}
+
+	@Override
+	public DataWrapper<List<ItemInfo>> getAllRecommendItemList() {
+		DataWrapper<List<ItemInfo>> dataWrapper =new DataWrapper<List<ItemInfo>>();
+		List<ItemInfo> itemInfoList=itemClassifyDao.getAllRecommendItemList();
+		dataWrapper.setData(itemInfoList);
+		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+		return dataWrapper;
+	}
 }

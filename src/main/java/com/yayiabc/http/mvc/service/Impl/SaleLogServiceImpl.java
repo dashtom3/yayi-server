@@ -70,10 +70,7 @@ public class SaleLogServiceImpl implements SaleLogService {
                 if (1 == saleLogDao.register(saleInfoTwo)) {
                     VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
                     String token = getToken(saleInfoTwo.getSaleId());
-<<<<<<< HEAD
                     if (openid != null) wxAppDao.addUser(saleInfoTwo.getSaleId(), openid);
-=======
->>>>>>> 3dfc1f0d23fec6d938b95318f7021295ec52d0b5
                     dataWrapper.setToken(token);
                     dataWrapper.setData(saleInfoTwo);
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);

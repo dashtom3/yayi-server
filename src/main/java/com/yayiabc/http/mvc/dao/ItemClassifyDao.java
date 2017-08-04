@@ -16,4 +16,6 @@ int getCount(Search search);
 int getCountGet(Search search);
 
 List<ItemInfo> queryItemSearchGet(Search search);
+
+List<ItemInfo> getAllRecommendItemList();
 }

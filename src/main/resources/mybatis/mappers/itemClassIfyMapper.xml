@@ -125,4 +125,21 @@
     </choose>
     LIMIT #{currentNumber},#{numberPerPage} 
    </select>
+   
+   <select id="getAllRecommendItemList" resultMap="itemInfoRM">
+   		SELECT e.* FROM
+(SELECT * FROM
+    (SELECT * FROM
+    item_info  a
+    INNER JOIN 
+    (SELECT item_id x_id,item_pica FROM item_detail) b
+    ON a.item_id=b.x_id) c
+    INNER JOIN 
+    (SELECT item_brand_id p_id,item_brand_name FROM item_brand WHERE state=1) d
+    ON c.item_brand_id=d.p_id) e
+    INNER JOIN
+    recommend_item f
+    ON e.item_id=f.item_id
+    limit 0,8
+   </select>
 </mapper>

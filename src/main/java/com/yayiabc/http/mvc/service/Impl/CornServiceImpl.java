@@ -81,10 +81,10 @@ public class CornServiceImpl implements CornService{
 				System.out.println(totalGongJuMoney);
 				System.out.println(totalHaoCaiRefund);
 				System.out.println(totalGongJuRefund);
-				balanceMonthCash.setHaocaiMoney(totalHaoCaiMoney);
-				balanceMonthCash.setGongjuMoney(totalGongJuMoney);
-				balanceMonthCash.setHaocaiRefund(totalHaoCaiRefund);
-				balanceMonthCash.setGongjuRefund(totalGongJuRefund);
+				balanceMonthCash.setHaocaiMoney(Double.parseDouble(df.format(totalHaoCaiMoney)));
+				balanceMonthCash.setGongjuMoney(Double.parseDouble(df.format(totalGongJuMoney)));
+				balanceMonthCash.setHaocaiRefund(Double.parseDouble(df.format(totalHaoCaiRefund)));
+				balanceMonthCash.setGongjuRefund(Double.parseDouble(df.format(totalGongJuRefund)));
 				balanceMonthCash.setBalanceIn(balanceIn);
 				balanceMonthCash.setBalance(balance);
 				balanceMonthCash.setDescribey("进账每月结算");

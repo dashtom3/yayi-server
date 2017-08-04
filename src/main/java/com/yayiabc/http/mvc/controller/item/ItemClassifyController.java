@@ -59,6 +59,12 @@ public class ItemClassifyController {
     	  return itemClassifyService.queryItemSearchGet(oneClassify,twoClassify,threeClassify,itemBrandName,rule,currentPage,numberPerPage);
       }
       
+      @RequestMapping("getAllRecommendItemList")
+      @ResponseBody
+      public DataWrapper<List<ItemInfo>> getAllRecommendItemList(){
+    	  return itemClassifyService.getAllRecommendItemList();
+      }
+      
       
       
 }

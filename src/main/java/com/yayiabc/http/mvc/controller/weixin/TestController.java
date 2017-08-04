@@ -13,6 +13,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.annotation.SaleTokenValidate;
 
+import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.annotation.UserLog;
 import com.yayiabc.common.annotation.UserTokenValidate;
 
@@ -58,10 +59,9 @@ public class TestController {
 	
 	@RequestMapping("api/demoThree")
 	@ResponseBody
-	@UserLog(description="验证通知")
-	@UserTokenValidate(description="身份验证通知")
+	@AdminTokenValidate
 	public DataWrapper<Void> demoThree(
-			@RequestHeader(value="token")String token
+			@RequestHeader(value="admintoken")String adminToken
 			){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		dataWrapper.setMsg("helloWorld");

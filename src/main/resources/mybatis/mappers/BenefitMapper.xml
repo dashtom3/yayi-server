@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.BenefitChangeDao">
+	<insert id="addBenefit" useGeneratedKeys="true" keyProperty="benefitId">
+		insert into benefit(benefit_name,benefit_qb,benefit_num,benefit_value_num,created,updated) values(#{benefitName},#{benefitQb},#{benefitNum},#{benefitValueNum},now(),#{updated})
+	</insert>
+	
+	<insert id="addBenefitDetail">
+		insert into benefit_detail values(null,#{benefitId},#{benefitCode},1,null,null)
+	</insert>
+	
+	<select id="getBenefitByBenefitCode" resultType="BenefitDetail">
+		select * from benefit_detail where benefit_code=#{benefitCode}
+	</select>
+	
+	<select id="getBenefitByBenefitId" resultType="Benefit">
+		select * from benefit where benefit_id=#{benefitId}
+	</select>
+	
+	<select id="getUserIdByToken" resultType="string">
+		select user_id from user_token where token=#{token}
+	</select>
+	
+	<select id="getPhoneByUserId" resultType="string">
+		select phone from user where user_id=#{userId}
+	</select>
+	
+	<update id="updateState">
+		update benefit_detail set state=2,benefit_time=now(),benefit_person=#{phone} where benefit_code_id=#{benefitCodeId}
+	</update>
+	
+	<update id="updateBenefitValueNum">
+		update benefit set benefit_value_num=benefit_value_num-1 where benefit_id=#{benefitId}
+	</update>
+	
+	<select id="getTotalNum" resultType="java.lang.Integer">
+		select count(0) from benefit
+		<where>
+			<if test="benefitName!=null">benefit_name like '%${benefitName}%'</if>
+			<if test="enable==1">and benefit_value_num!=0 and updated>now()</if>
+			<if test="enable==2">and benefit_value_num=0 or updated &lt; now()</if>
+		</where>
+	</select>
+	
+	<select id="getBenefitList" resultType="Benefit">
+		select * from benefit
+		<where>
+			<if test="benefitName!=null">benefit_name like '%${benefitName}%'</if>
+			<if test="enable==1">and benefit_value_num!=0 and updated>now()</if>
+			<if test="enable==2">and benefit_value_num=0 or updated &lt; now()</if>
+		</where>
+		order by created
+		limit #{currentNumber},#{numberPerPage}
+	</select>
+	
+	<select id="getBenefitDetailListByBenefitId" resultType="BenefitDetail">
+		select * from benefit_detail where benefit_id=#{benefitId}
+		limit #{currentNumber},#{numberPerPage} 
+	</select>
+	
+	<select id="getExcelEntryList" resultType="ExcelEntry">
+		SELECT a.benefit_qb,a.updated,b.benefit_code FROM 
+		benefit a
+		LEFT JOIN
+		(select * from benefit_detail where benefit_id=#{benefitId} and state=1) b
+		ON a.benefit_id=b.benefit_id
+		
+	</select>
+</mapper>

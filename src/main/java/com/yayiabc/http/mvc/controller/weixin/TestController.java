@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.controller.weixin;
 
 
 
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -18,11 +19,14 @@ import com.yayiabc.common.annotation.UserLog;
 import com.yayiabc.common.annotation.UserTokenValidate;
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.dao.TestDao;
+import com.yayiabc.http.mvc.pojo.jpa.Balance;
 
 @Controller
 public class TestController {
 	
-	
+	@Autowired
+	private TestDao testDao;
 	
 	@RequestMapping("api/test")
 	@ResponseBody
@@ -64,6 +68,9 @@ public class TestController {
 			@RequestHeader(value="admintoken")String adminToken
 			){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		Balance balance=new Balance();
+		testDao.insert(balance);
+		System.out.println(balance.getBalanceId());
 		dataWrapper.setMsg("helloWorld");
 		return dataWrapper;
 	}

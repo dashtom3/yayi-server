@@ -34,7 +34,7 @@ public class SaleMyClientServiceImpl implements SaleMyClientService {
 		List<UserStatistics> list=saleMyClientDao.myClient(value, saleId, page);
 		dataWrapper.setPage(page, totalNumber);
 		for (UserStatistics userStatistics : list) {
-			UserStatistics us=saleMyClientDao.queryCount(userStatistics.getUserId());
+			UserStatistics us=saleMyClientDao.queryCount(saleId,userStatistics.getUserId());
 			if(us==null){
 				userStatistics.setOrderaCount("");
 				userStatistics.setOrderaMoneyCount("");

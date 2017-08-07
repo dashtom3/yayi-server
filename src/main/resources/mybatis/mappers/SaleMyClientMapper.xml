@@ -44,11 +44,14 @@
 	</select>
 	
 	<select id="queryCount" resultType="UserStatistics">
-		SELECT
-		IF(COUNT(user_id) IS NOT NULL,COUNT(user_id),0) AS orderaCount,
-		IF(ROUND(SUM(actual_pay),2) IS NOT NULL,ROUND(SUM(actual_pay),2),0) AS orderaMoneyCount
-		FROM ordera 
-		WHERE user_id=#{userId} 
+		SELECT 
+		IF(COUNT(o.user_id) IS NOT NULL,COUNT(o.user_id),0) AS orderaCount,
+		(IF(ROUND(SUM(si.order_money_haocai),2) IS NOT NULL,ROUND(SUM(si.order_money_haocai),2),0)+IF(ROUND(SUM(si.order_money_gongju),2) IS NOT NULL,ROUND(SUM(si.order_money_gongju),2),0))-
+		(IF(ROUND(SUM(si.refund_money_gongju),2) IS NOT NULL,ROUND(SUM(si.refund_money_gongju),2),0)+IF(ROUND(SUM(si.refund_money_haocai),2) IS NOT NULL,ROUND(SUM(si.refund_money_haocai),2),0)) AS orderaMoneyCount
+		FROM sale_income si
+		LEFT JOIN ordera o ON si.order_id=o.order_id
+		LEFT JOIN USER u ON o.user_id=u.user_id
+		WHERE si.sale_id=#{saleId} AND si.created  &gt; u.bind_sale_time AND si.order_id IN(SELECT order_id FROM ordera WHERE user_id=#{userId})
 	</select>
 	
 	<select id="getLatelyOrderDate" resultType="String">

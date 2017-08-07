@@ -87,7 +87,7 @@
 	
 	<update id="verifyFail">
 		UPDATE certification 
-		SET type=NULL,company_name=NULL,part=NULL,doctor_pic=NULL,work_address=NULL
-		WHERE user_id=#{userId} AND state=3;
+		SET type=NULL,company_name=NULL,part=NULL,doctor_pic=NULL,work_address=NULL,judge=0
+		WHERE user_id=#{userId};
 	</update>
 </mapper>        

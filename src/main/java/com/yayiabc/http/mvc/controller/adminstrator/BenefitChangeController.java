@@ -86,13 +86,12 @@ public class BenefitChangeController {
 	//下载未兑换的优惠码
 	@RequestMapping("downLoad")
 	@ResponseBody
-	/*@AdminTokenValidate*/
+	@AdminTokenValidate
 	public DataWrapper<Void> downLoad(
-			/*@RequestHeader(value="adminToken",required=true) String adminToken,*/
-			/*@RequestParam(value="benefitId",required=true) Integer benefitId,*/
+			@RequestHeader(value="adminToken",required=true) String adminToken,
+			@RequestParam(value="benefitId",required=true) Integer benefitId,
 			HttpServletResponse response
 			){
-		Integer benefitId=4;
 		return benefitChangeService.downLoad(benefitId,response);
 	}
 }

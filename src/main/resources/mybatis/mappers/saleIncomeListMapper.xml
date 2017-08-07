@@ -240,7 +240,7 @@
 		FROM sale_income si 
 		INNER JOIN ordera o ON si.order_id=o.order_id
 		INNER JOIN USER u ON o.user_id=u.user_id 
-		WHERE si.sale_id=#{saleId} AND DATE_FORMAT(si.created,'%Y-%m-%d')  BETWEEN #{startDate} AND #{endDate} AND u.bind_sale_time &lt; o.created
+		WHERE si.sale_id=#{saleId} AND DATE_FORMAT(si.created,'%Y-%m-%d')  BETWEEN #{startDate} AND #{endDate}
 		GROUP BY si.sale_income_id
 		ORDER BY o.created DESC
 		LIMIT ${page.currentNumber},${page.numberPerPage} 
@@ -253,7 +253,7 @@
 			FROM sale_income si 
 			INNER JOIN ordera o ON si.order_id=o.order_id
 			INNER JOIN USER u ON o.user_id=u.user_id 
-			WHERE si.sale_id=#{saleId} AND DATE_FORMAT(si.created,'%Y-%m-%d')  BETWEEN #{startDate} AND #{endDate} AND u.bind_sale_time &lt; o.created
+			WHERE si.sale_id=#{saleId} AND DATE_FORMAT(si.created,'%Y-%m-%d')  BETWEEN #{startDate} AND #{endDate}
 			GROUP BY si.sale_income_id
 		) AS a
 	</select>	

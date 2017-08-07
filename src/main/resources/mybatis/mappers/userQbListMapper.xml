@@ -61,7 +61,7 @@
 	
 	<select id="queryQbBalances" resultType="java.lang.Integer">
 		SELECT qb_balances FROM qb_record WHERE user_id = #{userId}
-		ORDER BY qb_time DESC,q.millisecond DESC LIMIT 1
+		ORDER BY qb_time DESC,millisecond DESC LIMIT 1
 	</select>
 	
 	<update id="update">

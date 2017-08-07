@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -44,6 +45,8 @@ public class UserQbListServiceImpl implements UserQbListService {
 	public DataWrapper<Void> update(Integer qbBalance, String phone) {
 		DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
 		String userId = userDao.getUserId(phone);
+		Calendar Cld = Calendar.getInstance();
+		int MI = Cld.get(Calendar.MILLISECOND);		//获取毫秒
 		if (qbBalance.equals(userQbListDao.queryQb(phone))==true) {		//判断现有乾币余额和输入乾币数是否相同
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			dataWrapper.setMsg("乾币无修改");
@@ -68,7 +71,9 @@ public class UserQbListServiceImpl implements UserQbListService {
 					qbRecord.setRemark("管理员修改乾币余额，扣除乾币" + qbRecord.getQbRout());
 				}
 				qbRecord.setQbBalances(qbBalance);
+				qbRecord.setMillisecond(MI);
 				userMyQbDao.add(qbRecord);
+				dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			} else {
 				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			}

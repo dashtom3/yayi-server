@@ -36,8 +36,6 @@ import com.yayiabc.http.mvc.service.AliPayService;
 @RequestMapping("api/queryPay")
 @ResponseBody
 public class queryAliPayOrderController {
-	@Autowired
-	private AliPayService alipayService;
 	@RequestMapping("query")
 	@ResponseBody
 	String query(

@@ -39,7 +39,7 @@ public class CoinRechargeController {
     	Integer money=QbExchangeUtil.getQbByMoney(Integer.parseInt(moneys));
     	utilsdao.saveRechargeMessage(codeId,utilsdao.getUserID(token),String.valueOf(money));
     	    //调用支付宝
-       String sHtmlText=	alipay.packingParameter(codeId, "乾币充值", String.valueOf(money),"乾币");
+       String sHtmlText=	alipay.packingParameter(codeId, "乾币充值", moneys,"乾币");
     	try {
 			response.getWriter().write(sHtmlText);
 		} catch (IOException e) {

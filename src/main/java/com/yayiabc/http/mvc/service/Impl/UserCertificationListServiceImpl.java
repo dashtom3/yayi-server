@@ -47,11 +47,11 @@ public class UserCertificationListServiceImpl implements
 		if (userId == null) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
 		} else {
-			int i = userCertificationListDao.verify(userId, state, failReason);
-			if (i > 0) {
-				dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-			} else {
-				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+			if(state == 3){
+				userCertificationListDao.verifyFail(userId);
+				userCertificationListDao.verify(userId, state, failReason);
+			}else{
+				userCertificationListDao.verify(userId, state, failReason);
 			}
 		}
 		return dataWrapper;

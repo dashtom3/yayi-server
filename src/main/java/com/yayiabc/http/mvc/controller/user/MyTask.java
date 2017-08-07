@@ -11,13 +11,9 @@ import com.yayiabc.common.cahce.CacheUtils;
 import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.service.TimerChangeStateService;
-@Component
+/*@Component*/
 public class MyTask /*extends TimerTask*/{
-	/*@Autowired*/
-	/*@Override
-	public void run() {
-		kk();
-			}*/
+	
 	public  void kk(){
 		TimerChangeStateService timerChangeStateService=BeanUtil.getBean("TimerChangeStateServiceImpl");
 		CacheUtils cache=	CacheUtils.getInstance();

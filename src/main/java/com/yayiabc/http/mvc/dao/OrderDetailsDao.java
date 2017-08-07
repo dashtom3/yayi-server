@@ -5,8 +5,9 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
-import com.yayiabc.http.mvc.pojo.jpa.User;
+import com.yayiabc.http.mvc.pojo.model.OrderNums;
 
 public interface OrderDetailsDao {
 	List<Ordera> orderDetailsShow(
@@ -43,6 +44,6 @@ public interface OrderDetailsDao {
 	Ordera queryItemDetails(Integer orderId);
     //
 	int updateState(@Param("orderId")String orderId);
-	
+List<OrderNums> queryOrderNums(@Param("userId")String userId);
 
 }

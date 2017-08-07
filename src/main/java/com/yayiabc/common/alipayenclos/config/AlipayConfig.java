@@ -60,6 +60,29 @@ public class AlipayConfig {
 	public static String exter_invoke_ip = "";
 		
 //↑↑↑↑↑↑↑↑↑↑请在这里配置防钓鱼信息，如果没开通防钓鱼功能，为空即可 ↑↑↑↑↑↑↑↑↑↑↑↑↑↑↑
+	//|||||||||||||||||||||||||||下面是手机网站支付
+	// 商户appid
+	public static String APPID = "2016080600182827";
+	// 私钥 pkcs8格式的
+	public static String RSA_PRIVATE_KEY = "MIICdwIBADANBgkqhkiG9w0BAQEFAASCAmEwggJdAgEAAoGBAMr7ya59h5y8BNtgvqDTzTASVfthsBRxA+OgYYt8ODBKmw/EX0mfYD3d9AqZ4U+kytyvMC3GVveIR8RuundG+bHzPe+gI8BaKbae5KaOK1FCWFMAu3NlZnPGBNfaYG8syJD2PwfY2skFgeZRx6UVDud83xnMhzgo6uHDqb+CfLHxAgMBAAECgYBNhU2oAy74j+H2+oKzH1CczFPkFpHNrL/Efiriv4UiBEwmAGQ31NNHrW2XYt9msFP9ZjarNLVgAb8O6Q7zoLqZKfvElAFQW51G5DVo48hb/bN0rtWHjKHuTGTZ0fyCQ1BWSucPPJt3iPRi+AqQXR5eVImVvd/4bJEUpYDhCyN9RQJBAPQG2mrNPODnpG1uLN9USHGSDFWHoWd+Y7OO5kS+sS9aRBSnlyPa1UsABdr9aMaSTI9ibJeYYVZg8ZF89dRV70sCQQDU8Wctz6biWx1WQBTCjqmXSa7mlbW4N6DOoE5yiSQULA6EkCVrz3BFsU4ygwCwph3ZSY2zDH9oQ2nAXHIBKFIzAkEAjBfDHL1mzdcuVoSBzlScolauLgwHZVrx8gt/tsejAQRZQWJVKohfGweQVQBWPmmO+mIO5ZjdiLFu/Y83sgcDsQJBAIQDCFkxM59+pwhSf8xBz0d4KZLP2zFSY0HVxexhstlCmtl514knt82s5vKPnnzk7vpHDC6lH9NOf5/+b7rh+VsCQCG6y/WhKAFYhsGxnrhQ36bRRdl3QBs4bupEhcrhGupFi+acMYcJBa3Wze1GOI751RMN5E7GNvo5rylrH0RShKI=";
+	// 服务器异步通知页面路径 需http://或者https://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
+
+	// 请求网关地址
+	public static String URL = "https://openapi.alipaydev.com/gateway.do";
+	// 编码
+	public static String CHARSET = "UTF-8";
+	// 返回格式
+	public static String FORMAT = "json";
+	// 支付宝公钥
+	public static String ALIPAY_PUBLIC_KEY = "MIGfMA0GCSqGSIb3DQEBAQUAA4GNADCBiQKBgQDIgHnOn7LLILlKETd6BFRJ0GqgS2Y3mn1wMQmyh9zEyWlz5p1zrahRahbXAfCfSqshSNfqOmAQzSHRVjCqjsAw1jyqrXaPdKBmr90DIpIxmIyKXv4GGAkPyJ/6FTFY99uhpiq0qadD/uSzQsefWo0aTvP/65zi3eof7TcZ32oWpwIDAQAB";
+	/*// 日志记录目录
+	public static String log_path = "/log";*/
+	// RSA2
+	public static String SIGNTYPE = "RSA";
 	
+	public static String phoneNotify_url = "http://47.93.48.111:8080/api/phonePay/notifyVerifica";
+
+	// 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
+	public static String phoneReturn_url = "http://47.93.48.111:8080/api/phonePay/payVerifica";
 }
 

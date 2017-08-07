@@ -16,6 +16,7 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.User;
+import com.yayiabc.http.mvc.pojo.model.OrderNums;
 import com.yayiabc.http.mvc.pojo.model.itemIdList;
 import com.yayiabc.http.mvc.service.LogisticsService;
 import com.yayiabc.http.mvc.service.OrderDetailsService;
@@ -154,5 +155,14 @@ public class OrderDetailsController {
 		ArrayList<itemIdList> itemIdListy = (ArrayList<itemIdList>)JSONArray.toCollection(json,itemIdList.class);
 		System.out.println(itemIdListy);
 		return orderDetailsService.makeSureCom(token,orderId,itemIdListy);
+	}
+	/*@UserTokenValidate*/
+	/*@UserLog(description="统计单数")*/
+	@RequestMapping("queryOrderNums")
+	@ResponseBody
+	public DataWrapper<List<OrderNums>> queryOrderNums(
+			@RequestParam(value="token",required=true) String token
+			){
+		return orderDetailsService.queryOrderNums(token);
 	}
 }

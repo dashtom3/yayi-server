@@ -1,0 +1,95 @@
+package com.yayiabc.http.mvc.service.Impl;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
+
+import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import com.alipay.api.AlipayApiException;
+import com.alipay.api.AlipayClient;
+import com.alipay.api.DefaultAlipayClient;
+import com.alipay.api.domain.AlipayTradeWapPayModel;
+import com.alipay.api.request.AlipayTradeWapPayRequest;
+import com.yayiabc.common.alipayenclos.config.AlipayConfig;
+import com.yayiabc.common.alipayenclos.util.AlipayNotify;
+import com.yayiabc.common.alipayenclos.util.AlipaySubmit;
+import com.yayiabc.common.utils.BeanUtil;
+import com.yayiabc.common.utils.PayAfterOrderUtil;
+import com.yayiabc.http.mvc.dao.AliPayDao;
+import com.yayiabc.http.mvc.dao.UtilsDao;
+import com.yayiabc.http.mvc.pojo.jpa.Charge;
+import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
+import com.yayiabc.http.mvc.service.AliPayService;
+import com.yayiabc.http.mvc.service.PhoneAliPayService;
+import com.yayiabc.http.mvc.service.UserMyQbService;
+
+@Service
+public class PhoneAliPayServiceImpl implements PhoneAliPayService{
+
+	
+	@Override
+	public String packingParameter(String WIDout_trade_no, String WIDsubject, String WIDtotal_fee, String WIDbody
+			,String product_codes
+			) {
+		// TODO Auto-generated method stub
+	
+			
+			String out_trade_no=WIDout_trade_no;
+			String subject=WIDsubject;
+			String total_fee=WIDtotal_fee;
+			String product_code=product_codes;
+			//String body=WIDbody;
+			//把请求参数打包成数组
+		/*	Map<String, String> sParaTemp = new HashMap<String, String>();
+			sParaTemp.put("service", AlipayConfig.service);
+			sParaTemp.put("partner", AlipayConfig.partner);
+			sParaTemp.put("seller_id", AlipayConfig.seller_id);
+			sParaTemp.put("_input_charset", AlipayConfig.input_charset);
+			sParaTemp.put("payment_type", AlipayConfig.payment_type);
+			sParaTemp.put("notify_url", AlipayConfig.notify_url);
+			sParaTemp.put("return_url", AlipayConfig.return_url);
+			sParaTemp.put("out_trade_no", out_trade_no);
+			sParaTemp.put("subject", subject);
+			sParaTemp.put("total_fee", total_fee);
+			sParaTemp.put("product_code", product_code);*/
+         			
+			  // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，开发者无需关注签名与验签     
+		    //调用RSA签名方式
+		    AlipayClient client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
+		    AlipayTradeWapPayRequest alipay_request=new AlipayTradeWapPayRequest();
+		    
+		    // 封装请求支付信息
+		    AlipayTradeWapPayModel model=new AlipayTradeWapPayModel();
+		    model.setOutTradeNo(out_trade_no);
+		    model.setSubject(subject);
+		    model.setTotalAmount(total_fee);
+		    //model.setBody(body);
+		    model.setTimeoutExpress("2m");
+		    model.setProductCode(product_code);
+		    alipay_request.setBizModel(model);
+		    // 设置异步通知地址
+		    alipay_request.setNotifyUrl(AlipayConfig.phoneNotify_url);
+		    // 设置同步地址
+		    alipay_request.setReturnUrl(AlipayConfig.phoneReturn_url);   
+		    
+		    // form表单生产
+		    String form = "";
+			try {
+				// 调用SDK生成表单
+				form = client.pageExecute(alipay_request).getBody();
+			    return form;
+			} catch (AlipayApiException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			} 
+			return null;
+	}
+	/**
+	 * 1同步通知是给用户看的
+	 * 2异步通知是给服务器看的
+	 */
+}

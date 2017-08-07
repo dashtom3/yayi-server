@@ -52,6 +52,8 @@ public interface UtilsDao {
 	int saveRechargeMessage(@Param("codeId")String codeId,
 			@Param("userID")String userID,
 			@Param("money")String money);
+
+	String queryUserByToken(@Param("token")String token);
 	
 
 }

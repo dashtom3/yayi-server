@@ -30,7 +30,7 @@ public class PunRewardController {
        	 
 		return punRewardService.show(saleToken);
     }
-    @ResponseBody
+  /*  @ResponseBody
     @RequestMapping("shows")
     @SaleTokenValidate
     @SaleLog(description="后台:显示钱包余额 ")
@@ -39,7 +39,7 @@ public class PunRewardController {
     		@RequestParam(value="saleId",required=true) String saleId
     		 ){
 		return punRewardService.shows(saleId);
-    }
+    }*/
     @ResponseBody
     @RequestMapping("adminShows")
     @AdminTokenValidate(description="后台:显示钱包余额 ")

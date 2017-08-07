@@ -58,6 +58,17 @@ public class Ordera extends BasePojo {
 	private List<OrderItem> orderitemList;
 
 	private List<Comments> commentList;
+    private String orderNums;
+    
+	
+
+	public String getOrderNums() {
+		return orderNums;
+	}
+
+	public void setOrderNums(String orderNums) {
+		this.orderNums = orderNums;
+	}
 
 	public Integer getReceiverId() {
 		return receiverId;

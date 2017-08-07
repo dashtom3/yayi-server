@@ -4,9 +4,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
+
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.User;
+import com.yayiabc.http.mvc.pojo.model.OrderNums;
 import com.yayiabc.http.mvc.pojo.model.itemIdList;
 
 public interface OrderDetailsService {
@@ -28,4 +31,6 @@ public interface OrderDetailsService {
 	void payment(Integer orderId, Integer receiverId);
 
 	//DataWrapper<HashMap<String, Object>> payment(String token, String orderItemNum);
+	
+	DataWrapper<List<OrderNums>> queryOrderNums(String userId);
 }

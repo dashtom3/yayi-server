@@ -52,11 +52,13 @@ public class PayAfterOrderUtil {
 			   throw new RuntimeException(e);
 			}
 		}
-		SetSaleInCome(orderId);
+		if(SetSaleInCome(orderId)){
+			System.out.println("一切执行完毕");
+		}
 	}
 	//private static UserDao userDao = SpringContextHolder.getBean(UserDao.class);
 	//结账时放入到SaleIncome表里的数据 并把 到账到该销售员
-		private void SetSaleInCome(String orderId){
+		private boolean SetSaleInCome(String orderId){
 			 //销售员id
 		String saleId=utilsDao.getSaleIdByOrderId(orderId);
 			
@@ -81,7 +83,7 @@ public class PayAfterOrderUtil {
 		}
 		   //把钱币放入该用户的余额中
 		/*int signs=utilsDao.saveQbToUser(o.getUserId(),String.valueOf(qbNum+o.getGiveQb()));*/
-		System.out.println("一切执行完毕");
-	
+	  return true;
 		} 
+		
 }

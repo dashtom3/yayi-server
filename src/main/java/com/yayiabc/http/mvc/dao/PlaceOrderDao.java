@@ -87,16 +87,16 @@ public interface PlaceOrderDao {
 	String queryItemBrandNameByItemId(@Param("itemId")String itemId);
 
 	//本单赠送钱币数保存到数据库
-	void saveGiveQbNum(@Param("giveQbNum")String giveQbNum,
+	int saveGiveQbNum(@Param("giveQbNum")String giveQbNum,
 			@Param("postFee")	String postFee,
 			@Param("sumPrice") String sumPrice,
 			@Param("orderId")String orderId);
 
     //退款记录放入 iteminfo中
-	void saveRefundRecord(@Param("itemId")String itemId, @Param("refunNum")Integer refunNum);
+	int saveRefundRecord(@Param("itemId")String itemId, @Param("refunNum")Integer refunNum);
 
 	//保存该订单的退款商品分类金额到 sale_info中 
-	void saveRefundMessageToSaleIncome(
+	int saveRefundMessageToSaleIncome(
 			@Param("saleId")String saleId,
 			@Param("orderId")String orderId, 
 			@Param("haoCaiRefundSumMoney")Double haoCaiRefundSumMoney,

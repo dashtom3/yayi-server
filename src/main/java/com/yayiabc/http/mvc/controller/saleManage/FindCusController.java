@@ -26,7 +26,7 @@ public class FindCusController {
 	@SaleTokenValidate
 	@SaleLog(description="发现客户资源:未注册客户")
 	public DataWrapper<List<CusResources>>  unregistered(
-			@RequestHeader(value="saleToken",required=false)String saleToken,
+			@RequestHeader(value="saleToken",required=true)String saleToken,
 			@RequestParam(value="state",required=false)String state,
 			@RequestParam(value = "currentPage",required=false) Integer currentPage,//当前页
   		  @RequestParam(value = "numberPerPage",required=false) Integer numberPerPage//取多少

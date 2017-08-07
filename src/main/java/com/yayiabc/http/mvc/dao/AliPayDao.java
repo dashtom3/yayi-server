@@ -25,7 +25,7 @@ public interface AliPayDao {
 	//更改用户钱币
 	int updateQb(@Param("qbDed")Integer qbDed,@Param("userId")String userId);
 	//增加销量
-	void addSales(@Param("itemId")String itemId,@Param("num")Integer num);
+	int addSales(@Param("itemId")String itemId,@Param("num")Integer num);
 	Charge queryUserId(@Param("out_trade_no")String out_trade_no);
 	int  updateState(@Param("out_trade_no")String out_trade_no);
 }

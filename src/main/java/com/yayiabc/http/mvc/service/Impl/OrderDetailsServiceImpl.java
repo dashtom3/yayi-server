@@ -17,6 +17,7 @@ import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.Receiver;
 import com.yayiabc.http.mvc.pojo.jpa.User;
+import com.yayiabc.http.mvc.pojo.model.OrderNums;
 import com.yayiabc.http.mvc.pojo.model.itemIdList;
 import com.yayiabc.http.mvc.service.OrderDetailsService;
 
@@ -40,8 +41,6 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 			page.setNumberPerPage(10);
 			page.setCurrentPage(1);
 		}
-
-        		
 		DataWrapper<List<Ordera>> dataWrapper=new DataWrapper<List<Ordera>>();
 		String userId = null;
 		
@@ -54,6 +53,7 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		map.put("userId", userId);
 		
 		List<Ordera> orderDetailsList=orderdetailsDao.orderDetailsShow(map);
+		/*orderDetailsList.get(0).setOrderNums(String.valueOf(orderDetailsList));*/
 		//总条数
 	    int count=orderdetailsDao.queryCount(userId,map.get("state"));//totalnumber
 		dataWrapper.setPage(page, count);
@@ -164,6 +164,16 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 	 }else{
 		 
 	 }
+	}
+
+	@Override
+	public DataWrapper<List<OrderNums>> queryOrderNums(String token) {
+		// TODO Auto-generated method stub
+		DataWrapper<List<OrderNums>>  dataWrapper=new DataWrapper<List<OrderNums>>();
+	String userId=utilsDao.queryUserByToken(token);
+	System.out.println(userId);
+	   dataWrapper.setData(orderdetailsDao.queryOrderNums(userId));
+		return dataWrapper;
 	}
 }
 

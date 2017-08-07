@@ -101,4 +101,8 @@
 	  insert  into  charge(charge_id,token,money,state)values
 	  (#{codeId},#{userID},#{money},1)
 	</insert>
+	
+	<select id="queryUserByToken" resultType="java.lang.String">
+	 select user_id from user_token where token=#{token}
+	</select>
 </mapper>       

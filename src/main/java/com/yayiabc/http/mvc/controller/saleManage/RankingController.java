@@ -50,6 +50,5 @@ public class RankingController {
 			@RequestHeader(value="saleToken",required=true)String token
 	){
 		return rankingService.getSaleRanking(beYearMonth, token);
-	
 	}
 }

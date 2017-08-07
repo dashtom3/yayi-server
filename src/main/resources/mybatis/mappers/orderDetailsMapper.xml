@@ -195,4 +195,17 @@
 	<update id="updateState">
 		update ordera set state=9 where order_id =#{orderId}
 	</update>
+	
+	 <resultMap type="com.yayiabc.http.mvc.pojo.model.OrderNums" id="lo">
+	  <result property="userName" column="name"/>
+	   <result property="state" column="state"/>
+	    <result property="counts" column="count"/>
+	 </resultMap>
+	<!-- 查询统计用户订单数 -->
+	<select id="queryOrderNums" resultMap="lo">
+	   SELECT us.true_name name,orde.state,COUNT(state) count FROM
+	    ordera orde JOIN USER us ON 
+	    orde.user_id=us.user_id 
+	    WHERE orde.user_id=#{userId}  GROUP BY state
+	</select>
 </mapper>

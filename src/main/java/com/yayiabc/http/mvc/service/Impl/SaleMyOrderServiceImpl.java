@@ -83,8 +83,8 @@ public class SaleMyOrderServiceImpl implements SaleMyOrderService {
 		Page page = new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		int totalNumber=saleMyOrderDao.getCountDetailOrderList(saleId, orderId);
-		List<OrderInfoVo> list=saleMyOrderDao.detailOrderList(saleId, orderId, page);
+		int totalNumber=saleMyOrderDao.getCountDetailOrderList(orderId);
+		List<OrderInfoVo> list=saleMyOrderDao.detailOrderList(orderId, page);
 		dataWrapper.setPage(page, totalNumber);
 		OrderVo orderVo=new OrderVo();
 		orderVo=saleMyOrderDao.detail(saleId, orderId);

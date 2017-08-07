@@ -97,7 +97,7 @@
 		(IF(ROUND(si.refund_money_gongju,2) IS NOT NULL,ROUND(si.refund_money_gongju,2),0)) AS actualMoneyGongju 	
 		FROM sale_income si
 		LEFT JOIN ordera o  ON o.order_id=si.order_id
-		LEFT JOIN USER u ON si.sale_id=u.sale_id
+		LEFT JOIN USER u ON u.user_id=o.user_id
 		WHERE si.sale_id=#{saleId} AND si.order_id=#{orderId}
 		GROUP BY si.order_id
 	</select>
@@ -114,8 +114,7 @@
 		FROM ordera o
 		LEFT JOIN order_item oi ON o.order_id=oi.order_id
 		LEFT JOIN USER u ON o.user_id=u.user_id
-		LEFT JOIN sale_income si ON u.sale_id=si.sale_id
-		WHERE o.order_id=#{orderId} AND si.sale_id=#{saleId}
+		WHERE o.order_id=#{orderId}
 		GROUP BY oi.item_name
 		LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
@@ -127,8 +126,7 @@
 			FROM ordera o
 			LEFT JOIN order_item oi ON o.order_id=oi.order_id
 			LEFT JOIN USER u ON o.user_id=u.user_id
-			LEFT JOIN sale_income si ON u.sale_id=si.sale_id
-			WHERE o.order_id=#{orderId} AND si.sale_id=#{saleId}
+			WHERE o.order_id=#{orderId}
 			GROUP BY oi.item_name
 		) AS a
 	</select>

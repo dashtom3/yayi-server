@@ -47,11 +47,9 @@ public interface SaleMyOrderDao {
 			@Param("orderId")String orderId); 
 	
 	List<OrderInfoVo> detailOrderList(
-			@Param("saleId")String saleId,
 			@Param("orderId")String orderId,
 			@Param("page")Page page);
 	
 	int getCountDetailOrderList(
-			@Param("saleId")String saleId,
 			@Param("orderId")String orderId);
 }

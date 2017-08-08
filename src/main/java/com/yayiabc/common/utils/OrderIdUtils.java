@@ -1,6 +1,7 @@
 package com.yayiabc.common.utils;
 
 import java.util.Random;
+import java.util.UUID;
 
 /**
  * 
@@ -10,21 +11,12 @@ import java.util.Random;
  */
 public class OrderIdUtils {
 	public static   String 	createOrderId(String userId){
-		String str="0123456789";
-		if(userId==null){
-			return "没有查看该用户";
+		String orderId="";
+		String[] str=UUID.randomUUID().toString().split("-");
+		for (String string : str) {
+			orderId+=string;
 		}
-		String userID=(userId.substring(0,8)+userId.substring(12)).replace("-", "");
-		StringBuilder sb=new StringBuilder(userID);
-		for(int i=0;i<4;i++)
-		{
-			char ch=str.charAt(new Random().nextInt(str.length()));
-			sb.append(ch);
-		}
-		///System.out.println(sb.toString());
-		return sb.toString();
+		return orderId+new Random().nextInt(1000);
 	}
-	/*public static void main(String[] args) {
-		createOrderId("lhdd=888");
-    }*/
+	
 }

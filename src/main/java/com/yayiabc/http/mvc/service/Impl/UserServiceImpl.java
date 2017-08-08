@@ -9,9 +9,11 @@ import com.yayiabc.common.utils.MD5Util;
 import com.yayiabc.http.mvc.dao.SaleLogDao;
 import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.WxAppDao;
+import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.UserToken;
+import com.yayiabc.http.mvc.service.UserMyQbService;
 import com.yayiabc.http.mvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -28,6 +30,8 @@ public class UserServiceImpl implements UserService {
     private WxAppDao wxAppDao;
     @Autowired
     SaleLogDao saleLogDao;
+    @Autowired
+    private UserMyQbService userMyQbService;
 
 
     public DataWrapper<Void> getVerifyCode(String phone) {
@@ -73,6 +77,10 @@ public class UserServiceImpl implements UserService {
                     //绉婚櫎楠岃瘉鐮�
                     VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
                     String token = getToken(newUser.getUserId());
+                    QbRecord qbRecord=new QbRecord();
+                    qbRecord.setQbRget(60);
+                    qbRecord.setRemark("注册送60乾币");
+                    userMyQbService.add(qbRecord, token);
                     dataWrapper.setToken(token);
                     dataWrapper.setData(newUser);
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);

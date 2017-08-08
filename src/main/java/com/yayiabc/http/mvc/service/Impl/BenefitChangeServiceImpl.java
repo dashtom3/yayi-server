@@ -158,6 +158,7 @@ public class BenefitChangeServiceImpl implements BenefitChangeService{
 	@Override
 	public DataWrapper<Void> downLoad(Integer benefitId,
 			HttpServletResponse response){
+		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		Benefit benefit =benefitChangeDao.getBenefitByBenefitId(benefitId);
 		String fileName=benefit.getBenefitName()+new Date().getTime();
 		System.out.println(fileName);
@@ -193,8 +194,10 @@ public class BenefitChangeServiceImpl implements BenefitChangeService{
             while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
                 bos.write(buff, 0, bytesRead);
             }
+            dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
         } catch (IOException e) {
             e.printStackTrace();
+            dataWrapper.setErrorCode(ErrorCodeEnum.Error);
         } finally {
             if (bis != null)
 				try {
@@ -211,7 +214,7 @@ public class BenefitChangeServiceImpl implements BenefitChangeService{
 					e.printStackTrace();
 				}
         }
-        return null;
+        return dataWrapper;
     }
 
 	

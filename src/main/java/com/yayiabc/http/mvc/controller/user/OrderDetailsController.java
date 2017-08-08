@@ -161,7 +161,7 @@ public class OrderDetailsController {
 	@RequestMapping("queryOrderNums")
 	@ResponseBody
 	public DataWrapper<List<OrderNums>> queryOrderNums(
-			@RequestParam(value="token",required=true) String token
+			@RequestHeader(value="token",required=true) String token
 			){
 		return orderDetailsService.queryOrderNums(token);
 	}

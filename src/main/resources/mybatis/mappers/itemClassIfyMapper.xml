@@ -140,6 +140,6 @@
     INNER JOIN
     recommend_item f
     ON e.item_id=f.item_id
-    limit 0,8
+    limit 0,10
    </select>
 </mapper>

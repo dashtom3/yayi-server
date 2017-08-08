@@ -95,6 +95,7 @@ public class BenefitChangeServiceImpl implements BenefitChangeService{
 					benefitChangeDao.updateState(benefitDetail.getBenefitCodeId(),phone);
 					//6.修改优惠码未兑换的数量
 					benefitChangeDao.updateBenefitValueNum(benefit.getBenefitId());
+					dataWrapper.setNum(benefit.getBenefitQb());
 				}else{
 					dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 					String msg="优惠码已过期";
@@ -191,7 +192,7 @@ public class BenefitChangeServiceImpl implements BenefitChangeService{
             bos = new BufferedOutputStream(out);
             byte[] buff = new byte[2048];
             int bytesRead;
-            // Simple read/write loop.
+            
             while (-1 != (bytesRead = bis.read(buff, 0, buff.length))) {
                 bos.write(buff, 0, bytesRead);
             }

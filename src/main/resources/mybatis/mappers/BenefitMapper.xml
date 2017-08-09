@@ -62,10 +62,9 @@
 	
 	<select id="getExcelEntryList" resultType="ExcelEntry">
 		SELECT a.benefit_qb,a.updated,b.benefit_code FROM 
-		benefit a
+		(SELECT * FROM benefit_detail WHERE benefit_id=#{benefitId} AND state=1) b
 		LEFT JOIN
-		(select * from benefit_detail where benefit_id=#{benefitId} and state=1) b
+		benefit a
 		ON a.benefit_id=b.benefit_id
-		
 	</select>
 </mapper>

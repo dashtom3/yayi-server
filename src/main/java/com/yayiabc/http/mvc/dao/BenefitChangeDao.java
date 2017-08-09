@@ -34,7 +34,7 @@ public interface BenefitChangeDao {
 	List<BenefitDetail> getBenefitDetailListByBenefitId(@Param("benefitId")Integer benefitId,
 			@Param("currentNumber")Integer currentNumber, @Param("numberPerPage")Integer numberPerPage);
 
-	List<ExcelEntry> getExcelEntryList(Integer benefitId);
+	List<ExcelEntry> getExcelEntryList(@Param("benefitId")Integer benefitId);
 
 	
 

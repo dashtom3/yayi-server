@@ -165,6 +165,7 @@ public class BenefitChangeServiceImpl implements BenefitChangeService{
 		System.out.println(fileName);
 		fileName =fileName+".xls";
 		List<ExcelEntry> excelEntryList=benefitChangeDao.getExcelEntryList(benefitId);
+		System.out.println(excelEntryList);
 		for (ExcelEntry excelEntry : excelEntryList) {
 			excelEntry.setBenefitNum(benefit.getBenefitQb());
 		}

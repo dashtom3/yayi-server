@@ -26,7 +26,7 @@ public class ExcelUtil {
         Sheet sheet = wb.createSheet(list.get(0).get("sheetName").toString());
         // 手动设置列宽。第一个参数表示要为第几列设；，第二个参数表示列的宽度，n为列高的像素数。
         for(int i=0;i<keys.length;i++){
-            sheet.setColumnWidth((short) i, (short) (35.7 * 150));
+            sheet.setColumnWidth((short) i, (short) (40 * 300));
         }
 
         // 创建第一行

@@ -185,8 +185,8 @@ public class BenefitChangeServiceImpl implements BenefitChangeService{
         BufferedInputStream bis = null;
         BufferedOutputStream bos = null;
         try {
+        	response.setHeader("Access-Control-Allow-Origin", "*");
         	response.setHeader("Content-Disposition", "attachment;filename="+ URLEncoder.encode(fileName, "UTF-8"));
-            response.setHeader("Access-Control-Allow-Origin", "*");
         	ServletOutputStream out = response.getOutputStream();
             bis = new BufferedInputStream(is);
             bos = new BufferedOutputStream(out);

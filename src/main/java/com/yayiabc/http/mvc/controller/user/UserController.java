@@ -46,6 +46,17 @@ public class UserController {
 		return userService.register(phone,password,code,openid);
 	}
 	
+	//用户注册
+	@RequestMapping("wxRegister")
+	@ResponseBody
+	public DataWrapper<User> wxRegister(
+			@RequestParam(value = "phone", required = true) String phone,
+			@RequestParam(value = "password", required = true) String password,
+			@RequestParam(value = "openid", required = false) String openid
+			){
+		return userService.wxRegister(phone,password,openid);
+	}
+	
 	//短信登录
 	@RequestMapping("noteLogin")
 	@ResponseBody

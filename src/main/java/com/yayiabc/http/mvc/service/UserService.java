@@ -19,4 +19,6 @@ public interface UserService {
 
 
 	DataWrapper<Void> bindSale(String token, String salePhone);
+
+	DataWrapper<User> wxRegister(String phone, String password, String openid);
 }

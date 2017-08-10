@@ -39,7 +39,7 @@ public class UserManageListServiceImpl implements UserManageListService {
 		Page page = new Page();
 		page.setNumberPerPage(numberPerPage);
 	    page.setCurrentPage(currentPage);
-		int totalNumber = userManageListDao.getCount(phone, trueName, companyName, isBindSale, type, saleName);
+		int totalNumber = userManageListDao.getCount(phone, trueName, companyName, isBindSale, type, saleName, salePhone);
 		dataWrapper.setPage(page, totalNumber);
 		List<Map<String,String>> list = userManageListDao.userlist(phone, trueName, companyName, isBindSale, type, saleName, salePhone, page);
 		dataWrapper.setData(list);

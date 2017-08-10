@@ -60,28 +60,31 @@
 			LEFT JOIN certification c ON u.user_id=c.user_id
 			LEFT JOIN ordera o ON u.user_id=o.user_id
 			<where>
-				<if test="phone != null and phone !=''">
-					u.phone LIKE '%${phone}%'
-				</if>
-				<if test="trueName !=null and trueName !=''">
-					AND u.true_name LIKE '%${trueName}%'
-				</if>
-				<if test="companyName !=null and companyName !=''">
-					AND c.company_name LIKE '%${companyName}%'
-				</if>
-				<if test="isBindSale == 1">
-					AND u.sale_id IS NOT NULL
-				</if>
-				<if test="isBindSale == 2">
-					AND u.sale_id IS NULL
-				</if>
-				<if test="type !=null and type!=''">
-					AND c.type=#{type}
-				</if>
-				<if test="saleName !=null and saleName !=''">
-					AND s.true_name LIKE '%${saleName}%'
-				</if>
-			</where>
+			<if test="phone != null and phone !=''">
+				u.phone LIKE '%${phone}%'
+			</if>
+			<if test="trueName !=null and trueName !=''">
+				AND u.true_name LIKE '%${trueName}%'
+			</if>
+			<if test="companyName !=null and companyName !=''">
+				AND c.company_name LIKE '%${companyName}%'
+			</if>
+			<if test="isBindSale == 1 and isBindSale !=null and isBindSale !=''">
+				AND u.sale_id IS NOT NULL
+			</if>
+			<if test="isBindSale == 2 and isBindSale !=null and isBindSale !=''">
+				AND u.sale_id IS NULL
+			</if>
+			<if test="type !=null and type!=''">
+				AND c.type=#{type}
+			</if>
+			<if test="saleName !=null and saleName !=''">
+				AND s.true_name LIKE '%${saleName}%'
+			</if>
+			<if test="salePhone !=null and salePhone !=''">
+				AND s.phone LIKE '%${salePhone}%'
+			</if>
+		</where>
 			GROUP BY u.user_id
 			) AS a
 	</select>

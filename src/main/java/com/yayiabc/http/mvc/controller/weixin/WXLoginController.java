@@ -18,7 +18,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class WXLoginController {
     @Autowired
     WxLoginService wxLoginService;
-
+  
     @RequestMapping(value = "login",method = RequestMethod.POST)
     @ResponseBody
     public DataWrapper<Object> login(

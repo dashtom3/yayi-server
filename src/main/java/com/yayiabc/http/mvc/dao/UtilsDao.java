@@ -5,6 +5,7 @@ import org.apache.ibatis.annotations.Param;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
+import com.yayiabc.http.mvc.pojo.jpa.User;
 
 public interface UtilsDao {
 
@@ -54,6 +55,13 @@ public interface UtilsDao {
 			@Param("money")String money);
 
 	String queryUserByToken(@Param("token")String token);
+
+	User queryUserByUserId(@Param("uid")String uid);
+
+	
+	User queryUserByPhone(@Param("phone")String phone);
+
+	SaleInfo getSaleByPhone(@Param("phone")String phone);
 	
 
 }

@@ -31,7 +31,6 @@ public class UserController {
 	@ResponseBody
 	public DataWrapper<Void> getVerifyCode(@RequestParam(value = "phone", required = true) String phone) {
 	        return userService.getVerifyCode(phone);
-	    
 	}
 	
 	//用户注册
@@ -99,6 +98,7 @@ public class UserController {
 			){
 		return userService.forgetPwd(phone,code,password);
 	}
+	//用户绑定销售员
 	@RequestMapping(value = "bindSale",method = RequestMethod.POST)
 	@ResponseBody
 	public DataWrapper<Void> bindSale(

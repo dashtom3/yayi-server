@@ -12,6 +12,7 @@ import org.springframework.format.annotation.DateTimeFormat;
 public class User extends BasePojo {
 	private String userId;
 
+    private String saleId;
 	private String phone;
 
 	private String pwd;
@@ -85,6 +86,14 @@ public class User extends BasePojo {
 
 	public String getTrueName() {
 		return trueName;
+	}
+
+	public String getSaleId() {
+		return saleId;
+	}
+
+	public void setSaleId(String saleId) {
+		this.saleId = saleId;
 	}
 
 	public void setTrueName(String trueName) {

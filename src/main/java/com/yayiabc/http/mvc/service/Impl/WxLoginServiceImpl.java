@@ -76,6 +76,7 @@ public class WxLoginServiceImpl implements WxLoginService {
                 if (verifyCode.equals(serverCode)) {
                     dataWrapper.setData(seUser);
                     int num = userDao.getCartNum(seUser);
+                    
                     dataWrapper.setNum(num);
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());

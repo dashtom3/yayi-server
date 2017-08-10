@@ -8,12 +8,21 @@
     	insert into user(user_id,phone,pwd,created,updated) values(#{userId},#{phone},#{pwd},now(),now())
     </insert>
     <select id="getUserByUser" resultMap="userMap">
-		select * from user where phone=#{phone}
+	select a.*,b.phone sale_phone,b.true_name sale_name from 
+  (select * from user where phone=#{phone}) a
+  left join 
+  sale_info b
+  on a.sale_id=b.sale_id
 	</select>
     <resultMap type="User" id="userMap" autoMapping="true">
         <id column="user_id" property="userId" jdbcType="VARCHAR"/>
         <association property="certification" javaType="Certification">
             <id property="certificationId" column="certification_id"/>
+        </association>
+        <association property="saleinfo" javaType="SaleInfo">
+        	<id property="saleId" column="sale_id"/>
+        	<result property="phone" column="sale_phone"/>
+        	<result property="trueName" column="sale_name"/>
         </association>
     </resultMap>
     <select id="getCartNum" resultType="int">

@@ -27,6 +27,7 @@ import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.ExcelUtil;
 import com.yayiabc.common.utils.Page;
+import com.yayiabc.common.utils.ValidateCodeUtil;
 import com.yayiabc.http.mvc.dao.BenefitChangeDao;
 import com.yayiabc.http.mvc.pojo.jpa.Benefit;
 import com.yayiabc.http.mvc.pojo.jpa.BenefitDetail;
@@ -61,7 +62,10 @@ public class BenefitChangeServiceImpl implements BenefitChangeService{
 			System.out.println(benefit.getBenefitId());
 			Integer benefitId =benefit.getBenefitId();
 			for(int i=0;i<benefitNum;i++){
-				String benefitCode=UUID.randomUUID().toString();
+				String benefitCode="";
+				do{
+					benefitCode=ValidateCodeUtil.getCode();
+				}while(benefitChangeDao.getBenefitCodeCount(benefitCode)!=0);
 				benefitChangeDao.addBenefitDetail(benefitId,benefitCode);
 			}
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);

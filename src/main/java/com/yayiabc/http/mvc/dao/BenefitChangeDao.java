@@ -36,6 +36,8 @@ public interface BenefitChangeDao {
 
 	List<ExcelEntry> getExcelEntryList(@Param("benefitId")Integer benefitId);
 
+	int getBenefitCodeCount(@Param("benefitCode")String benefitCode);
+
 	
 
 	

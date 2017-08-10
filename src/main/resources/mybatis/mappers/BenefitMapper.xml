@@ -51,12 +51,12 @@
 			<if test="enable==1">and benefit_value_num!=0 and updated>now()</if>
 			<if test="enable==2">and benefit_value_num=0 or updated &lt; now()</if>
 		</where>
-		order by created
+		order by created desc
 		limit #{currentNumber},#{numberPerPage}
 	</select>
 	
 	<select id="getBenefitDetailListByBenefitId" resultType="BenefitDetail">
-		select * from benefit_detail where benefit_id=#{benefitId}
+		select * from benefit_detail where benefit_id=#{benefitId} order by state
 		limit #{currentNumber},#{numberPerPage} 
 	</select>
 	
@@ -66,5 +66,9 @@
 		LEFT JOIN
 		benefit a
 		ON a.benefit_id=b.benefit_id
+	</select>
+	
+	<select id="getBenefitCodeCount" resultType="java.lang.Integer">
+		select count(0) from benefit_detail where benefit_code=#{benefitCode}
 	</select>
 </mapper>

@@ -40,15 +40,7 @@ public class AdminTokenValidateAspect {
 		System.out.println(loginToken);
 		System.out.println("接受成功");
 		
-		
-		
-		//判断登录表中是否包含此token;
-		/*Long timeStamp=Long.valueOf(loginToken.substring(loginToken.length()-13,loginToken.length()));
-		Long nowTime=System.currentTimeMillis();*/
 		Object result=null;
-		/**
-		* 1.验证该用户是否已登录，通过是否包含此token来判断
-		*/
 		Integer adminCount=tokenValidateService.getAdminCountByLoginToken(loginToken);
 		if(adminCount!=0){
 			

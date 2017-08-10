@@ -39,9 +39,9 @@ public class DataWrapper<T>  {
 
     public void setErrorCode(ErrorCodeEnum errorCode) {
         this.errorCode = errorCode;
-        if (!errorCode.equals(ErrorCodeEnum.No_Error)) {
-            this.callStatus = CallStatusEnum.FAILED;
-        }
+//        if (!errorCode.equals(ErrorCodeEnum.No_Error)) {
+//            this.callStatus = CallStatusEnum.FAILED;
+//        }
     }
 
     public T getData() {

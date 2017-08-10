@@ -68,7 +68,7 @@ public class WXPhonePayController {
 				reqData.put("total_fee","1");
 			}*/
 			reqData.put("total_fee", "1");
-			reqData.put("spbill_create_ip","47.93.48.111");//终端ip,必传,APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP。
+			/*reqData.put("spbill_create_ip","47.93.48.111");*///终端ip,必传,APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP。
 			reqData.put("trade_type","MWEB");//必传,H5支付
 			reqData.put("product_id",System.currentTimeMillis()+"");//扫码支付时此参数必传,可以通过参数传进来,trade_type=NATIVE，此参数必传。此id为二维码中包含的商品ID，商户自行定义。
 			reqData.put("scene_info","{'h5_info': {'type':'Wap','wap_url': 'https://pay.qq.com','wap_name': '腾讯充值'}}" );//场景描述
@@ -78,8 +78,6 @@ public class WXPhonePayController {
 			/*response.sendRedirect(respMap.get("mweb_url"));*/
 			response.addHeader("location",respMap.get("mweb_url"));
 			response.setStatus(302);
-
-			
 		} catch (Exception e) {
 			String msg="服务器错误";
 			e.printStackTrace();

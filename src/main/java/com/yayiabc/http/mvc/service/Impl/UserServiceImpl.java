@@ -54,40 +54,7 @@ public class UserServiceImpl implements UserService {
         return dataWrapper;
     }
     
-    @Override
-    public DataWrapper<User> wxRegister(String phone, String password,
-    		String openid) {
-    	DataWrapper<User> dataWrapper = new DataWrapper<User>();
-        User neUser = new User();
-        neUser.setPhone(phone);
-        if (userDao.getUserByUser(neUser) == null) {
-        	 User newUser = new User();
-             newUser.setUserId(UUID.randomUUID().toString());
-             newUser.setPhone(phone);
-             newUser.setPwd(MD5Util.getMD5String(password));
-             if (1 == userDao.register(newUser)) {
-                 //绉婚櫎楠岃瘉鐮�
-                 VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
-                 String token = getToken(newUser.getUserId());
-                 QbRecord qbRecord=new QbRecord();
-                 qbRecord.setQbRget(60);
-                 qbRecord.setRemark("注册送60乾币");
-                 userMyQbService.add(qbRecord, token);
-                 dataWrapper.setToken(token);
-                 dataWrapper.setData(newUser);
-                 dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-                 dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-                 if (openid != null) wxAppDao.addUser(newUser.getUserId(),openid);
-             } else {
-                 dataWrapper.setErrorCode(ErrorCodeEnum.Register_Error);
-                 dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-             }
-        }else{
-        	dataWrapper.setErrorCode(ErrorCodeEnum.Username_Already_Exist);
-            dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-        }
-    	return dataWrapper;
-    }
+   
 
     @Override
     public DataWrapper<User> register(String phone, String password, String code,String openid) {

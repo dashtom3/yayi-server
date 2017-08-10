@@ -11,8 +11,12 @@
 		SELECT uid FROM wx_userlink WHERE openid = {_parameter}
 	</select>
 
-	<insert id="addUser" useGeneratedKeys="true" keyColumn="id">
-		INSERT INTO wx_userlink (uid,openid) VALUES (#{0},#{1})
+	<insert id="addUser">
+		INSERT INTO wx_userlink (uid,openid,type) VALUES (#{saleId},#{openid},1)
+	</insert>
+	
+	<insert id="addSaleUser">
+		INSERT INTO wx_userlink (uid,openid,type) VALUES (#{saleId},#{openid},2)
 	</insert>
 
 </mapper>

@@ -103,7 +103,7 @@ public class WxLoginServiceImpl implements WxLoginService {
                     if (saleId != null) {
                         String token = getSaleToken(saleId);
                         dataWrapper.setToken(token);
-                        wxAppDao.addUser(saleId,openid);
+                        wxAppDao.addSaleUser(saleId,openid);
                     }
                 } else {
                     dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_Error);

@@ -79,7 +79,7 @@ public class UserPersonalInfoController {
 	public DataWrapper<Map<String, String>> queryBind(
 			@RequestParam(value = "state", required = false, defaultValue = "1") Integer state,
 			@RequestParam(value = "salePhone", required = false) String salePhone,
-			@RequestHeader(value = "token", required = true) String token
+			@RequestHeader(value = "token", required = false) String token
 	){
 		return userPersonalInfoService.queryBind(state,salePhone,token);
 	}

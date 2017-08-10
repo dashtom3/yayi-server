@@ -75,7 +75,10 @@ public class WXPhonePayController {
 			System.out.println(reqData);
 			Map<String,String> respMap=wxPay.unifiedOrder(reqData);
 			System.out.println(respMap.get("mweb_url"));
-			response.sendRedirect(respMap.get("mweb_url"));
+			/*response.sendRedirect(respMap.get("mweb_url"));*/
+			response.addHeader("location",respMap.get("mweb_url"));
+			response.setStatus(302);
+
 			
 		} catch (Exception e) {
 			String msg="服务器错误";

@@ -67,6 +67,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		System.out.println(userOrderList);
 		if(userOrderList.isEmpty()){
 			dataWrapper.setMsg("暂无数据");
+			dataWrapper.setData(userOrderList);
 		}else{
 			dataWrapper.setData(userOrderList);
 			dataWrapper.setPage(page, count);

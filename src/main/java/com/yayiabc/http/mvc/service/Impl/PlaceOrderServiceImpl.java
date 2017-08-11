@@ -163,8 +163,9 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		//  get userId
 		DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String,Object>>();
 		HashMap<String, Object> hashMap=new HashMap<String, Object>();
+		String userId=null;
 		try {
-			String userId=utilsDao.getUserID(token);
+			 userId=utilsDao.getUserID(token);
 			System.out.println(userId);
 			//obtain orderId 
 			String orderId=OrderIdUtils.createOrderId(userId);
@@ -326,6 +327,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//生产发票性质
 			if("1".equals(order.getInvoiceHand())){
 				invoice.setOrderId(orderId);
+				invoice.setUserId(userId);
 				int  sign=placeOrderDao.saveInvoiced(invoice);
 				if(sign<0){
 					dataWrapper.setMsg("发票生产失败");
@@ -369,12 +371,22 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//判断 actualPay 是否是0付款
 			if(actualPay==0){
 				PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-				payAfterOrderUtil.universal(orderId);
+				payAfterOrderUtil.universal(orderId,null);
 			}
 			dataWrapper.setData(hashMap);
 			return dataWrapper;
 		} catch (Exception e){
 			throw new RuntimeException(e);
 		}
+	}
+	//查询上次下订单时填写的发票信息
+	@Override
+	public DataWrapper<Invoice> queryLastInvoice(String token) {
+		// TODO Auto-generated method stub
+		String userId=utilsDao.getUserID(token);
+		DataWrapper<Invoice> dataWrapper=new DataWrapper<Invoice>();
+		
+		dataWrapper.setData(placeOrderDao.queryLastInvoice(userId).get(0));
+		return dataWrapper;
 	}
 }

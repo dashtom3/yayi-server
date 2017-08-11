@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.annotation.AdminLog;
+import com.yayiabc.common.annotation.UserLog;
 import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Invoice;
@@ -35,7 +36,7 @@ public class PlaceOrderController {
 	@RequestMapping("Ded")
 	@ResponseBody
 	@UserTokenValidate
-	 @AdminLog(description="使用钱币抵扣")
+	 @UserLog(description="使用钱币抵扣")
 	public DataWrapper<Void> Ded(
 			@RequestHeader(value="token") String token,
 			@RequestParam(value="qbnum") Integer num
@@ -46,7 +47,7 @@ public class PlaceOrderController {
 	@RequestMapping("upateAddress")
 	@ResponseBody   //ipi需要文档修改
 	@UserTokenValidate
-	 @AdminLog(description="下单前 选择收货地址")
+	@UserLog(description="下单前 选择收货地址")
 	public DataWrapper<HashMap<String, Object>> upateAddress(
 			@RequestHeader(value="token") String token,
 			@RequestParam(value="receiverId") Integer receiverId
@@ -68,7 +69,7 @@ public class PlaceOrderController {
 	@RequestMapping("generaOrder")
 	@ResponseBody
 	@UserTokenValidate
-	 @AdminLog(description="提交订单")
+	 @UserLog(description="提交订单")
 	public DataWrapper<HashMap<String, Object>> generaOrder(
 			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderItem",required=true) String  orderItem,
@@ -82,5 +83,15 @@ public class PlaceOrderController {
 		DataWrapper<HashMap<String, Object>> hm=placeOrderService.generaOrder(token,orderItemList,order,invoice);
 		                return hm;                                                                                                             
 		
+	}
+	//提交订单前显示上次填写发票信息
+	@RequestMapping("queryLastInvoice")
+	@ResponseBody
+	@UserTokenValidate
+	 @UserLog(description="查询上次发票信息")
+	public DataWrapper<Invoice>  queryLastInvoice(
+			@RequestHeader(value="token",required=true) String token
+			){
+		return placeOrderService.queryLastInvoice(token);
 	}
 }

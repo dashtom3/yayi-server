@@ -28,4 +28,6 @@ public interface AliPayDao {
 	int addSales(@Param("itemId")String itemId,@Param("num")Integer num);
 	Charge queryUserId(@Param("out_trade_no")String out_trade_no);
 	int  updateState(@Param("out_trade_no")String out_trade_no);
+	//更改支付类型
+	int updatePayType(@Param("orderId")String orderId, @Param("type")String type);
 }

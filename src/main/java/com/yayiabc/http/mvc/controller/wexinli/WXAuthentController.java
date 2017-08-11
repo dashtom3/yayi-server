@@ -64,6 +64,7 @@ public class WXAuthentController{
       
         SNSUserInfo snsUserInfo=null;
         WXUserLink  wXUserLink=null;
+        SaleInfo sa=null;
             // 获取网页授权access_token
             WeixinOauth2Token weixinOauth2Token = AdvancedUtil.getOauth2AccessToken(code,appid,secret);
             // 网页授权接口访问凭证
@@ -92,20 +93,20 @@ public class WXAuthentController{
             		  //根据  uid 到用户表查 phone name  select true_name,phone,sale_id from user where user_id=#{uid}
             		 user=utilsDao.queryUserByUserId(wXUserLink.getUid());
             		//判断该用户是否绑定销售员
+            		 String token = getToken(wXUserLink.getUid());
+         			 dataWrapper.setToken(token);
             		if(user.getSaleId()!=null){
             			 SaleInfo saleInfo=wxAppDao.querySale(user.getSaleId());
             			 user.setSaleinfo(saleInfo);
             			 System.out.println("user  suer suer usreuser"+user);
             			 dataWrapper.setMsg("该用户的信息");
-            			String token = getToken(wXUserLink.getUid());
-            			dataWrapper.setToken(token);
             		}else{
             			//未绑定销售员
             		}
             	 }
             	 //销售员
             	 else{
-            		 SaleInfo sa=utilsDao.getSaleBySaleId(wXUserLink.getUid());
+            		  sa=utilsDao.getSaleBySaleId(wXUserLink.getUid());
             		 dataWrapper.setData(sa);
             		 dataWrapper.setMsg("该销售员信息");
             		 String saleToken = getToken(wXUserLink.getUid());
@@ -116,6 +117,7 @@ public class WXAuthentController{
           Model model=new Model();
           model.setwXUserLibk(wXUserLink);
           model.setUser(user);
+          model.setSaleInfo(sa);
           model.setsNSUserInfo(snsUserInfo);
            snsUserInfo.setSign(sb.toString());
            dataWrapper.setData(model);

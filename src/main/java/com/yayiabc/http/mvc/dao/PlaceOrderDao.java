@@ -104,4 +104,7 @@ public interface PlaceOrderDao {
 
    //保存发票性质
 	int saveInvoiced(Invoice invoice);
+
+     
+	List<Invoice> queryLastInvoice(@Param("userId")String userId);
 }

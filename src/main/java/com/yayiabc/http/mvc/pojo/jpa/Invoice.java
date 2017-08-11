@@ -1,5 +1,7 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
+import java.util.Date;
+
 public class Invoice {
 	private Integer InvoiceId;
 	private String companyName;
@@ -16,6 +18,21 @@ public class Invoice {
 	private String invoiceStyle;
 	private String  InvoiceState;
 	
+	private Date cTime;
+	private String userId;
+	
+	public String getUserId() {
+		return userId;
+	}
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+	public Date getcTime() {
+		return cTime;
+	}
+	public void setcTime(Date cTime) {
+		this.cTime = cTime;
+	}
 	public String getInvoiceStyle() {
 		return invoiceStyle;
 	}

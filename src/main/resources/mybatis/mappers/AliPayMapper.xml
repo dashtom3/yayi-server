@@ -44,4 +44,8 @@
 	 <update id="updateState">
 	 update  charge set state=2 where charge_id=#{out_trade_no}
 	 </update>
+	 
+	 <update id="updatePayType">
+	  update ordera set type =#{type} where order_id=#{orderId}
+	 </update>
 </mapper>       

@@ -170,9 +170,14 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 	public DataWrapper<List<OrderNums>> queryOrderNums(String token) {
 		// TODO Auto-generated method stub
 		DataWrapper<List<OrderNums>>  dataWrapper=new DataWrapper<List<OrderNums>>();
-	String userId=utilsDao.queryUserByToken(token);
-	System.out.println(userId);
-	   dataWrapper.setData(orderdetailsDao.queryOrderNums(userId));
+	  String userId=utilsDao.queryUserByToken(token);
+	  List<OrderNums> l=orderdetailsDao.queryOrderNums(userId);
+	  int sumCount=0;
+	  for(int i=0;i<l.size();i++){
+		  sumCount+=l.get(i).getCounts();
+	  }
+	   dataWrapper.setData(l);
+	   dataWrapper.setMsg(String.valueOf(sumCount));
 		return dataWrapper;
 	}
 }

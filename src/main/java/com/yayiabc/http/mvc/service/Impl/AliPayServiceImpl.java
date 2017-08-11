@@ -120,7 +120,7 @@ public class AliPayServiceImpl implements AliPayService{
 						return "successQB";
 					}
 					PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-					payAfterOrderUtil.universal(out_trade_no);
+					payAfterOrderUtil.universal(out_trade_no,"0");
 					   return "success";
 					/*int state=aliPayDao.updateStateAndPayTime(out_trade_no);
 					System.out.println(state);
@@ -186,7 +186,7 @@ public class AliPayServiceImpl implements AliPayService{
 					int  state=aliPayDao.querySatetIsTwo(out_trade_no);
 								if(2!=state){
 									PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-									payAfterOrderUtil.universal(out_trade_no);
+									payAfterOrderUtil.universal(out_trade_no,"0");
 									return "success";
 								}
 					//注意：
@@ -213,7 +213,7 @@ public class AliPayServiceImpl implements AliPayService{
 					int  state=aliPayDao.querySatetIsTwo(out_trade_no);
 					if(2!=state){
 						PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-						payAfterOrderUtil.universal(out_trade_no);
+						payAfterOrderUtil.universal(out_trade_no,"0");
 						
 					}
 					return "success";

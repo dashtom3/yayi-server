@@ -23,7 +23,11 @@ public class PayAfterOrderUtil {
 	@Autowired
 	private OrderManagementDao orderManagementDao;
 	
-	public  void universal(String orderId){
+	public  void universal(String orderId,String type){
+		//更改支付类型
+		if(type!=null){
+			int t=aliPayDao.updatePayType(orderId,type);
+		}
 		//更改订单状态与付款时间
 		int ax=aliPayDao.updateStateAndPayTime(orderId);
 		if(ax>0){

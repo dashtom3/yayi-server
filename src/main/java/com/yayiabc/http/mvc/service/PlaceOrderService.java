@@ -28,4 +28,7 @@ public interface PlaceOrderService {
 	DataWrapper<HashMap<String, Object>> generaOrder(String token, List<OrderItem> orderItem, Ordera order,
 			 Invoice  invoice
 			);
+
+
+	DataWrapper<Invoice> queryLastInvoice(String token);
 }

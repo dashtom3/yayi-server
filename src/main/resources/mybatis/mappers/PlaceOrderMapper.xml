@@ -157,13 +157,13 @@
 	<insert id="createOrder">
 		insert into
 		ordera(state,order_id,user_id,qb_ded,invoice_hand,is_register,buyer_message,total_fee,actual_pay
-		,post_fee,give_qb,created,receiver_id,pay_type,refund_info
+		,post_fee,give_qb,created,receiver_id,refund_info
 		<!-- ,buyer_nick,buyer_rate -->
 
 		)
 		values(1,#{orderId},#{userId},#{order.qbDed}
 		,#{order.invoiceHand},#{order.isRegister},#{order.buyerMessage},#{order.totalFee}
-		,#{order.actualPay},#{order.postFee},#{order.giveQb},now(),#{order.receiverId},0,'否'
+		,#{order.actualPay},#{order.postFee},#{order.giveQb},now(),#{order.receiverId},'否'
 		<!-- ,#{order.buyerNick} ,#{order.buyerRate} -->
 		)
 	</insert>
@@ -244,12 +244,16 @@
 		private String orderId; private String invoiceStyle; private String InvoiceState; -->
 	<insert id="saveInvoiced" parameterType="com.yayiabc.http.mvc.pojo.jpa.Invoice">
 
-		insert into invoice(company_name,taxpayer_num,registered_address,
+		insert into invoice(user_id,company_name,taxpayer_num,registered_address,
 		registered_phone,opne_bank,bank_number,stick_nanme,stick_phone,stick_address,order_id
-		,invoice_style,invoice_state,invoice_head
-		) values(#{companyName},#{taxpayerNum},#{registeredAddress},
+		,invoice_style,invoice_state,invoice_head,c_time
+		) values(#{userId},#{companyName},#{taxpayerNum},#{registeredAddress},
 		#{registeredPhone},#{opneBank},#{bankNumber},#{stickNanme},
-		#{stickPhone},#{stickaddress},#{orderId},#{invoiceStyle},#{InvoiceState},#{invoiceHead}
+		#{stickPhone},#{stickaddress},#{orderId},#{invoiceStyle},#{InvoiceState},#{invoiceHead},now()
 		)
 	</insert>
+	
+	<select id="queryLastInvoice" resultType="com.yayiabc.http.mvc.pojo.jpa.Invoice">
+	    select * from invoice where user_id=#{userId} ORDER BY c_time DESC
+	</select>
 </mapper>

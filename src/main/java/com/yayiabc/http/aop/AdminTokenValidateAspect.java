@@ -37,13 +37,9 @@ public class AdminTokenValidateAspect {
 	public Object around(ProceedingJoinPoint joinpoint){
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		String loginToken=request.getHeader("admintoken");
-		System.out.println(loginToken);
-		System.out.println("接受成功");
-		
 		Object result=null;
 		Integer adminCount=tokenValidateService.getAdminCountByLoginToken(loginToken);
 		if(adminCount!=0){
-			
 			try {
 				result=joinpoint.proceed();//放行
 			} catch (Throwable e) {

@@ -71,25 +71,24 @@ public class WxLoginServiceImpl implements WxLoginService {
             User user = new User();
             user.setPhone(phone);
             User seUser = userDao.getUserByUser(user);
-            if (seUser != null) {
-                String serverCode = VerifyCodeManager.getPhoneCode(phone);
-                if (verifyCode.equals(serverCode)) {
-                    dataWrapper.setData(seUser);
-                    int num = userDao.getCartNum(seUser);
-                    
-                    dataWrapper.setNum(num);
-                    dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-                    String userId = seUser.getUserId();
-                    String token = getUserToken(userId);
-                    dataWrapper.setToken(token);
-                    wxAppDao.addUser(userId,openid);
-                } else {
-                    dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_Error);
+            String serverCode = VerifyCodeManager.getPhoneCode(phone);
+            if (verifyCode.equals(serverCode)) {
+            	if (seUser != null) {
+	                dataWrapper.setData(seUser);
+	                int num = userDao.getCartNum(seUser);
+	                dataWrapper.setNum(num);
+	                dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+	                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+	                String userId = seUser.getUserId();
+	                String token = getUserToken(userId);
+	                dataWrapper.setToken(token);
+	                wxAppDao.addUser(userId,openid);
+            	}else {
+                    dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 }
             } else {
-                dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
+                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_Error);
                 dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
             }
         }else if ("2".equals(type)){

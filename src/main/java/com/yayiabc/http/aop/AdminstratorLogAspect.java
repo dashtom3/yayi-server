@@ -47,25 +47,13 @@ public class AdminstratorLogAspect {
 	@Before("controllerAspect()")
 	public void doBefore(JoinPoint joinPoint) throws Exception{
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		System.out.println(joinPoint.getSignature().getName());
-		System.out.println("我是日志通知");
-		
-		System.out.println(joinPoint.getArgs().toString());
 		String adminstratorToken=request.getHeader("admintoken");
 		String adminstratorId =systemControllerLogService.getAdminstratorIdByAdminstratorToken(adminstratorToken);
 		if(adminstratorId!=null){
 			String operate=getControllerMethodDescription(joinPoint);
-			/*String params = "";  
-			if (joinPoint.getArgs() !=  null && joinPoint.getArgs().length > 0) {  
-			   for ( int i = 0; i < joinPoint.getArgs().length; i++) {  
-			        params +=joinPoint.getArgs()[i] + ";";  
-			   }  
-			}*/
 			AdminstratorLog adminstratorLog=new AdminstratorLog();
 			adminstratorLog.setAdminstratorId(adminstratorId);
 			adminstratorLog.setOperate(operate);
-			/*adminstratorLog.setArguments(params);*/
-			
 			adminstratorLog.setCreated(new Date());
 			systemControllerLogService.addAdminstratorLog(adminstratorLog);
 		}

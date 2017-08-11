@@ -35,8 +35,6 @@ public class UserTokenValidateAspect {
 	public Object around(ProceedingJoinPoint joinpoint){
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		String loginToken=request.getHeader("token");
-		System.out.println("我是身份验证通知");
-		System.out.println(loginToken);
 		Object result=null;
 		/**
 		* 1.验证该用户是否已登录，通过是否包含此token来判断

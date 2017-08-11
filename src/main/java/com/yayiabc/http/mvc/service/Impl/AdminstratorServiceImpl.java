@@ -103,8 +103,6 @@ public class AdminstratorServiceImpl implements AdminstratorService {
                 dataWrapper.setMsg(msg);
             }
         } else {
-            System.out.println("code:" + code);
-            System.out.println("VerifyCode:" + VerifyCodeManager.getPhoneCode(phone));
             dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_Error);
             dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
         }
@@ -122,7 +120,6 @@ public class AdminstratorServiceImpl implements AdminstratorService {
         } else {
             adminstratorDao.updateAdminstratorToken(adminstratorToken);
         }
-//        new Timer().schedule(new TokenTask(token), 2 * 3600 * 1000);
         return token;
     }
 

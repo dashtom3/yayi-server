@@ -46,24 +46,13 @@ public class UserLogAspect {
 	@Before("controllerAspect()")
 	public void doBefore(JoinPoint joinPoint) throws Exception{
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
-		System.out.println(joinPoint.getSignature().getName());
-		System.out.println("我是日志通知");
-		
-		System.out.println(joinPoint.getArgs().toString());
 		String token=request.getHeader("token");
 		String userId =systemControllerLogService.getUserIdByToken(token);
 		if(userId!=null){
 			String operate=getControllerMethodDescription(joinPoint);
-			/*String params = "";  
-			if (joinPoint.getArgs() !=  null && joinPoint.getArgs().length > 0) {  
-			   for ( int i = 0; i < joinPoint.getArgs().length; i++) {  
-			        params +=joinPoint.getArgs()[i] + ";";  
-			   }  
-			}*/
 			UserLog userLog=new UserLog();
 			userLog.setUserId(userId);
 			userLog.setOperate(operate);
-			/*userLog.setArguments(params);*/
 			userLog.setCreated(new Date());
 			systemControllerLogService.addLog(userLog);
 		}

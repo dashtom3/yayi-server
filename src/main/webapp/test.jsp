@@ -17,6 +17,6 @@
 		token:<input type="text" name="token" value="9421c01f-d987-46dd-bcd8-9de8d2b63fd9"><br>
 		<input type="submit" value="保存"/>
 	</form>
-	<img src="/api/weixin/unifiedOrderReturnUrl?orderId=f02fa6e1-ddbe-462d-af65-b9ca4f4835e2">
+	
  </body>
 </html>

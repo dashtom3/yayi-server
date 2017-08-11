@@ -71,9 +71,7 @@ public class ItemBrandServiceImpl implements ItemBrandService{
         		num=1;
         	}
         }
-        System.out.println(num);
         ItemInfo itemInfo = itemBrandDao.itemDetailDes(itemId);
-        System.out.println(itemInfo);
         List<Property> propertyList=new ArrayList<Property>();
         Property propertyA =new Property();
         String propertyAName=itemBrandDao.getItemPropertyNameA(itemId);

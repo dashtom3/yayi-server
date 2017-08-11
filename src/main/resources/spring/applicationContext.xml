@@ -18,7 +18,6 @@
 	
 <bean id="SpringQtzJobOne" class="com.yayiabc.common.utils.CornUtil"/> 
 <bean id="SpringQtzJobTwo" class="com.yayiabc.common.utils.RankUtil"/> 
-<bean id="SpringQtzJobFour" class="com.yayiabc.common.utils.RankPerDay"/>
 <bean id="SpringQtzJobThree" class="com.yayiabc.http.mvc.controller.user.MyTask"/>  
  
     
@@ -30,11 +29,6 @@
  <bean id="jobDetailTwo" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
      <property name="targetObject" ref="SpringQtzJobTwo"></property>  
      <property name="targetMethod" value="rank"></property>  
-     <property name="concurrent" value="true"></property>  
- </bean>
- <bean id="jobDetailFour" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
-     <property name="targetObject" ref="SpringQtzJobFour"></property>  
-     <property name="targetMethod" value="rankPerDay"></property>  
      <property name="concurrent" value="true"></property>  
  </bean>
   <bean id="jobDetailThree" class="org.springframework.scheduling.quartz.MethodInvokingJobDetailFactoryBean">  
@@ -54,11 +48,6 @@
      <property name="cronExpression" value="0 0 0 1 * ?"></property>  
      <property name="startDelay" value="3000"></property>  
  </bean>
- <bean id="billsCheckJobTriggerFour" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
-     <property name="jobDetail" ref="jobDetailFour"></property>  
-     <property name="cronExpression" value="0 0 1 * * ?"></property>  
-     <property name="startDelay" value="3000"></property>  
- </bean>
   <bean id="billsCheckJobTriggerThree" class="org.springframework.scheduling.quartz.CronTriggerFactoryBean">  
      <property name="jobDetail" ref="jobDetailThree"></property>  
      <property name="cronExpression" value="0/5 * * * * ?"></property>  
@@ -72,7 +61,6 @@
          <list>  
             <ref bean="billsCheckJobTriggerOne"/> 
             <ref bean="billsCheckJobTriggerTwo"/> 
-            <ref bean="billsCheckJobTriggerFour"/> 
              <ref bean="billsCheckJobTriggerThree"/> 
             <!-- <ref bean="simpleTrigger"/>  --> 
          </list>  

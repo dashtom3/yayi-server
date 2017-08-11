@@ -104,7 +104,6 @@ public class ItemManageServiceImpl implements ItemManageService{
 			numberPerPage=null;
 		}
 		Integer totalNumber=itemManageDao.getCountProperty(itemPropertyName);
-		System.out.println(totalNumber);
 		dataWrapper.setPage(page, totalNumber);
 		Integer currentNumber=page.getCurrentNumber();
 		if(itemPropertyName==null||"".equals(itemPropertyName)){
@@ -114,10 +113,7 @@ public class ItemManageServiceImpl implements ItemManageService{
 		search.setCurrentNumber(currentNumber);
 		search.setNumberPerPage(numberPerPage);
 		search.setItemBrandName(itemPropertyName);
-		System.out.println(search.getNumberPerPage());//10
-		System.out.println(search.getCurrentNumber());//0
 		List<ItemProperty> itemPropertyList=itemManageDao.queryProperty(search);
-		System.out.println(itemPropertyList.size());
 		dataWrapper.setData(itemPropertyList);//4
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		
@@ -287,7 +283,6 @@ public class ItemManageServiceImpl implements ItemManageService{
 		itemClassify.setItemClassifyName(itemClassifyName);
 		itemClassify.setItemClassifyGrade(itemClassifyGrade);
 		itemClassify.setItemPreviousClassify(itemPreviousClassify);
-		System.out.println(itemClassifyGrade);
 		if(itemClassifyGrade==1){
 			itemManageDao.insertItemClassify(itemClassify);
 			System.out.println(1);

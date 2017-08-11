@@ -22,16 +22,18 @@ public class AdvancedUtil {
      * @param appId 公众账号的唯一标识
      * @param appSecret 公众账号的密钥
      * @param code
+	 * @param secret 
+	 * @param appid 
      * @return WeixinAouth2Token
      */
-    public static   WeixinOauth2Token getOauth2AccessToken(String code) {
+    public static   WeixinOauth2Token getOauth2AccessToken(String code, String appid, String secret) {
         WeixinOauth2Token wat = null;
         // 拼接请求地址
  
        System.out.println("codecodecodecodecodecodecodecode:::::::::::::"+code);
       String requestUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
-       requestUrl = requestUrl.replace("APPID", WX.APPID);
-        requestUrl = requestUrl.replace("SECRET", WX.APPSECRET);
+       requestUrl = requestUrl.replace("APPID", appid);
+        requestUrl = requestUrl.replace("SECRET", secret);
         requestUrl = requestUrl.replace("CODE", code);
         System.out.println(requestUrl);
         // 获取网页授权凭证
@@ -39,7 +41,6 @@ public class AdvancedUtil {
         for(String key:response.keySet()){
         	System.out.println("key:"+key +"  value:"+response.get(key));
         }
-         System.out.println(response.get("openid"));
         //JSONObject jsonObject = CommonUtil.httpsRequest(requestUrl, "GET", null);
         if (!response.isEmpty()) {
             try {

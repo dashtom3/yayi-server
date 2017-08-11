@@ -1,6 +1,7 @@
 package com.yayiabc.http.mvc.service.Impl;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Component;
 import org.springframework.stereotype.Service;
 
 import com.yayiabc.common.sdk.LogisticsMain;
@@ -10,6 +11,7 @@ import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.service.LogisticsService;
 
 @Service
+
 public class LogisticsServiceImpl implements LogisticsService{
 	@Autowired
 	private LogisticsDao logisticsDao;
@@ -31,6 +33,7 @@ public class LogisticsServiceImpl implements LogisticsService{
 				dataWrapper.setMsg("暂无物流信息");
 			}else{
 				dataWrapper.setData(s);
+				dataWrapper.setMsg(order.getShippingName()+"-"+order.getShippingCode());
 			}
 			//	return s;
 			return dataWrapper;

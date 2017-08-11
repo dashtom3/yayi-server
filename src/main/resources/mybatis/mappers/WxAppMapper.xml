@@ -18,7 +18,7 @@
 
 	
 	<insert id="addSaleUser">
-		INSERT INTO wx_userlink (uid,openid,type) VALUES (#{saleId},#{openid},2)
+		INSERT INTO wx_userlink (uid,openid,type) VALUES (#{saleId},#{oqueryIsBDpenid},2)
 	</insert>
 
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.WXUserLink" id="cheWX">
@@ -27,7 +27,7 @@
 	<result property="type" column="type"/>
 	</resultMap>
      <select id="queryIsBD" resultMap="cheWX">
-     select * from wx_userlink where  uid=#{openId} 
+     select * from wx_userlink where  openid=#{openId} 
      </select>
      
      <select id="queryObject" resultType="int">

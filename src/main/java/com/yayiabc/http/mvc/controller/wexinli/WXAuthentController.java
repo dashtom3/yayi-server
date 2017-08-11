@@ -1,6 +1,11 @@
 package com.yayiabc.http.mvc.controller.wexinli;
 
 
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
+
 import javax.servlet.http.HttpServletRequest;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,12 +15,15 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.dao.SaleLogDao;
+import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.dao.WxAppDao;
+import com.yayiabc.http.mvc.pojo.jpa.Model;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.jpa.WXUserLink;
-import com.yayiabc.http.mvc.pojo.model.SaleU;
+import com.yayiabc.http.mvc.pojo.model.UserToken;
 
 
 
@@ -34,6 +42,10 @@ public class WXAuthentController{
 	private WxAppDao wxAppDao;
 	@Autowired
 	private UtilsDao utilsDao;
+	@Autowired
+	private UserDao userDao;
+	@Autowired
+	private SaleLogDao saleLogDao;
 	@RequestMapping("returnSignAndMessage")
 	@ResponseBody
     public DataWrapper<Object> doGet(HttpServletRequest request,
@@ -43,10 +55,17 @@ public class WXAuthentController{
 		
         //String code = request.getParameter("code");
        // String state = request.getParameter("state");
+		Map<String, String> appCode = wxAppDao.getAppCode();
+		String appid=appCode.get("appid");
+		String secret=appCode.get("secret");
         DataWrapper<Object> dataWrapper =new DataWrapper<Object>();
         // 用户同意授权
+        User user=null;
+      
+        SNSUserInfo snsUserInfo=null;
+        WXUserLink  wXUserLink=null;
             // 获取网页授权access_token
-            WeixinOauth2Token weixinOauth2Token = AdvancedUtil.getOauth2AccessToken(code);
+            WeixinOauth2Token weixinOauth2Token = AdvancedUtil.getOauth2AccessToken(code,appid,secret);
             // 网页授权接口访问凭证
             if(weixinOauth2Token!=null){
             	System.out.println(weixinOauth2Token);
@@ -55,11 +74,11 @@ public class WXAuthentController{
             // 用户标识
             String openId = weixinOauth2Token.getOpenId();
             // 获取用户信息
-            SNSUserInfo snsUserInfo = AdvancedUtil.getSNSUserInfo(accessToken, openId);
+             snsUserInfo = AdvancedUtil.getSNSUserInfo(accessToken, openId);
             snsUserInfo.setOpenId(openId);
             System.out.println(snsUserInfo);
          //根据 openId 判断 该用户 是否绑定过
-            WXUserLink wXUserLink=wxAppDao.queryIsBD(openId);
+              wXUserLink=wxAppDao.queryIsBD(openId);
             StringBuffer sb=new StringBuffer();
            if(wXUserLink==null){
         	   sb.append(0+"");
@@ -71,13 +90,15 @@ public class WXAuthentController{
             	 //牙医
             	 if("1".equals(wXUserLink.getType())){
             		  //根据  uid 到用户表查 phone name  select true_name,phone,sale_id from user where user_id=#{uid}
-            		User user=utilsDao.queryUserByUserId(wXUserLink.getUid());
+            		 user=utilsDao.queryUserByUserId(wXUserLink.getUid());
             		//判断该用户是否绑定销售员
             		if(user.getSaleId()!=null){
             			 SaleInfo saleInfo=wxAppDao.querySale(user.getSaleId());
             			 user.setSaleinfo(saleInfo);
             			 System.out.println("user  suer suer usreuser"+user);
             			 dataWrapper.setMsg("该用户的信息");
+            			String token = getToken(wXUserLink.getUid());
+            			dataWrapper.setToken(token);
             		}else{
             			//未绑定销售员
             		}
@@ -87,10 +108,17 @@ public class WXAuthentController{
             		 SaleInfo sa=utilsDao.getSaleBySaleId(wXUserLink.getUid());
             		 dataWrapper.setData(sa);
             		 dataWrapper.setMsg("该销售员信息");
+            		 String saleToken = getToken(wXUserLink.getUid());
+                     dataWrapper.setToken(saleToken);
             	 }
             }
+           
+          Model model=new Model();
+          model.setwXUserLibk(wXUserLink);
+          model.setUser(user);
+          model.setsNSUserInfo(snsUserInfo);
            snsUserInfo.setSign(sb.toString());
-           dataWrapper.setData(snsUserInfo);
+           dataWrapper.setData(model);
         return dataWrapper;
     }
 	//点击下一步    验证是否注册过
@@ -130,5 +158,58 @@ public class WXAuthentController{
      			return dataWrapper;
      		}
     	 }
+    }
+    
+    private String getToken(String userId) {
+        String token = UUID.randomUUID().toString();
+        UserToken userToken = new UserToken();
+        userToken.setUserId(userId);
+        userToken.setToken(token);
+        String oldToken = userDao.getTokenByUserId(userId);
+        if (oldToken == null) {
+            userDao.addToken(userToken);
+        } else {
+            userDao.updateToken(userToken);
+        }
+        new Timer().schedule(new TokenTask(token), 2 * 3600 * 1000);
+        return token;
+    }
+
+    private class TokenTask extends TimerTask {
+        private String token;
+
+        public TokenTask(String token) {
+            this.token = token;
+        }
+
+        @Override
+        public void run() {
+            userDao.deleteToken(token);
+        }
+    }
+    
+    private String getSaleToken(String id) {
+        String token = UUID.randomUUID().toString();
+        String oldToken = saleLogDao.getTokenBySaleId(id);
+        if (oldToken == null) {
+            saleLogDao.addSaleToken(id, token);
+        } else {
+            saleLogDao.updateSaleToken(id, token);
+        }
+        new Timer().schedule(new SaleTokenTask(token), 2 * 3600 * 1000);
+        return token;
+    }
+
+    private class SaleTokenTask extends TimerTask {
+        private String token;
+
+        public SaleTokenTask(String token) {
+            this.token = token;
+        }
+
+        @Override
+        public void run() {
+            saleLogDao.deleteSaleToken(token);
+        }
     }
 }

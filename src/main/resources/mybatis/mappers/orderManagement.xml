@@ -240,7 +240,7 @@
 		update ordera
 		<set>
 			<if test="logisticsName!=null">
-				shipping_name='STO',
+				shipping_name=#{logisticsName},
 			</if>
 			<if test="logisticsCode!=null">
 				shipping_code=#{logisticsCode},

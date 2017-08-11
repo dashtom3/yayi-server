@@ -93,9 +93,9 @@ public class WxLoginServiceImpl implements WxLoginService {
             }
         }else if ("2".equals(type)){
             SaleInfo saleInfo = saleLogDao.getSaleInfoByPhone(phone);
-            if (saleInfo != null) {
-                String serverCode = VerifyCodeManager.getPhoneCode(phone);
-                if (verifyCode.equals(serverCode)) {
+            String serverCode = VerifyCodeManager.getPhoneCode(phone);
+            if (verifyCode.equals(serverCode)) {
+            	if (saleInfo != null) {
                     dataWrapper.setData(saleInfo);
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
@@ -105,12 +105,12 @@ public class WxLoginServiceImpl implements WxLoginService {
                         dataWrapper.setToken(token);
                         wxAppDao.addSaleUser(saleId,openid);
                     }
-                } else {
-                    dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_Error);
+            	}else {
+                    dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 }
             } else {
-                dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
+                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_Error);
                 dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
             }
         }

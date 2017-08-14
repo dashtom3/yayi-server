@@ -34,8 +34,6 @@ public class RankUtil {
 		String nowTime=sdf.format(now);
 		DataWrapper<List<Ranking>> dataWrapper=rankingService.queryMonthRankingAll(nowTime);
 		List<Ranking> rankingList=dataWrapper.getData();
-		System.out.println(rankingList);
-		System.out.println(dataWrapper.getMsg());
 		SimpleDateFormat sdfTwo=new SimpleDateFormat("yyyy_MM");
 		Integer saleCount=rankingDao.getSaleCountNow();
 		rankingDao.saveSaleNum(saleCount,now);

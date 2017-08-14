@@ -42,4 +42,8 @@
 	<select id="getPhoneById">
 		SELECT phone FROM sale_info WHERE sale_id = #{_parameter}
 	</select>
+	
+	<select id="getUserCount" resultType="java.lang.Integer">
+		select count(0) from user where phone=#{phone}
+	</select>
 </mapper>

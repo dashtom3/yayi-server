@@ -28,7 +28,6 @@ public class CornServiceImpl implements CornService{
 	@Override
 	public void addBalance() {
 		List<String> saleIdList=cornDao.getSaleIdList();
-		System.out.println(saleIdList);
 		for (String saleId : saleIdList) {
 			Double totalHaoCaiMoney=cornDao.getTotalHaoCaiMoneyBySaleId(saleId);
 			if(totalHaoCaiMoney==null){
@@ -63,11 +62,9 @@ public class CornServiceImpl implements CornService{
 				getMoneyByGongJu=(totalGongJuMoney-totalGongJuRefund)*0.15;
 			}
 			Double balanceIn=getMoneyByHaoCai+getMoneyByGongJu;
-			/*Double balanceIn=this.getMoneyByHaoCai(totalHaoCaiMoney, totalHaoCaiMoney-totalHaoCaiRefund)
-					+this.getMoneyByGongJu(totalGongJuMoney,totalGongJuMoney-totalGongJuRefund);*/
+			
 			if(balanceIn!=0){
 				Double balance=cornDao.getLatestBalanceBySaleId(saleId);
-				System.out.println(balance);
 				if(balance==null){
 					balance=0.00;
 				}
@@ -77,10 +74,6 @@ public class CornServiceImpl implements CornService{
 				balance+=balanceIn;
 				Balance balanceMonthCash=new Balance();
 				balanceMonthCash.setSaleId(saleId);
-				System.out.println(totalHaoCaiMoney);
-				System.out.println(totalGongJuMoney);
-				System.out.println(totalHaoCaiRefund);
-				System.out.println(totalGongJuRefund);
 				balanceMonthCash.setHaocaiMoney(Double.parseDouble(df.format(totalHaoCaiMoney)));
 				balanceMonthCash.setGongjuMoney(Double.parseDouble(df.format(totalGongJuMoney)));
 				balanceMonthCash.setHaocaiRefund(Double.parseDouble(df.format(totalHaoCaiRefund)));
@@ -89,7 +82,6 @@ public class CornServiceImpl implements CornService{
 				balanceMonthCash.setBalance(balance);
 				balanceMonthCash.setDescribey("进账每月结算");
 				balanceMonthCash.setCreated(new Date());
-				System.out.println(balanceMonthCash);
 				cornDao.addBalancePerMonth(balanceMonthCash);
 				
 			}

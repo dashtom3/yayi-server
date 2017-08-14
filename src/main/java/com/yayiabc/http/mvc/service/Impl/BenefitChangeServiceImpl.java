@@ -244,4 +244,23 @@ public class BenefitChangeServiceImpl implements BenefitChangeService{
         return listmap;
     }
 
+	@Override
+	public DataWrapper<Void> delete(Integer benefitId) {
+		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		//1.清除code_map中的缓存的验证码
+		List<String> validateCodeList=benefitChangeDao.queryValidateCode(benefitId);
+		Map map =ValidateCodeUtil.codeMap;
+		for (String validateCode : validateCodeList) {
+			if(map.containsValue(validateCode)){
+				map.remove(validateCode);
+			}
+		}
+		//2.清除benefit_detail记录
+		benefitChangeDao.deleteBenefitDetailByBenefitId(benefitId);
+		//3.清除benefit表记录
+		benefitChangeDao.deleteBenefitByBenefitId(benefitId);
+		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+		return dataWrapper;
+	}
+
 }

@@ -26,4 +26,6 @@ public interface SaleLogDao {
 	SaleInfo getSaleInfoById(String userId);
 
 	String getPhoneById(String saleId);
+
+	Integer getUserCount(@Param("phone")String phone);
 }

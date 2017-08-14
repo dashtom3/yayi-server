@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.dao;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.yayiabc.http.mvc.pojo.jpa.User;
@@ -33,4 +34,6 @@ public interface UserDao {
     void addSale(String saleId);
 
 	int bindSale(String userId, String saleId);
+
+	Integer getSaleCount(@Param("phone")String phone);
 }

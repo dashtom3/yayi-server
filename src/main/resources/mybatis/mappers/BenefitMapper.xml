@@ -71,4 +71,16 @@
 	<select id="getBenefitCodeCount" resultType="java.lang.Integer">
 		select count(0) from benefit_detail where benefit_code=#{benefitCode}
 	</select>
+	
+	<select id="queryValidateCode" resultType="string">
+		select benefit_code from benefit_detail where benefit_id=#{benefitId}
+	</select>
+	
+	<delete id="deleteBenefitDetailByBenefitId">
+		delete from benefit_detail where benefit_id=#{benefitId}
+	</delete>
+	
+	<delete id="deleteBenefitByBenefitId">
+		delete from benefit where benefit_id=#{benefitId}
+	</delete>
 </mapper>

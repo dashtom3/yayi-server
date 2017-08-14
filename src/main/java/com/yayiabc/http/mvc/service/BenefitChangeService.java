@@ -23,4 +23,6 @@ public interface BenefitChangeService {
 
 	DataWrapper<Void> downLoad(Integer benefitId, HttpServletResponse response);
 
+	DataWrapper<Void> delete(Integer benefitId);
+
 }

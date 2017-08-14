@@ -59,4 +59,8 @@
     <update id="bindSale">
         UPDATE user SET sale_id = #{1} WHERE user_id = #{0}
     </update>
+    
+    <select id="getSaleCount" resultType="java.lang.Integer">
+    	select count(0) from sale_info where phone=#{phone}
+    </select>
 </mapper>       

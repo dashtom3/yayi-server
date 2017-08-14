@@ -8,13 +8,17 @@ import org.springframework.stereotype.Service;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.dao.AdvManageDao;
+import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.AdvChart;
+import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.service.AdvManageService;
 
 @Service
 public class AdvManageServiceImpl implements AdvManageService{
   @Autowired
   private AdvManageDao advManageDao;
+  @Autowired
+  private UtilsDao ut;
 
 @Override  //show
 public DataWrapper<List<AdvChart>> showAdv() {
@@ -65,5 +69,12 @@ public DataWrapper<Void> deleteAdv(Integer advId) {
 		dataWrapper.setMsg("操作失败");
 	}
 	return dataWrapper;
+}
+//-------------
+
+@Override
+public List<Ordera> queryNowOrder() {
+	// TODO Auto-generated method stub
+	return  ut.queryNowOrder() ;
 }
 }

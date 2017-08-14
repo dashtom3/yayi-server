@@ -1,27 +1,51 @@
 package com.yayiabc.http.mvc.controller.user;
 
 import java.util.Date;
-import java.util.Timer;
+import java.util.List;
+import java.util.Map;
 
 import javax.servlet.http.HttpServlet;
 
+import org.springframework.beans.factory.InitializingBean;
+import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.yayiabc.common.cahce.CacheUtils;
+import com.yayiabc.common.utils.BeanUtil;
+import com.yayiabc.http.mvc.dao.UtilsDao;
+import com.yayiabc.http.mvc.pojo.jpa.Ordera;
+import com.yayiabc.http.mvc.service.AdvManageService;
 import com.yayiabc.http.mvc.service.TimerChangeStateService;
+import com.yayiabc.http.mvc.service.Impl.AdvManageServiceImpl;
+@Component
+public class testTimer  implements InitializingBean{
 
-
-
-public class testTimer extends HttpServlet{
-
-	private static final long serialVersionUID = 1L;
-	private TimerChangeStateService timerChangeStateService; 
+   @Autowired 
+	private AdvManageService  advManageService;
+	List<Ordera> orderList =null;
 	public void init(){
+		
 		//Date d=new Date();
-		System.err.println("我这个时候被加载了：");
-		/*CacheUtils.getInstance().addCache("f7598780-2bc1-4e8f-87d3-0cd88c900a630053", d);*/
-		Timer timer = new Timer();
-		//timer.schedule(new MyTask(),1000,9000);
+		System.err.println("我这个时候被加载了：把ordera表中 的数据订单state=1的数据放到缓存中");
+		Map<String, Date> map=CacheUtils.getInstance().getCacheMap();
+		//查询数据库订单的state=1的数据
+		
+		if(advManageService!=null){
+			 orderList =advManageService.queryNowOrder();
+			if(orderList!=null){
+				if(!orderList.isEmpty()){
+					for(int i=0;i<orderList.size();i++){
+						map.put(orderList.get(i).getOrderId(), orderList.get(i).getCreated());
+					}
+				}
+			}
+		}
+		System.err.println(map);
+	}
+	@Override
+	public void afterPropertiesSet() throws Exception {
+		// TODO Auto-generated method stub
+		init();
 	}
 }
 

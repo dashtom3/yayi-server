@@ -26,6 +26,10 @@
 		<result property="totalFee" column="total_fee" />
 		<result property="postFee" column="post_fee" />
 		<result property="giveQb" column="give_qb" />
+		<result property="payType" column="pay_type" />
+		<result property="invoiceHand" column="invoice_hand" />
+		<result property="isRegister" column="is_register" />
+		<result property="buyerMessage" column="buyer_message" />
 		<association property="receiver"
 			javaType="com.yayiabc.http.mvc.pojo.jpa.Receiver">
 			<id property="receiverId" column="receiver_id" />
@@ -65,6 +69,7 @@
 		resultMap="orderDetailsResultMap">
 		SELECT
 		orde.order_id,orde.created,orde_it.num,orde_it.price,orde.actual_pay,orde.give_qb,
+		orde.pay_type,orde.invoice_hand,orde.is_register,orde.buyer_message,
 		orde_it.item_name,orde_it.pic_path,orde_it.itm_SKU,
 		orde_it.item_property_namea,
 		orde_it.item_property_nameb,orde_it.item_property_namec,orde_it.item_id,orde.post_fee,orde.qb_ded,orde.state,

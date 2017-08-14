@@ -146,7 +146,7 @@ public class OrderManagementController {
 		   ){
 	   return orderManagementService.queryOrderDetails(orderId);
    }
-   //显示订单详情
+   //后台显示订单详情
    @RequestMapping("queryOrderInvoice")
    @ResponseBody
    @AdminTokenValidate

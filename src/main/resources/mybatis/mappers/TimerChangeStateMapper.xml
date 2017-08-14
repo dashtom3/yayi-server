@@ -7,16 +7,17 @@
 	<update id="timerChangeState">
 		update ordera set state =0 where order_id=#{orderId}
 	</update>
-	<select id="timerQueryState" resultType="int">
+
+	<select id="timerQueryState" resultType="java.lang.Integer">
 		select state from ordera
 		where order_id=#{orderId}
 	</select>
 
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.OrderItem" id="resMap">
-		
-			<id property="orderId" column="order_id" />
-			<result property="itemSKU" column="itm_SKU"/>
-			<result property="num" column="num"/>
+
+		<id property="orderId" column="order_id" />
+		<result property="itemSKU" column="itm_SKU" />
+		<result property="num" column="num" />
 	</resultMap>
 	<select id="queryOrderItems" resultMap="resMap">
 		SELECT orde.order_id
@@ -27,8 +28,62 @@
 		WHERE
 		orde.order_id=#{orderId}
 	</select>
+
+	<!-- <update id="stillItemValueNum"> update item_value set stock_num=(stock_num+#{NUMM}) 
+		where item_sKU=#{itemSKU} </update> -->
+	<update id="stillItemValueNum" parameterType="java.util.List">
+		
+		<foreach collection="list" item="plid" index="index" open="" close="" 
+			separator=";">
+			update item_value
+			<set>
+			stock_num = ${plid.num}+stock_num
+			</set>
+			where 
+			 item_sKU=#{plid.itemSKU}
+			
+		</foreach>
+	</update>
+	<!-- update item_value set stock_num=(stock_num+#{NUMM}) where
+		item_sKU=#{itemSKU} -->
+		
+	<update id="closeOrder" parameterType="java.util.List">
+	 <foreach collection="list" item="plid" index="index" open="" close="" 
+			separator=";">
+			update ordera
+			<set>
+			state = 0,close_time=now()
+			</set>
+			where 
+			 order_id=#{plid}
+		</foreach>
+	</update>
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.OrderItem" id="poi">
+	 <result property="itemSKU" column="itm_SKU"/>
+	 <result property="num" column="num"/>
+	</resultMap>
+	<select id="queryOrderItemNums" parameterType="java.util.List" resultMap="poi">
+	   SELECT
+            itm_SKU,num
+        FROM
+            order_item
+        <where>
+            order_id in
+            <foreach item="orderId" collection="list" separator="," open="(" close=")" index="">
+                #{orderId}
+            </foreach>
+        </where>
+	</select>
 	
-	<update id="stillItemValueNum">
-	  update item_value  set stock_num=#{NUMM} where item_sKU=#{itemSKU}
+	<update id="stillItemsListValueNum" parameterType="java.util.List">
+	<foreach collection="list" item="plid" index="index" open="" close="" 
+			separator=";">
+			update item_value
+			<set>
+			stock_num = ${plid.num}+stock_num
+			</set>
+			where 
+			 item_sKU=#{plid.itemSKU}
+		</foreach>
 	</update>
 </mapper>

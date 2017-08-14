@@ -3,6 +3,8 @@ package com.yayiabc.http.mvc.pojo.jpa;
 import java.util.Date;
 import java.util.List;
 
+import org.springframework.format.annotation.DateTimeFormat;
+
 /**
  * 
  * @author xiaojiang 订单表
@@ -11,7 +13,8 @@ public class Ordera extends BasePojo {
 	private String orderId;
 	private String userId;
 	private Double actualPay;
-
+	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	private Date created;
 	private Integer payType;
 
 	private String postFee;
@@ -92,6 +95,14 @@ public class Ordera extends BasePojo {
 
 	public void setUserId(String userId) {
 		this.userId = userId;
+	}
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
 	}
 
 	public Integer getQbDed() {
@@ -302,6 +313,18 @@ public class Ordera extends BasePojo {
 		this.refund = refund;
 	}
 
-
+	@Override
+	public String toString() {
+		return "Ordera [orderId=" + orderId + ", userId=" + userId + ", actualPay=" + actualPay + ", created=" + created
+				+ ", payType=" + payType + ", postFee=" + postFee + ", paymentTime=" + paymentTime + ", consignTime="
+				+ consignTime + ", endTime=" + endTime + ", closeTime=" + closeTime + ", buyerMessage=" + buyerMessage
+				+ ", buyerNick=" + buyerNick + ", buyerRate=" + buyerRate + ", state=" + state + ", shippingName="
+				+ shippingName + ", shippingCode=" + shippingCode + ", invoiceHand=" + invoiceHand + ", isRegister="
+				+ isRegister + ", giveQb=" + giveQb + ", refundInfo=" + refundInfo + ", totalFee=" + totalFee
+				+ ", qbDed=" + qbDed + ", refund=" + refund + ", receiver=" + receiver + ", receiverId=" + receiverId
+				+ ", user=" + user + ", supplies_sumprice=" + supplies_sumprice + ", tooldevices_sumprice="
+				+ tooldevices_sumprice + ", orderitemList=" + orderitemList + ", commentList=" + commentList
+				+ ", orderNums=" + orderNums + "]";
+	}
 	
 }

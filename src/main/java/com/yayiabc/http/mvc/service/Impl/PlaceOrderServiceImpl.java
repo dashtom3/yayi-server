@@ -1,6 +1,7 @@
 package com.yayiabc.http.mvc.service.Impl;
 
 import java.io.UnsupportedEncodingException;
+import java.util.ArrayList;
 import java.util.Arrays;
 import java.util.Date;
 import java.util.HashMap;
@@ -174,7 +175,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				if(order.getQbDed()==null){
 					order.setQbDed(0);
 				}if(order.getInvoiceHand()==null){
-					order.setInvoiceHand("没买价没有输入发票抬头");
+					order.setInvoiceHand("该用户不需要发票");
 				}if(order.getIsRegister()==null){
 					order.setIsRegister(0);
 				}if(order.getBuyerMessage()==null){
@@ -204,23 +205,44 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//把传过来的 List<OrderItem> 遍历到order_item 表中
 			Double sumPrice=0.0;
 			int itemSum=orderItemList.size();//商品总数量
+			//抽取for循环的第一步  根据orderItemList 的itemsku 去数据库做批量查询  出 ArrayList<ItemValue>
+			List<ItemValue> itemValueList=placeOrderDao.queryAttributesList(orderItemList);
+			//抽取for循环的第二步 根据 itemValueList里的 itemId 去数据库做批量查询 出ArrayList<orderItem>
+			List<OrderItem> orderItemListAttributes=placeOrderDao.queryItemIdListByitemValueList(itemValueList);
+			System.err.println(itemValueList.size()+" -- "+orderItemListAttributes.size()
+					);
+			System.out.println("itemValueList:"+itemValueList);
+			System.out.println("orderItemListAttributes:"+orderItemListAttributes);
+			System.err.println("-----------------------------------------------------------");
+			
 			for(int i=0;i<orderItemList.size();i++){
 				//query钱币赠送百分比
 				//Integer qbPercentage=placeOrderDao.queryQbPercentage(orderItemList.get(i).getItemSKU());
 				//giveQbNum+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice()*qbPercentage;
 				// 根据传过来的  商品sku 与 商品购买数目 查找对应的 其他参数（已知sku  num,orderId.,create,update） 
 				//需要item_name,price,picpath, a,b,c 属性，
-				ItemValue itemVlue=placeOrderDao.queryAttributes(orderItemList.get(i).getItemSKU());
+				//ItemValue itemVlue=placeOrderDao.queryAttributes(orderItemList.get(i).getItemSKU());
 				//新加入function 需要sku 找到itemid  找到商品表里面的item_sort（商品类型） 加入到订单商品表里 itemVlue里面有itemid 这里直接取
-				String itemType=placeOrderDao.queryItemsort(itemVlue.getItemId());
-				orderItemList.get(i).setItemType(itemType);
+				//String itemType=placeOrderDao.queryItemsort(itemVlue.getItemId());
+				//orderItemList.get(i).setItemType(itemType);
 				//根据sku 查找商品名称 业户说的
-				String itemName=placeOrderDao.queryItemName(itemVlue.getItemId());
+				//String itemName=placeOrderDao.queryItemName(itemVlue.getItemId());
 				//根据sku查找商品的图片路径
-				String itemPicPath=placeOrderDao.queryItemPicPath(itemVlue.getItemId());
+				//String itemPicPath=placeOrderDao.queryItemPicPath(itemVlue.getItemId());
 				//新 function 本单获得钱币数新规则 这里Set进商品品牌
-				String  itemBrandName=placeOrderDao.queryItemBrandNameByItemId(itemVlue.getItemId());
-				orderItemList.get(i).setItemBrandName(itemBrandName);
+				//String  itemBrandName=placeOrderDao.queryItemBrandNameByItemId(itemVlue.getItemId());
+				//--- !!!!  双休优化  123
+				orderItemList.get(i).setItemBrandName(orderItemListAttributes.get(i).getItemBrandName());
+				orderItemList.get(i).setItemName(orderItemListAttributes.get(i).getItemName());
+				orderItemList.get(i).setPicPath(orderItemListAttributes.get(i).getPicPath());
+				orderItemList.get(i).setItemPropertyNamea(itemValueList.get(i).getItemPropertyInfo());
+				orderItemList.get(i).setItemPropertyNameb(itemValueList.get(i).getItemPropertyTwoValue());
+				orderItemList.get(i).setItemPropertyNamec(itemValueList.get(i).getItemPropertyThreeValue());
+				orderItemList.get(i).setPrice(itemValueList.get(i).getItemSkuPrice());
+				orderItemList.get(i).setOrderId(orderId);
+				orderItemList.get(i).setItemType(orderItemListAttributes.get(i).getItemType());
+				//---
+				/*orderItemList.get(i).setItemBrandName(itemBrandName);
 
 				orderItemList.get(i).setItemSKU(itemVlue.getItemSKU());
 				orderItemList.get(i).setItemName(itemName);
@@ -229,19 +251,21 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				orderItemList.get(i).setItemPropertyNamea(itemVlue.getItemPropertyInfo());
 				orderItemList.get(i).setItemPropertyNameb(itemVlue.getItemPropertyTwoValue());
 				orderItemList.get(i).setItemPropertyNamec(itemVlue.getItemPropertyThreeValue());
+				orderItemList.get(i).setOrderId(orderId);*/
 				//查询该商品的库存数量
-				int ItemInventNum=placeOrderDao.queryItemInventNum(itemVlue.getItemSKU());
-				//判断
-				if(ItemInventNum>=orderItemList.get(i).getNum()){
+				//int ItemInventNum=placeOrderDao.queryItemInventNum(itemVlue.getItemSKU());
+				//双休优化  
+				//判断  
+				if(itemValueList.get(i).getStockNum()>=orderItemList.get(i).getNum()){
 					//如果库存数量大于购买数量  就去库存减去购买数
 					//更改库存数量
 					placeOrderDao.updateInventNum(
-							String.valueOf(ItemInventNum-orderItemList.get(i).getNum()),itemVlue.getItemSKU()
+							String.valueOf(itemValueList.get(i).getStockNum()-orderItemList.get(i).getNum()),itemValueList.get(i).getItemSKU()
 							);				
 					//---
 				}else{
 					hashMap.put("数量不足", "该商品"+orderItemList.get(i).getItemName()+"数量不足，您最多购买"
-							+String.valueOf(ItemInventNum-orderItemList.get(i).getNum())+"件。"
+							+String.valueOf(itemValueList.get(i).getStockNum()-orderItemList.get(i).getNum())+"件。"
 							);	
 					//删除该订单   和订单商品表里的信息
 					dataWrapper.setErrorCode(ErrorCodeEnum.Error);
@@ -264,11 +288,11 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				sumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
 
 				//将商品 同步到 订单商品表里
-				int sta=placeOrderDao.synchronization(orderItemList.get(i),orderId);
+				//int sta=placeOrderDao.synchronization(orderItemList.get(i),orderId);
 				//放一件到订单商品表清一件到
-				if(sta>0){
+				/*if(sta>0){
 					placeOrderDao.cleanCart(userId,orderItemList.get(i).getItemSKU());
-				}
+				}*/
 				//这里计算除道邦之外的商品分类价格  耗材类  工具设备类
 				if("耗材类".equals(orderItemList.get(i).getItemType())){
 					AllSuppliesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
@@ -283,6 +307,10 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				//giveQbNum+=0;
 				/*System.out.println(orderItemList.get(i));*/
 			}
+			//将商品 同步到 订单商品表里--------双休优化  批量 插入到order_item表中
+			int a=placeOrderDao.batchSynchronization(orderItemList);
+			//清空购物车 双休优化
+			int q=placeOrderDao.cleanCartList(userId,orderItemList);
 			
 			//这里计算本单赠送钱币数
 			//首先道邦品牌
@@ -337,7 +365,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//订单实际价格的计算
 			Double actualPay=sumPrice+postFee-order.getQbDed();
 			//放入订单表
-			placeOrderDao.insertActualPay(orderId,String.valueOf(actualPay));
+			//placeOrderDao.insertActualPay(orderId,String.valueOf(actualPay));
 			hashMap.put("OrderId",orderId);
 			hashMap.put("sumPrice",String.valueOf(sumPrice));
 			hashMap.put("giveQbNum", giveQbNum);
@@ -353,14 +381,16 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//本单赠送钱币数保存到数据库
 			placeOrderDao.saveGiveQbNum(String.valueOf(giveQbNum),String.valueOf(postFee),
 					String.valueOf(sumPrice)
-					,orderId);
+					,orderId,String.valueOf(AllSuppliesSumPrice),String.valueOf(AllTooldevicesSumPrice)
+					,String.valueOf(actualPay)
+					);
 			//这里保存到ordera表里 并没有把赠送钱币数 给到用户余额中  必须等
 			//该用户付款成功再根据orderId 把余额放到该用户的账户余额中。。。。。。。。。。。。。。。。。。。。。。。
 			//直接放入order表
-			int a=placeOrderDao.insertClassItemsSumMoney(String.valueOf(AllSuppliesSumPrice),
+			/*int c=placeOrderDao.insertClassItemsSumMoney(String.valueOf(AllSuppliesSumPrice),
 					String.valueOf(AllTooldevicesSumPrice)
 					,orderId
-					);
+					);*/
 			//得到 商品分类价格工具类
 			/*ConcurrentHashMap<String,Object> synMap=ClassificationHelpUtils.getInstance().getSynchronizedMap();
 			//synMap
@@ -385,8 +415,12 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		// TODO Auto-generated method stub
 		String userId=utilsDao.getUserID(token);
 		DataWrapper<Invoice> dataWrapper=new DataWrapper<Invoice>();
-		
-		dataWrapper.setData(placeOrderDao.queryLastInvoice(userId).get(0));
+		List<Invoice> in=placeOrderDao.queryLastInvoice(userId);
+		if(in!=null){
+			if(!in.isEmpty()){
+				dataWrapper.setData(in.get(0));
+			}
+		}
 		return dataWrapper;
 	}
 }

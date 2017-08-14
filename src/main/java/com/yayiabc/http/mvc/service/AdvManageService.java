@@ -4,6 +4,7 @@ import java.util.List;
 
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.AdvChart;
+import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 
 public interface AdvManageService {
    //显示广告信息
@@ -14,5 +15,6 @@ public interface AdvManageService {
 	DataWrapper<Void> updateAdv(AdvChart advChart);
 	//删除广告信息
 	DataWrapper<Void> deleteAdv(Integer advId);
-	
+	//--------附加
+	List<Ordera> queryNowOrder();
 }

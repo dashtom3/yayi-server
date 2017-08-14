@@ -101,6 +101,6 @@ public class AdvManageController {
     		String orderId
     		){
     	PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("payAfterOrderUtil");
- 	   payAfterOrderUtil.universal(orderId);
+ 	   payAfterOrderUtil.universal(orderId,"0");
     }
 }

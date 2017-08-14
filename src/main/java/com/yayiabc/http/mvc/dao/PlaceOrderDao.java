@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -87,10 +88,15 @@ public interface PlaceOrderDao {
 	String queryItemBrandNameByItemId(@Param("itemId")String itemId);
 
 	//本单赠送钱币数保存到数据库
-	int saveGiveQbNum(@Param("giveQbNum")String giveQbNum,
+	int saveGiveQbNum(
+			@Param("giveQbNum")String giveQbNum,
 			@Param("postFee")	String postFee,
 			@Param("sumPrice") String sumPrice,
-			@Param("orderId")String orderId);
+			@Param("orderId")String orderId,
+			@Param("suppliesSumPrice")String suppliesSumPrice,
+			@Param("tooldevicesSumPrice")String tooldevicesSumPrice,
+			@Param("actualPay")String actualPay
+			);
 
     //退款记录放入 iteminfo中
 	int saveRefundRecord(@Param("itemId")String itemId, @Param("refunNum")Integer refunNum);
@@ -107,4 +113,17 @@ public interface PlaceOrderDao {
 
      
 	List<Invoice> queryLastInvoice(@Param("userId")String userId);
+
+	
+
+	List<ItemValue> queryAttributesList(List<OrderItem> orderItemList);
+
+
+	List<OrderItem> queryItemIdListByitemValueList(List<ItemValue> itemValueList);
+
+
+	int batchSynchronization(List<OrderItem> orderItemList);
+
+
+	int cleanCartList(@Param("userId")String userId, @Param("orderItemLists")List<OrderItem> orderItemList);
 }

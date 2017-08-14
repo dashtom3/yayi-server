@@ -177,7 +177,7 @@ public class WXPayController {
 					Integer totalTwo=Integer.parseInt((String)packageParam.get("total_fee"));
 					if(totalFee==totalTwo){
 						PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-						   payAfterOrderUtil.universal(orderId);
+						   payAfterOrderUtil.universal(orderId,"1");
 						//这里是支付成功
 						System.out.println("支付成功");
 						//改变订单状态

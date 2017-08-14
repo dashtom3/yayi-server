@@ -46,6 +46,17 @@
 	 </update>
 	 
 	 <update id="updatePayType">
-	  update ordera set type =#{type} where order_id=#{orderId}
+	  update ordera set pay_type =#{type} where order_id=#{orderId}
+	 </update>
+	 
+	 <update id="addSalesList" parameterType="java.util.List">
+	  <foreach collection="list" item="kkk" index="index" open="" close="" 
+			separator=";">
+			update item_info
+			<set>
+			sales = ${kkk.num}+sales
+			</set>
+			where item_id=#{kkk.itemId}
+		</foreach>
 	 </update>
 </mapper>       

@@ -14,9 +14,15 @@ public interface TimerChangeStateDao {
         select state from ordera where order_id=#{orderId}
        </select>
  */
-	public int timerQueryState(@Param("orderId")String orderId);
-	public int timerChangeState(@Param("orderId")String orderId);
+	public Integer timerQueryState(@Param("orderId")String orderId);
+	public Integer timerChangeState(@Param("orderId")String orderId);
 	public List<OrderItem> queryOrderItems(@Param("orderId")String orderId);
 	
-	public int stillItemValueNum(@Param("itemSKU")String itemSKU, @Param("NUMM")String num);
+	public Integer stillItemValueNum(List<OrderItem> orderItemList);
+	
+	public int closeOrder(List<String> temporaryList);
+	
+	public List<OrderItem> queryOrderItemNums(List<String> temporaryList);
+	
+	public int stillItemsListValueNum(List<OrderItem> orderItemNums);
 }

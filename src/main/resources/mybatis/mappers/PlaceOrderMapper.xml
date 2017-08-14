@@ -168,7 +168,8 @@
 		)
 	</insert>
 	<update id="insertActualPay">
-		update ordera set actual_pay=#{actualPay} where order_id=#{orderId}
+		update ordera set actual_pay=#{actualPay} where
+		order_id=#{orderId}
 	</update>
 
 	<!-- //更改地址后 -->
@@ -179,55 +180,71 @@
 	</select>
 	<!-- //查看钱币赠送百分比 -->
 	<select id="queryQbPercentage" resultType="int">
-		select item_qb from item_value where item_sKU=#{itemSKU}
+		select item_qb from
+		item_value where item_sKU=#{itemSKU}
 	</select>
 
 	<select id="queryAttributes" resultType="com.yayiabc.http.mvc.pojo.jpa.ItemValue">
-		select * from item_value where item_sKU=#{itemSKU}
+		select * from item_value
+		where item_sKU=#{itemSKU}
 	</select>
 
 	<select id="queryItemName" resultType="java.lang.String">
-		select item_name from item_info where item_id=#{itemId}
+		select item_name from
+		item_info where item_id=#{itemId}
 	</select>
 
 	<select id="queryItemPicPath" resultType="java.lang.String">
-		select item_pica from item_detail where item_id=#{itemId}
+		select item_pica from
+		item_detail where item_id=#{itemId}
 	</select>
 
 	<delete id="cleanCart">
-		delete from cart where user_id=#{userId} and item_SKU=#{itemSKU}
+		delete from cart where user_id=#{userId} and
+		item_SKU=#{itemSKU}
 	</delete>
 	<!-- //查询商品库存数量 -->
 	<select id="queryItemInventNum" resultType="int">
-		select stock_num from item_value where item_sKU=#{itemSKU}
+		select stock_num from
+		item_value where item_sKU=#{itemSKU}
 	</select>
 	<!-- //updateInventNum更改库存数量 -->
 	<update id="updateInventNum">
-		update item_value set stock_num=#{NUM} where item_sKU=#{itemSKU}
+		update item_value set stock_num=(#{NUM})
+		where item_sKU=#{itemSKU}
 	</update>
 
 	<select id="queryItemsort" resultType="java.lang.String">
-		select item_sort from item_info where item_id=#{itemId}
+		select item_sort from
+		item_info where item_id=#{itemId}
 	</select>
 
 	<update id="insertClassItemsSumMoney">
-		update ordera set supplies_sumprice=#{suppliesSumPrice}
+		update ordera set
+		supplies_sumprice=#{suppliesSumPrice}
 		,tooldevices_sumprice=#{tooldevicesSumPrice}
 		where order_id=#{orderId}
 	</update>
 	<select id="queryItemBrandNameByItemId" resultType="String">
-		select item_brand_name from item_brand where item_brand_id=
-		(select item_brand_id from item_info where item_id=#{itemId})
+		select
+		item_brand_name from item_brand where item_brand_id=
+		(select
+		item_brand_id from item_info where item_id=#{itemId})
 	</select>
 
 	<update id="saveGiveQbNum">
 		update ordera set
-		give_qb=#{giveQbNum},post_fee=#{postFee},total_fee=#{sumPrice} where
+		give_qb=#{giveQbNum},post_fee=#{postFee},total_fee=#{sumPrice}
+		,supplies_sumprice=#{suppliesSumPrice}
+		,tooldevices_sumprice=#{tooldevicesSumPrice}
+		,actual_pay=#{actualPay}
+		 where
 		order_id=#{orderId}
 	</update>
 
 	<update id="saveRefundRecord">
-		update item_info set refund_num=(refund_num+${refunNum})
+		update item_info set
+		refund_num=(refund_num+${refunNum})
 		where
 		item_id=#{itemId}
 	</update>
@@ -244,16 +261,77 @@
 		private String orderId; private String invoiceStyle; private String InvoiceState; -->
 	<insert id="saveInvoiced" parameterType="com.yayiabc.http.mvc.pojo.jpa.Invoice">
 
-		insert into invoice(user_id,company_name,taxpayer_num,registered_address,
+		insert into
+		invoice(user_id,company_name,taxpayer_num,registered_address,
 		registered_phone,opne_bank,bank_number,stick_nanme,stick_phone,stick_address,order_id
 		,invoice_style,invoice_state,invoice_head,c_time
-		) values(#{userId},#{companyName},#{taxpayerNum},#{registeredAddress},
+		)
+		values(#{userId},#{companyName},#{taxpayerNum},#{registeredAddress},
 		#{registeredPhone},#{opneBank},#{bankNumber},#{stickNanme},
 		#{stickPhone},#{stickaddress},#{orderId},#{invoiceStyle},#{InvoiceState},#{invoiceHead},now()
 		)
 	</insert>
-	
+
 	<select id="queryLastInvoice" resultType="com.yayiabc.http.mvc.pojo.jpa.Invoice">
-	    select * from invoice where user_id=#{userId} ORDER BY c_time DESC
+		select * from invoice
+		where user_id=#{userId} ORDER BY c_time DESC
 	</select>
+	<!--双休期间的优化工作 -->
+	<select id="queryAttributesList" parameterType="java.util.List"
+		resultType="com.yayiabc.http.mvc.pojo.jpa.ItemValue">
+		SELECT
+		*
+		from item_value
+		WHERE item_sKU in
+		<foreach collection="list" item="item" open="(" close=")"
+			separator=",">
+			#{item.itemSKU}
+		</foreach>
+	</select>
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.OrderItem" id="queryOrderA">
+		<result property="itemName" column="item_name" />
+		<result property="itemType" column="item_sort" />
+		<result property="itemBrandName" column="item_brand_name" />
+		<result property="picPath" column="item_pica" />
+	</resultMap>
+	<select id="queryItemIdListByitemValueList" parameterType="java.util.List"
+		resultMap="queryOrderA">
+		SELECT ii.item_name,ii.item_sort,ii.item_id
+		itemid,ib.item_brand_name,id.item_pica
+		FROM
+		item_info ii JOIN
+		item_brand
+		ib ON ii.item_brand_id=ib.item_brand_id join
+		item_detail id on
+		ii.item_id=id.item_id
+		WHERE
+		ii.item_id in
+		<foreach collection="list" item="item" open="(" close=")"
+			separator=",">
+			#{item.itemId}
+		</foreach>
+	</select>
+
+	<insert id="batchSynchronization" parameterType="java.util.List">
+		insert into order_item
+		(itm_SKU,item_id,order_id,num,price,item_property_namea
+		,item_property_nameb,item_property_namec,created,item_name,pic_path,item_type,
+		item_brand_name
+		)values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.itemSKU},
+			#{item.itemId},#{item.orderId},#{item.num}, #{item.price},
+			#{item.itemPropertyNamea},#{item.itemPropertyNameb},#{item.itemPropertyNamec}
+			,now(),#{item.itemName},#{item.picPath},#{item.itemType},#{item.itemBrandName}
+			)
+		</foreach>
+	</insert>
+	<delete id="cleanCartList" parameterType="java.util.List">
+		 delete from cart where user_id=#{userId} and item_SKU in
+        <foreach item="item" collection="orderItemLists" open="(" separator="," close=")">
+            #{item.itemSKU}
+        </foreach>
+	</delete>
 </mapper>

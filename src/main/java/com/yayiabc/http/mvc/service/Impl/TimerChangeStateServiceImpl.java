@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.service.Impl;
 
 import java.util.List;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -13,8 +14,6 @@ import com.yayiabc.http.mvc.service.TimerChangeStateService;
 public class TimerChangeStateServiceImpl implements TimerChangeStateService{
 	@Autowired
 	private TimerChangeStateDao timerChangeStateDao;
-	@Autowired
-	private PlaceOrderDao placeOrderDao;
 	@Override
 	public int timerQueryState(String key) {
 		// TODO Auto-generated method stub
@@ -34,9 +33,24 @@ public class TimerChangeStateServiceImpl implements TimerChangeStateService{
 	}
 	 //还给库存表
 	@Override
-	public void stillItemValueNum(String itemSKU, Integer num) {
+	public int stillItemValueNum(@Param("orderItemList")List<OrderItem> orderItemList) {
 		// TODO Auto-generated method stub
-		int NUM=placeOrderDao.queryItemInventNum(itemSKU);
-		timerChangeStateDao.stillItemValueNum(itemSKU,String.valueOf(num+NUM));
+		//int NUM=placeOrderDao.queryItemInventNum(itemSKU);
+		return timerChangeStateDao.stillItemValueNum(orderItemList);
+	}
+	@Override
+	public int closeOrder(List<String> temporaryList) {
+		// TODO Auto-generated method stub
+		return timerChangeStateDao.closeOrder(temporaryList);
+	}
+	@Override
+	public List<OrderItem> queryOrderItemNums(List<String> temporaryList) {
+		// TODO Auto-generated method stub
+		return timerChangeStateDao.queryOrderItemNums(temporaryList);
+	}
+	@Override
+	public int stillItemsListValueNum(List<OrderItem> orderItemNums) {
+		// TODO Auto-generated method stub
+		return timerChangeStateDao.stillItemsListValueNum(orderItemNums);
 	}
 }

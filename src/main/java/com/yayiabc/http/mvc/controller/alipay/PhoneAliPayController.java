@@ -170,7 +170,7 @@ public class PhoneAliPayController {
 								//如果有做过处理，不执行商户的业务程序
 							if(2!=state){
 								PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-								payAfterOrderUtil.universal(out_trade_no);
+								payAfterOrderUtil.universal(out_trade_no,"0");
 								((PrintStream) out).println("success");
 							}
 							//注意：
@@ -183,7 +183,7 @@ public class PhoneAliPayController {
 								//如果有做过处理，不执行商户的业务程序
 							if(2!=state){
 								PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-								payAfterOrderUtil.universal(out_trade_no);
+								payAfterOrderUtil.universal(out_trade_no,"0");
 								((PrintStream) out).println("success");
 							}
 							//注意：

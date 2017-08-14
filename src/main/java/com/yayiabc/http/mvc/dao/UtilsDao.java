@@ -1,5 +1,7 @@
 package com.yayiabc.http.mvc.dao;
 
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
@@ -62,6 +64,9 @@ public interface UtilsDao {
 	User queryUserByPhone(@Param("phone")String phone);
 
 	SaleInfo getSaleByPhone(@Param("phone")String phone);
+
+	//查询现在订单表放入map中
+	List<Ordera> queryNowOrder();
 	
 
 }

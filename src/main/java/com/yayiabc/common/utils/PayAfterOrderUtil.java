@@ -1,10 +1,13 @@
 package com.yayiabc.common.utils;
 
+import java.util.Date;
 import java.util.List;
+import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
+import com.yayiabc.common.cahce.CacheUtils;
 import com.yayiabc.http.mvc.dao.AliPayDao;
 import com.yayiabc.http.mvc.dao.OrderManagementDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
@@ -32,6 +35,10 @@ public class PayAfterOrderUtil {
 		int ax=aliPayDao.updateStateAndPayTime(orderId);
 		if(ax>0){
 			System.out.println("更改成功");
+			//清楚缓存中的
+			CacheUtils cache=	CacheUtils.getInstance();
+			Map<String,Date> map=cache.getCacheMap();
+			map.remove(orderId);
 		}
 		Ordera o=aliPayDao.queryOrder(orderId);
 		QbRecord q=new QbRecord();
@@ -46,7 +53,9 @@ public class PayAfterOrderUtil {
 		int a=aliPayDao.updateQb(o.getQbDed(),o.getUserId());*/
 		//统计销量
 		List<OrderItem> orderItemList=orderManagementDao.queryOrderItemList(orderId);
-		for(int i=0;i<orderItemList.size();i++){
+		//双休优化增加销量
+		int t=aliPayDao.addSalesList(orderItemList);
+	/*	for(int i=0;i<orderItemList.size();i++){
 			//增加销量
 			try {
 				aliPayDao.addSales(orderItemList.get(i).getItemId(),
@@ -55,7 +64,7 @@ public class PayAfterOrderUtil {
 			} catch (Exception e) {
 			   throw new RuntimeException(e);
 			}
-		}
+		}*/
 		if(SetSaleInCome(orderId)){
 			System.out.println("一切执行完毕");
 		}

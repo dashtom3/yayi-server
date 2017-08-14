@@ -122,4 +122,11 @@
 	<select id="getSaleByPhone" resultType="com.yayiabc.http.mvc.pojo.jpa.SaleInfo">
 	 select * from sale_info where phone =#{phone}
 	</select>
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.Ordera" id="asdf">
+	 <id column="order_id" property="orderId"/>
+	 <result column="created" property="created"/>
+	</resultMap>
+	<select id="queryNowOrder" resultMap="asdf">
+	 select order_id,created from ordera  where state=1
+	</select>
 </mapper>       

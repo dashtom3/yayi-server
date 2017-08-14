@@ -24,7 +24,8 @@ public enum ErrorCodeEnum implements Serializable {
     RE_LOGIN_ADMIN("请重新登录",17),
     ITEM_LEAVE("该分类下有商品,不能删除",13),
     NO_POWER("已成为销售员,不能再注册成为客户",14),
-    NO_Auth("已成为客户,不能再注册成为销售员",15);
+    NO_Auth("已成为客户,不能再注册成为销售员",15),
+    PROPERTY_ALREADY_EXIST("该属性名已经存在,请不要重复添加",15);
 
     private String label;
     private Integer code;

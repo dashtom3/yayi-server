@@ -315,7 +315,7 @@ public class ItemManageServiceImpl implements ItemManageService{
 			String msg=dataWrapper.getErrorCode().getLabel();
 			dataWrapper.setMsg(msg);
 		}else{
-			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+			dataWrapper.setErrorCode(ErrorCodeEnum.PROPERTY_ALREADY_EXIST);
 			String msg=dataWrapper.getErrorCode().getLabel();
 			dataWrapper.setMsg(msg);
 		}

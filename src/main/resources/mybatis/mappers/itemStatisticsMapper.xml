@@ -29,6 +29,8 @@
 		ON ii.item_id=iv.item_id
 		LEFT JOIN item_brand ib
 		ON ii.item_brand_id=ib.item_brand_id 
+        LEFT JOIN order_item oi 
+		ON iv.item_sKU=oi.itm_SKU
 		<where>
 			<if test="itemName !=null and itemName !=''">
 				ii.item_name LIKE '%${itemName}%'
@@ -42,6 +44,12 @@
 			<if test="itemBrandName !=null and itemBrandName !=''">
 				AND ib.item_brand_name LIKE '%${itemBrandName}%'
 			</if>
+			<if test="startDate !=null and startDate !=''">
+				AND DATE_FORMAT(oi.created,'%Y-%m-%d') <![CDATA[  >=  ]]>#{startDate}
+			</if>
+			<if test="endDate != null and endDate !=''">
+				AND DATE_FORMAT(oi.created,'%Y-%m-%d') <![CDATA[  <=  ]]>#{endDate}
+			</if>	
 		</where>
 		GROUP BY iv.item_sKU
 		<if test="state == 0">
@@ -53,17 +61,25 @@
 		<if test="state ==2">
 			ORDER BY ii.refund_num DESC
 		</if>
+		<if test="state ==3">
+			ORDER BY salesMoney DESC
+		</if>
         LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
 	
 	<select id="getCount" resultType="int">
 		SELECT count(0) FROM (
-			SELECT count(0)
+			SELECT 
+			ii.item_id,
+			iv.item_sKU,
+			ii.item_price*ii.sales AS salesMoney 
 			FROM item_info ii
 			LEFT JOIN item_value iv
 			ON ii.item_id=iv.item_id
 			LEFT JOIN item_brand ib
 			ON ii.item_brand_id=ib.item_brand_id 
+        	LEFT JOIN order_item oi 
+			ON iv.item_sKU=oi.itm_SKU
 			<where>
 				<if test="itemName !=null and itemName !=''">
 					ii.item_name LIKE '%${itemName}%'
@@ -77,8 +93,26 @@
 				<if test="itemBrandName !=null and itemBrandName !=''">
 					AND ib.item_brand_name LIKE '%${itemBrandName}%'
 				</if>
+				<if test="startDate !=null and startDate !=''">
+					AND DATE_FORMAT(oi.created,'%Y-%m-%d') <![CDATA[  >=  ]]>#{startDate}
+				</if>
+				<if test="endDate != null and endDate !=''">
+					AND DATE_FORMAT(oi.created,'%Y-%m-%d') <![CDATA[  <=  ]]>#{endDate}
+				</if>	
 			</where>
 			GROUP BY iv.item_sKU
+			<if test="state == 0">
+				ORDER BY ii.created DESC 
+			</if>
+			<if test="state == 1">
+				ORDER BY ii.sales DESC
+			</if>
+			<if test="state ==2">
+				ORDER BY ii.refund_num DESC
+			</if>
+			<if test="state ==3">
+				ORDER BY salesMoney DESC
+			</if>
 			) AS a
 	</select>
 </mapper>

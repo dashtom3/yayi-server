@@ -35,11 +35,13 @@ public class ItemStatisticsController {
 			@RequestParam(value="itemId",required=false)String itemId,
 			@RequestParam(value="itemSKU",required=false)String itemSKU,
 			@RequestParam(value="itemBrandName",required=false)String itemBrandName,
+			@RequestParam(value="startDate",required=false)String startDate,
+			@RequestParam(value="endDate",required=false)String endDate,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
     		@RequestParam(value="state",required=false,defaultValue="0") Integer state,
     		@RequestHeader(value="adminToken",required=true)String adminToken
 	){
-		return itemStatisticsService.query(itemName, itemId, itemSKU, itemBrandName, currentPage, numberPerPage, state);	
+		return itemStatisticsService.query(itemName, itemId, itemSKU, itemBrandName, startDate, endDate, currentPage, numberPerPage, state);
 	}
 }

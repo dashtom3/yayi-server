@@ -38,6 +38,12 @@ public interface BenefitChangeDao {
 
 	int getBenefitCodeCount(@Param("benefitCode")String benefitCode);
 
+	List<String> queryValidateCode(@Param("benefitId")Integer benefitId);
+
+	void deleteBenefitDetailByBenefitId(@Param("benefitId")Integer benefitId);
+
+	void deleteBenefitByBenefitId(@Param("benefitId")Integer benefitId);
+
 	
 
 	

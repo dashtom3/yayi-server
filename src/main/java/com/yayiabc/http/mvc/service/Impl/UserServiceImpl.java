@@ -75,23 +75,30 @@ public class UserServiceImpl implements UserService {
                 newUser.setUserId(UUID.randomUUID().toString());
                 newUser.setPhone(phone);
                 newUser.setPwd(MD5Util.getMD5String(password));
-                if (1 == userDao.register(newUser)) {
-                    //绉婚櫎楠岃瘉鐮�
-                    VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
-                    String token = getToken(newUser.getUserId());
-                    QbRecord qbRecord=new QbRecord();
-                    qbRecord.setQbRget(60);
-                    qbRecord.setRemark("注册送60乾币");
-                    userMyQbService.add(qbRecord, token);
-                    dataWrapper.setToken(token);
-                    dataWrapper.setData(newUser);
-                    dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+                Integer count=userDao.getSaleCount(phone);
+                if(count==0){
+                	if (1 == userDao.register(newUser)) {
+	                    //绉婚櫎楠岃瘉鐮�
+	                    VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
+	                    String token = getToken(newUser.getUserId());
+	                    QbRecord qbRecord=new QbRecord();
+	                    qbRecord.setQbRget(60);
+	                    qbRecord.setRemark("注册送60乾币");
+	                    userMyQbService.add(qbRecord, token);
+	                    dataWrapper.setToken(token);
+	                    dataWrapper.setData(newUser);
+	                    dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+	                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                     if (openid != null) wxAppDao.addUser(newUser.getUserId(),openid);
-                } else {
-                    dataWrapper.setErrorCode(ErrorCodeEnum.Register_Error);
-                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+	                } else {
+	                    dataWrapper.setErrorCode(ErrorCodeEnum.Register_Error);
+	                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+	                }
+                }else{
+                	dataWrapper.setErrorCode(ErrorCodeEnum.NO_POWER);
+                	dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 }
+               
             } else {
                 System.out.println("code:" + code);
                 System.out.println("VerifyCode:" + VerifyCodeManager.getPhoneCode(phone));

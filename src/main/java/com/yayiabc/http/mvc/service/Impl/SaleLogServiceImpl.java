@@ -66,18 +66,23 @@ public class SaleLogServiceImpl implements SaleLogService {
                 saleInfoTwo.setSalePwd(MD5Util.getMD5String(password));
                 saleInfoTwo.setUpdated(new Date());
                 saleInfoTwo.setCreated(new Date());
-
-                if (1 == saleLogDao.register(saleInfoTwo)) {
-                    VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
-                    String token = getToken(saleInfoTwo.getSaleId());
-                    if (openid != null) wxAppDao.addSaleUser(saleInfoTwo.getSaleId(), openid);
-                    dataWrapper.setToken(token);
-                    dataWrapper.setData(saleInfoTwo);
-                    dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-                } else {
-                    dataWrapper.setErrorCode(ErrorCodeEnum.Register_Error);
-                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+                Integer count=saleLogDao.getUserCount(phone);
+                if(count==0){
+                	if (1 == saleLogDao.register(saleInfoTwo)) {
+	                    VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
+	                    String token = getToken(saleInfoTwo.getSaleId());
+	                    if (openid != null) wxAppDao.addSaleUser(saleInfoTwo.getSaleId(), openid);
+	                    dataWrapper.setToken(token);
+	                    dataWrapper.setData(saleInfoTwo);
+	                    dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+	                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+	                	} else {
+	                    dataWrapper.setErrorCode(ErrorCodeEnum.Register_Error);
+	                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+                	}
+                }else{
+                	dataWrapper.setErrorCode(ErrorCodeEnum.NO_Auth);
+                	dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 }
             } else {
                 System.out.println("code:" + code);

@@ -49,7 +49,7 @@ public class SaleTokenValidateAspect {
 			}
 		}else {
 			DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-			dataWrapper.setErrorCode(ErrorCodeEnum.RE_LOGIN);
+			dataWrapper.setErrorCode(ErrorCodeEnum.RE_LOGIN_SALE);
 			dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
 			result=dataWrapper;
 		}

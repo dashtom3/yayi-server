@@ -92,4 +92,16 @@ public class BenefitChangeController {
 			){
 		return benefitChangeService.downLoad(benefitId,response);
 	}
+	
+	//删除优惠码
+	@RequestMapping("delete")
+	@ResponseBody
+	@AdminTokenValidate
+	public DataWrapper<Void> delete(
+			@RequestHeader(value="adminToken",required=true) String adminToken,
+			@RequestParam(value="benefitId",required=true) Integer benefitId
+			){
+		
+		return benefitChangeService.delete(benefitId);
+	}
 }

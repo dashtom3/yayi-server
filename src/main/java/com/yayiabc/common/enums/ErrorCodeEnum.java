@@ -20,7 +20,11 @@ public enum ErrorCodeEnum implements Serializable {
     Limitation_error("无操作权限",10),
     NO_MESSAGE("没有查找到商品",11),
     RE_LOGIN("请重新登录",12),
-    ITEM_LEAVE("该分类下有商品,不能删除",13);
+    RE_LOGIN_SALE("请重新登录",16),
+    RE_LOGIN_ADMIN("请重新登录",17),
+    ITEM_LEAVE("该分类下有商品,不能删除",13),
+    NO_POWER("已成为销售员,不能再注册成为客户",14),
+    NO_Auth("已成为客户,不能再注册成为销售员",15);
 
     private String label;
     private Integer code;

@@ -48,7 +48,7 @@ public class AdminTokenValidateAspect {
 		
 		}else {
 			DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-			dataWrapper.setErrorCode(ErrorCodeEnum.RE_LOGIN);
+			dataWrapper.setErrorCode(ErrorCodeEnum.RE_LOGIN_ADMIN);
 			dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
 			result=dataWrapper;
 		}

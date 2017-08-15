@@ -86,5 +86,6 @@ public interface OrderManagementDao {
 	Ordera showRefundOrderMessage(@Param("orderId")String orderId);
 
 	Invoice queryOrderInvoice(@Param("orderId")String orderId);
-	
+    int	stillItemsListValueNums(List<OrderItem> orderItemList);
+    int addSalesLists(List<OrderItem> orderItemList);
 }

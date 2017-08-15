@@ -107,7 +107,6 @@ public class OrderManagementController {
 		   ){
 	   JSONArray json = JSONArray.fromObject(orderItem);
 		ArrayList<OrderItem> orderItemList = (ArrayList<OrderItem>)JSONArray.toCollection(json,OrderItem.class);
-		System.out.println(orderItemList);
 	   return  orderManagementService.makeRefundData(orderItemList);
    }
    //模拟失去焦点事件

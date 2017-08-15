@@ -44,7 +44,6 @@ public class AdvChart {
 	}
 	public AdvChart() {
 		super();
-		System.out.println("打印了");
 		// TODO Auto-generated constructor stub
 	}
 	

@@ -41,22 +41,18 @@ public class AlipayNotify {
         //isSign不是true，与安全校验码、请求时的参数格式（如：带自定义参数等）、编码格式有关
     	//遍历  这个map
     	for(String key:params.keySet()){
-    		System.out.println(key+": "+params.get(key));
-    		System.out.println("---------------------");
     	}
     	String responseTxt = "false";
 		if(params.get("notify_id") != null) {
 			String notify_id = params.get("notify_id");
 			//responseTxt    
 			responseTxt = verifyResponse(notify_id);
-			System.out.println("responseTxt  "+ responseTxt);
 		}
 	    String sign = "";
 	    if(params.get("sign") != null) 
 	    {
 	    	sign = params.get("sign");
 	    }
-	    System.out.println(sign);
 	    boolean isSign = getSignVeryfy(params, sign);
 
         //写日志记录（若要调试，请取消下面两行注释）
@@ -82,12 +78,10 @@ public class AlipayNotify {
         //获取待签名字符串
         String preSignStr = AlipayCore.createLinkString(sParaNew);
         //获得签名验证结果
-        System.out.println("preSignStr :"+preSignStr);
         boolean isSign = false;
         if(AlipayConfig.sign_type.equals("MD5") ) {
         	isSign = MD5.verify(preSignStr, sign, AlipayConfig.key, AlipayConfig.input_charset);
         }
-        System.out.println("isSign: "+isSign);
         return isSign;
     }
 

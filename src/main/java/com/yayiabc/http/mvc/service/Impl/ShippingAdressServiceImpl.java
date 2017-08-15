@@ -45,7 +45,6 @@ public class ShippingAdressServiceImpl implements ShippingAddressService{
 		HashMap<String, Receiver> hMap= new HashMap<String,Receiver>();
 		String userId=utilsDao.getUserID(token);
 		receiver.setUserId(userId);
-		System.out.println(receiver);
 		hMap.put("receiver",receiver );
 		int sign=shippingAddressDao.updateUserAddress(hMap);
 		if(sign>0){

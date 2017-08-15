@@ -14,13 +14,15 @@ public interface FindCusDao {
 
 	List<User> showMyCus(String saleId);
 
-	List<CusResources> shows(@Param("state")String state, @Param("currentPage")Integer currentPage, @Param("numberPerPage")Integer numberPerPage);
+	List<CusResources> shows(@Param("state")String state, @Param("currentNum")Integer currentPage, @Param("numberPerpage")Integer numberPerPage);
 
 	
 	//查询总条数
-	int queryCount();
+	Integer queryCount(@Param("state")String state);
     
 	
-	//注册 未绑定
-	List<User> showsss(@Param("state")String state, @Param("currentPage")Integer currentPage, @Param("numberPerPage")Integer numberPerPage);
+	//注册 未绑定currentNum,numberPerpage
+	List<User> showsss(@Param("state")String state, @Param("currentNum")Integer currentPage, @Param("numberPerpage")Integer numberPerPage);
+
+	Integer queryCounts(@Param("state")String state);
 }

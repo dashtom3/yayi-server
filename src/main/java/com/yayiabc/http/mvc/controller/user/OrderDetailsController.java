@@ -157,9 +157,7 @@ public class OrderDetailsController {
     		  @RequestParam(value="data",required=true) String data*/
 			){
 		JSONArray json = JSONArray.fromObject(itemIdList);
-		System.out.println(token);
 		ArrayList<itemIdList> itemIdListy = (ArrayList<itemIdList>)JSONArray.toCollection(json,itemIdList.class);
-		System.out.println(itemIdListy);
 		return orderDetailsService.makeSureCom(token,orderId,itemIdListy);
 	}
 	/*@UserTokenValidate*/

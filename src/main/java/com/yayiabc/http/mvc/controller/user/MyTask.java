@@ -27,9 +27,8 @@ public class MyTask /*extends TimerTask*/{
 				while(it.hasNext()){
 					Map.Entry<String, Date> entry = it.next();
 					
-					if(new Date().getTime()-entry.getValue().getTime()>=3*60*1000
+					if(new Date().getTime()-entry.getValue().getTime()>=30*60*1000
 							){
-						System.out.println("该订单已经关闭1:"+entry.getKey());
 						//查看该单state  状态 
 						//System.err.println();9421c01f-d987-46dd-bcd8-9de8d2b63fd9
                         
@@ -81,7 +80,6 @@ public class MyTask /*extends TimerTask*/{
 			
 			List<OrderItem> OrderItemNums=timerChangeStateService.queryOrderItemNums(temporaryList);
 			temporaryList.clear();
-			System.out.println(OrderItemNums);
 			int q=timerChangeStateService.stillItemsListValueNum(OrderItemNums);
 		  }
 	    }

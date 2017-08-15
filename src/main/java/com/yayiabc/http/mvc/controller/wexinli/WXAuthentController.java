@@ -68,16 +68,13 @@ public class WXAuthentController{
             // 获取网页授权access_token
             WeixinOauth2Token weixinOauth2Token = AdvancedUtil.getOauth2AccessToken(code,appid,secret);
             // 网页授权接口访问凭证
-            if(weixinOauth2Token!=null){
-            	System.out.println(weixinOauth2Token);
-            }
+           
             String accessToken = weixinOauth2Token.getAccessToken();
             // 用户标识
             String openId = weixinOauth2Token.getOpenId();
             // 获取用户信息
              snsUserInfo = AdvancedUtil.getSNSUserInfo(accessToken, openId);
             snsUserInfo.setOpenId(openId);
-            System.out.println(snsUserInfo);
          //根据 openId 判断 该用户 是否绑定过
               wXUserLink=wxAppDao.queryIsBD(openId);
             StringBuffer sb=new StringBuffer();
@@ -98,7 +95,6 @@ public class WXAuthentController{
             		if(user.getSaleId()!=null){
             			 SaleInfo saleInfo=wxAppDao.querySale(user.getSaleId());
             			 user.setSaleinfo(saleInfo);
-            			 System.out.println("user  suer suer usreuser"+user);
             			 dataWrapper.setMsg("该用户的信息");
             		}else{
             			//未绑定销售员

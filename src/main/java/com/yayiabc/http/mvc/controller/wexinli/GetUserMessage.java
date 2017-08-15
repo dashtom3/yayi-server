@@ -1,4 +1,4 @@
-package com.yayiabc.http.mvc.controller.wexinli;
+/*package com.yayiabc.http.mvc.controller.wexinli;
 
 import java.util.List;
 
@@ -6,13 +6,13 @@ import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
 
 public class GetUserMessage {
-	/**
+	*//**
      * 通过网页授权获取用户信息
      * 
      * @param accessToken 网页授权接口调用凭证
      * @param openId 用户标识
      * @return SNSUserInfo
-     */
+     *//*
     @SuppressWarnings( { "deprecation", "unchecked" })
     public static SNSUserInfo getSNSUserInfo(String accessToken, String openId) {
         SNSUserInfo snsUserInfo = null;
@@ -51,3 +51,4 @@ public class GetUserMessage {
         return snsUserInfo;
     }
 }
+*/

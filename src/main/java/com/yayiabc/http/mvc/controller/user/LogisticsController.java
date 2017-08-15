@@ -61,7 +61,6 @@ public class LogisticsController {
 				}
 			}
 		}
-		System.out.println("回调成功");
 		SimpleDateFormat formatter = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 		if(sign>0){
 			return "{\"EBusinessId\":\"1292696\",\"UpdateTime\":\""+formatter.format(new Date())+"\",\"Success\":true,\"Reason\":\"\"}";

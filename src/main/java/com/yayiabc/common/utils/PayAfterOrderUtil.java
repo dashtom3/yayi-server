@@ -34,7 +34,6 @@ public class PayAfterOrderUtil {
 		//更改订单状态与付款时间
 		int ax=aliPayDao.updateStateAndPayTime(orderId);
 		if(ax>0){
-			System.out.println("更改成功");
 			//清楚缓存中的
 			CacheUtils cache=	CacheUtils.getInstance();
 			Map<String,Date> map=cache.getCacheMap();

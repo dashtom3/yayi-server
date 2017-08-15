@@ -38,7 +38,6 @@ public class MyWalletServiceImpl implements MyWalletService{
 			page.setCurrentPage(1);
 		}
 		String saleId=utilsDao.getSaleId(token);
-		System.out.println(saleId);
 		hm.put("saleId", saleId);
 		//总条数
 				int count=myWalletDao.queryCount(hm);
@@ -58,16 +57,11 @@ public class MyWalletServiceImpl implements MyWalletService{
 		}
 
 	  if(!blist.isEmpty()){
-			System.out.println(blist);
 			Double jzze=0.0;
 			Double czze=0.0;
 		    //计算出该销售员的收入支出总额
 			
 			List<Balance> totalList=myWalletDao.getTotal(hm);
-			 for(String key :hm.keySet()){
-				 System.out.println(key+"  " +hm.get(key));
-			 }
-			 System.err.println("totalList   "+totalList);
 			for(int x=0;x<totalList.size();x++){
 				if(!totalList.get(x).getDescribey().contains("中")){
 					if(totalList.get(x).getBalanceIn()!=null){
@@ -91,7 +85,6 @@ public class MyWalletServiceImpl implements MyWalletService{
 		// TODO Auto-generated method stub
 		DataWrapper<Balance> dataWrapper=new DataWrapper<Balance>();
 		Balance balance=myWalletDao.details(balanceId);
-		System.err.println(balance);
 		Double haoCaiIncome=0.0;
 		Double gongJuIncome=0.0;
 		if(balance!=null){

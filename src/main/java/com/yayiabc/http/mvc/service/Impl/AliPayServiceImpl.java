@@ -66,7 +66,6 @@ public class AliPayServiceImpl implements AliPayService{
 			//建立请求
 			String sHtmlText = AlipaySubmit.buildRequest(sParaTemp,"get","确认");
 			//out.println(sHtmlText);
-			System.out.println(sHtmlText);
 			return sHtmlText;
 		} catch (Exception e) {
 			// TODO Auto-generated catch block
@@ -99,7 +98,6 @@ public class AliPayServiceImpl implements AliPayService{
 			boolean verify_result = AlipayNotify.verify(params);
 
 			if(verify_result){//验证成功
-				System.out.println("验证成功");
 				//请在这里加上商户的业务逻辑程序代码  明天写
 
 				//——请根据您的业务逻辑来编写程序（以下代码仅作参考）——

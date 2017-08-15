@@ -26,19 +26,14 @@ public class FindCusServiceImpl implements FindCusService {
 		
 		DataWrapper<List<User>> dataWrapper=new DataWrapper<List<User>>();
 		Page page=new Page();
-		if(currentPage!=null&numberPerPage!=null){
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		}else{
-			page.setNumberPerPage(10);
-			page.setCurrentPage(1);
-		}
 		//总条数
-		int count=findDao.queryCount();
-		System.out.println("总条数:"+count);
-		System.out.println(page);
+		Integer count=findDao.queryCounts(state);
+		Integer numberPerpage=page.getNumberPerPage();
+		Integer currentNum=page.getCurrentNumber();
 		dataWrapper.setPage(page,count);
-		dataWrapper.setData(findDao.showsss(state,currentPage,numberPerPage));
+		dataWrapper.setData(findDao.showsss(state,currentNum,numberPerpage));
 		return dataWrapper;
 	}
 	@Override
@@ -55,20 +50,15 @@ public class FindCusServiceImpl implements FindCusService {
 	public DataWrapper<List<CusResources>> shows(String state,Integer currentPage,Integer numberPerPage){
 		DataWrapper<List<CusResources>> dataWrapper=new DataWrapper<List<CusResources>>();
 		Page page=new Page();
-		if(currentPage!=null&numberPerPage!=null){
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		}else{
-			page.setNumberPerPage(10);
-			page.setCurrentPage(1);
-		}
 		//总条数
-		int count=findDao.queryCount();
-		System.out.println("总条数:"+count);
-		System.out.println(page);
+		Integer count=findDao.queryCount(state);
+		Integer numberPerpage=page.getNumberPerPage();
+		Integer currentNum=page.getCurrentNumber();
 		dataWrapper.setPage(page,count);
 		
-		dataWrapper.setData(findDao.shows(state,currentPage,numberPerPage));
+		dataWrapper.setData(findDao.shows(state,currentNum,numberPerpage));
 		return dataWrapper;
 	}
 }

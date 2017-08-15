@@ -41,15 +41,16 @@
 	  unit_name like'%${state}%' or unit_address like '%${state}%' or contacts_phone like '%${state}%'
 	  </if>
 	  </where>
-	  
+	   limit #{currentNum} ,#{numberPerpage}
 	</select>
 	
-	<select id="queryCount" resultType="int">
-	  select  count(1) from  cus_resources where 
-	  
-	  unit_name like '%${state}%' or unit_address like '%${state}%' or contacts_phone like '%${state}%'
-	  
-	  
+	<select id="queryCount" resultType="java.lang.Integer">
+	  select  count(0) from  cus_resources
+	 <where>
+	  <if test=" state !=null and state!='' ">
+	   unit_name like '%${state}%' or unit_address like '%${state}%' or contacts_phone like '%${state}%'
+	  </if>
+	  </where>
 	</select>
 	<select id="showsss" resultMap="c">
  	SELECT cert.user_id u_id,us.user_id,cert.company_name,cert.part,cert.work_address,us.phone,us.true_name  FROM USER us LEFT JOIN certification cert ON us.user_id=cert.user_id 
@@ -60,8 +61,20 @@
 	  </if>
 	 us.sale_id is null
 	 </where> 
+	 limit #{currentNum} ,#{numberPerpage}
 	 <!--  true_name ='%${state}%' and sale_id is null  or phone='%${state}%' and sale_id is null -->
 	  <!-- SELECT  cert.user_id u_id,us.user_id,cert.company_name,cert.part,cert.work_address,us.phone,us.true_name  FROM USER us LEFT JOIN certification cert ON us.user_id=cert.user_id 
 	  WHERE  us.sale_id IS NULL -->
+	</select>
+	
+	<select id="queryCounts" resultType="int">
+	   	SELECT count(1) FROM USER us LEFT JOIN certification cert ON us.user_id=cert.user_id 
+	 <where>
+	  <if test="state!=null and state!=''">
+	  us.true_name like '%${state}%' and us.sale_id is null  or us.phone like '%${state}%' and us.sale_id is null or  cert.company_name like '%${state}%'
+	  and us.sale_id is null and  
+	  </if>
+	 us.sale_id is null
+	 </where> 
 	</select>
 </mapper>       

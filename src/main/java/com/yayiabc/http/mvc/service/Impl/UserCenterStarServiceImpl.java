@@ -38,13 +38,10 @@ public class UserCenterStarServiceImpl  implements UserCenterStarService{
 		}
 		//总条数
 		int count=usercenterstardao.queryCount("item_star");
-		System.out.println("总条数:"+count);
-		System.out.println(page);
 		dataWrapper.setPage(page,count);
 	
 		//String userId=userDao.getUserId(phone);
 		String userId=utilsDao.getUserID(token);
-		System.out.println(userId);
 		List<MyStar> itemStarList=usercenterstardao.shows(userId,page);
 		dataWrapper.setData(itemStarList);
 		if(itemStarList.isEmpty()){

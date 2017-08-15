@@ -46,13 +46,9 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		List<FreeShipping> list=placeOrderDao.queryPostFree();
 		if(!list.isEmpty())
 		{
-			System.out.println(receiver);
-			System.out.println(sumPrice);
-			System.out.println(itemSum);
 			for(int i=0;i<list.size();i++){
 
 				String[] citys=list.get(i).getPostCity().split(",");
-				System.out.println("检查是否是否包邮:"+Arrays.toString(citys));
 				int money=list.get(i).getFreeShippingMoney();
 				if(Province==null){
 					String city=receiver.getCity();
@@ -84,7 +80,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		if(!lists.isEmpty()){
 			for(int i=0;i<lists.size();i++){
 				String[] citys=lists.get(i).getPostCity().split(",");
-				System.out.println("自定义邮费:城市"+Arrays.toString(citys));
 				if(Province==null){
 					String cityString=receiver.getCity();
 					for(int x=0;x<citys.length;x++){
@@ -167,7 +162,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		String userId=null;
 		try {
 			 userId=utilsDao.getUserID(token);
-			System.out.println(userId);
 			//obtain orderId 
 			String orderId=OrderIdUtils.createOrderId(userId);
 			//将订单信息保存在订单里 你如是否需要发表  留言等。。2[=。 
@@ -209,11 +203,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			List<ItemValue> itemValueList=placeOrderDao.queryAttributesList(orderItemList);
 			//抽取for循环的第二步 根据 itemValueList里的 itemId 去数据库做批量查询 出ArrayList<orderItem>
 			List<OrderItem> orderItemListAttributes=placeOrderDao.queryItemIdListByitemValueList(itemValueList);
-			System.err.println(itemValueList.size()+" -- "+orderItemListAttributes.size()
-					);
-			System.out.println("itemValueList:"+itemValueList);
-			System.out.println("orderItemListAttributes:"+orderItemListAttributes);
-			System.err.println("-----------------------------------------------------------");
 			
 			for(int i=0;i<orderItemList.size();i++){
 				//query钱币赠送百分比
@@ -401,7 +390,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//判断 actualPay 是否是0付款
 			if(actualPay==0){
 				PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-				payAfterOrderUtil.universal(orderId,null);
+				payAfterOrderUtil.universal(orderId,"3");
 			}
 			dataWrapper.setData(hashMap);
 			return dataWrapper;

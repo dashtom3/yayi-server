@@ -26,7 +26,7 @@ public class testTimer  implements InitializingBean{
 	public void init(){
 		
 		//Date d=new Date();
-		System.err.println("我这个时候被加载了：把ordera表中 的数据订单state=1的数据放到缓存中");
+		System.err.println("未付款订单加载到缓存中..................");
 		Map<String, Date> map=CacheUtils.getInstance().getCacheMap();
 		//查询数据库订单的state=1的数据
 		
@@ -40,7 +40,6 @@ public class testTimer  implements InitializingBean{
 				}
 			}
 		}
-		System.err.println(map);
 	}
 	@Override
 	public void afterPropertiesSet() throws Exception {

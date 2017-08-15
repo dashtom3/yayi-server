@@ -30,17 +30,12 @@ public class AdvancedUtil {
         WeixinOauth2Token wat = null;
         // 拼接请求地址
  
-       System.out.println("codecodecodecodecodecodecodecode:::::::::::::"+code);
       String requestUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
        requestUrl = requestUrl.replace("APPID", appid);
         requestUrl = requestUrl.replace("SECRET", secret);
         requestUrl = requestUrl.replace("CODE", code);
-        System.out.println(requestUrl);
         // 获取网页授权凭证
         Map<String, Object> response = HttpUtil.sendGet(requestUrl);
-        for(String key:response.keySet()){
-        	System.out.println("key:"+key +"  value:"+response.get(key));
-        }
         //JSONObject jsonObject = CommonUtil.httpsRequest(requestUrl, "GET", null);
         if (!response.isEmpty()) {
             try {

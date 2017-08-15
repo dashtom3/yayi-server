@@ -83,6 +83,7 @@ public class WxLoginServiceImpl implements WxLoginService {
 	                String token = getUserToken(userId);
 	                dataWrapper.setToken(token);
 	                wxAppDao.addUser(userId,openid);
+	                //把微信
             	}else {
                     dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());

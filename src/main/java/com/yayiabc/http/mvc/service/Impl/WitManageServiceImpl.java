@@ -28,12 +28,9 @@ public class WitManageServiceImpl implements WitManageService{
 			String saleToken,String balanceOut
 			){ 
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
-		System.out.println(saleToken);
 		String saleId=utilsDao.getSaleId(saleToken);
 		//根据saleId  得到该sale的钱包余额
-		System.out.println(saleId);
 		List<Double> saleNowMoney=witManageDao.queryMoney(saleId);
-		System.out.println(saleNowMoney);
 		
 	if(!saleNowMoney.isEmpty()){
 		int state=0;
@@ -63,11 +60,9 @@ public class WitManageServiceImpl implements WitManageService{
 	}
 	public String getVerifyCode(String phone) {
 		String code = VerifyCodeManager.getPhoneCode(phone);
-		System.out.println(code);
 		if (code == null) {
 			return code;
 		}
-		System.out.println(phone);
 		boolean result = HttpUtil.sendPhoneVerifyCode(code, phone);
 		if (result){
 			System.out.println(1);

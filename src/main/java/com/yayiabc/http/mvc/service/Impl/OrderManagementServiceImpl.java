@@ -60,11 +60,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		hMap.put("numberPerpage", page.getNumberPerPage());
 		Integer currentNum=page.getCurrentNumber();
 		hMap.put("currentNum", currentNum);
-		System.out.println(hMap.get("orderId"));
-		System.out.println(hMap.get("orderState"));
-		System.out.println(hMap);
 		List<OrderManagement> userOrderList=orderManagementDao.showOrder(hMap);
-		System.out.println(userOrderList);
 		if(userOrderList.isEmpty()){
 			dataWrapper.setMsg("暂无数据");
 			dataWrapper.setData(userOrderList);
@@ -107,9 +103,6 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		//根据订单id 查询出 当前订单的用户id 去钱币表 查看 该用户的钱币余额   queryUser
 		String userId=orderManagementDao.queryUser(OrederId);
 		//根据userId 查询用户余额
-		System.out.println(OrederId);
-		System.out.println(userId);
-		System.out.println(itemId);
 		Integer balance=orderManagementDao.userBalance(userId);
 		if(null==balance){
 			dataWrapper.setMsg("这个用户钱币null呀");
@@ -188,13 +181,13 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 					SendorderItemList.get(i).getRefunNum()
 					);
 		}
+		
 		//保存该订单的退款商品分类金额到 sale_income中 
 		String saleId=utilsDao.getSaleIdByOrderId(SendorderItemList.get(0).getOrderId());
 		/*placeOrderDao.saveRefundMessageToSaleIncome(
 				saleId,SendorderItemList.get(0).getOrderId(),
 				haoCaiRefundSumMoney,ToolRefundSumMoney
 				);*/
-		System.out.println("SendorderItemList123213213"+SendorderItemList);
 		refundSumPrice=haoCaiRefundSumMoney+ToolRefundSumMoney;
 		//这里根据订单id  计算该订单退款的sku  与      退款的数量 和  购买的数量 作比较
 		List<OrderItem> itemList=orderManagementDao.queryOrderItemList(SendorderItemList.get(0).getOrderId());
@@ -248,7 +241,6 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 				}
 			}
 		}
-		System.out.println("111111111ss"+itemList);
 		//退款后的赠送钱币数
 		Double refundAfterGiveQbNum=0.0;
 		//首先道邦品牌
@@ -274,21 +266,20 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			refundAfterGiveQbNum+=afterhaoCaiSumMoney*0.12;
 		}
 		//其他品牌 工具设配类
-		System.err.println(count);
 		if(count==1){
 			refundAfterGiveQbNum+=aftergongJuSumMoney*0.05;
 		}else if(count>=2){
 			refundAfterGiveQbNum+=aftergongJuSumMoney*0.10;
 		}
+		//退款还原库存   ++
+		int c=orderManagementDao.stillItemsListValueNums(SendorderItemList);
+		//还原销量   --
+		int t=orderManagementDao.addSalesLists(SendorderItemList);
 		count=0;
 		//扣除钱币数
-		System.out.println(order);
 		double dedQbNums=order.getGiveQb()-refundAfterGiveQbNum;
 		Integer dedQbNum=(int) Math.round(dedQbNums);
-		System.err.println(order.getGiveQb()+"  ----- "+refundAfterGiveQbNum);
 		//扣除该用户钱币
-		System.out.println(order);
-		System.out.println(order.getUserId());
 		/*int sign=orderManagementDao.dedQbNum(dedQbNum,order.getUserId());*/
 		
 			QbRecord q=new QbRecord();
@@ -298,7 +289,6 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			//放入钱币记录表
 			userMyQbService.add(q, token);
              		
-		System.out.println(haoCaiRefundSumMoney+"System.out.println(haoCaiRefundSumMoney);System.out.println(haoCaiRefundSumMoney);System.out.println(haoCaiRefundSumMoney);");
 		//退回钱币数
 		if(order.getActualPay()>refundSumPrice){
 			//退钱refundSumPrice

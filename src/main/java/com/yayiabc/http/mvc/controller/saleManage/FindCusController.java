@@ -28,9 +28,12 @@ public class FindCusController {
 	public DataWrapper<List<CusResources>>  unregistered(
 			@RequestHeader(value="saleToken",required=true)String saleToken,
 			@RequestParam(value="state",required=false)String state,
-			@RequestParam(value = "currentPage",required=false) Integer currentPage,//当前页
-  		  @RequestParam(value = "numberPerPage",required=false) Integer numberPerPage//取多少
+			@RequestParam(value = "currentPage",required=false,defaultValue="1") Integer currentPage,//当前页
+  		   @RequestParam(value = "numberPerPage",required=false,defaultValue="10") Integer numberPerPage//取多少
 			){
+		
+		
+		
 		return  findCusService.shows(state,currentPage,numberPerPage);
 	}
 	//已注册客户 待绑定
@@ -41,8 +44,8 @@ public class FindCusController {
 	public DataWrapper<List<User>>  registered(
 			@RequestHeader(value="saleToken",required=false)String saleToken,
 		@RequestParam(value="state",required=false)String state,
-		@RequestParam(value = "currentPage",required=false) Integer currentPage,//当前页
-		  @RequestParam(value = "numberPerPage",required=false) Integer numberPerPage//取多少
+		@RequestParam(value = "currentPage",required=false,defaultValue="1") Integer currentPage,//当前页
+		  @RequestParam(value = "numberPerPage",required=false,defaultValue="10") Integer numberPerPage//取多少
 			){
 		
 		return  findCusService.show(state,currentPage,numberPerPage);

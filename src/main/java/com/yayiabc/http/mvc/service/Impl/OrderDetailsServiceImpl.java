@@ -58,7 +58,6 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 	    int count=orderdetailsDao.queryCount(userId,map.get("state"));//totalnumber
 		dataWrapper.setPage(page, count);
 		dataWrapper.setData(orderDetailsList);
-		System.out.println(count);
 		if(orderDetailsList.isEmpty()){
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			dataWrapper.setMsg("暂订单为空");

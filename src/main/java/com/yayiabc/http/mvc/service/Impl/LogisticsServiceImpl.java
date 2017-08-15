@@ -20,7 +20,6 @@ public class LogisticsServiceImpl implements LogisticsService{
 		// TODO Auto-generated method stub
 		DataWrapper<String> dataWrapper=new DataWrapper<String>();
 		Ordera order=logisticsDao.queryLog(orderId);
-		System.out.println(order);
 		if(order!=null){
 			String s=null;
 			try {                                                 //快递公司编码                                 //快递单号

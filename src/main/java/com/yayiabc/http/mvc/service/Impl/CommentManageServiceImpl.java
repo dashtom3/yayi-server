@@ -32,7 +32,6 @@ public class CommentManageServiceImpl implements CommentManageService {
 		//总条数
 		Integer count=commentManageDao.queryCount(orderId,recoveryState);
 		dataWrapper.setPage(page,count);
-		System.out.println(dataWrapper);
 		Integer currentNumber=page.getCurrentNumber();
 		List<Comments> commentsList=commentManageDao.commentM(orderId, recoveryState, currentNumber, numberPerpage);
 		dataWrapper.setData(commentsList);

@@ -77,14 +77,12 @@ public class WitManageController {
 
 	public DataWrapper<String> getVerifyCode(String phone) {
 		String code = VerifyCodeManager.newPhoneCode(phone);
-		System.out.println(code);
 		DataWrapper<String>  dataWrapper=new DataWrapper<String>();
 		if (code == null) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			dataWrapper.setData(code);
 			return dataWrapper;
 		}
-		System.out.println(phone);
 		boolean result = HttpUtil.sendPhoneVerifyCode(code, phone);
 		if (result){
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);

@@ -36,7 +36,6 @@ public class ShippingAddressController {
 	      if(receiver.getIsDefault()==true){
 	    	  //根据token  查询出当前登录人user_ID
 	    	  Integer receiverId=shippingAddressService.addConditions(token);
-	    	  System.out.println(receiverId);
 	    	  if(receiverId==null||receiverId==0){
 	  	    	dataWrapper=shippingAddressService.addUserAdress(receiver,token);
 	  	    	return dataWrapper;
@@ -67,7 +66,6 @@ public class ShippingAddressController {
 		//request.setCharacterEncoding("UTF-8");
 		Integer receiverId=Integer.parseInt(receiverIds);
 		receiver.setReceiverId(receiverId);
-		System.out.println(receiver);
 		DataWrapper<Void> dataWrapper=null;
 		if(receiver.getIsDefault()==true){
 			//if y

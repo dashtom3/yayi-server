@@ -56,11 +56,8 @@ public class AliPayController {
 			){
 		HashMap<String , String> hm=alipayService.queryY(orderId);
 		
-		for(String key:hm.keySet()){
-			System.err.println("key: "+key+" "+hm.get(key));
-		}
+		
 		String sHtmlText=alipayService.packingParameter(hm.get("WIDout_trade_no"), hm.get("WIDsubject"), hm.get("WIDtotal_fee"), hm.get("WIDbody"));
-		System.err.println(sHtmlText);
 		try {
 			//写到页面的自动提交表单数据
 			response.getWriter().write(sHtmlText);
@@ -111,18 +108,14 @@ public class AliPayController {
 				//params.put(name, new String(valueStr).getBytes());
 				params.put(name, valueStr);
 			}
-			for(String key:params.keySet()){
-				System.out.println("key: "+key+ " , value:"+params.get(key));
-			}
+			
 			String Sign=alipayService.ReturnUrl(params);
 			if("successQB".equals(Sign)){
 				response.sendRedirect("http://www.yayiabc.com/center/myMoney");
 			}
 			if("success".equals(Sign)){
-				System.out.println("已经成功  正在跳转");
 				response.sendRedirect("http://www.yayiabc.com/paySuccess");
 			}else{
-				System.out.println("已经失败  正在跳转");
 				response.sendRedirect("http://www.yayiabc.com/payFail");
 			}
 			/*out.write(

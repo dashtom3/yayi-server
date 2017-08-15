@@ -33,8 +33,8 @@ public class OrderItem extends BasePojo {
 	private String  itemPropertyNamea;
 	private String  itemPropertyNameb;
 	private String  itemPropertyNamec;
-    private String refunNum;
 	private String itemType;//商品类型
+	private String refunNum;
 
 	private String itemBrandName;//商品品牌
 	

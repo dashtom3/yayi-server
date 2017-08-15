@@ -2,7 +2,7 @@ package com.yayiabc.http.mvc.pojo.jpa;
 
 public class WXEntry {
 	private String appId;
-	private String timeStamp;
+	private String timestamp;
 	private String nonceStr;
 	private String signature;
 	public String getAppId() {
@@ -11,11 +11,11 @@ public class WXEntry {
 	public void setAppId(String appId) {
 		this.appId = appId;
 	}
-	public String getTimeStamp() {
-		return timeStamp;
+	public String getTimestamp() {
+		return timestamp;
 	}
-	public void setTimeStamp(String timeStamp) {
-		this.timeStamp = timeStamp;
+	public void setTimestamp(String timestamp) {
+		this.timestamp = timestamp;
 	}
 	public String getNonceStr() {
 		return nonceStr;
@@ -29,11 +29,11 @@ public class WXEntry {
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
-	public WXEntry(String appId, String timeStamp, String nonceStr,
+	public WXEntry(String appId, String timestamp, String nonceStr,
 			String signature) {
 		super();
 		this.appId = appId;
-		this.timeStamp = timeStamp;
+		this.timestamp = timestamp;
 		this.nonceStr = nonceStr;
 		this.signature = signature;
 	}
@@ -43,9 +43,11 @@ public class WXEntry {
 	}
 	@Override
 	public String toString() {
-		return "WXEntry [appId=" + appId + ", timeStamp=" + timeStamp
+		return "WXEntry [appId=" + appId + ", timestamp=" + timestamp
 				+ ", nonceStr=" + nonceStr + ", signature=" + signature + "]";
 	}
+	
+	
 	
 	
 }

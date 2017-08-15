@@ -8,6 +8,7 @@ import java.security.NoSuchAlgorithmException;
 import java.io.UnsupportedEncodingException;  
 
 public class Sign {
+	public static Map<String, Object> map=new HashMap<String,Object>();
     public static void main(String[] args) {
         String jsapi_ticket = "jsapi_ticket";
 

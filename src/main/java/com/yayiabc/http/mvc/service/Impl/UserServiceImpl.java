@@ -8,6 +8,7 @@ import com.yayiabc.common.utils.HttpUtil;
 import com.yayiabc.common.utils.MD5Util;
 import com.yayiabc.http.mvc.dao.SaleLogDao;
 import com.yayiabc.http.mvc.dao.UserDao;
+import com.yayiabc.http.mvc.dao.UserManageListDao;
 import com.yayiabc.http.mvc.dao.WxAppDao;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
@@ -32,6 +33,8 @@ public class UserServiceImpl implements UserService {
     SaleLogDao saleLogDao;
     @Autowired
     private UserMyQbService userMyQbService;
+    @Autowired
+    private UserManageListDao userManageListDao;
 
 
     public DataWrapper<Void> getVerifyCode(String phone) {
@@ -259,6 +262,7 @@ public class UserServiceImpl implements UserService {
         String userId = userDao.getUserIdByToken(token);
         SaleInfo saleInfo = saleLogDao.getSaleInfoByPhone(salePhone);
         int i = userDao.bindSale(userId,saleInfo.getSaleId());
+        userManageListDao.bindUpdateNum(saleInfo.getSaleId());
         if (i != 1){
             dataWrapper.setErrorCode(ErrorCodeEnum.Error);
         }

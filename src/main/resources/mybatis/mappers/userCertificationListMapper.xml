@@ -7,8 +7,7 @@
 		<id column="user_id" property="userId"/>
 		<result column="phone" property="phone"/>
 		<result column="true_name" property="trueName"/>
-		<association property="certification" 
-			javaType="com.yayiabc.http.mvc.pojo.jpa.Certification">
+		<association property="certification" javaType="com.yayiabc.http.mvc.pojo.jpa.Certification">
 			<id column="user_id" property="userId"/>
 			<result column="type" property="type"/>
 			<result column="company_name" property="companyName"/>
@@ -17,13 +16,37 @@
 			<result column="doctor_pic" property="doctorPic"/>
 			<result column="state" property="state"/>
 			<result column="fail_reason" property="failReason"/>
+			<result column="medical_license" property="medicalLicense"/>
+			<result column="business_license" property="businessLicense"/>
+			<result column="tax_registration" property="taxRegistration"/>
+			<result column="opening_permit" property="openingPermit"/>
+			<result column="radiological_permit" property="radiologicalPermit"/>
+			<result column="id_card_positive" property="idCardPositive"/>
+			<result column="id_card_otherside" property="idCardOtherside"/>
 		</association>
 	</resultMap>
 	
 	<select id="list" resultMap="userCertificationListRM">
-		SELECT c.user_id,u.phone,u.true_name,c.type,c.company_name,c.part,c.work_address,c.doctor_pic,c.state,c.fail_reason 
+		SELECT 
+		c.user_id,
+		u.phone,
+		u.true_name,
+		c.type,
+		c.company_name,
+		c.part,
+		c.work_address,
+		c.doctor_pic,
+		c.state,
+		c.fail_reason,
+		c.medical_license,
+		c.business_license,
+		c.tax_registration,
+		c.opening_permit,
+		c.radiological_permit,
+		c.id_card_positive,
+		c.id_card_otherside 
 		FROM certification c
-		LEFT JOIN user u
+		LEFT JOIN `user` u
 		ON c.user_id=u.user_id	
 		<where>
 			<if test="phone !=null and phone !=''">
@@ -51,7 +74,7 @@
 		SELECT count(0) FROM (
 			SELECT count(0)
 			FROM certification c
-			LEFT JOIN user u
+			LEFT JOIN `user` u
 			ON c.user_id=u.user_id	
 			<where>
 				<if test="phone !=null and phone !=''">

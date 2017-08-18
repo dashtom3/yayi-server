@@ -26,7 +26,14 @@ public interface UserPersonalInfoApi {
      * 		companyName:"XX牙医诊所",
      * 		part:"浙江省杭州市西湖区",
      * 		workAddress:"XX路100号",
-     * 		doctorPic:"image/system05.jpg",
+     * 		doctorPic:"image/system05.jpg",		(医师执业资格证)
+     * 		medicalLicense:"null",				(医疗机构执业许可证)
+     * 		businessLicense:"null",				(营业执照)
+     * 		taxRegistration:"null",				(税务登记证)
+     * 		openingPermit:"null",				(开户许可证)
+     * 		radiologicalPermit:"null",			(放射诊疗许可证)
+     * 		idCardPositive:"null",				(法人身份证正面)
+     * 		idCardOtherside:"null",				(法人身份证反面)
      * 		state:"1",	(1待审核，2审核通过，3审核未通过)   
      * 		failReason:"资料不全",	( state为3时显示 )
      * 		judge:1
@@ -117,6 +124,13 @@ public interface UserPersonalInfoApi {
      * @apiParam {String} doctorPic 医师资格证图片（必须）
      * @apiParam {int} judge 状态判断（非必须，0或者1）
      * @apiParam {String} token 身份凭证（必须）
+     * @apiParam {String} medicalLicense 医疗机构执业许可证（必须）
+     * @apiParam {String} businessLicense 营业执照（必须）
+     * @apiParam {String} taxRegistration 税务登记证（必须）
+     * @apiParam {String} openingPermit 开户许可证（非必须）
+     * @apiParam {String} radiologicalPermit 放射诊疗许可证（非必须）
+     * @apiParam {String} idCardPositive 法人身份证正面（非必须）
+     * @apiParam {String} idCardOtherside 法人身份证反面（非必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK

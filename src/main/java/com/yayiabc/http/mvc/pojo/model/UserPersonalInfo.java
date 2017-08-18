@@ -17,10 +17,17 @@ public class UserPersonalInfo {
 	private String companyName;
 	private String part;
 	private String workAddress;
-	private String doctorPic;
+	private String doctorPic; // 医师执业资格证
 	private Integer state;
 	private String failReason;
 	private Integer judge;
+	private String medicalLicense; // 医疗机构执业许可证
+	private String businessLicense; // 营业执照
+	private String taxRegistration; // 税务登记证
+	private String openingPermit; // 开户许可证
+	private String radiologicalPermit; // 放射诊疗许可证
+	private String idCardPositive; // 法人身份证正面
+	private String idCardOtherside; // 法人身份证反面
 
 	public String getPhone() {
 		return phone;
@@ -142,6 +149,62 @@ public class UserPersonalInfo {
 		this.judge = judge;
 	}
 
+	public String getMedicalLicense() {
+		return medicalLicense;
+	}
+
+	public void setMedicalLicense(String medicalLicense) {
+		this.medicalLicense = medicalLicense;
+	}
+
+	public String getBusinessLicense() {
+		return businessLicense;
+	}
+
+	public void setBusinessLicense(String businessLicense) {
+		this.businessLicense = businessLicense;
+	}
+
+	public String getTaxRegistration() {
+		return taxRegistration;
+	}
+
+	public void setTaxRegistration(String taxRegistration) {
+		this.taxRegistration = taxRegistration;
+	}
+
+	public String getOpeningPermit() {
+		return openingPermit;
+	}
+
+	public void setOpeningPermit(String openingPermit) {
+		this.openingPermit = openingPermit;
+	}
+
+	public String getRadiologicalPermit() {
+		return radiologicalPermit;
+	}
+
+	public void setRadiologicalPermit(String radiologicalPermit) {
+		this.radiologicalPermit = radiologicalPermit;
+	}
+
+	public String getIdCardPositive() {
+		return idCardPositive;
+	}
+
+	public void setIdCardPositive(String idCardPositive) {
+		this.idCardPositive = idCardPositive;
+	}
+
+	public String getIdCardOtherside() {
+		return idCardOtherside;
+	}
+
+	public void setIdCardOtherside(String idCardOtherside) {
+		this.idCardOtherside = idCardOtherside;
+	}
+
 	public UserPersonalInfo() {
 		super();
 	}
@@ -149,7 +212,11 @@ public class UserPersonalInfo {
 	public UserPersonalInfo(String userId, String phone, String trueName,
 			Integer sex, Date birthday, String qq, String userPic,
 			Integer type, String companyName, String part, String workAddress,
-			String doctorPic, Integer state, String failReason, Integer judge) {
+			String doctorPic, Integer state, String failReason, Integer judge,
+			String medicalLicense, String businessLicense,
+			String taxRegistration, String openingPermit,
+			String radiologicalPermit, String idCardPositive,
+			String idCardOtherside) {
 		super();
 		this.userId = userId;
 		this.phone = phone;
@@ -166,6 +233,13 @@ public class UserPersonalInfo {
 		this.state = state;
 		this.failReason = failReason;
 		this.judge = judge;
+		this.medicalLicense = medicalLicense;
+		this.businessLicense = businessLicense;
+		this.taxRegistration = taxRegistration;
+		this.openingPermit = openingPermit;
+		this.radiologicalPermit = radiologicalPermit;
+		this.idCardPositive = idCardPositive;
+		this.idCardOtherside = idCardOtherside;
 	}
 
 	@Override
@@ -176,7 +250,12 @@ public class UserPersonalInfo {
 				+ type + ", companyName=" + companyName + ", part=" + part
 				+ ", workAddress=" + workAddress + ", doctorPic=" + doctorPic
 				+ ", state=" + state + ", failReason=" + failReason
-				+ ", judge=" + judge + "]";
+				+ ", judge=" + judge + ", medicalLicense=" + medicalLicense
+				+ ", businessLicense=" + businessLicense + ", taxRegistration="
+				+ taxRegistration + ", openingPermit=" + openingPermit
+				+ ", radiologicalPermit=" + radiologicalPermit
+				+ ", idCardPositive=" + idCardPositive + ", idCardOtherside="
+				+ idCardOtherside + "]";
 	}
 
 }

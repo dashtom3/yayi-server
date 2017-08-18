@@ -19,11 +19,39 @@
 		<result column="state" property="state"/>
 		<result column="fail_reason" property="failReason"/>
 		<result column="judge" property="judge"/>
+		<result column="medical_license" property="medicalLicense"/>
+		<result column="business_license" property="businessLicense"/>
+		<result column="tax_registration" property="taxRegistration"/>
+		<result column="opening_permit" property="openingPermit"/>
+		<result column="radiological_permit" property="radiologicalPermit"/>
+		<result column="id_card_positive" property="idCardPositive"/>
+		<result column="id_card_otherside" property="idCardOtherside"/>
 	</resultMap>
 	
 	<select id="detail" resultMap="userPersonalInfoRM">
-		SELECT u.phone,u.true_name,u.sex,u.birthday,u.qq,u.user_pic,c.type,c.company_name,c.part,c.work_address,c.doctor_pic,c.state,c.fail_reason,c.judge
-		FROM USER u 
+		SELECT 
+		u.phone,
+		u.true_name,
+		u.sex,
+		DATE_FORMAT(u.birthday, '%Y-%m-%d') AS birthday,
+		u.qq,
+		u.user_pic,
+		c.type,
+		c.company_name,
+		c.part,
+		c.work_address,
+		c.doctor_pic,
+		c.state,
+		c.fail_reason,
+		c.judge,
+		c.medical_license,
+		c.business_license,
+		c.tax_registration,
+		c.opening_permit,
+		c.radiological_permit,
+		c.id_card_positive,
+		c.id_card_otherside
+		FROM `user` u 
 		LEFT JOIN certification c 
 		ON u.user_id=c.user_id 
 		WHERE u.user_id = #{userId};
@@ -39,7 +67,7 @@
 	</insert>
 	
 	<update id="updateUser">
-		UPDATE user
+		UPDATE `user`
 		<set>
 			<if test="trueName !=null and trueName !=''">true_name=#{trueName},</if>
 			<if test="sex !=null and sex!=''">sex=#{sex},</if>
@@ -59,6 +87,13 @@
 			work_address=#{workAddress},
 			<if test="doctorPic != null and doctorPic !=''">doctor_pic=#{doctorPic},</if>
 			<if test="judge !=null and judge !=''">judge=#{judge},</if>
+			<if test="medicalLicense !=null and medicalLicense !=''">medical_license=#{medicalLicense},</if>
+			<if test="businessLicense !=null and businessLicense !=''">business_license=#{businessLicense},</if>
+			<if test="taxRegistration !=null and taxRegistration !=''">tax_registration=#{taxRegistration},</if>
+			<if test="openingPermit !=null and openingPermit !=''">opening_permit=#{openingPermit},</if>
+			<if test="radiologicalPermit !=null and radiologicalPermit !=''">radiological_permit=#{radiologicalPermit},</if>
+			<if test="idCardPositive !=null and idCardPositive !=''">id_card_positive=#{idCardPositive},</if>
+			<if test="idCardOtherside !=null and idCardOtherside !=''">id_card_otherside=#{idCardOtherside},</if>
 			state=1,fail_reason=NULL
 		</set>
 		WHERE user_id=#{userId};
@@ -67,21 +102,21 @@
 	<select id="queryBind" resultType="String">
 		SELECT 
 		IF(u.sale_id IS NOT NULL,1,2) AS isBindSale 
-		FROM USER u
+		FROM `user` u
 		LEFT JOIN sale_info s
 		ON u.sale_id=s.sale_id
 		WHERE u.user_id=#{userId}
 		UNION ALL
 		SELECT 
 	    s.true_name AS saleName
-		FROM USER u
+		FROM `user` u
 		LEFT JOIN sale_info s
 		ON u.sale_id=s.sale_id
 		WHERE u.user_id=#{userId}
 		UNION ALL
 		SELECT 
 		s.phone AS salePhone
-		FROM USER u
+		FROM `user` u
 		LEFT JOIN sale_info s
 		ON u.sale_id=s.sale_id
 		WHERE u.user_id=#{userId}

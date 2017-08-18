@@ -125,7 +125,7 @@
 		sale LEFT JOIN sale_income sale_come ON sale.sale_id
 		=sale_come.sale_id
 		LEFT JOIN ordera orde ON
-		sale_come.order_id=orde.order_id LEFT JOIN USER us ON
+		sale_come.order_id=orde.order_id LEFT JOIN `user` us ON
 		us.user_id=orde.user_id
 		LEFT JOIN order_item orde_it ON
 		orde.order_id=orde_it.order_id LEFT JOIN refund refu

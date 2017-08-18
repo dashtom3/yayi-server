@@ -24,7 +24,7 @@
 	</select>
 	
 	<select id="getPhoneByUserId" resultType="string">
-		select phone from user where user_id=#{userId}
+		select phone from `user` where user_id=#{userId}
 	</select>
 	
 	<update id="updateState">

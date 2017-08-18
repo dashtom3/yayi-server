@@ -7,7 +7,7 @@
 		SELECT a.*,b.user_name,b.phone FROM
 		user_log a
 		INNER JOIN 
-		(SELECT true_name user_name,phone,user_id u_id FROM USER)  b
+		(SELECT true_name user_name,phone,user_id u_id FROM `user`)  b
 		ON a.user_id=b.u_id
 		<where>
 			<if test="operate!=null">a.operate like '%${operate}%'</if>
@@ -21,7 +21,7 @@
 		select count(0) from 
 		user_log a
 		INNER JOIN 
-		(SELECT true_name user_name,phone,user_id u_id FROM USER)  b
+		(SELECT true_name user_name,phone,user_id u_id FROM `user`)  b
 		ON a.user_id=b.u_id
 		<where>
 			<if test="operate!=null">a.operate like '%${operate}%'</if>

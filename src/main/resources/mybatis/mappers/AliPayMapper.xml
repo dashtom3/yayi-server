@@ -29,7 +29,7 @@
 	 select * from ordera where order_id=#{orderId}
 	</select>
 	<update id="updateQb">
-	 update user set qb_balance=(qb_balance-${qbDed})
+	 update `user` set qb_balance=(qb_balance-${qbDed})
 	 where user_id=#{userId}
 	</update>
 	

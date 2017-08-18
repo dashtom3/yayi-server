@@ -23,10 +23,10 @@
 	</select>
 	<select id="queryPhone" parameterType="java.lang.String"
 		resultType="java.lang.String">
-		select phone from user where user_id=#{userId}
+		select phone from `user` where user_id=#{userId}
 	</select>
 	<select id="getSaleIdByOrderId" resultType="java.lang.String">
-		SELECT sale_id FROM USER WHERE user_id=(SELECT user_id FROM ordera WHERE
+		SELECT sale_id FROM `user` WHERE user_id=(SELECT user_id FROM ordera WHERE
 		order_id=#{orderId})
 	</select>
 
@@ -76,7 +76,7 @@
 	</select>
 
 	<select id="queryUserQbNum" resultType="int">
-		select qb_balance from user where user_id=#{userId}
+		select qb_balance from `user` where user_id=#{userId}
 	</select>
 	<!-- <update id="saveQbToUser">
 		update user set qb_balance=#{qb} where user_id=#{userId}
@@ -86,7 +86,7 @@
 		(SELECT user_id FROM ordera WHERE order_id=#{orderId})
 	</select>
 	<select id="queryNameByUserId" resultType="java.lang.String">
-		select true_name from user where user_id=#{userId}
+		select true_name from `user` where user_id=#{userId}
 	</select>
 
 	<select id="queryIt" resultType="com.yayiabc.http.mvc.pojo.jpa.OrderItem">
@@ -113,11 +113,11 @@
 	  <result property="saleId" column="sale_id"/>
 	 </resultMap>
 	<select id="queryUserByUserId" resultMap="userss">
-	 select user_id,true_name,phone,sale_id from user where user_id=#{uid}
+	 select user_id,true_name,phone,sale_id from `user` where user_id=#{uid}
 	</select>
 	
 	<select id="queryUserByPhone" resultType="com.yayiabc.http.mvc.pojo.jpa.User">
-	 select * from user where phone =#{phone}
+	 select * from `user` where phone =#{phone}
 	</select>
 	<select id="getSaleByPhone" resultType="com.yayiabc.http.mvc.pojo.jpa.SaleInfo">
 	 select * from sale_info where phone =#{phone}

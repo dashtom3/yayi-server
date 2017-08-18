@@ -239,7 +239,7 @@
 		DATE_FORMAT(o.created, '%Y-%c-%e %T') AS orderCreated
 		FROM sale_income si 
 		INNER JOIN ordera o ON si.order_id=o.order_id
-		INNER JOIN USER u ON o.user_id=u.user_id 
+		INNER JOIN `user` u ON o.user_id=u.user_id 
 		WHERE si.sale_id=#{saleId} AND DATE_FORMAT(si.created,'%Y-%m-%d')  BETWEEN #{startDate} AND #{endDate}
 		GROUP BY si.sale_income_id
 		ORDER BY o.created DESC
@@ -252,7 +252,7 @@
 			count(0)
 			FROM sale_income si 
 			INNER JOIN ordera o ON si.order_id=o.order_id
-			INNER JOIN USER u ON o.user_id=u.user_id 
+			INNER JOIN `user` u ON o.user_id=u.user_id 
 			WHERE si.sale_id=#{saleId} AND DATE_FORMAT(si.created,'%Y-%m-%d')  BETWEEN #{startDate} AND #{endDate}
 			GROUP BY si.sale_income_id
 		) AS a

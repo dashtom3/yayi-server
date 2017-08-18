@@ -75,7 +75,7 @@
 		orde_it.item_property_nameb,orde_it.item_property_namec,orde_it.item_id,orde.post_fee,orde.qb_ded,orde.state,
 		orde.actual_pay
 		,rece.*
-		FROM USER us
+		FROM `user` us
 		JOIN
 		ordera orde
 		ON
@@ -112,7 +112,7 @@
 		(SELECT
 		count(0)
 		FROM
-		USER us JOIN
+		`user` us JOIN
 		ordera orde ON
 		us.user_id=orde.user_id JOIN order_item
 		orde_it ON
@@ -209,7 +209,7 @@
 	<!-- 查询统计用户订单数 -->
 	<select id="queryOrderNums" resultMap="lo">
 	   SELECT us.true_name name,orde.state,COUNT(state) count FROM
-	    ordera orde JOIN USER us ON 
+	    ordera orde JOIN `user` us ON 
 	    orde.user_id=us.user_id 
 	    WHERE orde.user_id=#{userId}  GROUP BY state
 	</select>

@@ -235,6 +235,13 @@ public interface UserManageListApi {
      * 		part:"浙江省杭州市西湖区",
      * 		workAddress:"XX路100号",
      * 		doctorPic:"image/system05.jpg",
+     * 		medicalLicense:"null",				(医疗机构执业许可证)
+     * 		businessLicense:"null",				(营业执照)
+     * 		taxRegistration:"null",				(税务登记证)
+     * 		openingPermit:"null",				(开户许可证)
+     * 		radiologicalPermit:"null",			(放射诊疗许可证)
+     * 		idCardPositive:"null",				(法人身份证正面)
+     * 		idCardOtherside:"null",				(法人身份证反面)
      * 		Receiver(list):[{
      * 			receiverName:"收货人1号",
      * 			province:"上海",

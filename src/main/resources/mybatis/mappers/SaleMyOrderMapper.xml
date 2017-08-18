@@ -12,7 +12,7 @@
 		COUNT(si.order_id) AS dayOrderNum 
 		FROM sale_income si
 		LEFT JOIN ordera o ON o.order_id=si.order_id
-		LEFT JOIN USER u ON u.user_id=o.user_id
+		LEFT JOIN `user` u ON u.user_id=o.user_id
 		WHERE si.sale_id=#{saleId}
 		AND YEAR(si.created)=#{year}
 		AND MONTH(si.created)=#{month}
@@ -28,7 +28,7 @@
 		COUNT(si.order_id) AS orderNum
 		FROM sale_income si
 		LEFT JOIN ordera o ON o.order_id=si.order_id
-		LEFT JOIN USER u ON u.user_id=o.user_id
+		LEFT JOIN `user` u ON u.user_id=o.user_id
 		WHERE si.sale_id=#{saleId}
 		AND YEAR(si.created)=#{year}
 		AND MONTH(si.created)=#{month};
@@ -61,7 +61,7 @@
 		(IF(ROUND(si.order_money_gongju,2) IS NOT NULL,ROUND(si.order_money_gongju,2),0)-IF(ROUND(si.refund_money_gongju,2) IS NOT NULL,ROUND(si.refund_money_gongju,2),0)) AS gongjuMoney
 		FROM sale_income si
 		LEFT JOIN ordera o  ON o.order_id=si.order_id
-		LEFT JOIN USER u ON u.user_id=o.user_id
+		LEFT JOIN `user` u ON u.user_id=o.user_id
 		WHERE si.sale_id=#{saleId} AND YEAR(si.created) =#{year} AND MONTH(si.created)=#{month}
 		GROUP BY si.order_id
 		ORDER BY o.created DESC
@@ -74,7 +74,7 @@
 			count(0)
 			FROM sale_income si
 			LEFT JOIN ordera o  ON o.order_id=si.order_id
-			LEFT JOIN USER u ON u.user_id=o.user_id
+			LEFT JOIN `user` u ON u.user_id=o.user_id
 			WHERE si.sale_id=#{saleId} AND YEAR(si.created) =#{year} AND MONTH(si.created)=#{month}
 			GROUP BY si.order_id
 			ORDER BY o.created DESC
@@ -97,7 +97,7 @@
 		(IF(ROUND(si.refund_money_gongju,2) IS NOT NULL,ROUND(si.refund_money_gongju,2),0)) AS actualMoneyGongju 	
 		FROM sale_income si
 		LEFT JOIN ordera o  ON o.order_id=si.order_id
-		LEFT JOIN USER u ON u.user_id=o.user_id
+		LEFT JOIN `user` u ON u.user_id=o.user_id
 		WHERE si.sale_id=#{saleId} AND si.order_id=#{orderId}
 		GROUP BY si.order_id
 	</select>
@@ -113,7 +113,7 @@
 		(oi.price*oi.num) AS total
 		FROM ordera o
 		LEFT JOIN order_item oi ON o.order_id=oi.order_id
-		LEFT JOIN USER u ON o.user_id=u.user_id
+		LEFT JOIN `user` u ON o.user_id=u.user_id
 		WHERE o.order_id=#{orderId}
 		GROUP BY oi.item_name
 		LIMIT ${page.currentNumber},${page.numberPerPage}
@@ -125,7 +125,7 @@
 			count(0)
 			FROM ordera o
 			LEFT JOIN order_item oi ON o.order_id=oi.order_id
-			LEFT JOIN USER u ON o.user_id=u.user_id
+			LEFT JOIN `user` u ON o.user_id=u.user_id
 			WHERE o.order_id=#{orderId}
 			GROUP BY oi.item_name
 		) AS a

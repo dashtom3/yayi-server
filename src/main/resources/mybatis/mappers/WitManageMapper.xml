@@ -17,7 +17,7 @@
 	</select>
 	<!-- //根据userId 查phone -->
 	<select id="getPhone" resultType="java.lang.String">
-		select phone from user where
+		select phone from `user` where
 		user_id=#{userId}
 	</select>
 

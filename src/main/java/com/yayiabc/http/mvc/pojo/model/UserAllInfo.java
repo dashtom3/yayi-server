@@ -50,6 +50,15 @@ public class UserAllInfo {
 	private Integer orderaCount;
 
 	private Integer orderaMoneyCount;
+
+	private String medicalLicense; // 医疗机构执业许可证
+	private String businessLicense; // 营业执照
+	private String taxRegistration; // 税务登记证
+	private String openingPermit; // 开户许可证
+	private String radiologicalPermit; // 放射诊疗许可证
+	private String idCardPositive; // 法人身份证正面
+	private String idCardOtherside; // 法人身份证反面
+
 	private List<Receiver> receiverList;
 
 	public String getUserId() {
@@ -244,6 +253,62 @@ public class UserAllInfo {
 		this.orderaMoneyCount = orderaMoneyCount;
 	}
 
+	public String getMedicalLicense() {
+		return medicalLicense;
+	}
+
+	public void setMedicalLicense(String medicalLicense) {
+		this.medicalLicense = medicalLicense;
+	}
+
+	public String getBusinessLicense() {
+		return businessLicense;
+	}
+
+	public void setBusinessLicense(String businessLicense) {
+		this.businessLicense = businessLicense;
+	}
+
+	public String getTaxRegistration() {
+		return taxRegistration;
+	}
+
+	public void setTaxRegistration(String taxRegistration) {
+		this.taxRegistration = taxRegistration;
+	}
+
+	public String getOpeningPermit() {
+		return openingPermit;
+	}
+
+	public void setOpeningPermit(String openingPermit) {
+		this.openingPermit = openingPermit;
+	}
+
+	public String getRadiologicalPermit() {
+		return radiologicalPermit;
+	}
+
+	public void setRadiologicalPermit(String radiologicalPermit) {
+		this.radiologicalPermit = radiologicalPermit;
+	}
+
+	public String getIdCardPositive() {
+		return idCardPositive;
+	}
+
+	public void setIdCardPositive(String idCardPositive) {
+		this.idCardPositive = idCardPositive;
+	}
+
+	public String getIdCardOtherside() {
+		return idCardOtherside;
+	}
+
+	public void setIdCardOtherside(String idCardOtherside) {
+		this.idCardOtherside = idCardOtherside;
+	}
+
 	public UserAllInfo() {
 		super();
 	}
@@ -255,7 +320,11 @@ public class UserAllInfo {
 			String saleName, String salePhone, String saleCreated,
 			Integer bindUserNum, String userCreated, String certifyTime,
 			String latelyOrderDate, Integer orderaCount,
-			Integer orderaMoneyCount, List<Receiver> receiverList) {
+			Integer orderaMoneyCount, String medicalLicense,
+			String businessLicense, String taxRegistration,
+			String openingPermit, String radiologicalPermit,
+			String idCardPositive, String idCardOtherside,
+			List<Receiver> receiverList) {
 		super();
 		this.userId = userId;
 		this.trueName = trueName;
@@ -280,6 +349,13 @@ public class UserAllInfo {
 		this.latelyOrderDate = latelyOrderDate;
 		this.orderaCount = orderaCount;
 		this.orderaMoneyCount = orderaMoneyCount;
+		this.medicalLicense = medicalLicense;
+		this.businessLicense = businessLicense;
+		this.taxRegistration = taxRegistration;
+		this.openingPermit = openingPermit;
+		this.radiologicalPermit = radiologicalPermit;
+		this.idCardPositive = idCardPositive;
+		this.idCardOtherside = idCardOtherside;
 		this.receiverList = receiverList;
 	}
 
@@ -296,7 +372,12 @@ public class UserAllInfo {
 				+ bindUserNum + ", userCreated=" + userCreated
 				+ ", certifyTime=" + certifyTime + ", latelyOrderDate="
 				+ latelyOrderDate + ", orderaCount=" + orderaCount
-				+ ", orderaMoneyCount=" + orderaMoneyCount + ", receiverList="
+				+ ", orderaMoneyCount=" + orderaMoneyCount
+				+ ", medicalLicense=" + medicalLicense + ", businessLicense="
+				+ businessLicense + ", taxRegistration=" + taxRegistration
+				+ ", openingPermit=" + openingPermit + ", radiologicalPermit="
+				+ radiologicalPermit + ", idCardPositive=" + idCardPositive
+				+ ", idCardOtherside=" + idCardOtherside + ", receiverList="
 				+ receiverList + "]";
 	}
 

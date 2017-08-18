@@ -20,7 +20,7 @@
 	<select id="list" resultMap="qbRecordListRM">
 		SELECT q.qb_rid,u.phone,q.qb_rget,q.qb_rout,DATE_FORMAT(q.qb_time, '%Y-%c-%e %T') AS qb_time,q.remark,q.qb_balances
 		FROM qb_record q
-		LEFT JOIN USER u
+		LEFT JOIN `user` u
 		ON u.user_id=q.user_id
 		<where>
 			<if test="phone !=null and phone !=''">
@@ -40,7 +40,7 @@
 	<select id="getCount" resultType="int">
 		SELECT COUNT(0) 
 		FROM qb_record q
-		LEFT JOIN USER u
+		LEFT JOIN `user` u
 		ON u.user_id=q.user_id
 		<where>
 			<if test="phone !=null and phone !=''">
@@ -56,7 +56,7 @@
 	</select>
 	
 	<select id="queryQb" resultType="java.lang.Integer">
-		SELECT qb_balance FROM USER WHERE phone = #{userPhone};
+		SELECT qb_balance FROM `user` WHERE phone = #{userPhone};
 	</select>
 	
 	<select id="queryQbBalances" resultType="java.lang.Integer">
@@ -65,7 +65,7 @@
 	</select>
 	
 	<update id="update">
-		UPDATE user 
+		UPDATE `user` 
 		set
 		qb_balance=#{qbBalance}
 		WHERE phone=#{phone};

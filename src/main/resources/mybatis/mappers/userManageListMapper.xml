@@ -17,7 +17,7 @@
 				IF(COUNT(o.user_id) IS NOT NULL,COUNT(o.user_id),0) AS orderaCount,
 				DATE_FORMAT(u.created, '%Y-%c-%e %T') AS userCreated,
 				s.phone AS salePhone
-				FROM USER u 
+				FROM `user` u 
 				LEFT JOIN sale_info s ON u.sale_id=s.sale_id
 				LEFT JOIN certification c ON u.user_id=c.user_id
 				LEFT JOIN ordera o ON u.user_id=o.user_id
@@ -55,7 +55,7 @@
 	<select id="getCount" resultType="int">
 		SELECT COUNT(0) FROM (
 			SELECT COUNT(0)
-			FROM USER u 
+			FROM `user` u 
 			LEFT JOIN sale_info s ON u.sale_id=s.sale_id
 			LEFT JOIN certification c ON u.user_id=c.user_id
 			LEFT JOIN ordera o ON u.user_id=o.user_id
@@ -121,7 +121,7 @@
 	</select>
 	
 	<update id="bind">
-		UPDATE USER u 
+		UPDATE `user` u 
 		LEFT JOIN sale_info s
 		ON u.sale_id=s.sale_id
 		SET u.bind_sale_time=NOW(),u.sale_id=(SELECT sale_id FROM sale_info WHERE phone=#{salePhone})
@@ -129,7 +129,7 @@
 	</update>
 	
 	<update id="disBind">
-		UPDATE USER u 
+		UPDATE `user` u 
 		LEFT JOIN sale_info s
 		ON u.sale_id=s.sale_id
 		SET u.sale_id= NULL,u.bind_sale_time=NULL
@@ -138,9 +138,9 @@
 	
 	<update id="bindUpdateNum">
 		UPDATE sale_info s
-		LEFT JOIN USER u
+		LEFT JOIN `user` u
 		ON u.sale_id=s.sale_id
-		SET s.bind_user_num=(SELECT COUNT(user_id) FROM USER WHERE sale_id=#{saleId})
+		SET s.bind_user_num=(SELECT COUNT(user_id) FROM `user` WHERE sale_id=#{saleId})
 		WHERE s.sale_id=#{saleId};
 	</update>
 	
@@ -160,11 +160,18 @@
 		c.part,
 		c.work_address,
 		c.doctor_pic,
+		c.medical_license,
+		c.business_license,
+		c.tax_registration,
+		c.opening_permit,
+		c.radiological_permit,
+		c.id_card_positive,
+		c.id_card_otherside,
 		si.true_name AS saleName,
 		si.phone AS salePhone,
 		DATE_FORMAT(si.created, '%Y-%c-%e %T') AS saleCreated,
 		si.bind_user_num
-		FROM USER u
+		FROM `user` u
 		LEFT JOIN certification c ON u.user_id=c.user_id
 		LEFT JOIN sale_info si ON u.sale_id=si.sale_id
 		WHERE u.user_id=#{userId}

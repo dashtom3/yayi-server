@@ -31,7 +31,7 @@
      </select>
      
      <select id="queryObject" resultType="int">
-      select count(0) from user where user_id=#{uid}
+      select count(0) from `user` where user_id=#{uid}
      </select>
      <select id="queryObjects" resultType="int">
       select count(0) from sale_info where user_id=#{uid}
@@ -39,7 +39,7 @@
      
      
      <select id="queryIsSale" resultType="java.lang.String">
-      select sale_id from user where user_id=#{uid}
+      select sale_id from `user` where user_id=#{uid}
      </select>
      
      

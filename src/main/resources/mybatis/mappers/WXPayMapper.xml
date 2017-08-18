@@ -12,7 +12,7 @@
 	</select>
 	
 	<update id="addMoney">
-		update user set qb_balance=qb_balance+#{addMoney} where user_id=#{userId}
+		update `user` set qb_balance=qb_balance+#{addMoney} where user_id=#{userId}
 	</update>
 	
 	<update id="updateChargeState">

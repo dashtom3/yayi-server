@@ -28,7 +28,7 @@
 	</select> -->
 	
 	<select id="showMyCus" resultType="com.yayiabc.http.mvc.pojo.jpa.User">
-		SELECT * FROM USER 
+		SELECT * FROM `user` 
 		<where>
 		 sale_id =#{saleId}
 		</where>
@@ -53,7 +53,7 @@
 	  </where>
 	</select>
 	<select id="showsss" resultMap="c">
- 	SELECT cert.user_id u_id,us.user_id,cert.company_name,cert.part,cert.work_address,us.phone,us.true_name  FROM USER us LEFT JOIN certification cert ON us.user_id=cert.user_id 
+ 	SELECT cert.user_id u_id,us.user_id,cert.company_name,cert.part,cert.work_address,us.phone,us.true_name  FROM `user` us LEFT JOIN certification cert ON us.user_id=cert.user_id 
 	 <where>
 	  <if test="state!=null and state!=''">
 	  us.true_name like '%${state}%' and us.sale_id is null  or us.phone like '%${state}%' and us.sale_id is null or  cert.company_name like '%${state}%'
@@ -68,7 +68,7 @@
 	</select>
 	
 	<select id="queryCounts" resultType="int">
-	   	SELECT count(1) FROM USER us LEFT JOIN certification cert ON us.user_id=cert.user_id 
+	   	SELECT count(1) FROM `user` us LEFT JOIN certification cert ON us.user_id=cert.user_id 
 	 <where>
 	  <if test="state!=null and state!=''">
 	  us.true_name like '%${state}%' and us.sale_id is null  or us.phone like '%${state}%' and us.sale_id is null or  cert.company_name like '%${state}%'

@@ -31,7 +31,14 @@ public interface UserCertificationListApi {
      * 		workAddress:"XXXX路1000号",
      * 		doctorPic:"image/XX.jpg",
      * 		state:"待审核",
-     * 		failReason:null
+     * 		failReason:null,
+      * 	medicalLicense:"null",				(医疗机构执业许可证)
+     * 		businessLicense:"null",				(营业执照)
+     * 		taxRegistration:"null",				(税务登记证)
+     * 		openingPermit:"null",				(开户许可证)
+     * 		radiologicalPermit:"null",			(放射诊疗许可证)
+     * 		idCardPositive:"null",				(法人身份证正面)
+     * 		idCardOtherside:"null"				(法人身份证反面)
      * },{
      * 		userId:"b99da228-7c38-4c70-8338-84a927441063",
      * 		phone:"17668123578",
@@ -42,7 +49,14 @@ public interface UserCertificationListApi {
      * 		workAddress:"XXXX路888号",
      * 		doctorPic:"image/XX.jpg",
      * 		state:"审核未通过",
-     * 		failReason:"资格证过期"
+     * 		failReason:"资格证过期",
+     * 		medicalLicense:"null",				(医疗机构执业许可证)
+     * 		businessLicense:"null",				(营业执照)
+     * 		taxRegistration:"null",				(税务登记证)
+     * 		openingPermit:"null",				(开户许可证)
+     * 		radiologicalPermit:"null",			(放射诊疗许可证)
+     * 		idCardPositive:"null",				(法人身份证正面)
+     * 		idCardOtherside:"null"				(法人身份证反面)
      * }],
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
      * numberPerPage:10,

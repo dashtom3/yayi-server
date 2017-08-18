@@ -85,7 +85,7 @@
 	<!-- 获取简略用户信息列表 -->
 	<select id="userlist" resultMap="userRM">
 		SELECT u.user_id,u.phone,u.true_name,c.company_name 
-		FROM USER u
+		FROM `user` u
 		LEFT JOIN certification c
 		ON u.user_id=c.user_id
 		<where>
@@ -111,7 +111,7 @@
 	
 	<select id="userlistCount" resultType="int">
 		SELECT count(0)
-		FROM USER u
+		FROM `user` u
 		LEFT JOIN certification c
 		ON u.user_id=c.user_id
 		<where>
@@ -137,7 +137,7 @@
 	<!-- 已绑定的简略用户信息列表 -->
 	<select id="bindUserList" resultMap="userRM">
 		SELECT u.user_id,u.phone,u.true_name,c.company_name 
-		FROM USER u
+		FROM `user` u
 		LEFT JOIN certification c
 		ON u.user_id=c.user_id
 		WHERE u.sale_id=#{saleId} AND u.sale_id IS NOT NULL
@@ -147,7 +147,7 @@
 	
 	<select id="bindUserCount" resultType="int">
 		SELECT count(0)
-		FROM USER u
+		FROM `user` u
 		LEFT JOIN certification c
 		ON u.user_id=c.user_id
 		WHERE u.sale_id=#{saleId} AND u.sale_id IS NOT NULL

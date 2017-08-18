@@ -32,7 +32,7 @@
 		CONCAT(shipping_name,shipping_code) AS
 		information,orde.refund_info,orde.shipping_name,orde.shipping_code
 		FROM
-		ordera orde JOIN USER
+		ordera orde JOIN `user`
 		us ON us.user_id=orde.user_id JOIN receiver
 		rece
 		ON rece.receiver_id=orde.receiver_id
@@ -232,7 +232,7 @@
 	<!-- 根据用户id 查询该用户钱币余额 -->
 	<select id="userBalance" resultType="int">
 		select qb_balance from
-		user
+		`user`
 		where user_id=#{userId}
 	</select>
 
@@ -266,7 +266,7 @@
 		select count(0) from
 		( SELECT
 		count(0)
-		FROM ordera orde JOIN USER
+		FROM ordera orde JOIN `user`
 		us ON
 		us.user_id=orde.user_id JOIN receiver rece
 		ON

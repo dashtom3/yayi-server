@@ -12,6 +12,18 @@
 		<result column="sales" property="sales"/>
 		<result column="refund_num" property="refundNum"/>
 		<result column="salesMoney" property="salesMoney"/>
+		<result column="item_property_name" property="itemPropertyName" />
+		<result column="item_property_info" property="itemPropertyInfo" />
+		<result column="item_property_name_two" property="itemPropertyNameTwo" />
+		<result column="item_property_two_value" property="itemPropertyTwoValue" />
+		<result column="item_property_name_three" property="itemPropertyNameThree" />
+		<result column="item_property_three_value" property="itemPropertyThreeValue" />
+		<result column="item_property_four_name" property="itemPropertyFourName" />
+		<result column="item_property_four_value" property="itemPropertyFourValue" />
+		<result column="item_property_five_name" property="itemPropertyFiveName" />
+		<result column="item_property_five_value" property="itemPropertyFiveValue" />
+		<result column="item_property_six_name" property="itemPropertySixName" />
+		<result column="item_property_six_value" property="itemPropertySixValue" />
 	</resultMap>
 	
 	<select id="query" resultMap="itemStatisticsRM">
@@ -20,10 +32,16 @@
 		ii.item_name,
 		iv.item_sKU,
 		ib.item_brand_name,
-		ii.item_price,
-		ii.sales,
+		iv.item_sku_price as item_price,
+		iv.sales,
 		ii.refund_num,
-		ii.item_price*ii.sales AS salesMoney 
+		iv.item_property_name,iv.item_property_info,
+		iv.item_property_name_two,iv.item_property_two_value,
+		iv.item_property_name_three,iv.item_property_three_value,
+		iv.item_property_four_name,iv.item_property_four_value,
+		iv.item_property_five_name,iv.item_property_five_value,
+		iv.item_property_six_name,iv.item_property_six_value,
+		iv.item_sku_price*iv.sales AS salesMoney 
 		FROM item_info ii
 		LEFT JOIN item_value iv
 		ON ii.item_id=iv.item_id
@@ -32,8 +50,9 @@
         LEFT JOIN order_item oi 
 		ON iv.item_sKU=oi.itm_SKU
 		<where>
+			 	iv.sales !=0
 			<if test="itemName !=null and itemName !=''">
-				ii.item_name LIKE '%${itemName}%'
+				AND ii.item_name LIKE '%${itemName}%'
 			</if>
 			<if test="itemId !=null and itemId !=''">
 				AND ii.item_id LIKE '%${itemId}%'
@@ -45,7 +64,7 @@
 				AND ib.item_brand_name LIKE '%${itemBrandName}%'
 			</if>
 			<if test="startDate !=null and startDate !=''">
-				AND DATE_FORMAT(oi.created,'%Y-%m-%d') <![CDATA[  >=  ]]>#{startDate}
+				AND DATE_FORMAT(oi.created,'%Y-%m-%d') <![CDATA[  >=  ]]>#{startDate} 
 			</if>
 			<if test="endDate != null and endDate !=''">
 				AND DATE_FORMAT(oi.created,'%Y-%m-%d') <![CDATA[  <=  ]]>#{endDate}
@@ -70,9 +89,7 @@
 	<select id="getCount" resultType="int">
 		SELECT count(0) FROM (
 			SELECT 
-			ii.item_id,
-			iv.item_sKU,
-			ii.item_price*ii.sales AS salesMoney 
+			count(0)
 			FROM item_info ii
 			LEFT JOIN item_value iv
 			ON ii.item_id=iv.item_id
@@ -81,8 +98,9 @@
         	LEFT JOIN order_item oi 
 			ON iv.item_sKU=oi.itm_SKU
 			<where>
+					iv.sales !=0
 				<if test="itemName !=null and itemName !=''">
-					ii.item_name LIKE '%${itemName}%'
+					AND ii.item_name LIKE '%${itemName}%'
 				</if>
 				<if test="itemId !=null and itemId !=''">
 					AND ii.item_id LIKE '%${itemId}%'
@@ -94,25 +112,13 @@
 					AND ib.item_brand_name LIKE '%${itemBrandName}%'
 				</if>
 				<if test="startDate !=null and startDate !=''">
-					AND DATE_FORMAT(oi.created,'%Y-%m-%d') <![CDATA[  >=  ]]>#{startDate}
+					AND DATE_FORMAT(oi.created,'%Y-%m-%d') <![CDATA[  >=  ]]>#{startDate}  
 				</if>
 				<if test="endDate != null and endDate !=''">
 					AND DATE_FORMAT(oi.created,'%Y-%m-%d') <![CDATA[  <=  ]]>#{endDate}
 				</if>	
 			</where>
 			GROUP BY iv.item_sKU
-			<if test="state == 0">
-				ORDER BY ii.created DESC 
-			</if>
-			<if test="state == 1">
-				ORDER BY ii.sales DESC
-			</if>
-			<if test="state ==2">
-				ORDER BY ii.refund_num DESC
-			</if>
-			<if test="state ==3">
-				ORDER BY salesMoney DESC
-			</if>
 			) AS a
 	</select>
 </mapper>

@@ -65,6 +65,7 @@ public class UserManageListController {
 	 */
 	@RequestMapping(value="bind",method=RequestMethod.POST)
 	@ResponseBody
+	@AdminLog(description="绑定销售员")
 	public DataWrapper<Void> bind(
 			@RequestParam(value="salePhone",required=true)String salePhone,
 			@RequestParam(value="userPhone",required=true)String userPhone
@@ -78,6 +79,7 @@ public class UserManageListController {
 	 */
 	@RequestMapping(value="disBind",method=RequestMethod.POST)
 	@ResponseBody
+	@AdminLog(description="取消绑定销售员")
 	public DataWrapper<Void> disBind(
 			@RequestParam(value="salePhone",required=true)String salePhone,
 			@RequestParam(value="userPhone",required=true)String userPhone

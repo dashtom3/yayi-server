@@ -1,7 +1,7 @@
 package com.yayiabc.http.mvc.service.Impl;
 
-import java.util.List;
 
+import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -25,10 +25,15 @@ public class ItemStatisticsServiceImpl implements ItemStatisticsService {
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		int totalNumber =itemStatisticsDao.getCount(itemName, itemId, itemSKU, itemBrandName, startDate, endDate, state);
+		int totalNumber =itemStatisticsDao.getCount(itemName, itemId, itemSKU, itemBrandName, startDate, endDate);
 		dataWrapper.setPage(page, totalNumber);
 		List<ItemStatistics> list = itemStatisticsDao.query(itemName, itemId, itemSKU, itemBrandName, startDate, endDate, page, state);
 		dataWrapper.setData(list);
+		double SalesCount=0.0;	//商品销售总额
+		for(ItemStatistics itemStatistics :list){
+			SalesCount =SalesCount+itemStatistics.getSalesMoney();
+		}
+		dataWrapper.setMsg(String.valueOf(SalesCount));
 		return dataWrapper;
 	}
 

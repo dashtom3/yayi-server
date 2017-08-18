@@ -1,7 +1,6 @@
 package com.yayiabc.http.mvc.dao;
 
 import java.util.List;
-
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -19,11 +18,11 @@ public interface ItemStatisticsDao {
 			@Param("page")Page page,
 			@Param("state")Integer state);
 	
-	int getCount(@Param("itemName")String itemName,
-				@Param("itemId")String itemId,
-				@Param("itemSKU")String itemSKU,
-				@Param("itemBrandName")String itemBrandName,
-				@Param("startDate")String startDate,
-				@Param("endDate")String endDate,
-				@Param("state")Integer state);
+	int getCount(
+			@Param("itemName")String itemName,
+			@Param("itemId")String itemId,
+			@Param("itemSKU")String itemSKU,
+			@Param("itemBrandName")String itemBrandName,
+			@Param("startDate")String startDate,
+			@Param("endDate")String endDate);
 }

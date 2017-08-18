@@ -41,7 +41,11 @@ public class RankingServiceImpl implements RankingService {
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			String endDate = sdf.format(new Date());
 			list = rankingDao.queryMonthRanking(1, startDate,endDate);
-			dataWrapper.setData(list);
+			if(list==null){
+				dataWrapper.setData(null);
+			}else{
+				dataWrapper.setData(list);
+			}
 		} else { // 返回往月销售排行榜
 			String tableName="rank_"+beYearMonth.substring(0, 4)+"_"+beYearMonth.substring(5, 7);
 			int sign=rankingDao.queryRankingExist(tableName);

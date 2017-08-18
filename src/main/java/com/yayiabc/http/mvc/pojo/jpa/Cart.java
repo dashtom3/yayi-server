@@ -37,6 +37,7 @@ public class Cart extends BasePojo {
 	private String itemPropertyFiveValue;
 	private String itemPropertySixName;
 	private String itemPropertySixValue;
+	
 	private String itemBrandName;
 	private String itemSort;
 

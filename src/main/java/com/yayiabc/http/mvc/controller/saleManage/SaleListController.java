@@ -83,6 +83,7 @@ public class SaleListController {
 	 */
 	@RequestMapping(value="bind",method=RequestMethod.POST)
 	@ResponseBody
+	@AdminLog(description="绑定用户")
 	public DataWrapper<Void> bind(
 			@RequestParam(value="userPhone",required=true)String[] userPhone,
 			@RequestParam(value="salePhone",required=true)String salePhone
@@ -99,6 +100,7 @@ public class SaleListController {
 	 */
 	@RequestMapping(value="disBind",method=RequestMethod.POST)
 	@ResponseBody
+	@AdminLog(description="取消绑定用户")
 	public DataWrapper<Void> disBind(
 			@RequestParam(value="salePhone",required=true)String salePhone,
 			@RequestParam(value="userPhone",required=true)String[] userPhone

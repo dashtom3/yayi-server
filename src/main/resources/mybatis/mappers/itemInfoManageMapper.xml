@@ -102,7 +102,7 @@
 	<insert id="insertItemValue">
 		insert into item_value
 		values
-		(#{itemPropertySixValue},#{itemPropertySixName},#{itemPropertyFiveValue},#{itemPropertyFiveName},#{itemPropertyFourValue},#{itemPropertyFourName},#{itemPropertyThreeValue},#{itemPropertyNameThree},#{itemPropertyTwoValue},#{itemPropertyNameTwo},#{canUse},#{stockNum},#{itemQb},#{tiChen},#{itemSkuPrice},#{itemSKU},null,#{itemId},#{itemPropertyName},#{itemPropertyInfo})
+		(#{itemPropertySixValue},#{itemPropertySixName},#{itemPropertyFiveValue},#{itemPropertyFiveName},#{itemPropertyFourValue},#{itemPropertyFourName},#{itemPropertyThreeValue},#{itemPropertyNameThree},#{itemPropertyTwoValue},#{itemPropertyNameTwo},#{canUse},#{stockNum},#{itemQb},#{tiChen},#{itemSkuPrice},#{itemSKU},null,#{itemId},#{itemPropertyName},#{itemPropertyInfo},0)
 	</insert>
 
 	<insert id="insertItemInfo">

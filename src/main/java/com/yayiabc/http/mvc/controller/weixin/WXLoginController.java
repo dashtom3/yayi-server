@@ -57,18 +57,18 @@ public class WXLoginController {
     @ResponseBody
     public DataWrapper<User> updateUserInfo(
     		@ModelAttribute User user,
-    		@RequestParam(value="type",required=true) Integer type//1表示已注册2.表示未注册
+    		@RequestParam(value="number",required=true) Integer number//1表示已注册2.表示未注册
     		){
-    	return wxLoginService.updateUserInfo(user,type);
+    	return wxLoginService.updateUserInfo(user,number);
     }
     
     @RequestMapping("updateSaleInfo")
     @ResponseBody
     public DataWrapper<Void> updateSaleInfo(
     		@ModelAttribute SaleInfo saleInfo,
-    		@RequestParam(value="type",required=true) Integer type//1表示已注册2.表示未注册
+    		@RequestParam(value="number",required=true) Integer number//1表示已注册2.表示未注册
     		){
-    	return wxLoginService.updateSaleInfo(saleInfo,type);
+    	return wxLoginService.updateSaleInfo(saleInfo,number);
     }
     
    

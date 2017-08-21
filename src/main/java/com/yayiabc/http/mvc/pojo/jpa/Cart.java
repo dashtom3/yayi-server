@@ -22,7 +22,7 @@ public class Cart extends BasePojo {
 	private String itemSKU;
 
 	private Integer state;
-
+	
 	private Integer goodLeaveNum;
 
 	private String itemPropertyName;

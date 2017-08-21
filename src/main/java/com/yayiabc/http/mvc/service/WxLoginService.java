@@ -13,7 +13,7 @@ public interface WxLoginService {
 
     DataWrapper<Object> bindUser(String phone, String verifyCode, String openid, String type);
 
-	DataWrapper<User> updateUserInfo(User user,Integer type);
+	DataWrapper<User> updateUserInfo(User user,Integer number);
 
-	DataWrapper<Void> updateSaleInfo(SaleInfo saleInfo, Integer type);
+	DataWrapper<Void> updateSaleInfo(SaleInfo saleInfo, Integer number);
 }

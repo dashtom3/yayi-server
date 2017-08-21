@@ -34,7 +34,7 @@ public class UploadFile {
 
 		Auth auth = Auth.create(accessKey, secretKey);
 		StringMap putPolicy = new StringMap();
-		putPolicy.put("callbackUrl", "http://47.93.48.111:8080/api/file/callback");
+		putPolicy.put("callbackUrl", "http://123.56.220.72:8089/api/file/callback");
 		putPolicy.put("callbackBody", "key=$(key)&hash=$(etag)&bucket=$(bucket)&fsize=$(fsize)");
 		long expireSeconds = 3600;
 		String upToken = auth.uploadToken(bucket, null, expireSeconds, putPolicy);

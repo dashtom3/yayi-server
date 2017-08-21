@@ -81,7 +81,7 @@
 	
 	
 	<update id="updateUserInfo" parameterType="User">
-		update user set true_name=#{trueName},sex=#{sex} where phone=#{phone}
+		update user set true_name=#{trueName},sex=#{sex},birthday=#{birthday} where phone=#{phone}
 	</update>
 	
 	<update id="updateCertification">

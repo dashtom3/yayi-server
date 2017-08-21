@@ -172,9 +172,9 @@ public class WxLoginServiceImpl implements WxLoginService {
 
 
 	@Override
-	public DataWrapper<User> updateUserInfo(User user,Integer type) {
+	public DataWrapper<User> updateUserInfo(User user,Integer number) {
 		DataWrapper<User> dataWrapper =new DataWrapper<User>();
-		if(type==1){//已注册
+		if(number==1){//已注册
 			userDao.updateUserInfo(user);
 			String userId=userDao.getUserIdByPhone(user.getPhone());
 			user.setUserId(userId);
@@ -207,7 +207,7 @@ public class WxLoginServiceImpl implements WxLoginService {
                 dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
             }
 		}
-		return null;
+		return dataWrapper;
 	}
 	
 	 private String getToken(String userId) {
@@ -240,9 +240,9 @@ public class WxLoginServiceImpl implements WxLoginService {
 
 
 	@Override
-	public DataWrapper<Void> updateSaleInfo(SaleInfo saleInfo, Integer type) {
+	public DataWrapper<Void> updateSaleInfo(SaleInfo saleInfo, Integer number) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		if(type==1){//已注册
+		if(number==1){//已注册
 			saleInfoDao.updateSaleInfo(saleInfo);
 			String saleId=saleInfoDao.getSaleIdBySalePhone(saleInfo.getPhone());
 			String token=getSaleTokenUtil(saleId);

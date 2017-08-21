@@ -68,9 +68,7 @@
 	</select>
 
 
-    <update id="bindSale">
-        UPDATE `user` SET sale_id = #{1} WHERE user_id = #{0}
-    </update>
+    
     
     <select id="getSaleCount" resultType="java.lang.Integer">
     	select count(0) from sale_info where phone=#{phone}
@@ -80,9 +78,7 @@
 		UPDATE user SET sale_id = #{1},bind_sale_time=now() WHERE user_id = #{0}
 	</update>
 
-	<select id="getSaleCount" resultType="java.lang.Integer">
-		select count(0) from sale_info where phone=#{phone}
-	</select>
+	
 	
 	<update id="updateUserInfo" parameterType="User">
 		update user set true_name=#{trueName},sex=#{sex} where phone=#{phone}

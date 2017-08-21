@@ -129,11 +129,7 @@ LEFT JOIN
               (SELECT c.comment_id,c.user_id,c.s_id,c.order_id,c.comment_grade,c.comment_content,c.reply_content,c.co_created,c.co_updated,f.true_name,f.phone FROM
                   (SELECT comment_id,user_id,item_id s_id,order_id,comment_grade,comment_content,reply_content,created co_created,updated co_updated FROM comments) c
               inner JOIN
-<<<<<<< Updated upstream
-              `user` f
-=======
               user f
->>>>>>> Stashed changes
               ON c.user_id=f.user_id order by c.co_created desc) m
 ON n.item_id=m.s_id ) o
 inner JOIN

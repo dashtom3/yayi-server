@@ -3,7 +3,7 @@ package com.yayiabc.http.mvc.controller.weixin;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.dao.SaleLogDao;
 import com.yayiabc.http.mvc.dao.UserDao;
-import com.yayiabc.http.mvc.pojo.jpa.Big;
+
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.WxLoginService;
@@ -46,13 +46,7 @@ public class WXLoginController {
         return wxLoginService.bindUser(phone,verifyCode,openid,type);
     }
     
-    @RequestMapping(value="test",method=RequestMethod.POST)
-    @ResponseBody
-    public void test(
-    		@ModelAttribute Big big
-    		){
-    	System.out.println(big);
-    }
+   
     /**
      * sex:1为男2为女
      * @param user

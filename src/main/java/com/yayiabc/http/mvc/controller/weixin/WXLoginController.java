@@ -71,5 +71,16 @@ public class WXLoginController {
     	return wxLoginService.updateSaleInfo(saleInfo,number);
     }
     
+    @RequestMapping("test")
+    @ResponseBody
+    public DataWrapper<User> test(
+    		@ModelAttribute User user
+    		){
+    	DataWrapper<User> dataWrapper =new DataWrapper<User>();
+    	dataWrapper.setData(user);
+    	System.out.println(user);
+    	return dataWrapper;
+    }
+    
    
 }

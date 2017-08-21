@@ -5,6 +5,8 @@ import java.util.List;
 
 import org.springframework.format.annotation.DateTimeFormat;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
+
 /**
  * 
  * @author xiaojiang 用户表
@@ -115,7 +117,8 @@ public class User extends BasePojo {
 	public void setUserPic(String userPic) {
 		this.userPic = userPic == null ? null : userPic.trim();
 	}
-
+	
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getBirthday() {
 		return birthday;
 	}

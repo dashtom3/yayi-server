@@ -16,4 +16,8 @@ public interface SaleInfoDao {
 			@Param("saleId") String saleId);
 	
 	SaleInfo query(@Param("saleId") String saleId);
+
+	void updateSaleInfo(SaleInfo saleInfo);
+
+	String getSaleIdBySalePhone(@Param("phone")String phone);
 }

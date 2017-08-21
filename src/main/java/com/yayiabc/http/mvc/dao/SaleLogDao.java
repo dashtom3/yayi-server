@@ -28,4 +28,6 @@ public interface SaleLogDao {
 	String getPhoneById(String saleId);
 
 	Integer getUserCount(@Param("phone")String phone);
+
+
 }

@@ -36,4 +36,14 @@ public interface UserDao {
 	int bindSale(String userId, String saleId);
 
 	Integer getSaleCount(@Param("phone")String phone);
+
+	void updateUserInfo(User user);
+
+	void updateCertification(User user);
+
+	String getUserIdByPhone(@Param("phone")String phone);
+
+	void registerUserInfo(User user);
+
+	void registerUserCertification(User user);
 }

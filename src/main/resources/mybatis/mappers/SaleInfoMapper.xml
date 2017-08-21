@@ -42,4 +42,21 @@
 		bank_name,open_name,account_number,referrals FROM sale_info  
 		WHERE sale_id =#{saleId};
 	</select>
+	
+	<update id="updateSaleInfo">
+		update sale_info
+		<set>
+			true_name=#{trueName},sex=#{sex},id_card=#{idCard},work_unit=#{workUnit},work_position=#{workPosition},
+			part=#{part},address=#{address},postal_type=#{postalType},bank_name=#{bankName},open_name=#{openName},account_number=#{accountNumber},
+			<if test="birthday!=null">birthday=#{birthday},</if>
+			<if test="education!=null">education=#{education},</if>
+			<if test="weChar!=null">we_char=#{weChar},</if>
+			<if test="email!=null">email=#{email},</if>
+		</set>
+		where phone=#{phone}
+	</update>
+	
+	<select id="getSaleIdBySalePhone" resultType="string">
+		select sale_id from sale_info where phone=#{phone}
+	</select>
 </mapper>

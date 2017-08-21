@@ -12,6 +12,7 @@
 			<if test="email !=null and email !=''">email=#{email},</if>
 			<if test="sex !=null and sex !=''">sex=#{sex},</if>
 			<if test="birthday !=null and birthday !=''">birthday=#{birthday},</if>
+			<if test="referrals !=null and referrals !=''">referrals=#{referrals},</if>
 			part=#{part},
 			address=#{address},
 			education=#{education},
@@ -38,7 +39,7 @@
 		phone,true_name,id_card,we_char,
 		email,sex,birthday,part,address,education,
 		work_unit,work_position,sale_pic,postal_type,
-		bank_name,open_name,account_number FROM sale_info 
+		bank_name,open_name,account_number,referrals FROM sale_info  
 		WHERE sale_id =#{saleId};
 	</select>
 </mapper>

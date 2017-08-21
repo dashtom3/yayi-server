@@ -59,6 +59,8 @@ public class SaleInfo extends BasePojo {
 	private Integer isBindUser; // 是否绑定用户
 
 	private double totalGetMoney; // 累计收入
+	
+	private String referrals;	//推荐人
 
 	private List<User> user;
 
@@ -264,8 +266,6 @@ public class SaleInfo extends BasePojo {
 		this.bindUserNum = bindUserNum;
 	}
 
-	
-
 	public double getTotalGetMoney() {
 		return totalGetMoney;
 	}
@@ -282,6 +282,16 @@ public class SaleInfo extends BasePojo {
 		this.user = user;
 	}
 
+	
+	
+	public String getReferrals() {
+		return referrals;
+	}
+
+	public void setReferrals(String referrals) {
+		this.referrals = referrals;
+	}
+
 	public SaleInfo() {
 		super();
 	}
@@ -289,7 +299,7 @@ public class SaleInfo extends BasePojo {
 	public SaleInfo(String saleId, String trueName, String idCard,
 			Date birthday, String salePic, Integer sex, String address,
 			String weChar, String email, String part, String education,
-			String workUnit, String workPosition) {
+			String workUnit, String workPosition,String referrals) {
 		super();
 		this.saleId = saleId;
 		this.trueName = trueName;
@@ -304,6 +314,7 @@ public class SaleInfo extends BasePojo {
 		this.education = education;
 		this.workUnit = workUnit;
 		this.workPosition = workPosition;
+		this.referrals=referrals;
 	}
 
 	public SaleInfo(String saleId, String salePwd, String trueName,
@@ -314,7 +325,7 @@ public class SaleInfo extends BasePojo {
 			String education, String workUnit, String workPosition,
 			Integer bindUserNum, Integer isBindUser, List<User> user,
 			List<SaleIncome> saleincome, double totalGetMoney,
-			List<com.yayiabc.http.mvc.pojo.jpa.With> with) {
+			List<com.yayiabc.http.mvc.pojo.jpa.With> with,String referrals) {
 		super();
 		this.saleId = saleId;
 		this.salePwd = salePwd;
@@ -343,6 +354,7 @@ public class SaleInfo extends BasePojo {
 		this.totalGetMoney = totalGetMoney;
 		this.saleincome = saleincome;
 		With = with;
+		this.referrals=referrals;
 	}
 
 	public SaleInfo(String saleId, String trueName, String phone,

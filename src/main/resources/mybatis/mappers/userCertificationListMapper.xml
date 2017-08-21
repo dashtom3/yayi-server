@@ -110,7 +110,20 @@
 	
 	<update id="verifyFail">
 		UPDATE certification 
-		SET type=NULL,company_name=NULL,part=NULL,doctor_pic=NULL,work_address=NULL,judge=0
+		SET
+		type=NULL,
+		company_name=NULL,
+		part=NULL,
+		doctor_pic=NULL,
+		work_address=NULL,
+		judge=0,
+		medical_license=NULL,
+		business_license=NULL,
+		tax_registration=NULL,
+		opening_permit=NULL,
+		radiological_permit=NULL,
+		id_card_positive=NULL,
+		id_card_otherside=NULL
 		WHERE user_id=#{userId};
 	</update>
 </mapper>        

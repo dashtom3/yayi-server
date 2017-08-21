@@ -63,14 +63,14 @@ public interface UserPersonalInfoApi {
      *  }
      *
      */
-	
+
 	/**
      * @api {post} http://47.93.48.111:8080/api/userPersonalInfo/updateUser （前台）编辑个人资料个人信息
      * @apiName updateUser
      * @apiGroup userPersonalInfo
      * @apiVersion 0.1.0
      * @apiDescription 编辑个人资料个人信息
-     * 
+     *
      * @apiParam {String} trueName 真实姓名（必须）
      * @apiParam {int} sex 性别（必须，1男，2女）
      * @apiParam {date} birthday 生日（非必须）
@@ -116,7 +116,7 @@ public interface UserPersonalInfoApi {
      * @apiGroup userPersonalInfo
      * @apiVersion 0.1.0
      * @apiDescription 编辑个人资料资质认证
-     * 
+     *
      * @apiParam {int} type 类型（必须，1个人，2机构）
      * @apiParam {String} companyName 单位名称（必须）
      * @apiParam {String} part 单位所在地（非必须）

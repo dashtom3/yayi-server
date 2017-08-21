@@ -1,6 +1,6 @@
 package com.yayiabc.api.Back;
 
-public class ItemInfo {
+public interface ItemInfo {
 	/**
 	 * 
 	 * @api {post} http://47.93.48.111:8080/api/item/itemInfoList  （后台）商品列表

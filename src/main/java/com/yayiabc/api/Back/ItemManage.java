@@ -1,6 +1,6 @@
 package com.yayiabc.api.Back;
 
-public class ItemManage {
+public interface ItemManage {
 	/**
 	 * 
 	 * @api {post} http://47.93.48.111:8080/api/item/queryItemBrand  （后台）根据商品品牌名称和品牌产地来查询品牌

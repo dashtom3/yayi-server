@@ -1,6 +1,6 @@
 package com.yayiabc.api.CK;
 
-public class SaleRankingListApi {
+public interface SaleRankingListApi {
 	/**
      * @api {get} http://47.93.48.111:8080/api/rankingList/list （创客系统）销售排行榜
      * @apiName salelist

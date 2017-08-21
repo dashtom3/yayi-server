@@ -1,6 +1,6 @@
 package com.yayiabc.api.Back;
 
-public class SaleListApi {
+public interface SaleListApi {
 	/**
      * @api {get} http://47.93.48.111:8080/api/saleList/query （后台）销售员列表
      * @apiName query

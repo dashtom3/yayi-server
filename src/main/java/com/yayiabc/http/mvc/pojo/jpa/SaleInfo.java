@@ -3,6 +3,7 @@ package com.yayiabc.http.mvc.pojo.jpa;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -148,6 +149,7 @@ public class SaleInfo extends BasePojo {
 		this.workPosition = workPosition;
 	}
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	public Date getBirthday() {
 		return birthday;
 	}

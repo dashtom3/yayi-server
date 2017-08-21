@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.pojo.model;
 
 import java.util.Date;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class UserPersonalInfo {
@@ -85,6 +86,7 @@ public class UserPersonalInfo {
 		this.sex = sex;
 	}
 
+	@JsonFormat(pattern = "yyyy-MM-dd")
 	public Date getBirthday() {
 		return birthday;
 	}

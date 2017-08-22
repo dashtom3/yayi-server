@@ -22,7 +22,17 @@
             <if test="phone!=null">and phone like '%${phone}%'</if>
             <if test="trueName!=null">and true_name like '%${trueName}%'</if>
         </where>
+		LIMIT ${page.currentNumber},${page.numberPerPage}
     </select>
+
+	<select id="getAdminstratorCount" resultType="java.lang.Integer">
+		select COUNT(0) from adminstrator
+		<where>
+			true
+			<if test="phone!=null">and phone like '%${phone}%'</if>
+			<if test="trueName!=null">and true_name like '%${trueName}%'</if>
+		</where>
+	</select>
 
     <select id="loginAdminstrator" resultType="Adminstrator">
 		select * from adminstrator where phone=#{phone} and adminstrator_pwd=#{adminstratorPwd}

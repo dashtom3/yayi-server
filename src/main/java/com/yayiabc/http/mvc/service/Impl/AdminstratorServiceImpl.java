@@ -4,6 +4,7 @@ import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.MD5Util;
+import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.AdminstratorDao;
 import com.yayiabc.http.mvc.pojo.jpa.Adminstrator;
 import com.yayiabc.http.mvc.pojo.model.AdminstratorToken;
@@ -61,8 +62,7 @@ public class AdminstratorServiceImpl implements AdminstratorService {
     }
 
     @Override
-    public DataWrapper<List<Adminstrator>> queryAdminstrator(String phone,
-                                                             String trueName) {
+    public DataWrapper<List<Adminstrator>> queryAdminstrator(String phone, String trueName,Integer currentPage,Integer numberPerPage) {
         DataWrapper<List<Adminstrator>> dataWrapper = new DataWrapper<List<Adminstrator>>();
         if ("".equals(phone)) {
             phone = null;
@@ -70,7 +70,12 @@ public class AdminstratorServiceImpl implements AdminstratorService {
         if ("".equals(trueName)) {
             trueName = null;
         }
-        List<Adminstrator> adminstratorList = adminstratorDao.queryAdminstrator(phone, trueName);
+        Page page = new Page();
+        page.setNumberPerPage(numberPerPage);
+        page.setCurrentPage(currentPage);
+        int totalNumber=adminstratorDao.getAdminstratorCount(phone,trueName);
+        dataWrapper.setPage(page, totalNumber);
+        List<Adminstrator> adminstratorList = adminstratorDao.queryAdminstrator(phone, trueName,page);
         dataWrapper.setData(adminstratorList);
         dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
         return dataWrapper;

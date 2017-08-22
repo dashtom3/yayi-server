@@ -76,9 +76,11 @@ public class AdminstratorController {
 	public DataWrapper<List<Adminstrator>> queryAdminstrator(
 			@RequestParam(value="phone",required=false) String phone,
 			@RequestParam(value="trueName",required=false) String trueName,
-			@RequestHeader(value="adminToken",required=true)String adminToken
+			@RequestHeader(value="adminToken",required=true)String adminToken,
+			@RequestParam(value = "currentPage",required=false,defaultValue="1") Integer currentPage,
+			@RequestParam(value = "numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 			){
-		return adminstratorService.queryAdminstrator(phone,trueName);
+		return adminstratorService.queryAdminstrator(phone,trueName,currentPage,numberPerPage);
 	}
 	
 	/**

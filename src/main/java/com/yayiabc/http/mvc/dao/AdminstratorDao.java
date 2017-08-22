@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.dao;
 
 import java.util.List;
 
+import com.yayiabc.common.utils.Page;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -16,7 +17,9 @@ public interface AdminstratorDao {
 
 	void updateAdminstrator(Adminstrator adminstrator);
 
-	List<Adminstrator> queryAdminstrator(@Param("phone") String phone,@Param("trueName") String trueName);
+	List<Adminstrator> queryAdminstrator(@Param("phone") String phone,@Param("trueName") String trueName,@Param("page") Page page);
+
+	Integer getAdminstratorCount(@Param("phone") String phone,@Param("trueName") String trueName);
 
 	Adminstrator loginAdminstrator(@Param("phone") String phone,@Param("adminstratorPwd") String adminstratorPwd);
 

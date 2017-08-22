@@ -16,7 +16,7 @@ public interface AdminstratorService {
 			String adminstratorPwd, String trueName);
 
 	DataWrapper<List<Adminstrator>> queryAdminstrator(String phone,
-			String trueName);
+			String trueName,Integer currentPage,Integer numberPerPage);
 
 	DataWrapper<Void> loginAdminstrator(String phone, String adminstratorPwd,String code);
 

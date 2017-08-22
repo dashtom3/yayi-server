@@ -11,6 +11,7 @@
 		<result column="birthday" property="birthday"/>
 		<result column="qq" property="qq"/>
 		<result column="user_pic" property="userPic"/>
+		<result column="qb_balance" property="qbBalance"/>
 		<result column="type" property="type"/>
 		<result column="company_name" property="companyName"/>
 		<result column="part" property="part"/>
@@ -36,6 +37,7 @@
 		DATE_FORMAT(u.birthday, '%Y-%m-%d') AS birthday,
 		u.qq,
 		u.user_pic,
+		u.qb_balance,
 		c.type,
 		c.company_name,
 		c.part,

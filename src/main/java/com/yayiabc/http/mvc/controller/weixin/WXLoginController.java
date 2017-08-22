@@ -81,6 +81,8 @@ public class WXLoginController {
     	System.out.println(user);
     	return dataWrapper;
     }
+
+
     
    
 }

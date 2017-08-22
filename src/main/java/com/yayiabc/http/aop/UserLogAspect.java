@@ -7,10 +7,7 @@ import javax.servlet.http.HttpServletRequest;
 
 import org.aspectj.lang.JoinPoint;
 import org.aspectj.lang.ProceedingJoinPoint;
-import org.aspectj.lang.annotation.Around;
-import org.aspectj.lang.annotation.Aspect;
-import org.aspectj.lang.annotation.Before;
-import org.aspectj.lang.annotation.Pointcut;
+import org.aspectj.lang.annotation.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
@@ -43,8 +40,8 @@ public class UserLogAspect {
 		
 	}
 	
-	@Before("controllerAspect()")
-	public void doBefore(JoinPoint joinPoint) throws Exception{
+	@After("controllerAspect()")
+	public void doAfter(JoinPoint joinPoint) throws Exception{
 		HttpServletRequest request = ((ServletRequestAttributes) RequestContextHolder.getRequestAttributes()).getRequest();
 		String token=request.getHeader("token");
 		String userId =systemControllerLogService.getUserIdByToken(token);

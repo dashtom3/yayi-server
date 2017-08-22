@@ -149,7 +149,7 @@ public class SaleInfo extends BasePojo {
 		this.workPosition = workPosition;
 	}
 
-	@JsonFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
 	public Date getBirthday() {
 		return birthday;
 	}

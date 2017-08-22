@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.service;
 
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
+import org.springframework.transaction.annotation.Transactional;
 
 public interface SaleLogService {
 	DataWrapper<Void> getVerifyCode(String phone);

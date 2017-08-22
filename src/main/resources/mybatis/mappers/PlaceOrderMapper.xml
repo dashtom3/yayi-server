@@ -313,21 +313,21 @@
 	</select>
 
 	<insert id="batchSynchronization" parameterType="java.util.List">
-		insert into order_item
-		(itm_SKU,item_id,order_id,num,price,item_property_namea
-		,item_property_nameb,item_property_namec,created,item_name,pic_path,item_type,
-		item_brand_name
-		)values
-		<foreach collection="list" item="item" index="index"
-			separator=",">
-			(
-			#{item.itemSKU},
-			#{item.itemId},#{item.orderId},#{item.num}, #{item.price},
-			#{item.itemPropertyNamea},#{item.itemPropertyNameb},#{item.itemPropertyNamec}
-			,now(),#{item.itemName},#{item.picPath},#{item.itemType},#{item.itemBrandName}
-			)
-		</foreach>
-	</insert>
+	insert into order_item
+	(itm_SKU,item_id,order_id,num,price,item_property_namea
+	,item_property_nameb,item_property_namec,created,item_name,pic_path,item_type,
+	item_brand_name
+	)values
+	<foreach collection="list" item="item" index="index"
+			 separator=",">
+		(
+		#{item.itemSKU},
+		#{item.itemId},#{item.orderId},#{item.num}, #{item.price},
+		#{item.itemPropertyNamea},#{item.itemPropertyNameb},#{item.itemPropertyNamec}
+		,now(),#{item.itemName},#{item.picPath},#{item.itemType},#{item.itemBrandName}
+		)
+	</foreach>
+</insert>
 	<delete id="cleanCartList" parameterType="java.util.List">
 		 delete from cart where user_id=#{userId} and item_SKU in
         <foreach item="item" collection="orderItemLists" open="(" separator="," close=")">

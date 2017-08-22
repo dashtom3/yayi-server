@@ -29,6 +29,7 @@ import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.PostFee;
 import com.yayiabc.http.mvc.pojo.jpa.Receiver;
 import com.yayiabc.http.mvc.service.PlaceOrderService;
+import org.springframework.transaction.annotation.Transactional;
 
 @Service
 public class PlaceOrderServiceImpl implements PlaceOrderService{
@@ -149,6 +150,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	}
 
 	//1234
+	@Transactional
 	@Override
 	public DataWrapper<HashMap<String, Object>> generaOrder(String token, List<OrderItem> orderItemList, Ordera order,
 			Invoice  invoice
@@ -165,7 +167,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//obtain orderId 
 			String orderId=OrderIdUtils.createOrderId(userId);
 			//将订单信息保存在订单里 你如是否需要发表  留言等。。2[=。 
-			if(order!=null){
+			if(order != null){
 				if(order.getQbDed()==null){
 					order.setQbDed(0);
 				}if(order.getInvoiceHand()==null){
@@ -176,6 +178,9 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					order.setBuyerMessage("该单暂时未被评价呢");
 					order.setBuyerRate(0);
 				}
+			} else {
+				//set datawrapper
+				return  dataWrapper;
 			}
 			//创建订单并保存订单数据
 			placeOrderDao.createOrder(orderId,userId,order);

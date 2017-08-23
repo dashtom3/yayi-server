@@ -8,13 +8,11 @@ import com.yayiabc.common.utils.MD5Util;
 import com.yayiabc.http.mvc.dao.SaleLogDao;
 import com.yayiabc.http.mvc.dao.WxAppDao;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
-import com.yayiabc.http.mvc.pojo.model.UserToken;
 import com.yayiabc.http.mvc.service.SaleLogService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.Timer;
 import java.util.TimerTask;
 import java.util.UUID;
 
@@ -208,7 +206,7 @@ public class SaleLogServiceImpl implements SaleLogService {
         } else {
             saleLogDao.updateSaleToken(id, token);
         }
-        new Timer().schedule(new TokenTask(token), 2 * 3600 * 1000);
+//        new Timer().schedule(new TokenTask(token), 2 * 3600 * 1000);
         return token;
     }
 

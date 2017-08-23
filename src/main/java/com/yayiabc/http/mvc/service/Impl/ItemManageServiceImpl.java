@@ -11,7 +11,9 @@ import org.springframework.stereotype.Service;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
+import com.yayiabc.http.mvc.controller.item.ClassifyManage;
 import com.yayiabc.http.mvc.dao.ItemBrandDao;
+import com.yayiabc.http.mvc.dao.ItemClassifyDao;
 import com.yayiabc.http.mvc.dao.ItemManageDao;
 import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
 import com.yayiabc.http.mvc.pojo.jpa.ItemClassify;
@@ -26,6 +28,9 @@ public class ItemManageServiceImpl implements ItemManageService{
 	
 	@Autowired
 	private ItemManageDao itemManageDao;
+	
+	@Autowired
+    ItemClassifyDao itemClassifyDao;
 	/**
 	 * 品牌查询
 	 */
@@ -216,6 +221,7 @@ public class ItemManageServiceImpl implements ItemManageService{
 				itemManageDao.deleteClassify(itemClassifySon);
 			}
 			itemManageDao.deleteItemClassify(itemClassifyNameA);
+			ClassifyManage.classifyList=itemClassifyDao.showsTreeClassify();
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		}else{
 			dataWrapper.setErrorCode(ErrorCodeEnum.ITEM_LEAVE);
@@ -247,7 +253,7 @@ public class ItemManageServiceImpl implements ItemManageService{
 
 		}
 		itemManageDao.updateItemClassify(itemClassify);
-		
+		ClassifyManage.classifyList=itemClassifyDao.showsTreeClassify();
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
 	}
@@ -294,6 +300,7 @@ public class ItemManageServiceImpl implements ItemManageService{
 			System.out.println(3);
 		}
 		itemManageDao.addItemClassify(itemClassify);
+		ClassifyManage.classifyList=itemClassifyDao.showsTreeClassify();
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
 	}

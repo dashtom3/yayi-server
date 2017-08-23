@@ -1,5 +1,7 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import com.yayiabc.http.mvc.pojo.jpa.SaleToken;
+import com.yayiabc.http.mvc.pojo.model.UserToken;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -59,6 +61,15 @@ public class TokenValidateServiceImpl implements TokenValidateService{
 		return adminCount;
 	}
 
-	
+	@Override
+	public UserToken getUserTokenByLoginToken(String loginToken) {
+		return tokenValidateDao.getUserTokenByLoginToken(loginToken);
+	}
+
+	@Override
+	public SaleToken getSaleTokenByLoginToken(String loginToken) {
+		return tokenValidateDao.getSaleTokenByLoginToken(loginToken);
+	}
+
 
 }

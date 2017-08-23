@@ -19,8 +19,6 @@ import com.yayiabc.http.mvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import java.util.Timer;
-import java.util.TimerTask;
 import java.util.UUID;
 
 @Service("userService")
@@ -167,9 +165,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public DataWrapper<User> pwdLogin(String phone, String password) {
         DataWrapper<User> dataWrapper = new DataWrapper<User>();
-        User user = new User();
-        user.setPhone(phone);
-        User seUser = userDao.getUserByUser(user);
+        User seUser = userDao.getUserByPhone(phone);
         String token = null;
         if (seUser != null) {
             if (MD5Util.getMD5String(password).equals(seUser.getPwd())) {
@@ -280,22 +276,10 @@ public class UserServiceImpl implements UserService {
         } else {
             userDao.updateToken(userToken);
         }
-        new Timer().schedule(new TokenTask(token), 2 * 3600 * 1000);
         return token;
     }
 
-    private class TokenTask extends TimerTask {
-        private String token;
 
-        public TokenTask(String token) {
-            this.token = token;
-        }
-
-        @Override
-        public void run() {
-            userDao.deleteToken(token);
-        }
-    }
 
 
 }

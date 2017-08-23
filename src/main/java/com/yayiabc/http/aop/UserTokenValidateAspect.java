@@ -1,7 +1,9 @@
 package com.yayiabc.http.aop;
 
-import javax.servlet.http.HttpServletRequest;
-
+import com.yayiabc.common.enums.ErrorCodeEnum;
+import com.yayiabc.common.exceptionHandler.AuthException;
+import com.yayiabc.http.mvc.pojo.model.UserToken;
+import com.yayiabc.http.mvc.service.TokenValidateService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -11,9 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.yayiabc.common.enums.ErrorCodeEnum;
-import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.http.mvc.service.TokenValidateService;
+import javax.servlet.http.HttpServletRequest;
 
 @Aspect
 @Component
@@ -39,19 +39,19 @@ public class UserTokenValidateAspect {
 		/**
 		* 1.验证该用户是否已登录，通过是否包含此token来判断
 		*/
-		Integer userCount=tokenValidateService.getUserCountByLoginToken(loginToken);
-		if(userCount!=0){
-			try {
-				result=joinpoint.proceed();//放行
-			} catch (Throwable e) {
-				e.printStackTrace();
+		UserToken userToken =tokenValidateService.getUserTokenByLoginToken(loginToken);
+		if(userToken!=null){
+			if((System.currentTimeMillis()-userToken.getLoginDate().getTime())>30*60*1000){
+				try {
+					result=joinpoint.proceed();//放行
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+			}else{
+				throw new AuthException(ErrorCodeEnum.RE_LOGIN);
 			}
-		
-		}else {
-			DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-			dataWrapper.setErrorCode(ErrorCodeEnum.RE_LOGIN);
-			dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-			result=dataWrapper;
+		}else{
+			throw new AuthException(ErrorCodeEnum.RE_LOGIN);
 		}
 		return result;
 	}	

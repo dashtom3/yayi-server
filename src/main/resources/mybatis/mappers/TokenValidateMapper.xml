@@ -30,4 +30,12 @@
 	<select id="getAdminCountByLoginToken" resultType="java.lang.Integer">
 		select count(0) from adminstrator_token where adminstrator_token=#{loginToken}
 	</select>
+
+	<select id="getUserTokenByLoginToken" resultType="UserToken">
+		select * from user_token where token=#{loginToken}
+	</select>
+
+	<select id="getSaleTokenByLoginToken" resultType="SaleToken">
+		select * from sale_token where sale_token=#{loginToken}
+	</select>
 </mapper>       

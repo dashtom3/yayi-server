@@ -1,20 +1,15 @@
 package com.yayiabc.http.mvc.controller.weixin;
 
 import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.http.mvc.dao.SaleLogDao;
-import com.yayiabc.http.mvc.dao.UserDao;
-
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
+import com.yayiabc.http.mvc.pojo.model.UserToken;
 import com.yayiabc.http.mvc.service.WxLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.Date;
 
 /**
  *
@@ -71,14 +66,15 @@ public class WXLoginController {
     	return wxLoginService.updateSaleInfo(saleInfo,number);
     }
     
-    @RequestMapping("test")
+    @RequestMapping(value="test",method=RequestMethod.GET)
     @ResponseBody
-    public DataWrapper<User> test(
-    		@ModelAttribute User user
+    public DataWrapper<UserToken> test(
     		){
-    	DataWrapper<User> dataWrapper =new DataWrapper<User>();
-    	dataWrapper.setData(user);
-    	System.out.println(user);
+    	DataWrapper<UserToken> dataWrapper =new DataWrapper<UserToken>();
+    	UserToken userToken=new UserToken();
+    	userToken.setToken("416516456");
+    	dataWrapper.setData(userToken);
+    	System.out.println(userToken);
     	return dataWrapper;
     }
 

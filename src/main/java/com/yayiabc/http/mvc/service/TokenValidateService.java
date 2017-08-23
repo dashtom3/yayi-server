@@ -1,5 +1,8 @@
 package com.yayiabc.http.mvc.service;
 
+import com.yayiabc.http.mvc.pojo.jpa.SaleToken;
+import com.yayiabc.http.mvc.pojo.model.UserToken;
+
 public interface TokenValidateService {
 
 	Integer getUserCountByLoginToken(String loginToken);
@@ -16,4 +19,7 @@ public interface TokenValidateService {
 
 	Integer getAdminCountByLoginToken(String loginToken);
 
+    UserToken getUserTokenByLoginToken(String loginToken);
+
+    SaleToken getSaleTokenByLoginToken(String loginToken);
 }

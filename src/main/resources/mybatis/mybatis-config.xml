@@ -3,18 +3,25 @@
   PUBLIC "-//mybatis.org//DTD Config 3.0//EN"
   "http://mybatis.org/dtd/mybatis-3-config.dtd">
 <configuration>
-
+	<properties>  
+        <property name="dialect" value="mysql" />  
+    </properties>  
+    
 	<settings>
 		<!-- 开启驼峰自动映射 -->
 		<setting name="mapUnderscoreToCamelCase" value="true" />
 		<!-- 二级缓存的总开关，被redis替代 -->
 		<setting name="cacheEnabled" value="false" />
+        <setting name="logImpl" value="LOG4J" />    
+        <setting name="logImpl" value="STDOUT_LOGGING"/>
+		
 	</settings>
 	<typeAliases>
         <package name="com.yayiabc.http.mvc.pojo.jpa"/>
         <package name="com.yayiabc.http.mvc.pojo.model"/>
         <package name="com.yayiabc.http.mvc.pojo.log"/>
     </typeAliases>
+    
 
 	
 	<plugins>

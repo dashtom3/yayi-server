@@ -46,4 +46,6 @@ public interface UserDao {
 	void registerUserInfo(User user);
 
 	void registerUserCertification(User user);
+
+	User getUserByPhone(@Param("phone")String phone);
 }

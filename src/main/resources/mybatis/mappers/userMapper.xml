@@ -22,6 +22,21 @@
 		certification d
 		ON d.user_id=c.user_id
 	</select>
+
+	<select id="getUserByPhone" resultMap="userMap">
+		SELECT
+		c.*,d.type,d.company_name,d.part,d.doctor_pic,d.work_address,d.business_license
+		FROM
+		(SELECT a.*,b.phone sale_phone,b.true_name sale_name FROM
+		(SELECT * FROM user WHERE phone=#{phone}) a
+		LEFT JOIN
+		sale_info b
+		ON a.sale_id=b.sale_id)c
+		LEFT JOIN
+		certification d
+		ON d.user_id=c.user_id
+	</select>
+
 	<resultMap type="User" id="userMap" autoMapping="true">
 		<id column="user_id" property="userId" jdbcType="VARCHAR" />
 		<association property="certification" javaType="Certification"
@@ -52,7 +67,7 @@
 	</select>
 
 	<insert id="addToken">
-		insert into user_token values (#{token},#{userId})
+		insert into user_token(token,user_id) values (#{token},#{userId})
 	</insert>
 
 	<update id="updateToken">

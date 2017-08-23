@@ -12,6 +12,7 @@
 	<bean id="userTokenValidateAspect" class="com.yayiabc.http.aop.UserTokenValidateAspect"/>
 	<bean id="saleTokenValidateAspect" class="com.yayiabc.http.aop.SaleTokenValidateAspect"/>
 	<bean id="adminTokenValidateAspect" class="com.yayiabc.http.aop.AdminTokenValidateAspect"/>
+	<bean id="exceptionResolver" class="com.yayiabc.common.exceptionHandler.ExceptionHandler"/>
 	<bean class="org.springframework.aop.aspectj.annotation.AnnotationAwareAspectJAutoProxyCreator" />
 	<context:component-scan base-package="com.yayiabc.http.mvc.service"></context:component-scan>
 	<context:component-scan base-package="com.yayiabc.http.mvc.dao"></context:component-scan>

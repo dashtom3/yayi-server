@@ -1,29 +1,33 @@
 package com.yayiabc.http.mvc.controller.item;
 
-import java.util.List;
-
+import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
+import com.yayiabc.http.mvc.pojo.model.Classify;
+import com.yayiabc.http.mvc.pojo.model.SysResult;
+import com.yayiabc.http.mvc.service.ItemClassifyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
-import com.yayiabc.http.mvc.pojo.model.Classify;
-import com.yayiabc.http.mvc.pojo.model.SysResult;
-import com.yayiabc.http.mvc.service.ItemClassifyService;
+import java.util.List;
 
 
 @Controller
 @RequestMapping("api/item")
 public class ItemClassifyController {
+    
       @Autowired 
       private ItemClassifyService itemClassifyService;
+      
       @RequestMapping("showClassify")
       @ResponseBody
       public  DataWrapper<List<Classify>>  showClassify(){
-    	 return itemClassifyService.showsTreeClassify();
+    	  DataWrapper<List<Classify>> dataWrapper =new DataWrapper<List<Classify>>();
+    	  dataWrapper.setData(ClassifyManage.classifyList);
+
+    	 return dataWrapper;
       }
       @RequestMapping("getAllClassifyAndBrand")
       @ResponseBody

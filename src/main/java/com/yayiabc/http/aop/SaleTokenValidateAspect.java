@@ -1,7 +1,9 @@
 package com.yayiabc.http.aop;
 
-import javax.servlet.http.HttpServletRequest;
-
+import com.yayiabc.common.enums.ErrorCodeEnum;
+import com.yayiabc.common.exceptionHandler.AuthException;
+import com.yayiabc.http.mvc.pojo.jpa.SaleToken;
+import com.yayiabc.http.mvc.service.TokenValidateService;
 import org.aspectj.lang.ProceedingJoinPoint;
 import org.aspectj.lang.annotation.Around;
 import org.aspectj.lang.annotation.Aspect;
@@ -11,9 +13,7 @@ import org.springframework.stereotype.Component;
 import org.springframework.web.context.request.RequestContextHolder;
 import org.springframework.web.context.request.ServletRequestAttributes;
 
-import com.yayiabc.common.enums.ErrorCodeEnum;
-import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.http.mvc.service.TokenValidateService;
+import javax.servlet.http.HttpServletRequest;
 
 @Aspect
 @Component
@@ -39,8 +39,21 @@ public class SaleTokenValidateAspect {
 		/**
 		* 1.验证该用户是否已登录，通过是否包含此token来判断
 		*/
-
-		Integer saleCount=tokenValidateService.getSaleCountByLoginToken(loginToken);
+		SaleToken saleToken=tokenValidateService.getSaleTokenByLoginToken(loginToken);
+		if(saleToken!=null){
+			if((System.currentTimeMillis()-saleToken.getLoginTime().getTime())>30*60*1000){
+				try {
+					result=joinpoint.proceed();//放行
+				} catch (Throwable e) {
+					e.printStackTrace();
+				}
+			}else{
+				throw new AuthException(ErrorCodeEnum.RE_LOGIN);
+			}
+		}else{
+			throw new AuthException(ErrorCodeEnum.RE_LOGIN);
+		}
+		/*Integer saleCount=tokenValidateService.getSaleCountByLoginToken(loginToken);
 		if(saleCount!=0){
 			try {
 				result=joinpoint.proceed();//放行
@@ -52,7 +65,7 @@ public class SaleTokenValidateAspect {
 			dataWrapper.setErrorCode(ErrorCodeEnum.RE_LOGIN_SALE);
 			dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
 			result=dataWrapper;
-		}
+		}*/
 		return result;
 	}	
 }

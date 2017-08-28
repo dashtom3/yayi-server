@@ -46,7 +46,124 @@
         <filter-name>cors</filter-name>
         <url-pattern>/api/*</url-pattern>
     </filter-mapping>
-
+    
+    <!-- 银联配置 -->
+	<filter>
+		<filter-name>CharsetEncodingFilter</filter-name>
+		<filter-class>web.CharsetEncodingFilter</filter-class>
+	</filter>
+	<filter-mapping>
+		<filter-name>CharsetEncodingFilter</filter-name>
+		<url-pattern>*.jsp</url-pattern>
+		<url-pattern>*</url-pattern>
+	</filter-mapping>
+	<servlet>
+		<servlet-name>autoLoadServlet</servlet-name>
+		<servlet-class>web.AutoLoadServlet</servlet-class>
+		<load-on-startup>0</load-on-startup>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>autoLoadServlet</servlet-name>
+		<url-pattern>/autoLoadServlet</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>frontRcvResponse</servlet-name>
+		<servlet-class>com.yayiabc.http.mvc.controller.unionpay.demo.FrontRcvResponse</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>frontRcvResponse</servlet-name>
+		<url-pattern>/frontRcvResponse</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>backRcvResponse</servlet-name>
+		<servlet-class>com.yayiabc.http.mvc.controller.unionpay.demo.BackRcvResponse</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>backRcvResponse</servlet-name>
+		<url-pattern>/backRcvResponse</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>form_6_2_FrontConsume</servlet-name>
+		<servlet-class>com.yayiabc.http.mvc.controller.unionpay.demo.consume.Form_6_2_FrontConsume</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>form_6_2_FrontConsume</servlet-name>
+		<url-pattern>/form_6_2_FrontConsume</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>form_6_5_Query</servlet-name>
+		<servlet-class>com.yayiabc.http.mvc.controller.unionpay.demo.Form_6_5_Query</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>form_6_5_Query</servlet-name>
+		<url-pattern>/form_6_5_Query</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>form_6_3_ConsumeUndo</servlet-name>
+		<servlet-class>com.yayiabc.http.mvc.controller.unionpay.demo.consume.Form_6_3_ConsumeUndo</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>form_6_3_ConsumeUndo</servlet-name>
+		<url-pattern>/form_6_3_ConsumeUndo</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>form_6_4_Refund</servlet-name>
+		<servlet-class>com.yayiabc.http.mvc.controller.unionpay.demo.Form_6_4_Refund</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>form_6_4_Refund</servlet-name>
+		<url-pattern>/form_6_4_Refund</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>form_6_6_FileTransfer</servlet-name>
+		<servlet-class>com.yayiabc.http.mvc.controller.unionpay.demo.Form_6_6_FileTransfer</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>form_6_6_FileTransfer</servlet-name>
+		<url-pattern>/form_6_6_FileTransfer</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>form_6_7_1_AuthDeal_Front</servlet-name>
+		<servlet-class>com.yayiabc.http.mvc.controller.unionpay.demo.preauth.Form_6_7_1_AuthDeal_Front</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>form_6_7_1_AuthDeal_Front</servlet-name>
+		<url-pattern>/form_6_7_1_AuthDeal_Front</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>form_6_7_2_AuthUndo</servlet-name>
+		<servlet-class>com.yayiabc.http.mvc.controller.unionpay.demo.preauth.Form_6_7_2_AuthUndo</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>form_6_7_2_AuthUndo</servlet-name>
+		<url-pattern>/form_6_7_2_AuthUndo</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>form_6_7_3_AuthFinish</servlet-name>
+		<servlet-class>com.yayiabc.http.mvc.controller.unionpay.demo.preauth.Form_6_7_3_AuthFinish</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>form_6_7_3_AuthFinish</servlet-name>
+		<url-pattern>/form_6_7_3_AuthFinish</url-pattern>
+	</servlet-mapping>
+	<servlet>
+		<servlet-name>form_6_7_4_AuthFinishUndo</servlet-name>
+		<servlet-class>com.yayiabc.http.mvc.controller.unionpay.demo.preauth.Form_6_7_4_AuthFinishUndo</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>form_6_7_4_AuthFinishUndo</servlet-name>
+		<url-pattern>/form_6_7_4_AuthFinishUndo</url-pattern>
+	</servlet-mapping>
+	<!-- <servlet>
+		<servlet-name>form_6_2_FrontConsume2</servlet-name>
+		<servlet-class>com.yayiabc.http.mvc.controller.unionpay.demo.consume.Form_6_2_FrontConsume2</servlet-class>
+	</servlet>
+	<servlet-mapping>
+		<servlet-name>form_6_2_FrontConsume2</servlet-name>
+		<url-pattern>/form_6_2_FrontConsume2</url-pattern>
+	</servlet-mapping> -->
+	<!--  -->
+	
 	<!-- 配置SpringMVC -->
 	<servlet>
 		<servlet-name>springmvc-web</servlet-name>

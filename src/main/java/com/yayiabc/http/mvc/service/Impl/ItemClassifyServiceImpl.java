@@ -1,21 +1,18 @@
 package com.yayiabc.http.mvc.service.Impl;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.ItemBrandDao;
 import com.yayiabc.http.mvc.dao.ItemClassifyDao;
-import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
 import com.yayiabc.http.mvc.pojo.model.Classify;
 import com.yayiabc.http.mvc.pojo.model.Search;
-import com.yayiabc.http.mvc.pojo.model.SysResult;
 import com.yayiabc.http.mvc.service.ItemClassifyService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.List;
 @Service
 public class ItemClassifyServiceImpl implements ItemClassifyService {
 	@Autowired
@@ -36,7 +33,7 @@ public class ItemClassifyServiceImpl implements ItemClassifyService {
 		  return dataWrapper;
 	}
 
-	@Override
+	/*@Override
 	public DataWrapper<SysResult> getAllClassifyAndBrand() {
 		DataWrapper<SysResult> dataWrapper=new DataWrapper<SysResult>();
 		SysResult sysResult =new SysResult();
@@ -46,7 +43,7 @@ public class ItemClassifyServiceImpl implements ItemClassifyService {
 		sysResult.setItemBrandList(brandList);
 		dataWrapper.setData(sysResult);
 		return dataWrapper;
-	}
+	}*/
 
 	@Override
 	public DataWrapper<List<ItemInfo>> queryItemSearch(String oneClassify,

@@ -1,14 +1,5 @@
 package com.yayiabc.http.mvc.controller.item;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
@@ -16,6 +7,11 @@ import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
 import com.yayiabc.http.mvc.pojo.jpa.ItemClassify;
 import com.yayiabc.http.mvc.pojo.jpa.ItemProperty;
 import com.yayiabc.http.mvc.service.ItemManageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("api/item")
@@ -198,12 +194,14 @@ public class ItemManageController {
 	@AdminTokenValidate
 	@AdminLog(description="管理员删除分类")
 	public DataWrapper<Void> deleteItemClassify(
-			@RequestParam(value="itemClassifyId",required=true) Integer itemClassifyId,
+			/*@RequestParam(value="itemClassifyId",required=true) Integer itemClassifyId,
 			@RequestParam(value="itemClassifyName",required=true) String itemClassifyName,
-			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade,
+			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade,*/
+			@ModelAttribute ItemClassify itemClassify,
 			@RequestHeader(value="adminToken",required=true)String adminToken
 			){
-		return itemManageService.deleteItemClassify(itemClassifyId,itemClassifyName,itemClassifyGrade);
+//		return itemManageService.deleteItemClassify(itemClassifyId,itemClassifyName,itemClassifyGrade);
+		return itemManageService.deleteItemClassify(itemClassify);
 	}
 	
 	/**
@@ -214,13 +212,15 @@ public class ItemManageController {
 	@AdminTokenValidate
 	@AdminLog(description="管理员修改分类")
 	public DataWrapper<Void> updateItemClassify(
-			@RequestParam(value="itemClassifyId",required=true) Integer itemClassifyId,
+			/*@RequestParam(value="itemClassifyId",required=true) Integer itemClassifyId,
 			@RequestParam(value="itemClassifyName",required=true) String itemClassifyName,
 			@RequestParam(value="itemOldName",required=true) String itemOldName,
-			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade,
+			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade,*/
+			@ModelAttribute ItemClassify itemClassify,
 			@RequestHeader(value="adminToken",required=true)String adminToken
 			){
-		return itemManageService.updateItemClassify(itemClassifyId,itemClassifyName,itemOldName,itemClassifyGrade);
+//		return itemManageService.updateItemClassify(itemClassifyId,itemClassifyName,itemOldName,itemClassifyGrade);
+		return itemManageService.updateItemClassify(itemClassify);
 	}
 	
 	/**
@@ -231,12 +231,14 @@ public class ItemManageController {
 	@AdminTokenValidate
 	@AdminLog(description="管理员添加分类")
 	public DataWrapper<Void> addItemClassify(
-			@RequestParam(value="itemClassifyName",required=true) String itemClassifyName,
+			/*@RequestParam(value="itemClassifyName",required=true) String itemClassifyName,
 			@RequestParam(value="itemPreviousClassify",required=true) String itemPreviousClassify,
-			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade,
+			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade,*/
+			@ModelAttribute ItemClassify itemClassify,
 			@RequestHeader(value="adminToken",required=true)String adminToken
 			){
-		return itemManageService.addItemClassify(itemClassifyName,itemPreviousClassify,itemClassifyGrade);
+//		return itemManageService.addItemClassify(itemClassifyName,itemPreviousClassify,itemClassifyGrade);
+		return itemManageService.addItemClassify(itemClassify);
 	}
 	
 	

@@ -3,8 +3,81 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.yayiabc.http.mvc.dao.ItemManageDao">
- 	<select id="queryProperty" resultMap="itemProperty" parameterType="Search">
- 		SELECT a.item_property_id,a.item_property_name,b.item_sku,b.item_sku_price,b.item_pparam,b.is_enable FROM
+ 	<!--insert begin-->
+		<insert id="addProperty">
+			insert into item_property values(null,#{itemPropertyName},now(),now())
+		</insert>
+
+		<insert id="addItemClassify">
+			insert into item_classify(item_classify_grade,item_classify_name,item_previous_classify) values(#{itemClassifyGrade},#{itemClassifyName},#{itemPreviousClassify})
+		</insert>
+
+		<insert id="addPropertyd">
+			insert into item_propertyd
+			values
+			<foreach collection="itemPparamList" item="item" separator="," index="index">
+				(null,null,null,null,null,#{itemPropertyId},#{item},1,now(),now())
+			</foreach>
+		</insert>
+
+		<insert id="addToPropertyd">
+			insert into item_propertyd values(null,null,null,null,null,#{itemPid},#{itemPparam},1,now(),now())
+		</insert>
+	<!--insert end-->
+
+	<!--delete begin-->
+		<delete id="deleteProperty">
+			delete from item_property where item_property_id=#{itemPropertyId}
+		</delete>
+
+		<delete id="deletePropertyd">
+			delete from item_propertyd where item_pid=#{itemPropertyId}
+		</delete>
+
+		<delete id="deletePropertydBySKU">
+			delete from item_propertyd where item_SKU=#{itemSKU}
+		</delete>
+
+		<delete id="deleteItemClassify">
+			delete from item_classify where item_classify_name=#{itemClassifyName} or item_previous_classify=#{itemClassifyName}
+		</delete>
+
+		<delete id="deletePro">
+			delete from item_propertyd where item_pid=#{itemPropertyId}
+		</delete>
+
+
+		<delete id="deleteClassify">
+			delete from item_classify where item_previous_classify in
+			<foreach collection="list" item="item" separator="," index="index" close=")" open="(">
+				#{item}
+			</foreach>
+		</delete>
+
+		<delete id="deleteItemClassifyById">
+			delete from item_classify where item_classify_id=#{itemClassifyId}
+		</delete>
+	<!--delete end-->
+
+
+	<!--update begin-->
+		<update id="updatePropertyd">
+			update item_propertyd set item_pparam=#{itemPparam} where item_SKU=#{itemSKU}
+		</update>
+
+		<update id="updateProperty">
+			update item_property set item_property_name=#{itemPropertyName} where item_property_id=#{itemPropertyId}
+		</update>
+
+		<update id="updateItemClassify">
+			update item_classify set item_classify_name=#{itemClassifyName}
+			where item_classify_id=#{itemClassifyId}
+		</update>
+	<!--update end-->
+
+	<!--select begin-->
+		<select id="queryProperty" resultMap="itemProperty" parameterType="Search">
+			SELECT a.item_property_id,a.item_property_name,b.item_sku,b.item_sku_price,b.item_pparam,b.is_enable FROM
 			(select * from item_property
 			<where>
 				<if test="itemBrandName!=null">item_property_name like '%${itemBrandName}%'</if>
@@ -12,202 +85,62 @@
 			LEFT JOIN
 			item_propertyd b
 			ON a.item_property_id=b.item_pid
- 	</select>
- 	
- 	<resultMap type="ItemProperty" id="itemProperty">
- 		<id column="item_property_id" property="itemPropertyId"/>
- 		<result column="item_property_name" property="itemPropertyName"/>
- 		<collection property="itempropertydList" ofType="ItemPropertyd">
- 			<id property="itemSKU" column="item_sku"/>
- 			<result property="itemPparam" column="item_pparam"/>
- 			<result property="isEnable" column="is_enable"/>
- 			<result property="itemSkuPrice" column="item_sku_price"/>
- 		</collection>
- 	</resultMap>
- 	
- 	<select id="getCountProperty" resultType="java.lang.Integer">
- 		select count(0) from
- 		(SELECT count(0) FROM
+		</select>
+
+		<select id="getCountProperty" resultType="java.lang.Integer">
+			select count(0) from
+			(SELECT count(0) FROM
 			item_property a
 			LEFT JOIN
 			item_propertyd b
 			ON a.item_property_id=b.item_pid
 			<where>
-				true 
+				true
 				<if test="itemPropertyName!=null"> and item_property_name like '%${itemPropertyName}%'</if>
 			</where>
 			group by item_property_id) c
- 	</select>
- 	
- 	<delete id="deleteProperty">
- 		delete from item_property where item_property_id=#{itemPropertyId}
- 	</delete>
- 	
- 	<delete id="deletePropertyd">
- 		delete from item_propertyd where item_pid=#{itemPropertyId}
- 	</delete>
- 	
- 	<delete id="deletePropertydBySKU">
- 		delete from item_propertyd where item_SKU=#{itemSKU}
- 	</delete>
- 	
- 	<update id="updatePropertyd">
- 		update item_propertyd set item_pparam=#{itemPparam} where item_SKU=#{itemSKU}
- 	</update>
- 	
- 	<update id="updateProperty">
- 		update item_property set item_property_name=#{itemPropertyName} where item_property_id=#{itemPropertyId}
- 	</update>
- 	
- 	<insert id="addProperty">
- 		insert into item_property values(null,#{itemPropertyName},now(),now())
- 	</insert>
- 	
- 	
- 	<select id="showItemClassify" resultType="itemClassify">
- 		select * from item_classify
- 		<where>
- 			true
- 			<if test="oneClassify!=null"> and item_classify_name like '%${oneClassify}%'</if>
- 			<if test="twoClassify!=null"> and item_previous_classify like '%${twoClassify}%'</if>
- 		</where>
- 		limit #{currentNumber},#{numberPerPage}
- 	</select>
- 	
- 	<resultMap type="ItemClassify" id="itemClassify">
- 		<id property="itemClassifyId" column="item_classify_id"/>
- 		<result property="itemClassifyGrade" column="item_classify_grade"/>
- 		<result property="itemClassifyName" column="item_classify_name"/>
- 		<result property="itemPreviousClassify" column="item_previous_classify"/>
- 	</resultMap>
- 	
- 	<select id="queryItemClassifyByName" resultType="string">
- 		select classify_two_name from classify_two where one_classify=#{itemClassifyName}
- 	</select>
- 	
- 	<select id="queryItemClassifyName" resultType="string">
- 		select item_classify_name from item_classify where item_classify_id=#{itemClassifyId}
- 	</select>
- 	
- 	<delete id="deleteItemClassify">
- 		delete from item_classify where item_classify_name=#{itemClassifyName} or item_previous_classify=#{itemClassifyName}
- 	</delete>
- 	
- 	<delete id="deleteItemClassifyOneSon">
- 		delete from classify_two where one_classify=#{itemClassifyName}
- 	</delete>
- 	
- 	<select id="queryItemClassifySonName" resultType="string"> 
- 		select item_classify_name from item_classify where item_previous_classify=#{itemClassifyNameA}
- 	</select>
- 	
- 	<delete id="deleteItemClassifyTwoSon">
- 		delete from classify_three where classify_two_name=#{itemClassifyName}
- 	</delete>
- 	
- 	<update id="updateItemClassify">
- 		update item_classify set item_classify_name=#{itemClassifyName}
- 		where item_classify_id=#{itemClassifyId}
- 	</update>
- 	
- 	<update id="updateItemClassifyOne">
- 		update classify set one_classify=#{itemClassifyName} where one_classify=#{itemPreviousClassify}
- 	</update>
- 	
- 	<update id="updateItemClassifyOneSon">
- 		update classify_two set one_classify=#{itemClassifyName} where one_classify=#{itemPreviousClassify}
- 	</update>
- 	
- 	<update id="updateItemClassifyTwo">
- 		update classify_two set classify_two_name=#{itemClassifyName} where classify_two_name=#{itemPreviousClassify}
- 	</update>
- 	
- 	<update id="updateItemClassifyTwoSon">
- 		update classify_three set classify_two_name=#{itemClassifyName} where classify_two_name=#{itemPreviousClassify}
- 	</update>
- 	
- 	<update id="updateItemClassifyThree">
- 		update classify_three set classify_three_name=#{itemClassifyName} where classify_three_name=#{itemPreviousClassify}
- 	</update>
- 	
- 	<insert id="addItemClassify">
- 		insert into item_classify values(null,#{itemClassifyGrade},#{itemClassifyName},#{itemPreviousClassify},now(),now())
- 	</insert>
- 	
- 	<delete id="deleteItemClassifyOne">
- 		delete from classify where one_classify=#{itemClassifyName}
- 	</delete>
- 	
- 	<delete id="deleteItemClassifyTwo">
- 		delete from classify_two where classify_two_name=#{itemClassifyName}
- 	</delete>
- 	
- 	<delete id="deleteItemClassifyThree">
- 		delete from classify_three where classify_three_name=#{itemClassifyName}
- 	</delete>
- 	
- 	<insert id="addPropertyd">
- 		insert into item_propertyd
- 		values
- 		<foreach collection="itemPparamList" item="item" separator="," index="index">
- 			(null,null,null,null,null,#{itemPropertyId},#{item},1,now(),now())
- 		</foreach>
- 	</insert>
- 	
- 	<select id="queryItemPropertyIdByName" resultType="int">
- 		select item_property_id from item_property where item_property_name=#{itemPropertyName}
- 	</select>
- 	<insert id="insertItemClassify">
- 		insert into classify values(null,#{itemClassifyName},now(),now())
- 	</insert>
- 	<insert id="insertItemClassifyTwo">
- 		insert into classify_two values(null,#{itemClassifyName},#{itemPreviousClassify},now(),now())
- 	</insert>
- 	<insert id="insertItemClassifyThree">
- 		insert into classify_three values(null,#{itemClassifyName},#{itemPreviousClassify},now(),now())
- 	</insert>
- 	
- 	<insert id="addToPropertyd">
- 		insert into item_propertyd values(null,null,null,null,null,#{itemPid},#{itemPparam},1,now(),now())
- 	</insert>
- 	
- 	<select id="getCountByItemPropertyName" resultType="int">
- 		select count(0) from item_property where item_property_name=#{itemPropertyName}
- 	</select>
- 	
- 	<select id="getCount" resultType="java.lang.Integer">
- 		select count(0) from item_classify
- 		<where>
- 			true
- 			<if test="itemClassifyName!=null"> and item_classify_name like '%${itemClassifyName}%'</if>
- 			<if test="itemPreviousClassify!=null"> and item_previous_classify like '%${itemPreviousClassify}%'</if>
- 		</where>
- 	</select>
- 	
- 	<delete id="deletePro">
- 		delete from item_propertyd where item_pid=#{itemPropertyId}
- 	</delete>
- 	
- 	<delete id="deleteItemClassifySon">
- 		delete from classify_three where classify_two_name in
- 		<foreach collection="list" item="item" separator="," index="index" close=")" open="(">
- 			#{item}
- 		</foreach>
- 	</delete>
- 	
- 	<delete id="deleteClassify">
- 		delete from item_classify where item_previous_classify in
- 		<foreach collection="list" item="item" separator="," index="index" close=")" open="(">
- 			#{item}
- 		</foreach>
- 		
- 	</delete>
- 	
- 	<select id="queryItemClassifyByNameOne" resultType="string">
- 		select item_classify_name from item_classify where item_previous_classify=#{itemClassifyName}
- 	</select>
- 	
- 	<select id="getCountItemClassify" resultType="java.lang.Integer">
- 		select count(0) from item_info where one_classify=#{itemClassifyName} or two_classify=#{itemClassifyName} or three_classify=#{itemClassifyName}
- 	</select>
+		</select>
+
+		<select id="showItemClassify" resultType="ItemClassify">
+			select * from item_classify
+			<where>
+				<if test="oneClassify!=null">item_classify_name like '%${oneClassify}%'</if>
+				<if test="twoClassify!=null"> and item_previous_classify like '%${twoClassify}%'</if>
+			</where>
+			limit #{currentNumber},#{numberPerPage}
+		</select>
+
+		<select id="queryItemPropertyIdByName" resultType="int">
+			select item_property_id from item_property where item_property_name=#{itemPropertyName}
+		</select>
+
+		<select id="getCountByItemPropertyName" resultType="int">
+			select count(0) from item_property where item_property_name=#{itemPropertyName}
+		</select>
+
+		<select id="getCount" resultType="java.lang.Integer">
+			select count(0) from item_classify
+			<where>
+				<if test="itemClassifyName!=null">item_classify_name like '%${itemClassifyName}%'</if>
+				<if test="itemPreviousClassify!=null"> and item_previous_classify like '%${itemPreviousClassify}%'</if>
+			</where>
+		</select>
+
+		<select id="getCountItemClassify" resultType="java.lang.Integer">
+			select count(0) from item_info where one_classify=#{itemClassifyName} or two_classify=#{itemClassifyName} or three_classify=#{itemClassifyName}
+		</select>
+	<!--select end-->
+
+	<!--resultMap begin-->
+		<resultMap type="ItemProperty" id="itemProperty">
+			<id column="item_property_id" property="itemPropertyId"/>
+			<result column="item_property_name" property="itemPropertyName"/>
+			<collection property="itempropertydList" ofType="ItemPropertyd">
+				<id property="itemSKU" column="item_sku"/>
+				<result property="itemPparam" column="item_pparam"/>
+				<result property="isEnable" column="is_enable"/>
+				<result property="itemSkuPrice" column="item_sku_price"/>
+			</collection>
+		</resultMap>
+	<!--resultMap end-->
 </mapper>       

@@ -12,7 +12,7 @@
 	</insert>
 	
 	<insert id="addSaleToken">
-		insert into sale_token values(#{saleId},#{saleToken})
+		insert into sale_token(sale_id,sale_token) values(#{saleId},#{saleToken})
 	</insert>
 
 	<update id="updateSaleToken">

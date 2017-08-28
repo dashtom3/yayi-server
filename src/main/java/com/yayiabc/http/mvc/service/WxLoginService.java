@@ -11,9 +11,9 @@ import com.yayiabc.http.mvc.pojo.jpa.User;
 public interface WxLoginService {
     DataWrapper<Object> login(String code);
 
-    DataWrapper<Object> bindUser(String phone, String verifyCode, String openid, String type);
+    DataWrapper<Object> bindUser(String phone, String verifyCode, String type);
 
-	DataWrapper<User> updateUserInfo(User user,Integer number);
+	DataWrapper<User> updateUserInfo(User user,Integer number,String openid);
 
-	DataWrapper<Void> updateSaleInfo(SaleInfo saleInfo, Integer number);
+	DataWrapper<Void> updateSaleInfo(SaleInfo saleInfo, Integer number,String openid);
 }

@@ -3,7 +3,6 @@ package com.yayiabc.http.mvc.controller.item;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
 import com.yayiabc.http.mvc.pojo.model.Classify;
-import com.yayiabc.http.mvc.pojo.model.SysResult;
 import com.yayiabc.http.mvc.service.ItemClassifyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -26,14 +25,13 @@ public class ItemClassifyController {
       public  DataWrapper<List<Classify>>  showClassify(){
     	  DataWrapper<List<Classify>> dataWrapper =new DataWrapper<List<Classify>>();
     	  dataWrapper.setData(ClassifyManage.classifyList);
-
     	 return dataWrapper;
       }
-      @RequestMapping("getAllClassifyAndBrand")
+      /*@RequestMapping("getAllClassifyAndBrand")
       @ResponseBody
       public DataWrapper<SysResult> getAllClassifyAndBrand(){
-    	  return itemClassifyService.getAllClassifyAndBrand();
-      }
+      	return itemClassifyService.getAllClassifyAndBrand();
+      }*/
       
       @RequestMapping("queryItemSearch")
       @ResponseBody

@@ -9,25 +9,12 @@
 		insert into user(user_id,phone,pwd,created,updated)
 		values(#{userId},#{phone},#{pwd},now(),now())
 	</insert>
-	<select id="getUserByUser" resultMap="userMap">
-		SELECT
-		c.*,d.type,d.company_name,d.part,d.doctor_pic,d.work_address,d.business_license
-		FROM
-		(SELECT a.*,b.phone sale_phone,b.true_name sale_name FROM
-		(SELECT * FROM user WHERE phone=#{phone}) a
-		LEFT JOIN
-		sale_info b
-		ON a.sale_id=b.sale_id)c
-		LEFT JOIN
-		certification d
-		ON d.user_id=c.user_id
-	</select>
 
 	<select id="getUserByPhone" resultMap="userMap">
 		SELECT
-		c.*,d.type,d.company_name,d.part,d.doctor_pic,d.work_address,d.business_license
+		c.*,d.type,d.company_name,d.part,d.doctor_pic,d.work_address,d.business_license,c.sale_ids
 		FROM
-		(SELECT a.*,b.phone sale_phone,b.true_name sale_name FROM
+		(SELECT a.*,b.phone sale_phone,b.true_name sale_name,b.sale_id sale_ids FROM
 		(SELECT * FROM user WHERE phone=#{phone}) a
 		LEFT JOIN
 		sale_info b
@@ -45,7 +32,7 @@
 		</association>
 		<association property="saleinfo" javaType="SaleInfo"
 			autoMapping="true">
-			<id property="saleId" column="sale_id" />
+			<id property="saleId" column="sale_ids" />
 			<result property="phone" column="sale_phone" />
 			<result property="trueName" column="sale_name" />
 		</association>
@@ -101,7 +88,9 @@
 	
 	<update id="updateCertification">
 		update certification set type=#{certification.type},company_name=#{certification.companyName},part=#{certification.part},
-		work_address=#{certification.workAddress} where user_id=#{userId}
+		work_address=#{certification.workAddress},doctor_pic=#{certification.doctorPic},medical_license=#{certification.medicalLicense},business_license=#{certification.businessLicense},
+		 tax_registration=#{certification.taxRegistration},opening_permit=#{certification.openingPermit},radiological_permit=#{certification.radiologicalPermit},
+		 id_card_positive=#{certification.idCardPositive},id_card_otherside=#{certification.idCardOtherside} where user_id=#{userId}
 	</update>
 	
 	<select id="getUserIdByPhone" resultType="string">
@@ -113,7 +102,14 @@
 	</update>
 	
 	<insert id="registerUserCertification">
-		insert into certification(user_id,type,company_name,part,work_address) values(#{userId},#{certification.type},#{certification.companyName},#{certification.part},#{certification.workAddress})
+		insert into certification(user_id,type,company_name,part,work_address,doctor_pic,medical_license,business_license,tax_registration,opening_permit,radiological_permit,id_card_positive,id_card_otherside)
+		values(#{userId},#{certification.type},#{certification.companyName},#{certification.part},#{certification.workAddress},
+		#{certification.doctorPic},#{certification.medicalLicense},#{certification.businessLicense},#{certification.taxRegistration},#{certification.openingPermit},#{certification.radiologicalPermit},
+		#{certification.idCardPositive},#{certification.idCardOtherside})
 	</insert>
+
+	<select id="getCountByUserId" resultType="java.lang.Integer">
+		select count(0) from certification where user_id=#{userId}
+	</select>
 
 </mapper>       

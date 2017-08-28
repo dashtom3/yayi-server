@@ -4,32 +4,17 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yayiabc.http.mvc.dao.ItemClassifyDao">
 
-	<resultMap id="queryTreeList" type="Classify">
-		<id property="oneId" column="one_id"/>
-		<result property="oneClassify" column="one_classify"/>
-		<collection property="classifyTwoList" ofType="ClassifyTwo">
-			<id property="twoId" column="two_id"/>
-			<result property="classifyTwoName" column="classify_two_name"/>
-			<collection property="classifyThreeList" ofType="ClassifyThree">
-				<id property="threeId" column="three_id"/>
-				<result property="classifyThreeName" column="classify_three_name"/>
-			</collection>
-		</collection>
-	</resultMap>
-	
-	
-   <select id="showsTreeClassify" resultMap="queryTreeList">
-	SELECT d.one_id,d.two_id,d.one_classify,d.classify_two_name,c.three_id,c.classify_three_name FROM
-    (SELECT * FROM
-    (SELECT one_id,one_classify FROM classify) a
-    LEFT JOIN
-    (SELECT two_id,classify_two_name,one_classify one_c FROM classify_two) b
-    ON a.one_classify=b.one_c) d
-    LEFT JOIN
-    (SELECT three_id,classify_three_name,classify_two_name three_c FROM classify_three) c
-    ON d.classify_two_name=c.three_c
+
+
+   <select id="showsTreeClassify" resultMap="classify">
+    SELECT a.item_classify_id AS one_id ,a.item_classify_name AS oneClassify,b.item_classify_id AS two_id,
+    b.item_classify_name AS classify_two_name FROM
+      (SELECT * FROM item_classify WHERE item_classify_grade=1) a
+    INNER JOIN
+      (SELECT * FROM item_classify WHERE item_classify_grade=2) b
+    ON a.item_classify_name=b.item_previous_classify
    </select>
-   
+
    <resultMap type="ItemInfo" id="itemInfoRM" autoMapping="true">
 		<id property="itemId" column="item_id"/>
 		<association property="itemDetail" javaType="ItemDetail">
@@ -37,15 +22,23 @@
 			<result property="itemPica" column="item_pica"/>
 		</association>
 	</resultMap>
-   
+
+    <resultMap type="Classify" id="classify" autoMapping="true">
+        <id property="oneId" column="one_id"/>
+        <collection property="classifyTwoList" ofType="ClassifyTwo" autoMapping="true">
+            <id column="two_id" property="twoId"/>
+            <result property="classifyTwoName" column="classify_two_name"/>
+        </collection>
+    </resultMap>
+
    <select id="getCount" resultType="int" parameterType="Search">
    	SELECT count(0) FROM
     (SELECT * FROM
     (select * from item_info where state=1) a
-    INNER JOIN 
+    INNER JOIN
     (SELECT item_id x_id,item_pica FROM item_detail) b
     ON a.item_id=b.x_id) c
-    INNER JOIN 
+    INNER JOIN
     (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) d
     ON c.item_brand_id=d.p_id
     <where>
@@ -55,15 +48,15 @@
     	<if test="itemBrandName!=null">and item_brand_name=#{itemBrandName}</if>
     </where>
    </select>
-   
+
    <select id="queryItemSearch" resultMap="itemInfoRM" parameterType="Search">
    	SELECT * FROM
     (SELECT * FROM
     (select * from item_info where state=1) a
-    INNER JOIN 
+    INNER JOIN
     (SELECT item_id x_id,item_pica FROM item_detail) b
     ON a.item_id=b.x_id) c
-    INNER JOIN 
+    INNER JOIN
     (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) d
     ON c.item_brand_id=d.p_id
     <where>
@@ -72,24 +65,24 @@
     	<if test="threeClassify!=null">and three_classify=#{threeClassify}</if>
     	<if test="itemBrandName!=null">and item_brand_name=#{itemBrandName}</if>
     </where>
-    order by 
+    order by
     <choose>
     	<when test="rule==1">updated desc</when>
     	<when test="rule==2">sales desc</when>
     	<when test="rule==3">item_price desc</when>
     	<when test="rule==4">item_price asc</when>
     </choose>
-    LIMIT #{currentNumber},#{numberPerPage} 
+    LIMIT #{currentNumber},#{numberPerPage}
    </select>
-   
+
    <select id="getCountGet" resultType="int" parameterType="Search">
    	SELECT count(0) FROM
     (SELECT * FROM
     (select * from item_info where state=1 and is_throw=1) a
-    INNER JOIN 
+    INNER JOIN
     (SELECT item_id x_id,item_pica FROM item_detail) b
     ON a.item_id=b.x_id) c
-    INNER JOIN 
+    INNER JOIN
     (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) d
     ON c.item_brand_id=d.p_id
     <where>
@@ -99,15 +92,15 @@
     	<if test="itemBrandName!=null">and item_brand_name=#{itemBrandName}</if>
     </where>
    </select>
-   
+
    <select id="queryItemSearchGet" resultMap="itemInfoRM" parameterType="Search">
    	SELECT * FROM
     (SELECT * FROM
     (select * from item_info where state=1 and is_throw=1) a
-    INNER JOIN 
+    INNER JOIN
     (SELECT item_id x_id,item_pica FROM item_detail) b
     ON a.item_id=b.x_id) c
-    INNER JOIN 
+    INNER JOIN
     (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) d
     ON c.item_brand_id=d.p_id
     <where>
@@ -116,16 +109,16 @@
     	<if test="threeClassify!=null">and three_classify=#{threeClassify}</if>
     	<if test="itemBrandName!=null">and item_brand_name=#{itemBrandName}</if>
     </where>
-    order by 
+    order by
     <choose>
     	<when test="rule==1">updated desc</when>
     	<when test="rule==2">sales desc</when>
     	<when test="rule==3">item_price desc</when>
     	<when test="rule==4">item_price asc</when>
     </choose>
-    LIMIT #{currentNumber},#{numberPerPage} 
+    LIMIT #{currentNumber},#{numberPerPage}
    </select>
-   
+
    <select id="getAllRecommendItemList" resultMap="itemInfoRM">
    		SELECT e.* FROM
 (SELECT * FROM

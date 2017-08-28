@@ -60,9 +60,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public DataWrapper<User> register(String phone, String password, String code,String openid) {
         DataWrapper<User> dataWrapper = new DataWrapper<User>();
-        User neUser = new User();
-        neUser.setPhone(phone);
-        if (userDao.getUserByUser(neUser) == null) {
+        if (userDao.getUserByPhone(phone) == null) {
             //楠岃瘉鐮佹湇鍔�
             String serverCode = VerifyCodeManager.getPhoneCode(phone);
             if (serverCode.equals("noCode")) {
@@ -116,9 +114,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public DataWrapper<User> noteLogin(String phone, String code) {
         DataWrapper<User> dataWrapper = new DataWrapper<User>();
-        User neUser = new User();
-        neUser.setPhone(phone);
-        User user = userDao.getUserByUser(neUser);
+        User user = userDao.getUserByPhone(phone);
         if (user != null) {
             String serverCode = VerifyCodeManager.getPhoneCode(phone);
             if (serverCode.equals("noCode")) {
@@ -218,9 +214,7 @@ public class UserServiceImpl implements UserService {
     @Override
     public DataWrapper<Void> forgetPwd(String phone, String code, String password) {
         DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
-        User neUser = new User();
-        neUser.setPhone(phone);
-        if (userDao.getUserByUser(neUser) != null) {
+        if (userDao.getUserByPhone(phone) != null) {
             String serverCode = VerifyCodeManager.getPhoneCode(phone);
             if (serverCode.equals("noCode")) {
                 dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_notExist);
@@ -229,9 +223,8 @@ public class UserServiceImpl implements UserService {
                 dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_5min);
                 dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
             } else if (serverCode.equals(code)) {
-                neUser.setPwd(MD5Util.getMD5String(password));
                 try {
-                    userDao.updatePwd(neUser);
+                    userDao.updatePwd(phone,MD5Util.getMD5String(password));
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 } catch (Exception e) {

@@ -1,11 +1,13 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
 
+import java.io.Serializable;
+
 /**
  * 
  * @author xiaojiang 商品品牌表
  */
-public class ItemBrand extends BasePojo {
+public class ItemBrand extends BasePojo implements Serializable {
 	private Integer itemBrandId;
 
 	private String itemBrandLogo;

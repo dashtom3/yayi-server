@@ -1,15 +1,13 @@
 package com.yayiabc.http.mvc.dao;
 
-import java.util.List;
-import java.util.Map;
-
+import com.yayiabc.http.mvc.pojo.jpa.ItemClassify;
+import com.yayiabc.http.mvc.pojo.jpa.ItemProperty;
+import com.yayiabc.http.mvc.pojo.model.Search;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.yayiabc.http.mvc.pojo.jpa.ItemClassify;
-import com.yayiabc.http.mvc.pojo.jpa.ItemProperty;
-import com.yayiabc.http.mvc.pojo.jpa.ItemPropertyd;
-import com.yayiabc.http.mvc.pojo.model.Search;
+import java.util.List;
+import java.util.Map;
 
 
 
@@ -27,22 +25,11 @@ public interface ItemManageDao {
 
 	void deletePropertydBySKU(String itemSKU);
 
-	void updatePropertyd(ItemPropertyd itemPropertyd);
-
 	void updateProperty(ItemProperty itemProperty);
 
 	List<ItemClassify> showItemClassify(Search search);
 
-	void deleteItemClassify(String itemClassifyName);
-	//查询该商品分类是否为父类
-	int queryItemClassify(String itemClassifyName);
-
-	String queryItemClassifyName(Integer itemClassifyId);
-
-
 	void addProperty(String itemPropertyName);
-
-	
 
 	void addItemClassify(ItemClassify itemClassify);
 
@@ -50,39 +37,7 @@ public interface ItemManageDao {
 
 	Integer queryItemPropertyIdByName(String itemPropertyName);
 
-	void insertItemClassify(ItemClassify itemClassify);
-
-	void insertItemClassifyTwo(ItemClassify itemClassify);
-
-	void insertItemClassifyThree(ItemClassify itemClassify);
-
-	void deleteItemClassify(ItemClassify itemClassify);
-
-	void deleteItemClassifyTwo(ItemClassify itemClassify);
-
-	void deleteItemClassifyThree(ItemClassify itemClassify);
-
 	void updateItemClassify(ItemClassify itemClassify);
-	
-	void updateItemClassifyOne(ItemClassify itemClassify);
-	
-	void updateItemClassifyTwo(ItemClassify itemClassify);
-
-	void updateItemClassifyThree(ItemClassify itemClassify);
-
-	void deleteItemClassifyOneSon(ItemClassify itemClassify);
-
-	void deleteItemClassifyTwoSon(ItemClassify itemClassify);
-
-	List<String> queryItemClassifyByName(ItemClassify itemClassify);
-
-	void deleteItemClassifyOne(ItemClassify itemClassify);
-
-	void updateItemClassifyOneSon(ItemClassify itemClassify);
-
-	void updateItemClassifyTwoSon(ItemClassify itemClassify);
-
-	String queryItemClassifySonName(String itemClassifyNameA);
 
 	void addToPropertyd(@Param("itemPid")Integer itemPid,@Param("itemPparam") String itemPparam);
 
@@ -94,21 +49,8 @@ public interface ItemManageDao {
 
 	void deletePro(Integer itemPropertyId);
 
-	void deleteItemClassifySon(List<String> itemClassifyTwo);
-
-	void deleteClassify(List<String> itemClassifySon);
-
-	List<String> queryItemClassifyByNameOne(ItemClassify itemClassify);
-
 	Integer getCountItemClassify(@Param("itemClassifyName")String itemClassifyName);
 
 
-	
-
-
-
-	
-
-	
-
+    void deleteItemClassifyById(@Param("itemClassifyId")Integer itemClassifyId);
 }

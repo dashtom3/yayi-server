@@ -1,12 +1,12 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
-import java.util.Date;
+import java.io.Serializable;
 
 /**
  * 
  * @author xiaojiang 商品详情表
  */
-public class ItemDetail extends BasePojo {
+public class ItemDetail extends BasePojo implements Serializable{
 	private String itemId;
 
 	private String video;
@@ -148,6 +148,9 @@ public class ItemDetail extends BasePojo {
 	}
 
 	public String getStoreItemId() {
+		if(storeItemId==null||"".equals(storeItemId)){
+			storeItemId="暂无";
+		}
 		return storeItemId;
 	}
 
@@ -156,6 +159,9 @@ public class ItemDetail extends BasePojo {
 	}
 
 	public String getApparatusType() {
+		if(apparatusType==null||"".equals(apparatusType)){
+			apparatusType="暂无";
+		}
 		return apparatusType;
 	}
 
@@ -164,6 +170,9 @@ public class ItemDetail extends BasePojo {
 	}
 
 	public String getUnit() {
+		if(unit==null||"".equals(unit)){
+			unit="暂无";
+		}
 		return unit;
 	}
 
@@ -172,6 +181,9 @@ public class ItemDetail extends BasePojo {
 	}
 
 	public String getProducePompany() {
+		if(producePompany==null||"".equals(producePompany)){
+			producePompany="暂无";
+		}
 		return producePompany;
 	}
 
@@ -181,6 +193,9 @@ public class ItemDetail extends BasePojo {
 	}
 
 	public String getRegisterId() {
+		if(registerId==null||"".equals(registerId)){
+			registerId="暂无";
+		}
 		return registerId;
 	}
 
@@ -189,6 +204,9 @@ public class ItemDetail extends BasePojo {
 	}
 
 	public String getRegisterDate() {
+		if(registerDate==null||"".equals(registerDate)){
+			registerDate="暂无";
+		}
 		return registerDate;
 	}
 
@@ -197,6 +215,9 @@ public class ItemDetail extends BasePojo {
 	}
 
 	public String getItemPacking() {
+		if(itemPacking==null||"".equals(itemPacking)){
+			itemPacking="暂无";
+		}
 		return itemPacking;
 	}
 
@@ -205,6 +226,9 @@ public class ItemDetail extends BasePojo {
 	}
 
 	public String getItemLevels() {
+		if(itemLevels==null||"".equals(itemLevels)){
+			itemLevels="暂无";
+		}
 		return itemLevels;
 	}
 
@@ -213,6 +237,9 @@ public class ItemDetail extends BasePojo {
 	}
 
 	public String getItemRange() {
+		if(itemRange==null||"".equals(itemRange)){
+			itemRange="暂无";
+		}
 		return itemRange;
 	}
 
@@ -221,6 +248,9 @@ public class ItemDetail extends BasePojo {
 	}
 
 	public String getRemark() {
+		if(remark==null||"".equals(remark)){
+			remark="暂无";
+		}
 		return remark;
 	}
 

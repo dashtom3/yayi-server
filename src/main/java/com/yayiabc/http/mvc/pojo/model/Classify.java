@@ -6,17 +6,25 @@ import java.util.List;
 
 
 public class Classify {
-	private	Integer oneId; 
+	private	Integer oneId;
+	private Integer grade;
 	private String oneClassify;
 	private  List<ClassifyTwo> classifyTwoList;
-	
-	
+
 	public Integer getOneId() {
 		return oneId;
 	}
 
 	public void setOneId(Integer oneId) {
 		this.oneId = oneId;
+	}
+
+	public Integer getGrade() {
+		return grade;
+	}
+
+	public void setGrade(Integer grade) {
+		this.grade = grade;
 	}
 
 	public String getOneClassify() {
@@ -36,21 +44,22 @@ public class Classify {
 	}
 
 	public Classify() {
-		super();
-		// TODO Auto-generated constructor stub
 	}
-	
-	public Classify(Integer oneId, String oneClassify,
-			List<ClassifyTwo> classifyTwoList) {
-		super();
+
+	public Classify(Integer oneId, Integer grade, String oneClassify, List<ClassifyTwo> classifyTwoList) {
 		this.oneId = oneId;
+		this.grade = grade;
 		this.oneClassify = oneClassify;
 		this.classifyTwoList = classifyTwoList;
 	}
+
 	@Override
 	public String toString() {
-		return "Classify [oneId=" + oneId + ", oneClassify=" + oneClassify
-				+ ", classifyTwoList=" + classifyTwoList + "]";
+		return "Classify{" +
+				"oneId=" + oneId +
+				", grade=" + grade +
+				", oneClassify='" + oneClassify + '\'' +
+				", classifyTwoList=" + classifyTwoList +
+				'}';
 	}
-	
 }

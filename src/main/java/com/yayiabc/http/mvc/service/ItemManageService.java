@@ -1,11 +1,11 @@
 package com.yayiabc.http.mvc.service;
 
-import java.util.List;
-
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
 import com.yayiabc.http.mvc.pojo.jpa.ItemClassify;
 import com.yayiabc.http.mvc.pojo.jpa.ItemProperty;
+
+import java.util.List;
 
 public interface ItemManageService {
 
@@ -33,10 +33,12 @@ public interface ItemManageService {
 	DataWrapper<List<ItemClassify>> showItemClassify(String itemClassifyName,
 			String itemPreviousClassify,Integer currentPage,Integer numberPerPage);
 
-	DataWrapper<Void> deleteItemClassify(Integer itemClassifyId,String itemClassifyName,Integer itemClassifyGrade);
+//	DataWrapper<Void> deleteItemClassify(Integer itemClassifyId,String itemClassifyName,Integer itemClassifyGrade);
+	DataWrapper<Void> deleteItemClassify(ItemClassify itemClassify);
 
-	DataWrapper<Void> updateItemClassify(Integer itemClassifyId,String itemClassifyName,
-			String itemOldName ,Integer itemClassifyGrade);
+	/*DataWrapper<Void> updateItemClassify(Integer itemClassifyId,String itemClassifyName,
+			String itemOldName ,Integer itemClassifyGrade);*/
+	DataWrapper<Void> updateItemClassify(ItemClassify itemClassify);
 
 	DataWrapper<Void> addItemBrand(String itemBrandName, String itemBrandHome,
 			String itemBrandLogo);
@@ -44,8 +46,9 @@ public interface ItemManageService {
 	DataWrapper<Void> addProperty(String itemPropertyName);
 
 
-	DataWrapper<Void> addItemClassify(String itemClassifyName,
-			String itemPreviousClassify,Integer itemClassifyGrade);
+	/*DataWrapper<Void> addItemClassify(String itemClassifyName,
+			String itemPreviousClassify,Integer itemClassifyGrade);*/
+	DataWrapper<Void> addItemClassify(ItemClassify itemClassify);
 
 	DataWrapper<Void> addPropertyAndPropertyName(String itemPropertyName,
 			List<String> itemPparamList);

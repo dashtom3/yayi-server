@@ -1,9 +1,0 @@
-<?xml version="1.0" encoding="UTF-8"?>
-<!DOCTYPE mapper
-        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
-        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yayiabc.http.mvc.dao.TestDao">
-	<insert id="insert" useGeneratedKeys="true" keyProperty="balanceId">
-		insert into balance(sale_id) values(5)
-	</insert>
-</mapper>

@@ -13,6 +13,7 @@ public class FileUtil {
 	public FileUtil() {
 		
 	}
+
 	
 	public static String readFile(String filePath) {
 		String content = "";

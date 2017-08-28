@@ -10,67 +10,19 @@
 		(select item_brand_id p_id,item_brand_name from item_brand) b
 		on a.item_brand_id=b.p_id
 		<where>
-			true
-			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
+			<if test="itemId!=null and itemId!=''">item_id like '%${itemId}%'</if>
 			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
 			<if test="state!=null">and state=#{state}</if>
 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
-			<if test="oneClassify!=null and oneClassify!=''">and one_classify=#{oneClassify}</if>
-		</where>
-		order by a.updated desc
-		limit #{sales},#{itemStockNum}
-	</select>
-	<select id="itemInfoListTwo" resultMap="itemInfoRM">
-		select a.*,b.item_brand_name from
-		item_info a
-		inner join
-		(select item_brand_id p_id,item_brand_name from item_brand) b
-		on a.item_brand_id=b.p_id
-		<where>
-			true
-			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
-			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
-			<if test="state!=null">and state=#{state}</if>
-			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
-			<if test="oneClassify!=null and oneClassify!=''">and two_classify=#{oneClassify}</if>
-		</where>
-		order by a.updated desc
-		limit #{sales},#{itemStockNum}
-	</select>
-	<select id="itemInfoListThree" resultMap="itemInfoRM">
-		select a.*,b.item_brand_name from
-		item_info a
-		inner join
-		(select item_brand_id p_id,item_brand_name from item_brand) b
-		on a.item_brand_id=b.p_id
-		<where>
-			true
-			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
-			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
-			<if test="state!=null">and state=#{state}</if>
-			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
-			<if test="oneClassify!=null and oneClassify!=''">and three_classify=#{oneClassify}</if>
+			<choose>
+				<when test="isThrow==1">and one_classify like '%${itemClassify}%'</when>
+				<when test="isThrow==2">and two_classify like '%${itemClassify}%'</when>
+			</choose>
 		</where>
 		order by a.updated desc
 		limit #{sales},#{itemStockNum}
 	</select>
 
-	<select id="itemInfoListFour" resultMap="itemInfoRM">
-		select a.*,b.item_brand_name from
-		item_info a
-		inner join
-		(select item_brand_id p_id,item_brand_name from item_brand) b
-		on a.item_brand_id=b.p_id
-		<where>
-			true
-			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
-			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
-			<if test="state!=null">and state=#{state}</if>
-			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
-		</where>
-		order by a.updated desc
-		limit #{sales},#{itemStockNum}
-	</select>
 	<resultMap type="ItemInfo" id="itemInfoRM" autoMapping="true">
 		<id column="item_id" property="itemId" />
 		<association property="itemBrand" javaType="ItemBrand"
@@ -99,23 +51,26 @@
 		delete from item_value where item_id=#{itemId}
 	</delete>
 
-	<insert id="insertItemValue">
-		insert into item_value
+	<insert id="addItemValue">
+		insert into item_value(item_id,item_sKU,item_sku_price,stock_num,can_use,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value)
 		values
-		(#{itemPropertySixValue},#{itemPropertySixName},#{itemPropertyFiveValue},#{itemPropertyFiveName},#{itemPropertyFourValue},#{itemPropertyFourName},#{itemPropertyThreeValue},#{itemPropertyNameThree},#{itemPropertyTwoValue},#{itemPropertyNameTwo},#{canUse},#{stockNum},#{itemQb},#{tiChen},#{itemSkuPrice},#{itemSKU},null,#{itemId},#{itemPropertyName},#{itemPropertyInfo},0)
+		<foreach collection="list" item="item" index="index" separator=",">
+			(#{item.itemId},#{item.itemSKU},#{item.itemSkuPrice},#{item.stockNum},#{item.canUse},#{item.itemPropertyName},#{item.itemPropertyInfo},#{item.itemPropertyNameTwo},#{item.itemPropertyTwoValue},#{item.itemPropertyNameThree},#{item.itemPropertyThreeValue})
+		</foreach>
 	</insert>
 
-	<insert id="insertItemInfo">
-		insert into item_info
-		values(#{itemSort},#{isThrow},#{itemId},#{itemName},#{itemBrand.itemBrandId},#{itemPrice},0,0,0,#{oneClassify},#{twoClassify},#{threeClassify},now(),now());
+	<insert id="addItemInfo">
+		insert into item_info(item_sort,is_throw,item_id,item_name,item_brand_id,item_price,one_classify,two_classify,created,updated)
+		values(#{itemSort},#{isThrow},#{itemId},#{itemName},#{itemBrand.itemBrandId},#{itemPrice},#{oneClassify},#{twoClassify},now(),now());
 	</insert>
 
-	<insert id="insertItemDetail">
-		insert into item_detail
+	<insert id="addItemDetail">
+		insert into item_detail(item_id,item_desc,item_use,video,item_pica,item_picb,item_picc,item_picd,item_pice,store_item_id,apparatus_type,unit,produce_pompany,register_id,register_date,item_packing,item_levels,item_range,
+		remark,created,updated)
 		values
-		(#{itemId},#{itemDesc},#{itemUse},#{video},#{itemPica},#{itemPicb},
-		#{itemPicc},#{itemPicd},#{itemPice},null,1,null,#{storeItemId},#{apparatusType},#{unit},#{producePompany},
-		#{registerId},#{registerDate},#{itemPacking},#{itemLevels},#{itemRange},#{remark},now(),now()
+		(#{itemDetail.itemId},#{itemDetail.itemDesc},#{itemDetail.itemUse},#{itemDetail.video},#{itemDetail.itemPica},#{itemDetail.itemPicb},
+		#{itemDetail.itemPicc},#{itemDetail.itemPicd},#{itemDetail.itemPice},#{itemDetail.storeItemId},#{itemDetail.apparatusType},#{itemDetail.unit},#{itemDetail.producePompany},
+		#{itemDetail.registerId},#{itemDetail.registerDate},#{itemDetail.itemPacking},#{itemDetail.itemLevels},#{itemDetail.itemRange},#{itemDetail.remark},now(),now()
 		)
 	</insert>
 
@@ -174,59 +129,14 @@
 		(select item_brand_id p_id,item_brand_name from item_brand) b
 		on a.item_brand_id=b.p_id
 		<where>
-			true
-			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
+			<if test="itemId!=null and itemId!=''">item_id like '%${itemId}%'</if>
 			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
 			<if test="state!=null">and state=#{state}</if>
 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
-			<if test="oneClassify!=null and oneClassify!=''">and one_classify=#{oneClassify}</if>
-		</where>
-	</select>
-
-	<select id="getCountTwo" resultType="java.lang.Integer">
-		select count(0) from
-		item_info a
-		inner join
-		(select item_brand_id p_id,item_brand_name from item_brand) b
-		on a.item_brand_id=b.p_id
-		<where>
-			true
-			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
-			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
-			<if test="state!=null">and state=#{state}</if>
-			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
-			<if test="oneClassify!=null and oneClassify!=''">and two_classify=#{oneClassify}</if>
-		</where>
-	</select>
-
-	<select id="getCountThree" resultType="java.lang.Integer">
-		select count(0) from
-		item_info a
-		inner join
-		(select item_brand_id p_id,item_brand_name from item_brand) b
-		on a.item_brand_id=b.p_id
-		<where>
-			true
-			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
-			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
-			<if test="state!=null">and state=#{state}</if>
-			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
-			<if test="oneClassify!=null and oneClassify!=''">and three_classify=#{oneClassify}</if>
-		</where>
-	</select>
-
-	<select id="getCountFour" resultType="java.lang.Integer">
-		select count(0) from
-		item_info a
-		inner join
-		(select item_brand_id p_id,item_brand_name from item_brand) b
-		on a.item_brand_id=b.p_id
-		<where>
-			true
-			<if test="itemId!=null and itemId!=''"> and item_id like '%${itemId}%'</if>
-			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
-			<if test="state!=null">and state=#{state}</if>
-			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
+			<choose>
+				<when test="isThrow==1">and one_classify like '%${itemClassify}%'</when>
+				<when test="isThrow==2">and two_classify like '%${itemClassify}%'</when>
+			</choose>
 		</where>
 	</select>
 	

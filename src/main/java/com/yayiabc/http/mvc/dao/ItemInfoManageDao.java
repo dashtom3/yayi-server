@@ -1,14 +1,11 @@
 package com.yayiabc.http.mvc.dao;
 
-import java.util.List;
-
-
+import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
+import com.yayiabc.http.mvc.pojo.jpa.ItemValue;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.yayiabc.http.mvc.pojo.jpa.ItemDetail;
-import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
-import com.yayiabc.http.mvc.pojo.jpa.ItemValue;
+import java.util.List;
 @Repository
 public interface ItemInfoManageDao {
 
@@ -24,59 +21,16 @@ public interface ItemInfoManageDao {
 
 	void deleteItemValue(String itemId);
 
-	void deleteItemStock(String itemId);
-
-
-	void insertItemInfo(ItemInfo itemInfo);
-
-	void insertItemDetail(ItemDetail itemDetail);
-
-	void updateItemInfo(ItemInfo itemInfo);
-
-	void updateItemDetail(ItemDetail itemDetail);
-
-	void updateItemValue(ItemValue itemValue);
-
 	Double getMinPriceFromItemValue(String itemId);
-
-
-	void deleteComments(String itemId);
-
-	Integer queryItemNum(String itemSKU);
-
-	void insertItemValue(ItemValue itemValue);
-
-	String getItemBrandNameByItemId(Integer itemBrandId);
-
-	int getItemClassifyGradeByName(String itemClassify);
-
-	int getItemClassifyGrade(String itemClassify);
 
 	List<ItemInfo> itemInfoListOne(ItemInfo itemInfo);
 
-	List<ItemInfo> itemInfoListTwo(ItemInfo itemInfo);
-
-	List<ItemInfo> itemInfoListThree(ItemInfo itemInfo);
 
 	Integer getCountOne(ItemInfo itemInfo);
 
-	Integer getCountTwo(ItemInfo itemInfo);
+	void addItemInfo(ItemInfo itemInfo);
 
-	Integer getCountThree(ItemInfo itemInfo);
+	void addItemDetail(ItemInfo itemInfo);
 
-	Integer getCountFour(ItemInfo itemInfo);
-
-	List<ItemInfo> itemInfoListFour(ItemInfo itemInfo);
-
-	
-
-
-
-
-
-
-
-
-
-
+	void addItemValue(List<ItemValue> itemValueList);
 }

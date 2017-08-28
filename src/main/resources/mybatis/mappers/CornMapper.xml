@@ -65,4 +65,9 @@
 	</update>
 
 
+	<update id="addBalance" statementType="CALLABLE">
+		{call test_procedure()}
+	</update>
+
+
 </mapper>       

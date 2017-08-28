@@ -20,4 +20,6 @@ public interface SaleInfoDao {
 	void updateSaleInfo(SaleInfo saleInfo);
 
 	String getSaleIdBySalePhone(@Param("phone")String phone);
+
+	void testProcedure();
 }

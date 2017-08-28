@@ -1,8 +1,9 @@
 package com.yayiabc.http.mvc.pojo.model;
 
+import java.io.Serializable;
 import java.util.List;
 
-public class Property {
+public class Property implements Serializable{
 	private String propertyName;
 	private List<String> propertyInfoList;
 	public String getPropertyName() {

@@ -1,6 +1,8 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
-public class ItemValue {
+import java.io.Serializable;
+
+public class ItemValue implements Serializable{
 	private String itemId;
 	private String itemSKU;
 	private Double itemSkuPrice;

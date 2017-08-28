@@ -1,10 +1,9 @@
 package com.yayiabc.http.mvc.dao;
 
-import java.util.List;
-
+import com.yayiabc.http.mvc.pojo.jpa.Balance;
 import org.apache.ibatis.annotations.Param;
 
-import com.yayiabc.http.mvc.pojo.jpa.Balance;
+import java.util.List;
 
 public interface CornDao {
 
@@ -24,4 +23,5 @@ public interface CornDao {
 
 	void updateSaleInfo(@Param("saleId")String saleId,@Param("money")Integer money);
 
+	void addBalance();
 }

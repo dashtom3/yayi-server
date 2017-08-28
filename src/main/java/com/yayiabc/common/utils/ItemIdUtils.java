@@ -2,6 +2,7 @@ package com.yayiabc.common.utils;
 
 import java.text.SimpleDateFormat;
 import java.util.Date;
+import java.util.Random;
 
 
 public class ItemIdUtils {
@@ -10,7 +11,9 @@ public class ItemIdUtils {
 		Date date =new Date();
 		SimpleDateFormat sdf=new SimpleDateFormat("yyMMddHHmmss");
 		String str=sdf.format(date);
-		return str;
+		return str+new Random().nextInt(1000);
 		
 	}
+
+
 }

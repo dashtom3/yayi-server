@@ -1,12 +1,13 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
+import java.io.Serializable;
 import java.util.Date;
 
 /**
  * 
  * @author xiaojiang 评论信息表
  */
-public class Comments extends BasePojo {
+public class Comments extends BasePojo implements Serializable{
 	private Integer commentId;
 	
 	private String sku;

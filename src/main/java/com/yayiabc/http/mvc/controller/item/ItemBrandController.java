@@ -1,7 +1,10 @@
 package com.yayiabc.http.mvc.controller.item;
 
-import java.util.List;
-
+import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.RedisClient;
+import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
+import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
+import com.yayiabc.http.mvc.service.ItemBrandService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -9,12 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-
-import com.yayiabc.common.utils.DataWrapper;
-
-import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
-import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
-import com.yayiabc.http.mvc.service.ItemBrandService;
+import java.util.List;
 
 @Controller
 @RequestMapping(value="api/item")
@@ -29,7 +27,9 @@ public class ItemBrandController{
     @ResponseBody
     public DataWrapper<List<ItemBrand>> brandList()
     {
-        return itemBrandService.brandList();
+        DataWrapper<List<ItemBrand>> dataWrapper =new DataWrapper<List<ItemBrand>>();
+        dataWrapper.setData((List<ItemBrand>) RedisClient.getInstance().get("itemBrandList"));
+        return dataWrapper;
     }
 
     @RequestMapping(value={"brandItemList"})
@@ -49,7 +49,6 @@ public class ItemBrandController{
     		@RequestParam(value="itemId") String itemId,
     		@RequestHeader(value="token",required=false) String token)
     {	
-    	
         return itemBrandService.itemDetailDes(itemId,token);
     }
     

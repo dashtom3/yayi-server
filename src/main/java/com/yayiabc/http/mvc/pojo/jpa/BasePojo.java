@@ -1,10 +1,10 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
-import java.util.Date;
-
 import org.springframework.format.annotation.DateTimeFormat;
 
-public class BasePojo {
+import java.util.Date;
+
+public class BasePojo{
 	@DateTimeFormat(pattern = "yyyy-MM-dd")
 	private Date created;
 	

@@ -1,17 +1,17 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
-import java.util.Date;
-import java.util.List;
-
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
+import java.io.Serializable;
+import java.util.Date;
+import java.util.List;
 
 /**
  * 
  * @author xiaojiang 用户表
  */
-public class User extends BasePojo {
+public class User extends BasePojo implements Serializable {
 	private String userId;
 
     private String saleId;

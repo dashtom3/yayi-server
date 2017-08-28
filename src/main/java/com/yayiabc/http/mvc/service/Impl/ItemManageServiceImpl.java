@@ -1,13 +1,5 @@
 package com.yayiabc.http.mvc.service.Impl;
 
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
@@ -18,9 +10,14 @@ import com.yayiabc.http.mvc.dao.ItemManageDao;
 import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
 import com.yayiabc.http.mvc.pojo.jpa.ItemClassify;
 import com.yayiabc.http.mvc.pojo.jpa.ItemProperty;
-import com.yayiabc.http.mvc.pojo.jpa.ItemPropertyd;
 import com.yayiabc.http.mvc.pojo.model.Search;
 import com.yayiabc.http.mvc.service.ItemManageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.HashMap;
+import java.util.List;
+import java.util.Map;
 @Service
 public class ItemManageServiceImpl implements ItemManageService{
 	@Autowired
@@ -193,6 +190,29 @@ public class ItemManageServiceImpl implements ItemManageService{
 	}
 
 	@Override
+	public DataWrapper<Void> deleteItemClassify(ItemClassify itemClassify) {
+		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		Integer count =itemManageDao.getCountItemClassify(itemClassify.getItemClassifyName());
+		if(count==0){
+			itemManageDao.deleteItemClassifyById(itemClassify.getItemClassifyId());
+			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+		}else{
+			dataWrapper.setErrorCode(ErrorCodeEnum.ITEM_LEAVE);
+		}
+		dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+		return dataWrapper;
+	}
+
+	@Override
+	public DataWrapper<Void> updateItemClassify(ItemClassify itemClassify) {
+		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		itemManageDao.updateItemClassify(itemClassify);
+		ClassifyManage.classifyList=itemClassifyDao.showsTreeClassify();
+		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+		return dataWrapper;
+	}
+
+	/*@Override
 	public DataWrapper<Void> deleteItemClassify(Integer itemClassifyId,String itemClassifyName,Integer itemClassifyGrade) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		ItemClassify itemClassify =new ItemClassify();
@@ -229,9 +249,11 @@ public class ItemManageServiceImpl implements ItemManageService{
 		String msg=dataWrapper.getErrorCode().getLabel();
 		dataWrapper.setMsg(msg);
 		return dataWrapper;
-	}
+	}*/
 
-	@Override
+
+
+	/*@Override
 	public DataWrapper<Void> updateItemClassify(Integer itemClassifyId,String itemClassifyName, 
 			String itemOldName,Integer itemClassifyGrade) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
@@ -240,23 +262,11 @@ public class ItemManageServiceImpl implements ItemManageService{
 		itemClassify.setItemPreviousClassify(itemOldName);
 		itemClassify.setItemClassifyName(itemClassifyName);
 		itemClassify.setItemClassifyGrade(itemClassifyGrade);
-		if(itemClassifyGrade==1){
-			itemManageDao.updateItemClassifyOne(itemClassify);
-			itemManageDao.updateItemClassifyOneSon(itemClassify);
-			
-		}else if(itemClassifyGrade==2){
-			itemManageDao.updateItemClassifyTwo(itemClassify);
-			itemManageDao.updateItemClassifyTwoSon(itemClassify);
-
-		}else if(itemClassifyGrade==3){
-			itemManageDao.updateItemClassifyThree(itemClassify);
-
-		}
 		itemManageDao.updateItemClassify(itemClassify);
 		ClassifyManage.classifyList=itemClassifyDao.showsTreeClassify();
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
-	}
+	}*/
 
 	@Override
 	public DataWrapper<Void> addItemBrand(String itemBrandName,
@@ -279,9 +289,18 @@ public class ItemManageServiceImpl implements ItemManageService{
 		return dataWrapper;
 	}
 
-
-
 	@Override
+	public DataWrapper<Void> addItemClassify(ItemClassify itemClassify) {
+		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		itemManageDao.addItemClassify(itemClassify);
+		ClassifyManage.classifyList=itemClassifyDao.showsTreeClassify();
+		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+		return dataWrapper;
+	}
+
+
+
+	/*@Override
 	public DataWrapper<Void> addItemClassify(String itemClassifyName,
 			String itemPreviousClassify,Integer itemClassifyGrade) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
@@ -289,21 +308,11 @@ public class ItemManageServiceImpl implements ItemManageService{
 		itemClassify.setItemClassifyName(itemClassifyName);
 		itemClassify.setItemClassifyGrade(itemClassifyGrade);
 		itemClassify.setItemPreviousClassify(itemPreviousClassify);
-		if(itemClassifyGrade==1){
-			itemManageDao.insertItemClassify(itemClassify);
-			System.out.println(1);
-		}else if(itemClassifyGrade==2){
-			itemManageDao.insertItemClassifyTwo(itemClassify);
-			System.out.println(2);
-		}else if(itemClassifyGrade==3){
-			itemManageDao.insertItemClassifyThree(itemClassify);
-			System.out.println(3);
-		}
 		itemManageDao.addItemClassify(itemClassify);
 		ClassifyManage.classifyList=itemClassifyDao.showsTreeClassify();
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
-	}
+	}*/
 
 	@Override
 	public DataWrapper<Void> addPropertyAndPropertyName(

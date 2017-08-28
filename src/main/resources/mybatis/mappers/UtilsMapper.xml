@@ -129,4 +129,8 @@
 	<select id="queryNowOrder" resultMap="asdf">
 	 select order_id,created from ordera  where state=1
 	</select>
+
+
+
+
 </mapper>       

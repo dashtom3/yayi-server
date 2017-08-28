@@ -9,13 +9,11 @@ import com.yayiabc.http.mvc.pojo.model.UserToken;
 @Repository
 public interface UserDao {
 
-	User getUserByUser(User user);
-
 	int register(User newUser);
 
 	int getCartNum(User user);
 
-	void updatePwd(User neUser);
+	void updatePwd(@Param("phone")String phone,@Param("pwd")String pwd);
 	
 	String getUserId(String phone);
 
@@ -48,4 +46,6 @@ public interface UserDao {
 	void registerUserCertification(User user);
 
 	User getUserByPhone(@Param("phone")String phone);
+
+    Integer getCountByUserId(@Param("userId") String userId);
 }

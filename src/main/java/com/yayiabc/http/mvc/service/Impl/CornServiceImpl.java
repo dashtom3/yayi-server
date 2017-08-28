@@ -1,16 +1,10 @@
 package com.yayiabc.http.mvc.service.Impl;
 
 
-import java.text.DecimalFormat;
-import java.util.Date;
-import java.util.List;
-
+import com.yayiabc.http.mvc.dao.CornDao;
+import com.yayiabc.http.mvc.service.CornService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import com.yayiabc.http.mvc.dao.CornDao;
-import com.yayiabc.http.mvc.pojo.jpa.Balance;
-import com.yayiabc.http.mvc.service.CornService;
 
 
 
@@ -27,7 +21,8 @@ public class CornServiceImpl implements CornService{
 
 	@Override
 	public void addBalance() {
-		List<String> saleIdList=cornDao.getSaleIdList();
+		cornDao.addBalance();
+		/*List<String> saleIdList=cornDao.getSaleIdList();
 		for (String saleId : saleIdList) {
 			Double totalHaoCaiMoney=cornDao.getTotalHaoCaiMoneyBySaleId(saleId);
 			if(totalHaoCaiMoney==null){
@@ -85,7 +80,7 @@ public class CornServiceImpl implements CornService{
 				cornDao.addBalancePerMonth(balanceMonthCash);
 				
 			}
-		}
+		}*/
 		
 		
 	}

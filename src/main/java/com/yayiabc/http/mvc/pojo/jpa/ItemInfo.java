@@ -1,15 +1,16 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
+import com.yayiabc.http.mvc.pojo.model.Property;
+
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
-
-import com.yayiabc.http.mvc.pojo.model.Property;
 
 /**
  * 
  * @author xiaojiang 商品信息表
  */
-public class ItemInfo extends BasePojo {
+public class ItemInfo extends BasePojo implements Serializable{
 	private String itemId;
 
 	private String itemName;

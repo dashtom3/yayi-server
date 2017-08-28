@@ -41,7 +41,7 @@ public class SaleTokenValidateAspect {
 		*/
 		SaleToken saleToken=tokenValidateService.getSaleTokenByLoginToken(loginToken);
 		if(saleToken!=null){
-			if((System.currentTimeMillis()-saleToken.getLoginTime().getTime())>30*60*1000){
+			if((System.currentTimeMillis()-saleToken.getLoginTime().getTime())<30*60*1000){
 				try {
 					result=joinpoint.proceed();//放行
 				} catch (Throwable e) {

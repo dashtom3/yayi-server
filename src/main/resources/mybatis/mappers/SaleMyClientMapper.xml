@@ -23,6 +23,7 @@
 		u.phone LIKE '%${value}%' AND u.sale_id =#{saleId} OR 
 		c.company_name LIKE '%${value}%' AND u.sale_id =#{saleId}
 		GROUP BY u.user_id
+		ORDER BY bind_sale_time DESC
 		LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
 	
@@ -59,7 +60,9 @@
 		DATE_FORMAT(created, '%Y-%c-%e %T') AS latelyOrderDate  
 		FROM ordera 
 		WHERE user_id=#{userId}
-		ORDER BY created DESC 
+		<if test="state == 1">
+			ORDER BY created DESC 
+		</if>
 		LIMIT 1
 	</select>
 </mapper>

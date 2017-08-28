@@ -31,11 +31,12 @@ public class SaleMyClientController {
 	@SaleLog(description="销售员查询我的客户")
 	public DataWrapper<List<UserStatistics>> myClient(
 			@RequestParam(value="value",required=false)String value,
+			@RequestParam(value="state",required=false)Integer state,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
     		@RequestHeader(value="saleToken",required=true)String token
 	){
-		return saleMyClientService.myClient(value, token, currentPage, numberPerPage);
+		return saleMyClientService.myClient(value,state, token, currentPage, numberPerPage);
 	}
 
 	@RequestMapping(value="getInvitation",method=RequestMethod.GET)

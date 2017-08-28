@@ -16,5 +16,5 @@ public interface SaleMyClientDao {
 
 	UserStatistics queryCount(@Param("saleId")String saleId,@Param("userId")String userId);
 	
-	String getLatelyOrderDate(@Param("userId")String userId);
+	String getLatelyOrderDate(@Param("userId")String userId,@Param("state")Integer state);
 }

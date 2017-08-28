@@ -23,7 +23,7 @@ public class SaleMyClientServiceImpl implements SaleMyClientService {
 	UserDao userDao;
 	
 	@Override
-	public DataWrapper<List<UserStatistics>> myClient(String value,
+	public DataWrapper<List<UserStatistics>> myClient(String value,Integer state,
 			String token, Integer currentPage, Integer numberPerPage) {
 		DataWrapper<List<UserStatistics>> dataWrapper = new DataWrapper<List<UserStatistics>>();
 		String saleId=saleLogDao.getSaleIdByToken(token);
@@ -42,7 +42,7 @@ public class SaleMyClientServiceImpl implements SaleMyClientService {
 			}else{
 				userStatistics.setOrderaCount(us.getOrderaCount());
 				userStatistics.setOrderaMoneyCount(us.getOrderaMoneyCount());
-				userStatistics.setLatelyOrderDate(saleMyClientDao.getLatelyOrderDate(userStatistics.getUserId()));
+				userStatistics.setLatelyOrderDate(saleMyClientDao.getLatelyOrderDate(userStatistics.getUserId(),state));
 			}
 		}
 		dataWrapper.setData(list);

@@ -98,6 +98,8 @@ public class FrontRcvResponse extends HttpServlet {
 			LogUtil.writeLog("验证签名结果[成功].");
 			//判断respCode=00、A6后，对涉及资金类的交易，请再发起查询接口查询，确定交易成功后更新数据库。
 			resp.sendRedirect("http://www.yayiabc.com/paySuccess");
+		} else{
+			resp.sendRedirect("http://www.yayiabc.com/payFail");
 		}
 		//req.setAttribute("result", page.toString());
 		LogUtil.writeLog("FrontRcvResponse前台接收报文返回结束");

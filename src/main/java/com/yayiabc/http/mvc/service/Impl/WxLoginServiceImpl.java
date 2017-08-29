@@ -12,7 +12,7 @@ import com.yayiabc.http.mvc.dao.WxAppDao;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
-import com.yayiabc.http.mvc.pojo.model.UserToken;
+import com.yayiabc.http.mvc.service.TokenService;
 import com.yayiabc.http.mvc.service.UserMyQbService;
 import com.yayiabc.http.mvc.service.WxLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -38,6 +38,8 @@ public class WxLoginServiceImpl implements WxLoginService {
     UserMyQbService userMyQbService;
     @Autowired
     SaleInfoDao saleInfoDao;
+    @Autowired
+    TokenService tokenService;
 
 
 
@@ -56,12 +58,12 @@ public class WxLoginServiceImpl implements WxLoginService {
             String type = userId.get("type");
             if ("1".equals(type)){
                 User user = userDao.getUserByUserId(userId.get("userId"));
-                String token = getToken(userId.get("userId"));
+                String token = tokenService.getToken(userId.get("userId"));
                 dataWrapper.setToken(token);
                 dataWrapper.setData(user);
             }else if ("2".equals(type)){
                 SaleInfo saleInfo = saleLogDao.getSaleInfoById(userId.get("userId"));
-                String token = getSaleToken(userId.get("userId"));
+                String token = tokenService.getSaleToken(userId.get("userId"));
                 dataWrapper.setData(saleInfo);
                 dataWrapper.setToken(token);
             }
@@ -86,7 +88,7 @@ public class WxLoginServiceImpl implements WxLoginService {
 	                dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 	                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
 	                String userId = seUser.getUserId();
-	                String token = getToken(userId);
+	                String token =tokenService.getToken(userId);
 	                dataWrapper.setData(seUser);
 	                dataWrapper.setToken(token);
 
@@ -109,7 +111,7 @@ public class WxLoginServiceImpl implements WxLoginService {
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                     String saleId = saleInfo.getSaleId();
                     if (saleId != null) {
-                        String token = getSaleToken(saleId);
+                        String token =tokenService.getSaleToken(saleId);
                         dataWrapper.setToken(token);
                         dataWrapper.setData(saleInfo);
 
@@ -127,16 +129,7 @@ public class WxLoginServiceImpl implements WxLoginService {
     }
 
 
-    private  String getSaleToken(String id) {
-        String token = UUID.randomUUID().toString();
-        String oldToken = saleLogDao.getTokenBySaleId(id);
-        if (oldToken == null) {
-            saleLogDao.addSaleToken(id, token);
-        } else {
-            saleLogDao.updateSaleToken(id, token);
-        }
-        return token;
-    }
+
 
 
 
@@ -166,7 +159,7 @@ public class WxLoginServiceImpl implements WxLoginService {
              newUser.setPhone(user.getPhone());
              newUser.setPwd(MD5Util.getMD5String(user.getPwd()));
              if (1 == userDao.register(newUser)) {
-                    String token = getToken(newUser.getUserId());
+                    String token = tokenService.getToken(newUser.getUserId());
                     QbRecord qbRecord=new QbRecord();
                     qbRecord.setQbRget(60);
                     qbRecord.setRemark("注册送60乾币");
@@ -186,19 +179,7 @@ public class WxLoginServiceImpl implements WxLoginService {
 		return dataWrapper;
 	}
 
-	 private String getToken(String userId) {
-	        String token = UUID.randomUUID().toString();
-	        UserToken userToken = new UserToken();
-	        userToken.setUserId(userId);
-	        userToken.setToken(token);
-	        String oldToken = userDao.getTokenByUserId(userId);
-	        if (oldToken == null) {
-	            userDao.addToken(userToken);
-	        } else {
-	            userDao.updateToken(userToken);
-	        }
-	        return token;
-	    }
+
 
 
 
@@ -209,7 +190,7 @@ public class WxLoginServiceImpl implements WxLoginService {
 		if(number==1){//已注册
 			saleInfoDao.updateSaleInfo(saleInfo);
 			String saleId=saleInfoDao.getSaleIdBySalePhone(saleInfo.getPhone());
-			String token=getSaleToken(saleId);
+			String token=tokenService.getSaleToken(saleId);
             wxAppDao.addSaleUser(saleId,openid);
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			dataWrapper.setToken(token);
@@ -222,7 +203,7 @@ public class WxLoginServiceImpl implements WxLoginService {
             saleInfoTwo.setCreated(new Date());
             	if (1 == saleLogDao.register(saleInfoTwo)) {
                     VerifyCodeManager.removePhoneCodeByPhoneNum(saleInfo.getPhone());
-                    String token = getSaleToken(saleInfoTwo.getSaleId());
+                    String token = tokenService.getSaleToken(saleInfoTwo.getSaleId());
                     saleInfoDao.updateSaleInfo(saleInfo);
                     wxAppDao.addSaleUser(saleInfoTwo.getSaleId(),openid);
                     dataWrapper.setToken(token);

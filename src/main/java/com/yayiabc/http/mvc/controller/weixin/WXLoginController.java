@@ -8,6 +8,7 @@ import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.UserToken;
 import com.yayiabc.http.mvc.service.WxLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -47,12 +48,7 @@ public class WXLoginController {
     }
     
    
-    /**
-     * sex:1为男2为女
-     * @param user
-     * @param type
-     * @return
-     */
+
     @RequestMapping("updateUserInfo")
     @ResponseBody
     public DataWrapper<User> updateUserInfo(
@@ -91,6 +87,18 @@ public class WXLoginController {
     ){
         DataWrapper<User> dataWrapper =new DataWrapper<User>();
         saleInfoDao.testProcedure();
+        return dataWrapper;
+    }
+
+    @RequestMapping("test")
+    @ResponseBody
+    @Cacheable(value="name")
+    public DataWrapper<User> test(String name){
+        System.out.println("开始查询数据库");
+        User user=new User();
+        user.setTrueName(name);
+        DataWrapper<User> dataWrapper =new DataWrapper<User>();
+        dataWrapper.setData(user);
         return dataWrapper;
     }
 

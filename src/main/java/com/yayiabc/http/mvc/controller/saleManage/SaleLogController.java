@@ -1,26 +1,28 @@
 package com.yayiabc.http.mvc.controller.saleManage;
 
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpSession;
-
+import com.yayiabc.common.utils.CheckIsSignUtils;
+import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.dao.UtilsDao;
+import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
+import com.yayiabc.http.mvc.service.SaleLogService;
+import com.yayiabc.http.mvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yayiabc.common.utils.CheckIsSignUtils;
-import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.http.mvc.dao.UtilsDao;
-import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
-import com.yayiabc.http.mvc.service.SaleLogService;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpSession;
 
 @Controller
 @RequestMapping("api/saleLog")
 public class SaleLogController {
 
     @Autowired
-    SaleLogService saleLogService;
+    private SaleLogService saleLogService;
+    @Autowired
+    private UserService userService;
     @Autowired
     private UtilsDao utilsDao;
     // 获取验证码
@@ -30,7 +32,7 @@ public class SaleLogController {
     public DataWrapper<Void> getVerifyCode(
             @RequestParam(value = "phone", required = true) String phone
     ) {
-        return saleLogService.getVerifyCode(phone);
+        return userService.getVerifyCode(phone);
     }
 
 

@@ -13,7 +13,7 @@ import com.yayiabc.http.mvc.dao.WxAppDao;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
-import com.yayiabc.http.mvc.pojo.model.UserToken;
+import com.yayiabc.http.mvc.service.TokenService;
 import com.yayiabc.http.mvc.service.UserMyQbService;
 import com.yayiabc.http.mvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -33,10 +33,11 @@ public class UserServiceImpl implements UserService {
     private UserMyQbService userMyQbService;
     @Autowired
     private UserManageListDao userManageListDao;
+    @Autowired
+    private TokenService tokenService;
 
 
     public DataWrapper<Void> getVerifyCode(String phone) {
-        //浜斿垎閽熶箣鍐呬笉鑳藉啀鍙戠煭淇�
         DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
         String code = VerifyCodeManager.newPhoneCode(phone);
         if (code == null) {
@@ -79,7 +80,7 @@ public class UserServiceImpl implements UserService {
                 	if (1 == userDao.register(newUser)) {
 	                    //绉婚櫎楠岃瘉鐮�
 	                    VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
-	                    String token = getToken(newUser.getUserId());
+	                    String token = tokenService.getToken(newUser.getUserId());
 	                    QbRecord qbRecord=new QbRecord();
 	                    qbRecord.setQbRget(60);
 	                    qbRecord.setRemark("注册送60乾币");
@@ -99,8 +100,6 @@ public class UserServiceImpl implements UserService {
                 }
                
             } else {
-                System.out.println("code:" + code);
-                System.out.println("VerifyCode:" + VerifyCodeManager.getPhoneCode(phone));
                 dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_Error);
                 dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
             }
@@ -129,7 +128,7 @@ public class UserServiceImpl implements UserService {
                 dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 int num = userDao.getCartNum(user);
                 dataWrapper.setNum(num);
-                String token = getToken(user.getUserId());
+                String token =tokenService.getToken(user.getUserId());
                 //--
 
 
@@ -171,7 +170,7 @@ public class UserServiceImpl implements UserService {
                 dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
                 dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 String userId = seUser.getUserId();
-                token = getToken(userId);
+                token = tokenService.getToken(userId);
                 dataWrapper.setToken(token);
             } else {
                 dataWrapper.setErrorCode(ErrorCodeEnum.Password_error);
@@ -258,19 +257,7 @@ public class UserServiceImpl implements UserService {
         return dataWrapper;
     }
 
-    private String getToken(String userId) {
-        String token = UUID.randomUUID().toString();
-        UserToken userToken = new UserToken();
-        userToken.setUserId(userId);
-        userToken.setToken(token);
-        String oldToken = userDao.getTokenByUserId(userId);
-        if (oldToken == null) {
-            userDao.addToken(userToken);
-        } else {
-            userDao.updateToken(userToken);
-        }
-        return token;
-    }
+
 
 
 

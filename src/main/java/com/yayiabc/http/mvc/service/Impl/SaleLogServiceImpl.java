@@ -3,7 +3,6 @@ package com.yayiabc.http.mvc.service.Impl;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.common.utils.HttpUtil;
 import com.yayiabc.common.utils.MD5Util;
 import com.yayiabc.http.mvc.dao.SaleLogDao;
 import com.yayiabc.http.mvc.dao.WxAppDao;
@@ -24,25 +23,7 @@ public class SaleLogServiceImpl implements SaleLogService {
     @Autowired
     WxAppDao wxAppDao;
 
-    @Override
-    public DataWrapper<Void> getVerifyCode(String phone) {
-        DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
-        String code = VerifyCodeManager.newPhoneCode(phone);
-        if (code == null) {
-            dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_5min);
-            dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            return dataWrapper;
-        }
-        boolean result = HttpUtil.sendPhoneVerifyCode(code, phone);
-        if (result) {
-            dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-            dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-        } else {
-            dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-            dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-        }
-        return dataWrapper;
-    }
+
 
     @Override
     public DataWrapper<SaleInfo> register(String phone, String password,

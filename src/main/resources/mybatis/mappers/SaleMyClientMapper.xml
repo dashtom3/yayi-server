@@ -18,12 +18,19 @@
 		ON u.sale_id=s.sale_id
 		LEFT JOIN certification c
 		ON u.user_id=c.user_id
+		LEFT JOIN ordera o
+		ON u.user_id = o.user_id
 		WHERE  
 		u.true_name LIKE '%${value}%' AND u.sale_id =#{saleId} OR 
 		u.phone LIKE '%${value}%' AND u.sale_id =#{saleId} OR 
 		c.company_name LIKE '%${value}%' AND u.sale_id =#{saleId}
 		GROUP BY u.user_id
-		ORDER BY bind_sale_time DESC
+		<if test="state == 1">
+			ORDER BY bind_sale_time DESC
+		</if>
+		<if test="state == 2">
+			ORDER BY o.created DESC
+		</if>
 		LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
 	
@@ -60,9 +67,6 @@
 		DATE_FORMAT(created, '%Y-%c-%e %T') AS latelyOrderDate  
 		FROM ordera 
 		WHERE user_id=#{userId}
-		<if test="state == 1">
-			ORDER BY created DESC 
-		</if>
 		LIMIT 1
 	</select>
 </mapper>

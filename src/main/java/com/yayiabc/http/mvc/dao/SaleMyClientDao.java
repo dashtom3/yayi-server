@@ -10,7 +10,7 @@ import org.springframework.stereotype.Repository;
 
 @Repository
 public interface SaleMyClientDao {
-	List<UserStatistics> myClient(@Param("value")String value,@Param("saleId")String saleId,@Param("page")Page page);
+	List<UserStatistics> myClient(@Param("value")String value,@Param("state")Integer state,@Param("saleId")String saleId,@Param("page")Page page);
 	
 	int getCount(@Param("value")String value,@Param("saleId")String saleId);
 

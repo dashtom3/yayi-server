@@ -6,16 +6,19 @@ import java.util.Date;
 import java.util.HashMap;
 import java.util.Map;
 
-import javax.servlet.ServletConfig;
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 
 import com.yayiabc.http.mvc.controller.unionpay.demo.DemoBase;
 import com.yayiabc.http.mvc.controller.unionpay.sdk.AcpService;
 import com.yayiabc.http.mvc.controller.unionpay.sdk.LogUtil;
 import com.yayiabc.http.mvc.controller.unionpay.sdk.SDKConfig;
+import com.yayiabc.http.mvc.dao.AliPayDao;
 
 /**
  * 重要：联调测试时请仔细阅读注释！
@@ -36,21 +39,12 @@ import com.yayiabc.http.mvc.controller.unionpay.sdk.SDKConfig;
  * 交易说明:1）以后台通知或交易状态查询交易确定交易成功,前台通知不能作为判断成功的标准.
  *       2）交易状态查询交易（Form_6_5_Query）建议调用机制：前台类交易建议间隔（5分、10分、30分、60分、120分）发起交易查询，如果查询到结果成功，则不用再查询。（失败，处理中，查询不到订单均可能为中间状态）。也可以建议商户使用payTimeout（支付超时时间），过了这个时间点查询，得到的结果为最终结果。
  */
-public class Form_6_2_FrontConsume extends HttpServlet {
-
-	@Override
-	public void init(ServletConfig config) throws ServletException {
-		/**
-		 * 请求银联接入地址，获取证书文件，证书路径等相关参数初始化到SDKConfig类中
-		 * 在java main 方式运行时必须每次都执行加载
-		 * 如果是在web应用开发里,这个方法可使用监听的方式写入缓存,无须在这出现
-		 */
-		//这里已经将加载属性文件的方法挪到了web/AutoLoadServlet.java中
-		//SDKConfig.getConfig().loadPropertiesFromSrc(); //从classpath加载acp_sdk.properties文件
-		super.init();
-	}
+@Controller
+public class Form_6_2_FrontConsume{
+	@Autowired
+	AliPayDao aliPayDao;
 	
-	@Override
+	@RequestMapping("form_6_2_FrontConsume")
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
@@ -58,8 +52,9 @@ public class Form_6_2_FrontConsume extends HttpServlet {
 		
 		//前台页面传过来的
 		//String merId = req.getParameter("merId");
-		String txnAmt = req.getParameter("txnAmt");
+		//String txnAmt = req.getParameter("txnAmt");
 		String orderId = req.getParameter("orderId");
+		String txnAmt = aliPayDao.queryActual(orderId);
 		//String txnTime = req.getParameter("txnTime");
 		
 		Map<String, String> requestData = new HashMap<String, String>();
@@ -117,9 +112,4 @@ public class Form_6_2_FrontConsume extends HttpServlet {
 		resp.getWriter().write(html);
 	}
 	
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp)
-			throws ServletException, IOException {
-		doPost(req, resp);
-	}	
 }

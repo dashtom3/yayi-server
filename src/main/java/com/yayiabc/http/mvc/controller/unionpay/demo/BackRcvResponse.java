@@ -8,18 +8,17 @@ import java.util.HashMap;
 import java.util.Map;
 
 import javax.servlet.ServletException;
-import javax.servlet.http.HttpServlet;
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 import org.apache.commons.io.IOUtils;
-
-import com.yayiabc.common.utils.BeanUtil;
-import com.yayiabc.common.utils.PayAfterOrderUtil;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
 import com.yayiabc.http.mvc.controller.unionpay.sdk.AcpService;
 import com.yayiabc.http.mvc.controller.unionpay.sdk.LogUtil;
 import com.yayiabc.http.mvc.controller.unionpay.sdk.SDKConstants;
-import com.yayiabc.http.mvc.dao.AliPayDao;
+import com.yayiabc.http.mvc.service.UnionpayService;
 
 
 /**
@@ -41,65 +40,38 @@ import com.yayiabc.http.mvc.dao.AliPayDao;
  *			为保证安全，涉及资金类的交易，收到通知后请再发起查询接口确认交易成功。不涉及资金的交易可以以通知接口respCode=00判断成功。
  * 			未收到通知时，查询接口调用时间点请参照此FAQ：https://open.unionpay.com/ajweb/help/faq/list?id=77&level=0&from=0
  */
+@Controller
+public class BackRcvResponse{
+	@Autowired
+	UnionpayService unionpayService;
 
-public class BackRcvResponse extends HttpServlet{
-	
-	private AliPayDao alipayDao;
-	
-
-	@Override
-	public void init() throws ServletException {
-		/**
-		 * 请求银联接入地址，获取证书文件，证书路径等相关参数初始化到SDKConfig类中
-		 * 在java main 方式运行时必须每次都执行加载
-		 * 如果是在web应用开发里,这个方法可使用监听的方式写入缓存,无须在这出现
-		 */
-		//这里已经将加载属性文件的方法挪到了web/AutoLoadServlet.java中
-		//SDKConfig.getConfig().loadPropertiesFromSrc(); //从classpath加载acp_sdk.properties文件
-		super.init();
-	}
-	
-	@Override
+	@RequestMapping("backRcvResponse")
 	protected void doPost(HttpServletRequest req, HttpServletResponse resp)
 			throws ServletException, IOException {
 
 		LogUtil.writeLog("BackRcvResponse接收后台通知开始");
-		
-		String encoding = req.getParameter(SDKConstants.param_encoding);
 		// 获取银联通知服务器发送的后台通知参数
 		Map<String, String> reqParam = getAllRequestParamStream(req);
-		LogUtil.printRequestLog(reqParam);
-		
+		String encoding = req.getParameter(SDKConstants.param_encoding);
 		//重要！验证签名前不要修改reqParam中的键值对的内容，否则会验签不过
 		if (!AcpService.validate(reqParam, encoding)) {
 			LogUtil.writeLog("验证签名结果[失败].");
 			//验签失败，需解决验签问题
-			
 		} else {
+			LogUtil.printRequestLog(reqParam);
 			LogUtil.writeLog("BackRcvResponse验证签名结果[成功].");
 			//【注：为了安全验签成功才应该写商户的成功处理逻辑】交易成功，更新商户订单状态
 			String orderId =reqParam.get("orderId"); //获取后台通知的数据，其他字段也可用类似方式获取
-			String respCode = reqParam.get("respCode");
+			String respCode =reqParam.get("respCode");
 			//判断respCode=00、A6后，对涉及资金类的交易，请再发起查询接口查询，确定交易成功后更新数据库。
-			
-			//银联支付后台业务逻辑代码
-			//①查询订单是否已完成
-			PayAfterOrderUtil payAfterOrderUtil = BeanUtil.getBean("PayAfterOrderUtil");
-			if(2!=alipayDao.querySatetIsTwo(orderId)){
-				payAfterOrderUtil.universal(orderId, "2");
-				LogUtil.writeLog("BackRcvResponse接收后台通知结束");
-				//返回给银联服务器http 200  状态码
-				resp.getWriter().print("ok");
-			}
+			unionpayService.UnionPayJudge(orderId, respCode);
 		}
-		
+		LogUtil.writeLog("BackRcvResponse接收后台通知结束");
+		//返回给银联服务器http 200  状态码
+		resp.getWriter().print("ok");
 	}
 
-	@Override
-	protected void doGet(HttpServletRequest req, HttpServletResponse resp) throws ServletException,
-			IOException {
-		this.doPost(req, resp);
-	}
+	
 
 	/**
 	 * 获取请求参数中所有的信息

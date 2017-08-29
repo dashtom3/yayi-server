@@ -5,12 +5,14 @@ import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.pojo.model.UserToken;
 import com.yayiabc.http.mvc.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
 
 import java.util.UUID;
 
 /**
  * Created by 小月亮 on 2017/8/29.
  */
+@Service
 public class TokenServiceImpl implements TokenService {
     @Autowired
     private UserDao userDao;

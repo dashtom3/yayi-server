@@ -12,6 +12,10 @@
 	  select actual_pay from ordera where order_id=#{orderId}
 	</select>
 	
+	<select id="queryActual" resultType="String">
+	  select actual_pay*100 from ordera where order_id=#{orderId}
+	</select>
+	
 	<select id="queryYitemNames" resultType="java.lang.String">
 	   select item_name from order_item where order_id=#{orderId}
 	</select>

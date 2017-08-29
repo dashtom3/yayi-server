@@ -97,9 +97,13 @@ public class FrontRcvResponse extends HttpServlet {
 			//page.append("<tr><td width=\"30%\" align=\"right\">验证签名结果</td><td>成功</td></tr>");
 			LogUtil.writeLog("验证签名结果[成功].");
 			//判断respCode=00、A6后，对涉及资金类的交易，请再发起查询接口查询，确定交易成功后更新数据库。
-			resp.sendRedirect("http://www.yayiabc.com/paySuccess");
+			if("YLQB".equals(valideData.get("orderId").substring(0, 4))){
+				resp.sendRedirect("http://www.yayiabc.com/center/myMoney");
+			}else{
+				resp.sendRedirect("http://www.yayiabc.com/paySuccess");
+			}
 		} else{
-			resp.sendRedirect("http://www.yayiabc.com/payFail");
+				resp.sendRedirect("http://www.yayiabc.com/payFail");
 		}
 		//req.setAttribute("result", page.toString());
 		LogUtil.writeLog("FrontRcvResponse前台接收报文返回结束");

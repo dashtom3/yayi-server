@@ -12,6 +12,14 @@ public class OrderManagement {
 	private	String shippingName;
 	private	String shippingCode;
 	private	String refundInfo;
+	private String qbDes;
+	
+	public String getQbDes() {
+		return qbDes;
+	}
+	public void setQbDes(String qbDes) {
+		this.qbDes = qbDes;
+	}
 	public String getOrderId() {
 		return orderId;
 	}

@@ -66,24 +66,7 @@ public class AliPayController {
 			e.printStackTrace();
 		}
 	}
-	/**
-	 * ?buyer_email=17621302014&buyer_id=2088612734610853&exterface=create_direct_pay_by_user&is_success=T&
-	 * notify_id=RqPnCoPT3K9%252Fvwbh3InYwJKFDxNZfxZnZBsWXcEyYjtXMPGMPyDqDXSSKy%
-	 * 252Bt7nWcteUB&notify_time=2017-07-13%2016%3A16%3
-	 * A17&notify_type=trade_status_sync&out_trade_no=6c3cf294-51bb-471d-ad43-ddcac48fa79b2095&
-	 * payment_type=1&seller_email=yzm%40yzmedu.com&seller_id=2088221734067901&
-	 * subject=%E6%B5%8B%E8%AF%95%E4%B8%80%E4%B8%8B...
-	 * &total_fee=0.01&trade_no=2017071321001004850242776603&
-	 * trade_status=TRADE_SUCCESS&sign=3ee973ff791b75533176e7aa1749b56a&sign_type=MD5
-	 * @param is_success
-	 * @param sign_type
-	 * @param sign
-	 * @param trade_status
-	 * @param out_trade_no
-	 * @param trade_no
-	 * @param request
-	 * @param response
-	 */
+	
 	//判断订单支付同步跳转
 	@RequestMapping("payVerifica")
 	void ReturnUrl(

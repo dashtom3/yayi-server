@@ -5,8 +5,8 @@
        
 <mapper namespace="com.yayiabc.http.mvc.dao.UserMyQbDao">
 	<insert id="add" parameterType="QbRecord">
-			INSERT INTO qb_record(user_id,qb_rget,qb_rout,qb_time,qb_balances,remark,created,millisecond)
-			VALUE(#{userId},#{qbRget},#{qbRout},NOW(),#{qbBalances},#{remark},NOW(),#{millisecond});
+			INSERT INTO qb_record(user_id,qb_rget,qb_rout,qb_time,remark,created,millisecond)
+			VALUE(#{userId},#{qbRget},#{qbRout},NOW(),#{remark},NOW(),#{millisecond});
 	</insert>
 	
 	<resultMap type="QbRecord" id="qbRecordRM">
@@ -22,7 +22,7 @@
 	</resultMap>
 	
 	<select id="query" resultMap="qbRecordRM">
-		SELECT q.qb_rid,q.qb_rget,q.qb_rout,q.qb_time,q.remark,u.qb_balance
+		SELECT q.qb_rid,q.qb_rget,q.qb_rout,q.qb_time,q.remark,(u.qb_balance+u.a_qb+u.b_qb+u.c_qb)  qb_balance
 		FROM qb_record q
 		LEFT JOIN `user` u
 		ON u.user_id=q.user_id
@@ -39,13 +39,39 @@
         where q.user_id=#{userId}; 
 	</select>
 	
-	<select id="updateUserQb">
+	<update id="updateUserQb">
 		UPDATE `user` 	
-		SET	qb_balance=qb_balance+#{qbNum}
+		SET	${qbType}=${qbType}+#{qbNum}
 		WHERE user_id=#{userId};
-	</select>
+	</update>
 	
 	<select id="queryQbbalance" resultType="java.lang.Integer">
-		SELECT qb_balance FROM `user` WHERE user_id = #{userId};
+		SELECT ${qbType} FROM `user` WHERE user_id = #{userId}
 	</select>
+	
+	<update id="updateDataToUser" parameterType="java.util.List">
+	<foreach collection="list" item="nn" index="index" open=""
+			close="" separator=";">
+			update user
+			<set>
+			<if test="index==0">
+			qb_balance = ${nn},
+			</if>
+			<if test="index==1">
+			a_qb = ${nn},
+			</if>
+			<if test="index==2">
+			b_qb = ${nn},
+			</if>
+			<if test="index==3">
+			c_qb = ${nn}
+			</if>
+			</set>
+			where user_id=#{userId}
+		</foreach>
+	</update>
+	<insert id="addMessageQbQ" parameterType="java.util.List">
+	  INSERT INTO qb_record(user_id,qb_rout,remark,created,millisecond)
+			VALUE(#{userId},#{dedNums},#{message},NOW(),#{millisecond});
+	</insert>
 </mapper>        

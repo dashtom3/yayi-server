@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yayiabc.common.enums.ErrorCodeEnum;
+import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.OrderDetailsDao;
@@ -20,6 +21,7 @@ import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.OrderNums;
 import com.yayiabc.http.mvc.pojo.model.itemIdList;
 import com.yayiabc.http.mvc.service.OrderDetailsService;
+import com.yayiabc.http.mvc.service.TimerChangeStateService;
 
 @Service
 public class OrderDetailsServiceImpl implements OrderDetailsService {
@@ -73,6 +75,12 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 	public DataWrapper<Void> cancel(String orderId){
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
+		//还原库存
+		TimerChangeStateService timerChangeStateService=BeanUtil.getBean("TimerChangeStateServiceImpl");
+		List<String> l=new ArrayList<String>();
+		l.add(orderId);
+		List<OrderItem> OrderItemNums=timerChangeStateService.queryOrderItemNums(l);
+		int q=timerChangeStateService.stillItemsListValueNum(OrderItemNums);
 		int state=orderdetailsDao.cancel(orderId);
 		if(state>0){
 			dataWrapper.setMsg("操作成功");

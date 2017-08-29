@@ -30,6 +30,7 @@
 		<result property="invoiceHand" column="invoice_hand" />
 		<result property="isRegister" column="is_register" />
 		<result property="buyerMessage" column="buyer_message" />
+		<result property="qbDes" column="qb_des" />
 		<association property="receiver"
 			javaType="com.yayiabc.http.mvc.pojo.jpa.Receiver">
 			<id property="receiverId" column="receiver_id" />
@@ -73,7 +74,7 @@
 		orde_it.item_name,orde_it.pic_path,orde_it.itm_SKU,
 		orde_it.item_property_namea,
 		orde_it.item_property_nameb,orde_it.item_property_namec,orde_it.item_id,orde.post_fee,orde.qb_ded,orde.state,
-		orde.actual_pay
+		orde.actual_pay,orde.total_fee,orde.qb_des
 		,rece.*
 		FROM `user` us
 		JOIN

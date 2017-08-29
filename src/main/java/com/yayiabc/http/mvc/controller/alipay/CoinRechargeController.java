@@ -23,23 +23,24 @@ import com.yayiabc.http.mvc.service.UserMyQbService;
 public class CoinRechargeController {
 	@Autowired
 	private UtilsDao utilsdao;
-    private CoinRechargeService  coinRechargeService;
-    @Autowired
-	private UserMyQbService userMyQbService;
     @Autowired AliPayService alipay;
     @RequestMapping("recharge")
     @ResponseBody
    // @UserTokenValidate(description="开始支付宝充值乾币")
     public void recharge(
     		@RequestParam(value="token",required=true)String token,
-    		@RequestParam(value="money",required=true)String moneys,
+    		@RequestParam(value="money",required=true)String qbNum,
+    		@RequestParam(value="qbType",required=true)String qbType,
     		 HttpServletResponse response
     		){
+    	//String qbType="a_qb";
     	String codeId=createId(token);
-    	Integer money=QbExchangeUtil.getQbByMoney(Integer.parseInt(moneys));
-    	utilsdao.saveRechargeMessage(codeId,utilsdao.getUserID(token),String.valueOf(money));
-    	    //调用支付宝
-       String sHtmlText=	alipay.packingParameter(codeId, "乾币充值", moneys,"乾币");
+    	double money=QbExchangeUtil.getQbByMoney(Integer.parseInt(qbNum),qbType);
+    	utilsdao.saveRechargeMessage(codeId,utilsdao.getUserID(token),qbNum,qbType);
+    	//test  钱币充值  前台传来的钱币类型 为: a_qb b_qb ,c_qb
+    	money=0.01;
+    	//调用支付宝
+       String sHtmlText=alipay.packingParameter(codeId, "乾币充值", String.valueOf(money),"乾币");
     	try {
 			response.getWriter().write(sHtmlText);
 		} catch (IOException e) {

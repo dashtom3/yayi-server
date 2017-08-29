@@ -314,7 +314,7 @@ public class WXPayController {
 						//给客户的钱包充值
 						String token=wXPayDao.getTokenByChargeId(chargeId);
 						String userId=userDao.getUserIdByToken(token);
-						Integer addMoney=QbExchangeUtil.getQbByMoney(money);
+						Integer addMoney=QbExchangeUtil.getQbByMoney(money,"qbA");
 						QbRecord qbRecord =new QbRecord();
 						qbRecord.setQbRget(addMoney);
 						qbRecord.setRemark("乾币充值"+money);

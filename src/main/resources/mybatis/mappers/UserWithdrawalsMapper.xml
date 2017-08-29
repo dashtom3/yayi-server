@@ -1,0 +1,71 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.UserWithdrawalsDao">
+
+
+	<insert id="submit">
+		insert into
+		user_with(w_user_id,atype,btype,ctype,give_type,created) values(
+		#(userId),#(aType),#(bType),#(cType),#(giveType),now()
+		)
+	</insert>
+
+	<update id="updateUserQb">
+		update user
+		<set>
+			<if test="aType!=null and aType!=''">
+				a_qb=a_qb-${aType},
+			</if>
+			<if test="bType!=null and bType!=''">
+				b_qb=b_qb-${bType},
+			</if>
+			<if test="cType!=null and cType!=''">
+				cType=cType-${cType},
+			</if>
+			<if test="giveType!=null and giveType!=''">
+				qb_balance=qb_balance-${giveType},
+			</if>
+		</set>
+		where user_id=#{userId}
+	</update>
+
+
+	<select id="queryCount" resultType="int">
+		select count(1) from
+		user_with uw join user us on uw.user_id=us.user_id
+	</select>
+
+	<select id="show" resultType="com.yayiabc.http.mvc.pojo.jpa.UserWith">
+		select uw.atype,uw.btype,uw.ctype,uw.give_type,us.true_name,uw.created,uw.determine_time
+		from
+		user_with uw join user us on uw.user_id=us.user_id
+		<where>
+			<if test="userName !=null and userName!=''">
+				us.true_name=#{userName}
+			</if>
+			<if test="orderCTime !=null and orderCTime !=''">
+				and DATE_FORMAT(uw.created,'%Y-%m-%d') <![CDATA[  >=  ]]>#{orderCTime}
+			</if>
+			<if test="orderETime !=null and orderETime !=''">
+				and DATE_FORMAT(uw.created,'%Y-%m-%d') <![CDATA[  <=  ]]>#{orderETime}
+			</if>
+		</where>
+		order by uw.created desc limit #{currentNum} ,#{numberPerpage}
+	</select>
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.UserWith" id="vvx">
+		<id property="withId" column="with_id" />
+		<result property="aType" column="atype" />
+		<result property="bType" column="btype" />
+		<result property="cType" column="ctype" />
+		<result property="giveType" column="give_type" />
+	</resultMap>
+	<select id="queryFourQb" resultMap="vvx">
+		select atype,btype,ctype,give_type from user_with where with_id=#{withId}
+	</select>
+	
+	<update id="determine">
+	  update user_with set sign=2,determine_time=now() where with_id=#{withId}
+	</update>
+</mapper>       

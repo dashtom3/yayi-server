@@ -1,34 +1,34 @@
 package com.yayiabc.common.utils;
 
+import com.yayiabc.http.mvc.expand.KeyExpiredListener;
+
 import redis.clients.jedis.Jedis;
 
 /**
  * Created by 小月亮 on 2017/8/27.
  */
 public class RedisClient {
-    private static final String ip= "127.0.0.1";
+    private static final String ip= "192.168.80.130";
 
     private static final int port=6379;
 
     protected static RedisClient redis = new RedisClient ();
 
-    protected static Jedis jedis = new Jedis( ip, port);;
+    public final static Jedis jedis = new Jedis( ip, port);;
 
     static {
-
-
-
+    	jedis.auth("123");
+    	jedis.psubscribe(new KeyExpiredListener(), "__key*__:*");
     }
 
     protected RedisClient() {
+    	
     }
 
     public static RedisClient getInstance()
 
     {
-
         return redis;
-
     }
 
 

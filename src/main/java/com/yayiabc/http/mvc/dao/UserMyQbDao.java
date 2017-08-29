@@ -16,7 +16,16 @@ public interface UserMyQbDao {
 
 	int getCount(@Param("userId") String userId);
 
-	void updateUserQb(@Param("qbNum") Integer qbNum,@Param("userId") String userId);
+	void updateUserQb(@Param("qbNum") Integer qbNum,@Param("userId") String userId
+			,@Param("qbType")String qbType
+			);
 	
-	Integer queryQbbalance(String userId);
+	Integer queryQbbalance(@Param("userId")String userId,@Param("qbType")String qbType);
+
+	int updateDataToUser(@Param("list")List<Integer> listData,@Param("userId")String userId);
+
+	
+	int addMessageQbQ(@Param("dedNums")int dedNums, @Param("userId")String userId, @Param("message")String s
+			,@Param("millisecond")int Mi
+			);
 }

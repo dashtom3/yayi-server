@@ -5,6 +5,14 @@ public class Charge {
 	private String token;
 	private Integer money;
 	private Integer state;//1表示未支付 2表示已支付
+	private String qbType;
+	
+	public String getQbType() {
+		return qbType;
+	}
+	public void setQbType(String qbType) {
+		this.qbType = qbType;
+	}
 	public String getChargeId() {
 		return chargeId;
 	}

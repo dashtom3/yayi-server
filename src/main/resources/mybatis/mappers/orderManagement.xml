@@ -22,15 +22,18 @@
 		<result property="shippingName" column="shipping_name" />
 		<result property="shippingCode" column="shipping_code" />
 		<result property="refundInfo" column="refund_info" />
-
+		<result property="qbDes" column="qb_des" />
 	</resultMap>
+
+
 	<select id="showOrder" resultMap="userOrderManageResultMap">
 		SELECT
-		orde.order_id,orde.total_fee,orde.qb_ded,orde.actual_pay,us.phone,orde.created,us.true_name,
+		orde.order_id,orde.total_fee,orde.qb_ded,orde.actual_pay,us.phone,DATE_FORMAT(orde.created,
+		'%Y-%m-%d %H:%i:%S') created,us.true_name,
 		orde.payment_time,
 		orde.state,orde.refund_info,
 		CONCAT(shipping_name,shipping_code) AS
-		information,orde.refund_info,orde.shipping_name,orde.shipping_code
+		information,orde.refund_info,orde.shipping_name,orde.shipping_code,orde.qb_des
 		FROM
 		ordera orde JOIN `user`
 		us ON us.user_id=orde.user_id JOIN receiver
@@ -40,25 +43,25 @@
 			<if test="orderId !=null and orderId !=''">
 				orde.order_id like '%${orderId}%'
 			</if>
-		    <if test="orderState !=null and orderState !=4 and orderState!=''">
+			<if test="orderState !=null and orderState !=4 and orderState!=''">
 				and orde.state=#{orderState}
 			</if>
 			<if test="isRefund !=null and isRefund !=''">
 				and orde.refund_info=#{isRefund}
 			</if>
-			
-			<if test="orderCTime !=null and orderCTime !=null">
-				and orde.created >#{orderCTime}
+
+			<if test="orderCTime !=null and orderCTime !=''">
+				and DATE_FORMAT(orde.created,'%Y-%m-%d') <![CDATA[  >=  ]]>#{orderCTime}
 			</if>
-			<if test="orderETime !=null and orderETime !=null">
-				and orde.created &lt;#{orderETime}
+			<if test="orderETime !=null and orderETime !=''">
+				and DATE_FORMAT(orde.created,'%Y-%m-%d') <![CDATA[  <=  ]]>#{orderETime}
 			</if>
 			<if test="buyerInfo != null and buyerInfo !=''">
 				and (us.phone like '%${buyerInfo}%' or us.true_name like
 				'%${buyerInfo}%')
 			</if>
 			<if test="orderState==4">
-			  and orde.state in(4,9)<!-- (orde.state=4 or orde.state=9) -->
+				and orde.state in(4,9)<!-- (orde.state=4 or orde.state=9) -->
 			</if>
 		</where>
 		order by orde.created desc limit #{currentNum} ,#{numberPerpage}
@@ -132,9 +135,11 @@
 		orde_it.item_property_namea,orde_it.item_property_nameb,orde_it.item_property_namec,
 
 		orde_it.pic_path,orde_it.price,orde_it.num,item_de.register_id,item_in.item_name,orde_it.itm_SKU,orde_it.refund_num
-        ,orde_it.item_type,orde_it.item_brand_name
-		FROM ordera orde JOIN receiver rece ON
-		orde.receiver_id=rece.receiver_id JOIN order_item orde_it ON
+		,orde_it.item_type,orde_it.item_brand_name
+		FROM ordera orde JOIN
+		receiver rece ON
+		orde.receiver_id=rece.receiver_id JOIN order_item
+		orde_it ON
 		orde_it.order_id=orde.order_id JOIN item_detail item_de ON
 		orde_it.item_id=item_de.item_id JOIN item_info item_in ON
 		item_in.item_id=orde_it.item_id WHERE orde.order_id =#{orderId}
@@ -150,7 +155,6 @@
 		<!-- <result property="userId" column="user_id" /> -->
 		<association property="refund"
 			javaType="com.yayiabc.http.mvc.pojo.jpa.Refund">
-			<id property="" column="" />
 			<result property="dedQb" column="ded_qb" />
 			<result property="returnQb" column="return_qb" />
 			<result property="returnMoney" column="return_money" />
@@ -184,7 +188,7 @@
 		orde_it.itm_SKU,
 		orde_it.item_type,
 		orde_it.item_brand_name,
-        orde_it.item_id
+		orde_it.item_id
 		FROM ordera
 		orde JOIN order_item
 		orde_it ON
@@ -281,19 +285,19 @@
 			<if test="isRefund !=null and isRefund !=''">
 				and orde.refund_info=#{isRefund}
 			</if>
-			
+
 			<if test="orderCTime !=null and orderCTime !=null">
-				and orde.created >#{orderCTime}
+				and orde.created <![CDATA[  >=  ]]>#{orderCTime}
 			</if>
 			<if test="orderETime !=null and orderETime !=null">
-				and orde.created &lt;#{orderETime}
+				and orde.created <![CDATA[  <=  ]]>#{orderETime}
 			</if>
 			<if test="buyerInfo != null and buyerInfo !=''">
 				and (us.phone like '%${buyerInfo}%' or us.true_name like
 				'%${buyerInfo}%')
 			</if>
 			<if test="orderState==4">
-			  and orde.state in(4,9)<!-- (orde.state=4 or orde.state=9) -->
+				and orde.state in(4,9)<!-- (orde.state=4 or orde.state=9) -->
 			</if>
 		</where>
 		group by orde.order_id) a
@@ -324,6 +328,9 @@
 
 		<result property="actualPay" column="actual_pay" />
 		<result property="giveQb" column="give_qb" />
+		<result property="userId" column="user_id" />
+		<result property="qbDes" column="qb_des" />
+
 	</resultMap>
 	<select id="queryOrder" resultMap="www">
 		select * from
@@ -342,9 +349,8 @@
 		values
 		(#{userId},#{haoCaiRefundSumMoney},#{toolRefundSumMoney},now(),#{dedQbNum},#{returnMoney},#{orderId})
 	</insert>
-	<!-- order.getUserId(),haoCaiRefundSumMoney,ToolRefundSumMoney,
-					dedQbNum,(order.getActualPay()),//扣除钱币数，退回钱
-					a,SendorderItemList.get(0).getOrderId() -->
+	<!-- order.getUserId(),haoCaiRefundSumMoney,ToolRefundSumMoney, dedQbNum,(order.getActualPay()),//扣除钱币数，退回钱 
+		a,SendorderItemList.get(0).getOrderId() -->
 	<insert id="saveRefundMessages">
 		insert into
 		refund(user_id,refund_money_haocai,refund_money_gongju,created,ded_qb,return_qb,return_money,order_id)
@@ -374,7 +380,7 @@
 		update sale_income set refund_money_haocai =#{haoCaiRefundSumMoney},
 		refund_money_gongju=#{toolRefundSumMoney},updated=now()
 		where
-		sale_id=#{saleId} and order_id=#{orderId}
+		order_id=#{orderId}
 	</insert>
 
 	<update id="saveRefundNumToOrderItem">
@@ -402,7 +408,7 @@
 			<result property="itemSKU" column="itm_SKU" />
 			<result property="num" column="num" />
 			<result property="price" column="price" />
-			<result property="itemName" column="item_name"/>
+			<result property="itemName" column="item_name" />
 			<result property="itemPropertyNamea" column="item_property_namea" />
 			<result property="itemPropertyNameb" column="item_property_nameb" />
 			<result property="itemPropertyNamec" column="item_property_namec" />
@@ -411,7 +417,8 @@
 		</collection>
 	</resultMap>
 	<select id="showRefundOrderMessage" resultMap="ppp">
-		SELECT orde.order_id
+		SELECT
+		orde.order_id
 		o,orde.actual_pay,orde.qb_ded,orde.refund_info,orde.payment_time,orde.give_qb,
 
 		orde_it.item_name,orde_it.num,orde_it.price,orde_it.item_property_namea,orde_it.item_property_nameb,
@@ -426,48 +433,115 @@
 		refu.order_id=orde.order_id
 		where orde.order_id=#{orderId}
 	</select>
-	
+
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.Invoice" id="qaz">
-	<id property="InvoiceId" column="invoice_id"/>
-	<result property="companyName" column="company_name"/>
-	<result property="taxpayerNum" column="taxpayer_num"/>
-	<result property="registeredAddress" column="registered_address"/>
-	<result property="registeredPhone" column="registered_phone"/>
-	<result property="opneBank" column="opne_bank"/>
-	<result property="bankNumber" column="bank_number"/>
-	<result property="stickNanme" column="stick_nanme"/>
-	<result property="stickPhone" column="stick_phone"/>
-	<result property="stickaddress" column="stick_address"/>
-	<result property="orderId" column="order_id"/>
-	<result property="invoiceStyle" column="invoice_style"/>
-	<result property="InvoiceState" column="invoice_state"/>
-	<result property="invoiceHead" column="invoice_head"/>
-	<result property="cTime" column="c_time"/>
+		<id property="InvoiceId" column="invoice_id" />
+		<result property="companyName" column="company_name" />
+		<result property="taxpayerNum" column="taxpayer_num" />
+		<result property="registeredAddress" column="registered_address" />
+		<result property="registeredPhone" column="registered_phone" />
+		<result property="opneBank" column="opne_bank" />
+		<result property="bankNumber" column="bank_number" />
+		<result property="stickNanme" column="stick_nanme" />
+		<result property="stickPhone" column="stick_phone" />
+		<result property="stickaddress" column="stick_address" />
+		<result property="orderId" column="order_id" />
+		<result property="invoiceStyle" column="invoice_style" />
+		<result property="InvoiceState" column="invoice_state" />
+		<result property="invoiceHead" column="invoice_head" />
+		<result property="cTime" column="c_time" />
 	</resultMap>
 	<select id="queryOrderInvoice" resultMap="qaz">
-	 select * from  invoice where order_id=#{orderId}
+		select * from invoice
+		where order_id=#{orderId}
 	</select>
-	
+
 	<update id="stillItemsListValueNums" parameterType="java.util.List">
-	<foreach collection="list" item="plid" index="index" open="" close="" 
-			separator=";">
+		<foreach collection="list" item="plid" index="index" open=""
+			close="" separator=";">
 			update item_value
 			<set>
-			stock_num = ${plid.refunNum}+stock_num
+				stock_num = ${plid.refunNum}+stock_num
 			</set>
-			where 
-			 item_sKU=#{plid.itemSKU}
+			where
+			item_sKU=#{plid.itemSKU}
 		</foreach>
 	</update>
-	
-	 <update id="addSalesLists" parameterType="java.util.List">
-	  <foreach collection="list" item="kkk" index="index" open="" close="" 
-			separator=";">
+
+	<update id="addSalesLists" parameterType="java.util.List">
+		<foreach collection="list" item="kkk" index="index" open=""
+			close="" separator=";">
 			update item_info
 			<set>
-			sales = sales-${kkk.refunNum}
+				sales = sales-${kkk.refunNum}
 			</set>
 			where item_id=#{kkk.itemId}
 		</foreach>
-	 </update>
+	</update>
+
+	<update id="addSalesListsTOItemValue" parameterType="java.util.List">
+		<foreach collection="list" item="cc" index="index" open=""
+			close="" separator=";">
+			update item_value
+			<set>
+				sales = sales-${cc.refunNum}
+			</set>
+			where item_sKU=#{cc.itemSKU}
+		</foreach>
+	</update>
+
+	<update id="saveRefundNumToOrderItems" parameterType="java.util.List">
+		<foreach collection="list" item="nn" index="index" open=""
+			close="" separator=";">
+			update order_item
+			<set>
+				refund_num = ${nn.refunNum}
+			</set>
+			where itm_SKU=#{nn.itemSKU} and order_id=#{nn.orderId}
+		</foreach>
+	</update>
+
+	<update id="returnQbAll">
+		<foreach collection="array" item="nn" index="index" open=""
+			close="" separator=";">
+			update user
+			<set>
+				<if test="index==0">
+					qb_balance = qb_balance+${nn},
+				</if>
+				<if test="index==1">
+					a_qb = a_qb+${nn},
+				</if>
+				<if test="index==2">
+					b_qb = b_qb+${nn},
+				</if>
+				<if test="index==3">
+					c_qb = c_qb+${nn}
+				</if>
+			</set>
+			where user_id=#{userId}
+		</foreach>
+	</update>
+
+	<update id="returnQbAnyOthes" parameterType="java.util.List">
+		<foreach collection="list" item="nn" index="index" open=""
+			close="" separator=";">
+			update user
+			<set>
+				<if test="index==0">
+					qb_balance = qb_balance+${nn},
+				</if>
+				<if test="index==1">
+					a_qb = a_qb+${nn},
+				</if>
+				<if test="index==2">
+					b_qb = b_qb+${nn},
+				</if>
+				<if test="index==3">
+					c_qb = c_qb+${nn}
+				</if>
+			</set>
+			where user_id=#{userId}
+		</foreach>
+	</update>
 </mapper>

@@ -18,6 +18,7 @@ import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.OrderIdUtils;
 import com.yayiabc.common.utils.PayAfterOrderUtil;
+import com.yayiabc.common.utils.RedisClient;
 import com.yayiabc.http.mvc.dao.PlaceOrderDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Cart;
@@ -29,6 +30,9 @@ import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.PostFee;
 import com.yayiabc.http.mvc.pojo.jpa.Receiver;
 import com.yayiabc.http.mvc.service.PlaceOrderService;
+
+import redis.clients.jedis.Jedis;
+
 import org.springframework.transaction.annotation.Transactional;
 
 @Service
@@ -390,8 +394,12 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//synMap
 			 */			//商品描述==
 			//hashMap.put("itemMS", "不错");
-			//将该订单加入到Map缓存中
-			CacheUtils.getInstance().getCacheMap().put(orderId, new Date());
+			//将该订单加入到缓存中
+			RedisClient redis=RedisClient.getInstance();
+			Jedis jedis=redis.jedis;
+			jedis.lpush("list",orderId);
+	        jedis.expire("list",120);
+			//CacheUtils.getInstance().getCacheMap().put(orderId, new Date());
 			//判断 actualPay 是否是0付款
 			if(actualPay==0){
 				PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");

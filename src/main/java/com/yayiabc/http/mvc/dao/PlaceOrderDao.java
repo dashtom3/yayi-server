@@ -126,4 +126,16 @@ public interface PlaceOrderDao {
 
 
 	int cleanCartList(@Param("userId")String userId, @Param("orderItemLists")List<OrderItem> orderItemList);
+
+
+	List<ItemValue> queryAttributesl(ArrayList<OrderItem> sendorderItemList);
+
+
+	List<String> queryItemsortl(List<ItemValue> itemVlueList);
+
+
+	int saveRefundRecords(ArrayList<OrderItem> sendorderItemList);
+
+
+	int updateInventNums(List<OrderItem> orderItemList);
 }

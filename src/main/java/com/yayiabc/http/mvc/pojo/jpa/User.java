@@ -45,6 +45,33 @@ public class User extends BasePojo implements Serializable {
 	private List<Ordera> orderaList;
 
 	private List<QbRecord> qbRecordList;
+	private int aQb;
+	private int bQb;
+	private int cQb;
+	
+	public int getaQb() {
+		return aQb;
+	}
+
+	public void setaQb(int aQb) {
+		this.aQb = aQb;
+	}
+
+	public int getbQb() {
+		return bQb;
+	}
+
+	public void setbQb(int bQb) {
+		this.bQb = bQb;
+	}
+
+	public int getcQb() {
+		return cQb;
+	}
+
+	public void setcQb(int cQb) {
+		this.cQb = cQb;
+	}
 
 	public String getUserId() {
 		return userId;

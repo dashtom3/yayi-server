@@ -26,12 +26,14 @@
 		select phone from `user` where user_id=#{userId}
 	</select>
 	<select id="getSaleIdByOrderId" resultType="java.lang.String">
-		SELECT sale_id FROM `user` WHERE user_id=(SELECT user_id FROM ordera WHERE
+		SELECT sale_id FROM
+		`user` WHERE user_id=(SELECT user_id FROM ordera WHERE
 		order_id=#{orderId})
 	</select>
 
 	<select id="querySalePhoneBySaleId" resultType="java.lang.String">
-		select phone from sale_info where sale_id=#{saleId}
+		select phone from
+		sale_info where sale_id=#{saleId}
 	</select>
 	<resultMap type="Ordera" id="queryClass">
 		<id property="orderId" column="order_id" />
@@ -40,7 +42,8 @@
 	</resultMap>
 
 	<select id="queryCalssSumPrice" resultMap="queryClass">
-		select * from ordera where
+		select * from ordera
+		where
 		order_id =#{orderId}
 	</select>
 	<!-- @Param("saleId")String saleId, @Param("orderId")String orderId, @Param("refund_money_haocai")String 
@@ -51,9 +54,11 @@
 		+order.getTooldevices_sumprice() -->
 
 	<insert id="insert">
-		insert into sale_income(sale_id,order_id,refund_money_haocai
+		insert into
+		sale_income(sale_id,order_id,refund_money_haocai
 		,refund_money_gongju,order_money_haocai,order_money_gongju
-		,created) values
+		,created)
+		values
 		(
 		#{saleId},#{orderId},#{refund_money_haocai},#{refund_money_gongju},#{Supplies_sumprice}
 		,
@@ -63,7 +68,8 @@
 	</insert>
 
 	<select id="getSaleBySaleId" resultType="com.yayiabc.http.mvc.pojo.jpa.SaleInfo">
-		select * from sale_info where sale_id=#{saleId}
+		select * from sale_info
+		where sale_id=#{saleId}
 	</select>
 
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.Ordera" id="orderReslutMap">
@@ -72,62 +78,91 @@
 		<result property="giveQb" column="give_qb" />
 	</resultMap>
 	<select id="queryGiveQBNumByOrderId" resultMap="orderReslutMap">
-		select user_id,give_qb,actual_pay from ordera where order_id=#{orderId}
+		select
+		user_id,give_qb,actual_pay from ordera where order_id=#{orderId}
 	</select>
 
 	<select id="queryUserQbNum" resultType="int">
-		select qb_balance from `user` where user_id=#{userId}
+		select qb_balance from
+		`user` where user_id=#{userId}
 	</select>
-	<!-- <update id="saveQbToUser">
-		update user set qb_balance=#{qb} where user_id=#{userId}
-	</update> -->
+	<!-- <update id="saveQbToUser"> update user set qb_balance=#{qb} where user_id=#{userId} 
+		</update> -->
 	<select id="queryTokenByOrderId" resultType="java.lang.String">
-		SELECT token FROM user_token WHERE user_id=
-		(SELECT user_id FROM ordera WHERE order_id=#{orderId})
+		SELECT token FROM
+		user_token WHERE user_id=
+		(SELECT user_id FROM ordera WHERE
+		order_id=#{orderId})
 	</select>
 	<select id="queryNameByUserId" resultType="java.lang.String">
-		select true_name from `user` where user_id=#{userId}
+		select true_name from
+		`user` where user_id=#{userId}
 	</select>
 
 	<select id="queryIt" resultType="com.yayiabc.http.mvc.pojo.jpa.OrderItem">
-		select item_property_namea,item_property_nameb,item_property_namec,item_name
+		select
+		item_property_namea,item_property_nameb,item_property_namec,item_name
 		from order_item
 		where order_id=#{orderId} AND itm_SKU=#{itemSKU}
 	</select>
-	<!--@Param("codeId")String codeId,
-			@Param("userID")String userID,
-			@Param("money")String money);  -->
+	<!--int saveRechargeMessage(@Param("codeId")String codeId, @Param("userID")String 
+		userID, @Param("money")String money,@Param("qbType")String qbType); -->
 	<insert id="saveRechargeMessage">
-	  insert  into  charge(charge_id,token,money,state)values
-	  (#{codeId},#{userID},#{money},1)
+		insert into
+		charge(charge_id,token,qb_num,state,qb_type)values
+		(#{codeId},#{userID},#{qbNum},1,#{qbType})
 	</insert>
-	
+
 	<select id="queryUserByToken" resultType="java.lang.String">
-	 select user_id from user_token where token=#{token}
+		select user_id from
+		user_token where token=#{token}
 	</select>
-	 
-	 <resultMap type="com.yayiabc.http.mvc.pojo.jpa.User" id="userss">
-	  <id property="userId" column="user_id"/>
-	  <result property="trueName" column="true_name"/>
-	  <result property="phone" column="phone"/>
-	  <result property="saleId" column="sale_id"/>
-	 </resultMap>
+
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.User" id="userss">
+		<id property="userId" column="user_id" />
+		<result property="trueName" column="true_name" />
+		<result property="phone" column="phone" />
+		<result property="saleId" column="sale_id" />
+		<result property="aQb" column="a_qb" />
+		<result property="bQb" column="b_qb" />
+		<result property="cQb" column="c_qb" />
+		<result property="qbBalance" column="qb_balance" />
+	</resultMap>
 	<select id="queryUserByUserId" resultMap="userss">
-	 select user_id,true_name,phone,sale_id from `user` where user_id=#{uid}
+		select
+		user_id,true_name,phone,sale_id
+		,a_qb,b_qb,c_qb,qb_balance
+		from `user`
+		where user_id=#{uid}
 	</select>
-	
+
 	<select id="queryUserByPhone" resultType="com.yayiabc.http.mvc.pojo.jpa.User">
-	 select * from `user` where phone =#{phone}
+		select * from `user`
+		where phone =#{phone}
 	</select>
 	<select id="getSaleByPhone" resultType="com.yayiabc.http.mvc.pojo.jpa.SaleInfo">
-	 select * from sale_info where phone =#{phone}
+		select * from sale_info
+		where phone =#{phone}
 	</select>
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.Ordera" id="asdf">
-	 <id column="order_id" property="orderId"/>
-	 <result column="created" property="created"/>
+		<id column="order_id" property="orderId" />
+		<result column="created" property="created" />
 	</resultMap>
 	<select id="queryNowOrder" resultMap="asdf">
-	 select order_id,created from ordera  where state=1
+		select order_id,created
+		from ordera where state=1
+	</select>
+
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.User" id="getUser">
+		<id property="userId" column="user_id" />
+		<result property="aQb" column="a_qb" />
+		<result property="bQb" column="b_qb" />
+		<result property="cQb" column="c_qb" />
+		<result property="qbBalance" column="qb_balance" />
+	</resultMap>
+	<select id="getUserByToken" resultMap="getUser">
+		select user_id,a_qb,b_qb,c_qb,qb_balance from user
+		where user_id=(select user_id from user_token where token=#{token})
 	</select>
 
 

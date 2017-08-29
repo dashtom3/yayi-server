@@ -5,10 +5,10 @@
 	<artifactId>Yayi</artifactId>
 	<packaging>war</packaging>
 	<version>0.0.1-SNAPSHOT</version>
-	<!-- 闂嗗棔鑵戠€规矮绠熸笟婵婄閻楀牊婀伴崣?-->
+	<!-- 闂嗗棔鑵戠€规矮绠熸笟婵婄閻楀牊婀伴崣? -->
 	<properties>
-		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding> 
-		<maven-compiler-plugin.version>3.3</maven-compiler-plugin.version> 
+		<project.build.sourceEncoding>UTF-8</project.build.sourceEncoding>
+		<maven-compiler-plugin.version>3.3</maven-compiler-plugin.version>
 		<junit.version>4.10</junit.version>
 		<spring.version>4.1.3.RELEASE</spring.version>
 
@@ -33,11 +33,9 @@
 
 		<commons-fileupload.version>1.3.1</commons-fileupload.version>
 
-		<jackson.version>1.9.13</jackson.version>
+		<jackson.version>2.4.2</jackson.version>
 		<httpclient.version>4.3.5</httpclient.version>
 		<jedis.version>2.6.0</jedis.version>
-        <jackson.core.version>2.4.2</jackson.core.version>
-
 	</properties>
 
 	<dependencies>
@@ -46,23 +44,24 @@
 			<groupId>junit</groupId>
 			<artifactId>junit</artifactId>
 			<version>${junit.version}</version>
+			<scope>test</scope>
 		</dependency>
-		
-		
-       
-        <dependency>  
-   <groupId>org.quartz-scheduler</groupId>  
-   <artifactId>quartz</artifactId>  
-   <version>2.2.1</version>  
- </dependency>  
- <dependency>  
-   <groupId>org.quartz-scheduler</groupId>  
-   <artifactId>quartz-jobs</artifactId>  
-   <version>2.2.1</version>  
- </dependency> 
-        
-    
-	
+
+
+
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+		<dependency>
+			<groupId>org.quartz-scheduler</groupId>
+			<artifactId>quartz-jobs</artifactId>
+			<version>2.2.1</version>
+		</dependency>
+
+
+
 
 		<!-- Spring -->
 		<dependency>
@@ -115,7 +114,7 @@
 			<version>${mysql.version}</version>
 		</dependency>
 
-		<!-- https://mvnrepository.com/artifact/com.alibaba/druid,鏉╃偞甯村Ч?-->
+		<!-- https://mvnrepository.com/artifact/com.alibaba/druid,鏉╃偞甯村Ч? -->
 		<dependency>
 			<groupId>com.alibaba</groupId>
 			<artifactId>druid</artifactId>
@@ -148,7 +147,7 @@
 			<version>${slf4j.version}</version>
 		</dependency>
 
-		<!-- Jackson Json婢跺嫮鎮婂銉ュ徔閸?-->
+		<!-- Jackson Json婢跺嫮鎮婂銉ュ徔閸? -->
 		<dependency>
 			<groupId>com.fasterxml.jackson.core</groupId>
 			<artifactId>jackson-databind</artifactId>
@@ -172,7 +171,6 @@
 			<groupId>com.rabbitmq</groupId>
 			<artifactId>amqp-client</artifactId>
 			<version>3.5.1</version>
-			<scope>test</scope>
 		</dependency>
 		<dependency>
 			<groupId>org.springframework.amqp</groupId>
@@ -181,7 +179,7 @@
 		</dependency>
 
 
-		<!-- JSP閻╃鍙?-->
+		<!-- JSP閻╃鍙? -->
 		<dependency>
 			<groupId>jstl</groupId>
 			<artifactId>jstl</artifactId>
@@ -200,7 +198,7 @@
 			<scope>provided</scope>
 		</dependency>
 
-		<!-- 閺冨爼妫块幙宥勭稊缂佸嫪娆?-->
+		<!-- 閺冨爼妫块幙宥勭稊缂佸嫪娆? -->
 		<dependency>
 			<groupId>joda-time</groupId>
 			<artifactId>joda-time</artifactId>
@@ -219,14 +217,14 @@
 			<version>4.0.1</version>
 		</dependency>
 
-		<!-- 閺傚洣娆㈡稉濠佺炊缂佸嫪娆?-->
+		<!-- 閺傚洣娆㈡稉濠佺炊缂佸嫪娆? -->
 		<dependency>
 			<groupId>commons-fileupload</groupId>
 			<artifactId>commons-fileupload</artifactId>
 			<version>${commons-fileupload.version}</version>
 		</dependency>
-		
-		<!-- 娑撳啰澧版禍鎴炴瀮娴犳湹绗傛导?-->
+
+		<!-- 娑撳啰澧版禍鎴炴瀮娴犳湹绗傛导? -->
 		<dependency>
 			<groupId>com.qiniu</groupId>
 			<artifactId>qiniu-java-sdk</artifactId>
@@ -235,7 +233,7 @@
 
 
 
-		
+
 
 		<!-- jedis -->
 		<dependency>
@@ -249,7 +247,7 @@
 			<version>${jedis.version}</version>
 		</dependency>
 
-		<!-- 鐎涙顑侀崝鐘茬槕閵嗕浇袙鐎?-->
+		<!-- 鐎涙顑侀崝鐘茬槕閵嗕浇袙鐎? -->
 		<dependency>
 			<groupId>commons-codec</groupId>
 			<artifactId>commons-codec</artifactId>
@@ -263,51 +261,25 @@
 			<version>5.1.3.Final</version>
 		</dependency>
 		<dependency>
-      		<groupId>com.google.zxing</groupId>
-      		<artifactId>core</artifactId>
-      		<version>3.2.0</version>
-    	</dependency>
-    	<dependency>
-      		<groupId>com.google.zxing</groupId>
-      		<artifactId>javase</artifactId>
-      		<version>3.2.0</version>
-    	</dependency>
-    	
-    	<!-- POI报表 -->
-    	<dependency>
-  			<groupId>org.apache.poi</groupId>
-  			<artifactId>poi</artifactId>
-  			<version>3.13</version>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>core</artifactId>
+			<version>3.2.0</version>
 		</dependency>
-		
 		<dependency>
-            <groupId>org.codehaus.jackson</groupId>
-            <artifactId>jackson-mapper-asl</artifactId>
-            <version>${jackson.version}</version>
-        </dependency>
-        <dependency>
-            <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-core</artifactId>
-          <version>${jackson.core.version}</version>
-      </dependency>
-      <dependency>
-          <groupId>com.fasterxml.jackson.core</groupId>
-          <artifactId>jackson-databind</artifactId>
-          <version>${jackson.core.version}</version>
-      </dependency>
-		
-	  	<dependency>
-    		<groupId>org.apache.maven.plugins</groupId>
-    		<artifactId>maven-resources-plugin</artifactId>
-    		<version>2.4.3</version>
+			<groupId>com.google.zxing</groupId>
+			<artifactId>javase</artifactId>
+			<version>3.2.0</version>
 		</dependency>
-         
- 
- 
 
+		<!-- POI报表 -->
+		<dependency>
+			<groupId>org.apache.poi</groupId>
+			<artifactId>poi</artifactId>
+			<version>3.13</version>
+		</dependency>
 	</dependencies>
-	
-	
+
+
 
 
 	<build>
@@ -329,13 +301,21 @@
 				<configuration>
 					<source>1.7</source>
 					<target>1.7</target>
-					<encoding>UTF8</encoding> 
+					<encoding>UTF8</encoding>
 					<compilerArguments>
-					<extdirs>src\main\webapp\WEB-INF\lib</extdirs>
+						<extdirs>src\main\webapp\WEB-INF\lib</extdirs>
 					</compilerArguments>
 				</configuration>
-			</plugin> 
-			
+
+			</plugin>
+			<plugin>
+				<groupId>org.apache.maven.plugins</groupId>
+				<artifactId>maven-war-plugin</artifactId>
+				<version>2.3</version>
+				<configuration>
+					<failOnMissingWebXml>false</failOnMissingWebXml>
+				</configuration>
+			</plugin>
 		</plugins>
 	</build>
 </project>

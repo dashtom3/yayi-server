@@ -70,7 +70,7 @@ public class UserQbListServiceImpl implements UserQbListService {
 					qbRecord.setQbRout(newQb - oldQb);
 					qbRecord.setRemark("管理员修改乾币余额，扣除乾币" + qbRecord.getQbRout());
 				}
-				qbRecord.setQbBalances(qbBalance);
+				//qbRecord.setQbBalances(qbBalance);
 				qbRecord.setMillisecond(MI);
 				userMyQbDao.add(qbRecord);
 				dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);

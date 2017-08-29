@@ -6,6 +6,7 @@ import java.util.Map;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.yayiabc.common.alipayenclos.config.AlipayConfig;
 import com.yayiabc.common.alipayenclos.util.AlipayNotify;
@@ -79,6 +80,7 @@ public class AliPayServiceImpl implements AliPayService{
 	 */
 	//支付校验结果同步
 	@Override
+	@Transactional
 	public String ReturnUrl(/*String is_success, String sign_type, String sign, String trade_statuss, String out_trade_nos,
 			String trade_nos,*/Map<String,String> params) {
 		// TODO Auto-generated method stub
@@ -113,7 +115,8 @@ public class AliPayServiceImpl implements AliPayService{
 						String token=utilsDao.getToken(charge.getToken());
 						QbRecord q=new QbRecord();
 						q.setQbRget(charge.getMoney());
-						q.setRemark("乾币充值(支付宝)");
+						q.setQbType(charge.getQbType());
+						q.setRemark(charge.getQbType()+"乾币充值(支付宝)");
 						userMyQbService.add(q, token);
 						return "successQB";
 					}
@@ -174,7 +177,8 @@ public class AliPayServiceImpl implements AliPayService{
 							String token=utilsDao.getToken(charge.getToken());
 							QbRecord q=new QbRecord();
 							q.setQbRget(charge.getMoney());
-							q.setRemark("乾币充值(支付宝)");
+							q.setQbType(charge.getQbType());
+							q.setRemark(charge.getQbType()+"乾币充值(支付宝)");
 							userMyQbService.add(q, token);
 							return "success";
 						}
@@ -202,7 +206,8 @@ public class AliPayServiceImpl implements AliPayService{
 							String token=utilsDao.getToken(charge.getToken());
 							QbRecord q=new QbRecord();
 							q.setQbRget(charge.getMoney());
-							q.setRemark("乾币充值(支付宝)");
+							q.setQbType(charge.getQbType());
+							q.setRemark(charge.getQbType()+"乾币充值(支付宝)");
 							userMyQbService.add(q, token);
 							return "success";
 						}

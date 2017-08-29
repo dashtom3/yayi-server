@@ -63,7 +63,15 @@ public class Ordera extends BasePojo {
 	private List<Comments> commentList;
     private String orderNums;
     
-	
+    private String qbDes;
+
+	public String getQbDes() {
+		return qbDes;
+	}
+
+	public void setQbDes(String qbDes) {
+		this.qbDes = qbDes;
+	}
 
 	public String getOrderNums() {
 		return orderNums;

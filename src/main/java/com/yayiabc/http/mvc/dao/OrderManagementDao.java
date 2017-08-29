@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.dao;
 
+import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -62,11 +63,11 @@ public interface OrderManagementDao {
 	int returnQb(@Param("Qb")double Qb, @Param("userId")String userId);
 	
 	//将退款后的记录更新到订单表中
-	void updateOrderMessage(
+	int updateOrderMessage(
 		@Param("orderId") String orderId
 			);
 
-	void saveRefundMessToSaleIncome(
+	int saveRefundMessToSaleIncome(
 			@Param("saleId")String saleId,
 			@Param("orderId")String orderId, 
 			@Param("haoCaiRefundSumMoney")Double haoCaiRefundSumMoney,
@@ -88,4 +89,14 @@ public interface OrderManagementDao {
 	Invoice queryOrderInvoice(@Param("orderId")String orderId);
     int	stillItemsListValueNums(List<OrderItem> orderItemList);
     int addSalesLists(List<OrderItem> orderItemList);
+
+	int dedSalesLists(ArrayList<OrderItem> sendorderItemList);
+
+	int addSalesListsTOItemValue(ArrayList<OrderItem> sendorderItemList);
+
+	int saveRefundNumToOrderItems(ArrayList<OrderItem> sendorderItemList);
+
+	int returnQbAll(@Param("array")String[] str,@Param("userId") String userId);
+
+	int  returnQbAnyOthes(@Param("list")List<Integer> list,@Param("userId") String userId);
 }

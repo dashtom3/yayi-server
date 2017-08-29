@@ -54,7 +54,7 @@ public interface UtilsDao {
 
 	int saveRechargeMessage(@Param("codeId")String codeId,
 			@Param("userID")String userID,
-			@Param("money")String money);
+			@Param("qbNum")String money,@Param("qbType")String qbType);
 
 	String queryUserByToken(@Param("token")String token);
 
@@ -67,6 +67,10 @@ public interface UtilsDao {
 
 	//查询现在订单表放入map中
 	List<Ordera> queryNowOrder();
+
+	
+	//通过token 获取user实体
+	User getUserByToken(String token);
 	
 
 }

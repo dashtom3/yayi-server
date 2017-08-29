@@ -3,22 +3,23 @@ package com.yayiabc.common.utils;
 import com.yayiabc.http.mvc.expand.KeyExpiredListener;
 
 import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
 
 /**
  * Created by 小月亮 on 2017/8/27.
  */
 public class RedisClient {
-    private static final String ip= "192.168.80.130";
+    private static final String ip= "47.93.48.111";
 
     private static final int port=6379;
 
     protected static RedisClient redis = new RedisClient ();
 
-    public final static Jedis jedis = new Jedis( ip, port);;
-
+    public final static Jedis jedis = new Jedis( ip, port);
+  
     static {
-    	jedis.auth("123");
-    	jedis.psubscribe(new KeyExpiredListener(), "__key*__:*");
+    	
     }
 
     protected RedisClient() {

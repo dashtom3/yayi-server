@@ -167,7 +167,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		HashMap<String, Object> hashMap=new HashMap<String, Object>();
 		String userId=null;
 		try {
-			 userId=utilsDao.getUserID(token);
+			userId=utilsDao.getUserID(token);
 			//obtain orderId 
 			String orderId=OrderIdUtils.createOrderId(userId);
 			//将订单信息保存在订单里 你如是否需要发表  留言等。。2[=。 
@@ -211,8 +211,16 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//抽取for循环的第一步  根据orderItemList 的itemsku 去数据库做批量查询  出 ArrayList<ItemValue>
 			List<ItemValue> itemValueList=placeOrderDao.queryAttributesList(orderItemList);
 			//抽取for循环的第二步 根据 itemValueList里的 itemId 去数据库做批量查询 出ArrayList<orderItem>
+			/**
+			 * <resultMap type="com.yayiabc.http.mvc.pojo.jpa.OrderItem" id="queryOrderA">
+				<result property="itemName" column="item_name" />
+				<result property="itemType" column="item_sort" />
+				<result property="itemBrandName" column="item_brand_name" />
+				<result property="picPath" column="item_pica" />
+	           </resultMap>
+			 */
 			List<OrderItem> orderItemListAttributes=placeOrderDao.queryItemIdListByitemValueList(itemValueList);
-			
+
 			for(int i=0;i<orderItemList.size();i++){
 				//query钱币赠送百分比
 				//Integer qbPercentage=placeOrderDao.queryQbPercentage(orderItemList.get(i).getItemSKU());
@@ -309,7 +317,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			int a=placeOrderDao.batchSynchronization(orderItemList);
 			//清空购物车 双休优化
 			int q=placeOrderDao.cleanCartList(userId,orderItemList);
-			
+
 			//这里计算本单赠送钱币数
 			//首先道邦品牌
 			if(daoBnagSumPrice>0&&daoBnagSumPrice<300){
@@ -395,11 +403,12 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			 */			//商品描述==
 			//hashMap.put("itemMS", "不错");
 			//将该订单加入到缓存中
-			RedisClient redis=RedisClient.getInstance();
+			/*RedisClient redis=RedisClient.getInstance();
 			Jedis jedis=redis.jedis;
-			jedis.lpush("list",orderId);
-	        jedis.expire("list",120);
-			//CacheUtils.getInstance().getCacheMap().put(orderId, new Date());
+			jedis.set(orderId,orderId);
+	        jedis.expire(orderId,120);*/
+			CacheUtils.getInstance().getCacheMap().put(orderId, new Date());
+
 			//判断 actualPay 是否是0付款
 			if(actualPay==0){
 				PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");

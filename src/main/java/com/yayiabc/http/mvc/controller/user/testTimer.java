@@ -12,13 +12,17 @@ import org.springframework.stereotype.Component;
 
 import com.yayiabc.common.cahce.CacheUtils;
 import com.yayiabc.common.utils.BeanUtil;
+import com.yayiabc.common.utils.RedisClient;
 import com.yayiabc.http.mvc.dao.UtilsDao;
+import com.yayiabc.http.mvc.expand.KeyExpiredListener;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.service.AdvManageService;
 import com.yayiabc.http.mvc.service.TimerChangeStateService;
 import com.yayiabc.http.mvc.service.Impl.AdvManageServiceImpl;
+
+import redis.clients.jedis.Jedis;
 @Component
-public class testTimer  implements InitializingBean{
+public class testTimer extends Thread implements InitializingBean{
 
    @Autowired 
 	private AdvManageService  advManageService;
@@ -45,6 +49,19 @@ public class testTimer  implements InitializingBean{
 	public void afterPropertiesSet() throws Exception {
 		// TODO Auto-generated method stub
 		init();
+		//initTwo();
+	}
+	private void initTwo() {
+		// TODO Auto-generated method stub
+		Thread thread=new  Thread(new testTimer());
+		thread.start();
+	}
+	@Override
+	public void run(){
+		 RedisClient rs=RedisClient.getInstance();
+		 Jedis jedis=rs.jedis;
+		 jedis.auth("123");
+		 jedis.psubscribe(new KeyExpiredListener(), "__keyevent@0__:expired"); 
 	}
 }
 

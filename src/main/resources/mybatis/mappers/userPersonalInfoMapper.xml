@@ -37,7 +37,7 @@
 		DATE_FORMAT(u.birthday, '%Y-%m-%d') AS birthday,
 		u.qq,
 		u.user_pic,
-		u.qb_balance,
+		(u.qb_balance+u.a_qb+u.b_qb+u.c_qb) qb_balance,
 		c.type,
 		c.company_name,
 		c.part,

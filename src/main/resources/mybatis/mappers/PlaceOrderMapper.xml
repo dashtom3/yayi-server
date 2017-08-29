@@ -296,7 +296,7 @@
 	</resultMap>
 	<select id="queryItemIdListByitemValueList" parameterType="java.util.List"
 		resultMap="queryOrderA">
-		SELECT ii.item_name,ii.item_sort,ii.item_id
+		<!-- SELECT ii.item_name,ii.item_sort,ii.item_id
 		itemid,ib.item_brand_name,id.item_pica
 		FROM
 		item_info ii JOIN
@@ -305,9 +305,20 @@
 		item_detail id on
 		ii.item_id=id.item_id
 		WHERE
-		ii.item_id in
+		ii.item_id in -->
 		<foreach collection="list" item="item" open="(" close=")"
-			separator=",">
+			separator=";">
+			
+			SELECT ii.item_name,ii.item_sort,ii.item_id
+		itemid,ib.item_brand_name,id.item_pica
+		FROM
+		item_info ii JOIN
+		item_brand
+		ib ON ii.item_brand_id=ib.item_brand_id join
+		item_detail id on
+		ii.item_id=id.item_id
+		WHERE
+		ii.item_id =
 			#{item.itemId}
 		</foreach>
 	</select>

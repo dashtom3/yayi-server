@@ -34,7 +34,13 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 	@Override
 	public DataWrapper<List<Ordera>>  orderDetailsShow(HashMap<String,String> map,String token
 			,Integer currentPage,Integer numberPerpage){
+		String userId=utilsDao.getUserID(token);
 		// TODO Auto-generated method stub
+		/*RedisClient redis=RedisClient.getInstance();
+		Jedis jedis=redis.jedis;
+		jedis.set(orderId,orderId);
+        jedis.expire(orderId,120);*/
+		
 		Page page=new Page();
 		if(currentPage!=null&numberPerpage!=null){
 		page.setNumberPerPage(numberPerpage);
@@ -44,9 +50,6 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 			page.setCurrentPage(1);
 		}
 		DataWrapper<List<Ordera>> dataWrapper=new DataWrapper<List<Ordera>>();
-		String userId = null;
-		
-			 userId=utilsDao.getUserID(token);
 		
 //		hMap.put("currentPage", page.getCurrentPage());
 		map.put("numberPerpage", String.valueOf(page.getNumberPerPage()));

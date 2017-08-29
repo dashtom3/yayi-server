@@ -122,6 +122,7 @@ public class ItemBrandServiceImpl implements ItemBrandService{
             Integer commentNumber =itemBrandDao.getCommentNumber(itemId);
             itemInfo.setItemStockNum(commentNumber);
             dataWrapper.setData(itemInfo);
+         
             redisClient.set(itemInfo,itemId);
         }
         String msg=itemBrandDao.getItemSKUByPrice(itemInfo.getItemPrice(),itemId);

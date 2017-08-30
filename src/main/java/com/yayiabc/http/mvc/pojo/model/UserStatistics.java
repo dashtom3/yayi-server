@@ -21,9 +21,9 @@ public class UserStatistics {
 
 	private String workAddress;
 
-	private String orderaCount;
+	private Integer orderaCount;
 
-	private String orderaMoneyCount;
+	private Double orderaMoneyCount;
 
 	private String latelyOrderDate;
 
@@ -51,19 +51,19 @@ public class UserStatistics {
 		this.trueName = trueName;
 	}
 
-	public String getOrderaCount() {
+	public Integer getOrderaCount() {
 		return orderaCount;
 	}
 
-	public void setOrderaCount(String orderaCount) {
+	public void setOrderaCount(Integer orderaCount) {
 		this.orderaCount = orderaCount;
 	}
 
-	public String getOrderaMoneyCount() {
+	public Double getOrderaMoneyCount() {
 		return orderaMoneyCount;
 	}
 
-	public void setOrderaMoneyCount(String orderaMoneyCount) {
+	public void setOrderaMoneyCount(Double orderaMoneyCount) {
 		this.orderaMoneyCount = orderaMoneyCount;
 	}
 
@@ -113,7 +113,7 @@ public class UserStatistics {
 
 	public UserStatistics(String userId, String phone, String trueName,
 			Integer bindUserNum, String companyName, String bindSaleTime,
-			String workAddress, String orderaCount, String orderaMoneyCount,
+			String workAddress, Integer orderaCount, Double orderaMoneyCount,
 			String latelyOrderDate) {
 		super();
 		this.userId = userId;

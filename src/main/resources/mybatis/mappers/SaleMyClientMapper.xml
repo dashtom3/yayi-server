@@ -43,6 +43,8 @@
 			ON u.sale_id=s.sale_id
 			LEFT JOIN certification c
 			ON u.user_id=c.user_id
+			LEFT JOIN ordera o
+			ON u.user_id = o.user_id
 			WHERE  
 			u.true_name LIKE '%${value}%' AND u.sale_id =#{saleId} OR 
 			u.phone LIKE '%${value}%' AND u.sale_id =#{saleId} OR 

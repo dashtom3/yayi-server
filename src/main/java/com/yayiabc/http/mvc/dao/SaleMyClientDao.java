@@ -11,9 +11,9 @@ import com.yayiabc.http.mvc.pojo.model.UserStatistics;
 
 @Repository
 public interface SaleMyClientDao {
-	List<UserStatistics> myClient(@Param("value")String value,@Param("state")Integer state,@Param("saleId")String saleId,@Param("page")Page page);
+	List<UserStatistics> myClient(@Param("value")String value,@Param("saleId")String saleId,@Param("state")Integer state,@Param("page")Page page);
 	
-	int getCount(@Param("value")String value,@Param("saleId")String saleId,@Param("state")Integer state);
+	int getCount(@Param("value")String value,@Param("saleId")String saleId);
 
 	UserStatistics queryCount(@Param("saleId")String saleId,@Param("userId")String userId);
 	

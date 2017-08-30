@@ -11,7 +11,7 @@
 		u.true_name,
 		u.phone,
 		c.company_name,
-		DATE_FORMAT(u.bind_sale_time, '%Y-%c-%e %T') AS bind_sale_time,
+		DATE_FORMAT(u.bind_sale_time,'%Y-%m-%d %H:%i:%S') AS bind_sale_time,
 		c.work_address
 		FROM `user` u
 		LEFT JOIN sale_info s
@@ -31,7 +31,7 @@
 		<if test="state == 2">
 			ORDER BY o.created DESC
 		</if>
-		LIMIT ${page.currentNumber},${page.numberPerPage}
+		<!-- LIMIT ${page.currentNumber},${page.numberPerPage} -->
 	</select>
 	
 	<select id="getCount" resultType="int">
@@ -66,7 +66,7 @@
 	
 	<select id="getLatelyOrderDate" resultType="String">
 		SELECT 
-		DATE_FORMAT(created, '%Y-%c-%e %T') AS latelyOrderDate  
+		DATE_FORMAT(created,'%Y-%m-%d %H:%i:%S') AS latelyOrderDate  
 		FROM ordera 
 		WHERE user_id=#{userId}
 		LIMIT 1

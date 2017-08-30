@@ -77,6 +77,6 @@
 		</foreach>
 	 </update>
 	 <update id="saveLast">
-	   update ordera set qb_des=#{newQbDed} where order_id=#{orderId}
+	   update ordera set qb_des=#{newQbDed}  where order_id=#{orderId}
 	 </update>
 </mapper>       

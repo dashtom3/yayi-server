@@ -12,7 +12,6 @@ import org.springframework.stereotype.Component;
 
 import com.yayiabc.common.cahce.CacheUtils;
 import com.yayiabc.common.utils.BeanUtil;
-import com.yayiabc.common.utils.RedisClient;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.expand.KeyExpiredListener;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
@@ -56,13 +55,13 @@ public class testTimer extends Thread implements InitializingBean{
 		Thread thread=new  Thread(new testTimer());
 		thread.start();
 	}
-	@Override
+	/*@Override
 	public void run(){
 		 RedisClient rs=RedisClient.getInstance();
 		 Jedis jedis=rs.jedis;
 		 jedis.auth("123");
 		 jedis.psubscribe(new KeyExpiredListener(), "__keyevent@0__:expired"); 
-	}
+	}*/
 }
 
 

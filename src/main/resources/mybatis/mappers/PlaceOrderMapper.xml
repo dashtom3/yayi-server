@@ -31,7 +31,8 @@
 	</select>
 
 	<select id="ded" resultType="int">
-		select (a_qb+b_qb+c_qb+qb_balance)  qb_balance from `user` where
+		select (a_qb+b_qb+c_qb+qb_balance)
+		qb_balance from `user` where
 		user_id=#{userId}
 	</select>
 
@@ -211,7 +212,8 @@
 	<!-- //updateInventNum更改库存数量 -->
 	<update id="updateInventNum">
 		update item_value set stock_num=(#{NUM})
-		where item_sKU=#{itemSKU}
+		where
+		item_sKU=#{itemSKU}
 	</update>
 
 	<select id="queryItemsort" resultType="java.lang.String">
@@ -238,7 +240,7 @@
 		,supplies_sumprice=#{suppliesSumPrice}
 		,tooldevices_sumprice=#{tooldevicesSumPrice}
 		,actual_pay=#{actualPay}
-		 where
+		where
 		order_id=#{orderId}
 	</update>
 
@@ -296,7 +298,7 @@
 	</resultMap>
 	<select id="queryItemIdListByitemValueList" parameterType="java.util.List"
 		resultMap="queryOrderA">
-		<!-- SELECT ii.item_name,ii.item_sort,ii.item_id
+		SELECT ii.item_name,ii.item_sort,ii.item_id
 		itemid,ib.item_brand_name,id.item_pica
 		FROM
 		item_info ii JOIN
@@ -305,92 +307,129 @@
 		item_detail id on
 		ii.item_id=id.item_id
 		WHERE
-		ii.item_id in -->
-		<foreach collection="list" item="item" open="(" close=")"
-			separator=";">
-			
-			SELECT ii.item_name,ii.item_sort,ii.item_id
-		itemid,ib.item_brand_name,id.item_pica
-		FROM
-		item_info ii JOIN
-		item_brand
-		ib ON ii.item_brand_id=ib.item_brand_id join
+		<foreach collection="list" index="index" item="item" open="("
+			close=")" separator=",">
+			ii.item_id in #{item.itemId}
+		</foreach>
+	</select>
+	<!-- 123 最终的 -->
+	<resultMap type="com.yayiabc.http.mvc.pojo.model.FinalList"
+		id="dadade">
+		<id property="itemValueId" column="item_value_id" />
+		<result property="itemValueId" column="item_value_id" />
+		<result property="itemPropertySixValue" column="item_property_six_value" />
+		<result property="itemPropertySixName" column="item_property_six_name" />
+		<result property="itemPropertyFiveValue" column="item_property_five_value" />
+		<result property="itemPropertyFiveName" column="item_property_five_name" />
+		<result property="itemPropertyFourValue" column="item_property_four_value" />
+		<result property="itemPropertyFourName" column="item_property_four_name" />
+		<result property="itemPropertyThreeValue" column="item_property_three_value" />
+		<result property="itemPropertyNameThree" column="item_property_name_three" />
+		<result property="itemPropertyTwoValue" column="item_property_two_value" />
+		<result property="itemPropertyNameTwo" column="item_property_name_two" />
+		<result property="stockNum" column="stock_num" />
+		<result property="itemQb" column="item_qb" />
+		<result property="itemSkuPrice" column="item_sku_price" />
+		<result property="itemSKU" column="item_sKU" />
+		<result property="itemId" column="item_id" />
+		<result property="itemPropertyName" column="item_property_name" />
+		<result property="itemPropertyInfo" column="item_property_info" />
+		<result property="itemName" column="item_name"/>
+		<result property="itemType" column="item_sort"/>
+		<result property="itemBrandName" column="item_brand_name"/>
+		<result property="picPath" column="item_pica"/>
+	</resultMap>
+	<select id="queryFinalList" parameterType="java.util.List"
+		resultMap="dadade">
+		SELECT
+		iv.*,ii.item_name,ii.item_sort,ii.item_id
+		itemid,ib.item_brand_name,iv.item_sKU,id.item_pica
+
+		FROM item_value iv
+		JOIN item_info ii ON iv.item_id=ii.item_id join
 		item_detail id on
-		ii.item_id=id.item_id
-		WHERE
-		ii.item_id =
-			#{item.itemId}
+		ii.item_id=id.item_id JOIN item_brand ib ON
+		ii.item_brand_id=ib.item_brand_id
+		WHERE iv.item_sKU IN
+		<foreach collection="list" index="index" item="item" open="("
+			close=")" separator=",">
+			#{item.itemSKU}
 		</foreach>
 	</select>
 
 	<insert id="batchSynchronization" parameterType="java.util.List">
-	insert into order_item
-	(itm_SKU,item_id,order_id,num,price,item_property_namea
-	,item_property_nameb,item_property_namec,created,item_name,pic_path,item_type,
-	item_brand_name
-	)values
-	<foreach collection="list" item="item" index="index"
-			 separator=",">
-		(
-		#{item.itemSKU},
-		#{item.itemId},#{item.orderId},#{item.num}, #{item.price},
-		#{item.itemPropertyNamea},#{item.itemPropertyNameb},#{item.itemPropertyNamec}
-		,now(),#{item.itemName},#{item.picPath},#{item.itemType},#{item.itemBrandName}
-		)
-	</foreach>
-</insert>
+		insert into order_item
+		(itm_SKU,item_id,order_id,num,price,item_property_namea
+		,item_property_nameb,item_property_namec,created,item_name,pic_path,item_type,
+		item_brand_name
+		)values
+		<foreach collection="list" item="item" index="index"
+			separator=",">
+			(
+			#{item.itemSKU},
+			#{item.itemId},#{item.orderId},#{item.num}, #{item.price},
+			#{item.itemPropertyNamea},#{item.itemPropertyNameb},#{item.itemPropertyNamec}
+			,now(),#{item.itemName},#{item.picPath},#{item.itemType},#{item.itemBrandName}
+			)
+		</foreach>
+	</insert>
 	<delete id="cleanCartList" parameterType="java.util.List">
-		 delete from cart where user_id=#{userId} and item_SKU in
-        <foreach item="item" collection="orderItemLists" open="(" separator="," close=")">
-            #{item.itemSKU}
-        </foreach>
+		delete from cart where user_id=#{userId} and item_SKU in
+		<foreach item="item" collection="orderItemLists" open="("
+			separator="," close=")">
+			#{item.itemSKU}
+		</foreach>
 	</delete>
-	
-	<select id="queryAttributesl" parameterType="java.util.List" resultType="com.yayiabc.http.mvc.pojo.jpa.ItemValue">
+
+	<select id="queryAttributesl" parameterType="java.util.List"
+		resultType="com.yayiabc.http.mvc.pojo.jpa.ItemValue">
 		SELECT
-            item_id,item_sku_price
-        FROM
-            item_value
-        <where>
-            item_sKU in
-            <foreach item="oo" collection="list" separator="," open="(" close=")" index="">
-                #{oo.itemSKU}
-            </foreach>
-        </where>
+		item_id,item_sku_price
+		FROM
+		item_value
+		<where>
+			item_sKU in
+			<foreach item="oo" collection="list" separator="," open="("
+				close=")" index="">
+				#{oo.itemSKU}
+			</foreach>
+		</where>
 	</select>
-	
-	<select id="queryItemsortl" parameterType="java.util.List" resultType="string">
+
+	<select id="queryItemsortl" parameterType="java.util.List"
+		resultType="string">
 		SELECT
-           item_sort
-        FROM
-            item_info
-        <where>
-            item_id in
-            <foreach item="oo" collection="list" separator="," open="(" close=")" index="">
-                #{oo.itemId}
-            </foreach>
-        </where>
+		item_sort
+		FROM
+		item_info
+		<where>
+			item_id in
+			<foreach item="oo" collection="list" separator="," open="("
+				close=")" index="">
+				#{oo.itemId}
+			</foreach>
+		</where>
 	</select>
-	 <update id="saveRefundRecords" parameterType="java.util.List">
-	
-	  <foreach collection="list" item="cc" index="index" open="" close="" 
-			separator=";">
-			   update item_info
+	<update id="saveRefundRecords" parameterType="java.util.List">
+
+		<foreach collection="list" item="cc" index="index" open=""
+			close="" separator=";">
+			update item_info
 			<set>
-			refund_num = refund_num+${cc.refunNum}
+				refund_num = refund_num+${cc.refunNum}
 			</set>
 			where item_id=#{cc.itemId}
 		</foreach>
-	 </update>
-	 <update id="updateInventNums" parameterType="java.util.List">
-	 
-	  <foreach collection="list" item="cc" index="index" open="" close="" 
-			separator=";">
-			 update item_value
+	</update>
+	<update id="updateInventNums" parameterType="java.util.List">
+
+		<foreach collection="list" item="cc" index="index" open=""
+			close="" separator=";">
+			update item_value
 			<set>
-			stock_num = stock_num-${cc.num}
+				stock_num = stock_num-${cc.num}
 			</set>
-			where item_sKU=#{cc.itemSKU} and  stock_num-${cc.num}>=0
+			where item_sKU=#{cc.itemSKU} and stock_num-${cc.num}>=0
 		</foreach>
-	 </update>
+	</update>
 </mapper>

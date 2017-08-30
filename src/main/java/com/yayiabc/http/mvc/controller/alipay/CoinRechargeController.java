@@ -12,46 +12,70 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.enums.CallStatusEnum;
+import com.yayiabc.common.enums.ErrorCodeEnum;
+import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.QbExchangeUtil;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.service.AliPayService;
 import com.yayiabc.http.mvc.service.CoinRechargeService;
+import com.yayiabc.http.mvc.service.PhoneAliPayService;
 import com.yayiabc.http.mvc.service.UserMyQbService;
+
+import okhttp3.internal.framed.ErrorCode;
 
 @Controller
 @RequestMapping("api/pay")
 public class CoinRechargeController {
 	@Autowired
 	private UtilsDao utilsdao;
-    @Autowired AliPayService alipay;
-    @RequestMapping("recharge")
-    @ResponseBody
-   // @UserTokenValidate(description="开始支付宝充值乾币")
-    public void recharge(
-    		@RequestParam(value="token",required=true)String token,
-    		@RequestParam(value="money",required=true)String qbNum,
-    		@RequestParam(value="qbType",required=true)String qbType,
-    		 HttpServletResponse response
-    		){
-    	//String qbType="a_qb";
-    	String codeId=createId(token);
-    	double money=QbExchangeUtil.getQbByMoney(Integer.parseInt(qbNum),qbType);
-    	utilsdao.saveRechargeMessage(codeId,utilsdao.getUserID(token),qbNum,qbType);
-    	//test  钱币充值  前台传来的钱币类型 为: a_qb b_qb ,c_qb
-    	money=0.01;
-    	//调用支付宝
-       String sHtmlText=alipay.packingParameter(codeId, "乾币充值", String.valueOf(money),"乾币");
-    	try {
-			response.getWriter().write(sHtmlText);
-		} catch (IOException e) {
-			// TODO Auto-generated catch block
-			e.printStackTrace();
-		}
-    }
-     //生成 id的方法
-     String createId(String token){
-    	String userId= utilsdao.getUserID(token);
-    	String codeId=("zfb"+userId.substring(0,5)+userId.substring(5)).replace("1", "7")+System.currentTimeMillis();
-    	return codeId;
-     }
+	@Autowired AliPayService alipay;
+	@Autowired PhoneAliPayService phoneAliPayService;
+	@RequestMapping("recharge")
+	@ResponseBody
+	// @UserTokenValidate(description="开始支付宝充值乾币")
+	public void recharge(
+			@RequestParam(value="token",required=true)String token,
+			@RequestParam(value="money",required=true)String qbNum,
+			@RequestParam(value="qbType",required=true)String qbType,
+			@RequestParam(value="computerOrPhone",required=true)String computerOrPhone,
+			HttpServletResponse response
+			){
+		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
+		//String qbType="a_qb";
+		String codeId=createId(token);
+		double money=QbExchangeUtil.getQbByMoney(Integer.parseInt(qbNum),qbType);
+		utilsdao.saveRechargeMessage(codeId,utilsdao.getUserID(token),qbNum,qbType);
+		//test  钱币充值  前台传来的钱币类型 为: a_qb b_qb ,c_qb
+        if(computerOrPhone.equals("computer")){
+        	//调用PC网页支付宝.
+    		String sHtmlText=alipay.packingParameter(codeId, "乾币充值", String.valueOf(money),"乾币");
+    		try {
+    			dataWrapper.setCallStatus(CallStatusEnum.SUCCEED);
+    			response.getWriter().write(sHtmlText);
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        }else if(computerOrPhone.equals("phone")){
+        	//调用移动端 支付宝.
+        	dataWrapper.setCallStatus(CallStatusEnum.SUCCEED);
+        	String product_code="QUICK_WAP_PAY";
+    		String sHtmlText=phoneAliPayService.packingParameter(codeId, "乾币充值", String.valueOf(money),"乾币",product_code);
+    		try {
+    			response.getWriter().write(sHtmlText);
+    		} catch (IOException e) {
+    			// TODO Auto-generated catch block
+    			e.printStackTrace();
+    		}
+        }else{
+        	dataWrapper.setMsg("参数异常");
+        }
+	}
+	//生成 id的方法
+	String createId(String token){
+		String userId= utilsdao.getUserID(token);
+		String codeId=("zfb"+userId.substring(0,5)+userId.substring(5)).replace("1", "7")+System.currentTimeMillis();
+		return codeId;
+	}
 }

@@ -29,6 +29,7 @@ import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.PostFee;
 import com.yayiabc.http.mvc.pojo.jpa.Receiver;
+import com.yayiabc.http.mvc.pojo.model.FinalList;
 import com.yayiabc.http.mvc.service.PlaceOrderService;
 
 import redis.clients.jedis.Jedis;
@@ -209,7 +210,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			Double sumPrice=0.0;
 			int itemSum=orderItemList.size();//商品总数量
 			//抽取for循环的第一步  根据orderItemList 的itemsku 去数据库做批量查询  出 ArrayList<ItemValue>
-			List<ItemValue> itemValueList=placeOrderDao.queryAttributesList(orderItemList);
+			//List<ItemValue> itemValueList=placeOrderDao.queryAttributesList(orderItemList);
 			//抽取for循环的第二步 根据 itemValueList里的 itemId 去数据库做批量查询 出ArrayList<orderItem>
 			/**
 			 * <resultMap type="com.yayiabc.http.mvc.pojo.jpa.OrderItem" id="queryOrderA">
@@ -219,8 +220,15 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				<result property="picPath" column="item_pica" />
 	           </resultMap>
 			 */
-			List<OrderItem> orderItemListAttributes=placeOrderDao.queryItemIdListByitemValueList(itemValueList);
-
+			//List<OrderItem> orderItemListAttributes=placeOrderDao.queryItemIdListByitemValueList(itemValueList);
+			
+			//-----啦啦
+			List<FinalList> finalList=placeOrderDao.queryFinalList(orderItemList);
+			/*if(itemValueList.size()>orderItemListAttributes.size()){
+				 
+			}*/
+			System.out.println(finalList);
+			System.out.println(finalList.size()==orderItemList.size());
 			for(int i=0;i<orderItemList.size();i++){
 				//query钱币赠送百分比
 				//Integer qbPercentage=placeOrderDao.queryQbPercentage(orderItemList.get(i).getItemSKU());
@@ -238,15 +246,23 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				//新 function 本单获得钱币数新规则 这里Set进商品品牌
 				//String  itemBrandName=placeOrderDao.queryItemBrandNameByItemId(itemVlue.getItemId());
 				//--- !!!!  双休优化  123
-				orderItemList.get(i).setItemBrandName(orderItemListAttributes.get(i).getItemBrandName());
-				orderItemList.get(i).setItemName(orderItemListAttributes.get(i).getItemName());
-				orderItemList.get(i).setPicPath(orderItemListAttributes.get(i).getPicPath());
-				orderItemList.get(i).setItemPropertyNamea(itemValueList.get(i).getItemPropertyInfo());
-				orderItemList.get(i).setItemPropertyNameb(itemValueList.get(i).getItemPropertyTwoValue());
-				orderItemList.get(i).setItemPropertyNamec(itemValueList.get(i).getItemPropertyThreeValue());
-				orderItemList.get(i).setPrice(itemValueList.get(i).getItemSkuPrice());
+				//orderItemList.get(i).setItemBrandName(orderItemListAttributes.get(i).getItemBrandName());
+				orderItemList.get(i).setItemBrandName(finalList.get(i).getItemBrandName());
+				//orderItemList.get(i).setItemName(orderItemListAttributes.get(i).getItemName());
+				orderItemList.get(i).setItemName(finalList.get(i).getItemName());
+				//orderItemList.get(i).setPicPath(orderItemListAttributes.get(i).getPicPath());
+				orderItemList.get(i).setPicPath(finalList.get(i).getPicPath());
+				//orderItemList.get(i).setItemPropertyNamea(itemValueList.get(i).getItemPropertyInfo());
+				orderItemList.get(i).setItemPropertyNamea(finalList.get(i).getItemPropertyInfo());
+				//orderItemList.get(i).setItemPropertyNameb(itemValueList.get(i).getItemPropertyTwoValue());
+				orderItemList.get(i).setItemPropertyNameb(finalList.get(i).getItemPropertyTwoValue());
+//				orderItemList.get(i).setItemPropertyNamec(itemValueList.get(i).getItemPropertyThreeValue());
+				orderItemList.get(i).setItemPropertyNamec(finalList.get(i).getItemPropertyThreeValue());
+				//orderItemList.get(i).setPrice(itemValueList.get(i).getItemSkuPrice());
+				orderItemList.get(i).setPrice(finalList.get(i).getItemSkuPrice());
 				orderItemList.get(i).setOrderId(orderId);
-				orderItemList.get(i).setItemType(orderItemListAttributes.get(i).getItemType());
+				//orderItemList.get(i).setItemType(orderItemListAttributes.get(i).getItemType());
+				orderItemList.get(i).setItemType(finalList.get(i).getItemType());
 				//---
 				/*orderItemList.get(i).setItemBrandName(itemBrandName);
 
@@ -262,16 +278,16 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				//int ItemInventNum=placeOrderDao.queryItemInventNum(itemVlue.getItemSKU());
 				//双休优化  
 				//判断  
-				if(itemValueList.get(i).getStockNum()>=orderItemList.get(i).getNum()){
+				if(finalList.get(i).getStockNum()>=orderItemList.get(i).getNum()){
 					//如果库存数量大于购买数量  就去库存减去购买数
 					//更改库存数量
 					placeOrderDao.updateInventNum(
-							String.valueOf(itemValueList.get(i).getStockNum()-orderItemList.get(i).getNum()),itemValueList.get(i).getItemSKU()
+							String.valueOf(finalList.get(i).getStockNum()-orderItemList.get(i).getNum()),finalList.get(i).getItemSKU()
 							);				
 					//---
 				}else{
 					hashMap.put("数量不足", "该商品"+orderItemList.get(i).getItemName()+"数量不足，您最多购买"
-							+String.valueOf(itemValueList.get(i).getStockNum()-orderItemList.get(i).getNum())+"件。"
+							+String.valueOf(finalList.get(i).getStockNum()-orderItemList.get(i).getNum())+"件。"
 							);	
 					//删除该订单   和订单商品表里的信息
 					dataWrapper.setErrorCode(ErrorCodeEnum.Error);

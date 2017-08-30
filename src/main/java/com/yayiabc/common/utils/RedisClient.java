@@ -19,7 +19,7 @@ public class RedisClient {
     public final static Jedis jedis = new Jedis( ip, port);
   
     static {
-    	
+    	jedis.auth("123");
     }
 
     protected RedisClient() {

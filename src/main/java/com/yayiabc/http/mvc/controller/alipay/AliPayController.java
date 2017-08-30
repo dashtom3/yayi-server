@@ -50,7 +50,6 @@ public class AliPayController {
 	@RequestMapping("payParames")
 	
 	void paParames(
-			
 			@RequestParam(value="orderId",required=true) String orderId,//订单号
 			 HttpServletResponse response
 			){

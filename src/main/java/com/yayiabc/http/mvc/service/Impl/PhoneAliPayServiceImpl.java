@@ -42,21 +42,7 @@ public class PhoneAliPayServiceImpl implements PhoneAliPayService{
 			String subject=WIDsubject;
 			String total_fee=WIDtotal_fee;
 			String product_code=product_codes;
-			//String body=WIDbody;
-			//把请求参数打包成数组
-		/*	Map<String, String> sParaTemp = new HashMap<String, String>();
-			sParaTemp.put("service", AlipayConfig.service);
-			sParaTemp.put("partner", AlipayConfig.partner);
-			sParaTemp.put("seller_id", AlipayConfig.seller_id);
-			sParaTemp.put("_input_charset", AlipayConfig.input_charset);
-			sParaTemp.put("payment_type", AlipayConfig.payment_type);
-			sParaTemp.put("notify_url", AlipayConfig.notify_url);
-			sParaTemp.put("return_url", AlipayConfig.return_url);
-			sParaTemp.put("out_trade_no", out_trade_no);
-			sParaTemp.put("subject", subject);
-			sParaTemp.put("total_fee", total_fee);
-			sParaTemp.put("product_code", product_code);*/
-         			
+         		
 			  // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，开发者无需关注签名与验签     
 		    //调用RSA签名方式
 		    AlipayClient client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);

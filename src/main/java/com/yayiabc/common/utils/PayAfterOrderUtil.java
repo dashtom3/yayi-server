@@ -88,7 +88,7 @@ public class PayAfterOrderUtil {
 			//----
 			q.setQbRget(oo.getGiveQb());
 			q.setQbType("qb_balance");
-			q.setRemark("下单获得"+oo.getGiveQb()+"个乾币，（1类型"+oo.getGiveQb()+"个）。（订单编号:"+orderId+"）");
+			q.setRemark("下单获得"+oo.getGiveQb()+"个乾币，（0类型"+oo.getGiveQb()+"个）。（订单编号:"+orderId+"）");
 			String token=utilsDao.queryTokenByOrderId(orderId);
 			userMyQbService.add(q, token);
 		}
@@ -99,6 +99,7 @@ public class PayAfterOrderUtil {
 	String  newQbDed(String userId,Integer  DedNum,String orderId){
 		//dednum <= max used qb //钱币够用
 		User u=utilsDao.queryUserByUserId(userId);
+		
 		List<Integer> listData=new ArrayList<Integer>();
 		listData.add(u.getQbBalance()); //"qb_balance"
 		listData.add( u.getaQb());      //"a_qb"
@@ -115,6 +116,7 @@ public class PayAfterOrderUtil {
 				qbDes=sb1.toString()+DedNum;
 				s="下单使用"+a+"个钱币，（"+sb.toString()+i+"类型"+DedNum+"个"+"）。"+"（订单编号："+orderId+"）";
 				DedNum=listData.get(i)-DedNum;
+				//listData.get(i)=listData.get(i)-DedNum;  这个
 				listData.set(i, DedNum);
 				break;
 			}else if(listData.get(i)<DedNum&&listData.get(i)!=0){

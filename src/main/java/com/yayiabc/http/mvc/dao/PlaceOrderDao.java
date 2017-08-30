@@ -13,6 +13,7 @@ import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.PostFee;
 import com.yayiabc.http.mvc.pojo.jpa.Receiver;
+import com.yayiabc.http.mvc.pojo.model.FinalList;
 
 
 public interface PlaceOrderDao {
@@ -138,4 +139,9 @@ public interface PlaceOrderDao {
 
 
 	int updateInventNums(List<OrderItem> orderItemList);
+
+
+	List<FinalList> queryFinalList(List<OrderItem> orderItemList);
+
+
 }

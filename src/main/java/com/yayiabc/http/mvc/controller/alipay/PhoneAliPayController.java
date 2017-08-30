@@ -22,8 +22,12 @@ import com.yayiabc.common.alipayenclos.config.AlipayConfig;
 import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.PayAfterOrderUtil;
 import com.yayiabc.http.mvc.dao.AliPayDao;
+import com.yayiabc.http.mvc.dao.UtilsDao;
+import com.yayiabc.http.mvc.pojo.jpa.Charge;
+import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.service.AliPayService;
 import com.yayiabc.http.mvc.service.PhoneAliPayService;
+import com.yayiabc.http.mvc.service.UserMyQbService;
 /**
  * 
  * @author me
@@ -40,6 +44,10 @@ public class PhoneAliPayController {
 	private AliPayDao aliPayDao;
 	@Autowired
 	private AliPayService alipayService;
+	@Autowired
+	private UserMyQbService userMyQbService;
+	@Autowired
+	private UtilsDao utilsDao;
 	// 14.29  点击选择类型确定支付宝支付时(手机网站)
 	@RequestMapping("PhonePayParames")
 	void PhonePayParames(
@@ -48,9 +56,7 @@ public class PhoneAliPayController {
 			){
 		HashMap<String , String> hm=alipayService.queryY(orderId);
 		
-		for(String key:hm.keySet()){
-			System.err.println("key: "+key+" "+hm.get(key));
-		}
+		
 		String product_code="QUICK_WAP_PAY";
 		String sHtmlText=phoneAlipayService.packingParameter(hm.get("WIDout_trade_no"), hm.get("WIDsubject"), hm.get("WIDtotal_fee"), hm.get("WIDbody")
 				,product_code
@@ -156,7 +162,6 @@ public class PhoneAliPayController {
 					//计算得出通知验证结果
 					//boolean AlipaySignature.rsaCheckV1(Map<String, String> params, String publicKey, String charset, String sign_type)
 					boolean verify_result = AlipaySignature.rsaCheckV1(params, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.CHARSET, "RSA");
-					int  state=aliPayDao.querySatetIsTwo(out_trade_no);
 					if(verify_result){//验证成功
 						//////////////////////////////////////////////////////////////////////////////////////////
 						//请在这里加上商户的业务逻辑程序代码
@@ -168,6 +173,18 @@ public class PhoneAliPayController {
 								//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 								//请务必判断请求时的total_fee、seller_id与通知时获取的total_fee、seller_id为一致的
 								//如果有做过处理，不执行商户的业务程序
+							if("zfb".equals(out_trade_no.substring(0, 3))){
+								aliPayDao.updateState(out_trade_no);
+								Charge charge=aliPayDao.queryUserId(out_trade_no);
+								String token=utilsDao.getToken(charge.getToken());
+								QbRecord q=new QbRecord();
+								q.setQbRget(charge.getMoney());
+								q.setQbType(charge.getQbType());
+								q.setRemark(charge.getQbType()+"乾币充值(支付宝)");
+								userMyQbService.add(q, token);
+								((PrintStream) out).println("success");
+							}
+							int  state=aliPayDao.querySatetIsTwo(out_trade_no);
 							if(2!=state){
 								PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 								payAfterOrderUtil.universal(out_trade_no,"0");
@@ -181,6 +198,18 @@ public class PhoneAliPayController {
 								//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 								//请务必判断请求时的total_fee、seller_id与通知时获取的total_fee、seller_id为一致的
 								//如果有做过处理，不执行商户的业务程序
+							if("zfb".equals(out_trade_no.substring(0, 3))){
+								aliPayDao.updateState(out_trade_no);
+								Charge charge=aliPayDao.queryUserId(out_trade_no);
+								String token=utilsDao.getToken(charge.getToken());
+								QbRecord q=new QbRecord();
+								q.setQbRget(charge.getMoney());
+								q.setQbType(charge.getQbType());
+								q.setRemark(charge.getQbType()+"乾币充值(支付宝)");
+								userMyQbService.add(q, token);
+								((PrintStream) out).println("success");
+							}
+							int  state=aliPayDao.querySatetIsTwo(out_trade_no);
 							if(2!=state){
 								PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 								payAfterOrderUtil.universal(out_trade_no,"0");

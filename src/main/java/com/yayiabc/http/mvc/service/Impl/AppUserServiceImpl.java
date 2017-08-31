@@ -53,6 +53,7 @@ public class AppUserServiceImpl implements AppUserService {
                         QbRecord qbRecord=new QbRecord();
                         qbRecord.setQbRget(60);
                         qbRecord.setRemark("注册送60乾币");
+                        qbRecord.setQbType("qb_balance");
                         userMyQbService.add(qbRecord, token);
                         userDao.registerUserInfo(user);
                         userDao.registerUserCertification(user);

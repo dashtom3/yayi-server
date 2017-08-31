@@ -28,20 +28,20 @@ public class ClassifyManage implements InitializingBean{
 
     public void init(){
 
-       /* getClassify();
-        getBrand();*/
+//       getClassify();
+       getBrand();
     }
     @Override
     public void afterPropertiesSet() throws Exception {
         init();
     }
     
-    /*private void getClassify(){
+   /* private void getClassify(){
     	classifyList=itemClassifyDao.showsTreeClassify();
-    }
+    }*/
 
     private void getBrand(){
         RedisClient redis=RedisClient.getInstance();
         redis.set(itemBrandDao.brandList(),"itemBrandList");
-    }*/
+    }
 }

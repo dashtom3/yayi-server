@@ -219,7 +219,6 @@ public class ItemManageController {
 			@ModelAttribute ItemClassify itemClassify,
 			@RequestHeader(value="adminToken",required=true)String adminToken
 			){
-//		return itemManageService.updateItemClassify(itemClassifyId,itemClassifyName,itemOldName,itemClassifyGrade);
 		return itemManageService.updateItemClassify(itemClassify);
 	}
 	

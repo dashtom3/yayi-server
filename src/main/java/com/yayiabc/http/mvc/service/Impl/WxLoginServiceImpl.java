@@ -72,6 +72,7 @@ public class WxLoginServiceImpl implements WxLoginService {
             dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
         }
         return dataWrapper;
+
     }
 
     @Override
@@ -79,8 +80,8 @@ public class WxLoginServiceImpl implements WxLoginService {
         DataWrapper<Object> dataWrapper = new DataWrapper<Object>();
         if ("1".equals(type)){
             User seUser = userDao.getUserByPhone(phone);
-            String serverCode = VerifyCodeManager.getPhoneCode(phone);
-            if (verifyCode.equals(serverCode)) {
+            /*String serverCode = VerifyCodeManager.getPhoneCode(phone);
+            if (verifyCode.equals(serverCode)) {*/
             	if (seUser != null) {
 	                dataWrapper.setData(seUser);
 	                int num = userDao.getCartNum(seUser);
@@ -91,16 +92,14 @@ public class WxLoginServiceImpl implements WxLoginService {
 	                String token =tokenService.getToken(userId);
 	                dataWrapper.setData(seUser);
 	                dataWrapper.setToken(token);
-
-	                //把微信
             	}else {
                     dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 }
-            } else {
+           /* } else {
                 dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_Error);
                 dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            }
+            }*/
         }else if ("2".equals(type)){
             SaleInfo saleInfo = saleLogDao.getSaleInfoByPhone(phone);
             String serverCode = VerifyCodeManager.getPhoneCode(phone);
@@ -163,6 +162,7 @@ public class WxLoginServiceImpl implements WxLoginService {
                     QbRecord qbRecord=new QbRecord();
                     qbRecord.setQbRget(60);
                     qbRecord.setRemark("注册送60乾币");
+                    qbRecord.setQbType("qb_balance");
                     userMyQbService.add(qbRecord, token);
                     user.setUserId(newUser.getUserId());
                     userDao.registerUserInfo(user);

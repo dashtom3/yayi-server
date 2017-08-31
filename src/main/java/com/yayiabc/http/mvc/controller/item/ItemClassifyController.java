@@ -1,8 +1,10 @@
 package com.yayiabc.http.mvc.controller.item;
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.dao.ItemClassifyDao;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
 import com.yayiabc.http.mvc.pojo.model.Classify;
+import com.yayiabc.http.mvc.pojo.model.SysResult;
 import com.yayiabc.http.mvc.service.ItemClassifyService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -19,19 +21,21 @@ public class ItemClassifyController {
     
       @Autowired 
       private ItemClassifyService itemClassifyService;
+      @Autowired
+	  private ItemClassifyDao itemClassifyDao;
       
       @RequestMapping("showClassify")
       @ResponseBody
       public  DataWrapper<List<Classify>>  showClassify(){
     	  DataWrapper<List<Classify>> dataWrapper =new DataWrapper<List<Classify>>();
-    	  dataWrapper.setData(ClassifyManage.classifyList);
+    	  dataWrapper.setData(itemClassifyDao.showsTreeClassify());
     	 return dataWrapper;
       }
-      /*@RequestMapping("getAllClassifyAndBrand")
+      @RequestMapping("getAllClassifyAndBrand")
       @ResponseBody
       public DataWrapper<SysResult> getAllClassifyAndBrand(){
       	return itemClassifyService.getAllClassifyAndBrand();
-      }*/
+      }
       
       @RequestMapping("queryItemSearch")
       @ResponseBody

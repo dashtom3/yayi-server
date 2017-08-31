@@ -30,9 +30,7 @@ public class ItemBrandServiceImpl implements ItemBrandService{
     private ItemBrandDao itemBrandDao;
 
     private RedisClient redisClient=RedisClient.getInstance();
-    public ItemBrandServiceImpl()
-    {
-    }
+
 
     public DataWrapper<List<ItemBrand>> brandList(){
         DataWrapper<List<ItemBrand>> dataWrapper = new DataWrapper<List<ItemBrand>>();

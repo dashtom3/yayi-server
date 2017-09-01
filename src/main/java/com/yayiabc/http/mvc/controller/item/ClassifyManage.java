@@ -1,7 +1,6 @@
 package com.yayiabc.http.mvc.controller.item;
 
 
-import com.yayiabc.common.utils.RedisClient;
 import com.yayiabc.http.mvc.dao.ItemBrandDao;
 import com.yayiabc.http.mvc.dao.ItemClassifyDao;
 import com.yayiabc.http.mvc.pojo.model.Classify;
@@ -28,20 +27,20 @@ public class ClassifyManage implements InitializingBean{
 
     public void init(){
 
-        getClassify();
-        getBrand();
+//       getClassify();
+//       getBrand();
     }
     @Override
     public void afterPropertiesSet() throws Exception {
         init();
     }
     
-    private void getClassify(){
+   /* private void getClassify(){
     	classifyList=itemClassifyDao.showsTreeClassify();
-    }
+    }*/
 
-    private void getBrand(){
-        RedisClient redis=RedisClient.getInstance();
-        redis.set(itemBrandDao.brandList(),"itemBrandList");
-    }
+//    private void getBrand(){
+//        RedisClient redis=RedisClient.getInstance();
+//        redis.set(itemBrandDao.brandList(),"itemBrandList");
+//    }
 }

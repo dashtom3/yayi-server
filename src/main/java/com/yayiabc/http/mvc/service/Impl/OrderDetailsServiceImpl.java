@@ -85,7 +85,7 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		List<OrderItem> OrderItemNums=timerChangeStateService.queryOrderItemNums(l);
 		int q=timerChangeStateService.stillItemsListValueNum(OrderItemNums);
 		int state=orderdetailsDao.cancel(orderId);
-		if(state>0){
+		if(state>0&&q>0){
 			dataWrapper.setMsg("操作成功");
 		}else{
 			dataWrapper.setMsg("操作失败");

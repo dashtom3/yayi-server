@@ -17,7 +17,7 @@
 		<!-- 订单表 -->
 		<!-- <collection property="orderaList" ofType="Ordera"> -->
 		<id property="orderId" column="order_id" />
-		<result property="user_id" column="userId" />
+		<result property="userId" column="ouserId" />
 		<result property="shippingCode" column="shipping_code" />
 		<result property="created" column="created" />
 		<result property="state" column="state" />
@@ -34,7 +34,6 @@
 		<association property="receiver"
 			javaType="com.yayiabc.http.mvc.pojo.jpa.Receiver">
 			<id property="receiverId" column="receiver_id" />
-			<result property="userId" column="user_id" />
 			<result property="receiverName" column="receiver_name" />
 			<result property="province" column="province" />
 			<result property="city" column="city" />
@@ -43,11 +42,10 @@
 			<result property="phone" column="phone" />
 			<result property="isDefault" column="is_default" />
 			<result property="landlineNumber" column="landline_number" />
-
 		</association>
 		<!-- //订单商品表 -->
 		<collection property="orderitemList" ofType="OrderItem">
-			<id property="itemId" column="item_id" />
+			<result property="itemId" column="item_id" />
 			<result property="picPath" column="pic_path" />
 			<result property="num" column="num" />
 			<result property="price" column="price" />
@@ -56,31 +54,28 @@
 			<result property="itemPropertyNamea" column="item_property_namea" />
 			<result property="itemPropertyNameb" column="item_property_nameb" />
 			<result property="itemPropertyNamec" column="item_property_namec" />
-
 			<!-- 商品表 信息表 -->
-			<association property="itemInfo"
+			 <association property="itemInfo"
 				javaType="com.yayiabc.http.mvc.pojo.jpa.ItemInfo">
 				<result property="itemName" column="item_name" />
-				<!-- 商品属性表 -->
 			</association>
-			<!-- </collection> -->
 		</collection>
 	</resultMap>
 	<select id="orderDetailsShow" parameterType="java.util.Map"
 		resultMap="orderDetailsResultMap">
 		SELECT
-		orde.order_id,orde.created,orde_it.num,orde_it.price,orde.actual_pay,orde.give_qb,
+		orde.user_id ouserId ,orde.order_id,orde.created,orde_it.num,orde_it.price,orde.actual_pay,orde.give_qb,
 		orde.pay_type,orde.invoice_hand,orde.is_register,orde.buyer_message,
 		orde_it.item_name,orde_it.pic_path,orde_it.itm_SKU,
 		orde_it.item_property_namea,
 		orde_it.item_property_nameb,orde_it.item_property_namec,orde_it.item_id,orde.post_fee,orde.qb_ded,orde.state,
 		orde.actual_pay,orde.total_fee,orde.qb_des
 		,rece.*
-		FROM `user` us
-		JOIN
+		FROM<!--  `user` us
+		JOIN -->
 		ordera orde
-		ON
-		us.user_id=orde.user_id
+		<!-- ON
+		us.user_id=orde.user_id -->
 		JOIN
 		receiver rece
 		ON
@@ -91,7 +86,7 @@
 		orde.order_id=orde_it.order_id
 		<where>
 			<if test="userId !=null and userId!=''">
-				us.user_id=#{userId}
+				orde.user_id=#{userId}
 			</if>
 			<!-- <choose> <when test="state==3 and state!='' and state !=null"> and 
 				orde.state=#{state} or orde.state=5 </when> <otherwise> and orde.state=#{state} 
@@ -113,18 +108,18 @@
 		(SELECT
 		count(0)
 		FROM
-		`user` us JOIN
-		ordera orde ON
-		us.user_id=orde.user_id JOIN order_item
+		
+		ordera orde 
+		<!-- us.user_id=orde.user_id --> JOIN order_item
 		orde_it ON
-		orde.order_id=orde_it.order_id JOIN
+		orde.order_id=orde_it.order_id <!-- JOIN
 		item_info item_f ON
 		orde_it.item_id
-		= item_f.item_id join receiver rece on
+		= item_f.item_id --> join receiver rece on
 		rece.receiver_id=orde.receiver_id
 		<where>
 			<if test="userId !=null and userId!=''">
-				us.user_id=#{userId}
+				orde.user_id=#{userId}
 			</if>
 
 			<if test="state !=null and state!=''">

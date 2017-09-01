@@ -52,7 +52,9 @@ public class OrderDetailsController {
 			){
 		HashMap<String,String>map=new HashMap<String,String>();
 		map.put("state", state);
-		return orderDetailsService.orderDetailsShow(map,token,currentPage,numberPerpage);
+		DataWrapper<List<Ordera>>  l=orderDetailsService.orderDetailsShow(map,token,currentPage,numberPerpage);
+				System.out.println(l.getData());
+		return l;
 	}
 	
 	//取消订单
@@ -116,9 +118,6 @@ public class OrderDetailsController {
 			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderId",required=true) String orderId,
 			@RequestParam(value="itemIdList",required=true) String itemIdList
-			/* @RequestParam(value="itemId",required=true) String itemId,
-    		  @RequestParam(value="score",required=true) String score,
-    		  @RequestParam(value="data",required=true) String data*/
 			){
 		JSONArray json = JSONArray.fromObject(itemIdList);
 		ArrayList<itemIdList> itemIdListy = (ArrayList<itemIdList>)JSONArray.toCollection(json,itemIdList.class);

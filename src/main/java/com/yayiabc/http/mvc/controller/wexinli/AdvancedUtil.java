@@ -26,6 +26,7 @@ public class AdvancedUtil {
 	 * @param appid 
      * @return WeixinAouth2Token
      */
+	
     public static   WeixinOauth2Token getOauth2AccessToken(String code, String appid, String secret) {
         WeixinOauth2Token wat = null;
         // 拼接请求地址

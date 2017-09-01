@@ -213,7 +213,7 @@
 	<update id="updateInventNum">
 		update item_value set stock_num=(#{NUM})
 		where
-		item_sKU=#{itemSKU}
+		item_sKU=#{itemSKU} and stock_num >= 0
 	</update>
 
 	<select id="queryItemsort" resultType="java.lang.String">

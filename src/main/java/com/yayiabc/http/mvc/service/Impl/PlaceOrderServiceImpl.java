@@ -46,7 +46,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 
 
 
-	public Double getFreight(Receiver receiver,Double sumPrice,Integer itemSum){
+	public Integer getFreight(Receiver receiver,Double sumPrice,Integer itemSum){
 		String Province =receiver.getProvince();
 		//查询包邮表数据
 		List<FreeShipping> list=placeOrderDao.queryPostFree();
@@ -62,7 +62,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 						if(city.equals(citys[x])){
 							if(sumPrice>money||sumPrice==money){
 								if(list.get(i).getState()==1){
-									return 0.0;
+									return 0;
 								}
 							}
 						}
@@ -72,7 +72,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 						if(Province.equals(citys[y])){
 							if(sumPrice>money||sumPrice==money){
 								if(list.get(i).getState()==1){
-									return 0.0;
+									return 0;
 								}
 							}
 						}
@@ -90,19 +90,19 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					String cityString=receiver.getCity();
 					for(int x=0;x<citys.length;x++){
 						if(cityString.equals(citys[x])){
-							return (double) (lists.get(i).getFirstMoney()+(itemSum-1)*lists.get(i).getAddMoney());
+							return (lists.get(i).getFirstMoney()+(itemSum-1)*lists.get(i).getAddMoney());
 						}
 					}
 				}else{
 					for(int x=0;x<citys.length;x++){
 						if(Province.equals(citys[x])){
-							return (double) (lists.get(i).getFirstMoney()+(itemSum-1)*lists.get(i).getAddMoney());
+							return  (lists.get(i).getFirstMoney()+(itemSum-1)*lists.get(i).getAddMoney());
 						}
 					}
 				}
 			}
 		}
-		return 0.0;
+		return 0;
 	}
 	//钱币抵扣
 	@Override
@@ -292,7 +292,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					//删除该订单   和订单商品表里的信息
 					dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 					dataWrapper.setData(hashMap);
-					return dataWrapper;
+					throw new RuntimeException("库存不足抛出异常"); 
+					//return dataWrapper;
 				}
 
 				if("上海道邦".equals(orderItemList.get(i).getItemBrandName())){
@@ -371,9 +372,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			}*/
 			//该单计算运费
 			Receiver receiver=placeOrderDao.queryReceiver(order.getReceiverId());
-
-			Double postFee=getFreight(receiver,sumPrice,itemSum);
-
+			Integer postFee=getFreight(receiver,sumPrice,itemSum);
 			//生产发票性质
 			if("1".equals(order.getInvoiceHand())){
 				invoice.setOrderId(orderId);

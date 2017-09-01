@@ -46,10 +46,11 @@ public class WXAuthentController{
 	private UserDao userDao;
 	@Autowired
 	private SaleLogDao saleLogDao;
+	private static int a;
 	@RequestMapping("returnSignAndMessage")
 	@ResponseBody
     public DataWrapper<Object> doGet(HttpServletRequest request,
-    		@RequestParam(value="code",required=false) String code
+    		@RequestParam(value="code",required=true) String code
     		){
         // 用户同意授权后，能获取到code
 		
@@ -61,7 +62,10 @@ public class WXAuthentController{
         DataWrapper<Object> dataWrapper =new DataWrapper<Object>();
         // 用户同意授权
         User user=null;
-      
+         System.out.println(appCode.get("appid")+"          appid");
+         System.out.println(appCode.get("secret")+"          secret");
+         a++;
+         System.out.println(a+"aaaaaaaaaaaaa"+a);
         SNSUserInfo snsUserInfo=null;
         WXUserLink  wXUserLink=null;
         SaleInfo sa=null;
@@ -109,7 +113,6 @@ public class WXAuthentController{
                      dataWrapper.setToken(saleToken);
             	 }
             }
-           
           Model model=new Model();
           model.setwXUserLibk(wXUserLink);
           model.setUser(user);

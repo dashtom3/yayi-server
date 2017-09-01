@@ -61,7 +61,6 @@ public class PhoneAliPayServiceImpl implements PhoneAliPayService{
 		    alipay_request.setNotifyUrl(AlipayConfig.phoneNotify_url);
 		    // 设置同步地址
 		    alipay_request.setReturnUrl(AlipayConfig.phoneReturn_url);   
-		    
 		    // form表单生产
 		    String form = "";
 			try {

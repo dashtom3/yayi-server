@@ -22,7 +22,7 @@ public class ItemClassifyController {
       @Autowired 
       private ItemClassifyService itemClassifyService;
       @Autowired
-	  private ItemClassifyDao itemClassifyDao;
+      private ItemClassifyDao itemClassifyDao;
       
       @RequestMapping("showClassify")
       @ResponseBody
@@ -36,7 +36,7 @@ public class ItemClassifyController {
       public DataWrapper<SysResult> getAllClassifyAndBrand(){
       	return itemClassifyService.getAllClassifyAndBrand();
       }
-      
+    
       @RequestMapping("queryItemSearch")
       @ResponseBody
       public DataWrapper<List<ItemInfo>> queryItemSearch(

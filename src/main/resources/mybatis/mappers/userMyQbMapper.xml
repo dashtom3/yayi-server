@@ -71,7 +71,7 @@
 		</foreach>
 	</update>
 	<insert id="addMessageQbQ" parameterType="java.util.List">
-	  INSERT INTO qb_record(user_id,qb_rout,remark,created,millisecond)
-			VALUE(#{userId},#{dedNums},#{message},NOW(),#{millisecond});
+	  INSERT INTO qb_record(user_id,qb_rout,qb_time,remark,created,millisecond)
+			VALUE(#{userId},#{dedNums},now(),#{message},NOW(),#{millisecond});
 	</insert>
 </mapper>        

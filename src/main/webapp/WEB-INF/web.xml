@@ -47,6 +47,31 @@
         <url-pattern>/api/*</url-pattern>
     </filter-mapping>
     
+    	<!-- 配置SpringMVC -->
+	<servlet>
+		<servlet-name>springmvc-web</servlet-name>
+		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
+		<!-- 指定SpringMVC配置文件 -->
+		<init-param>
+			<param-name>contextConfigLocation</param-name>
+			<param-value>classpath:spring/springmvc-config.xml</param-value>
+		</init-param>
+		<load-on-startup>1</load-on-startup>
+	</servlet>
+
+	<servlet-mapping>
+		<servlet-name>springmvc-web</servlet-name>
+		<url-pattern>*.html</url-pattern>
+	</servlet-mapping>
+	<servlet-mapping>
+		<servlet-name>springmvc-web</servlet-name>
+		<url-pattern>/</url-pattern>
+	</servlet-mapping>
+	<!-- 防止springMVC框架返回json时和html冲突报 406 错误 -->
+	<servlet-mapping>
+		<servlet-name>springmvc-web</servlet-name>
+		<url-pattern>/service/*</url-pattern>
+	</servlet-mapping>
     <!-- 银联配置 -->
 	<filter>
 		<filter-name>CharsetEncodingFilter</filter-name>
@@ -164,31 +189,7 @@
 	</servlet-mapping> -->
 	<!--  -->
 	
-	<!-- 配置SpringMVC -->
-	<servlet>
-		<servlet-name>springmvc-web</servlet-name>
-		<servlet-class>org.springframework.web.servlet.DispatcherServlet</servlet-class>
-		<!-- 指定SpringMVC配置文件 -->
-		<init-param>
-			<param-name>contextConfigLocation</param-name>
-			<param-value>classpath:spring/springmvc-config.xml</param-value>
-		</init-param>
-		<load-on-startup>1</load-on-startup>
-	</servlet>
 
-	<servlet-mapping>
-		<servlet-name>springmvc-web</servlet-name>
-		<url-pattern>*.html</url-pattern>
-	</servlet-mapping>
-	<servlet-mapping>
-		<servlet-name>springmvc-web</servlet-name>
-		<url-pattern>/</url-pattern>
-	</servlet-mapping>
-	<!-- 防止springMVC框架返回json时和html冲突报 406 错误 -->
-	<servlet-mapping>
-		<servlet-name>springmvc-web</servlet-name>
-		<url-pattern>/service/*</url-pattern>
-	</servlet-mapping>
 	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>

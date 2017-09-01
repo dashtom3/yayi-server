@@ -147,7 +147,7 @@ public class WxLoginServiceImpl implements WxLoginService {
             }else{
                 userDao.registerUserCertification(user);
             }
-			String token=userDao.getTokenByUserId(userId);
+			String token=tokenService.getToken(userId);
             User seUser = userDao.getUserByPhone(user.getPhone());
             wxAppDao.addUser(userId,openid);
             dataWrapper.setData(seUser);

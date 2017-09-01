@@ -250,9 +250,10 @@ public class UserServiceImpl implements UserService {
         DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
         String userId = userDao.getUserIdByToken(token);
         SaleInfo saleInfo = saleLogDao.getSaleInfoByPhone(salePhone);
-        int i = userDao.bindSale(userId,saleInfo.getSaleId());
-        userManageListDao.bindUpdateNum(saleInfo.getSaleId());
-        if (i != 1){
+        if(saleInfo!=null) {
+            int i = userDao.bindSale(userId,saleInfo.getSaleId());
+            userManageListDao.bindUpdateNum(saleInfo.getSaleId());
+        }else{
             dataWrapper.setErrorCode(ErrorCodeEnum.Error);
         }
         return dataWrapper;

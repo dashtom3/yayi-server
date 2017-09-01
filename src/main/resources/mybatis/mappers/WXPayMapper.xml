@@ -4,7 +4,7 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.yayiabc.http.mvc.dao.WXPayDao">
  	<insert id="addCharge">
- 		insert into charge values(#{chargeId},#{token},#{money},#{state})
+ 		insert into charge values(#{chargeId},#{token},#{money},#{qbType},#{state})
  	</insert>
 	
 	<select id="getMoneyByChargeId" resultType="java.lang.Integer">

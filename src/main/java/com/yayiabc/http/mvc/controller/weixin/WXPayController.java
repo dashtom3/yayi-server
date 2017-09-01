@@ -1,43 +1,30 @@
 package com.yayiabc.http.mvc.controller.weixin;
 
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-import java.util.SortedMap;
-import java.util.TreeMap;
-import java.util.UUID;
-
-
-import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import com.yayiabc.common.annotation.UserTokenValidate;
-import com.yayiabc.common.utils.BeanUtil;
-import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.common.utils.GetQCode;
-import com.yayiabc.common.utils.PayAfterOrderUtil;
-import com.yayiabc.common.utils.QbExchangeUtil;
+import com.yayiabc.common.utils.*;
 import com.yayiabc.common.weixin.WXPay;
 import com.yayiabc.common.weixin.WXPayConfigImpl;
 import com.yayiabc.common.weixin.WXPayUtil;
 import com.yayiabc.http.mvc.dao.AliPayDao;
 import com.yayiabc.http.mvc.dao.UserDao;
+import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.dao.WXPayDao;
 import com.yayiabc.http.mvc.pojo.jpa.Charge;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.service.AliPayService;
 import com.yayiabc.http.mvc.service.UserMyQbService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.BufferedOutputStream;
+import java.io.BufferedReader;
+import java.io.InputStream;
+import java.io.InputStreamReader;
+import java.util.*;
 
 @Controller
 @RequestMapping("api/weixin")
@@ -57,6 +44,9 @@ public class WXPayController {
 	
 	@Autowired
 	private UserMyQbService userMyQbService;
+
+	@Autowired
+	private UtilsDao utilsDao;
 	
 	/**
 	 * 下订单付款时统一下单接口
@@ -66,7 +56,6 @@ public class WXPayController {
 	@ResponseBody
 	
 	public void unifiedOrderReturnUrl(
-			
 			@RequestParam("orderId") String orderId,HttpServletResponse response){
 		System.out.println("开始处理回调");
 		HashMap<String, String> hashMap=aliPayService.queryY(orderId);
@@ -113,7 +102,7 @@ public class WXPayController {
 	}
 	
 	/**
-	 * 下订单付款完成后接收微信系统发送的回掉的请求，并展示给用户
+	 * 下订单付款完成后接收微信系统发送的回掉的请求
 	 * @param request
 	 * @param response
 	 * @return
@@ -124,7 +113,6 @@ public class WXPayController {
 	public void getReturnUrl(HttpServletRequest request,HttpServletResponse response) throws Exception{
 		
 		WXPay wxPay =new WXPay(WXPayConfigImpl.getInstance());
-		System.out.println("helloworld");
 		//读取参数
 		InputStream inputStream;
 		StringBuffer sb=new StringBuffer();
@@ -213,6 +201,7 @@ public class WXPayController {
 	@ResponseBody
 
 	public void unifiedOrderCharge(@RequestParam(value="money",required=true) Integer money,
+			@RequestParam("qbType")String qbType,
 			@RequestParam(value="token",required=true) String token,
 			HttpServletResponse response){
 		String chargeId=UUID.randomUUID().toString();
@@ -225,9 +214,12 @@ public class WXPayController {
 		charge.setChargeId(chargeId);
 		charge.setMoney(money);
 		charge.setState(1);
-		charge.setToken(token);
+		charge.setToken(utilsDao.getUserID(token));
+		charge.setQbType(qbType);
 		wXPayDao.deleteChargeByToken(token);
 		wXPayDao.addCharge(charge);
+		double totalMoney= QbExchangeUtil.getQbByMoney(money,qbType);
+		money=(int)Math.round(totalMoney);
 		try {
 			WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:8080/api/weixin/getChargeReturnUrl");
 			Map<String,String> reqData =new HashMap<String,String>();
@@ -312,11 +304,12 @@ public class WXPayController {
 						//这里是支付成功
 						System.out.println("支付成功");
 						//给客户的钱包充值
-						String token=wXPayDao.getTokenByChargeId(chargeId);
-						String userId=userDao.getUserIdByToken(token);
-						Integer addMoney=QbExchangeUtil.getQbByMoney(money,"qbA");
+						Charge charge=aliPayDao.queryUserId(out_trade_no);
+						String userId=wXPayDao.getTokenByChargeId(chargeId);
+						String token=userDao.getTokenByUserId(userId);
 						QbRecord qbRecord =new QbRecord();
-						qbRecord.setQbRget(addMoney);
+						qbRecord.setQbRget(charge.getMoney());
+						qbRecord.setQbType(charge.getQbType());
 						qbRecord.setRemark("乾币充值"+money);
 						userMyQbService.add(qbRecord, token);
 						wXPayDao.updateChargeState(chargeId);
@@ -348,7 +341,8 @@ public class WXPayController {
 	public DataWrapper<Void> checkChargeState(
 			@RequestParam(value="token",required=true) String token){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		Integer num=wXPayDao.getStateByToken(token);
+		String userId=userDao.getUserIdByToken(token);
+		Integer num=wXPayDao.getStateByToken(userId);
 		dataWrapper.setNum(num);
 		return dataWrapper;
 	}

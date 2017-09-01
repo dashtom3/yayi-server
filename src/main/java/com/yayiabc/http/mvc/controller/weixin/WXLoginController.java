@@ -5,10 +5,8 @@ import com.yayiabc.http.mvc.dao.SaleInfoDao;
 import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
-import com.yayiabc.http.mvc.pojo.model.UserToken;
 import com.yayiabc.http.mvc.service.WxLoginService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.cache.annotation.Cacheable;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
@@ -69,17 +67,7 @@ public class WXLoginController {
     	return wxLoginService.updateSaleInfo(saleInfo,number,openid);
     }
     
-    @RequestMapping(value="test",method=RequestMethod.GET)
-    @ResponseBody
-    public DataWrapper<UserToken> test(
-    		){
-    	DataWrapper<UserToken> dataWrapper =new DataWrapper<UserToken>();
-    	UserToken userToken=new UserToken();
-    	userToken.setToken("416516456");
-    	dataWrapper.setData(userToken);
-    	System.out.println(userToken);
-    	return dataWrapper;
-    }
+
 
     @RequestMapping(value="testProcedure")
     @ResponseBody
@@ -92,11 +80,12 @@ public class WXLoginController {
 
     @RequestMapping("test")
     @ResponseBody
-    @Cacheable(value="name")
-    public DataWrapper<User> test(String name){
+    public DataWrapper<User> test(String name) throws InterruptedException {
         System.out.println("开始查询数据库");
         User user=new User();
         user.setTrueName(name);
+        Thread.sleep(10000);
+
         DataWrapper<User> dataWrapper =new DataWrapper<User>();
         dataWrapper.setData(user);
         return dataWrapper;

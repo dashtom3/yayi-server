@@ -3,7 +3,6 @@ package com.yayiabc.http.mvc.service.Impl;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
-import com.yayiabc.common.utils.RedisClient;
 import com.yayiabc.http.mvc.dao.ItemBrandDao;
 import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
@@ -29,7 +28,7 @@ public class ItemBrandServiceImpl implements ItemBrandService{
     @Autowired
     private ItemBrandDao itemBrandDao;
 
-    private RedisClient redisClient=RedisClient.getInstance();
+//    private RedisClient redisClient=RedisClient.getInstance();
 
 
     public DataWrapper<List<ItemBrand>> brandList(){

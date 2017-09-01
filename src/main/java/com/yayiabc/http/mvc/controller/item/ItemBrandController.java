@@ -1,7 +1,6 @@
 package com.yayiabc.http.mvc.controller.item;
 
 import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.common.utils.RedisClient;
 import com.yayiabc.http.mvc.pojo.jpa.ItemBrand;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
 import com.yayiabc.http.mvc.service.ItemBrandService;
@@ -27,9 +26,7 @@ public class ItemBrandController{
     @ResponseBody
     public DataWrapper<List<ItemBrand>> brandList()
     {
-        DataWrapper<List<ItemBrand>> dataWrapper =new DataWrapper<List<ItemBrand>>();
-        dataWrapper.setData((List<ItemBrand>)RedisClient.getInstance().get("itemBrandList"));
-        return dataWrapper;
+        return itemBrandService.brandList();
     }
 
     @RequestMapping(value={"brandItemList"})

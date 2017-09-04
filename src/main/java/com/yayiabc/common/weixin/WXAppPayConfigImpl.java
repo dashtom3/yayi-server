@@ -33,10 +33,16 @@ public class WXAppPayConfigImpl extends WXPayConfig{
         return "wx983825eaeef912b7";
     }
 
+//    public String getMchID() {
+//        return "1377180402";
+//    }
     public String getMchID() {
-        return "1377180402";
+        return "1292687201";
     }
 
+    /*public String getKey() {
+        return "d3592e6d6642995950d3451c1ea36607";
+    }*/
     public String getKey() {
         return "xiaojiangxiaojiangxiaojiangjiang";
     }

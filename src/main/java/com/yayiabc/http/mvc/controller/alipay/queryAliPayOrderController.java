@@ -49,7 +49,7 @@ public class queryAliPayOrderController {
 				String trade_no = new String(request.getParameter("WIDtrade_no"));
 				/**********************/
 				// SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，开发者无需关注签名与验签     
-				AlipayClient client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
+				AlipayClient client = new DefaultAlipayClient(AlipayConfig.DEVURL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
 				AlipayTradeQueryRequest alipay_request = new AlipayTradeQueryRequest();
 
 				AlipayTradeQueryModel model=new AlipayTradeQueryModel();

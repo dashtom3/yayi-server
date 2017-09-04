@@ -76,6 +76,7 @@
 	</select>
 	
 	<update id="stillItemsListValueNum" parameterType="java.util.List">
+	
 	<foreach collection="list" item="plid" index="index" open="" close="" 
 			separator=";">
 			update item_value

@@ -17,7 +17,7 @@ public interface OrderDetailsDao {
 	int queryCount(@Param("userId")String userId,@Param("state")String state);
 	
     //取消订单
-	int  cancel(@Param("orderId")String orderId);
+	int  cancel(@Param("orderId")String orderId,@Param("userId") String userId);
    //确定收货
 	int  confirmReceipt(String orderId);
    //显示评论1

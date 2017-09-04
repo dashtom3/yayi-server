@@ -45,7 +45,7 @@ public class PhoneAliPayServiceImpl implements PhoneAliPayService{
          		
 			  // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，开发者无需关注签名与验签     
 		    //调用RSA签名方式
-		    AlipayClient client = new DefaultAlipayClient(AlipayConfig.URL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
+		    AlipayClient client = new DefaultAlipayClient(AlipayConfig.DEVURL, AlipayConfig.DEVAPPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
 		    AlipayTradeWapPayRequest alipay_request=new AlipayTradeWapPayRequest();
 		    
 		    // 封装请求支付信息

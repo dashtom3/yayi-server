@@ -25,8 +25,13 @@ public enum ErrorCodeEnum implements Serializable {
     ITEM_LEAVE("该分类下有商品,不能删除",13),
     NO_POWER("已成为销售员,不能再注册成为客户",14),
     NO_Auth("已成为客户,不能再注册成为销售员",15),
-    PROPERTY_ALREADY_EXIST("该属性名已经存在,请不要重复添加",15);
-
+    PROPERTY_ALREADY_EXIST("该属性名已经存在,请不要重复添加",15),
+	CAN_CEL("取消订单失败,原因库存未全部还原",16),
+	QBDED_Error("取消订单失败,原因库存未全部还原",17),
+	ITEMSTOCK_Error("取消订单失败,原因库存未全部还原",18),
+	ORDER_ERROR("订单错误",19),
+	
+	REFUND_ERROR("退款错误",19);
     private String label;
     private Integer code;
 

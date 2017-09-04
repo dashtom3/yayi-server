@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
 
 import com.yayiabc.common.cahce.CacheUtils;
+import com.yayiabc.common.enums.ErrorCodeEnum;
+import com.yayiabc.common.exceptionHandler.OrderException;
 import com.yayiabc.http.mvc.dao.AliPayDao;
 import com.yayiabc.http.mvc.dao.OrderManagementDao;
 import com.yayiabc.http.mvc.dao.PlaceOrderDao;
@@ -33,7 +35,7 @@ public class PayAfterOrderUtil {
 	@Autowired
 	private PlaceOrderDao placeOrderDao;
 
-	public  void universal(String orderId,String type){
+	public  boolean universal(String orderId,String type){
 		//更改支付类型
 		int tt=0;
 		if(type!=null){
@@ -53,7 +55,10 @@ public class PayAfterOrderUtil {
 			//
 
 			//更新到订单表最后一列
-			aliPayDao.saveLast(newQbDed(o.getUserId(),o.getQbDed(),o.getOrderId()),o.getOrderId());
+			int a=aliPayDao.saveLast(newQbDed(o.getUserId(),o.getQbDed(),o.getOrderId()),o.getOrderId());
+			if(a<=0){
+				throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
+			}
 		}
 		//统计销量
 		List<OrderItem> orderItemList=orderManagementDao.queryOrderItemList(orderId);
@@ -62,10 +67,14 @@ public class PayAfterOrderUtil {
 		//增加 itemvalue表里面的销量信息
 
 		int c=aliPayDao.addSalesListTOitemValue(orderItemList);
-
+         if(t<=0&&c<=0){
+        	 throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
+         }
 		if(SetSaleInCome(orderId)){
 			System.out.println("一切执行完毕");
+			return true;
 		}
+		return false;
 	}
 	//结账时放入到SaleIncome表里的数据 并把 到账到该销售员
 	private boolean SetSaleInCome(String orderId){

@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
 
 import com.yayiabc.common.enums.ErrorCodeEnum;
+import com.yayiabc.common.exceptionHandler.OrderException;
 import com.yayiabc.common.sdk.KDN;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
@@ -145,11 +146,11 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		dataWrapper.setData(map);
 		return dataWrapper;
 	}
-	private void ut(int sign,List l,String bz){
-		if(sign/*!=l.size()*/<=0){
+	/*private void ut(int sign,List l,String bz){
+		if(sign!=l.size()<=0){
 			throw new RuntimeException(bz+"    失败");
 		}
-	}
+	}*/
 	//操作退款数据
 	@Override  
 	/**
@@ -193,11 +194,15 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			}
 			//item_info  记录每个商品的退款次数
 			int c=placeOrderDao.saveRefundRecords(SendorderItemList);
-			ut(c,SendorderItemList,"(退款)记录每个商品的退款次数");
+			if(c<=0){
+				throw new OrderException(ErrorCodeEnum.REFUND_ERROR);
+			}
 			//把退货数量放入order_item表中
-			ut(orderManagementDao.saveRefundNumToOrderItems(
+		   if(orderManagementDao.saveRefundNumToOrderItems(
 					SendorderItemList
-					),SendorderItemList,"(退款)把退货数量放入order_item表中");
+					)<=0){
+				throw new OrderException(ErrorCodeEnum.REFUND_ERROR);
+		   }
 			//保存该订单的退款商品分类金额到 sale_income中 
 			String saleId=utilsDao.getSaleIdByOrderId(SendorderItemList.get(0).getOrderId());
 
@@ -284,13 +289,13 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			}
 			//退款还原库存   ++
 			int d=orderManagementDao.stillItemsListValueNums(SendorderItemList);
-			ut(d,SendorderItemList,"(退款)退款还原库存");
 			//还原销量   --
 			int t=orderManagementDao.addSalesLists(SendorderItemList);
-			ut(t,SendorderItemList,"(退款)退款还原销量");
 			//还原 item_value 的销量
 			int p=orderManagementDao.addSalesListsTOItemValue(SendorderItemList);
-			ut(p,SendorderItemList,"(退款)退款还原item_value销量");
+			if(d+t+p<3){
+				throw new OrderException(ErrorCodeEnum.REFUND_ERROR);
+			}
 			count=0;
 			//扣除钱币数
 			double dedQbNums=order.getGiveQb()-refundAfterGiveQbNum;
@@ -320,7 +325,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 								ToolRefundSumMoney
 								)<=0
 						){
-					throw new Exception("退款信息保存到 sale_income 里失败");
+					throw new OrderException(ErrorCodeEnum.REFUND_ERROR);
 				}
 
 				/*Double nowTotaFee=order.getTotalFee()-refundSumPrice;*/
@@ -328,11 +333,11 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 				if(orderManagementDao.updateOrderMessage(
 						SendorderItemList.get(0).getOrderId()
 						)<=0){
-					throw new Exception("更新到订单表 里失败");
+					throw new OrderException(ErrorCodeEnum.REFUND_ERROR);
 				}
 				if(countItem==befConuntItem){
 					//订单状态改为交易关闭
-					orderDetailsDao.cancel(itemList.get(0).getOrderId());
+					orderDetailsDao.cancel(itemList.get(0).getOrderId(),order.getUserId());
 				}
 
 				//退金币0
@@ -347,7 +352,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 					if(order.getState()==2||order.getState()==5){
 						isReturnPostF=Integer.parseInt(order.getPostFee().trim());
 					}
-					orderDetailsDao.cancel(itemList.get(0).getOrderId());
+					orderDetailsDao.cancel(itemList.get(0).getOrderId(),order.getUserId());
 				}
 				Integer a=(int) Math.round(refundSumPrice-order.getActualPay()); //退回钱币数
 				int state=orderManagementDao.saveRefundMessages(order.getUserId(),haoCaiRefundSumMoney,ToolRefundSumMoney,
@@ -355,7 +360,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 						(order.getActualPay()),SendorderItemList.get(0).getOrderId()
 						);
 				if(state<=0){
-					throw new Exception("(退款) saveRefundMessages");
+					throw new OrderException(ErrorCodeEnum.REFUND_ERROR);
 				}
 				//退款信息保存到 sale_income 里c
 				int si=orderManagementDao.saveRefundMessToSaleIncome(
@@ -364,7 +369,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 						ToolRefundSumMoney
 						);
 				if(si<=0){
-					throw new Exception("(退款) saveRefundMessToSaleIncome");
+					throw new OrderException(ErrorCodeEnum.REFUND_ERROR);
 				}
 
 				//更新到订单表

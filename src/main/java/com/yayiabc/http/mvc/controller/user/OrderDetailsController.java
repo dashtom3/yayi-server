@@ -4,7 +4,9 @@ import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.core.annotation.Order;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
@@ -62,11 +64,12 @@ public class OrderDetailsController {
 	@ResponseBody
 	@UserTokenValidate
 	@UserLog(description="前台取消订单")
+	@ExceptionHandler
 	public DataWrapper<Void> cancel(
 			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderId",required=true) String orderId
 			){
-		return orderDetailsService.cancel(orderId);
+		return orderDetailsService.cancel(orderId,token);
 	}
 	//查看物流
 	@RequestMapping("seeLog")

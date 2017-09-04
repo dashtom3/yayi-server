@@ -18,7 +18,7 @@ public interface OrderDetailsService {
 			);
 	
     //取消订单
-	DataWrapper<Void> cancel(String orderId);
+	DataWrapper<Void> cancel(String orderId, String token);
     //确定收货
 	DataWrapper<Void> confirmReceipt(String orderId);
     //显示评论相关内容

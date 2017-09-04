@@ -12,7 +12,7 @@ import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 public interface PlaceOrderService {
    //点击购买 购物车
 
-	DataWrapper<Void> ded(String phone, int num);
+	DataWrapper<Integer> ded(String phone, int num);
 
 
     //下面的更改地址

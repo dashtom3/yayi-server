@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 
 import com.yayiabc.common.cahce.CacheUtils;
 import com.yayiabc.common.enums.ErrorCodeEnum;
+import com.yayiabc.common.exceptionHandler.OrderException;
 import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.OrderIdUtils;
@@ -25,6 +26,7 @@ import com.yayiabc.http.mvc.pojo.model.FinalList;
 import com.yayiabc.http.mvc.service.PlaceOrderService;
 
 import org.springframework.transaction.annotation.Transactional;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Service
 public class PlaceOrderServiceImpl implements PlaceOrderService{
@@ -96,8 +98,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	}
 	//钱币抵扣
 	@Override
-	public DataWrapper<Void> ded(String token, int num/*,Integer  receiverId*/) {
-		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
+	public DataWrapper<Integer> ded(String token, int num/*,Integer  receiverId*/) {
+		DataWrapper<Integer> dataWrapper=new DataWrapper<Integer>();
 		// TODO Auto-generated method stub
 		//该单计算运费
 		/*Receiver receiver=placeOrderDao.queryReceiver(receiverId);
@@ -106,6 +108,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		String userId=utilsDao.getUserID(token);
 		//查询当前用户的钱币剩余
 		int su= placeOrderDao.ded(userId);
+		dataWrapper.setData(su);
 		if(su>=num){
 			dataWrapper.setMsg("余额充足");
 		}else{
@@ -147,9 +150,16 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	//1234
 	@Transactional
 	@Override
+	@ExceptionHandler
 	public DataWrapper<HashMap<String, Object>> generaOrder(String token, List<OrderItem> orderItemList, Ordera order,
 			Invoice  invoice
 			) {
+		//判断  乾币！！！、
+		DataWrapper<Integer> data=ded(token,order.getQbDed());
+		int qbBalance=data.getData();
+		if(qbBalance<order.getQbDed()){
+			throw new OrderException(ErrorCodeEnum.QBDED_Error);
+		}
 		//记录工具设备类的商品 个数
 		int TooldevicesSumCount=0;
 		// TODO Auto-generated method stub
@@ -211,11 +221,11 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	           </resultMap>
 			 */
 			//List<OrderItem> orderItemListAttributes=placeOrderDao.queryItemIdListByitemValueList(itemValueList);
-			
+
 			//-----啦啦
 			List<FinalList> finalList=placeOrderDao.queryFinalList(orderItemList);
 			/*if(itemValueList.size()>orderItemListAttributes.size()){
-				 
+
 			}*/
 			System.out.println(finalList);
 			System.out.println(finalList.size()==orderItemList.size());
@@ -246,7 +256,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				orderItemList.get(i).setItemPropertyNamea(finalList.get(i).getItemPropertyInfo());
 				//orderItemList.get(i).setItemPropertyNameb(itemValueList.get(i).getItemPropertyTwoValue());
 				orderItemList.get(i).setItemPropertyNameb(finalList.get(i).getItemPropertyTwoValue());
-//				orderItemList.get(i).setItemPropertyNamec(itemValueList.get(i).getItemPropertyThreeValue());
+				//				orderItemList.get(i).setItemPropertyNamec(itemValueList.get(i).getItemPropertyThreeValue());
 				orderItemList.get(i).setItemPropertyNamec(finalList.get(i).getItemPropertyThreeValue());
 				//orderItemList.get(i).setPrice(itemValueList.get(i).getItemSkuPrice());
 				orderItemList.get(i).setPrice(finalList.get(i).getItemSkuPrice());
@@ -280,9 +290,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 							+String.valueOf(finalList.get(i).getStockNum()-orderItemList.get(i).getNum())+"件。"
 							);	
 					//删除该订单   和订单商品表里的信息
-					dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-					dataWrapper.setData(hashMap);
-					throw new RuntimeException("库存不足抛出异常"); 
+					throw new OrderException(ErrorCodeEnum.ITEMSTOCK_Error); 
 					//return dataWrapper;
 				}
 
@@ -324,7 +332,9 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			int a=placeOrderDao.batchSynchronization(orderItemList);
 			//清空购物车 双休优化
 			int q=placeOrderDao.cleanCartList(userId,orderItemList);
-
+			if(a<=0){
+				throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
+			}
 			//这里计算本单赠送钱币数
 			//首先道邦品牌
 			if(daoBnagSumPrice>0&&daoBnagSumPrice<300){
@@ -368,9 +378,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				invoice.setOrderId(orderId);
 				invoice.setUserId(userId);
 				int  sign=placeOrderDao.saveInvoiced(invoice);
-				if(sign<0){
-					dataWrapper.setMsg("发票生产失败");
-					return dataWrapper;
+				if(sign<=0){
+					throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
 				}
 			}
 			//订单实际价格的计算
@@ -390,11 +399,17 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			hashMap.put("daoBnagSumPrice", daoBnagSumPrice);
 
 			//本单赠送钱币数保存到数据库
-			placeOrderDao.saveGiveQbNum(String.valueOf(giveQbNum),String.valueOf(postFee),
-					String.valueOf(sumPrice)
-					,orderId,String.valueOf(AllSuppliesSumPrice),String.valueOf(AllTooldevicesSumPrice)
-					,String.valueOf(actualPay)
-					);
+			if(
+					placeOrderDao.saveGiveQbNum(String.valueOf(giveQbNum),String.valueOf(postFee),
+							String.valueOf(sumPrice)
+							,orderId,String.valueOf(AllSuppliesSumPrice),String.valueOf(AllTooldevicesSumPrice)
+							,String.valueOf(actualPay)
+							)<=0
+					)
+			{
+				throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
+			}
+
 			//这里保存到ordera表里 并没有把赠送钱币数 给到用户余额中  必须等
 			//该用户付款成功再根据orderId 把余额放到该用户的账户余额中。。。。。。。。。。。。。。。。。。。。。。。
 			//直接放入order表
@@ -417,12 +432,14 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//判断 actualPay 是否是0付款
 			if(actualPay==0){
 				PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-				payAfterOrderUtil.universal(orderId,"3");
+				if(!payAfterOrderUtil.universal(orderId,"3")){
+					throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
+				}
 			}
 			dataWrapper.setData(hashMap);
 			return dataWrapper;
 		} catch (Exception e){
-			throw new RuntimeException(e);
+			throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
 		}
 	}
 	//查询上次下订单时填写的发票信息

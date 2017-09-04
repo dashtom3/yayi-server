@@ -8,6 +8,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yayiabc.common.enums.ErrorCodeEnum;
+import com.yayiabc.common.exceptionHandler.OrderException;
 import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
@@ -75,20 +76,26 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 	
 	//取消订单
 	@Override
-	public DataWrapper<Void> cancel(String orderId){
+	public DataWrapper<Void> cancel(String orderId,String token){
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
+		//判断该用户有没有这个订单
+		String userId=utilsDao.getUserID(token);
 		//还原库存
 		TimerChangeStateService timerChangeStateService=BeanUtil.getBean("TimerChangeStateServiceImpl");
 		List<String> l=new ArrayList<String>();
 		l.add(orderId);
 		List<OrderItem> OrderItemNums=timerChangeStateService.queryOrderItemNums(l);
 		int q=timerChangeStateService.stillItemsListValueNum(OrderItemNums);
-		int state=orderdetailsDao.cancel(orderId);
-		if(state>0&&q>0){
-			dataWrapper.setMsg("操作成功");
+		if(q>0){
+			int state=orderdetailsDao.cancel(orderId,userId);
+			if(state>0){
+				dataWrapper.setMsg("操作成功");
+			}else{
+				 throw  new OrderException(ErrorCodeEnum.CAN_CEL);
+			}
 		}else{
-			dataWrapper.setMsg("操作失败");
+			 throw  new OrderException(ErrorCodeEnum.CAN_CEL);
 		}
  		return dataWrapper;
 	}

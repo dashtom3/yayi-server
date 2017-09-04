@@ -11,6 +11,17 @@ import com.yayiabc.common.utils.DataWrapper;
 
 @ControllerAdvice
 public class ExceptionHandler {
+	@org.springframework.web.bind.annotation.ExceptionHandler(OrderException.class)
+	@ResponseBody
+    public DataWrapper<String> exceptionProcess(OrderException ex) {  
+		ex.printStackTrace();
+		
+
+		DataWrapper<String> dataWrapper = new DataWrapper<String>();
+		dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+		dataWrapper.setData(ex.getMessage());
+        return dataWrapper;
+    }
 
 	@org.springframework.web.bind.annotation.ExceptionHandler(RuntimeException.class)
 	@ResponseBody

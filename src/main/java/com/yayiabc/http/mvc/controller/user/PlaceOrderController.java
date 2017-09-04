@@ -5,6 +5,7 @@ import java.util.HashMap;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ExceptionHandler;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -37,7 +38,7 @@ public class PlaceOrderController {
 	@ResponseBody
 	@UserTokenValidate
 	 @UserLog(description="使用钱币抵扣")
-	public DataWrapper<Void> Ded(
+	public DataWrapper<Integer> Ded(
 			@RequestHeader(value="token") String token,
 			@RequestParam(value="qbnum") Integer num
 			){
@@ -57,19 +58,20 @@ public class PlaceOrderController {
 		return placeOrderService.upateAddress(receiverId,sumPrice,itemSum);
 	}
 
-	//伪清空 购物车
+	/*//伪清空 购物车
 	@ResponseBody
 	@RequestMapping("emptyCart")
 	 @AdminLog
 	public DataWrapper<Void> emptyCart(@RequestParam(value="token")String token){
 		return placeOrderService.emptyCart(token);
 	}
-
+*/
 	//1234
 	@RequestMapping("generaOrder")
 	@ResponseBody
 	@UserTokenValidate
-	 @UserLog(description="提交订单")
+	@UserLog(description="提交订单")
+	@ExceptionHandler
 	public DataWrapper<HashMap<String, Object>> generaOrder(
 			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderItem",required=true) String  orderItem,

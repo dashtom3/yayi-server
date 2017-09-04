@@ -21,6 +21,12 @@
 			<id property="itemId" column="x_id"/>
 			<result property="itemPica" column="item_pica"/>
 		</association>
+        <association property="itemBrand" javaType="ItemBrand" autoMapping="true">
+            <id property="itemBrandId" column="p_id"/>
+        </association>
+       <collection property="itemValueList" ofType="ItemValue" autoMapping="true">
+           <id column="item_value_id" property="itemValueId"/>
+       </collection>
 	</resultMap>
 
     <resultMap type="Classify" id="classify" autoMapping="true">
@@ -50,7 +56,8 @@
    </select>
 
    <select id="queryItemSearch" resultMap="itemInfoRM" parameterType="Search">
-   	SELECT * FROM
+    select * from
+    (SELECT * FROM
     (SELECT * FROM
     (select * from item_info where state=1) a
     INNER JOIN
@@ -58,7 +65,10 @@
     ON a.item_id=b.x_id) c
     INNER JOIN
     (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) d
-    ON c.item_brand_id=d.p_id
+    ON c.item_brand_id=d.p_id)o
+    inner JOIN
+    (SELECT item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,item_qb,item_value_id FROM item_value) q
+    ON o.item_id=q.prop_id
     <where>
     	<if test="oneClassify!=null">one_classify=#{oneClassify}</if>
     	<if test="twoClassify!=null">and two_classify=#{twoClassify}</if>
@@ -94,15 +104,19 @@
    </select>
 
    <select id="queryItemSearchGet" resultMap="itemInfoRM" parameterType="Search">
-   	SELECT * FROM
-    (SELECT * FROM
-    (select * from item_info where state=1 and is_throw=1) a
-    INNER JOIN
-    (SELECT item_id x_id,item_pica FROM item_detail) b
-    ON a.item_id=b.x_id) c
-    INNER JOIN
-    (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) d
-    ON c.item_brand_id=d.p_id
+       select * from
+       (SELECT * FROM
+       (SELECT * FROM
+       (select * from item_info where state=1) a
+       INNER JOIN
+       (SELECT item_id x_id,item_pica FROM item_detail) b
+       ON a.item_id=b.x_id) c
+       INNER JOIN
+       (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) d
+       ON c.item_brand_id=d.p_id)o
+       inner JOIN
+       (SELECT item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,item_qb,item_value_id FROM item_value) q
+       ON o.item_id=q.prop_id
     <where>
     	<if test="oneClassify!=null">one_classify=#{oneClassify}</if>
     	<if test="twoClassify!=null">and two_classify=#{twoClassify}</if>
@@ -120,16 +134,20 @@
    </select>
 
    <select id="getAllRecommendItemList" resultMap="itemInfoRM">
-   		SELECT e.* FROM
-(SELECT * FROM
+    select * from
+    (select * from
     (SELECT * FROM
-    item_info  a
-    INNER JOIN 
+    (SELECT * FROM
+    (select * from item_info where state=1) a
+    INNER JOIN
     (SELECT item_id x_id,item_pica FROM item_detail) b
     ON a.item_id=b.x_id) c
-    INNER JOIN 
-    (SELECT item_brand_id p_id,item_brand_name FROM item_brand WHERE state=1) d
-    ON c.item_brand_id=d.p_id) e
+    INNER JOIN
+    (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) d
+    ON c.item_brand_id=d.p_id)o
+    inner JOIN
+    (SELECT item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,item_qb,item_value_id FROM item_value) q
+    ON o.item_id=q.prop_id) e
     INNER JOIN
     recommend_item f
     ON e.item_id=f.item_id

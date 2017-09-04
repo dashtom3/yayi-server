@@ -1,13 +1,14 @@
 package com.yayiabc.http.mvc.controller.weixin;
 
+import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.QbExchangeUtil;
-import com.yayiabc.common.weixin.WXPay;
-import com.yayiabc.common.weixin.WXPayConfigImpl;
+import com.yayiabc.common.weixin.*;
 import com.yayiabc.http.mvc.dao.AliPayDao;
 import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.dao.WXPayDao;
 import com.yayiabc.http.mvc.pojo.jpa.Charge;
+import com.yayiabc.http.mvc.pojo.jpa.WXAppEntry;
 import com.yayiabc.http.mvc.service.AliPayService;
 import com.yayiabc.http.mvc.service.UserMyQbService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -18,16 +19,14 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.util.HashMap;
-import java.util.Map;
-import java.util.UUID;
+import java.util.*;
 
 /**
  * Created by 小月亮 on 2017/9/2.
  */
 @Controller
 @RequestMapping("api/appPay")
-public class WXAppPay {
+public class WXAppPayController {
     @Autowired
     private AliPayService aliPayService;
 
@@ -47,7 +46,6 @@ public class WXAppPay {
     private UtilsDao utilsDao;
     @RequestMapping("unifiedOrderReturnUrl")
     @ResponseBody
-
     public void unifiedOrderReturnUrl(
             @RequestParam("orderId") String orderId, HttpServletRequest request,
             HttpServletResponse response){
@@ -95,11 +93,12 @@ public class WXAppPay {
 
     @RequestMapping("unifiedOrderCharge")
     @ResponseBody
-    public void unifiedOrderCharge(@RequestParam(value="money",required=true) Integer money,
-                                   @RequestParam("qbType")String qbType,
-                                   @RequestParam(value="token",required=true) String token,
-                                   HttpServletRequest request,
-                                   HttpServletResponse response){
+    public DataWrapper<WXAppEntry> unifiedOrderCharge(@RequestParam(value="money",required=true) Integer money,
+                                                      @RequestParam("qbType")String qbType,
+                                                      @RequestParam(value="token",required=true) String token,
+                                                      HttpServletRequest request,
+                                                      HttpServletResponse response){
+        DataWrapper<WXAppEntry> dataWrapper =new DataWrapper<WXAppEntry>();
         String chargeId=UUID.randomUUID().toString();
         String[] str=chargeId.split("-");
         chargeId="";
@@ -117,7 +116,7 @@ public class WXAppPay {
         double totalMoney= QbExchangeUtil.getQbByMoney(money,qbType);
         money=(int)Math.round(totalMoney);
         try {
-            WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:6181/api/weixin/getChargeReturnUrl");
+            WXPay wxPay = new WXPay(WXAppPayConfigImpl.getInstance(), "http://47.93.48.111:6181/api/weixin/getChargeReturnUrl");
             Map<String,String> reqData =new HashMap<String,String>();
             reqData.put("body","乾币充值");//必传
             reqData.put("out_trade_no",chargeId);
@@ -130,10 +129,21 @@ public class WXAppPay {
             System.out.println(reqData);
             Map<String,String> respMap=wxPay.unifiedOrder(reqData);
             System.out.println(respMap);
-            String urlCode=(String)respMap.get("code_url");
+            SortedMap<String, String> parameterMap = new TreeMap<String, String>();
+            parameterMap.put("appid", WXAppPayConfigImpl.getInstance().getAppID());
+            parameterMap.put("partnerid",WXAppPayConfigImpl.getInstance().getMchID());
+            parameterMap.put("prepayid", respMap.get("prepay_id"));
+            parameterMap.put("package", "Sign=WXPay");
+            parameterMap.put("noncestr", WXPayUtil.generateNonceStr());
+            parameterMap.put("timestamp",String.valueOf(System.currentTimeMillis()).toString().substring(0,10));
+            String signature=WXPayUtil.generateSignature(parameterMap,WXAppPayConfigImpl.getInstance().getKey(), WXPayConstants.SignType.MD5);
+            WXAppEntry wxAppEntry =new WXAppEntry(parameterMap.get("appid"),parameterMap.get("timestamp"),parameterMap.get("partnerid"),parameterMap.get("prepayid"),parameterMap.get("noncestr"),signature);
+            dataWrapper.setData(wxAppEntry);
         } catch (Exception e) {
             String msg="服务器错误";
             e.printStackTrace();
         }
+        return  dataWrapper;
     }
 }
+

@@ -30,4 +30,5 @@ public interface SaleLogDao {
 	Integer getUserCount(@Param("phone")String phone);
 
 
+	int appRegister(SaleInfo saleInfo);
 }

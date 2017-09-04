@@ -11,8 +11,7 @@
 	</insert>
 
 	<select id="getUserByPhone" resultMap="userMap">
-		SELECT
-		c.*,d.type,d.company_name,d.part,d.doctor_pic,d.work_address,d.business_license,c.sale_ids
+		SELECT *
 		FROM
 		(SELECT a.*,b.phone sale_phone,b.true_name sale_name,b.sale_id sale_ids FROM
 		(SELECT * FROM user WHERE phone=#{phone}) a

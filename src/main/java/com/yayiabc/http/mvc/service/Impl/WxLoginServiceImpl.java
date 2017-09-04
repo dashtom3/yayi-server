@@ -156,7 +156,7 @@ public class WxLoginServiceImpl implements WxLoginService {
 			 User newUser = new User();
              newUser.setUserId(UUID.randomUUID().toString());
              newUser.setPhone(user.getPhone());
-             newUser.setPwd(MD5Util.getMD5String(user.getPwd()));
+             newUser.setPwd(MD5Util.getMD5String("123456"));
              if (1 == userDao.register(newUser)) {
                     String token = tokenService.getToken(newUser.getUserId());
                     QbRecord qbRecord=new QbRecord();
@@ -198,7 +198,7 @@ public class WxLoginServiceImpl implements WxLoginService {
 			SaleInfo saleInfoTwo = new SaleInfo();
             saleInfoTwo.setSaleId(UUID.randomUUID().toString());
             saleInfoTwo.setPhone(saleInfo.getPhone());
-            saleInfoTwo.setSalePwd(MD5Util.getMD5String(saleInfo.getSalePwd()));
+            saleInfoTwo.setSalePwd(MD5Util.getMD5String("123456"));
             saleInfoTwo.setUpdated(new Date());
             saleInfoTwo.setCreated(new Date());
             	if (1 == saleLogDao.register(saleInfoTwo)) {

@@ -92,7 +92,6 @@ public class WXPhonePayController {
 	
 	@RequestMapping("unifiedOrderCharge")
 	@ResponseBody
-
 	public void unifiedOrderCharge(@RequestParam(value="money",required=true) Integer money,
 			@RequestParam(value="token",required=true) String token,
 			@RequestParam(value="qbType",required = true)String qbType,
@@ -100,7 +99,6 @@ public class WXPhonePayController {
 			HttpServletResponse response){
 		String chargeId=UUID.randomUUID().toString();
 		String[] str=chargeId.split("-");
-		chargeId="";
 		for (String string : str) {
 			chargeId+=string;
 		}

@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.controller.weixin;
 
+import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.dao.SaleInfoDao;
 import com.yayiabc.http.mvc.dao.UserDao;
@@ -80,14 +81,10 @@ public class WXLoginController {
 
     @RequestMapping("test")
     @ResponseBody
-    public DataWrapper<User> test(String name) throws InterruptedException {
-        System.out.println("开始查询数据库");
-        User user=new User();
-        user.setTrueName(name);
-        Thread.sleep(10000);
-
+    @UserTokenValidate
+    public DataWrapper<User> test(@RequestHeader("token")String token) throws InterruptedException {
         DataWrapper<User> dataWrapper =new DataWrapper<User>();
-        dataWrapper.setData(user);
+        dataWrapper.setData(userDao.getUserByPhone("15900901007"));
         return dataWrapper;
     }
 

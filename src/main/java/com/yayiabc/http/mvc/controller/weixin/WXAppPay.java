@@ -1,6 +1,5 @@
 package com.yayiabc.http.mvc.controller.weixin;
 
-import com.yayiabc.common.utils.GetQCode;
 import com.yayiabc.common.utils.QbExchangeUtil;
 import com.yayiabc.common.weixin.WXPay;
 import com.yayiabc.common.weixin.WXPayConfigImpl;
@@ -118,7 +117,7 @@ public class WXAppPay {
         double totalMoney= QbExchangeUtil.getQbByMoney(money,qbType);
         money=(int)Math.round(totalMoney);
         try {
-            WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:8080/api/weixin/getChargeReturnUrl");
+            WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:6181/api/weixin/getChargeReturnUrl");
             Map<String,String> reqData =new HashMap<String,String>();
             reqData.put("body","乾币充值");//必传
             reqData.put("out_trade_no",chargeId);
@@ -132,7 +131,6 @@ public class WXAppPay {
             Map<String,String> respMap=wxPay.unifiedOrder(reqData);
             System.out.println(respMap);
             String urlCode=(String)respMap.get("code_url");
-            GetQCode.getqCode(urlCode, response);
         } catch (Exception e) {
             String msg="服务器错误";
             e.printStackTrace();

@@ -39,4 +39,8 @@
 		insert into sale_info(sale_id,sale_pwd,true_name,id_card,birthday,phone,sex,address,we_char,email,part,education,work_unit,work_position,referrals,created,updated)
 		VALUES(#{saleId},#{salePwd},#{trueName},#{idCard},#{birthday},#{phone},#{sex},#{address},#{weChar},#{email},#{part},#{education},#{workUnit},#{workPosition},#{referrals},now()now())
 	</insert>
+
+	<select id="getUserCount" resultType="java.lang.Integer">
+		select count(0) from user where phone=#{phone}
+	</select>
 </mapper>

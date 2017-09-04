@@ -1,8 +1,5 @@
 package com.yayiabc.common.weixin;
 
-import java.io.ByteArrayInputStream;
-import java.io.InputStream;
-
 public class WXPayConfigImpl extends WXPayConfig{
 
     private byte[] certData;
@@ -31,7 +28,7 @@ public class WXPayConfigImpl extends WXPayConfig{
     }
 
     public String getAppID() {
-        return "wx4b1a6fde77626a32";
+            return "wx4b1a6fde77626a32";
     }
 
     public String getMchID() {

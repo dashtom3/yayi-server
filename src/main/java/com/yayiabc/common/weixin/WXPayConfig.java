@@ -1,7 +1,5 @@
 package com.yayiabc.common.weixin;
 
-import java.io.InputStream;
-
 public abstract class WXPayConfig {
 
 

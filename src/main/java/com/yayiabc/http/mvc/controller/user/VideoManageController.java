@@ -26,7 +26,7 @@ public class VideoManageController {
      @RequestMapping("showVid")
      @ResponseBody
      @AdminTokenValidate
-     @AdminLog(description="显示视屏管理列表")
+     @AdminLog(description="显示视频管理列表")
      public DataWrapper<List<VidManage>> showVid(
     		 @RequestHeader(value="adminToken",required=true) String adminToken
     		 ){
@@ -37,7 +37,7 @@ public class VideoManageController {
      @RequestMapping("updateVid")
      @ResponseBody
      @AdminTokenValidate
-     @AdminLog(description="更改视屏管理列表")
+     @AdminLog(description="更改视频管理列表")
      public DataWrapper<Void> updateVid(
     		 @RequestHeader(value="adminToken",required=true) String adminToken,
      		@ModelAttribute VidManage vidManage,
@@ -51,7 +51,7 @@ public class VideoManageController {
      @RequestMapping("insertVid")
      @ResponseBody
      @AdminTokenValidate
-     @AdminLog(description="插入视屏到管理列表")
+     @AdminLog(description="插入视频到管理列表")
      public DataWrapper<Void> insertVid(
     		 @RequestHeader(value="adminToken",required=true) String adminToken,
     		 @ModelAttribute VidManage vidManage
@@ -63,7 +63,7 @@ public class VideoManageController {
      @RequestMapping("deleteVid")
      @ResponseBody
      @AdminTokenValidate
-     @AdminLog(description="删除视屏管理列表")
+     @AdminLog(description="删除视频管理列表")
      public DataWrapper<Void> deleteVid(
     		 @RequestHeader(value="adminToken",required=true) String adminToken,
      		@RequestParam(value="viId") Integer viId

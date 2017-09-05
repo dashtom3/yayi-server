@@ -43,7 +43,6 @@ public class CommentManageController {
     	 if("".equals(orderId)){
     		 orderId=null;
     	 }
-    	 System.out.println(recoveryState);
 		return commentManage.commentM(orderId,recoveryState,currentPage,numberPerpage);
       }
       //回复评论

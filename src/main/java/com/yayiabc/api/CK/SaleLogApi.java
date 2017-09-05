@@ -2,7 +2,7 @@ package com.yayiabc.api.CK;
 
 public interface SaleLogApi {
 	 /**
-     * @api {post} http://47.93.48.111:8080/api/saleLog/register （创客系统）销售员注册
+     * @api {post} http://47.93.48.111:6181/api/saleLog/register （创客系统）销售员注册
      * @apiName register
      * @apiGroup userLog
      * @apiVersion 0.1.0
@@ -45,7 +45,7 @@ public interface SaleLogApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48.111:8080/api/saleLog/getVerifyCode （创客系统）获取验证码
+     * @api {post} http://47.93.48.111:6181/api/saleLog/getVerifyCode （创客系统）获取验证码
      * @apiName getVerifyCode
      * @apiGroup saleLog
      * @apiVersion 0.1.0
@@ -87,13 +87,13 @@ public interface SaleLogApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48.111:8080/api/saleLog/noteLogin （创客系统）短信登录
+     * @api {post} http://47.93.48.111:6181/api/saleLog/noteLogin （创客系统）短信登录
      * @apiName noteLogin
      * @apiGroup saleLog
      * @apiVersion 0.1.0
      * @apiDescription 短信登录
      *
-     * @apiParam {String} phoneNumber 手机号码（必须，11位手机号码，可作为登录名）
+     * @apiParam {String} phone 手机号码（必须，11位手机号码，可作为登录名）
      * @apiParam {String} code 短信验证码（必须）
      *
      * @apiSuccessExample Success-Response:
@@ -129,7 +129,7 @@ public interface SaleLogApi {
      */
 	
 	 /**
-     * @api {post} http://47.93.48.111:8080/api/saleLog/pwdLogin （创客系统）密码登录
+     * @api {post} http://47.93.48.111:6181/api/saleLog/pwdLogin （创客系统）密码登录
      * @apiName pwdLogin
      * @apiGroup saleLog
      * @apiVersion 0.1.0
@@ -171,13 +171,13 @@ public interface SaleLogApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48.111:8080/api/saleLog/reLogin （创客系统）退出登录
+     * @api {post} http://47.93.48.111:6181/api/saleLog/reLogin （创客系统）退出登录
      * @apiName reLogin
      * @apiGroup saleLog
      * @apiVersion 0.1.0
      * @apiDescription 退出登录
      *
-     * @apiParam {String} token 身份验证（必须）
+     * @apiParam {String} saleToken 身份凭证（必须）
      *
      * @apiSuccessExample Success-Response:
      *  HTTP/1.1 200 OK
@@ -212,7 +212,7 @@ public interface SaleLogApi {
      */
 	
 	 /**
-     * @api {post} http://47.93.48.111:8080/api/saleLog/forgetPwd （创客系统）忘记密码登录
+     * @api {post} http://47.93.48.111:6181/api/saleLog/forgetPwd （创客系统）忘记密码登录
      * @apiName forgetPwd
      * @apiGroup saleLog
      * @apiVersion 0.1.0

@@ -49,7 +49,6 @@ public class MyWalletController {
 			@RequestParam(value="numberPerpage",required=false)Integer numberPerpage
 			){
 		HashMap<String, Object> hm=new HashMap<String,Object>();
-		
 		hm.put("state", state);
 		hm.put("starTime", starTime);
 		hm.put("endTime", endTime);

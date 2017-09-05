@@ -2,15 +2,15 @@ package com.yayiabc.api.CK;
 
 public interface SaleMyOrderApi {
 	/**
-     * @api {get} http://47.93.48.111:8080/api/saleMyOrder/myOrderData （创客系统）我的业绩统计数据
+     * @api {get} http://47.93.48.111:6181/api/saleMyOrder/myOrderData （创客系统）我的业绩统计数据
      * @apiName myOrder
      * @apiGroup saleMyOrder
      * @apiVersion 0.1.0
      * @apiDescription 我的业绩统计数据
      *
-     * @apiParam {int} currentPage （非必须）
-     * @apiParam {int} numberPerPage （非必须）  
-     * @apiParam {String} token 身份凭证（必须）
+	 * @apiParam {String} year 年（必须，格式"yyyy"）
+	 * @apiParam {String} month 月（必须，格式"MM"）
+	 * @apiParam {String} saleToken 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -51,7 +51,7 @@ public interface SaleMyOrderApi {
      */
 	
 	/**
-     * @api {get} http://47.93.48.111:8080/api/saleMyOrder/myOrderList （创客系统）我的业绩订单列表
+     * @api {get} http://47.93.48.111:6181/api/saleMyOrder/myOrderList （创客系统）我的业绩订单列表
      * @apiName List
      * @apiGroup saleMyOrder
      * @apiVersion 0.1.0
@@ -61,7 +61,7 @@ public interface SaleMyOrderApi {
      * @apiParam {int} numberPerPage （非必须）  
      * @apiParam {String} year 年（必须,格式"yyyy"）
      * @apiParam {String} month 月（必须，格式"MM"）
-     * @apiParam {String} token 身份凭证（必须）
+	 * @apiParam {String} saleToken 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -108,7 +108,7 @@ public interface SaleMyOrderApi {
      */
 	
 	/**
-     * @api {get} http://47.93.48.111:8080/api/saleMyOrder/chart （创客系统）折线图
+     * @api {get} http://47.93.48.111:6181/api/saleMyOrder/chart （创客系统）折线图
      * @apiName chart
      * @apiGroup saleMyOrder
      * @apiVersion 0.1.0
@@ -116,7 +116,7 @@ public interface SaleMyOrderApi {
      *
      * @apiParam {String} year 年（必须,格式"yyyy"）
      * @apiParam {String} month 月（必须，格式"MM"）
-     * @apiParam {String} token 身份凭证（必须）
+	 * @apiParam {String} saleToken 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -155,14 +155,16 @@ public interface SaleMyOrderApi {
      */
 	
 	/**
-     * @api {get} http://47.93.48.111:8080/api/saleMyOrder/detail （创客系统）查看详情
+     * @api {get} http://47.93.48.111:6181/api/saleMyOrder/detail （创客系统）查看详情
      * @apiName detail
      * @apiGroup saleMyOrder
      * @apiVersion 0.1.0
      * @apiDescription 查看详情
      *
      * @apiParam {String} orderId 订单编号（必须）  
-     * @apiParam {String} token 身份凭证（必须）
+	 * @apiParam {String} saleToken 身份凭证（必须）
+	 * @apiParam {int} currentPage （非必须）
+	 * @apiParam {int} numberPerPage （非必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK

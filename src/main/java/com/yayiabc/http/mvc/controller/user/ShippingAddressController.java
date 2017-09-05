@@ -54,7 +54,7 @@ public class ShippingAddressController {
 	@RequestMapping("update")
 	@ResponseBody
 	@UserTokenValidate
-	 @UserLog(description="更改收货地址")
+	@UserLog(description="更改收货地址")
 	public  DataWrapper<Void> update(
 			@ModelAttribute Receiver receiver,
 			@RequestParam(value="receiverId",required=true) String receiverIds,

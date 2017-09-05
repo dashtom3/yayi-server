@@ -75,9 +75,7 @@ public class CusResoController {
     @AdminLog(description="客户资源删除")
     public DataWrapper<Void> delete(
     		@RequestHeader(value="adminToken") String adminToken,
-    		@RequestParam(value="cusId",required=true)Integer id 
-    		
-    		//四个参数非必须     但id是必须
+    		@RequestParam(value="cusId",required=true)Integer id
     		){
     	return cusResoService.delete(id);
     }

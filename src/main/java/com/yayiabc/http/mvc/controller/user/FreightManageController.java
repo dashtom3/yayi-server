@@ -125,8 +125,8 @@ public class FreightManageController {
 		}
 	//包邮update
 		 @RequestMapping("updateFreeShipp")
-		    @ResponseBody
-		    @AdminTokenValidate
+		 @ResponseBody
+		 @AdminTokenValidate
 		 @AdminLog(description="更改包邮数据")
 			public DataWrapper<Void> updateFreeShipp(
 					//freeShipping f

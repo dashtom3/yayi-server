@@ -55,7 +55,6 @@ public class OrderDetailsController {
 		HashMap<String,String>map=new HashMap<String,String>();
 		map.put("state", state);
 		DataWrapper<List<Ordera>>  l=orderDetailsService.orderDetailsShow(map,token,currentPage,numberPerpage);
-				System.out.println(l.getData());
 		return l;
 	}
 	
@@ -80,7 +79,7 @@ public class OrderDetailsController {
 			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderId",required=true) String orderId
 			){
-		return logisticsService.queryLog( orderId);
+		return logisticsService.queryLog(orderId);
 	}
 	
 	//确定收货

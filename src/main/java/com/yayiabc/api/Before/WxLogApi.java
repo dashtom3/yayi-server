@@ -2,7 +2,7 @@ package com.yayiabc.api.Before;
 
 public interface WxLogApi {
 	/**
-     * @api {get} http://47.93.48.111:8080/api/wxLogin/login 网页微信扫码登录
+     * @api {get} http://47.93.48.111:6181/api/wxLogin/login 网页微信扫码登录
      * @apiName login
      * @apiGroup wxLogin
      * @apiVersion 0.1.0
@@ -43,7 +43,7 @@ public interface WxLogApi {
      */
 
     /**
-     * @api {get} http://47.93.48.111:8080/api/wxLogin/bindUser 网页微信绑定已有用户
+     * @api {get} http://47.93.48.111:6181/api/wxLogin/bindUser 网页微信绑定已有用户
      * @apiName bandUser
      * @apiGroup wxLogin
      * @apiVersion 0.1.0

@@ -1,14 +1,17 @@
 package com.yayiabc.api.CK;
 
-public interface SaleRankingListApi {
-	/**
-     * @api {get} http://47.93.48.111:6181/api/rankingList/list （创客系统）销售总排行榜
-     * @apiName salelist
-     * @apiGroup rankingList
+public interface FindCusApi {
+    /**
+     * @api {post} http://47.93.48.111:6181/api/findCus/unregistered （创客系统）发现客户资源，未注册客户
+     * @apiName unregistered
+     * @apiGroup findCus
      * @apiVersion 0.1.0
-     * @apiDescription 销售排行榜
+     * @apiDescription 发现客户资源，未注册客户
      *
-     * @apiParam {String} beYearMonth 年月（必须，格式"yyyy-MM"）
+     * @apiParam {String} state （非必须，姓名或者手机号）
+     * @apiParam {int} currentPage （非必须）
+     * @apiParam {int} numberPerPage （非必须）
+     * @apiParam {String} saleToken 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -17,18 +20,18 @@ public interface SaleRankingListApi {
      * errorCode:"No_Error",
      * data:[
      * {
-     * 	    rowNum:1,
-     *		phone:'135687461',
-     *		bindUserNum:5,
-     *		orderCount:6,
-     *		saleMoney:5000
+     * 	    cusId:1,
+     *		unitName:"小明",
+     *		unitAddress:NULL,
+     *		contacts:NULL,
+     *		saleMoney:NULL
      * },
      * {
-     * 	    rowNum:2,
-     *		phone:'135468768',
-     *		bindUserNum:4,
-     *		orderCount:5,
-     *		saleMoney:4000
+     * 	    cusId:2,
+     *		unitName:"小红",
+     *		unitAddress:NULL,
+     *		contacts:NULL,
+     *		saleMoney:NULL
      * }
      * ],
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
@@ -56,15 +59,17 @@ public interface SaleRankingListApi {
      *  }
      *
      */
-	
-	/**
-     * @api {get} http://47.93.48.111:6181/api/rankingList/compareData （创客系统）销售员排行榜排名信息
-     * @apiName compareData
-     * @apiGroup rankingList
+
+    /**
+     * @api {post} http://47.93.48.111:6181/api/findCus/registered （创客系统）发现客户资源，已注册客户待绑定
+     * @apiName registered
+     * @apiGroup findCus
      * @apiVersion 0.1.0
-     * @apiDescription 销售排行榜比较数据
+     * @apiDescription 发现客户资源，未注册客户
      *
-     * @apiParam {String} beYearMonth 年月（必须，格式"yyyy-MM"）
+     * @apiParam {String} state （非必须，姓名或者手机号）
+     * @apiParam {int} currentPage （非必须）
+     * @apiParam {int} numberPerPage （非必须）
      * @apiParam {String} saleToken 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
@@ -72,14 +77,17 @@ public interface SaleRankingListApi {
      * {
      * callStatus:"SUCCEED",
      * errorCode:"No_Error",
-     * data:
+     * data:[
      * {
-     * 	    saleSum:5000,
-     *		rankNow:2,
-     *		bindUserNum:101,
-     *		orderCount:6,
-     *		saleMoney:5000
-     * },
+     *     userId:"1a892a56-4183-40bf-a56a-f38b9209bd4c",
+     *     phone:"13383752377",
+     *     trueName:"小明",
+     *     certification{
+     *         companyName:XXXX公司,
+     *         workAddress:XXX路XX号
+     *     }
+     * }
+     * ],
      * token:"SK1d7a4fe3-c2cd-417f-8f6f-bf7412592996",
      * numberPerPage:10,
      * currentPage:1,

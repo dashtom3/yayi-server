@@ -2,7 +2,7 @@ package com.yayiabc.api.Before;
 
 public interface CartApi {
 	/**
-     * @api {post} http://47.93.48.111:8080/api/cart/add （前台）新增商品到购物车
+     * @api {post} http://47.93.48.111:6181/api/cart/add （前台）新增商品到购物车
      * @apiName add
      * @apiGroup cart
      * @apiVersion 0.1.0
@@ -45,7 +45,7 @@ public interface CartApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48.111:8080/api/cart/updateNum （前台）修改购物车内商品数量
+     * @api {post} http://47.93.48.111:6181/api/cart/updateNum （前台）修改购物车内商品数量
      * @apiName updateNum
      * @apiGroup cart
      * @apiVersion 0.1.0
@@ -88,7 +88,7 @@ public interface CartApi {
      */
 	
 	/**
-     * @api {get} http://47.93.48.111:8080/api/cart/list （前台）获取购物车列表
+     * @api {get} http://47.93.48.111:6181/api/cart/list （前台）获取购物车列表
      * @apiName list
      * @apiGroup cart
      * @apiVersion 0.1.0
@@ -175,7 +175,7 @@ public interface CartApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48.111:8080/api/cart/clear （前台）清空购物车内失效商品
+     * @api {post} http://47.93.48.111:6181/api/cart/clear （前台）清空购物车内失效商品
      * @apiName clear
      * @apiGroup cart
      * @apiVersion 0.1.0
@@ -258,7 +258,7 @@ public interface CartApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48.111:8080/api/cart/star （前台）收藏商品
+     * @api {post} http://47.93.48.111:6181/api/cart/star （前台）收藏商品
      * @apiName star
      * @apiGroup cart
      * @apiVersion 0.1.0

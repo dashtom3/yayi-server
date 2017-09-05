@@ -15,6 +15,7 @@ public class User extends BasePojo implements Serializable {
 	private String userId;
 
     private String saleId;
+
 	private String phone;
 
 	private String pwd;

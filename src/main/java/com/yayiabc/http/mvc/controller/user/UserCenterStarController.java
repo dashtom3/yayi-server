@@ -40,10 +40,8 @@ public class UserCenterStarController {
       @UserLog(description="删除收藏中的单一商品")
       public DataWrapper<Void> deleteOne(
     		  @RequestParam(value = "itemId",required=true) String itemId,
-    		 
     		  @RequestHeader(value = "token",required=true) String token
     		  ){
-    	       
     	  return ucss.deleteStarOne(token,itemId);
       }
       //取消全部商品收藏
@@ -52,7 +50,6 @@ public class UserCenterStarController {
       @UserTokenValidate
       @UserLog(description="清空收藏")
       public DataWrapper<Void> deleteAll(
-    		 
     		  @RequestHeader(value = "token",required=true) String token
     		  ){
     	  return ucss.deleteStarAll(token);
@@ -64,7 +61,6 @@ public class UserCenterStarController {
       @UserTokenValidate
       @UserLog(description="添加收藏")
       public DataWrapper<Void> addMyStar(
-    		 
     		  @RequestParam(value = "itemId",required=true) String itemId,
     		  @RequestHeader(value = "token",required=true) String token
     		  ){

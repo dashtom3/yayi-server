@@ -22,12 +22,7 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.yayiabc.common.alipayenclos.config.AlipayConfig;
-import com.yayiabc.common.alipayenclos.config.AlipayConfig2;
-import com.yayiabc.common.alipayenclos.util.AlipayCore;
-import com.yayiabc.common.alipayenclos.util.UtilDate;
 import com.yayiabc.common.utils.DataWrapper;
-
-import net.sf.json.JSONObject;
 
 @Controller
 @RequestMapping("api/appPay")
@@ -42,10 +37,10 @@ public class AppPayController {
 		AlipayTradeAppPayRequest request = new AlipayTradeAppPayRequest();
 		//SDK已经封装掉了公共参数，这里只需要传入业务参数。以下方法为sdk的model入参方式(model和biz_content同时存在的情况下取biz_content)。
 		AlipayTradeAppPayModel model = new AlipayTradeAppPayModel();
-		model.setBody("我是测试数据");
+		//model.setBody("我是测试数据");
 		model.setSubject("App支付测试Java");
 		model.setOutTradeNo(getOutTradeNo());
-		model.setTimeoutExpress("30m");
+		//model.setTimeoutExpress("30m");
 		model.setTotalAmount("0.01");
 		model.setProductCode("QUICK_MSECURITY_PAY");
 		request.setBizModel(model);
@@ -134,6 +129,7 @@ public class AppPayController {
         model.setTimeoutExpress("30m");  
         model.setTotalAmount("0.01");  
         model.setProductCode("QUICK_MSECURITY_PAY");  
+        
         request.setBizModel(model);  
         request.setNotifyUrl("http://47.93.48.111:6181/api/appPay/callBack");//回调地址  
         String orderInfo = null;  
@@ -150,69 +146,4 @@ public class AppPayController {
         return dataWrapper; 
 	}
 	
-	//-------------------
-	@ResponseBody
-	@RequestMapping("appPayYa")
-	public  DataWrapper<Object> alipay(/*String body, String subject, String out_trade_no, String total_amount*/) throws Exception {
-
-	         //公共参数
-	         Map<String, String> map = new HashMap<String, String>();
-	         map.put("app_id", AlipayConfig.APPID);
-	         map.put("method", "alipay.trade.app.pay");
-	         map.put("format", "json");
-	         map.put("charset", "utf-8");
-	         map.put("sign_type", "RSA2");
-	         map.put("timestamp", UtilDate.getDateFormatter());
-	         map.put("version", "1.0");
-	         map.put("notify_url", AlipayConfig.service);
-//mobile.securitypay.pay
-	         Map<String, String> m = new HashMap<String, String>();
-
-	         m.put("body", "一个月会员");
-	         m.put("subject", "一个月会员");
-	         m.put("out_trade_no", getOutTradeNo());
-	         m.put("timeout_express", "30m");
-	         m.put("total_amount", "0.01");
-	         m.put("seller_id", AlipayConfig.partner);
-	         m.put("product_code", "QUICK_MSECURITY_PAY");
-
-	         JSONObject bizcontentJson= JSONObject.fromObject(m);
-
-	         map.put("biz_content", bizcontentJson.toString());
-	        //对未签名原始字符串进行签名       
-	        String rsaSign = AlipaySignature.rsaSign(map, AlipayConfig2.private_key, "utf-8");
-
-	         Map<String, String> map4 = new HashMap<String, String>();
-
-	         map4.put("app_id", AlipayConfig2.app_id);
-	         map4.put("method", "alipay.trade.app.pay");
-	         map4.put("format", "json");
-	         map4.put("charset", "utf-8");
-	         map4.put("sign_type", "RSA2");
-	         map4.put("timestamp", URLEncoder.encode(UtilDate.getDateFormatter(),"UTF-8"));
-	         map4.put("version", "1.0");
-	         map4.put("notify_url",  URLEncoder.encode(AlipayConfig2.service,"UTF-8"));
-	         //最后对请求字符串的所有一级value（biz_content作为一个value）进行encode，编码格式按请求串中的charset为准，没传charset按UTF-8处理
-	         map4.put("biz_content", URLEncoder.encode(bizcontentJson.toString(), "UTF-8"));
-
-	        Map par = AlipayCore.paraFilter(map4); //除去数组中的空值和签名参数
-	        String json4 = AlipayCore.createLinkString(map4);   //拼接后的字符串
-
-	        json4=json4 + "&sign=" + URLEncoder.encode(rsaSign, "UTF-8");
-
-	        System.out.println(json4.toString());
-
-	       /* AliPayMsg apm = new AliPayMsg();
-	        apm.setCode("1");
-	        apm.setMsg("支付成功");
-	        apm.setData(json4.toString());  
-
-	        JSONObject json = JSONObject.fromObject(apm);*/
-
-
-	        System.out.println(json4);
-            DataWrapper<Object>  dataWrapper=new DataWrapper<Object>();
-            dataWrapper.setData(json4);
-	        return dataWrapper;     
-	     }
 }

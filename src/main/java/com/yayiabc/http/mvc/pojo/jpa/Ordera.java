@@ -64,6 +64,18 @@ public class Ordera extends BasePojo {
     private String orderNums;
     
     private String qbDes;
+    
+    private int createState;  //0  购物车       1 立即购买
+    
+    
+
+	public int getCreateState() {
+		return createState;
+	}
+
+	public void setCreateState(int createState) {
+		this.createState = createState;
+	}
 
 	public String getQbDes() {
 		return qbDes;

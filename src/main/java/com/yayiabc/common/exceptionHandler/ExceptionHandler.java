@@ -1,5 +1,7 @@
 package com.yayiabc.common.exceptionHandler;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.web.bind.annotation.ControllerAdvice;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -13,10 +15,8 @@ import com.yayiabc.common.utils.DataWrapper;
 public class ExceptionHandler {
 	@org.springframework.web.bind.annotation.ExceptionHandler(OrderException.class)
 	@ResponseBody
-    public DataWrapper<String> exceptionProcess(OrderException ex) {  
+    public DataWrapper<String> exceptionProcess(HttpServletRequest request,OrderException ex) {  
 		ex.printStackTrace();
-		
-
 		DataWrapper<String> dataWrapper = new DataWrapper<String>();
 		dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 		dataWrapper.setData(ex.getMessage());

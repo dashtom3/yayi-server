@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -150,10 +151,10 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	//1234
 	@Transactional
 	@Override
-	@ExceptionHandler
 	public DataWrapper<HashMap<String, Object>> generaOrder(String token, List<OrderItem> orderItemList, Ordera order,
 			Invoice  invoice
 			) {
+		System.out.println(orderItemList);
 		//判断  乾币！！！、
 		DataWrapper<Integer> data=ded(token,order.getQbDed());
 		int qbBalance=data.getData();
@@ -227,54 +228,27 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			/*if(itemValueList.size()>orderItemListAttributes.size()){
 
 			}*/
-			System.out.println(finalList);
-			System.out.println(finalList.size()==orderItemList.size());
+			
+			//System.err.println(finalList);
+			//Collections.reverse(finalList);
+			//System.out.println(finalList);
+			//System.out.println(finalList);
+			//System.err.println(finalList.size()==orderItemList.size());
 			for(int i=0;i<orderItemList.size();i++){
-				//query钱币赠送百分比
-				//Integer qbPercentage=placeOrderDao.queryQbPercentage(orderItemList.get(i).getItemSKU());
-				//giveQbNum+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice()*qbPercentage;
-				// 根据传过来的  商品sku 与 商品购买数目 查找对应的 其他参数（已知sku  num,orderId.,create,update） 
-				//需要item_name,price,picpath, a,b,c 属性，
-				//ItemValue itemVlue=placeOrderDao.queryAttributes(orderItemList.get(i).getItemSKU());
-				//新加入function 需要sku 找到itemid  找到商品表里面的item_sort（商品类型） 加入到订单商品表里 itemVlue里面有itemid 这里直接取
-				//String itemType=placeOrderDao.queryItemsort(itemVlue.getItemId());
-				//orderItemList.get(i).setItemType(itemType);
-				//根据sku 查找商品名称 业户说的
-				//String itemName=placeOrderDao.queryItemName(itemVlue.getItemId());
-				//根据sku查找商品的图片路径
-				//String itemPicPath=placeOrderDao.queryItemPicPath(itemVlue.getItemId());
-				//新 function 本单获得钱币数新规则 这里Set进商品品牌
-				//String  itemBrandName=placeOrderDao.queryItemBrandNameByItemId(itemVlue.getItemId());
-				//--- !!!!  双休优化  123
-				//orderItemList.get(i).setItemBrandName(orderItemListAttributes.get(i).getItemBrandName());
-				orderItemList.get(i).setItemBrandName(finalList.get(i).getItemBrandName());
-				//orderItemList.get(i).setItemName(orderItemListAttributes.get(i).getItemName());
-				orderItemList.get(i).setItemName(finalList.get(i).getItemName());
-				//orderItemList.get(i).setPicPath(orderItemListAttributes.get(i).getPicPath());
-				orderItemList.get(i).setPicPath(finalList.get(i).getPicPath());
-				//orderItemList.get(i).setItemPropertyNamea(itemValueList.get(i).getItemPropertyInfo());
-				orderItemList.get(i).setItemPropertyNamea(finalList.get(i).getItemPropertyInfo());
-				//orderItemList.get(i).setItemPropertyNameb(itemValueList.get(i).getItemPropertyTwoValue());
-				orderItemList.get(i).setItemPropertyNameb(finalList.get(i).getItemPropertyTwoValue());
-				//				orderItemList.get(i).setItemPropertyNamec(itemValueList.get(i).getItemPropertyThreeValue());
-				orderItemList.get(i).setItemPropertyNamec(finalList.get(i).getItemPropertyThreeValue());
-				//orderItemList.get(i).setPrice(itemValueList.get(i).getItemSkuPrice());
-				orderItemList.get(i).setPrice(finalList.get(i).getItemSkuPrice());
-				orderItemList.get(i).setOrderId(orderId);
-				//orderItemList.get(i).setItemType(orderItemListAttributes.get(i).getItemType());
-				orderItemList.get(i).setItemType(finalList.get(i).getItemType());
-				//---
-				/*orderItemList.get(i).setItemBrandName(itemBrandName);
-
-				orderItemList.get(i).setItemSKU(itemVlue.getItemSKU());
-				orderItemList.get(i).setItemName(itemName);
-				orderItemList.get(i).setPicPath(itemPicPath);
-				orderItemList.get(i).setPrice(itemVlue.getItemSkuPrice());
-				orderItemList.get(i).setItemPropertyNamea(itemVlue.getItemPropertyInfo());
-				orderItemList.get(i).setItemPropertyNameb(itemVlue.getItemPropertyTwoValue());
-				orderItemList.get(i).setItemPropertyNamec(itemVlue.getItemPropertyThreeValue());
-				orderItemList.get(i).setOrderId(orderId);*/
-				//查询该商品的库存数量
+				for(int x=0;x<finalList.size();x++){
+					if(orderItemList.get(i).getItemSKU().equals(finalList.get(x).getItemSKU())){
+						orderItemList.get(i).setItemBrandName(finalList.get(x).getItemBrandName());
+						orderItemList.get(i).setItemName(finalList.get(x).getItemName());
+						orderItemList.get(i).setPicPath(finalList.get(x).getPicPath());
+						orderItemList.get(i).setItemPropertyNamea(finalList.get(x).getItemPropertyInfo());
+						orderItemList.get(i).setItemPropertyNameb(finalList.get(x).getItemPropertyTwoValue());
+						orderItemList.get(i).setItemPropertyNamec(finalList.get(x).getItemPropertyThreeValue());
+						orderItemList.get(i).setPrice(finalList.get(x).getItemSkuPrice());
+						orderItemList.get(i).setOrderId(orderId);
+						orderItemList.get(i).setItemType(finalList.get(x).getItemType());
+					}
+				}
+			
 				//int ItemInventNum=placeOrderDao.queryItemInventNum(itemVlue.getItemSKU());
 				//双休优化  
 				//判断  
@@ -307,7 +281,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				}
 				//订单商品总价
 				sumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
-
+                
 				//将商品 同步到 订单商品表里
 				//int sta=placeOrderDao.synchronization(orderItemList.get(i),orderId);
 				//放一件到订单商品表清一件到
@@ -328,6 +302,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				//giveQbNum+=0;
 				/*System.out.println(orderItemList.get(i));*/
 			}
+			//System.out.println(orderItemList);System.err.println(sumPrice);
 			//将商品 同步到 订单商品表里--------双休优化  批量 插入到order_item表中
 			int a=placeOrderDao.batchSynchronization(orderItemList);
 			//清空购物车 双休优化
@@ -438,7 +413,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			}
 			dataWrapper.setData(hashMap);
 			return dataWrapper;
-		} catch (Exception e){
+		} catch (OrderException e){
 			throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
 		}
 	}

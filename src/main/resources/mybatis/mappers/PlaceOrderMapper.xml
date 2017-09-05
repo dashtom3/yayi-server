@@ -350,10 +350,10 @@
 		item_detail id on
 		ii.item_id=id.item_id JOIN item_brand ib ON
 		ii.item_brand_id=ib.item_brand_id
-		WHERE iv.item_sKU IN
-		<foreach collection="list" index="index" item="item" open="("
-			close=")" separator=",">
-			#{item.itemSKU}
+		WHERE <!-- iv.item_sKU IN -->
+		<foreach collection="list"  index="index" item="item" open="("
+			close=")" separator="or">
+			iv.item_sKU=#{item.itemSKU}
 		</foreach>
 	</select>
 

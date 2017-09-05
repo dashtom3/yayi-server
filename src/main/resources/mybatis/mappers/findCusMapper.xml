@@ -3,13 +3,13 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.yayiabc.http.mvc.dao.FindCusDao">
-     <resultMap type="User" id="c">
+     <resultMap type="com.yayiabc.http.mvc.pojo.jpa.User" id="csasa">
      <id property="userId" column="user_id"/>
      <result property="phone" column="phone"/>
       <result property="trueName" column="true_name"/>
      <association property="certification" javaType="com.yayiabc.http.mvc.pojo.jpa.Certification">
-     	<id property="userId" column="u_id"/>
-       <result property="companyName" column="company_name"/>
+     	<!-- <id property="userId" column="u_id"/> -->
+        <result property="companyName" column="company_name"/>
         <result property="part" column="part"/>
         <result property="workAddress" column="work_address"/>
      </association>
@@ -52,7 +52,7 @@
 	  </if>
 	  </where>
 	</select>
-	<select id="showsss" resultMap="c">
+	<select id="showsss" resultMap="csasa">
  	SELECT cert.user_id u_id,us.user_id,cert.company_name,cert.part,cert.work_address,us.phone,us.true_name  FROM `user` us LEFT JOIN certification cert ON us.user_id=cert.user_id 
 	 <where>
 	  <if test="state!=null and state!=''">

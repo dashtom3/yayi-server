@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 import com.yayiabc.http.mvc.pojo.jpa.Balance;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.With;
+import com.yayiabc.http.mvc.pojo.model.SaleWitModel;
 
 public interface WitManageDao {
 	
@@ -31,7 +32,7 @@ public interface WitManageDao {
 
 	int  insertMoney(With w);
      
-	List<Double> queryMoney(String saleId);
+	List<SaleWitModel> queryMoney(String saleId);
    //deleteMoney
 	int deleteMoney(Integer cashId, Integer cashMoney);
     //set

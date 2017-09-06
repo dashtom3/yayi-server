@@ -154,8 +154,10 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	public DataWrapper<HashMap<String, Object>> generaOrder(String token, List<OrderItem> orderItemList, Ordera order,
 			Invoice  invoice
 			) {
-		System.out.println(orderItemList);
 		//判断  乾币！！！、
+		if(order.getQbDed()==null){
+			order.setQbDed(0);
+		}
 		DataWrapper<Integer> data=ded(token,order.getQbDed());
 		int qbBalance=data.getData();
 		if(qbBalance<order.getQbDed()){
@@ -229,11 +231,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 
 			}*/
 			
-			//System.err.println(finalList);
-			//Collections.reverse(finalList);
-			//System.out.println(finalList);
-			//System.out.println(finalList);
-			//System.err.println(finalList.size()==orderItemList.size());
 			for(int i=0;i<orderItemList.size();i++){
 				for(int x=0;x<finalList.size();x++){
 					if(orderItemList.get(i).getItemSKU().equals(finalList.get(x).getItemSKU())){
@@ -248,26 +245,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 						orderItemList.get(i).setItemType(finalList.get(x).getItemType());
 					}
 				}
-			
-				//int ItemInventNum=placeOrderDao.queryItemInventNum(itemVlue.getItemSKU());
-				//双休优化  
-				//判断  
-				if(finalList.get(i).getStockNum()>=orderItemList.get(i).getNum()){
-					//如果库存数量大于购买数量  就去库存减去购买数
-					//更改库存数量
-					placeOrderDao.updateInventNum(
-							String.valueOf(finalList.get(i).getStockNum()-orderItemList.get(i).getNum()),finalList.get(i).getItemSKU()
-							);				
-					//---
-				}else{
-					hashMap.put("数量不足", "该商品"+orderItemList.get(i).getItemName()+"数量不足，您最多购买"
-							+String.valueOf(finalList.get(i).getStockNum()-orderItemList.get(i).getNum())+"件。"
-							);	
-					//删除该订单   和订单商品表里的信息
-					throw new OrderException(ErrorCodeEnum.ITEMSTOCK_Error); 
-					//return dataWrapper;
-				}
-
+				
 				if("上海道邦".equals(orderItemList.get(i).getItemBrandName())){
 					daoBnagSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
 				}else{
@@ -281,28 +259,18 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				}
 				//订单商品总价
 				sumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
-                
-				//将商品 同步到 订单商品表里
-				//int sta=placeOrderDao.synchronization(orderItemList.get(i),orderId);
-				//放一件到订单商品表清一件到
-				/*if(sta>0){
-					placeOrderDao.cleanCart(userId,orderItemList.get(i).getItemSKU());
-				}*/
 				//这里计算除道邦之外的商品分类价格  耗材类  工具设备类
 				if("耗材类".equals(orderItemList.get(i).getItemType())){
 					AllSuppliesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
 				}else if("工具设备类".equals(orderItemList.get(i).getItemType())){
 					AllTooldevicesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
 				}
-				/*if(i!=orderItemList.size()-1){
-					sb.append(orderItemList.get(i).getItemName()+",");
-				}else{
-					sb.append(orderItemList.get(i).getItemName());
-				}*/
-				//giveQbNum+=0;
-				/*System.out.println(orderItemList.get(i));*/
 			}
-			//System.out.println(orderItemList);System.err.println(sumPrice);
+			//更改库存 与校验商品是否在售卖状态
+			boolean flag=changeStockNum(orderItemList,finalList);
+			if(!flag){
+				throw new OrderException(ErrorCodeEnum.ITEMSTOCK_Error); 
+			}
 			//将商品 同步到 订单商品表里--------双休优化  批量 插入到order_item表中
 			int a=placeOrderDao.batchSynchronization(orderItemList);
 			//清空购物车 双休优化
@@ -310,41 +278,10 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			if(a<=0){
 				throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
 			}
-			//这里计算本单赠送钱币数
-			//首先道邦品牌
-			if(daoBnagSumPrice>0&&daoBnagSumPrice<300){
-				giveQbNum=giveQbNum+daoBnagSumPrice*0.03;
-			}else if(daoBnagSumPrice>=300&&daoBnagSumPrice<600){
-				giveQbNum=giveQbNum+daoBnagSumPrice*0.05;
-			}else if(daoBnagSumPrice>=600&&daoBnagSumPrice<1200){
-				giveQbNum=giveQbNum+daoBnagSumPrice*0.08;
-			}else if(daoBnagSumPrice>=1200&&daoBnagSumPrice<2500){
-				giveQbNum=giveQbNum+daoBnagSumPrice*0.12;
-			}else if(daoBnagSumPrice>=2500){
-				giveQbNum=giveQbNum+daoBnagSumPrice*0.15;
-			}
-			//其他品牌 耗材类
-			if(SuppliesSumPrice>0&&SuppliesSumPrice<500){
-				giveQbNum=giveQbNum+SuppliesSumPrice*0.03;
-			}else if(SuppliesSumPrice>=500&&SuppliesSumPrice<1000){
-				giveQbNum=giveQbNum+SuppliesSumPrice*0.05;
-			}else if(SuppliesSumPrice>=1000&&SuppliesSumPrice<3000){
-				giveQbNum=giveQbNum+SuppliesSumPrice*0.08;
-			}else if(SuppliesSumPrice>=3000){
-				giveQbNum=giveQbNum+SuppliesSumPrice*0.12;
-			}
-			//其他品牌 工具设配类
-			if(TooldevicesSumCount==1){
-				giveQbNum=giveQbNum+TooldevicesSumPrice*0.05;
-			}else if(TooldevicesSumCount>=2){
-				giveQbNum=giveQbNum+TooldevicesSumPrice*0.10;
-			}
-			/*try {
-				//hashMap.put("itemNames", (sb.toString().getBytes("utf-8")));
-			} catch (UnsupportedEncodingException e) {
-				// TODO Auto-generated catch block
-				e.printStackTrace();
-			}*/
+			//计算本单赠送钱币数
+			giveQbNum=calculQbNum(daoBnagSumPrice,SuppliesSumPrice,TooldevicesSumCount,TooldevicesSumPrice);
+			
+			
 			//该单计算运费
 			Receiver receiver=placeOrderDao.queryReceiver(order.getReceiverId());
 			Integer postFee=getFreight(receiver,sumPrice,itemSum);
@@ -384,27 +321,10 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			{
 				throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
 			}
-
-			//这里保存到ordera表里 并没有把赠送钱币数 给到用户余额中  必须等
-			//该用户付款成功再根据orderId 把余额放到该用户的账户余额中。。。。。。。。。。。。。。。。。。。。。。。
-			//直接放入order表
-			/*int c=placeOrderDao.insertClassItemsSumMoney(String.valueOf(AllSuppliesSumPrice),
-					String.valueOf(AllTooldevicesSumPrice)
-					,orderId
-					);*/
-			//得到 商品分类价格工具类
-			/*ConcurrentHashMap<String,Object> synMap=ClassificationHelpUtils.getInstance().getSynchronizedMap();
-			//synMap
-			 */			//商品描述==
-			//hashMap.put("itemMS", "不错");
-			//将该订单加入到缓存中
-			/*RedisClient redis=RedisClient.getInstance();
-			Jedis jedis=redis.jedis;
-			jedis.set(orderId,orderId);
-	        jedis.expire(orderId,120);*/
+            //放入缓存
 			CacheUtils.getInstance().getCacheMap().put(orderId, new Date());
 
-			//判断 actualPay 是否是0付款
+			//判断客服是否全额乾币支付
 			if(actualPay==0){
 				PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 				if(!payAfterOrderUtil.universal(orderId,"3")){
@@ -413,9 +333,70 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			}
 			dataWrapper.setData(hashMap);
 			return dataWrapper;
-		} catch (OrderException e){
-			throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
+		} catch (Exception e){
+			throw new RuntimeException(e); 
 		}
+	}
+	
+	//下单更改订单里的商品库存
+	private boolean changeStockNum(List<OrderItem> orderItemList,List<FinalList> finalList){
+		if(orderItemList.size()!=finalList.size()){
+			return false;
+		}else{
+			for(int i=0;i<orderItemList.size();i++){
+				//判断当前商品是否在售卖状态
+				if(finalList.get(i).getCanUse()==1){
+				if(finalList.get(i).getStockNum()>=orderItemList.get(i).getNum()){
+					//如果库存数量大于购买数量  就去库存减去购买数
+					//更改库存数量
+					placeOrderDao.updateInventNum(
+							String.valueOf(finalList.get(i).getStockNum()-orderItemList.get(i).getNum()),finalList.get(i).getItemSKU()
+							);
+					return true;
+					//---
+				}else{
+					//删除该订单   和订单商品表里的信息
+					return false;
+					//return dataWrapper;
+				}
+				}else{
+					return false;
+				}
+			}
+		}
+		return false;
+	}
+	private double calculQbNum(double daoBnagSumPrice,double SuppliesSumPrice,double TooldevicesSumCount,double TooldevicesSumPrice){
+		double giveQbNum=0.0;
+		//首先道邦品牌
+		if(daoBnagSumPrice>0&&daoBnagSumPrice<300){
+			giveQbNum=giveQbNum+daoBnagSumPrice*0.03;
+		}else if(daoBnagSumPrice>=300&&daoBnagSumPrice<600){
+			giveQbNum=giveQbNum+daoBnagSumPrice*0.05;
+		}else if(daoBnagSumPrice>=600&&daoBnagSumPrice<1200){
+			giveQbNum=giveQbNum+daoBnagSumPrice*0.08;
+		}else if(daoBnagSumPrice>=1200&&daoBnagSumPrice<2500){
+			giveQbNum=giveQbNum+daoBnagSumPrice*0.12;
+		}else if(daoBnagSumPrice>=2500){
+			giveQbNum=giveQbNum+daoBnagSumPrice*0.15;
+		}
+		//其他品牌 耗材类
+		if(SuppliesSumPrice>0&&SuppliesSumPrice<500){
+			giveQbNum=giveQbNum+SuppliesSumPrice*0.03;
+		}else if(SuppliesSumPrice>=500&&SuppliesSumPrice<1000){
+			giveQbNum=giveQbNum+SuppliesSumPrice*0.05;
+		}else if(SuppliesSumPrice>=1000&&SuppliesSumPrice<3000){
+			giveQbNum=giveQbNum+SuppliesSumPrice*0.08;
+		}else if(SuppliesSumPrice>=3000){
+			giveQbNum=giveQbNum+SuppliesSumPrice*0.12;
+		}
+		//其他品牌 工具设配类
+		if(TooldevicesSumCount==1){
+			giveQbNum=giveQbNum+TooldevicesSumPrice*0.05;
+		}else if(TooldevicesSumCount>=2){
+			giveQbNum=giveQbNum+TooldevicesSumPrice*0.10;
+		}
+		return giveQbNum;
 	}
 	//查询上次下订单时填写的发票信息
 	@Override

@@ -78,8 +78,12 @@
 		select * from cashmanage
 		where cash_id=#{cashId}
 	</select>
-	<select id="queryMoney" resultType="java.lang.Double">
-		select balance from balance
+	<resultMap type="com.yayiabc.http.mvc.pojo.model.SaleWitModel" id="ttr">
+	 <result property="describey" column="describey"/>
+	 <result property="balance" column="balance"/>
+	</resultMap>
+	<select id="queryMoney" resultMap="ttr">
+		select describey,balance from balance
 		where sale_id=#{saleId} order by created desc
 	</select>
 

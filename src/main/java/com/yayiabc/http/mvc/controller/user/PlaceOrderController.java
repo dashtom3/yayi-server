@@ -72,7 +72,7 @@ public class PlaceOrderController {
 	@ResponseBody
 	@UserTokenValidate
 	@UserLog(description="提交订单")
-	@ExceptionHandler
+	//@ExceptionHandler
 	public DataWrapper<HashMap<String, Object>> generaOrder(
 			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderItem",required=true) String  orderItem,
@@ -83,9 +83,7 @@ public class PlaceOrderController {
 		ArrayList<OrderItem> orderItemList = (ArrayList<OrderItem>)JSONArray.toCollection(json,OrderItem.class);
 		//接入 支付   订单号  商品名称    付款金额    商品描述
 		
-		DataWrapper<HashMap<String, Object>> hm=placeOrderService.generaOrder(token,orderItemList,order,invoice);
-		                return hm;                                                                                                             
-		
+		return placeOrderService.generaOrder(token,orderItemList,order,invoice);
 	}
 	//提交订单前显示上次填写发票信息
 	@RequestMapping("queryLastInvoice")

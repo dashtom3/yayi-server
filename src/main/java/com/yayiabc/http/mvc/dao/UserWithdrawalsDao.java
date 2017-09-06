@@ -5,6 +5,7 @@ import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
+import com.yayiabc.http.mvc.pojo.jpa.UserWitSetUp;
 import com.yayiabc.http.mvc.pojo.jpa.UserWith;
 
 public interface UserWithdrawalsDao {
@@ -26,4 +27,24 @@ public interface UserWithdrawalsDao {
 
 
 	int determine(String withId);
+
+
+	int  queryIsSetUp(String userId);
+
+
+	int updateWitType(@Param("userId")String userId, @Param("accountHolder")String accountHolder, @Param("cardNumber")String cardNumber,
+			
+			@Param("witType")String witType, @Param("oBank")String oBank);
+
+
+	int insertWitType(@Param("userId")String userId,  @Param("accountHolder")String accountHolder, @Param("cardNumber")String cardNumber,
+			@Param("witType")String witType, @Param("oBank")String oBank
+			);
+
+    
+	
+	 UserWitSetUp witSetUpShow(String userId);
+
+
+	int queryWitSign(String userId);
 }

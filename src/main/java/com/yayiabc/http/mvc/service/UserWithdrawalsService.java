@@ -11,4 +11,8 @@ public interface UserWithdrawalsService {
 	DataWrapper<Object> yesOrNo(String withId, Integer sign);
 
 	DataWrapper<Object> show(HashMap<String, Object> hm);
+
+	DataWrapper<Object> setUpWitType(String token, String accountHolder, String cardNumber, String oBank, String cardNumber2);
+
+	DataWrapper<Object> witSetUpShow(String token);
 }

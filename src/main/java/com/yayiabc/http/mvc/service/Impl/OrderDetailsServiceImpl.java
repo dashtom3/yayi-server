@@ -12,6 +12,7 @@ import com.yayiabc.common.exceptionHandler.OrderException;
 import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
+import com.yayiabc.http.mvc.dao.AliPayDao;
 import com.yayiabc.http.mvc.dao.OrderDetailsDao;
 import com.yayiabc.http.mvc.dao.ShippingAddressDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
@@ -32,6 +33,8 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 	private UtilsDao utilsDao;
 	@Autowired
 	private ShippingAddressDao shippingAddressDao;
+	@Autowired
+	private AliPayDao aliPayDao;
 	@Override
 	public DataWrapper<List<Ordera>>  orderDetailsShow(HashMap<String,String> map,String token
 			,Integer currentPage,Integer numberPerpage){
@@ -81,6 +84,9 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		//判断该用户有没有这个订单
 		String userId=utilsDao.getUserID(token);
+		//判断这个订单的状态   如果是已付款则无法取消订单
+		int sign=aliPayDao.querySatetIsTwo(orderId);
+		if(sign==1){
 		//还原库存
 		TimerChangeStateService timerChangeStateService=BeanUtil.getBean("TimerChangeStateServiceImpl");
 		List<String> l=new ArrayList<String>();
@@ -96,6 +102,9 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 			}
 		}else{
 			 throw  new OrderException(ErrorCodeEnum.CAN_CEL);
+		}
+		}else{
+			dataWrapper.setMsg("该订单已经付款，无法取消订单");	
 		}
  		return dataWrapper;
 	}

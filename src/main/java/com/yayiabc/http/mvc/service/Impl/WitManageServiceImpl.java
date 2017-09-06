@@ -14,6 +14,7 @@ import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.dao.WitManageDao;
 import com.yayiabc.http.mvc.pojo.jpa.Balance;
 import com.yayiabc.http.mvc.pojo.jpa.With;
+import com.yayiabc.http.mvc.pojo.model.SaleWitModel;
 import com.yayiabc.http.mvc.service.WitManageService;
 @Service
 public class WitManageServiceImpl implements WitManageService{
@@ -30,12 +31,16 @@ public class WitManageServiceImpl implements WitManageService{
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		String saleId=utilsDao.getSaleId(saleToken);
 		//根据saleId  得到该sale的钱包余额
-		List<Double> saleNowMoney=witManageDao.queryMoney(saleId);
-		
+		//防止 非法用户直接调接口提现
+	List<SaleWitModel> saleNowMoney=witManageDao.queryMoney(saleId);
+		if(saleNowMoney.get(0).getDescribey().substring(0,6).equals("提现申请中")){
+			dataWrapper.setMsg("NONONO");
+			return dataWrapper;
+		}
 	if(!saleNowMoney.isEmpty()){
 		int state=0;
-		if(saleNowMoney.get(0)>=Double.parseDouble(balanceOut)){
-			state=witManageDao.submitWit(saleId,Double.parseDouble(balanceOut),saleNowMoney.get(0)
+		if(saleNowMoney.get(0).getBalance()>=Double.parseDouble(balanceOut)){
+			state=witManageDao.submitWit(saleId,Double.parseDouble(balanceOut),saleNowMoney.get(0).getBalance()
 					,"提现申请中:"+balanceOut
 					);
 			if(state>0){

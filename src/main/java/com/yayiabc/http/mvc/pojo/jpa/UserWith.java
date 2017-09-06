@@ -5,17 +5,34 @@ import java.util.Date;
 import org.springframework.format.annotation.DateTimeFormat;
 
 public class UserWith {
-
 	private  int withId;
-	private String userId;
 	private double aType;
 	private double bType;
 	private double cType;
 	private double giveType;
 	private String trueName;
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss",style="GMT+8")
-	private Date created;
-	private int sign;
+	private Date created; //发起申请时间
+	
+	private Date determineTime;  //批准提现时间
+	private int sign;  //提现标志位  1表示 待审核  2  表示审核成功
+     private int witSetupId;  //提现设置表的主键
+     
+	public int getWitSetupId() {
+		return witSetupId;
+	}
+
+	public Date getDetermineTime() {
+		return determineTime;
+	}
+
+	public void setDetermineTime(Date determineTime) {
+		this.determineTime = determineTime;
+	}
+
+	public void setWitSetupId(int witSetupId) {
+		this.witSetupId = witSetupId;
+	}
 
 	public int getWithId() {
 		return withId;
@@ -25,9 +42,6 @@ public class UserWith {
 		this.withId = withId;
 	}
 
-	public String getUserId() {
-		return userId;
-	}
 
 	public String getTrueName() {
 		return trueName;
@@ -37,9 +51,6 @@ public class UserWith {
 		this.trueName = trueName;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId;
-	}
 	public double getaType() {
 		return aType;
 	}

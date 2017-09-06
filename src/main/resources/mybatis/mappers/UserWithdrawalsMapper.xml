@@ -7,8 +7,8 @@
 
 	<insert id="submit">
 		insert into
-		user_with(w_user_id,atype,btype,ctype,give_type,created) values(
-		#(userId),#(aType),#(bType),#(cType),#(giveType),now()
+		user_with(a_type,b_type,c_type,give_type,created,wit_setup_id) values(
+		#(aType),#(bType),#(cType),#(giveType),now(),#(witSetupId)
 		)
 	</insert>
 
@@ -36,14 +36,49 @@
 		select count(1) from
 		user_with uw join user us on uw.user_id=us.user_id
 	</select>
-
-	<select id="show" resultType="com.yayiabc.http.mvc.pojo.jpa.UserWith">
-		select uw.atype,uw.btype,uw.ctype,uw.give_type,us.true_name,uw.created,uw.determine_time
-		from
-		user_with uw join user us on uw.user_id=us.user_id
+	<!-- 12 hm.put("nameOrPhone", nameOrPhone); hm.put("sign", sign); hm.put("currentPage", 
+		currentPage); hm.put("numberPerpage", numberPerpage); hm.put("orderCTime", 
+		orderCTime); hm.put("orderETime", orderETime); -->
+		
+		
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.User" id="cctvt">
+		<id property="userId" column="user_id" />
+		<result property="trueName" column="true_name" />
+		<result property="phone" column="phone" />
+		<association property="userWitSetUp"
+			javaType="com.yayiabc.http.mvc.pojo.jpa.UserWitSetUp">
+			<!-- <result property="aType" column="a_type" /> <result property="bType" 
+				column="b_type" /> <result property="cType" column="c_type" /> <result property="giveType" 
+				column="give_type" /> -->
+			<id property="witSetupId" column="wit_setup_id" />
+			<result property="witType" column="wit_type" />
+			<result property="accountHolder" column="account_holder" />
+			<result property="cardNumber" column="card_number" />
+			<result property="oBank" column="o_bank" />
+			<association property="userWith" javaType="com.yayiabc.http.mvc.pojo.jpa.UserWith">
+				<result property="aType" column="a_type" />
+				<result property="bType" column="b_type" />
+				<result property="cType" column="c_type" />
+				<result property="giveType" column="give_type" />
+				<result property="created" column="created" />
+				<result property="determineTime" column="determine_time"/>
+				<result property="sign" column="sign"/>
+			</association>
+		</association>
+	</resultMap>
+	<select id="show" resultMap="cctvt">
+		SELECT us.user_id,us.true_name,us.phone,cwt.wit_setup_id,cwt.wit_type,cwt.account_holder,cwt.card_number
+		,cwt.o_bank,uw.a_type,uw.b_type,uw.c_type,uw.give_type,uw.created,uw.determine_time,uw.sign
+		 FROM USER us JOIN cash_withdrawal_type cwt ON
+		us.user_id=cwt.user_id JOIN user_with uw
+		ON cwt.wit_setup_id
+		=uw.wit_setup_id
 		<where>
-			<if test="userName !=null and userName!=''">
-				us.true_name=#{userName}
+			<if test="nameOrPhone!=null and nameOrPhone!=''">
+				#{nameOrPhone} in (us.true_name,us.phone)
+			</if>
+			<if test="sign!=null and sign!=''">
+				uw.sign=#{sign}
 			</if>
 			<if test="orderCTime !=null and orderCTime !=''">
 				and DATE_FORMAT(uw.created,'%Y-%m-%d') <![CDATA[  >=  ]]>#{orderCTime}
@@ -62,10 +97,40 @@
 		<result property="giveType" column="give_type" />
 	</resultMap>
 	<select id="queryFourQb" resultMap="vvx">
-		select atype,btype,ctype,give_type from user_with where with_id=#{withId}
+		select
+		a_type,b_type,c_type,give_type from user_with where with_id=#{withId}
 	</select>
-	
+
 	<update id="determine">
-	  update user_with set sign=2,determine_time=now() where with_id=#{withId}
+		update user_with set sign=2,determine_time=now()
+		where with_id=#{withId}
 	</update>
+
+
+	<!-- 检查用户是否设置过提现类型 -->
+	<select id="queryIsSetUp" resultType="int" parameterType="java.lang.String">
+		select
+		count(1) from cash_withdrawal_type where user_id=#{userId}
+	</select>
+
+	<update id="updateWitType">
+		update cash_withdrawal_type set
+		account_holder=#{accountHolder},card_number=#{cardNumber},create_time=now(),
+		wit_type=#{witType},o_bank=#{oBank}
+		where user_id=#{userId}
+	</update>
+	<insert id="insertWitType">
+		insert into cash_withdrawal_type
+		values(#{userId},#{witType},#{accountHolder},#{cardNumber},#{oBank},NOW())
+	</insert>
+
+	<!-- 显示提设置信息 -->
+	<select id="witSetUpShow" resultType="com.yayiabc.http.mvc.pojo.jpa.UserWitSetUp">
+		SELECT * FROM
+		cash_withdrawal_type WHERE user_id=(SELECT MAX(user_id) FROM
+		cash_withdrawal_type WHERE user_id=#{userId})
+	</select>
+	<select id="queryWitSign" resultType="int">
+	   select sign from user_with where wit_setup_id=(select max(wit_setup_id)  from  cash_withdrawal_type  where user_id=#{userId})
+	</select>
 </mapper>       

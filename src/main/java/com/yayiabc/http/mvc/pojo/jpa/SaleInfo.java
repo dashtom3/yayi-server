@@ -69,6 +69,16 @@ public class SaleInfo extends BasePojo {
 
 	private List<With> With;
 
+	private String describey;
+
+	public String getDescribey() {
+		return describey;
+	}
+
+	public void setDescribey(String describey) {
+		this.describey = describey;
+	}
+
 	public String getSaleId() {
 		return saleId;
 	}
@@ -165,8 +175,6 @@ public class SaleInfo extends BasePojo {
 	public void setIdCard(String idCard) {
 		this.idCard = idCard;
 	}
-
-
 
 	public double getMoney() {
 		return money;
@@ -301,7 +309,7 @@ public class SaleInfo extends BasePojo {
 	public SaleInfo(String saleId, String trueName, String idCard,
 			Date birthday, String salePic, Integer sex, String address,
 			String weChar, String email, String part, String education,
-			String workUnit, String workPosition,String referrals) {
+			String workUnit, String workPosition,String referrals,String describey) {
 		super();
 		this.saleId = saleId;
 		this.trueName = trueName;
@@ -317,6 +325,7 @@ public class SaleInfo extends BasePojo {
 		this.workUnit = workUnit;
 		this.workPosition = workPosition;
 		this.referrals=referrals;
+		this.describey=describey;
 	}
 
 	public SaleInfo(String saleId, String salePwd, String trueName,
@@ -327,7 +336,7 @@ public class SaleInfo extends BasePojo {
 			String education, String workUnit, String workPosition,
 			Integer bindUserNum, Integer isBindUser, List<User> user,
 			List<SaleIncome> saleincome, double totalGetMoney,
-			List<com.yayiabc.http.mvc.pojo.jpa.With> with,String referrals) {
+			List<com.yayiabc.http.mvc.pojo.jpa.With> with,String referrals,String describey) {
 		super();
 		this.saleId = saleId;
 		this.salePwd = salePwd;
@@ -357,6 +366,7 @@ public class SaleInfo extends BasePojo {
 		this.saleincome = saleincome;
 		With = with;
 		this.referrals=referrals;
+		this.describey=describey;
 	}
 
 	public SaleInfo(String saleId, String trueName, String phone,
@@ -380,19 +390,36 @@ public class SaleInfo extends BasePojo {
 
 	@Override
 	public String toString() {
-		return "SaleInfo [saleId=" + saleId + ", salePwd=" + salePwd
-				+ ", trueName=" + trueName + ", idCard=" + idCard
-				+ ", birthday=" + birthday + ", money=" + money + ", salePic="
-				+ salePic + ", postalType=" + postalType + ", bankName="
-				+ bankName + ", openName=" + openName + ", accountNumber="
-				+ accountNumber + ", type=" + type + ", phone=" + phone
-				+ ", sex=" + sex + ", address=" + address + ", weChar="
-				+ weChar + ", email=" + email + ", part=" + part
-				+ ", education=" + education + ", workUnit=" + workUnit
-				+ ", workPosition=" + workPosition + ", bindUserNum="
-				+ bindUserNum + ", isBindUser=" + isBindUser
-				+ ", totalGetMoney=" + totalGetMoney + ", user=" + user
-				+ ", saleincome=" + saleincome + ", With=" + With + "]";
+		return "SaleInfo{" +
+				"saleId='" + saleId + '\'' +
+				", salePwd='" + salePwd + '\'' +
+				", trueName='" + trueName + '\'' +
+				", idCard='" + idCard + '\'' +
+				", birthday=" + birthday +
+				", money=" + money +
+				", salePic='" + salePic + '\'' +
+				", postalType='" + postalType + '\'' +
+				", bankName='" + bankName + '\'' +
+				", openName='" + openName + '\'' +
+				", accountNumber='" + accountNumber + '\'' +
+				", type=" + type +
+				", phone='" + phone + '\'' +
+				", sex=" + sex +
+				", address='" + address + '\'' +
+				", weChar='" + weChar + '\'' +
+				", email='" + email + '\'' +
+				", part='" + part + '\'' +
+				", education='" + education + '\'' +
+				", workUnit='" + workUnit + '\'' +
+				", workPosition='" + workPosition + '\'' +
+				", bindUserNum=" + bindUserNum +
+				", isBindUser=" + isBindUser +
+				", totalGetMoney=" + totalGetMoney +
+				", referrals='" + referrals + '\'' +
+				", user=" + user +
+				", saleincome=" + saleincome +
+				", With=" + With +
+				", describey='" + describey + '\'' +
+				'}';
 	}
-
 }

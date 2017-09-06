@@ -3,16 +3,14 @@ package com.yayiabc.http.mvc.service.Impl;
 import java.util.List;
 import java.util.Map;
 
+import com.yayiabc.http.mvc.dao.*;
+import com.yayiabc.http.mvc.pojo.model.UserStatistics;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
-import com.yayiabc.http.mvc.dao.SaleListDao;
-import com.yayiabc.http.mvc.dao.ShippingAddressDao;
-import com.yayiabc.http.mvc.dao.UserDao;
-import com.yayiabc.http.mvc.dao.UserManageListDao;
 import com.yayiabc.http.mvc.pojo.jpa.Receiver;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.model.UserAllInfo;
@@ -29,6 +27,8 @@ public class UserManageListServiceImpl implements UserManageListService {
 	SaleListDao saleListDao;
 	@Autowired
 	ShippingAddressDao shippingAddressDao;
+	@Autowired
+	SaleMyClientDao saleMyClientDao;
 
 	@Override
 	public DataWrapper<List<Map<String,String>>> userlist(String phone,
@@ -89,6 +89,10 @@ public class UserManageListServiceImpl implements UserManageListService {
 			List<Receiver> receiverList = shippingAddressDao
 					.showShoppingAddress(userId);
 			userAllInfo.setReceiverList(receiverList);
+			UserStatistics us=saleMyClientDao.queryCount(userAllInfo.getSaleId(),userId);
+			userAllInfo.setOrderaCount(us.getOrderaCount());
+			userAllInfo.setOrderaMoneyCount(us.getOrderaMoneyCount());
+			userAllInfo.setLatelyOrderDate(saleMyClientDao.getLatelyOrderDate(userId));
 			dataWrapper.setData(userAllInfo);
 		}
 		return dataWrapper;

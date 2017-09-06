@@ -13,6 +13,8 @@ public class UserAllInfo {
 
 	private Integer sex;
 
+	private String bindTime;
+
 	private String birthday;
 
 	private String qq;
@@ -49,7 +51,7 @@ public class UserAllInfo {
 
 	private Integer orderaCount;
 
-	private Integer orderaMoneyCount;
+	private Double orderaMoneyCount;
 
 	private String medicalLicense; // 医疗机构执业许可证
 	private String businessLicense; // 营业执照
@@ -60,6 +62,14 @@ public class UserAllInfo {
 	private String idCardOtherside; // 法人身份证反面
 
 	private List<Receiver> receiverList;
+
+	public String getBindTime() {
+		return bindTime;
+	}
+
+	public void setBindTime(String bindTime) {
+		this.bindTime = bindTime;
+	}
 
 	public String getUserId() {
 		return userId;
@@ -245,11 +255,11 @@ public class UserAllInfo {
 		this.orderaCount = orderaCount;
 	}
 
-	public Integer getOrderaMoneyCount() {
+	public Double getOrderaMoneyCount() {
 		return orderaMoneyCount;
 	}
 
-	public void setOrderaMoneyCount(Integer orderaMoneyCount) {
+	public void setOrderaMoneyCount(Double orderaMoneyCount) {
 		this.orderaMoneyCount = orderaMoneyCount;
 	}
 
@@ -319,12 +329,11 @@ public class UserAllInfo {
 			String doctorPic, Integer isBindSale, String saleId,
 			String saleName, String salePhone, String saleCreated,
 			Integer bindUserNum, String userCreated, String certifyTime,
-			String latelyOrderDate, Integer orderaCount,
-			Integer orderaMoneyCount, String medicalLicense,
+			String latelyOrderDate, Integer orderaCount, Double orderaMoneyCount, String medicalLicense,
 			String businessLicense, String taxRegistration,
 			String openingPermit, String radiologicalPermit,
 			String idCardPositive, String idCardOtherside,
-			List<Receiver> receiverList) {
+			List<Receiver> receiverList,String bindTime) {
 		super();
 		this.userId = userId;
 		this.trueName = trueName;
@@ -357,6 +366,7 @@ public class UserAllInfo {
 		this.idCardPositive = idCardPositive;
 		this.idCardOtherside = idCardOtherside;
 		this.receiverList = receiverList;
+		this.bindTime=bindTime;
 	}
 
 	@Override

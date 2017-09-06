@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.dao;
 
 import java.util.List;
 
+import com.yayiabc.http.mvc.pojo.jpa.Certification;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -17,4 +18,6 @@ public interface UserCertificationListDao {
 	int getCount(@Param("phone")String phone,@Param("trueName")String trueName,@Param("companyName")String companyName,@Param("type")Integer type,@Param("state")Integer state);
 
 	void verifyFail(@Param("userId")String userId);	//审核未通过时清空资质信息
+
+	Certification detail(@Param("userId") String userId);
 }

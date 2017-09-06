@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.controller.manager;
 
 import java.util.List;
 
+import com.yayiabc.http.mvc.pojo.jpa.Certification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -42,7 +43,21 @@ public class UserCertificationListController {
 		
 		return userCertificationListService.list(phone, trueName, companyName, type, state,currentPage,numberPerPage);
 	}
-	
+
+	/**
+	 * 查看用户资质认证详情信息
+	 */
+	@RequestMapping(value = "detail",method = RequestMethod.GET)
+	@ResponseBody
+	@AdminTokenValidate
+	@AdminLog(description = "管理员查询用户资质认证详情")
+	public DataWrapper<Certification> detail(
+			@RequestParam(value = "userId",required = true)String userId,
+			@RequestHeader(value = "adminToken",required = true)String adminToken
+	) {
+		return  userCertificationListService.detail(userId);
+	}
+
 	/**
 	 * 审核用户资质认证信息
 	 */

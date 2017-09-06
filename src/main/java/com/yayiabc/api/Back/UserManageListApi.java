@@ -2,7 +2,7 @@ package com.yayiabc.api.Back;
 
 public interface UserManageListApi {
 	/**
-     * @api {get} http://47.93.48.111:8080/api/userManageList/userlist （后台）获取用户信息列表
+     * @api {get} http://47.93.48.111:6181/api/userManageList/userlist （后台）获取用户信息列表
      * @apiName userlist
      * @apiGroup userManageList
      * @apiVersion 0.1.0
@@ -75,7 +75,7 @@ public interface UserManageListApi {
      */
 	
 	/**
-     * @api {get} http://47.93.48.111:8080/api/userManageList/salelist （后台）获取简略销售员信息列表
+     * @api {get} http://47.93.48.111:6181/api/userManageList/salelist （后台）获取简略销售员信息列表
      * @apiName salelist
      * @apiGroup userManageList
      * @apiVersion 0.1.0
@@ -123,7 +123,7 @@ public interface UserManageListApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48.111:8080/api/userManageList/bind （后台）绑定销售员
+     * @api {post} http://47.93.48.111:6181/api/userManageList/bind （后台）绑定销售员
      * @apiName bind
      * @apiGroup userManageList
      * @apiVersion 0.1.0
@@ -165,7 +165,7 @@ public interface UserManageListApi {
      */
 	
 	/**
-     * @api {post} http://47.93.48.111:8080/api/userManageList/disBind （后台）取消绑定销售员
+     * @api {post} http://47.93.48.111:6181/api/userManageList/disBind （后台）取消绑定销售员
      * @apiName disBind
      * @apiGroup userManageList
      * @apiVersion 0.1.0
@@ -207,7 +207,7 @@ public interface UserManageListApi {
      */
 	
 	/**
-     * @api {get} http://47.93.48.111:8080/api/userManageList/detail （后台）获取用户详情
+     * @api {get} http://47.93.48.111:6181/api/userManageList/detail （后台）获取用户详情
      * @apiName detail
      * @apiGroup userManageList
      * @apiVersion 0.1.0

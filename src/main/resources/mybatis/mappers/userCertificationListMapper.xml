@@ -35,16 +35,7 @@
 		c.company_name,
 		c.part,
 		c.work_address,
-		c.doctor_pic,
-		c.state,
-		c.fail_reason,
-		c.medical_license,
-		c.business_license,
-		c.tax_registration,
-		c.opening_permit,
-		c.radiological_permit,
-		c.id_card_positive,
-		c.id_card_otherside 
+		c.state
 		FROM certification c
 		LEFT JOIN `user` u
 		ON c.user_id=u.user_id	
@@ -64,12 +55,39 @@
 			<if test="state !=null and state !=''">
 				AND c.state=#{state}
 			</if>
+			AND c.type !=''
+			AND	c.doctor_pic!=''
+			AND c.medical_license!=''
+			AND c.business_license!=''
+			AND c.tax_registration!=''
+			AND c.opening_permit!=''
+			AND c.radiological_permit!=''
+			AND c.id_card_otherside!=''
+			AND c.id_card_positive!=''
 		</where>
 		GROUP BY c.user_id	
 		ORDER BY c.created DESC
         LIMIT ${page.currentNumber},${page.numberPerPage}
 	</select>
-	
+
+	<select id="detail" resultType="Certification">
+		SELECT
+		user_id,
+		type,
+		state,
+		fail_reason,
+		doctor_pic,
+		medical_license,
+		business_license,
+		tax_registration,
+		opening_permit,
+		radiological_permit,
+		id_card_positive,
+		id_card_otherside
+		FROM certification
+		WHERE user_id=#{userId}
+	</select>
+
 	<select id="getCount" resultType="int">
 		SELECT count(0) FROM (
 			SELECT count(0)
@@ -92,6 +110,15 @@
 				<if test="state !=null and state !=''">
 					AND c.state=#{state}
 				</if>
+				AND c.type !=''
+				AND	c.doctor_pic!=''
+				AND c.medical_license!=''
+				AND c.business_license!=''
+				AND c.tax_registration!=''
+				AND c.opening_permit!=''
+				AND c.radiological_permit!=''
+				AND c.id_card_otherside!=''
+				AND c.id_card_positive!=''
 			</where>
 			GROUP BY c.user_id
 			) AS a

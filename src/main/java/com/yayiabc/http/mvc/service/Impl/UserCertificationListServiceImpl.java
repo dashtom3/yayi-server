@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.service.Impl;
 
 import java.util.List;
 
+import com.yayiabc.http.mvc.pojo.jpa.Certification;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -12,6 +13,8 @@ import com.yayiabc.http.mvc.dao.UserCertificationListDao;
 import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.UserCertificationListService;
+
+import javax.xml.crypto.Data;
 
 @Service
 public class UserCertificationListServiceImpl implements
@@ -36,6 +39,14 @@ public class UserCertificationListServiceImpl implements
 		List<User> list = userCertificationListDao.list(phone, trueName,
 				companyName, type, state, page);
 		dataWrapper.setData(list);
+		return dataWrapper;
+	}
+
+	@Override
+	public DataWrapper<Certification> detail(String userId) {
+		DataWrapper<Certification> dataWrapper=new DataWrapper<Certification>();
+		Certification certification=userCertificationListDao.detail(userId);
+		dataWrapper.setData(certification);
 		return dataWrapper;
 	}
 

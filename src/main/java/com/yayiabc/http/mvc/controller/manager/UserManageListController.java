@@ -92,11 +92,8 @@ public class UserManageListController {
 	 */
 	@RequestMapping(value="detail",method=RequestMethod.GET)
 	@ResponseBody
-	@AdminTokenValidate
-	@AdminLog(description="管理员查询用户详情")
 	public DataWrapper<UserAllInfo> detail(
-			@RequestParam(value="phone",required=true)String phone,
-			@RequestHeader(value="adminToken",required=true)String adminToken
+			@RequestParam(value="phone",required=true)String phone
 	){
 		return userManageListService.detail(phone);
 	}

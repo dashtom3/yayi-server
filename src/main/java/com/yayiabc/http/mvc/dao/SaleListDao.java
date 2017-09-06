@@ -31,7 +31,7 @@ public interface SaleListDao {
 	String getSaleId(@Param("salePhone")String salePhone);
 	
 	//查询销售员钱包余额
-	String queryByBalance(@Param("phone")String phone);
+	String queryByBalance(@Param("phone")String phone,@Param("saleId") String saleId);
 	
 	//查询销售员累计收入
 	String getTotalGetMoney(@Param("saleId")String saleId);

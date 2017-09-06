@@ -63,7 +63,7 @@ public class SaleListServiceImpl implements SaleListService {
 		DataWrapper<SaleInfo> dataWrapper = new DataWrapper<SaleInfo>();
 		SaleInfo saleInfo = new SaleInfo();
 		saleInfo =saleListDao.detail(phone);
-		String money=saleListDao.queryByBalance(phone);
+		String money=saleListDao.queryByBalance(phone,null);
 		if(money==null){
 			saleInfo.setMoney(0);
 		}else{

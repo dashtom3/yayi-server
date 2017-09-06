@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import com.yayiabc.http.mvc.dao.SaleListDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -16,6 +17,8 @@ public class SaleInfoServiceImpl implements SaleInfoService {
 	SaleInfoDao saleInfoDao;
 	@Autowired
 	SaleLogDao saleLogDao;
+	@Autowired
+	SaleListDao saleListDao;
 	
 	@Override
 	public DataWrapper<Void> updateSale(SaleInfo saleInfo,String token) {
@@ -57,10 +60,17 @@ public class SaleInfoServiceImpl implements SaleInfoService {
 	public DataWrapper<SaleInfo> query(String token) {
 		DataWrapper<SaleInfo> dataWrapper=new DataWrapper<SaleInfo>();
 		String saleId=saleLogDao.getSaleIdByToken(token);
+		SaleInfo saleInfo=new SaleInfo();
 		if(saleId == null){
 			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
 		}else{
-			SaleInfo saleInfo=saleInfoDao.query(saleId);
+			saleInfo=saleInfoDao.query(saleId);
+			String money=saleListDao.queryByBalance(null,saleId);
+			if(money==null){
+				saleInfo.setMoney(0);
+			}else{
+				saleInfo.setMoney(Double.parseDouble(money));
+			}
 			dataWrapper.setData(saleInfo);
 		}
 		return dataWrapper;

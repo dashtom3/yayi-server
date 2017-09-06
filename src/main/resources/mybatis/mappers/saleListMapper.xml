@@ -199,7 +199,7 @@
 		FROM 
 		balance 
 		WHERE 
-		sale_id = (SELECT sale_id FROM sale_info WHERE phone=#{phone}) 		
+		sale_id = (SELECT sale_id FROM sale_info WHERE phone=#{phone} or sale_id=#{saleId})
 		ORDER BY created DESC
 		LIMIT 1	
 	</select>

@@ -32,20 +32,15 @@ public class PhoneAliPayServiceImpl implements PhoneAliPayService{
 
 	
 	@Override
-	public String packingParameter(String WIDout_trade_no, String WIDsubject, String WIDtotal_fee, String WIDbody
-			,String product_codes
+	public String packingParameter(String out_trade_no, String subject, String total_fee, String WIDbody
+			,String product_code
 			) {
 		// TODO Auto-generated method stub
-	
 			
-			String out_trade_no=WIDout_trade_no;
-			String subject=WIDsubject;
-			String total_fee=WIDtotal_fee;
-			String product_code=product_codes;
          		
 			  // SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，开发者无需关注签名与验签     
 		    //调用RSA签名方式
-		    AlipayClient client = new DefaultAlipayClient(AlipayConfig.DEVURL, AlipayConfig.DEVAPPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
+		    AlipayClient client = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY,"RSA2");
 		    AlipayTradeWapPayRequest alipay_request=new AlipayTradeWapPayRequest();
 		    
 		    // 封装请求支付信息

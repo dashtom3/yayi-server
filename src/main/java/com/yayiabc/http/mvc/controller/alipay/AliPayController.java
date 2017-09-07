@@ -32,19 +32,6 @@ import com.yayiabc.http.mvc.service.AliPayService;
 public class AliPayController {
 	@Autowired
 	private AliPayService alipayService;
-	//支付satrt 测试
-	@RequestMapping("payParame")
-	@ResponseBody   
-	String payParame(
-			
-			@RequestParam(value="WIDout_trade_no",required=true) String WIDout_trade_no,//订单号
-			@RequestParam(value="WIDsubject",required=true) String WIDsubject,//商品名称
-			@RequestParam(value="WIDtotal_fee",required=true) String WIDtotal_fee,//付款金额 
-			
-			@RequestParam(value="WIDbody",required=false) String WIDbody//商品描述
-			){
-		return alipayService.packingParameter(WIDout_trade_no, WIDsubject, WIDtotal_fee, WIDbody);
-	}
 	
 	// 14.29  点击选择类型确定支付宝支付时
 	@RequestMapping("payParames")
@@ -110,17 +97,6 @@ public class AliPayController {
 	////判断订单支付异步跳转
 	@RequestMapping("notifyVerifica")
 	void notifyVerifica(
-			@RequestParam(value="is_success",required=true) String is_success,//表示接口调用是否成功，并不表明业务处理结果。
-			
-			@RequestParam(value="sign_type",required=true) String sign_type,//MD5
-			@RequestParam(value="sign",required=true) String sign,//签名与验签
-			@RequestParam(value="trade_status",required=false) String trade_status,//交易状态
-			@RequestParam(value="out_trade_no",required=false) String out_trade_no,//商户订单号
-			@RequestParam(value="trade_no",required=false) String trade_no,//支付宝交易号
-			
-			@RequestParam(value="notify_time",required=true) String notify_time,
-			@RequestParam(value="notify_type",required=true) String notify_type,//
-			@RequestParam(value="notify_id",required=true) String notify_id,//
 			HttpServletRequest request,
 			HttpServletResponse response
 			//同上
@@ -148,7 +124,7 @@ public class AliPayController {
 					is_success, sign_type, sign, trade_status, out_trade_no, trade_no,params));
 			out.w*/
 			out.write(alipayService.notifyVerifica(
-					is_success, sign_type, sign, trade_status, out_trade_no, trade_no,params).getBytes()
+					params).getBytes()
 					);//以UTF-8进行编码  0
 		} catch (IOException e) {
 			// TODO Auto-generated catch block

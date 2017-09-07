@@ -13,9 +13,11 @@ import com.yayiabc.common.alipayenclos.util.AlipayNotify;
 import com.yayiabc.common.alipayenclos.util.AlipaySubmit;
 import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.PayAfterOrderUtil;
+import com.yayiabc.common.utils.QbExchangeUtil;
 import com.yayiabc.http.mvc.dao.AliPayDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Charge;
+import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.service.AliPayService;
 import com.yayiabc.http.mvc.service.UserMyQbService;
@@ -95,7 +97,8 @@ public class AliPayServiceImpl implements AliPayService{
 
 			//交易状态
 			String trade_status =params.get("trade_status"); /*new String(trade_statuss.getBytes("ISO-8859-1"),"UTF-8");*/
-			
+			//付款金额
+            String amount = params.get("buyer_pay_amount");
 			//计算得出通知验证结果
 			boolean verify_result = AlipayNotify.verify(params);
 
@@ -104,31 +107,11 @@ public class AliPayServiceImpl implements AliPayService{
 
 				//——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
 				if(trade_status.equals("TRADE_FINISHED") || trade_status.equals("TRADE_SUCCESS")){
-					//判断该笔订单是否在商户网站中已经做过处理
-					//123
-					//(更改订单状态state).如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
-					//如果有做过处理，不执行商户的业务程序
-					//钱币充值
-					if("zfb".equals(out_trade_no.substring(0, 3))){
-						aliPayDao.updateState(out_trade_no);
-						Charge charge=aliPayDao.queryUserId(out_trade_no);
-						String token=utilsDao.getToken(charge.getToken());
-						QbRecord q=new QbRecord();
-						q.setQbRget(charge.getMoney());
-						q.setQbType(charge.getQbType());
-						q.setRemark(charge.getQbType()+"乾币充值(支付宝)");
-						userMyQbService.add(q, token);
-						return "successQB";
+					Ordera order=aliPayDao.queryOrder(out_trade_no);
+					if(!amount.equals(order.getActualPay())&&order.getOrderId().equals(out_trade_no)){
+						 return "fail";
 					}
-					PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-					payAfterOrderUtil.universal(out_trade_no,"0");
 					 return "success";
-					/*int state=aliPayDao.updateStateAndPayTime(out_trade_no);
-					System.out.println(state);
-					if(state>0){
-						return "success";
-					}*/
-
 				}
 				//验证成功  支付失败 123
 
@@ -144,19 +127,20 @@ public class AliPayServiceImpl implements AliPayService{
 	}
 	//支付校验结果异步
 	@Override
-	public String notifyVerifica(String is_success, String sign_type, String sign, String trade_statuss,
-			String out_trade_nos, String trade_nos, Map<String, String> params) {
+	public String notifyVerifica(Map<String,String> params) {
 		// TODO Auto-generated method stub
 		try {
 			//商户订单号
-			String out_trade_no = out_trade_nos;//new String(out_trade_nos.getBytes("ISO-8859-1"),"UTF-8");
+			String out_trade_no =params.get("out_trade_no"); /*new String(out_trade_nos.getBytes("ISO-8859-1"),"UTF-8");*/
 
 			//支付宝交易号
-			String trade_no = trade_nos;//new String(trade_nos.getBytes("ISO-8859-1"),"UTF-8");
+
+			String trade_no =params.get("trade_no"); /*new String(trade_nos.getBytes("ISO-8859-1"),"UTF-8");*/
 
 			//交易状态
-			String trade_status = trade_statuss;//new String(trade_statuss.getBytes("ISO-8859-1"),"UTF-8");
-
+			String trade_status =params.get("trade_status"); /*new String(trade_statuss.getBytes("ISO-8859-1"),"UTF-8");*/
+			//付款金额
+            String amount = params.get("buyer_pay_amount");
 
 			//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
 
@@ -170,27 +154,8 @@ public class AliPayServiceImpl implements AliPayService{
 					//判断该笔订单是否在商户网站中已经做过处理finished
 					//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 					//请务必判断请求时的total_fee、seller_id与通知时获取的total_fee、seller_id为一致的
-					if("zfb".equals(out_trade_no.substring(0, 3))){
-						Charge charge=aliPayDao.queryUserId(out_trade_no);
-						if(charge.getState()!=2){
-							aliPayDao.updateState(out_trade_no);
-							String token=utilsDao.getToken(charge.getToken());
-							QbRecord q=new QbRecord();
-							q.setQbRget(charge.getMoney());
-							q.setQbType(charge.getQbType());
-							q.setRemark(charge.getQbType()+"乾币充值(支付宝)");
-							userMyQbService.add(q, token);
-							return "success";
-						}
-						
-					}
-					//如果有做过处理，不执行商户的业务程序
-					int  state=aliPayDao.querySatetIsTwo(out_trade_no);
-								if(2!=state){
-									PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-									payAfterOrderUtil.universal(out_trade_no,"0");
-									return "success";
-								}
+					
+					return ut(out_trade_no,amount);
 					//注意：
 					//退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
 					
@@ -199,27 +164,8 @@ public class AliPayServiceImpl implements AliPayService{
 					//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 					//请务必判断请求时的total_fee、seller_id与通知时获取的total_fee、seller_id为一致的
 					//如果有做过处理，不执行商户的业务程序
-					if("zfb".equals(out_trade_no.substring(0, 3))){
-						Charge charge=aliPayDao.queryUserId(out_trade_no);
-						if(charge.getState()!=2){
-							aliPayDao.updateState(out_trade_no);
-							String token=utilsDao.getToken(charge.getToken());
-							QbRecord q=new QbRecord();
-							q.setQbRget(charge.getMoney());
-							q.setQbType(charge.getQbType());
-							q.setRemark(charge.getQbType()+"乾币充值(支付宝)");
-							userMyQbService.add(q, token);
-							return "success";
-						}
-						
-					}
-					int  state=aliPayDao.querySatetIsTwo(out_trade_no);
-					if(2!=state){
-						PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-						payAfterOrderUtil.universal(out_trade_no,"0");
-						
-					}
-					return "success";
+					
+					return ut(out_trade_no,amount);
 					//注意：
 					//付款完成后，支付宝系统发送该交易状态通知
 					
@@ -258,12 +204,45 @@ public class AliPayServiceImpl implements AliPayService{
 		}
 		//订单留言
 		String WIDbody=aliPayDao.queryYorderMessage(orderId);
-		hmHashMap.put("WIDout_trade_no", orderId);
-		hmHashMap.put("WIDtotal_fee",String.valueOf(WIDtotal_fee));
-		hmHashMap.put("WIDsubject", sb.toString());
-		hmHashMap.put("WIDbody",WIDbody);
+		hmHashMap.put("WIDout_trade_no", orderId);  //
+		hmHashMap.put("WIDtotal_fee",String.valueOf(WIDtotal_fee)); //交易金额 WIDtotal_fee
+		hmHashMap.put("WIDsubject", sb.toString());  //描述
+		hmHashMap.put("WIDbody",WIDbody);    //dingdan留言
 
 
 		return hmHashMap;
+	}
+	 //提出
+	private String ut(String out_trade_no,String amount){
+		if("zfb".equals(out_trade_no.substring(0, 3))){
+			Charge charge=aliPayDao.queryUserId(out_trade_no);
+			 
+            if(!amount.equals(charge.getMoney())){
+            	return "fail";
+            }
+            //商户订单号
+			if(charge.getState()!=2){
+				aliPayDao.updateState(out_trade_no);
+				String token=utilsDao.getToken(charge.getToken());
+				QbRecord q=new QbRecord();
+				q.setQbRget(charge.getMoney());
+				q.setQbType(charge.getQbType());
+				q.setRemark(charge.getQbType()+"乾币充值(支付宝)");
+				userMyQbService.add(q, token);
+				return "success";
+			}
+			
+		}
+	   //校验金额
+		Ordera order=aliPayDao.queryOrder(out_trade_no);
+		if(!amount.equals(order.getActualPay())&&order.getOrderId().equals(out_trade_no)){
+			 return "fail";
+		}
+					if(2!=order.getState()){
+						PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
+						payAfterOrderUtil.universal(out_trade_no,"0");
+						return "success";
+					}
+					return "fail";
 	}
 }

@@ -144,4 +144,17 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		}
 		return dataWrapper;
 	}
+	//显示当前用户的钱币余额
+	@Override
+	public DataWrapper<Object> showUserQbNum(String token) {
+		// TODO Auto-generated method stub
+		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
+		String userId=utilsDao.getUserID(token);
+		if(userId==null){
+			dataWrapper.setMsg("NONONO");
+		}else{
+	    dataWrapper.setData(userWithdrawalsServiceDao.showUserQbNum(userId));
+		}
+		return dataWrapper;
+	}
 }

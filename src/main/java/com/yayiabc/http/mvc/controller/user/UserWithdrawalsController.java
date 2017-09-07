@@ -97,4 +97,12 @@ public class UserWithdrawalsController {
 		   ){
 	  return  userWithdrawalsService.witSetUpShow(token);
    }
+   //显示当前用户的钱币余额
+   @ResponseBody
+   @RequestMapping("showUserQbNum")
+   DataWrapper<Object> showUserQbNum(
+		   @RequestHeader(value="token",required=true) String token
+		   ){
+	  return  userWithdrawalsService.showUserQbNum(token);
+   }
 }

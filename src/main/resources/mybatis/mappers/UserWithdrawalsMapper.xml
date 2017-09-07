@@ -133,4 +133,8 @@
 	<select id="queryWitSign" resultType="int">
 	   select sign from user_with where wit_setup_id=(select max(wit_setup_id)  from  cash_withdrawal_type  where user_id=#{userId})
 	</select>
+	
+   <select id="showUserQbNum" resultType="com.yayiabc.http.mvc.pojo.jpa.User">
+    select a_qb,b_qb,c_qb,qb_balance from 'user' where user_id=#{userId}
+   </select>
 </mapper>       

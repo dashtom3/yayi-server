@@ -50,7 +50,8 @@ public class MyWalletServiceImpl implements MyWalletService{
 		  
 		List<Balance> blist= myWalletDao.detail(hm);
 		for(int i=0;i<blist.size();i++){
-			if(blist.get(i).getDescribey().contains("中")){
+			
+			if(blist.get(i).getDescribey().contains("中")||(blist.get(i).getBalanceIn()+blist.get(i).getBalanceOut())==0){
 				blist.remove(i);
 				i--;
 			}

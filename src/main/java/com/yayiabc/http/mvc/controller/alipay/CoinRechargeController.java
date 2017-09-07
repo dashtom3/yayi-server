@@ -18,6 +18,7 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.QbExchangeUtil;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.service.AliPayService;
+import com.yayiabc.http.mvc.service.AppPayService;
 import com.yayiabc.http.mvc.service.CoinRechargeService;
 import com.yayiabc.http.mvc.service.PhoneAliPayService;
 import com.yayiabc.http.mvc.service.UserMyQbService;
@@ -31,17 +32,19 @@ public class CoinRechargeController {
 	private UtilsDao utilsdao;
 	@Autowired AliPayService alipay;
 	@Autowired PhoneAliPayService phoneAliPayService;
+	@Autowired
+	private AppPayService appPayService;
 	@RequestMapping("recharge")
 	@ResponseBody
 	// @UserTokenValidate(description="开始支付宝充值乾币")
-	public void recharge(
+	public DataWrapper<Object> recharge(
 			@RequestParam(value="token",required=true)String token,
 			@RequestParam(value="money",required=true)String qbNum,
 			@RequestParam(value="qbType",required=true)String qbType,
 			@RequestParam(value="computerOrPhone",required=true)String computerOrPhone,
 			HttpServletResponse response
 			){
-		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
+		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
 		//String qbType="a_qb";
 		String codeId=createId(token);
 		double money=QbExchangeUtil.getQbByMoney(Integer.parseInt(qbNum),qbType);
@@ -68,9 +71,17 @@ public class CoinRechargeController {
     			// TODO Auto-generated catch block
     			e.printStackTrace();
     		}
+        }else if(computerOrPhone.equals("app")){
+        	 //app充值钱币
+        	/**
+        	 * String orderId, String out_trade_no, String total_fee, String body, String subject,
+			   String QUICK_MSECURITY_PAY
+        	 */
+        	return appPayService.packingParameter(codeId, codeId, String.valueOf(money), "乾币充值", "乾币", "QUICK_MSECURITY_PAY");
         }else{
         	dataWrapper.setMsg("参数异常");
         }
+        return dataWrapper;
 	}
 	//生成 id的方法
 	String createId(String token){

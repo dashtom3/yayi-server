@@ -31,13 +31,8 @@ public interface AliPayService {
 */			Map<String,String> params//获取支付宝GET过来反馈信息
 			);
 	//异步支付校验
-	String notifyVerifica(String is_success,
-			String sign_type, 
-			String sign, 
-			String trade_status,
-			String out_trade_no,
-			String trade_no, 
-			Map<String, String> params
+	String notifyVerifica(
+			Map<String,String> params
 			);
 	
 	HashMap<String , String> queryY(String orderId);

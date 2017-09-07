@@ -48,7 +48,7 @@ public class UserMyQbController {
 	public DataWrapper<List<QbRecord>> query(
 			@RequestParam(value = "currentPage", required = false, defaultValue = "1") Integer currentPage,
 			@RequestParam(value = "numberPerPage", required = false, defaultValue = "10") Integer numberPerPage,
-			@RequestHeader(value = "token", required = true) String token) {
+			@RequestHeader(value = "token", required = true) String token){
 		return userMyQbService.query(token, currentPage, numberPerPage);
 	}
 }

@@ -15,4 +15,6 @@ public interface UserWithdrawalsService {
 	DataWrapper<Object> setUpWitType(String token, String accountHolder, String cardNumber, String oBank, String cardNumber2);
 
 	DataWrapper<Object> witSetUpShow(String token);
+
+	DataWrapper<Object> showUserQbNum(String token);
 }

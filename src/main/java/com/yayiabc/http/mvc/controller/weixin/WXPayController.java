@@ -212,7 +212,7 @@ public class WXPayController {
 		}
 		Charge charge=new Charge();
 		charge.setChargeId(chargeId);
-		charge.setMoney(money);
+		charge.setMoney(String.valueOf(money));
 		charge.setState(1);
 		charge.setToken(utilsDao.getUserID(token));
 		charge.setQbType(qbType);
@@ -308,7 +308,7 @@ public class WXPayController {
 						String userId=wXPayDao.getTokenByChargeId(chargeId);
 						String token=userDao.getTokenByUserId(userId);
 						QbRecord qbRecord =new QbRecord();
-						qbRecord.setQbRget(charge.getMoney());
+						qbRecord.setQbRget(Integer.parseInt(charge.getMoney()));
 						qbRecord.setQbType(charge.getQbType());
 						qbRecord.setRemark("乾币充值"+money);
 						userMyQbService.add(qbRecord, token);

@@ -25,19 +25,18 @@ public class UserWithdrawalsController {
    @ResponseBody
    @RequestMapping("show")
    DataWrapper<Object> show(
-		   @RequestHeader(value="adminToken",required=true) String adminToken,
+		  // @RequestHeader(value="adminToken",required=true) String adminToken,
 		   @RequestParam(value="nameOrPhone",required=false) String nameOrPhone,
-		   @RequestParam(value="sign",required=false) String sign,
-		   @RequestParam(value="currentPage",required=false,defaultValue="0")Integer currentPage,
+		   @RequestParam(value="sign",required=false) String sign,  //申请中   0   成功 为  1
+		   @RequestParam(value="currentPage",required=false,defaultValue="1")Integer currentPage,
 		   @RequestParam(value="numberPerpage",required=false,defaultValue="10")Integer numberPerpage,
 		   @RequestParam(value="orderCTime",required=false)String orderCTime,
 		   @RequestParam(value="orderETime",required=false)String orderETime
 		   ){
 	   HashMap<String, Object> hm=new HashMap<String,Object>();
 	   hm.put("nameOrPhone", nameOrPhone);
-	   hm.put("sign", sign);
-	   hm.put("currentPage", currentPage);
 	   hm.put("numberPerpage", numberPerpage);
+	   hm.put("currentPage", currentPage);
 	   hm.put("orderCTime", orderCTime);
 	   hm.put("orderETime", orderETime);
 	  return  userWithdrawalsService.show(hm);
@@ -101,7 +100,7 @@ public class UserWithdrawalsController {
    @ResponseBody
    @RequestMapping("showUserQbNum")
    DataWrapper<Object> showUserQbNum(
-		   @RequestHeader(value="token",required=true) String token
+		   @RequestParam(value="token",required=true) String token
 		   ){
 	  return  userWithdrawalsService.showUserQbNum(token);
    }

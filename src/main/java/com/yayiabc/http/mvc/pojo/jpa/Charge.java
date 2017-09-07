@@ -1,12 +1,22 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
+import java.util.Date;
+
 public class Charge {
 	private String chargeId;
 	private String token;
-	private Integer money;
+	private int qbNum;
 	private Integer state;//1表示未支付 2表示已支付
 	private String qbType;
+	private String money;
+	private Date created;
 	
+	public Date getCreated() {
+		return created;
+	}
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 	public String getQbType() {
 		return qbType;
 	}
@@ -25,33 +35,23 @@ public class Charge {
 	public void setToken(String token) {
 		this.token = token;
 	}
-	public Integer getMoney() {
-		return money;
-	}
-	public void setMoney(Integer money) {
-		this.money = money;
-	}
 	public Integer getState() {
 		return state;
 	}
 	public void setState(Integer state) {
 		this.state = state;
 	}
-	public Charge(String chargeId, String token, Integer money, Integer state) {
-		super();
-		this.chargeId = chargeId;
-		this.token = token;
+	public int getQbNum() {
+		return qbNum;
+	}
+	public void setQbNum(int qbNum) {
+		this.qbNum = qbNum;
+	}
+	public String getMoney() {
+		return money;
+	}
+	public void setMoney(String money) {
 		this.money = money;
-		this.state = state;
-	}
-	public Charge() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-	@Override
-	public String toString() {
-		return "Charge [chargeId=" + chargeId + ", token=" + token + ", money="
-				+ money + ", state=" + state + "]";
 	}
 	
 }

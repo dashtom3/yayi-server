@@ -11,6 +11,7 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.UserWithdrawalsDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
+import com.yayiabc.http.mvc.pojo.jpa.CusResources;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.jpa.UserWitSetUp;
 import com.yayiabc.http.mvc.pojo.jpa.UserWith;
@@ -21,24 +22,48 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 	private UserWithdrawalsDao userWithdrawalsServiceDao;
 	@Autowired
 	private UtilsDao utilsDao;
-	
+
 	//提现列表的显示
 	@Override
 	public DataWrapper<Object> show(HashMap<String, Object> hm) {
-		// TODO Auto-generated method stub
+		// TODO Auto-generated method stub   currentPage
+		/**
+		 * DataWrapper<List<CusResources>> dataWrapper=new DataWrapper<List<CusResources>>();
+		Page page=new Page();
+		page.setNumberPerPage(numberPerPage);
+		page.setCurrentPage(currentPage);
+		//总条数
+		Integer count=findDao.queryCount(state);
+		Integer numberPerpage=page.getNumberPerPage();
+		Integer currentNum=page.getCurrentNumber();
+		dataWrapper.setPage(page,count);
+       hm.put("nameOrPhone", nameOrPhone);
+	   hm.put("numberPerpage", numberPerpage);
+	   hm.put("currentPage", currentPage);
+	   hm.put("orderCTime", orderCTime);
+	   hm.put("orderETime", orderETime);
+		dataWrapper.setData(findDao.shows(state,currentNum,numberPerpage));
+		return dataWrapper;
+		 */
 		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
 		Page page=new Page();
+		page.setNumberPerPage((Integer)hm.get("numberPerpage"));
+		page.setCurrentPage((Integer)hm.get("currentPage"));
+		 hm.remove("numberPerpage");
+         hm.remove("currentPage");
+         hm.put("numberPerpage", page.getNumberPerPage());
+         hm.put("currentNum", page.getCurrentNumber());
+		//总条数
 		int count=userWithdrawalsServiceDao.queryCount(hm);//totalnumber
 		//				hMap.put("currentPage", page.getCurrentPage());
-		hm.put("numberPerpage", page.getNumberPerPage());
-		Integer currentNum=page.getCurrentNumber();
-		hm.put("currentNum", currentNum);
+        
 		List<UserWith> userWithList=userWithdrawalsServiceDao.show(hm);
+		dataWrapper.setPage(page,count);
 		if(userWithList.isEmpty()){
 			dataWrapper.setMsg("暂无数据");
 		}
-			dataWrapper.setPage(page, count);
-		
+		dataWrapper.setPage(page, count);
+
 		dataWrapper.setData(userWithList);
 		return dataWrapper;
 	}
@@ -56,25 +81,25 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		}
 		//userWith.setUserId(user.getUserId());
 		int userQb=user.getaQb()+user.getbQb()+user.getcQb()+user.getQbBalance();
-		
+
 		if(userWith!=null){
-          if(userQb<userWith.getaType()+userWith.getbType()+userWith.getcType()+userWith.getGiveType()){
-        	  dataWrapper.setMsg("提现错误操作");
-        	  throw new RuntimeException("提现错误");
-          }else{
-        	  //根据用户的提现选择 ，更改user表用户的钱币类型的个数
-        	  userWithdrawalsServiceDao.updateUserQb(userWith);
-        	  //这里做处理 保存到用户提现表中
-        	  userWith.setaType(Math.round(userWith.getaType()*0.8));
-        	  userWith.setbType(Math.round(userWith.getbType()*0.9));
-        	  userWith.setcType(Math.round(userWith.getcType()*0.95));
-        	  userWith.setGiveType(Math.round(userWith.getGiveType()));
-        	  dataWrapper.setData( userWithdrawalsServiceDao.submit(userWith));
-          }
+			if(userQb<userWith.getaType()+userWith.getbType()+userWith.getcType()+userWith.getGiveType()){
+				dataWrapper.setMsg("提现错误操作");
+				throw new RuntimeException("提现错误");
+			}else{
+				//根据用户的提现选择 ，更改user表用户的钱币类型的个数
+				userWithdrawalsServiceDao.updateUserQb(userWith);
+				//这里做处理 保存到用户提现表中
+				userWith.setaType(Math.round(userWith.getaType()*0.8));
+				userWith.setbType(Math.round(userWith.getbType()*0.9));
+				userWith.setcType(Math.round(userWith.getcType()*0.95));
+				userWith.setGiveType(Math.round(userWith.getGiveType()));
+				dataWrapper.setData( userWithdrawalsServiceDao.submit(userWith));
+			}
 		}
-		 return dataWrapper;
+		return dataWrapper;
 	}
-	
+
 	//确定或者取消
 	@Override
 	public DataWrapper<Object> yesOrNo(String withId, Integer sign) {
@@ -84,22 +109,22 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		if(sign==1){
 			// withId 获取此用户 此次提现的内容
 			UserWith userWith=userWithdrawalsServiceDao.queryFourQb(withId);
-			
-			  userWith.setaType(-Math.round(userWith.getaType()/0.8));
-        	  userWith.setbType(-Math.round(userWith.getbType()/0.9));
-        	  userWith.setcType(-Math.round(userWith.getcType()/0.95));
-        	  userWith.setGiveType(-Math.round(userWith.getGiveType()));
-        	  int a=userWithdrawalsServiceDao.submit(userWith);
-        	  if(a>0){
-        		  dataWrapper.setMsg("拒绝提现申请，成功");
-        	  }else{
-        		  dataWrapper.setMsg("拒绝提现申请，失败");
-        	  }
+
+			userWith.setaType(-Math.round(userWith.getaType()/0.8));
+			userWith.setbType(-Math.round(userWith.getbType()/0.9));
+			userWith.setcType(-Math.round(userWith.getcType()/0.95));
+			userWith.setGiveType(-Math.round(userWith.getGiveType()));
+			int a=userWithdrawalsServiceDao.submit(userWith);
+			if(a>0){
+				dataWrapper.setMsg("拒绝提现申请，成功");
+			}else{
+				dataWrapper.setMsg("拒绝提现申请，失败");
+			}
 		}
 		//确定
 		else{
 			if(userWithdrawalsServiceDao.determine(withId)>0){
-				 dataWrapper.setMsg("打款成功");
+				dataWrapper.setMsg("打款成功");
 			}
 		}
 		return dataWrapper;
@@ -120,12 +145,12 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 				dataWrapper.setMsg("操作失败");
 			}
 		}else{*/
-			//insert
-			if(userWithdrawalsServiceDao.insertWitType(userId,accountHolder,cardNumber,witType,oBank)>0){
-				dataWrapper.setMsg("操作成功");
-			}else{
-				dataWrapper.setMsg("操作失败");
-			}
+		//insert
+		if(userWithdrawalsServiceDao.insertWitType(userId,accountHolder,cardNumber,witType,oBank)>0){
+			dataWrapper.setMsg("操作成功");
+		}else{
+			dataWrapper.setMsg("操作失败");
+		}
 		//}    
 		return dataWrapper;
 	}
@@ -153,7 +178,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		if(userId==null){
 			dataWrapper.setMsg("NONONO");
 		}else{
-	    dataWrapper.setData(userWithdrawalsServiceDao.showUserQbNum(userId));
+			dataWrapper.setData(userWithdrawalsServiceDao.showUserQbNum(userId));
 		}
 		return dataWrapper;
 	}

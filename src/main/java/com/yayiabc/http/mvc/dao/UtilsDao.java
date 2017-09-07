@@ -51,10 +51,10 @@ public interface UtilsDao {
 	String queryNameByUserId(@Param("userId")String userId);
 
 	OrderItem queryIt(@Param("itemSKU")String itemSKU, @Param("orderId")String orderId);
-
+//utilsdao.saveRechargeMessage(codeId,utilsdao.getUserID(token),String.valueOf(qbNum),qbType,String.valueOf(money));
 	int saveRechargeMessage(@Param("codeId")String codeId,
 			@Param("userID")String userID,
-			@Param("qbNum")String money,@Param("qbType")String qbType);
+			@Param("qbNum")String qbNum,@Param("qbType")String qbType, @Param("money")String money);
 
 	String queryUserByToken(@Param("token")String token);
 

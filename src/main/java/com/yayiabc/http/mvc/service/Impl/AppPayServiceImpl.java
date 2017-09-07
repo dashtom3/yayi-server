@@ -30,7 +30,7 @@ public class AppPayServiceImpl implements AppPayService {
         model.setSubject(subject);  
         model.setOutTradeNo(out_trade_no);  
         model.setTimeoutExpress("30m");  
-        model.setTotalAmount(total_fee);  
+        model.setTotalAmount("0.01");  
         model.setProductCode(QUICK_MSECURITY_PAY);  
         request.setBizModel(model);  
         request.setNotifyUrl("http://47.93.48.111:6181/api/appPay/callBack");//回调地址  
@@ -45,6 +45,7 @@ public class AppPayServiceImpl implements AppPayService {
         }  
         DataWrapper<Object> dataWrapper=new DataWrapper<Object>(); 
         dataWrapper.setData(orderInfo);
+        dataWrapper.setMsg(out_trade_no);
         return dataWrapper; 
 	}
 }

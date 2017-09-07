@@ -37,4 +37,7 @@ public interface AliPayDao {
 	int addSalesList(List<OrderItem> orderItemList);
 	int addSalesListTOitemValue(List<OrderItem> orderItemList);
 	int  saveLast(@Param("newQbDed")String newQbDed,@Param("orderId") String orderId);
+	
+	
+	int queryChargeIsTwo(String id);
 }

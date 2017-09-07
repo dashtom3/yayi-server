@@ -39,7 +39,7 @@ public class CoinRechargeController {
 	// @UserTokenValidate(description="开始支付宝充值乾币")
 	public DataWrapper<Object> recharge(
 			@RequestParam(value="token",required=true)String token,
-			@RequestParam(value="money",required=true)String qbNum,
+			@RequestParam(value="qbNum",required=true)String qbNum,
 			@RequestParam(value="qbType",required=true)String qbType,
 			@RequestParam(value="computerOrPhone",required=true)String computerOrPhone,
 			HttpServletResponse response
@@ -48,7 +48,7 @@ public class CoinRechargeController {
 		//String qbType="a_qb";
 		String codeId=createId(token);
 		double money=QbExchangeUtil.getQbByMoney(Integer.parseInt(qbNum),qbType);
-		utilsdao.saveRechargeMessage(codeId,utilsdao.getUserID(token),qbNum,qbType);
+		utilsdao.saveRechargeMessage(codeId,utilsdao.getUserID(token),String.valueOf(qbNum),qbType,String.valueOf(money));
 		//test  钱币充值  前台传来的钱币类型 为: a_qb b_qb ,c_qb
         if(computerOrPhone.equals("computer")){
         	//调用PC网页支付宝.
@@ -77,6 +77,7 @@ public class CoinRechargeController {
         	 * String orderId, String out_trade_no, String total_fee, String body, String subject,
 			   String QUICK_MSECURITY_PAY
         	 */
+        	System.out.println("33333333333333333333333333333333");
         	return appPayService.packingParameter(codeId, codeId, String.valueOf(money), "乾币充值", "乾币", "QUICK_MSECURITY_PAY");
         }else{
         	dataWrapper.setMsg("参数异常");

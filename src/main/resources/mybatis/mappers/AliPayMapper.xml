@@ -79,4 +79,9 @@
 	 <update id="saveLast">
 	   update ordera set qb_des=#{newQbDed}  where order_id=#{orderId}
 	 </update>
+	 
+	 
+	 <select id="queryChargeIsTwo" resultType="int">
+	    select state from charge where charge_id=#{id}
+	 </select>
 </mapper>       

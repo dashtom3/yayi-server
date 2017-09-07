@@ -105,12 +105,13 @@
 		from order_item
 		where order_id=#{orderId} AND itm_SKU=#{itemSKU}
 	</select>
-	<!--int saveRechargeMessage(@Param("codeId")String codeId, @Param("userID")String 
-		userID, @Param("money")String money,@Param("qbType")String qbType); -->
+	<!--	int saveRechargeMessage(@Param("codeId")String codeId,
+			@Param("userID")String userID,
+			@Param("qbNum")String qbNum,@Param("qbType")String qbType, String money); -->
 	<insert id="saveRechargeMessage">
 		insert into
-		charge(charge_id,token,qb_num,state,qb_type)values
-		(#{codeId},#{userID},#{qbNum},1,#{qbType})
+		charge(charge_id,token,qb_num,state,qb_type,money,created)values
+		      (#{codeId},#{userID},#{qbNum},1,#{qbType},#{money},now())
 	</insert>
 
 	<select id="queryUserByToken" resultType="java.lang.String">

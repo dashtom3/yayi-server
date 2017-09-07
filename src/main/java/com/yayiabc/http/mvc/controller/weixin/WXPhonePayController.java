@@ -104,7 +104,7 @@ public class WXPhonePayController {
 		}
 		Charge charge=new Charge();
 		charge.setChargeId(chargeId);
-		charge.setMoney(money);
+		charge.setMoney(String.valueOf(money));
 		charge.setState(1);
 		charge.setToken(utilsDao.getUserID(token));
 		charge.setQbType(qbType);

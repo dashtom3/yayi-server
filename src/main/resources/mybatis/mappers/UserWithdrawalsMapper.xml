@@ -33,8 +33,20 @@
 
 
 	<select id="queryCount" resultType="int">
-		select count(1) from
-		user_with uw join user us on uw.user_id=us.user_id
+		SELECT  count(1)
+		 FROM 
+		 `user` us JOIN cash_withdrawal_type cwt ON
+		us.user_id=cwt.user_id JOIN user_with uw
+		ON cwt.wit_setup_id
+		=uw.wit_setup_id
+		<where>
+			<if test="nameOrPhone!=null and nameOrPhone!=''">
+				#{nameOrPhone} in (us.true_name,us.phone)
+			</if>
+			<if test="sign!=null and sign!=''">
+				uw.sign=#{sign}
+			</if>
+		</where>
 	</select>
 	<!-- 12 hm.put("nameOrPhone", nameOrPhone); hm.put("sign", sign); hm.put("currentPage", 
 		currentPage); hm.put("numberPerpage", numberPerpage); hm.put("orderCTime", 
@@ -69,7 +81,8 @@
 	<select id="show" resultMap="cctvt">
 		SELECT us.user_id,us.true_name,us.phone,cwt.wit_setup_id,cwt.wit_type,cwt.account_holder,cwt.card_number
 		,cwt.o_bank,uw.a_type,uw.b_type,uw.c_type,uw.give_type,uw.created,uw.determine_time,uw.sign
-		 FROM USER us JOIN cash_withdrawal_type cwt ON
+		 FROM 
+		 `user` us JOIN cash_withdrawal_type cwt ON
 		us.user_id=cwt.user_id JOIN user_with uw
 		ON cwt.wit_setup_id
 		=uw.wit_setup_id
@@ -87,7 +100,7 @@
 				and DATE_FORMAT(uw.created,'%Y-%m-%d') <![CDATA[  <=  ]]>#{orderETime}
 			</if>
 		</where>
-		order by uw.created desc limit #{currentNum} ,#{numberPerpage}
+		order by uw.created desc limit ${currentNum} ,${numberPerpage}
 	</select>
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.UserWith" id="vvx">
 		<id property="withId" column="with_id" />
@@ -133,8 +146,13 @@
 	<select id="queryWitSign" resultType="int">
 	   select sign from user_with where wit_setup_id=(select max(wit_setup_id)  from  cash_withdrawal_type  where user_id=#{userId})
 	</select>
-	
-   <select id="showUserQbNum" resultType="com.yayiabc.http.mvc.pojo.jpa.User">
-    select a_qb,b_qb,c_qb,qb_balance from 'user' where user_id=#{userId}
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.User" id="qwaz">
+	 <result property="aQb" column="a_qb"/>
+	 <result property="bQb" column="b_qb"/>
+	  <result property="cQb" column="c_qb"/>
+	   <result property="qbBalance" column="qb_balance"/>
+	</resultMap>
+   <select id="showUserQbNum" resultMap="qwaz">
+    select a_qb,b_qb,c_qb,qb_balance from user where user_id=#{userId}
    </select>
 </mapper>       

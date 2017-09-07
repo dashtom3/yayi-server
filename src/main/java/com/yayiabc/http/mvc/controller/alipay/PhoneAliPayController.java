@@ -178,7 +178,7 @@ public class PhoneAliPayController {
 								Charge charge=aliPayDao.queryUserId(out_trade_no);
 								String token=utilsDao.getToken(charge.getToken());
 								QbRecord q=new QbRecord();
-								q.setQbRget(charge.getMoney());
+								q.setQbRget(Integer.parseInt(charge.getMoney()));
 								q.setQbType(charge.getQbType());
 								q.setRemark(charge.getQbType()+"乾币充值(支付宝)");
 								userMyQbService.add(q, token);
@@ -203,7 +203,7 @@ public class PhoneAliPayController {
 								Charge charge=aliPayDao.queryUserId(out_trade_no);
 								String token=utilsDao.getToken(charge.getToken());
 								QbRecord q=new QbRecord();
-								q.setQbRget(charge.getMoney());
+								q.setQbRget(Integer.parseInt(charge.getMoney()));
 								q.setQbType(charge.getQbType());
 								q.setRemark(charge.getQbType()+"乾币充值(支付宝)");
 								userMyQbService.add(q, token);

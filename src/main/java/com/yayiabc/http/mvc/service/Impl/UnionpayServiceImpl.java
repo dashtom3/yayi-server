@@ -38,7 +38,7 @@ public class UnionpayServiceImpl implements UnionpayService{
 						aliPayDao.updateState(orderId);
 						String token = utilsDao.getToken(charge.getToken());
 						QbRecord q = new QbRecord();
-						q.setQbRget(charge.getMoney());
+						q.setQbRget(Integer.parseInt(charge.getMoney()));
 						q.setQbType(charge.getQbType());
 						q.setRemark(charge.getQbType()+"乾币充值（银联支付）");
 						userMyQbService.add(q, token);

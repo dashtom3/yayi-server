@@ -31,8 +31,8 @@ public class AppUserServiceImpl implements AppUserService {
     @Autowired
     private TokenService tokenService;
     @Override
-    public DataWrapper<Void> regiseter(User user,String code) {
-        DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
+    public DataWrapper<User> regiseter(User user,String code) {
+        DataWrapper<User> dataWrapper = new DataWrapper<User>();
         if (userDao.getUserByPhone(user.getPhone()) == null) {
             String serverCode = VerifyCodeManager.getPhoneCode(user.getPhone());
             if (serverCode.equals("noCode")) {
@@ -57,6 +57,7 @@ public class AppUserServiceImpl implements AppUserService {
                         userMyQbService.add(qbRecord, token);
                         userDao.registerUserInfo(user);
                         userDao.registerUserCertification(user);
+                        dataWrapper.setData(user);
                         dataWrapper.setToken(token);
                         dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
                         dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());

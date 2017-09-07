@@ -25,7 +25,7 @@ public class AppUserController {
      */
     @RequestMapping("register")
     @ResponseBody
-    public DataWrapper<Void> register(
+    public DataWrapper<User> register(
             @ModelAttribute User user,
             @RequestParam(value="code",required = true) String code
     ){

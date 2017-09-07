@@ -55,18 +55,15 @@
 			<if test="state !=null and state !=''">
 				AND c.state=#{state}
 			</if>
-			<if test="state == 1">
+			<if test="type == 1">
 				AND c.doctor_pic!=''
+				AND c.type!=''
 			</if>
-			<if test="state == 2">
-				AND c.doctor_pic!=''
+			<if test="type == 2">
+				AND c.type!=''
 				AND c.medical_license!=''
 				AND c.business_license!=''
 				AND c.tax_registration!=''
-				AND c.opening_permit!=''
-				AND c.radiological_permit!=''
-				AND c.id_card_otherside!=''
-				AND c.id_card_positive!=''
 			</if>
 		</where>
 		GROUP BY c.user_id	
@@ -114,18 +111,15 @@
 				<if test="state !=null and state !=''">
 					AND c.state=#{state}
 				</if>
-				<if test="state == 1">
+				<if test="type == 1">
 					AND c.doctor_pic!=''
+					AND c.type!=''
 				</if>
-				<if test="state == 2">
-					AND c.doctor_pic!=''
+				<if test="type == 2">
+					AND c.type!=''
 					AND c.medical_license!=''
 					AND c.business_license!=''
 					AND c.tax_registration!=''
-					AND c.opening_permit!=''
-					AND c.radiological_permit!=''
-					AND c.id_card_otherside!=''
-					AND c.id_card_positive!=''
 				</if>
 			</where>
 			GROUP BY c.user_id
@@ -146,19 +140,19 @@
 	<update id="verifyFail">
 		UPDATE certification 
 		SET
-		type=NULL,
+		judge=0
+		<!-->type=NULL,
 		company_name=NULL,
 		part=NULL,
 		doctor_pic=NULL,
 		work_address=NULL,
-		judge=0,
 		medical_license=NULL,
 		business_license=NULL,
 		tax_registration=NULL,
 		opening_permit=NULL,
 		radiological_permit=NULL,
 		id_card_positive=NULL,
-		id_card_otherside=NULL
+		id_card_otherside=NULL<-->
 		WHERE user_id=#{userId};
 	</update>
 </mapper>        

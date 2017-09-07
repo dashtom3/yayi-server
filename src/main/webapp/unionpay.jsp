@@ -10,11 +10,11 @@
 	<form class="api-form" method="post"
 		action="<%request.getContextPath();%>/form_6_2_FrontConsume"
 		target="_blank">
-		<p>
+		<!-- <p>
 			<label>交易金额：</label> <input id="txnAmt" type="text" name="txnAmt"
 				placeholder="交易金额" value="1000" title="单位为分,不能带小数点 "
 				required="required" />
-		</p>
+		</p> -->
 		<p>
 			<label>商户订单号：</label> <input id="orderId" type="text" name="orderId"
 				placeholder="商户订单号"

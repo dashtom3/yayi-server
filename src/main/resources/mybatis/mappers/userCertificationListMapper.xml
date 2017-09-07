@@ -36,8 +36,8 @@
 		c.part,
 		c.work_address,
 		c.state
-		FROM certification c
-		LEFT JOIN `user` u
+		FROM `user` u
+		LEFT JOIN certification c
 		ON c.user_id=u.user_id	
 		<where>
 			<if test="phone !=null and phone !=''">
@@ -55,15 +55,19 @@
 			<if test="state !=null and state !=''">
 				AND c.state=#{state}
 			</if>
-			AND c.type !=''
-			AND	c.doctor_pic!=''
-			AND c.medical_license!=''
-			AND c.business_license!=''
-			AND c.tax_registration!=''
-			AND c.opening_permit!=''
-			AND c.radiological_permit!=''
-			AND c.id_card_otherside!=''
-			AND c.id_card_positive!=''
+			<if test="state == 1">
+				AND c.doctor_pic!=''
+			</if>
+			<if test="state == 2">
+				AND c.doctor_pic!=''
+				AND c.medical_license!=''
+				AND c.business_license!=''
+				AND c.tax_registration!=''
+				AND c.opening_permit!=''
+				AND c.radiological_permit!=''
+				AND c.id_card_otherside!=''
+				AND c.id_card_positive!=''
+			</if>
 		</where>
 		GROUP BY c.user_id	
 		ORDER BY c.created DESC
@@ -110,15 +114,19 @@
 				<if test="state !=null and state !=''">
 					AND c.state=#{state}
 				</if>
-				AND c.type !=''
-				AND	c.doctor_pic!=''
-				AND c.medical_license!=''
-				AND c.business_license!=''
-				AND c.tax_registration!=''
-				AND c.opening_permit!=''
-				AND c.radiological_permit!=''
-				AND c.id_card_otherside!=''
-				AND c.id_card_positive!=''
+				<if test="state == 1">
+					AND c.doctor_pic!=''
+				</if>
+				<if test="state == 2">
+					AND c.doctor_pic!=''
+					AND c.medical_license!=''
+					AND c.business_license!=''
+					AND c.tax_registration!=''
+					AND c.opening_permit!=''
+					AND c.radiological_permit!=''
+					AND c.id_card_otherside!=''
+					AND c.id_card_positive!=''
+				</if>
 			</where>
 			GROUP BY c.user_id
 			) AS a

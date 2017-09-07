@@ -14,7 +14,8 @@ public interface UserCertificationListApi {
      * @apiParam {int} type 类型（非必须，全部传空值，1个人，2机构）
      * @apiParam {int} state 状态（非必须，全部传空值，1待审核，2审核通过，3，审核未通过）
      * @apiParam {int} currentPage （非必须）
-     * @apiParam {int} numberPerPage （非必须） 
+     * @apiParam {int} numberPerPage （非必须）
+     * @apiParam {String} adminToken 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK

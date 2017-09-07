@@ -62,4 +62,8 @@ public interface SaleIncomeListDao {
 			@Param("startDate") String startDate,
 			@Param("endDate") String endDate,
 			@Param("saleId")String saleId);
+
+	//销售员通知内容
+	OrderVo userOrderDetail(
+			@Param("orderId")String orderId);
 }

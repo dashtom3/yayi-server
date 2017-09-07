@@ -30,7 +30,7 @@ import org.slf4j.LoggerFactory;
  */
 public class LogUtil {
 
-	private final static Logger GATELOG = LoggerFactory.getLogger("ACP_SDK_LOG");
+	private final static Logger GATELOG = LoggerFactory.getLogger("yayiabc");
 	private final static Logger GATELOG_ERROR = LoggerFactory.getLogger("SDK_ERR_LOG");
 	private final static Logger GATELOG_MESSAGE = LoggerFactory.getLogger("SDK_MSG_LOG");
 

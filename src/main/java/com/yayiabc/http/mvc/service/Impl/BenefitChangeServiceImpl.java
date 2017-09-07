@@ -1,28 +1,5 @@
 package com.yayiabc.http.mvc.service.Impl;
 
-import java.io.BufferedInputStream;
-import java.io.BufferedOutputStream;
-import java.io.ByteArrayInputStream;
-import java.io.ByteArrayOutputStream;
-import java.io.IOException;
-import java.io.InputStream;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.text.ParseException;
-import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.UUID;
-
-import javax.servlet.ServletOutputStream;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.ExcelUtil;
@@ -35,6 +12,16 @@ import com.yayiabc.http.mvc.pojo.jpa.ExcelEntry;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.service.BenefitChangeService;
 import com.yayiabc.http.mvc.service.UserMyQbService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import javax.servlet.ServletOutputStream;
+import javax.servlet.http.HttpServletResponse;
+import java.io.*;
+import java.net.URLEncoder;
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
+import java.util.*;
 
 @Service
 public class BenefitChangeServiceImpl implements BenefitChangeService{
@@ -92,6 +79,7 @@ public class BenefitChangeServiceImpl implements BenefitChangeService{
 					QbRecord qbRecord =new QbRecord();
 					qbRecord.setQbRget(benefit.getBenefitQb());
 					qbRecord.setRemark("优惠码兑换"+benefit.getBenefitQb()+"乾币");
+					qbRecord.setQbType("qb_balance");
 					userMyQbService.add(qbRecord, token);
 					//5.修改优惠码的兑换状态
 					String userId=benefitChangeDao.getUserIdByToken(token);

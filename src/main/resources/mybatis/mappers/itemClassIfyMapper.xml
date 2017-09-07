@@ -10,7 +10,7 @@
     SELECT a.item_classify_id AS one_id ,a.item_classify_name AS oneClassify,b.item_classify_id AS two_id,
     b.item_classify_name AS classify_two_name FROM
       (SELECT * FROM item_classify WHERE item_classify_grade=1) a
-    INNER JOIN
+    LEFT JOIN
       (SELECT * FROM item_classify WHERE item_classify_grade=2) b
     ON a.item_classify_name=b.item_previous_classify
    </select>

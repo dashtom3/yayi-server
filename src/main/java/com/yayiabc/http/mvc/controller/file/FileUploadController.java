@@ -25,6 +25,8 @@ public class FileUploadController {
 		dataWrapper.setMsg(upToken);
 		return dataWrapper;
 	}
+
+
 	
 	
 }

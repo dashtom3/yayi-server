@@ -4,26 +4,26 @@ package com.yayiabc.http.mvc.pojo.jpa;
  * Created by 小月亮 on 2017/9/4.
  */
 public class WXAppEntry {
-    private String appId;
-    private String timestamp;
+    private String appid;
+    private Long timestamp;
     private String partnerid;
     private String prepayid;
-    private String nonceStr;
-    private String signature;
+    private String noncestr;
+    private String sign;
 
-    public String getAppId() {
-        return appId;
+    public String getAppid() {
+        return appid;
     }
 
-    public void setAppId(String appId) {
-        this.appId = appId;
+    public void setAppid(String appid) {
+        this.appid = appid;
     }
 
-    public String getTimestamp() {
+    public Long getTimestamp() {
         return timestamp;
     }
 
-    public void setTimestamp(String timestamp) {
+    public void setTimestamp(Long timestamp) {
         this.timestamp = timestamp;
     }
 
@@ -43,29 +43,29 @@ public class WXAppEntry {
         this.prepayid = prepayid;
     }
 
-    public String getNonceStr() {
-        return nonceStr;
+    public String getNoncestr() {
+        return noncestr;
     }
 
-    public void setNonceStr(String nonceStr) {
-        this.nonceStr = nonceStr;
+    public void setNoncestr(String noncestr) {
+        this.noncestr = noncestr;
     }
 
-    public String getSignature() {
-        return signature;
+    public String getSign() {
+        return sign;
     }
 
-    public void setSignature(String signature) {
-        this.signature = signature;
+    public void setSign(String sign) {
+        this.sign = sign;
     }
 
-    public WXAppEntry(String appId, String timestamp, String partnerid, String prepayid, String nonceStr, String signature) {
-        this.appId = appId;
+    public WXAppEntry(String appid, Long timestamp, String partnerid, String prepayid, String noncestr, String sign) {
+        this.appid = appid;
         this.timestamp = timestamp;
         this.partnerid = partnerid;
         this.prepayid = prepayid;
-        this.nonceStr = nonceStr;
-        this.signature = signature;
+        this.noncestr = noncestr;
+        this.sign = sign;
     }
 
     public WXAppEntry() {
@@ -74,12 +74,12 @@ public class WXAppEntry {
     @Override
     public String toString() {
         return "WXAppEntry{" +
-                "appId='" + appId + '\'' +
-                ", timestamp='" + timestamp + '\'' +
+                "appid='" + appid + '\'' +
+                ", timestamp=" + timestamp +
                 ", partnerid='" + partnerid + '\'' +
                 ", prepayid='" + prepayid + '\'' +
-                ", nonceStr='" + nonceStr + '\'' +
-                ", signature='" + signature + '\'' +
+                ", noncestr='" + noncestr + '\'' +
+                ", sign='" + sign + '\'' +
                 '}';
     }
 }

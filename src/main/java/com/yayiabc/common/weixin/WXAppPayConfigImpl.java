@@ -20,7 +20,7 @@ public class WXAppPayConfigImpl extends WXPayConfig{
     //线程安全的单例模式
     public static WXAppPayConfigImpl getInstance() throws Exception{
         if (INSTANCE == null) {
-            synchronized (WXPayConfigImpl.class) {
+            synchronized (WXAppPayConfigImpl.class) {
                 if (INSTANCE == null) {
                     INSTANCE = new WXAppPayConfigImpl();
                 }
@@ -32,10 +32,13 @@ public class WXAppPayConfigImpl extends WXPayConfig{
     public String getAppID() {
         return "wx983825eaeef912b7";
     }
+    /*public String getAppID() {
+        return "wx4b1a6fde77626a32";
+    }*/
 
-//    public String getMchID() {
-//        return "1377180402";
-//    }
+    /*public String getMchID() {
+        return "1377180402";
+    }*/
     public String getMchID() {
         return "1292687201";
     }

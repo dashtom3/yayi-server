@@ -135,9 +135,10 @@ public class WXAppPayController {
             parameterMap.put("prepayid", respMap.get("prepay_id"));
             parameterMap.put("package", "Sign=WXPay");
             parameterMap.put("noncestr", WXPayUtil.generateNonceStr());
-            parameterMap.put("timestamp",String.valueOf(System.currentTimeMillis()).toString().substring(0,10));
-            String signature=WXPayUtil.generateSignature(parameterMap,WXAppPayConfigImpl.getInstance().getKey(), WXPayConstants.SignType.MD5);
-            WXAppEntry wxAppEntry =new WXAppEntry(parameterMap.get("appid"),parameterMap.get("timestamp"),parameterMap.get("partnerid"),parameterMap.get("prepayid"),parameterMap.get("noncestr"),signature);
+            parameterMap.put("timestamp",String.valueOf(System.currentTimeMillis()/1000));
+            String sign=WXPayUtil.generateSignature(parameterMap,WXAppPayConfigImpl.getInstance().getKey(), WXPayConstants.SignType.MD5);
+            System.out.println(sign);
+            WXAppEntry wxAppEntry =new WXAppEntry(parameterMap.get("appid"),Long.parseLong(parameterMap.get("timestamp")),parameterMap.get("partnerid"),parameterMap.get("prepayid"),parameterMap.get("noncestr"),sign);
             dataWrapper.setData(wxAppEntry);
         } catch (Exception e) {
             String msg="服务器错误";

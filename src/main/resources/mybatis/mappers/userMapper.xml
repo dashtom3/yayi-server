@@ -97,7 +97,7 @@
 	</select>
 	
 	<update id="registerUserInfo">
-		update user set true_name=#{trueName},sex=#{sex} where user_id=#{userId}
+		update user set true_name=#{trueName},sex=#{sex},birthday=#{birthday} where user_id=#{userId}
 	</update>
 	
 	<insert id="registerUserCertification">

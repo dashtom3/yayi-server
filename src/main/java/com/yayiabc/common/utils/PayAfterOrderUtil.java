@@ -70,14 +70,14 @@ public class PayAfterOrderUtil {
          if(t<=0&&c<=0){
         	 throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
          }
-		if(SetSaleInCome(orderId)){
+		if(SetSaleInCome(orderId,o.getUserId())){
 			System.out.println("一切执行完毕");
 			return true;
 		}
 		return false;
 	}
 	//结账时放入到SaleIncome表里的数据 并把 到账到该销售员
-	private boolean SetSaleInCome(String orderId){
+	private boolean SetSaleInCome(String orderId,String userId){
 		//销售员id
 		String saleId=utilsDao.getSaleIdByOrderId(orderId);
 
@@ -86,6 +86,11 @@ public class PayAfterOrderUtil {
 		//保存到 sale_income 表里
 
 		int sign=utilsDao.insert(saleId, orderId, 0.0,0.0,order.getSupplies_sumprice(), order.getTooldevices_sumprice());
+		SendToSaleMessage sendToSaleMessage= BeanUtil.getBean("SendToSaleMessage");
+		boolean b=sendToSaleMessage.send(userId,orderId);
+		if(!b){
+			throw new RuntimeException();
+		}
 		//获取该订单的赠送钱币数
 		Ordera o=utilsDao.queryGiveQBNumByOrderId(orderId);
 		//查询该用户钱包余额
@@ -158,6 +163,4 @@ public class PayAfterOrderUtil {
 		 }
 		return null;
 	}
-	
-	//验证重复订单
 }

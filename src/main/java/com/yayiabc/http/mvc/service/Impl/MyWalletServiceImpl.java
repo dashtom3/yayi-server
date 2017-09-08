@@ -15,7 +15,6 @@ import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Balance;
 import com.yayiabc.http.mvc.service.MyWalletService;
 @Service
-@RequestMapping("api/a")
 public class MyWalletServiceImpl implements MyWalletService{
 	@Autowired
 	private MyWalletDao myWalletDao;
@@ -38,6 +37,7 @@ public class MyWalletServiceImpl implements MyWalletService{
 			page.setCurrentPage(1);
 		}
 		String saleId=utilsDao.getSaleId(token);
+		System.err.println(saleId);
 		hm.put("saleId", saleId);
 		//总条数
 				int count=myWalletDao.queryCount(hm);
@@ -49,6 +49,7 @@ public class MyWalletServiceImpl implements MyWalletService{
 		DataWrapper<List<Balance>> dataWrapper=new DataWrapper<List<Balance>>();
 		  
 		List<Balance> blist= myWalletDao.detail(hm);
+		System.out.println(blist);
 		if(!blist.isEmpty()){
 		for(int i=0;i<blist.size();i++){
 			

@@ -52,7 +52,7 @@ public class AppPayController {
 
 	@ResponseBody
 	@RequestMapping("callBack")
-	public String aliPay_notify(
+	public void aliPay_notify(
 			HttpServletRequest request,
 			HttpServletResponse response
 			){
@@ -109,7 +109,6 @@ public class AppPayController {
 			e.printStackTrace();
 		}
         System.out.println("不啦啦啦");
-		return "fail";
     }
 	//app支付
 	@ResponseBody
@@ -117,7 +116,6 @@ public class AppPayController {
 	public DataWrapper<Object> apppay(String orderId){
 		
         HashMap<String , String> hm=alipayService.queryY(orderId);
-       
         return appPayService.packingParameter(orderId,hm.get("WIDout_trade_no"),hm.get("WIDtotal_fee"),hm.get("WIDbody"),hm.get("WIDsubject")
     		   ,"QUICK_MSECURITY_PAY"
     		   );
@@ -143,19 +141,26 @@ public class AppPayController {
 				userMyQbService.add(q, token);
 				return "success";
 			}else{
+				//这里是不是应该 把state状态充值为1
 				return "success";
 			}
 			
 		}
 	   //校验金额
 		Ordera order=alipayDao.queryOrder(out_trade_no);
-		if(!amount.equals(order.getActualPay())&&order.getOrderId().equals(out_trade_no)){
+		/*if(!amount.equals(order.getActualPay())&&!order.getOrderId().equals(out_trade_no)){
 			 return "fail";
-		}
-					if(1==order.getState()){
-						PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-						payAfterOrderUtil.universal(out_trade_no,"0");
-						return "success";
+		}*/
+					if(order!=null){
+						if(1==order.getState()){
+							PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
+							boolean falg=payAfterOrderUtil.universal(out_trade_no,"0");
+							if(falg){
+								return "success";
+							}else{
+								return "fail";
+							}
+						}
 					}
 					return "fail";
 	  }

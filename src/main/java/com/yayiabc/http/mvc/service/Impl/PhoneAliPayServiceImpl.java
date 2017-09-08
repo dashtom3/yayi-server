@@ -47,7 +47,7 @@ public class PhoneAliPayServiceImpl implements PhoneAliPayService{
 		    AlipayTradeWapPayModel model=new AlipayTradeWapPayModel();
 		    model.setOutTradeNo(out_trade_no);
 		    model.setSubject(subject);
-		    model.setTotalAmount(total_fee);
+		    model.setTotalAmount("0.01");
 		    //model.setBody(body);
 		    model.setTimeoutExpress("2m");
 		    model.setProductCode(product_code);
@@ -66,7 +66,7 @@ public class PhoneAliPayServiceImpl implements PhoneAliPayService{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			} 
-			return null;
+			return form;
 	}
 	/**
 	 * 1同步通知是给用户看的

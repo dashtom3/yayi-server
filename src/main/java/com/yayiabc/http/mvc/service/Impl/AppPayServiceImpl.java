@@ -34,6 +34,7 @@ public class AppPayServiceImpl implements AppPayService {
         model.setProductCode(QUICK_MSECURITY_PAY);  
         request.setBizModel(model);  
         request.setNotifyUrl("http://47.93.48.111:6181/api/appPay/callBack");//回调地址  
+        //request.setReturnUrl("http://www.yayiabc.com/center/myMoney");  
         String orderInfo = null; 
         try {  
             //这里和普通的接口调用不同，使用的是sdkExecute  

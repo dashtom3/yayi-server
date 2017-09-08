@@ -105,9 +105,7 @@
 		from order_item
 		where order_id=#{orderId} AND itm_SKU=#{itemSKU}
 	</select>
-	<!--	int saveRechargeMessage(@Param("codeId")String codeId,
-			@Param("userID")String userID,
-			@Param("qbNum")String qbNum,@Param("qbType")String qbType, String money); -->
+	<!--	utilsdao.saveRechargeMessage(codeId,utilsdao.getUserID(token),String.valueOf(qbNum),qbType,String.valueOf(money)); -->
 	<insert id="saveRechargeMessage">
 		insert into
 		charge(charge_id,token,qb_num,state,qb_type,money,created)values

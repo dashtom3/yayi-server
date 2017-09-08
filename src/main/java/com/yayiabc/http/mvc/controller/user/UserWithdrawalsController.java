@@ -100,7 +100,7 @@ public class UserWithdrawalsController {
    @ResponseBody
    @RequestMapping("showUserQbNum")
    DataWrapper<Object> showUserQbNum(
-		   @RequestParam(value="token",required=true) String token
+		   @RequestHeader(value="token",required=true) String token
 		   ){
 	  return  userWithdrawalsService.showUserQbNum(token);
    }

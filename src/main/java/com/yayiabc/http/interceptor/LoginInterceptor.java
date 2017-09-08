@@ -1,11 +1,17 @@
 package com.yayiabc.http.interceptor;
 
+import java.io.IOException;
+import java.net.InetAddress;
+import java.net.NetworkInterface;
+import java.net.SocketException;
 import java.util.ArrayList;
+import java.util.Enumeration;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 import javax.servlet.http.HttpSession;
 
+import org.slf4j.Logger;
 import org.springframework.web.servlet.handler.HandlerInterceptorAdapter;
 
 import com.yayiabc.common.utils.CheckIsSignUtils;
@@ -18,40 +24,64 @@ public class LoginInterceptor extends HandlerInterceptorAdapter {
 			throws Exception {
 		
 		/*
-		 * 验证当前用户是否登录
+		 * 验证 当前q
 		 */
-		CheckIsSignUtils checkIsSignUtils= CheckIsSignUtils.getInstance();
-		ArrayList al=checkIsSignUtils.getList();
-		 String token=null;
-		   String uri=request.getRequestURI();
-		   if(al!=null){
-			   HttpSession session=request.getSession();
-			   token=(String)session.getAttribute("token");
-			   
-			   for(int i=0;i<al.size();i++){
-				   if(al.get(i).equals(token)){
-					   System.out.println("该账号已经登陆");
-					   return false;
-				   }
-			   }
-		   }
-		   System.out.println(uri);
-		   
-		  if(token!=null||uri.indexOf("api/user")!=-1
-				   //创客的登录注册拦截
-				   ||uri.indexOf("api/saleLog")!=-1||
-				   //显示商品
-				   uri.indexOf("api/")!=-1
-				   ||uri.indexOf("api/page.htm")!=-1||uri.indexOf("logreg/log.htm")!=-1||uri.indexOf("logreg/validateCode.htm")!=-1
-				   
-				   ||uri.indexOf("logreg/log.htm")!=-1||uri.indexOf("sys/index.htm")!=-1||uri.indexOf("logreg/findUser")!=-1||uri.indexOf("logreg/reg")!=-1){
-			
+		/*if(request.getRemoteAddr().equals("47.93.48.111")){
+			 System.err.println(ip);
 			 return true;
-		}else{
-			//request.getRequestDispatcher("/WEB-INF/views/logReg.jsp").forward(request, response);
-			System.out.println("该用户没登录");
-			return false;
-		}
+		 }*/
+		//String ip=request.getRemoteAddr();
+		
+		InetAddress address1=InetAddress.getByName("127.0.0.1");
+		System.out.println(getIpAddress(request));
+		     return true;
 	}
+	
+	/**
+     * 获取服务器IP地址
+     * @return
+     */
+	//private static Logger logger = Logger.getLogger(RandomCodeUtils.class);  
+	  
+    /** 
+     * 获取请求主机IP地址,如果通过代理进来，则透过防火墙获取真实IP地址; 
+     *  
+     * @param request 
+     * @return 
+     * @throws IOException 
+     */  
+    public final static String getIpAddress(HttpServletRequest request) throws IOException {  
+        // 获取请求主机IP地址,如果通过代理进来，则透过防火墙获取真实IP地址  
+  
+        String ip = request.getHeader("X-Forwarded-For");  
+  
+        if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+                ip = request.getHeader("Proxy-Client-IP");  
+            }  
+            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+                ip = request.getHeader("WL-Proxy-Client-IP");  
+            }  
+            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+                ip = request.getHeader("HTTP_CLIENT_IP");  
+            }  
+            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+                ip = request.getHeader("HTTP_X_FORWARDED_FOR");  
+            }  
+            if (ip == null || ip.length() == 0 || "unknown".equalsIgnoreCase(ip)) {  
+                ip = request.getRemoteAddr();  
+            }  
+        } else if (ip.length() > 15) {  
+            String[] ips = ip.split(",");  
+            for (int index = 0; index < ips.length; index++) {  
+                String strIp = (String) ips[index];  
+                if (!("unknown".equalsIgnoreCase(strIp))) {  
+                    ip = strIp;  
+                    break;  
+                }  
+            }  
+        }  
+        return ip;  
+    }  
 
 }

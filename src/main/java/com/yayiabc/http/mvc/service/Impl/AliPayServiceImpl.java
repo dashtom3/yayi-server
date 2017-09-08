@@ -140,8 +140,8 @@ public class AliPayServiceImpl implements AliPayService{
 			//交易状态
 			String trade_status =params.get("trade_status"); /*new String(trade_statuss.getBytes("ISO-8859-1"),"UTF-8");*/
 			//付款金额
-            String amount = params.get("buyer_pay_amount");
-
+            String amount = params.get("total_fee");
+            System.out.println(amount);
 			//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
 
 			if(AlipayNotify.verify(params)){//验证成功
@@ -235,7 +235,7 @@ public class AliPayServiceImpl implements AliPayService{
 		}
 	   //校验金额
 		Ordera order=aliPayDao.queryOrder(out_trade_no);
-		if(!amount.equals(order.getActualPay())&&order.getOrderId().equals(out_trade_no)){
+		if(!amount.equals(order.getActualPay())&&!order.getOrderId().equals(out_trade_no)){
 			 return "fail";
 		}
 					if(2!=order.getState()){

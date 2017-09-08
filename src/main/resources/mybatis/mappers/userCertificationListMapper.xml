@@ -40,6 +40,22 @@
 		LEFT JOIN certification c
 		ON u.user_id=c.user_id
 		<where>
+			<if test="type !=1 and type !=2">
+				c.type!=''
+				AND c.medical_license!=''
+				AND c.business_license!=''
+				AND c.tax_registration!=''
+				OR c.doctor_pic!=''
+				AND c.type!=''
+			</if>
+			<if test="type == 1">
+				c.doctor_pic!=''
+			</if>
+			<if test="type == 2">
+				c.medical_license!=''
+				AND c.business_license!=''
+				AND c.tax_registration!=''
+			</if>
 			<if test="phone !=null and phone !=''">
 				u.phone LIKE '%${phone}%'
 			</if>
@@ -54,21 +70,6 @@
 			</if>
 			<if test="state !=null and state !=''">
 				AND c.state=#{state}
-			</if>
-			<if test="type == 1">
-				AND c.doctor_pic!=''
-			</if>
-			<if test="type == 2">
-				AND c.medical_license!=''
-				AND c.business_license!=''
-				AND c.tax_registration!=''
-			</if>
-			<if test="type == null and type ==''">
-				AND c.type!=''
-				AND c.doctor_pic!=''
-				AND c.medical_license!=''
-				AND c.business_license!=''
-				AND c.tax_registration!=''
 			</if>
 		</where>
 		GROUP BY c.user_id	
@@ -96,11 +97,28 @@
 
 	<select id="getCount" resultType="int">
 		SELECT count(0) FROM (
-			SELECT count(0)
-			FROM `user` u
-			LEFT JOIN certification c
-			ON u.user_id=c.user_id
+		SELECT
+		COUNT(0)
+		FROM `user` u
+		LEFT JOIN certification c
+		ON u.user_id=c.user_id
 		<where>
+			<if test="type !=1 and type !=2">
+				c.type!=''
+				AND c.medical_license!=''
+				AND c.business_license!=''
+				AND c.tax_registration!=''
+				OR c.doctor_pic!=''
+				AND c.type!=''
+			</if>
+			<if test="type == 1">
+				c.doctor_pic!=''
+			</if>
+			<if test="type == 2">
+				c.medical_license!=''
+				AND c.business_license!=''
+				AND c.tax_registration!=''
+			</if>
 			<if test="phone !=null and phone !=''">
 				u.phone LIKE '%${phone}%'
 			</if>
@@ -116,24 +134,9 @@
 			<if test="state !=null and state !=''">
 				AND c.state=#{state}
 			</if>
-			<if test="type == 1">
-				AND c.doctor_pic!=''
-			</if>
-			<if test="type == 2">
-				AND c.medical_license!=''
-				AND c.business_license!=''
-				AND c.tax_registration!=''
-			</if>
-			<if test="type == null and type ==''">
-				AND c.type!=''
-				AND c.doctor_pic!=''
-				AND c.medical_license!=''
-				AND c.business_license!=''
-				AND c.tax_registration!=''
-			</if>
 		</where>
-			GROUP BY c.user_id
-			) AS a
+		GROUP BY c.user_id
+		) AS a
 	</select>
 	
 	<update id="verify">

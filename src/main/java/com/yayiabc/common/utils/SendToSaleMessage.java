@@ -28,7 +28,7 @@ public class SendToSaleMessage {
             OrderVo orderVo=saleIncomeListDao.userOrderDetail(orderId);
             System.out.println("@@@"+df.format(orderVo.getActualMoney())+df.format(orderVo.getActualMoneyHaocai())+df.format(orderVo.getActualMoneyGongju()));
             if(orderVo!=null){
-                boolean result=HttpUtil.sendToSaleNotice(list.get(2),orderVo.getUserPhone(),df.format(orderVo.getActualMoney()),df.format(orderVo.getActualMoneyHaocai()),df.format(orderVo.getActualMoneyGongju()));
+                boolean result=HttpUtil.sendToSaleNotice(list.get(2),orderVo.getUserPhone(),df.format(orderVo.getActualMoney()),df.format(orderVo.getOrderMoneyHaocai()),df.format(orderVo.getOrderMoneyGongju()));
                 if(result){
                     LogUtil.writeLog("向销售员发送信息成功!");
                     return true;

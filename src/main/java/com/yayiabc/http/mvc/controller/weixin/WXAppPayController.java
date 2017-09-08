@@ -136,7 +136,7 @@ public class WXAppPayController {
             parameterMap.put("package", "Sign=WXPay");
             parameterMap.put("noncestr", WXPayUtil.generateNonceStr());
             parameterMap.put("timestamp",String.valueOf(System.currentTimeMillis()/1000));
-            String sign=WXPayUtil.generateSignature(parameterMap,WXAppPayConfigImpl.getInstance().getKey(), WXPayConstants.SignType.MD5);
+            String sign=WXPayUtil.generateSignature(parameterMap,WXAppPayConfigImpl.getInstance().getKey(), WXPayConstants.SignType.HMACSHA256);
             System.out.println(sign);
             WXAppEntry wxAppEntry =new WXAppEntry(parameterMap.get("appid"),Long.parseLong(parameterMap.get("timestamp")),parameterMap.get("partnerid"),parameterMap.get("prepayid"),parameterMap.get("noncestr"),sign);
             dataWrapper.setData(wxAppEntry);

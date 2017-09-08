@@ -134,8 +134,8 @@ public class HttpUtil {
     }
 
     public String sendPhoneCode(String code,String phoneNum){
-        String accountSid = "8a48b551512459880151339497b02f2b";
-        String token = "a2780e18732b43ba9b9974c824f8cf19";
+        String accountSid = "8a216da857a253ce0157ad08a86d099d";
+        String token = "168ebfadc56d45098c5e35bc697f8944";
         SimpleDateFormat sdf = new SimpleDateFormat("yyyyMMddHHmmss");
         Date time = new Date();
         String timeString = sdf.format(time);
@@ -166,7 +166,7 @@ public class HttpUtil {
         //*ACOUNT SID和AUTH TOKEN在登陆官网后，在“应用-管理控制台”中查看开发者主账号获取*
         //*参数顺序：第一个参数是ACOUNT SID，第二个参数是AUTH TOKEN。                   *
         //*******************************************************************************
-        restAPI.setAccount("8a48b551512459880151339497b02f2b", "a2780e18732b43ba9b9974c824f8cf19");
+        restAPI.setAccount("8a216da857a253ce0157ad08a86d099d", "168ebfadc56d45098c5e35bc697f8944");
 
 
         //******************************注释*********************************************
@@ -174,7 +174,7 @@ public class HttpUtil {
         //*测试开发可使用“测试Demo”的APP ID，正式上线需要使用自己创建的应用的App ID     *
         //*应用ID的获取：登陆官网，在“应用-应用列表”，点击应用名称，看应用详情获取APP ID*
         //*******************************************************************************
-        restAPI.setAppId("8aaf07085dbbd708015dbc32aad40081");
+        restAPI.setAppId("8a216da857a253ce0157ad08aa1509a4");
 
 
         //******************************注释****************************************************************
@@ -191,7 +191,7 @@ public class HttpUtil {
         //*result = restAPI.sendTemplateSMS("13800000000","1" ,new String[]{"6532","5"});																		  *
         //*则13800000000手机号收到的短信内容是：【云通讯】您使用的是云通讯短信模板，您的验证码是6532，请于5分钟内正确输入     *
         //*********************************************************************************************************************
-        result = restAPI.sendTemplateSMS(phoneNum,"203459" ,new String[]{userPhone,itemSumMoney,actualMoneyHaocai,actualMoneyGongju});
+        result = restAPI.sendTemplateSMS(phoneNum,"203723" ,new String[]{userPhone,itemSumMoney,actualMoneyHaocai,actualMoneyGongju});
 
         System.out.println("SDKTestGetSubAccounts result=" + result);
         if("000000".equals(result.get("statusCode"))){
@@ -228,7 +228,7 @@ public class HttpUtil {
         //*ACOUNT SID和AUTH TOKEN在登陆官网后，在“应用-管理控制台”中查看开发者主账号获取*
         //*参数顺序：第一个参数是ACOUNT SID，第二个参数是AUTH TOKEN。                   *
         //*******************************************************************************
-        restAPI.setAccount("8a48b551512459880151339497b02f2b", "a2780e18732b43ba9b9974c824f8cf19");
+        restAPI.setAccount("8a216da857a253ce0157ad08a86d099d", "168ebfadc56d45098c5e35bc697f8944");
 
 
         //******************************注释*********************************************
@@ -236,7 +236,7 @@ public class HttpUtil {
         //*测试开发可使用“测试Demo”的APP ID，正式上线需要使用自己创建的应用的App ID     *
         //*应用ID的获取：登陆官网，在“应用-应用列表”，点击应用名称，看应用详情获取APP ID*
         //*******************************************************************************
-        restAPI.setAppId("8aaf07085dbbd708015dbc32aad40081");
+        restAPI.setAppId("8a216da857a253ce0157ad08aa1509a4");
 
 
         //******************************注释****************************************************************
@@ -253,7 +253,7 @@ public class HttpUtil {
         //*result = restAPI.sendTemplateSMS("13800000000","1" ,new String[]{"6532","5"});																		  *
         //*则13800000000手机号收到的短信内容是：【云通讯】您使用的是云通讯短信模板，您的验证码是6532，请于5分钟内正确输入     *
         //*********************************************************************************************************************
-        result = restAPI.sendTemplateSMS(phoneNum,"198737" ,new String[]{code,"5"});
+        result = restAPI.sendTemplateSMS(phoneNum,"203722" ,new String[]{code,"5"});
 
         System.out.println("SDKTestGetSubAccounts result=" + result);
         if("000000".equals(result.get("statusCode"))){
@@ -272,6 +272,7 @@ public class HttpUtil {
         }
     }
 
+    //未使用
     @SuppressWarnings("unchecked")
 	public static boolean sendMassage(String massage,String phoneNum){
         HashMap<String, Object> result = null;

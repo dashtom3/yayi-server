@@ -2,7 +2,7 @@ package com.yayiabc.api.Before;
 
 public interface UserApi {
 	/**
-     * @api {post} http://47.93.48.111:8080/api/user/getVerifyCode （前台）获取验证码
+     * @api {post} http://47.93.48.111:6181/api/user/getVerifyCode （前台）获取验证码
      * @apiName getVerifyCode
      * @apiGroup user
      * @apiVersion 0.1.0
@@ -43,7 +43,7 @@ public interface UserApi {
      */
 
     /**
-     * @api {post} http://47.93.48.111:8080/api/user/register （前台）用户注册
+     * @api {post} http://47.93.48.111:6181/api/user/register （前台）用户注册
      * @apiName register
      * @apiGroup user
      * @apiVersion 0.1.0
@@ -87,7 +87,7 @@ public interface UserApi {
      */
 
     /**
-     * @api {post} http://47.93.48.111:8080/api/user/noteLogin （前台）短信登录
+     * @api {post} http://47.93.48.111:6181/api/user/noteLogin （前台）短信登录
      * @apiName noteLogin
      * @apiGroup user
      * @apiVersion 0.1.0
@@ -129,7 +129,7 @@ public interface UserApi {
      */
 
     /**
-     * @api {post} http://47.93.48.111:8080/api/user/pwdLogin （前台）密码登录
+     * @api {post} http://47.93.48.111:6181/api/user/pwdLogin （前台）密码登录
      * @apiName pwdLogin
      * @apiGroup user
      * @apiVersion 0.1.0
@@ -171,7 +171,7 @@ public interface UserApi {
      */
 
     /**
-     * @api {post} http://47.93.48.111:8080/api/user/reLogin （前台）退出登录
+     * @api {post} http://47.93.48.111:6181/api/user/reLogin （前台）退出登录
      * @apiName reLogin
      * @apiGroup user
      * @apiVersion 0.1.0
@@ -212,7 +212,7 @@ public interface UserApi {
      */
 
     /**
-     * @api {post} http://47.93.48.111:8080/api/user/forgetPwd （前台）忘记密码
+     * @api {post} http://47.93.48.111:6181/api/user/forgetPwd （前台）忘记密码
      * @apiName forgetPwd
      * @apiGroup user
      * @apiVersion 0.1.0
@@ -255,7 +255,7 @@ public interface UserApi {
      */
 
     /**
-     * @api {post} http://47.93.48.111:8080/api/user/bindSale （前台）用户绑定销售员
+     * @api {post} http://47.93.48.111:6181/api/user/bindSale （前台）用户绑定销售员
      * @apiName bindSale
      * @apiGroup user
      * @apiVersion 0.1.0

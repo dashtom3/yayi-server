@@ -9,7 +9,7 @@ public interface WXPayDao {
 
 	void addCharge(Charge charge);
 
-	Integer getMoneyByChargeId(String chargeId);
+	String getMoneyByChargeId(String chargeId);
 
 	void addMoney(@Param("userId")String userId,@Param("addMoney") Integer addMoney);
 

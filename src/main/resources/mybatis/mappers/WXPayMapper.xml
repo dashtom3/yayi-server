@@ -7,7 +7,7 @@
  		insert into charge(charge_id,token,qb_num,money,qb_type,state,created) values(#{chargeId},#{token},2,#{money},#{qbType},#{state},now())
  	</insert>
 	
-	<select id="getMoneyByChargeId" resultType="java.lang.Integer">
+	<select id="getMoneyByChargeId" resultType="java.lang.String">
 		select money from charge where charge_id=#{chargeId}
 	</select>
 	

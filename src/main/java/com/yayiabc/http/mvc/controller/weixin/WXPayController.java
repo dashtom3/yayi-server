@@ -296,8 +296,8 @@ public class WXPayController {
 				String chargeId=(String)packageParam.get("out_trade_no");
 				Integer chargeState=wXPayDao.getChargeStateByChargeId(chargeId);
 				if(chargeState==1){
-					Integer money=wXPayDao.getMoneyByChargeId(chargeId);
-					Integer totalTwo=money*100;
+					String money=wXPayDao.getMoneyByChargeId(chargeId);
+					Integer totalTwo=(int)Double.parseDouble(money)*100;
 					Integer totalFee=Integer.parseInt((String)packageParam.get("total_fee"));
 					if(totalFee==totalTwo){
 						//这里是支付成功

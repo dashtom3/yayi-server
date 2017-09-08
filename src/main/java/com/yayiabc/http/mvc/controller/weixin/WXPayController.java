@@ -199,7 +199,6 @@ public class WXPayController {
 	
 	@RequestMapping("unifiedOrderCharge")
 	@ResponseBody
-
 	public void unifiedOrderCharge(@RequestParam(value="money",required=true) Integer money,
 			@RequestParam("qbType")String qbType,
 			@RequestParam(value="token",required=true) String token,

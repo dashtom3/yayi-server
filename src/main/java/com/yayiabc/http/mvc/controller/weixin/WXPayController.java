@@ -56,7 +56,7 @@ public class WXPayController {
 	@ResponseBody
 	
 	public void unifiedOrderReturnUrl(
-			@RequestParam("orderId") String orderId,HttpServletResponse response){
+			@RequestParam("orderId") String orderId,HttpServletResponse response,HttpServletRequest request){
 		System.out.println("开始处理回调");
 		HashMap<String, String> hashMap=aliPayService.queryY(orderId);
 		String total_fee=hashMap.get("WIDtotal_fee");//0.01
@@ -86,8 +86,7 @@ public class WXPayController {
 			}else {
 				reqData.put("total_fee","1");
 			}
-			reqData.put("spbill_create_ip","47.93.48.111");//终端ip,必传,APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP。
-//			reqData.put("notify_url","http://47.93.48.111:8080/api/item/getItemId");//通知地址,接收微信支付异步通知回调地址，通知url必须为直接可访问的url，不能携带参数
+			reqData.put("spbill_create_ip",request.getRemoteAddr());//终端ip,必传,APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP。
 			reqData.put("trade_type","NATIVE");//必传,现场扫码付
 			reqData.put("product_id",System.currentTimeMillis()+"");//扫码支付时此参数必传,可以通过参数传进来,trade_type=NATIVE，此参数必传。此id为二维码中包含的商品ID，商户自行定义。
 			System.out.println(reqData);
@@ -293,25 +292,34 @@ public class WXPayController {
 			if("SUCCESS".equals((String)packageParam.get("result_code"))){
 				
 				//判断返回结果中的金额是否和数据库中查出来的订单金额一致
+				System.out.println("返回成功");
+				//判断返回结果中的金额是否和数据库中查出来的订单金额一致
 				String chargeId=(String)packageParam.get("out_trade_no");
+				System.out.println(chargeId);
 				Integer chargeState=wXPayDao.getChargeStateByChargeId(chargeId);
 				if(chargeState==1){
+					System.out.println("状态成功");
 					String money=wXPayDao.getMoneyByChargeId(chargeId);
-					Integer totalTwo=(int)Double.parseDouble(money)*100;
-					Integer totalFee=Integer.parseInt((String)packageParam.get("total_fee"));
-					if(totalFee==totalTwo){
+					System.out.println(money);
+					String totalFee=(String)packageParam.get("total_fee");
+					System.out.println(totalFee);
+					if(money.equals(totalFee)){
 						//这里是支付成功
 						System.out.println("支付成功");
 						//给客户的钱包充值
 						Charge charge=aliPayDao.queryUserId(out_trade_no);
+						System.out.println(charge);
 						String userId=wXPayDao.getTokenByChargeId(chargeId);
 						String token=userDao.getTokenByUserId(userId);
+						System.out.println("处理回掉成功");
 						QbRecord qbRecord =new QbRecord();
-						qbRecord.setQbRget(Integer.parseInt(charge.getMoney()));
+						qbRecord.setQbRget(charge.getQbNum());
 						qbRecord.setQbType(charge.getQbType());
-						qbRecord.setRemark("乾币充值"+money);
+						qbRecord.setRemark("乾币充值"+charge.getQbNum());
 						userMyQbService.add(qbRecord, token);
+						System.out.println("开始改变订单状态");
 						wXPayDao.updateChargeState(chargeId);
+						System.out.println("改变订单状态成功");
 						resXml = "<xml>" + "<return_code><" +
 								"![CDATA[SUCCESS]]></return_code>"+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
 					}else{
@@ -321,13 +329,13 @@ public class WXPayController {
 					resXml = "<xml>" + "<return_code><" +
 							"![CDATA[SUCCESS]]></return_code>"+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
 				}
-				
+
 			}else{
 				resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"+ "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
 			}
-			BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());  
-			out.write(resXml.getBytes());  
-			out.flush();  
+			BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());
+			out.write(resXml.getBytes());
+			out.flush();
 			out.close();
 		}else{
 			System.out.println("签名验证失败");

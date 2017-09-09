@@ -44,7 +44,7 @@ public class testTimer extends Thread implements InitializingBean{
 			}
 		}
 	}
-	@Override
+	
 	public void afterPropertiesSet() throws Exception {
 		// TODO Auto-generated method stub
 		init();

@@ -26,6 +26,7 @@
         </association>
        <collection property="itemValueList" ofType="ItemValue" autoMapping="true">
            <id column="item_value_id" property="itemValueId"/>
+           <result column="s_num" property="stockNum"/>
        </collection>
 	</resultMap>
 

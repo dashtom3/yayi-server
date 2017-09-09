@@ -1,26 +1,18 @@
 package com.yayiabc.http.mvc.controller.wexinli;
 
-import java.util.List;
-import java.util.Map;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.HttpUtil;
-import com.yayiabc.common.utils.WX;
-import com.yayiabc.http.mvc.dao.WxAppDao;
-
 import net.sf.json.JSONArray;
 import net.sf.json.JSONObject;
+
+import java.util.List;
+import java.util.Map;
 public class AdvancedUtil {
 	/**
      * 获取网页授权凭证
      * 
-     * @param appId 公众账号的唯一标识
-     * @param appSecret 公众账号的密钥
+     * @param code 公众账号的唯一标识
+     * @param secret 公众账号的密钥
      * @param code
 	 * @param secret 
 	 * @param appid 
@@ -48,7 +40,7 @@ public class AdvancedUtil {
                 wat.setScope((String)response.get("scope"));
             } catch (Exception e) {
                 wat = null;
-                int errorCode = (int) response.get("errcode");
+                int errorCode = Integer.parseInt(response.get("errcode").toString());
                 String errorMsg = (String) response.get("errmsg");
                 System.out.println("获取网页授权凭证失败 errcode:{} errmsg:{}"+errorCode+errorMsg);
                /* log.error("获取网页授权凭证失败 errcode:{} errmsg:{}", errorCode, errorMsg);*/

@@ -2,8 +2,7 @@ package com.yayiabc.http.mvc.controller.alipay;
 
 
 import java.io.IOException;
-import java.io.OutputStream;
-import java.io.PrintStream;
+import java.io.PrintWriter;
 import java.util.HashMap;
 import java.util.Iterator;
 import java.util.Map;
@@ -21,14 +20,8 @@ import com.alipay.api.internal.util.AlipaySignature;
 import com.yayiabc.common.alipayenclos.config.AlipayConfig;
 import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.PayAfterOrderUtil;
-import com.yayiabc.http.mvc.dao.AliPayDao;
-import com.yayiabc.http.mvc.dao.UtilsDao;
-import com.yayiabc.http.mvc.pojo.jpa.Charge;
-import com.yayiabc.http.mvc.pojo.jpa.Ordera;
-import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.service.AliPayService;
 import com.yayiabc.http.mvc.service.PhoneAliPayService;
-import com.yayiabc.http.mvc.service.UserMyQbService;
 /**
  * 
  * @author me
@@ -42,13 +35,8 @@ public class PhoneAliPayController {
 	@Autowired
 	private PhoneAliPayService phoneAlipayService;
 	@Autowired
-	private AliPayDao aliPayDao;
-	@Autowired
 	private AliPayService alipayService;
 	@Autowired
-	private UserMyQbService userMyQbService;
-	@Autowired
-	private UtilsDao utilsDao;
 	// 14.29  点击选择类型确定支付宝支付时(手机网站)
 	@RequestMapping("PhonePayParames")
 	void PhonePayParames(
@@ -105,16 +93,16 @@ public class PhoneAliPayController {
 			//支付宝交易号
 
 			String trade_no = new String(request.getParameter("trade_no"));
-			for(String key:params.keySet()){
+			/*for(String key:params.keySet()){
 				System.out.println("key: "+key+ " , value:"+params.get(key));
-			}
+			}*/
 			boolean Sign=AlipaySignature.rsaCheckV1(params, AlipayConfig.ALIPAY_PUBLIC_KEY, AlipayConfig.CHARSET, "RSA2");
 		
 			if(Sign){
 				System.out.println("已经成功  正在跳转");
-				response.sendRedirect("http://www.yayiabc.com/paySuccess");
+				response.sendRedirect("http://www.baidu.com");
 			}else{				System.out.println("已经失败  正在跳转");
-				response.sendRedirect("http://www.yayiabc.com/payFail");
+				response.sendRedirect("http://www.taobao.com");
 			}
 			/*out.write(
 					);//以UTF-8进行编码  
@@ -131,9 +119,9 @@ public class PhoneAliPayController {
 			HttpServletResponse response
 			//同上
 			){
-		
+		 PrintWriter out =null;
 		 try {
-			  OutputStream out = response.getOutputStream();
+			   out = response.getWriter();;
 				Map<String,String> params = new HashMap<String,String>();
 				Map requestParams = request.getParameterMap();
 				for (Iterator iter = requestParams.keySet().iterator(); iter.hasNext();) {
@@ -174,11 +162,14 @@ public class PhoneAliPayController {
 								//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 								//请务必判断请求时的total_fee、seller_id与通知时获取的total_fee、seller_id为一致的
 								//如果有做过处理，不执行商户的业务程序
-							    String falg=ut(out_trade_no,total_amount); 
-							    if(falg.equals("success"))
-								((PrintStream) out).println("success");
-							    else
-							    ((PrintStream) out).println("fail");
+							PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
+			                   if( payAfterOrderUtil.SecurityVerification(out_trade_no,total_amount,"0")){
+			                	   System.out.println("成功啦");
+			                	   out.write("success");
+			                   }else{
+			                	   System.out.println("失败啦");
+			                	   out.write("fail");
+			                   }
 							//注意：
 							//如果签约的是可退款协议，退款日期超过可退款期限后（如三个月可退款），支付宝系统发送该交易状态通知
 							//如果没有签约可退款协议，那么付款完成后，支付宝系统发送该交易状态通知。
@@ -187,15 +178,19 @@ public class PhoneAliPayController {
 								//如果没有做过处理，根据订单号（out_trade_no）在商户网站的订单系统中查到该笔订单的详细，并执行商户的业务程序
 								//请务必判断请求时的total_fee、seller_id与通知时获取的total_fee、seller_id为一致的
 								//如果有做过处理，不执行商户的业务程序
-							 String falg=ut(out_trade_no,total_amount); 
-							    if(falg.equals("success"))
-								((PrintStream) out).println("success");
-							    else
-							    ((PrintStream) out).println("fail");
+							
+							 PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
+			                   if( payAfterOrderUtil.SecurityVerification(out_trade_no,total_amount,"0")){
+			                	   System.out.println("成功啦");
+			                	   out.write("success");
+			                   }else{
+			                	   System.out.println("失败啦");
+			                	   out.write("fail");
+			                   }
 							//注意：
 							//如果签约的是可退款协议，那么付款完成后，支付宝系统发送该交易状态通知。
 						}else{
-							((PrintStream) out).println("fail");
+							out.write("fail");
 						}
 
 						//——请根据您的业务逻辑来编写程序（以上代码仅作参考）——
@@ -205,55 +200,14 @@ public class PhoneAliPayController {
 
 						//////////////////////////////////////////////////////////////////////////////////////////
 					}else{//验证失败
-						((PrintStream) out).println("fail");
+						out.write("fail");
 					}	 
 		} catch (Exception e) {
 			throw  new RuntimeException(e);
+		}finally{
+			out.flush();
+			out.close();
 		}
 		 
 }
-	//验证方法
-	private String ut(String out_trade_no,String amount){
-		if("zfb".equals(out_trade_no.substring(0, 3))){
-			Charge charge=aliPayDao.queryUserId(out_trade_no);
-			System.out.println(out_trade_no);
-			 System.out.println("123123123213   "+charge);
-			 System.out.println(amount+"    "+charge.getMoney());
-          /*  if(!amount.equals(charge.getMoney())){
-            	return "fail";
-            }*/
-            //商户订单号
-			if(charge.getState()==1){
-				aliPayDao.updateState(out_trade_no);
-				String token=utilsDao.getToken(charge.getToken());
-				QbRecord q=new QbRecord();
-				q.setQbRget(charge.getQbNum());
-				q.setQbType(charge.getQbType());
-				q.setRemark(charge.getQbType()+"乾币充值(支付宝)");
-				userMyQbService.add(q, token);
-				return "success";
-			}else{
-				//这里是不是应该 把state状态充值为1
-				return "success";
-			}
-			
-		}
-	   //校验金额
-		Ordera order=aliPayDao.queryOrder(out_trade_no);
-		/*if(!amount.equals(order.getActualPay())&&!order.getOrderId().equals(out_trade_no)){
-			 return "fail";
-		}*/
-					if(order!=null){
-						if(1==order.getState()){
-							PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-							boolean falg=payAfterOrderUtil.universal(out_trade_no,"0");
-							if(falg){
-								return "success";
-							}else{
-								return "fail";
-							}
-						}
-					}
-					return "fail";
-	  }
 }

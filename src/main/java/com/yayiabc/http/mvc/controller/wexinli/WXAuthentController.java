@@ -11,6 +11,7 @@ import javax.servlet.http.HttpServletRequest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
@@ -46,7 +47,6 @@ public class WXAuthentController{
 	private UserDao userDao;
 	@Autowired
 	private SaleLogDao saleLogDao;
-	private static int a;
 	@RequestMapping("returnSignAndMessage")
 	@ResponseBody
     public DataWrapper<Object> doGet(HttpServletRequest request,
@@ -62,10 +62,6 @@ public class WXAuthentController{
         DataWrapper<Object> dataWrapper =new DataWrapper<Object>();
         // 用户同意授权
         User user=null;
-         System.out.println(appCode.get("appid")+"          appid");
-         System.out.println(appCode.get("secret")+"          secret");
-         a++;
-         System.out.println(a+"aaaaaaaaaaaaa"+a);
         SNSUserInfo snsUserInfo=null;
         WXUserLink  wXUserLink=null;
         SaleInfo sa=null;
@@ -212,5 +208,12 @@ public class WXAuthentController{
         public void run() {
             saleLogDao.deleteSaleToken(token);
         }
+    }
+    @RequestMapping("getQRCode")
+    @ResponseBody
+    public DataWrapper<Object> getQRCode(){
+    	DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
+    	dataWrapper.setData("https://open.weixin.qq.com/connect/qrconnect?appid=wxd342cb43ba1b1e6f&redirect_uri&redirect_uri=http%3a%2f%2fwww.yayiabc.com&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect");
+    	return dataWrapper;
     }
 }

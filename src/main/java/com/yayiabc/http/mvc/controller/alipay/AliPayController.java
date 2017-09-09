@@ -12,13 +12,10 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.http.mvc.service.AliPayService;
 /**
  * 
@@ -116,20 +113,23 @@ public class AliPayController {
 			//valueStr = new String(valueStr.getBytes("ISO-8859-1"), "gbk");
 			params.put(name, valueStr);
 		}
-		OutputStream out;
+		OutputStream out = null;
 		try {
 			out = response.getOutputStream();
-			/*response.setContentType("text/html;charset=UTF-8");  */
-			/*response.getWriter().write(alipayService.notifyVerifica(
-					is_success, sign_type, sign, trade_status, out_trade_no, trade_no,params));
-			out.w*/
 			out.write(alipayService.notifyVerifica(
 					params).getBytes()
 					);//以UTF-8进行编码  0
-		} catch (IOException e) {
+		} catch (Exception e) {
 			// TODO Auto-generated catch block
 			e.printStackTrace();
-		}  
+		} finally {
+			try {
+				out.close();
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+		} 
 
 	}
 }

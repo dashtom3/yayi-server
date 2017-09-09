@@ -1,31 +1,14 @@
 package com.yayiabc.http.mvc.controller.alipay;
-
-
-import java.io.IOException;
-import java.io.OutputStream;
-import java.util.HashMap;
-import java.util.Iterator;
-import java.util.Map;
-
 import javax.servlet.http.HttpServletRequest;
-import javax.servlet.http.HttpServletResponse;
-
-import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.alipay.api.AlipayClient;
 import com.alipay.api.DefaultAlipayClient;
 import com.alipay.api.domain.AlipayTradeQueryModel;
 import com.alipay.api.request.AlipayTradeQueryRequest;
 import com.alipay.api.response.AlipayTradeQueryResponse;
 import com.yayiabc.common.alipayenclos.config.AlipayConfig;
-import com.yayiabc.common.annotation.UserTokenValidate;
-import com.yayiabc.http.mvc.service.AliPayService;
 /**
  * 
  * @author me
@@ -49,7 +32,7 @@ public class queryAliPayOrderController {
 				String trade_no = new String(request.getParameter("WIDtrade_no"));
 				/**********************/
 				// SDK 公共请求类，包含公共请求参数，以及封装了签名与验签，开发者无需关注签名与验签     
-				AlipayClient client = new DefaultAlipayClient(AlipayConfig.DEVURL, AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY,AlipayConfig.SIGNTYPE);
+				AlipayClient client = new DefaultAlipayClient("https://openapi.alipay.com/gateway.do", AlipayConfig.APPID, AlipayConfig.RSA_PRIVATE_KEY, AlipayConfig.FORMAT, AlipayConfig.CHARSET, AlipayConfig.ALIPAY_PUBLIC_KEY,"RSA2");
 				AlipayTradeQueryRequest alipay_request = new AlipayTradeQueryRequest();
 
 				AlipayTradeQueryModel model=new AlipayTradeQueryModel();

@@ -17,6 +17,7 @@ import com.yayiabc.http.mvc.dao.AliPayDao;
 import com.yayiabc.http.mvc.dao.OrderManagementDao;
 import com.yayiabc.http.mvc.dao.PlaceOrderDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
+import com.yayiabc.http.mvc.pojo.jpa.Charge;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
@@ -32,8 +33,6 @@ public class PayAfterOrderUtil {
 	private UserMyQbService userMyQbService;
 	@Autowired
 	private OrderManagementDao orderManagementDao;
-	@Autowired
-	private PlaceOrderDao placeOrderDao;
 
 	public  boolean universal(String orderId,String type){
 		//更改支付类型
@@ -151,16 +150,56 @@ public class PayAfterOrderUtil {
 		userMyQbService.addMessageQbQ(a,userId,s,MI); //新增钱币记录表   
 		return qbDes;
 	}
-	public Object checkSecurity(String userId,String orderId){
-		 if(userId!=null){
-			//User user= utilsDao.queryUserByUserId(userId);
-			Integer qbNums=placeOrderDao.ded(userId);
-			return qbNums;
-		 }
-		 //----------------
-		 if(orderId!=null){
-			 
-		 }
-		return null;
-	}
+	/**
+	 * 安全验证方法
+	 * @param out_trade_no
+	 * @param amount
+	 * @return
+	 */
+	public boolean SecurityVerification(String out_trade_no,String amount,String payType){
+		//充值乾币安全检查
+		if("zfb".equals(out_trade_no.substring(0, 3))||"wx".equals(out_trade_no.substring(0, 2))){
+			Charge charge=aliPayDao.queryUserId(out_trade_no);
+			 System.out.println(out_trade_no);
+			 System.out.println("123123123213   "+charge);
+			 System.out.println(amount+"    "+charge.getMoney());
+            if(!amount.equals(charge.getMoney())){
+            	return false;
+            }
+            //商户订单号
+			if(charge!=null){
+				if(charge.getState()==1){
+					aliPayDao.updateState(out_trade_no);
+					String token=utilsDao.getToken(charge.getToken());
+					QbRecord q=new QbRecord();
+					q.setQbRget(charge.getQbNum());
+					q.setQbType(charge.getQbType());
+					q.setRemark(charge.getQbType()+"乾币充值(支付宝)");
+					userMyQbService.add(q, token);
+					return true;
+				}/*else{
+					//这里是不是应该 把state状态重置为1
+					return "success";
+				}*/
+			}
+			
+		}
+	   //订单支付安全检查
+		Ordera order=aliPayDao.queryOrder(out_trade_no);
+		if(!amount.equals(order.getActualPay())&&!order.getOrderId().equals(out_trade_no)){
+			 return false;
+		}
+					if(order!=null){
+						if(1==order.getState()){
+							PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
+							boolean falg=payAfterOrderUtil.universal(out_trade_no,payType);
+							if(falg){
+								return true;
+							}else{
+								return false;
+							}
+						}
+					}
+					return false;
+	  }
 }

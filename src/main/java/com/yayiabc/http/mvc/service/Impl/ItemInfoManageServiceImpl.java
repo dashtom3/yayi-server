@@ -34,8 +34,17 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 		itemInfo.setTwoClassify(itemBrandName);
 		itemInfo.setState(state);
 		List<ItemInfo> itemInfoList=null;
+		Integer isThrow=0;
+		if(itemClassify!=null&&!"".equals(itemClassify)){
+			Integer count=itemInfoManageDao.getCountOneClassify(itemClassify);
+			if(count!=0){
+				isThrow=1;
+			}else{
+				isThrow=2;
+			}
+		}
 		Integer totalNumber=0;
-	    itemInfo.setIsThrow(itemClassifyGrade);
+	    itemInfo.setIsThrow(isThrow);
 		totalNumber=itemInfoManageDao.getCountOne(itemInfo);
 		dataWrapper.setPage(page, totalNumber);
 		itemInfo.setSales(page.getCurrentNumber());

@@ -4,7 +4,6 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.yayiabc.http.mvc.dao.ItemSearchDao">
 	<select id="itemSearch" resultMap="itemInfoRM">
-	<bind name="pattern" value="'%' + itemBrandName + '%'" />
 		 SELECT d.item_id,d.x_id,d.item_name,d.item_price,d.item_pica,d.one_classify,d.sales,d.two_classify,d.three_classify,c.item_brand_name,d.updated FROM
  (SELECT * FROM
  (SELECT item_id,item_name,sales,item_brand_id,item_price,one_classify,two_classify,three_classify,updated FROM item_info where state=1) a
@@ -14,9 +13,9 @@
  LEFT JOIN
  (SELECT item_brand_id p_id,item_brand_name FROM item_brand) c
  ON d.item_brand_id=c.p_id
- WHERE item_name like #{pattern} or one_classify like #{pattern}
- or two_classify like #{pattern} or three_classify like #{pattern}
- or item_brand_name like #{pattern}
+ WHERE item_name like '%${itemBrandName}%' or one_classify like '%${itemBrandName}%'
+ or two_classify like '%${itemBrandName}%' or three_classify like '%${itemBrandName}%'
+ or item_brand_name like '%${itemBrandName}%'
  order by 
     <choose>
     	<when test="rule=1">updated desc</when>
@@ -27,7 +26,6 @@
  LIMIT #{currentNumber},#{numberPerPage}
 	</select>
 	<select id="getCount" resultType="int">
-	<bind name="pattern" value="'%' + itemBrandName + '%'" />
 		 SELECT count(0) FROM
  (SELECT * FROM
  (SELECT item_id,item_name,item_brand_id,item_price,one_classify,two_classify,three_classify FROM item_info where state=1) a
@@ -37,9 +35,9 @@
  LEFT JOIN
  (SELECT item_brand_id p_id,item_brand_name FROM item_brand) c
  ON d.item_brand_id=c.p_id
- WHERE item_name like #{pattern} or one_classify like #{pattern}
- or two_classify like #{pattern} or three_classify like #{pattern}
- or item_brand_name like #{pattern}
+ WHERE item_name like '%${itemBrandName}%' or one_classify like '%${itemBrandName}%'
+ or two_classify like '%${itemBrandName}%' or three_classify like '%${itemBrandName}%'
+ or item_brand_name like '%${itemBrandName}%'
 	</select>
 	<resultMap type="ItemInfo" id="itemInfoRM" autoMapping="true">
 		<id property="itemId" column="item_id"/>

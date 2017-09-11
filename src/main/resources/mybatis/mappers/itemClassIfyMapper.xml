@@ -49,8 +49,8 @@
     (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) d
     ON c.item_brand_id=d.p_id
     <where>
-    	<if test="oneClassify!=null">one_classify=#{oneClassify}</if>
-    	<if test="twoClassify!=null">and two_classify=#{twoClassify}</if>
+    	<if test="oneClassify!=null">one_classify like '%${oneClassify}%'</if>
+    	<if test="twoClassify!=null">and two_classify like '%${twoClassify}%'</if>
     	<if test="threeClassify!=null">and three_classify=#{threeClassify}</if>
     	<if test="itemBrandName!=null">and item_brand_name=#{itemBrandName}</if>
     </where>
@@ -71,8 +71,8 @@
     (SELECT item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,item_qb,item_value_id FROM item_value) q
     ON o.item_id=q.prop_id
     <where>
-    	<if test="oneClassify!=null">one_classify=#{oneClassify}</if>
-    	<if test="twoClassify!=null">and two_classify=#{twoClassify}</if>
+    	<if test="oneClassify!=null">one_classify like '%${oneClassify}%'</if>
+    	<if test="twoClassify!=null">and two_classify like '%${twoClassify}%'</if>
     	<if test="threeClassify!=null">and three_classify=#{threeClassify}</if>
     	<if test="itemBrandName!=null">and item_brand_name=#{itemBrandName}</if>
     </where>
@@ -97,8 +97,8 @@
     (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) d
     ON c.item_brand_id=d.p_id
     <where>
-    	<if test="oneClassify!=null">one_classify=#{oneClassify}</if>
-    	<if test="twoClassify!=null">and two_classify=#{twoClassify}</if>
+    	<if test="oneClassify!=null">one_classify like '%${oneClassify}%'</if>
+    	<if test="twoClassify!=null">and two_classify like '%${twoClassify}%'</if>
     	<if test="threeClassify!=null">and three_classify=#{threeClassify}</if>
     	<if test="itemBrandName!=null">and item_brand_name=#{itemBrandName}</if>
     </where>
@@ -119,8 +119,8 @@
        (SELECT item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,item_qb,item_value_id FROM item_value) q
        ON o.item_id=q.prop_id
     <where>
-    	<if test="oneClassify!=null">one_classify=#{oneClassify}</if>
-    	<if test="twoClassify!=null">and two_classify=#{twoClassify}</if>
+    	<if test="oneClassify!=null">one_classify like '%${oneClassify}%'</if>
+    	<if test="twoClassify!=null">and two_classify like '%${twoClassify}%'</if>
     	<if test="threeClassify!=null">and three_classify=#{threeClassify}</if>
     	<if test="itemBrandName!=null">and item_brand_name=#{itemBrandName}</if>
     </where>

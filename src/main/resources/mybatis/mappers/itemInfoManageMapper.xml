@@ -14,13 +14,18 @@
 			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
 			<if test="state!=null">and state=#{state}</if>
 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
+			<!--<if test="oneClassify!=null and oneClassify!=''">and one_classify like '%${oneClassify}%' or two_classify like '%${oneClassify}%'</if>-->
 			<choose>
-				<when test="isThrow==1">and one_classify like '%${itemClassify}%'</when>
-				<when test="isThrow==2">and two_classify like '%${itemClassify}%'</when>
+				<when test="isThrow==1">and one_classify like '%${oneClassify}%'</when>
+				<when test="isThrow==2">and two_classify like '%${oneClassify}%'</when>
 			</choose>
 		</where>
 		order by a.updated desc
 		limit #{sales},#{itemStockNum}
+	</select>
+
+	<select id="getCountOneClassify" resultType="java.lang.Integer">
+		select count(0) from item_classify where item_classify_name=#{itemClassify} and item_classify_grade=1
 	</select>
 
 	<resultMap type="ItemInfo" id="itemInfoRM" autoMapping="true">
@@ -133,9 +138,10 @@
 			<if test="itemName!=null and itemName!=''">and item_name like '%${itemName}%'</if>
 			<if test="state!=null">and state=#{state}</if>
 			<if test="twoClassify!=null and twoClassify!=''">and item_brand_name=#{twoClassify}</if>
+			<!--<if test="oneClassify!=null and oneClassify!=''">and one_classify like '%${oneClassify}%' or two_classify like '%${oneClassify}%'</if>-->
 			<choose>
-				<when test="isThrow==1">and one_classify like '%${itemClassify}%'</when>
-				<when test="isThrow==2">and two_classify like '%${itemClassify}%'</when>
+				<when test="isThrow==1">and one_classify like '%${oneClassify}%'</when>
+				<when test="isThrow==2">and two_classify like '%${oneClassify}%'</when>
 			</choose>
 		</where>
 	</select>

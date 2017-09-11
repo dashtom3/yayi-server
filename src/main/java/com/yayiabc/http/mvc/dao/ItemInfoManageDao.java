@@ -33,4 +33,6 @@ public interface ItemInfoManageDao {
 	void addItemDetail(ItemInfo itemInfo);
 
 	void addItemValue(List<ItemValue> itemValueList);
+
+	Integer getCountOneClassify(String itemClassify);
 }

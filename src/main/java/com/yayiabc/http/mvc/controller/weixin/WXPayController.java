@@ -164,12 +164,16 @@ public class WXPayController {
 					Integer totalTwo=Integer.parseInt((String)packageParam.get("total_fee"));
 					if(totalFee==totalTwo){
 						PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-						   payAfterOrderUtil.universal(orderId,"1");
-						//这里是支付成功
-						System.out.println("支付成功");
-						//改变订单状态
+						Boolean flag=payAfterOrderUtil.universal(orderId,"1");
+						if(flag){
+							//这里是支付成功
+							System.out.println("支付成功");
+							//改变订单状态
 						/*aliPayDao.updateStateAndPayTime(orderId);*/
-						resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>"+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
+							resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>"+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
+						}else {
+							resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"+ "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
+						}
 					}else{
 						resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"+ "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
 					}

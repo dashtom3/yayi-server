@@ -36,7 +36,7 @@ public class PhoneAliPayController {
 	private PhoneAliPayService phoneAlipayService;
 	@Autowired
 	private AliPayService alipayService;
-	@Autowired
+	
 	// 14.29  点击选择类型确定支付宝支付时(手机网站)
 	@RequestMapping("PhonePayParames")
 	void PhonePayParames(

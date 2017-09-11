@@ -11,6 +11,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.concurrent.ConcurrentHashMap;
+
 /**
  *
  * Created by Jo on 2017/8/2.
@@ -18,6 +20,7 @@ import org.springframework.web.bind.annotation.*;
 @Controller
 @RequestMapping("api/wxLogin")
 public class WXLoginController {
+    static ConcurrentHashMap<String,String> concurrentHashMap=new ConcurrentHashMap<String,String>();
     @Autowired
     WxLoginService wxLoginService;
 
@@ -87,6 +90,10 @@ public class WXLoginController {
         dataWrapper.setData(userDao.getUserByPhone("15900901007"));
         return dataWrapper;
     }
+
+
+
+
 
 
     

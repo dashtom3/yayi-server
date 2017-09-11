@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.controller.item;
 
 import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
+import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.ItemIdUtils;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
@@ -99,7 +100,16 @@ public class ItemInfoManageController {
 	@ResponseBody
 	public DataWrapper<Void> getItemId(){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		String itemId=ItemIdUtils.getItemId();
+		String itemId;
+		synchronized (this){
+			try {
+				Thread.sleep(1000);
+			} catch (InterruptedException e) {
+				e.printStackTrace();
+				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+			}
+			itemId=ItemIdUtils.getItemId();
+		}
 		dataWrapper.setMsg(itemId);
 		return dataWrapper;
 	}

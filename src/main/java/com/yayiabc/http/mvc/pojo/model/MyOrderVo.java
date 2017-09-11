@@ -9,6 +9,8 @@ public class MyOrderVo {
 
 	private String userPhone;
 
+	private String userPic;
+
 	private String orderId;
 	
 	private double allMoney; // 销售额
@@ -49,6 +51,14 @@ public class MyOrderVo {
 
 	public String getUserPhone() {
 		return userPhone;
+	}
+
+	public String getUserPic() {
+		return userPic;
+	}
+
+	public void setUserPic(String userPic) {
+		this.userPic = userPic;
 	}
 
 	public void setUserPhone(String userPhone) {
@@ -117,7 +127,7 @@ public class MyOrderVo {
 
 	public MyOrderVo(String saleId,String orderId, String orderCreated, String userName,
 			String userPhone, double allMoney, double haocaiMoney,
-			double gongjuMoney, double refundMoney, double actualMoney,
+			double gongjuMoney, double refundMoney, double actualMoney,String userPic,
 			SaleDataStatistics saleDataStatistics) {
 		super();
 		this.orderId=orderId;
@@ -130,6 +140,7 @@ public class MyOrderVo {
 		this.gongjuMoney = gongjuMoney;
 		this.refundMoney = refundMoney;
 		this.actualMoney = actualMoney;
+		this.userPic=userPic;
 		this.saleDataStatistics = saleDataStatistics;
 	}
 

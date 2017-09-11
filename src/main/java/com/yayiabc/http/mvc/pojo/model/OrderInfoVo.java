@@ -8,6 +8,7 @@ public class OrderInfoVo {
 	private double price;
 	private Integer num;
 	private double total;
+	private String picPath;
 
 	public String getItemName() {
 		return itemName;
@@ -41,6 +42,14 @@ public class OrderInfoVo {
 		this.itemPropertyNamec = itemPropertyNamec;
 	}
 
+	public String getPicPath() {
+		return picPath;
+	}
+
+	public void setPicPath(String picPath) {
+		this.picPath = picPath;
+	}
+
 	public double getPrice() {
 		return price;
 	}
@@ -71,7 +80,7 @@ public class OrderInfoVo {
 
 	public OrderInfoVo(String itemName, String itemPropertyNamea,
 			String itemPropertyNameb, String itemPropertyNamec, double price,
-			Integer num, double total) {
+			Integer num, double total,String picPath) {
 		super();
 		this.itemName = itemName;
 		this.itemPropertyNamea = itemPropertyNamea;
@@ -80,6 +89,7 @@ public class OrderInfoVo {
 		this.price = price;
 		this.num = num;
 		this.total = total;
+		this.picPath=picPath;
 	}
 
 	@Override

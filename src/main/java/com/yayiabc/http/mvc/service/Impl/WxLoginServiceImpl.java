@@ -222,7 +222,7 @@ public class WxLoginServiceImpl implements WxLoginService {
         DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
         String type=userDao.getTypeByOpenid(openid);
         if(type == null){
-            dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+            dataWrapper.setErrorCode(ErrorCodeEnum.OPENID_NOT_EXIST);
         }else if(type.equals(state)){
             dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
         }else{

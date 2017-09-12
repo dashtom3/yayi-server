@@ -37,9 +37,9 @@ public interface UserWithdrawalsDao {
 			
 			@Param("witType")String witType, @Param("oBank")String oBank);
 
-
-	int insertWitType(@Param("userId")String userId,  @Param("accountHolder")String accountHolder, @Param("cardNumber")String cardNumber,
-			@Param("witType")String witType, @Param("oBank")String oBank
+     //#{userId},#{witType},#{accountHolder},#{cardNumber},#{oBank},NOW()
+	int insertWitType(@Param("userId")String userId,  @Param("witType")String witType, @Param("accountHolder")String accountHolder,
+			@Param("cardNumber")String cardNumber, @Param("oBank")String oBank
 			);
 
     

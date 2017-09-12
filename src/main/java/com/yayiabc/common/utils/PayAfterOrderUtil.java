@@ -52,45 +52,54 @@ public class PayAfterOrderUtil {
 		//QbRecord q=new QbRecord();
 		if(o.getQbDed()!=0){
 			//
-
 			//更新到订单表最后一列
 			int a=aliPayDao.saveLast(newQbDed(o.getUserId(),o.getQbDed(),o.getOrderId()),o.getOrderId());
 			if(a<=0){
 				throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
 			}
 		}
+		
 		//统计销量
 		List<OrderItem> orderItemList=orderManagementDao.queryOrderItemList(orderId);
 		//双休优化增加销量
 		int t=aliPayDao.addSalesList(orderItemList);
 		//增加 itemvalue表里面的销量信息
-
 		int c=aliPayDao.addSalesListTOitemValue(orderItemList);
          if(t<=0&&c<=0){
         	 throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
          }
-		if(SetSaleInCome(orderId,o.getUserId())){
-			System.out.println("一切执行完毕");
-			return true;
-		}
-		return false;
+         //关于钱币
+ 		//查询该用户钱包余额
+ 		//int qbNum=utilsDao.queryUserQbNum(o.getUserId());
+ 		if(o.getGiveQb()!=0){
+ 			QbRecord q=new QbRecord();
+ 			//----
+ 			q.setQbRget(o.getGiveQb());
+ 			q.setQbType("qb_balance");
+ 			q.setRemark("下单获得"+o.getGiveQb()+"个乾币，（0类型"+o.getGiveQb()+"个）。（订单编号:"+orderId+"）");
+ 			String token=utilsDao.queryTokenByOrderId(orderId);
+ 			userMyQbService.add(q, token);
+ 		}
+ 		//判断 该用户是否绑定了销售员
+ 		String saleId=utilsDao.getSaleIdByOrderId(orderId);
+ 		if(saleId!=null&&!saleId.equals("")){
+ 			return SetSaleInCome(orderId,o.getUserId(),saleId);
+ 		}
+		return true;
 	}
 	//结账时放入到SaleIncome表里的数据 并把 到账到该销售员
-	private boolean SetSaleInCome(String orderId,String userId){
-		//销售员id
-		String saleId=utilsDao.getSaleIdByOrderId(orderId);
-
+	private boolean SetSaleInCome(String orderId,String userId,String saleId){
 		//查出此单的  supplies_sumprice    tooldevices_sumprice
 		Ordera order=utilsDao.queryCalssSumPrice(orderId);
 		//保存到 sale_income 表里
-
+        
 		int sign=utilsDao.insert(saleId, orderId, 0.0,0.0,order.getSupplies_sumprice(), order.getTooldevices_sumprice());
 		SendToSaleMessage sendToSaleMessage= BeanUtil.getBean("SendToSaleMessage");
 		boolean b=sendToSaleMessage.send(userId,orderId);
 		if(!b){
 			throw new RuntimeException();
 		}
-		//获取该订单的赠送钱币数
+		/*//获取该订单的赠送钱币数
 		Ordera o=utilsDao.queryGiveQBNumByOrderId(orderId);
 		//查询该用户钱包余额
 		//int qbNum=utilsDao.queryUserQbNum(o.getUserId());
@@ -104,8 +113,7 @@ public class PayAfterOrderUtil {
 			q.setRemark("下单获得"+oo.getGiveQb()+"个乾币，（0类型"+oo.getGiveQb()+"个）。（订单编号:"+orderId+"）");
 			String token=utilsDao.queryTokenByOrderId(orderId);
 			userMyQbService.add(q, token);
-		}
-
+		}*/
 		return true;
 	} 
 	//下单钱币扣除规则 先。。。后。。。。。。。

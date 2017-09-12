@@ -8,7 +8,7 @@
 	<insert id="submit">
 		insert into
 		user_with(a_type,b_type,c_type,give_type,created,wit_setup_id) values(
-		#(aType),#(bType),#(cType),#(giveType),now(),#(witSetupId)
+		#(aType),#(bType),#(cType),#(giveType),now(),(select max(wit_setup_id) from cash_withdrawal_type where user_id=#{userId})
 		)
 	</insert>
 
@@ -133,7 +133,7 @@
 		where user_id=#{userId}
 	</update>
 	<insert id="insertWitType">
-		insert into cash_withdrawal_type
+		insert into cash_withdrawal_type(user_id,wit_type,account_holder,card_number,o_bank,create_time)
 		values(#{userId},#{witType},#{accountHolder},#{cardNumber},#{oBank},NOW())
 	</insert>
 
@@ -151,8 +151,9 @@
 	 <result property="bQb" column="b_qb"/>
 	  <result property="cQb" column="c_qb"/>
 	   <result property="qbBalance" column="qb_balance"/>
+	    <result property="phone" column="phone"/>
 	</resultMap>
    <select id="showUserQbNum" resultMap="qwaz">
-    select a_qb,b_qb,c_qb,qb_balance from user where user_id=#{userId}
+    select a_qb,b_qb,c_qb,qb_balance,phone from user where user_id=#{userId}
    </select>
 </mapper>       

@@ -22,9 +22,9 @@ public class AdvancedUtil {
     public static   WeixinOauth2Token getOauth2AccessToken(String code, String appid, String secret) {
         WeixinOauth2Token wat = null;
         // 拼接请求地址
- 
-      String requestUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
-       requestUrl = requestUrl.replace("APPID", appid);
+  
+        String requestUrl = "https://api.weixin.qq.com/sns/oauth2/access_token?appid=APPID&secret=SECRET&code=CODE&grant_type=authorization_code";
+        requestUrl = requestUrl.replace("APPID", appid);
         requestUrl = requestUrl.replace("SECRET", secret);
         requestUrl = requestUrl.replace("CODE", code);
         // 获取网页授权凭证

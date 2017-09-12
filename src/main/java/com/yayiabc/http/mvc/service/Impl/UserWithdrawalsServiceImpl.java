@@ -6,7 +6,10 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestHeader;
 
+import com.yayiabc.common.enums.ErrorCodeEnum;
+import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.UserWithdrawalsDao;
@@ -69,12 +72,22 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 	}
 	//提交提现申请
 	@Override
-	public  DataWrapper<Object> submit(UserWith userWith,String token) {
+	public  DataWrapper<Object> submit(UserWith userWith,String token,String vCode) {
 		// TODO Auto-generated method stub
 		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
 		User user=utilsDao.getUserByToken(token);
+		if(user==null){
+			dataWrapper.setMsg("toekn验证异常");
+			return dataWrapper;
+		}
+		if(!vCode.equals(VerifyCodeManager.getPhoneCode(user.getPhone()))){
+
+			dataWrapper.setMsg("验证码错误");
+			return dataWrapper;
+		}
+		userWith.setUserId(user.getUserId());
 		//校验 用户是否是提现成功状态下 发起的提现申请
-		int sign=userWithdrawalsServiceDao.queryWitSign(user.getUserId());
+		Integer sign=userWithdrawalsServiceDao.queryWitSign(user.getUserId());
 		if(sign==1){
 			dataWrapper.setMsg("NONONO");
 			return dataWrapper;
@@ -131,7 +144,9 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 	}
 	//设置提现类型
 	@Override
-	public DataWrapper<Object> setUpWitType(String token, String witType, String accountHolder, String oBank, String cardNumber) {
+	public DataWrapper<Object> setUpWitType(
+			String token,
+			String witType, String accountHolder, String oBank, String cardNumber) {
 		// TODO Auto-generated method stub
 		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
 		String userId=utilsDao.getUserID(token);
@@ -145,8 +160,8 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 				dataWrapper.setMsg("操作失败");
 			}
 		}else{*/
-		//insert
-		if(userWithdrawalsServiceDao.insertWitType(userId,accountHolder,cardNumber,witType,oBank)>0){
+		//insert   values(#{userId},#{witType},#{accountHolder},#{cardNumber},#{oBank},NOW())
+		if(userWithdrawalsServiceDao.insertWitType(userId,witType,accountHolder,cardNumber,oBank)>0){
 			dataWrapper.setMsg("操作成功");
 		}else{
 			dataWrapper.setMsg("操作失败");

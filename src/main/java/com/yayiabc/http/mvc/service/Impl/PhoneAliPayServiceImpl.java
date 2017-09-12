@@ -44,7 +44,7 @@ public class PhoneAliPayServiceImpl implements PhoneAliPayService{
 		AlipayTradeWapPayModel model=new AlipayTradeWapPayModel();
 		model.setOutTradeNo(out_trade_no);
 		model.setSubject(subject);
-		model.setTotalAmount(out_trade_no);
+		model.setTotalAmount(total_fee);
 		model.setBody(WIDbody);
 		model.setTimeoutExpress("2m");
 		model.setProductCode(product_code);
@@ -52,7 +52,7 @@ public class PhoneAliPayServiceImpl implements PhoneAliPayService{
 		// 设置异步通知地址
 		alipay_request.setNotifyUrl(AlipayConfig.phoneNotify_url);
 		// 设置同步地址
-		alipay_request.setReturnUrl(AlipayConfig.phoneReturn_url);   
+		//alipay_request.setReturnUrl(AlipayConfig.phoneReturn_url);   
 		// form表单生产
 		String form = "";
 		try {

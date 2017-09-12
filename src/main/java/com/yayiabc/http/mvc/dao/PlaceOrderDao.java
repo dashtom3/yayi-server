@@ -113,7 +113,7 @@ public interface PlaceOrderDao {
 	int saveInvoiced(Invoice invoice);
 
      
-	List<Invoice> queryLastInvoice(@Param("userId")String userId);
+	Invoice queryLastInvoice(@Param("userId")String userId);
 
 	
 

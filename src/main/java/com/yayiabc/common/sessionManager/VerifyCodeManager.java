@@ -37,7 +37,8 @@ public class VerifyCodeManager {
                     VerifyCodeManager.removePhoneCodeByPhoneNum(phoneNum);
                     return "overdue";
                 }else{
-                    return  USER_CODE_MAP.get(phoneNum).substring(0,4);
+                	String a=USER_CODE_MAP.get(phoneNum).substring(0,4);
+                    return  a;
                 }
             }
             else

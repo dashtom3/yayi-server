@@ -1,6 +1,5 @@
 package com.yayiabc.http.mvc.service.Impl;
 
-import java.util.Collections;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
@@ -27,7 +26,6 @@ import com.yayiabc.http.mvc.pojo.model.FinalList;
 import com.yayiabc.http.mvc.service.PlaceOrderService;
 
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.ExceptionHandler;
 
 @Service
 public class PlaceOrderServiceImpl implements PlaceOrderService{
@@ -35,9 +33,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	private PlaceOrderDao placeOrderDao;
 	@Autowired
 	private UtilsDao utilsDao;
-
-
-
 
 	public Integer getFreight(Receiver receiver,Double sumPrice,Integer itemSum){
 		String Province =receiver.getProvince();
@@ -73,7 +68,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				}
 			}
 		}
-
 		//查询自定义运费表数据
 		List<PostFee> lists=placeOrderDao.query();
 		if(!lists.isEmpty()){
@@ -102,11 +96,11 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	public DataWrapper<Integer> ded(String token, int num/*,Integer  receiverId*/) {
 		DataWrapper<Integer> dataWrapper=new DataWrapper<Integer>();
 		// TODO Auto-generated method stub
-		//该单计算运费
-		/*Receiver receiver=placeOrderDao.queryReceiver(receiverId);
-
-		Double postFee=getFreight(receiver,sumPrice,itemSum);*/
 		String userId=utilsDao.getUserID(token);
+		if(userId==null){
+			dataWrapper.setMsg("token验证过期");
+			return dataWrapper;
+		}
 		//查询当前用户的钱币剩余
 		int su= placeOrderDao.ded(userId);
 		dataWrapper.setData(su);
@@ -212,25 +206,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//把传过来的 List<OrderItem> 遍历到order_item 表中
 			Double sumPrice=0.0;
 			int itemSum=orderItemList.size();//商品总数量
-			//抽取for循环的第一步  根据orderItemList 的itemsku 去数据库做批量查询  出 ArrayList<ItemValue>
-			//List<ItemValue> itemValueList=placeOrderDao.queryAttributesList(orderItemList);
-			//抽取for循环的第二步 根据 itemValueList里的 itemId 去数据库做批量查询 出ArrayList<orderItem>
-			/**
-			 * <resultMap type="com.yayiabc.http.mvc.pojo.jpa.OrderItem" id="queryOrderA">
-				<result property="itemName" column="item_name" />
-				<result property="itemType" column="item_sort" />
-				<result property="itemBrandName" column="item_brand_name" />
-				<result property="picPath" column="item_pica" />
-	           </resultMap>
-			 */
-			//List<OrderItem> orderItemListAttributes=placeOrderDao.queryItemIdListByitemValueList(itemValueList);
 
-			//-----啦啦
 			List<FinalList> finalList=placeOrderDao.queryFinalList(orderItemList);
-			/*if(itemValueList.size()>orderItemListAttributes.size()){
-
-			}*/
-			
 			for(int i=0;i<orderItemList.size();i++){
 				for(int x=0;x<finalList.size();x++){
 					if(orderItemList.get(i).getItemSKU().equals(finalList.get(x).getItemSKU())){
@@ -245,27 +222,13 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 						orderItemList.get(i).setItemType(finalList.get(x).getItemType());
 					}
 				}
-				
-				if("上海道邦".equals(orderItemList.get(i).getItemBrandName())){
-					daoBnagSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
-				}else{
-					//这里计算除道邦之外的商品分类价格  耗材类  工具设备类
-					if("耗材类".equals(orderItemList.get(i).getItemType())){
-						SuppliesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
-					}else if("工具设备类".equals(orderItemList.get(i).getItemType())){
-						TooldevicesSumCount+=orderItemList.get(i).getNum();
-						TooldevicesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
-					}
-				}
-				//订单商品总价
-				sumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
-				//这里计算除道邦之外的商品分类价格  耗材类  工具设备类
-				if("耗材类".equals(orderItemList.get(i).getItemType())){
-					AllSuppliesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
-				}else if("工具设备类".equals(orderItemList.get(i).getItemType())){
-					AllTooldevicesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
-				}
 			}
+			//计算改单商品金额
+			HashMap<String, Object> priceMap=partItemPrices(orderItemList,AllSuppliesSumPrice,AllTooldevicesSumPrice);
+			sumPrice=(Double) priceMap.get("sumPrice");
+			AllSuppliesSumPrice=(Double) priceMap.get("AllSuppliesSumPrice");
+			AllTooldevicesSumPrice=(Double) priceMap.get("AllTooldevicesSumPrice");
+			
 			//更改库存 与校验商品是否在售卖状态
 			boolean flag=changeStockNum(orderItemList,finalList);
 			if(!flag){
@@ -279,7 +242,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
 			}
 			//计算本单赠送钱币数
-			giveQbNum=calculQbNum(daoBnagSumPrice,SuppliesSumPrice,TooldevicesSumCount,TooldevicesSumPrice);
+			giveQbNum=calculQbNum(daoBnagSumPrice,SuppliesSumPrice,TooldevicesSumCount,TooldevicesSumPrice,orderItemList);
 			
 			
 			//该单计算运费
@@ -304,8 +267,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			hashMap.put("itemSum", itemSum);
 			hashMap.put("postFee", postFee);
 			hashMap.put("actualPay", actualPay);
-			hashMap.put("AllSuppliesSumPrice", AllSuppliesSumPrice);
-			hashMap.put("AllTooldevicesSumPrice", AllTooldevicesSumPrice);
+			/*hashMap.put("AllSuppliesSumPrice", AllSuppliesSumPrice);
+			hashMap.put("AllTooldevicesSumPrice", AllTooldevicesSumPrice);*/
 			hashMap.put("SuppliesSumPrice", SuppliesSumPrice);
 			hashMap.put("TooldevicesSumPrice", TooldevicesSumPrice);
 			hashMap.put("daoBnagSumPrice", daoBnagSumPrice);
@@ -323,7 +286,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			}
             //放入缓存
 			CacheUtils.getInstance().getCacheMap().put(orderId, new Date());
-
 			//判断客服是否全额乾币支付
 			if(actualPay==0){
 				PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
@@ -337,10 +299,28 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			throw new RuntimeException(e); 
 		}
 	}
-	
+
+	//分别计算该单下的分类价格AllSuppliesSumPrice
+	private HashMap<String, Object> partItemPrices(List<OrderItem> orderItemList, double AllSuppliesSumPrice, double AllTooldevicesSumPrice){
+		HashMap<String, Object> hm=new HashMap<String,Object>();
+		if(!orderItemList.isEmpty())
+		for(int i=0;i<orderItemList.size();i++){
+			//这里计算除道邦之外的商品分类价格  耗材类  工具设备类
+			if("耗材类".equals(orderItemList.get(i).getItemType())){
+				AllSuppliesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
+			}else if("工具设备类".equals(orderItemList.get(i).getItemType())){
+				AllTooldevicesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
+			}
+		}
+		hm.put("AllSuppliesSumPrice", keepTwo(AllSuppliesSumPrice));
+		hm.put("AllTooldevicesSumPrice", keepTwo(AllTooldevicesSumPrice));
+		hm.put("sumPrice",keepTwo(AllSuppliesSumPrice+AllTooldevicesSumPrice));
+		return hm;
+     }
 	//下单更改订单里的商品库存
 	private boolean changeStockNum(List<OrderItem> orderItemList,List<FinalList> finalList){
 		if(orderItemList.size()!=finalList.size()){
+			System.out.println(orderItemList.size()+"   "+finalList.size());
 			return false;
 		}else{
 			for(int i=0;i<orderItemList.size();i++){
@@ -352,22 +332,33 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					placeOrderDao.updateInventNum(
 							String.valueOf(finalList.get(i).getStockNum()-orderItemList.get(i).getNum()),finalList.get(i).getItemSKU()
 							);
-					return true;
 					//---
 				}else{
 					//删除该订单   和订单商品表里的信息
 					return false;
-					//return dataWrapper;
 				}
 				}else{
 					return false;
 				}
 			}
 		}
-		return false;
+		return true;
 	}
-	private double calculQbNum(double daoBnagSumPrice,double SuppliesSumPrice,double TooldevicesSumCount,double TooldevicesSumPrice){
+	private double calculQbNum(double daoBnagSumPrice,double SuppliesSumPrice,double TooldevicesSumCount,double TooldevicesSumPrice, List<OrderItem> orderItemList){
 		double giveQbNum=0.0;
+        for(int i=0;i<orderItemList.size();i++){
+        	if("上海道邦".equals(orderItemList.get(i).getItemBrandName())){
+				daoBnagSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
+			}else{
+				//这里计算除道邦之外的商品分类价格  耗材类  工具设备类
+				if("耗材类".equals(orderItemList.get(i).getItemType())){
+					SuppliesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
+				}else if("工具设备类".equals(orderItemList.get(i).getItemType())){
+					TooldevicesSumCount+=orderItemList.get(i).getNum();
+					TooldevicesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
+				}
+			}
+        }
 		//首先道邦品牌
 		if(daoBnagSumPrice>0&&daoBnagSumPrice<300){
 			giveQbNum=giveQbNum+daoBnagSumPrice*0.03;
@@ -404,12 +395,15 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		// TODO Auto-generated method stub
 		String userId=utilsDao.getUserID(token);
 		DataWrapper<Invoice> dataWrapper=new DataWrapper<Invoice>();
-		List<Invoice> in=placeOrderDao.queryLastInvoice(userId);
+		Invoice in=placeOrderDao.queryLastInvoice(userId);
 		if(in!=null){
-			if(!in.isEmpty()){
-				dataWrapper.setData(in.get(0));
-			}
+				dataWrapper.setData(in);
 		}
 		return dataWrapper;
 	}
+	
+	//double保留最后两位小数
+    private Double keepTwo(Double ouble){
+      return (double) Math.round(ouble);
+    }
 }

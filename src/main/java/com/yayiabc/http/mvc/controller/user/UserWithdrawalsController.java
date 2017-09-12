@@ -10,6 +10,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.enums.ErrorCodeEnum;
+import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.UserWith;
 import com.yayiabc.http.mvc.service.UserWithdrawalsService;
@@ -52,9 +54,12 @@ public class UserWithdrawalsController {
    @RequestMapping("submit")
    DataWrapper<Object> submit(
 		   @ModelAttribute UserWith  userWith,
-		   @RequestHeader(value="token",required=true) String token
+		   @RequestHeader(value="token",required=true) String token,
+		   @RequestParam(value="vCode") String vCode
 		   ){
-	  return  userWithdrawalsService.submit(userWith,token);
+	   
+	   
+	  return  userWithdrawalsService.submit(userWith,token,vCode);
    }
    /**
     * 确定申请

@@ -14,7 +14,7 @@
 			<if test="itemSKUs!=null and itemSKUs!=''">
 				<foreach collection="itemSKUs" item="sku" open="" close=""
 					separator="or">
-					item_sku = #{sku}
+					item_sku = #{sku}queryLastInvoice
 				</foreach>
 			</if>
 		</where>
@@ -276,7 +276,7 @@
 
 	<select id="queryLastInvoice" resultType="com.yayiabc.http.mvc.pojo.jpa.Invoice">
 		select * from invoice
-		where user_id=#{userId} ORDER BY c_time DESC
+		where user_id=#{userId} ORDER BY c_time DESC limit 0,1
 	</select>
 	<!--双休期间的优化工作 -->
 	<select id="queryAttributesList" parameterType="java.util.List"

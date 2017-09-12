@@ -158,9 +158,10 @@
 		<result property="bQb" column="b_qb" />
 		<result property="cQb" column="c_qb" />
 		<result property="qbBalance" column="qb_balance" />
+		<result property="phone" column="phone" />
 	</resultMap>
 	<select id="getUserByToken" resultMap="getUser">
-		select user_id,a_qb,b_qb,c_qb,qb_balance from user
+		select user_id,a_qb,b_qb,c_qb,qb_balance,phone from user
 		where user_id=(select user_id from user_token where token=#{token})
 	</select>
 

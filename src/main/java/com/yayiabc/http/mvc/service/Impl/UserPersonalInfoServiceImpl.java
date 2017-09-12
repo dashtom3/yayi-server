@@ -66,6 +66,18 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 			certification.setUserId(userId);
 			int i = userPersonalInfoDao.updateCertification(certification);
 			if (i > 0) {
+				UserPersonalInfo userPersonalInfo = userPersonalInfoDao.detail(userId);
+				if(userPersonalInfo.getType()==1){
+					if(userPersonalInfo.getDoctorPic() !=null ){
+						userPersonalInfoDao.updateState(userId);
+					}
+				}else if(userPersonalInfo.getType()==2){
+					if(userPersonalInfo.getMedicalLicense() !=null &&
+						userPersonalInfo.getBusinessLicense() !=null &&
+						userPersonalInfo.getTaxRegistration()!=null){
+						userPersonalInfoDao.updateState(userId);
+					}
+				}
 				dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			} else {
 				dataWrapper.setErrorCode(ErrorCodeEnum.Error);

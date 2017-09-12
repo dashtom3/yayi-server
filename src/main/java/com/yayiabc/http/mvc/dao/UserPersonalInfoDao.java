@@ -16,6 +16,8 @@ public interface UserPersonalInfoDao {
 	int updateCertification(Certification certification);  
 	
 	int updateUser(User user);
+
+	void updateState(String userId);
 	
 	String getUserIdOnC(String userId);
 	

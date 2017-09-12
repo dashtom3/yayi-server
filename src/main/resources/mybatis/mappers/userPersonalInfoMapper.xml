@@ -96,9 +96,16 @@
 			<if test="radiologicalPermit !=null and radiologicalPermit !=''">radiological_permit=#{radiologicalPermit},</if>
 			<if test="idCardPositive !=null and idCardPositive !=''">id_card_positive=#{idCardPositive},</if>
 			<if test="idCardOtherside !=null and idCardOtherside !=''">id_card_otherside=#{idCardOtherside},</if>
-			state=1,fail_reason=NULL
+			fail_reason=NULL
 		</set>
 		WHERE user_id=#{userId};
+	</update>
+
+	<update id="updateState">
+			UPDATE certification
+			SET
+			state=1
+			WHERE user_id=#{userId};
 	</update>
 	
 	<select id="queryBind" resultType="String">

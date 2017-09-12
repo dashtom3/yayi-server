@@ -40,24 +40,9 @@
 		LEFT JOIN certification c
 		ON u.user_id=c.user_id
 		<where>
-			<if test="type !=1 and type !=2">
-				c.type!=''
-				AND c.medical_license!=''
-				AND c.business_license!=''
-				AND c.tax_registration!=''
-				OR c.doctor_pic!=''
-				AND c.type!=''
-			</if>
-			<if test="type == 1">
-				c.doctor_pic!=''
-			</if>
-			<if test="type == 2">
-				c.medical_license!=''
-				AND c.business_license!=''
-				AND c.tax_registration!=''
-			</if>
+			    c.state !=''
 			<if test="phone !=null and phone !=''">
-				u.phone LIKE '%${phone}%'
+			    AND u.phone LIKE '%${phone}%'
 			</if>
 			<if test="trueName !=null and trueName !=''">
 				AND u.true_name LIKE '%${trueName}%'
@@ -103,24 +88,9 @@
 		LEFT JOIN certification c
 		ON u.user_id=c.user_id
 		<where>
-			<if test="type !=1 and type !=2">
-				c.type!=''
-				AND c.medical_license!=''
-				AND c.business_license!=''
-				AND c.tax_registration!=''
-				OR c.doctor_pic!=''
-				AND c.type!=''
-			</if>
-			<if test="type == 1">
-				c.doctor_pic!=''
-			</if>
-			<if test="type == 2">
-				c.medical_license!=''
-				AND c.business_license!=''
-				AND c.tax_registration!=''
-			</if>
+			    c.state !=''
 			<if test="phone !=null and phone !=''">
-				u.phone LIKE '%${phone}%'
+				AND u.phone LIKE '%${phone}%'
 			</if>
 			<if test="trueName !=null and trueName !=''">
 				AND u.true_name LIKE '%${trueName}%'

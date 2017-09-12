@@ -16,4 +16,6 @@ public interface WxLoginService {
 	DataWrapper<User> updateUserInfo(User user,Integer number,String openid);
 
 	DataWrapper<Void> updateSaleInfo(SaleInfo saleInfo, Integer number,String openid);
+
+	DataWrapper<Void> judgeOpenid(String openid,String state);
 }

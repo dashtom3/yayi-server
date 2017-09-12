@@ -48,4 +48,12 @@ public interface UserDao {
 	User getUserByPhone(@Param("phone")String phone);
 
     Integer getCountByUserId(@Param("userId") String userId);
+
+    //彻底删除用户信息
+    void deleteInGrainUser(@Param("userId")String userId);
+
+    String getUserPhoneByToken(@Param("token")String token);
+
+
+    String getTypeByOpenid(@Param("openid")String openid);
 }

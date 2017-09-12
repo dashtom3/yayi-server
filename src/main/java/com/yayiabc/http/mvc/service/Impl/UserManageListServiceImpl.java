@@ -3,6 +3,8 @@ package com.yayiabc.http.mvc.service.Impl;
 import java.util.List;
 import java.util.Map;
 
+import com.yayiabc.common.utils.HttpUtil;
+import com.yayiabc.http.mvc.controller.unionpay.sdk.LogUtil;
 import com.yayiabc.http.mvc.dao.*;
 import com.yayiabc.http.mvc.pojo.model.UserStatistics;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -71,6 +73,11 @@ public class UserManageListServiceImpl implements UserManageListService {
 			int i = userManageListDao.bind(salePhone, userPhone);
 			if (i > 0) {
 				userManageListDao.bindUpdateNum(saleId);
+				boolean result= HttpUtil.sendUserBind(userPhone,salePhone);
+				boolean resulta=HttpUtil.sendSaleBind(salePhone,userPhone);
+				if(result && resulta){
+					LogUtil.writeLog("绑定短信发送成功！");
+				}
 			} else {
 				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			}

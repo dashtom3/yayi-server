@@ -217,5 +217,24 @@ public class WxLoginServiceImpl implements WxLoginService {
 		return dataWrapper;
 	}
 
+    @Override
+    public DataWrapper<Void> judgeOpenid(String openid, String state) {
+        DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
+        String type=userDao.getTypeByOpenid(openid);
+        if(type == null){
+            dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+        }else if(type.equals(state)){
+            dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+        }else{
+            dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+            if("ds".equals(type)){
+                dataWrapper.setMsg("该微信号已绑定牙医账号！");
+            }else if("ck".equals(type)){
+                dataWrapper.setMsg("该微信号已绑定创客账号！");
+            }
+        }
+        return dataWrapper;
+    }
+
 
 }

@@ -92,10 +92,12 @@ public class WXLoginController {
     }
 
 
-
-
-
-
-    
-   
+    @RequestMapping(value = "judgeOpenid",method = RequestMethod.POST)
+    @ResponseBody
+    public DataWrapper<Void> judgeOpenid(
+            @RequestParam(value = "openid",required = true)String openid,
+            @RequestParam(value = "state",required = true)String state
+    ){
+        return wxLoginService.judgeOpenid(openid,state);
+    }
 }

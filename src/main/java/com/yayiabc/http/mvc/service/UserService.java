@@ -17,8 +17,7 @@ public interface UserService {
 
 	DataWrapper<Void> forgetPwd(String phone, String code, String password);
 
-
 	DataWrapper<Void> bindSale(String token, String salePhone);
 
-
+	DataWrapper<Void> deleteInGrainUser(String userId);
 }

@@ -102,4 +102,14 @@ public class UserController {
 	){
 		return userService.bindSale(token,salePhone);
 	}
+
+	//彻底删除
+	@RequestMapping(value = "deleteInGrainUser",method = RequestMethod.POST)
+	@ResponseBody
+	public DataWrapper<Void> deleteInGrainUser(
+			//@RequestParam("token") String token,
+			@RequestParam("userId") String userId
+	){
+		return userService.deleteInGrainUser(userId);
+	}
 }

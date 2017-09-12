@@ -3,9 +3,8 @@ package com.yayiabc.http.mvc.service.Impl;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.sessionManager.SessionManager;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
-import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.common.utils.HttpUtil;
-import com.yayiabc.common.utils.MD5Util;
+import com.yayiabc.common.utils.*;
+import com.yayiabc.http.mvc.controller.unionpay.sdk.LogUtil;
 import com.yayiabc.http.mvc.dao.SaleLogDao;
 import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.UserManageListDao;
@@ -17,6 +16,7 @@ import com.yayiabc.http.mvc.service.TokenService;
 import com.yayiabc.http.mvc.service.UserMyQbService;
 import com.yayiabc.http.mvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -253,15 +253,25 @@ public class UserServiceImpl implements UserService {
         if(saleInfo!=null) {
             int i = userDao.bindSale(userId,saleInfo.getSaleId());
             userManageListDao.bindUpdateNum(saleInfo.getSaleId());
+            boolean result=HttpUtil.sendUserBind(userDao.getUserPhoneByToken(token),salePhone);
+            boolean resulta=HttpUtil.sendSaleBind(salePhone,userDao.getUserPhoneByToken(token));
+            if(result && resulta){
+                LogUtil.writeLog("绑定短信发送成功！");
+            }
         }else{
             dataWrapper.setErrorCode(ErrorCodeEnum.Error);
         }
         return dataWrapper;
     }
 
-
-
-
+    @Override
+    public DataWrapper<Void> deleteInGrainUser(String userId) {
+        DataWrapper<Void> dataWrapper= new DataWrapper<Void>();
+        userDao.deleteInGrainUser(userId);
+//        SendToSaleMessage sendToSaleMessage= BeanUtil.getBean("SendToSaleMessage");
+//        sendToSaleMessage.send("42c3ae9e-95d3-4e5b-9347-48fe27f9dfda","fd48c46d9499408b9a9a05215edae56e701");
+        return dataWrapper;
+    }
 
 
 }

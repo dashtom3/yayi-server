@@ -47,9 +47,12 @@
 		select user_id from user where phone=#{phone};
 	</select>
 
-
 	<select id="getTokenByUserId" resultType="string">
 		select token from user_token where user_id=#{userId}
+	</select>
+
+	<select id="getUserPhoneByToken">
+		SELECT phone FROM `user` WHERE user_id =(SELECT user_id FROM user_token WHERE token=#{token});
 	</select>
 
 	<insert id="addToken">
@@ -68,9 +71,6 @@
 		select user_id from user_token where token=#{token}
 	</select>
 
-
-    
-    
     <select id="getSaleCount" resultType="java.lang.Integer">
     	select count(0) from sale_info where phone=#{phone}
     </select>
@@ -79,8 +79,6 @@
 		UPDATE user SET sale_id = #{1},bind_sale_time=now() WHERE user_id = #{0}
 	</update>
 
-	
-	
 	<update id="updateUserInfo" parameterType="User">
 		update user set true_name=#{trueName},sex=#{sex},birthday=#{birthday} where phone=#{phone}
 	</update>
@@ -111,4 +109,26 @@
 		select count(0) from certification where user_id=#{userId}
 	</select>
 
+	<delete id="deleteInGrainUser">
+		DELETE
+		u,c,r,its,ut,qbr
+		FROM `user` u
+		LEFT JOIN certification c
+		ON u.user_id=c.user_id
+		LEFT JOIN receiver r
+		ON u.user_id=r.user_id
+		LEFT JOIN item_star its
+		ON u.user_id=its.user_id
+		LEFT JOIN user_token ut
+		ON u.user_id=ut.user_id
+		LEFT JOIN qb_record qbr
+		ON u.user_id=qbr.user_id
+		LEFT JOIN cart c
+		ON u.user_id=c.user_id
+		WHERE u.user_id=#{userId}
+	</delete>
+
+	<select id="getTypeByOpenid" resultType="String">
+		SELECT IF(type =1,'ds',if(type = 2,'ck',NULL)) AS getType FROM wx_userlink WHERE openid=#{openid};
+	</select>
 </mapper>       

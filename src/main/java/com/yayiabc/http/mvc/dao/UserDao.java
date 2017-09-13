@@ -6,6 +6,8 @@ import org.springframework.stereotype.Repository;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.UserToken;
 
+import java.util.Map;
+
 @Repository
 public interface UserDao {
 
@@ -55,5 +57,5 @@ public interface UserDao {
     String getUserPhoneByToken(@Param("token")String token);
 
 
-    String getTypeByOpenid(@Param("openid")String openid);
+	Map<String,String> getTypeByOpenid(@Param("openid")String openid);
 }

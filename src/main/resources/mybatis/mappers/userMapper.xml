@@ -10,6 +10,19 @@
 		values(#{userId},#{phone},#{pwd},now(),now())
 	</insert>
 
+	<select id="getUserByUserId" resultMap="userMap">
+		SELECT *
+		FROM
+		(SELECT a.*,b.phone sale_phone,b.true_name sale_name,b.sale_id sale_ids FROM
+		(SELECT * FROM user WHERE user_id=#{userId}) a
+		LEFT JOIN
+		sale_info b
+		ON a.sale_id=b.sale_id)c
+		LEFT JOIN
+		certification d
+		ON d.user_id=c.user_id
+	</select>
+
 	<select id="getUserByPhone" resultMap="userMap">
 		SELECT *
 		FROM
@@ -128,7 +141,7 @@
 		WHERE u.user_id=#{userId}
 	</delete>
 
-	<select id="getTypeByOpenid" resultType="String">
-		SELECT IF(type =1,'ds',if(type = 2,'ck',NULL)) AS getType FROM wx_userlink WHERE openid=#{openid};
+	<select id="getTypeByOpenid" resultType="java.util.Map">
+		SELECT uid,IF(type =1,'ds',if(type = 2,'ck',NULL)) AS getType FROM wx_userlink WHERE openid=#{openid};
 	</select>
 </mapper>       

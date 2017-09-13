@@ -19,6 +19,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -218,18 +219,46 @@ public class WxLoginServiceImpl implements WxLoginService {
 	}
 
     @Override
-    public DataWrapper<Void> judgeOpenid(String openid, String state) {
-        DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
-        String type=userDao.getTypeByOpenid(openid);
-        if(type == null){
+    public DataWrapper<Object> judgeOpenid(String openid, String state) {
+        DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
+        Map<String, String> map=userDao.getTypeByOpenid(openid);
+        if( map==null || map.isEmpty() ){
             dataWrapper.setErrorCode(ErrorCodeEnum.OPENID_NOT_EXIST);
-        }else if(type.equals(state)){
-            dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+        }else if(map.get("getType").equals(state)){
+            if ("ds".equals(map.get("getType"))){
+                User seUser = userDao.getUserByUserId(map.get("uid"));
+                if (seUser != null) {
+                    dataWrapper.setData(seUser);
+                    int num = userDao.getCartNum(seUser);
+                    dataWrapper.setNum(num);
+                    dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+                    String token =tokenService.getToken(seUser.getUserId());
+                    dataWrapper.setData(seUser);
+                    dataWrapper.setToken(token);
+                }else {
+                    dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
+                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+                }
+            }else if ("ck".equals(map.get("getType"))){
+                SaleInfo saleInfo = saleLogDao.getSaleInfoById(map.get("uid"));
+                    if (saleInfo != null) {
+                        dataWrapper.setData(saleInfo);
+                        dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+                        dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+                        String token =tokenService.getSaleToken(saleInfo.getSaleId());
+                        dataWrapper.setToken(token);
+                        dataWrapper.setData(saleInfo);
+                    }else {
+                        dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
+                        dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+                    }
+            }
         }else{
             dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-            if("ds".equals(type)){
+            if("ds".equals(map.get("getType"))){
                 dataWrapper.setMsg("该微信号已绑定牙医账号！");
-            }else if("ck".equals(type)){
+            }else if("ck".equals(map.get("getType"))){
                 dataWrapper.setMsg("该微信号已绑定创客账号！");
             }
         }

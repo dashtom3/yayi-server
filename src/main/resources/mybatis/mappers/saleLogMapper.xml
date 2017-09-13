@@ -6,6 +6,10 @@
 	<select id="getSaleInfoByPhone" resultType="SaleInfo">
 		select * from sale_info where phone=#{phone}
 	</select>
+
+	<select id="getSaleInfoById" resultType="SaleInfo">
+		SELECT * FROM sale_info WHERE sale_id=#{0};
+	</select>
 	
 	<insert id="register" parameterType="SaleInfo">
 		insert into sale_info(sale_pwd,sale_id,phone,created,updated,referrals) values(#{salePwd},#{saleId},#{phone},#{created},#{updated},#{referrals})

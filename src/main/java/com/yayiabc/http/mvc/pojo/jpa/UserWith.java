@@ -86,4 +86,12 @@ public class UserWith {
 	public void setSign(int sign) {
 		this.sign = sign;
 	}
+
+	public UserWith() {
+		this.aType = 0;
+		this.bType = 0;
+		this.cType = 0;
+		this.giveType = 0;
+		this.sign = 1;
+	}
 }

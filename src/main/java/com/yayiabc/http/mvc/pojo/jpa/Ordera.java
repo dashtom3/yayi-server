@@ -333,6 +333,11 @@ public class Ordera extends BasePojo {
 		this.refund = refund;
 	}
 
+	public Ordera() {
+		this.buyerMessage = "该用户未留言";
+		this.state = 1;
+	}
+
 	@Override
 	public String toString() {
 		return "Ordera [orderId=" + orderId + ", userId=" + userId + ", actualPay=" + actualPay + ", created=" + created

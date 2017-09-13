@@ -52,14 +52,14 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		Page page=new Page();
 		page.setNumberPerPage((Integer)hm.get("numberPerpage"));
 		page.setCurrentPage((Integer)hm.get("currentPage"));
-		 hm.remove("numberPerpage");
-         hm.remove("currentPage");
-         hm.put("numberPerpage", page.getNumberPerPage());
-         hm.put("currentNum", page.getCurrentNumber());
+		hm.remove("numberPerpage");
+		hm.remove("currentPage");
+		hm.put("numberPerpage", page.getNumberPerPage());
+		hm.put("currentNum", page.getCurrentNumber());
 		//总条数
 		int count=userWithdrawalsServiceDao.queryCount(hm);//totalnumber
 		//				hMap.put("currentPage", page.getCurrentPage());
-        
+
 		List<UserWith> userWithList=userWithdrawalsServiceDao.show(hm);
 		dataWrapper.setPage(page,count);
 		if(userWithList.isEmpty()){
@@ -80,35 +80,36 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 			dataWrapper.setMsg("toekn验证异常");
 			return dataWrapper;
 		}
-		if(!vCode.equals(VerifyCodeManager.getPhoneCode(user.getPhone()))){
-
+		/*if(!vCode.equals(VerifyCodeManager.getPhoneCode(user.getPhone()))){
 			dataWrapper.setMsg("验证码错误");
 			return dataWrapper;
-		}
+		}*/
 		userWith.setUserId(user.getUserId());
 		//校验 用户是否是提现成功状态下 发起的提现申请
+		System.out.println(user);
 		Integer sign=userWithdrawalsServiceDao.queryWitSign(user.getUserId());
-		if(sign==1){
+		if(sign==null||sign==2){
+			int userQb=user.getaQb()+user.getbQb()+user.getcQb()+user.getQbBalance();
+
+			if(userWith!=null){
+				if(userQb<userWith.getaType()+userWith.getbType()+userWith.getcType()+userWith.getGiveType()){
+					dataWrapper.setMsg("提现错误操作");
+					throw new RuntimeException("提现错误");
+				}else{
+					//根据用户的提现选择 ，更改user表用户的钱币类型的个数
+					userWithdrawalsServiceDao.updateUserQb(userWith);
+					//这里做处理 保存到用户提现表中  String.format("%.2f", f)
+			
+					userWith.setaType(utilsTwo(userWith.getaType()*0.8));    //a
+					userWith.setbType(utilsTwo(userWith.getbType()*0.9));    //b
+					userWith.setcType(utilsTwo(userWith.getcType()*0.95));    //c
+					userWith.setGiveType(utilsTwo(userWith.getGiveType()));    //give
+					dataWrapper.setData( userWithdrawalsServiceDao.submit(userWith));
+				}
+			}
+		}else {
 			dataWrapper.setMsg("NONONO");
 			return dataWrapper;
-		}
-		//userWith.setUserId(user.getUserId());
-		int userQb=user.getaQb()+user.getbQb()+user.getcQb()+user.getQbBalance();
-
-		if(userWith!=null){
-			if(userQb<userWith.getaType()+userWith.getbType()+userWith.getcType()+userWith.getGiveType()){
-				dataWrapper.setMsg("提现错误操作");
-				throw new RuntimeException("提现错误");
-			}else{
-				//根据用户的提现选择 ，更改user表用户的钱币类型的个数
-				userWithdrawalsServiceDao.updateUserQb(userWith);
-				//这里做处理 保存到用户提现表中
-				userWith.setaType(Math.round(userWith.getaType()*0.8));
-				userWith.setbType(Math.round(userWith.getbType()*0.9));
-				userWith.setcType(Math.round(userWith.getcType()*0.95));
-				userWith.setGiveType(Math.round(userWith.getGiveType()));
-				dataWrapper.setData( userWithdrawalsServiceDao.submit(userWith));
-			}
 		}
 		return dataWrapper;
 	}
@@ -119,10 +120,11 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		// TODO Auto-generated method stub
 		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
 		//取消
-		if(sign==1){
+		if(sign==3){
 			// withId 获取此用户 此次提现的内容
 			UserWith userWith=userWithdrawalsServiceDao.queryFourQb(withId);
-
+			System.out.println(userWith);
+            if(userWith!=null){
 			userWith.setaType(-Math.round(userWith.getaType()/0.8));
 			userWith.setbType(-Math.round(userWith.getbType()/0.9));
 			userWith.setcType(-Math.round(userWith.getcType()/0.95));
@@ -133,12 +135,19 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 			}else{
 				dataWrapper.setMsg("拒绝提现申请，失败");
 			}
+			}else{
+				dataWrapper.setMsg("参数错误");
+			}
 		}
 		//确定
-		else{
+		else if(sign==2){
 			if(userWithdrawalsServiceDao.determine(withId)>0){
 				dataWrapper.setMsg("打款成功");
+			}else{
+				dataWrapper.setMsg("打款失败");
 			}
+		}else{
+			dataWrapper.setMsg("参数异常");
 		}
 		return dataWrapper;
 	}
@@ -196,5 +205,9 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 			dataWrapper.setData(userWithdrawalsServiceDao.showUserQbNum(userId));
 		}
 		return dataWrapper;
+	}
+	//保留两位小数
+	private double utilsTwo(double i){
+		return i*100/100;
 	}
 }

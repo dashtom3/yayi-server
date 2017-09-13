@@ -55,7 +55,7 @@ public class UserWithdrawalsController {
    DataWrapper<Object> submit(
 		   @ModelAttribute UserWith  userWith,
 		   @RequestHeader(value="token",required=true) String token,
-		   @RequestParam(value="vCode") String vCode
+		   @RequestParam(value="vCode",required=false) String vCode
 		   ){
 	   
 	   
@@ -66,12 +66,13 @@ public class UserWithdrawalsController {
     * (后台)
     */
    @ResponseBody
-   @RequestMapping("YesOrNo")
+   @RequestMapping("YesOrNo")    // 1 提现申请中   2 是提现成功  3 提现拒绝
    DataWrapper<Object> yesOrNo(
 		   @RequestHeader(value="adminToken",required=true) String adminToken,
 		   @RequestParam(value="withId",required=true) String withId,
 		   @RequestParam(value="sign",required=true) Integer sign
 		   ){
+	   //是否需要验证adminToken的安全
 	  return  userWithdrawalsService.yesOrNo(withId,sign);
    }
    

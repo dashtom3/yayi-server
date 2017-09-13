@@ -7,25 +7,25 @@
 
 	<insert id="submit">
 		insert into
-		user_with(a_type,b_type,c_type,give_type,created,wit_setup_id) values(
-		#(aType),#(bType),#(cType),#(giveType),now(),(select max(wit_setup_id) from cash_withdrawal_type where user_id=#{userId})
+		user_with(a_type,b_type,c_type,give_type,created,wit_setup_id,user_id) values(
+		#{aType},#{bType},#{cType},#{giveType},now(),(select max(wit_setup_id) from cash_withdrawal_type where user_id=#{userId}),#{userId}
 		)
 	</insert>
 
 	<update id="updateUserQb">
 		update user
 		<set>
-			<if test="aType!=null and aType!=''">
-				a_qb=a_qb-${aType},
+			<if test="aType!=null and aType!='' and aType!=0">
+				a_qb=a_qb-#{aType}
 			</if>
-			<if test="bType!=null and bType!=''">
-				b_qb=b_qb-${bType},
+			<if test="bType!=null and bType!='' and bType!=0">
+				b_qb=b_qb-#{bType}
 			</if>
-			<if test="cType!=null and cType!=''">
-				cType=cType-${cType},
+			<if test="cType!=null and cType!='' and cType!=0">
+				c_qb=c_qb-#{cType}
 			</if>
-			<if test="giveType!=null and giveType!=''">
-				qb_balance=qb_balance-${giveType},
+			<if test="giveType!=null and giveType!='' and giveType!=0">
+				qb_balance=qb_balance-#{giveType}
 			</if>
 		</set>
 		where user_id=#{userId}
@@ -68,6 +68,7 @@
 			<result property="cardNumber" column="card_number" />
 			<result property="oBank" column="o_bank" />
 			<association property="userWith" javaType="com.yayiabc.http.mvc.pojo.jpa.UserWith">
+			     <id property="withId" column="with_id"/>
 				<result property="aType" column="a_type" />
 				<result property="bType" column="b_type" />
 				<result property="cType" column="c_type" />
@@ -80,7 +81,7 @@
 	</resultMap>
 	<select id="show" resultMap="cctvt">
 		SELECT us.user_id,us.true_name,us.phone,cwt.wit_setup_id,cwt.wit_type,cwt.account_holder,cwt.card_number
-		,cwt.o_bank,uw.a_type,uw.b_type,uw.c_type,uw.give_type,uw.created,uw.determine_time,uw.sign
+		,cwt.o_bank,uw.a_type,uw.b_type,uw.c_type,uw.give_type,uw.created,uw.determine_time,uw.sign,uw.with_id
 		 FROM 
 		 `user` us JOIN cash_withdrawal_type cwt ON
 		us.user_id=cwt.user_id JOIN user_with uw
@@ -104,13 +105,14 @@
 	</select>
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.UserWith" id="vvx">
 		<id property="withId" column="with_id" />
+		<result property="userId" column="user_id" />
 		<result property="aType" column="atype" />
 		<result property="bType" column="btype" />
 		<result property="cType" column="ctype" />
 		<result property="giveType" column="give_type" />
 	</resultMap>
 	<select id="queryFourQb" resultMap="vvx">
-		select
+		select with_id,user_id,
 		a_type,b_type,c_type,give_type from user_with where with_id=#{withId}
 	</select>
 
@@ -143,8 +145,8 @@
 		cash_withdrawal_type WHERE user_id=(SELECT MAX(user_id) FROM
 		cash_withdrawal_type WHERE user_id=#{userId})
 	</select>
-	<select id="queryWitSign" resultType="int">
-	   select sign from user_with where wit_setup_id=(select max(wit_setup_id)  from  cash_withdrawal_type  where user_id=#{userId})
+	<select id="queryWitSign" resultType="java.lang.Integer">
+	   SELECT sign FROM user_with WHERE user_id=#{userId}  ORDER BY created DESC    LIMIT 0,1 
 	</select>
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.User" id="qwaz">
 	 <result property="aQb" column="a_qb"/>

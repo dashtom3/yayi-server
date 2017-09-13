@@ -12,12 +12,12 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
-import com.yayiabc.common.annotation.UserLog;
 import com.yayiabc.common.sdk.LogisticsMain;
 import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.PayAfterOrderUtil;
 import com.yayiabc.http.mvc.pojo.jpa.AdvChart;
+import com.yayiabc.http.mvc.pojo.jpa.Test;
 import com.yayiabc.http.mvc.service.AdvManageService;
 
 @Controller
@@ -98,9 +98,8 @@ public class AdvManageController {
     @RequestMapping("test")
     @ResponseBody
     public void da(
-    		String orderId
+    		Test  t
     		){
-    	PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("payAfterOrderUtil");
- 	   payAfterOrderUtil.universal(orderId,"0");
+    	  System.out.println(t);
     }
 }

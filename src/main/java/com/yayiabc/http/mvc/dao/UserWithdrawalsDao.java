@@ -12,13 +12,13 @@ import com.yayiabc.http.mvc.pojo.jpa.UserWith;
 public interface UserWithdrawalsDao {
 	
 
-	int  updateUserQb(UserWith userWith);
+	Integer  updateUserQb(UserWith userWith);
 	
 	
-	int submit(UserWith userWith);
+	Integer submit(UserWith userWith);
 
 
-	int queryCount(HashMap<String, Object> hm);
+	Integer queryCount(HashMap<String, Object> hm);
 
 
 	List<UserWith> show(HashMap<String, Object> hm);
@@ -27,18 +27,18 @@ public interface UserWithdrawalsDao {
 	UserWith queryFourQb(String withId);
 
 
-	int determine(String withId);
+	Integer determine(String withId);
 
 
-	int  queryIsSetUp(String userId);
+	Integer  queryIsSetUp(String userId);
 
 
-	int updateWitType(@Param("userId")String userId, @Param("accountHolder")String accountHolder, @Param("cardNumber")String cardNumber,
+	Integer updateWitType(@Param("userId")String userId, @Param("accountHolder")String accountHolder, @Param("cardNumber")String cardNumber,
 			
 			@Param("witType")String witType, @Param("oBank")String oBank);
 
      //#{userId},#{witType},#{accountHolder},#{cardNumber},#{oBank},NOW()
-	int insertWitType(@Param("userId")String userId,  @Param("witType")String witType, @Param("accountHolder")String accountHolder,
+	Integer insertWitType(@Param("userId")String userId,  @Param("witType")String witType, @Param("accountHolder")String accountHolder,
 			@Param("cardNumber")String cardNumber, @Param("oBank")String oBank
 			);
 
@@ -47,7 +47,7 @@ public interface UserWithdrawalsDao {
 	 UserWitSetUp witSetUpShow(String userId);
 
 
-	int queryWitSign(String userId);
+	Integer queryWitSign(String userId);
 
 
 	User showUserQbNum(String userId);

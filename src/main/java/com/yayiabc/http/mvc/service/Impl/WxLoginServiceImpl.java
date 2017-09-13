@@ -73,7 +73,6 @@ public class WxLoginServiceImpl implements WxLoginService {
             dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
         }
         return dataWrapper;
-
     }
 
     @Override

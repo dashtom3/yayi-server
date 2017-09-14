@@ -15,6 +15,16 @@
 		<listener-class>org.springframework.web.context.ContextLoaderListener</listener-class>
 	</listener>
 
+	<!--  防盗链 -->
+	<!--<filter>-->
+		<!--<filter-name>AuthFilter</filter-name>-->
+		<!--<filter-class>com.yayiabc.http.fr.Dodo</filter-class>-->
+	<!--</filter>-->
+	<!--<filter-mapping>-->
+		<!--<filter-name>AuthFilter</filter-name>-->
+		<!--<url-pattern>/*</url-pattern>-->
+	<!--</filter-mapping>-->
+
 	<!-- 编码过滤器，以UTF8编码 -->
 	<filter>
 		<filter-name>encodingFilter</filter-name>

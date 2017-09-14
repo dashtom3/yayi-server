@@ -15,7 +15,6 @@ public class OrderItem extends BasePojo {
 	private String itemId;
 	private String itemName;
 	private String orderId;
-	private Ordera ordera;
 	private String itemSKU;
 	private Integer qbDed;
 	/**
@@ -25,7 +24,6 @@ public class OrderItem extends BasePojo {
 
 	private Double price;
 
-	private String totalFee;
 
 	private String picPath;
 	private Comments commentList;
@@ -155,13 +153,6 @@ public class OrderItem extends BasePojo {
 		this.qbDed = qbDed;
 	}
 
-	public Ordera getOrdera() {
-		return ordera;
-	}
-
-	public void setOrdera(Ordera ordera) {
-		this.ordera = ordera;
-	}
 
 	public Integer getNum() {
 		return num;
@@ -179,13 +170,6 @@ public class OrderItem extends BasePojo {
 		this.price = price;
 	}
 
-	public String getTotalFee() {
-		return totalFee;
-	}
-
-	public void setTotalFee(String totalFee) {
-		this.totalFee = totalFee == null ? null : totalFee.trim();
-	}
 
 	public String getPicPath() {
 		return picPath;
@@ -217,17 +201,14 @@ public class OrderItem extends BasePojo {
 		// TODO Auto-generated constructor stub
 	}
 
-
-
-
 	@Override
 	public String toString() {
-		return "OrderItem [itemId=" + itemId + ", itemName=" + itemName + ", orderId=" + orderId + ", ordera=" + ordera
-				+ ", itemSKU=" + itemSKU + ", qbDed=" + qbDed + ", num=" + num + ", price=" + price + ", totalFee="
-				+ totalFee + ", picPath=" + picPath + ", commentList=" + commentList + ", refund=" + refund
-				+ ", itemPropertyNamea=" + itemPropertyNamea + ", itemPropertyNameb=" + itemPropertyNameb
-				+ ", itemPropertyNamec=" + itemPropertyNamec + ", refunNum=" + refunNum + ", itemType=" + itemType
-				+ ", itemBrandName=" + itemBrandName + ", itemInfo=" + itemInfo + "]";
+		return "OrderItem [itemId=" + itemId + ", itemName=" + itemName + ", orderId=" + orderId + ", itemSKU="
+				+ itemSKU + ", qbDed=" + qbDed + ", num=" + num + ", price=" + price + ", picPath=" + picPath
+				+ ", commentList=" + commentList + ", refund=" + refund + ", itemPropertyNamea=" + itemPropertyNamea
+				+ ", itemPropertyNameb=" + itemPropertyNameb + ", itemPropertyNamec=" + itemPropertyNamec
+				+ ", itemType=" + itemType + ", refunNum=" + refunNum + ", itemBrandName=" + itemBrandName
+				+ ", itemInfo=" + itemInfo + "]";
 	}
 
 }

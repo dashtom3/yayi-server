@@ -80,10 +80,10 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 			dataWrapper.setMsg("toekn验证异常");
 			return dataWrapper;
 		}
-		/*if(!vCode.equals(VerifyCodeManager.getPhoneCode(user.getPhone()))){
+		if(!vCode.equals(VerifyCodeManager.getPhoneCode(user.getPhone()))){
 			dataWrapper.setMsg("验证码错误");
 			return dataWrapper;
-		}*/
+		}
 		userWith.setUserId(user.getUserId());
 		//校验 用户是否是提现成功状态下 发起的提现申请
 		System.out.println(user);
@@ -131,7 +131,9 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 			userWith.setGiveType(-Math.round(userWith.getGiveType()));
 			int a=userWithdrawalsServiceDao.submit(userWith);
 			if(a>0){
+				if(userWithdrawalsServiceDao.determine(withId,sign)>0){
 				dataWrapper.setMsg("拒绝提现申请，成功");
+				}
 			}else{
 				dataWrapper.setMsg("拒绝提现申请，失败");
 			}
@@ -141,7 +143,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		}
 		//确定
 		else if(sign==2){
-			if(userWithdrawalsServiceDao.determine(withId)>0){
+			if(userWithdrawalsServiceDao.determine(withId,sign)>0){
 				dataWrapper.setMsg("打款成功");
 			}else{
 				dataWrapper.setMsg("打款失败");
@@ -199,10 +201,12 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		// TODO Auto-generated method stub
 		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
 		String userId=utilsDao.getUserID(token);
+		Integer sign=userWithdrawalsServiceDao.queryWitSign(userId);
 		if(userId==null){
 			dataWrapper.setMsg("NONONO");
 		}else{
 			dataWrapper.setData(userWithdrawalsServiceDao.showUserQbNum(userId));
+			dataWrapper.setMsg(sign+"");
 		}
 		return dataWrapper;
 	}

@@ -57,8 +57,6 @@ public class UserWithdrawalsController {
 		   @RequestHeader(value="token",required=true) String token,
 		   @RequestParam(value="vCode",required=false) String vCode
 		   ){
-	   
-	   
 	  return  userWithdrawalsService.submit(userWith,token,vCode);
    }
    /**

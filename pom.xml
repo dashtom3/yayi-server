@@ -37,7 +37,8 @@
 		<httpclient.version>4.3.5</httpclient.version>
 		<jedis.version>2.6.0</jedis.version>
 	</properties>
-
+     
+     
 	<dependencies>
 		<!-- 閸楁洖鍘撳ù瀣槸 -->
 		<dependency>
@@ -48,7 +49,12 @@
 		</dependency>
 
 
-
+<!-- Ehcache实现,用于参考 lihui-->
+<dependency>
+    <groupId>org.mybatis</groupId>
+    <artifactId>mybatis-ehcache</artifactId>
+    <version>1.0.0</version>
+</dependency>
 		<dependency>
 			<groupId>org.quartz-scheduler</groupId>
 			<artifactId>quartz</artifactId>
@@ -277,6 +283,17 @@
 			<artifactId>poi</artifactId>
 			<version>3.13</version>
 		</dependency>
+		<!-- rabbitmq -->
+		<dependency>  
+            <groupId>com.rabbitmq</groupId>  
+            <artifactId>amqp-client</artifactId>  
+            <version>3.6.0</version>  
+        </dependency>  
+        <dependency>
+        <groupId>org.springframework.amqp</groupId>
+        <artifactId>spring-rabbit</artifactId>
+        <version>1.4.5.RELEASE</version>
+    </dependency>
 	</dependencies>
 
 

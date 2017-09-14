@@ -110,14 +110,15 @@
 		<result property="bType" column="btype" />
 		<result property="cType" column="ctype" />
 		<result property="giveType" column="give_type" />
+		<result property="sign" column="sign" />
 	</resultMap>
 	<select id="queryFourQb" resultMap="vvx">
 		select with_id,user_id,
-		a_type,b_type,c_type,give_type from user_with where with_id=#{withId}
+		a_type,b_type,c_type,give_type,sign from user_with where with_id=#{withId}
 	</select>
 
 	<update id="determine">
-		update user_with set sign=2,determine_time=now()
+		update user_with set sign=#{sign},determine_time=now()
 		where with_id=#{withId}
 	</update>
 

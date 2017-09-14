@@ -30,7 +30,6 @@ public class CoinRechargeController {
 	private AppPayService appPayService;
 	@RequestMapping("recharge")
 	@ResponseBody
-	// @UserTokenValidate(description="开始支付宝充值乾币")
 	public void recharge(
 			@RequestParam(value="token",required=true)String token,
 			@RequestParam(value="qbNum",required=true)String qbNum,

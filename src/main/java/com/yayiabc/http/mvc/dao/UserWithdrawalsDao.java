@@ -27,7 +27,7 @@ public interface UserWithdrawalsDao {
 	UserWith queryFourQb(String withId);
 
 
-	Integer determine(String withId);
+	Integer determine(@Param("withId")String withId,@Param("sign") int sign);
 
 
 	Integer  queryIsSetUp(String userId);

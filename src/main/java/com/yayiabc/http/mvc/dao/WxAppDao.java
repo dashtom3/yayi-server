@@ -1,13 +1,11 @@
 package com.yayiabc.http.mvc.dao;
 
-import java.util.Map;
-
+import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
+import com.yayiabc.http.mvc.pojo.jpa.WXUserLink;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
-import com.yayiabc.http.mvc.pojo.jpa.WXUserLink;
-import com.yayiabc.http.mvc.pojo.model.SaleU;
+import java.util.Map;
 
 
 
@@ -25,9 +23,9 @@ public interface WxAppDao {
 
 
 
-    void addUser(@Param("saleId")String saleId,@Param("openid") String openid);
+    void addUser(@Param("saleId")String saleId,@Param("openid") String openid,@Param("phone")String phone);
 
-	void addSaleUser(@Param("saleId")String saleId,@Param("openid") String openid);
+	void addSaleUser(@Param("saleId")String saleId,@Param("openid") String openid,@Param("phone")String phone);
 
 
     WXUserLink queryIsBD(@Param("openId")String openId);
@@ -39,4 +37,5 @@ public interface WxAppDao {
 	String queryIsSale(@Param("uid")String uid);
 	SaleInfo querySale(@Param("uid")String uid);
 
+	Integer getPhoneCount(@Param("phone")String phone);
 }

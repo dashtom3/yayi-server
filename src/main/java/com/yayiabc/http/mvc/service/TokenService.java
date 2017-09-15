@@ -6,4 +6,5 @@ package com.yayiabc.http.mvc.service;
 public interface TokenService {
     String getToken(String userId);
     String getSaleToken(String id);
+    String getAdminToken(Integer adminId);
 }

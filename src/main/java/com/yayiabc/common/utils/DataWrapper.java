@@ -42,6 +42,7 @@ public class DataWrapper<T>  {
        if (!errorCode.equals(ErrorCodeEnum.No_Error)) {
          this.callStatus = CallStatusEnum.FAILED;
        }
+       this.msg=errorCode.getLabel();
 
     }
 
@@ -130,5 +131,14 @@ public class DataWrapper<T>  {
 				+ currentPage + ", totalNumber=" + totalNumber + ", totalPage="
 				+ totalPage + ", num=" + num + ", msg=" + msg + "]";
 	}
+
+	public DataWrapper(ErrorCodeEnum errorCodeEnum,T data,String token,Integer num,String msg,Page page,Integer totalNumber){
+	    this.setErrorCode(errorCodeEnum);
+	    this.data=data;
+	    this.token=token;
+	    this.num=num;
+	    this.setPage(page,totalNumber);
+	    this.msg=msg;
+    }
    
 }

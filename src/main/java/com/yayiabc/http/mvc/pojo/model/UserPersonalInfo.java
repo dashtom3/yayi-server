@@ -1,9 +1,9 @@
 package com.yayiabc.http.mvc.pojo.model;
 
-import java.util.Date;
-
 import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 
 public class UserPersonalInfo {
     private String userId;
@@ -87,7 +87,7 @@ public class UserPersonalInfo {
         this.sex = sex;
     }
 
-    @JsonFormat(pattern = "yyyy-MM-dd")
+    @JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
     public Date getBirthday() {
         return birthday;
     }

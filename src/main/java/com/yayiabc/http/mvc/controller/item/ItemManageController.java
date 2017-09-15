@@ -230,13 +230,9 @@ public class ItemManageController {
 	@AdminTokenValidate
 	@AdminLog(description="管理员添加分类")
 	public DataWrapper<Void> addItemClassify(
-			/*@RequestParam(value="itemClassifyName",required=true) String itemClassifyName,
-			@RequestParam(value="itemPreviousClassify",required=true) String itemPreviousClassify,
-			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade,*/
 			@ModelAttribute ItemClassify itemClassify,
 			@RequestHeader(value="adminToken",required=true)String adminToken
 			){
-//		return itemManageService.addItemClassify(itemClassifyName,itemPreviousClassify,itemClassifyGrade);
 		return itemManageService.addItemClassify(itemClassify);
 	}
 	

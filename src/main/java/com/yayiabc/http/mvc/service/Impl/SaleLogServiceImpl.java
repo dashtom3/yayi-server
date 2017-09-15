@@ -4,6 +4,7 @@ import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.MD5Util;
+import com.yayiabc.common.utils.VerifiCodeValidateUtil;
 import com.yayiabc.http.mvc.dao.SaleLogDao;
 import com.yayiabc.http.mvc.dao.WxAppDao;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
@@ -31,14 +32,11 @@ public class SaleLogServiceImpl implements SaleLogService {
         DataWrapper<SaleInfo> dataWrapper = new DataWrapper<SaleInfo>();
         SaleInfo saleInfo = saleLogDao.getSaleInfoByPhone(phone);
         if (saleInfo == null) {
-            String serverCode = VerifyCodeManager.getPhoneCode(phone);
-            if (serverCode.equals("noCode")) {
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_notExist);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            } else if (serverCode.equals("overdue")) {
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_5min);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            } else if (serverCode.equals(code)) {
+            ErrorCodeEnum codeEnum= VerifiCodeValidateUtil.verifiCodeValidate(phone,code);
+            if(!codeEnum.equals(ErrorCodeEnum.No_Error)){
+                dataWrapper.setErrorCode(codeEnum);
+                return dataWrapper;
+            }
                 SaleInfo saleInfoTwo = new SaleInfo();
                 saleInfoTwo.setSaleId(UUID.randomUUID().toString());
                 saleInfoTwo.setPhone(phone);
@@ -50,7 +48,7 @@ public class SaleLogServiceImpl implements SaleLogService {
                 	if (1 == saleLogDao.register(saleInfoTwo)) {
 	                    VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
 	                    String token = getToken(saleInfoTwo.getSaleId());
-	                    if (openid != null) wxAppDao.addSaleUser(saleInfoTwo.getSaleId(), openid);
+	                    if (openid != null) wxAppDao.addSaleUser(saleInfoTwo.getSaleId(), openid,saleInfoTwo.getPhone());
 	                    dataWrapper.setToken(token);
 	                    dataWrapper.setData(saleInfoTwo);
 	                    dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
@@ -63,12 +61,6 @@ public class SaleLogServiceImpl implements SaleLogService {
                 	dataWrapper.setErrorCode(ErrorCodeEnum.NO_Auth);
                 	dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 }
-            } else {
-                System.out.println("code:" + code);
-                System.out.println("VerifyCode:" + VerifyCodeManager.getPhoneCode(phone));
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_Error);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            }
         } else {
             dataWrapper.setErrorCode(ErrorCodeEnum.Username_Already_Exist);
             dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
@@ -81,25 +73,16 @@ public class SaleLogServiceImpl implements SaleLogService {
         DataWrapper<SaleInfo> dataWrapper = new DataWrapper<SaleInfo>();
         SaleInfo saleInfo = saleLogDao.getSaleInfoByPhone(phone);
         if (saleInfo != null) {
-            String serverCode = VerifyCodeManager.getPhoneCode(phone);
-            if (serverCode.equals("noCode")) {
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_notExist);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            } else if (serverCode.equals("overdue")) {
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_5min);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            } else if (serverCode.equals(code)) {
+            ErrorCodeEnum codeEnum= VerifiCodeValidateUtil.verifiCodeValidate(phone,code);
+            if(!codeEnum.equals(ErrorCodeEnum.No_Error)){
+                dataWrapper.setErrorCode(codeEnum);
+                return dataWrapper;
+            }
                 dataWrapper.setData(saleInfo);
                 dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
                 dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 String saleToken = getToken(saleInfo.getSaleId());
                 dataWrapper.setToken(saleToken);
-            } else {
-                System.out.println("code:" + code);
-                System.out.println("VerifyCode:" + VerifyCodeManager.getPhoneCode(phone));
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_Error);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            }
         } else {
             dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
             dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
@@ -148,14 +131,11 @@ public class SaleLogServiceImpl implements SaleLogService {
         DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
         SaleInfo saleInfo = saleLogDao.getSaleInfoByPhone(phone);
         if (saleInfo != null) {
-            String serverCode = VerifyCodeManager.getPhoneCode(phone);
-            if (serverCode.equals("noCode")) {
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_notExist);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            } else if (serverCode.equals("overdue")) {
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_5min);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            } else if (serverCode.equals(code)) {
+            ErrorCodeEnum codeEnum= VerifiCodeValidateUtil.verifiCodeValidate(phone,code);
+            if(!codeEnum.equals(ErrorCodeEnum.No_Error)){
+                dataWrapper.setErrorCode(codeEnum);
+                return dataWrapper;
+            }
                 password = MD5Util.getMD5String(password);
                 try {
                     saleLogDao.updatePwd(password, saleInfo.getSaleId());
@@ -166,12 +146,6 @@ public class SaleLogServiceImpl implements SaleLogService {
                     dataWrapper.setErrorCode(ErrorCodeEnum.Error);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 }
-            } else {
-                System.out.println("code:" + code);
-                System.out.println("VerifyCode:" + VerifyCodeManager.getPhoneCode(phone));
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_Error);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            }
         } else {
             dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
             dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());

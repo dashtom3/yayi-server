@@ -49,9 +49,8 @@ public class UserController {
 			@RequestParam(value = "phone", required = true) String phone ,
 			@RequestParam(value = "code", required = true) String code
 			){
-		DataWrapper<User> dauser=userService.noteLogin(phone,code);
-		return dauser;
-		//return userService.noteLogin(phone,code);
+		return userService.noteLogin(phone,code);
+
 		
 	}
 	

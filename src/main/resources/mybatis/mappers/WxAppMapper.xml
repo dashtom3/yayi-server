@@ -12,13 +12,13 @@
 	</select>
 
 	<insert id="addUser">
-		INSERT INTO wx_userlink (uid,openid,type) VALUES (#{saleId},#{openid},1)
+		INSERT INTO wx_userlink (uid,openid,type,phone) VALUES (#{saleId},#{openid},1,#{phone})
 	</insert>
 
 
 	
 	<insert id="addSaleUser">
-		INSERT INTO wx_userlink (uid,openid,type) VALUES (#{saleId},#{openid},2)
+		INSERT INTO wx_userlink (uid,openid,type,phone) VALUES (#{saleId},#{openid},2,#{phone})
 	</insert>
 
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.WXUserLink" id="cheWX">
@@ -51,4 +51,8 @@
      <select id="querySale" resultMap="yyy">
       select  sale_id,true_name,phone  from sale_info  where sale_id=#{uid}
      </select>
+    
+    <select id="getPhoneCount" resultType="java.lang.Integer">
+        select count(0) from wx_userlink where phone=#{phone}
+    </select>
 </mapper>

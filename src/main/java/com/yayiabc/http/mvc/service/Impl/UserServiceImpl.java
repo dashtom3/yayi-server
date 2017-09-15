@@ -3,8 +3,15 @@ package com.yayiabc.http.mvc.service.Impl;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.sessionManager.SessionManager;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
+
 import com.yayiabc.common.utils.*;
 import com.yayiabc.http.mvc.controller.unionpay.sdk.LogUtil;
+
+import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.HttpUtil;
+import com.yayiabc.common.utils.MD5Util;
+import com.yayiabc.common.utils.VerifiCodeValidateUtil;
+
 import com.yayiabc.http.mvc.dao.SaleLogDao;
 import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.UserManageListDao;
@@ -62,15 +69,12 @@ public class UserServiceImpl implements UserService {
     public DataWrapper<User> register(String phone, String password, String code,String openid) {
         DataWrapper<User> dataWrapper = new DataWrapper<User>();
         if (userDao.getUserByPhone(phone) == null) {
-            //楠岃瘉鐮佹湇鍔�
-            String serverCode = VerifyCodeManager.getPhoneCode(phone);
-            if (serverCode.equals("noCode")) {
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_notExist);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            } else if (serverCode.equals("overdue")) {
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_5min);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            } else if (serverCode.equals(code)) {
+            //验证码判断
+            ErrorCodeEnum codeEnum= VerifiCodeValidateUtil.verifiCodeValidate(phone,code);
+            dataWrapper.setErrorCode(codeEnum);
+            if(!codeEnum.equals(ErrorCodeEnum.No_Error)){
+                return dataWrapper;
+            }
                 User newUser = new User();
                 newUser.setUserId(UUID.randomUUID().toString());
                 newUser.setPhone(phone);
@@ -88,25 +92,15 @@ public class UserServiceImpl implements UserService {
 	                    userMyQbService.add(qbRecord, token);
 	                    dataWrapper.setToken(token);
 	                    dataWrapper.setData(newUser);
-	                    dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-	                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-                    if (openid != null) wxAppDao.addUser(newUser.getUserId(),openid);
+                        if (openid != null) wxAppDao.addUser(newUser.getUserId(),openid,newUser.getPhone());
 	                } else {
 	                    dataWrapper.setErrorCode(ErrorCodeEnum.Register_Error);
-	                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
 	                }
                 }else{
                 	dataWrapper.setErrorCode(ErrorCodeEnum.NO_POWER);
-                	dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 }
-               
-            } else {
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_Error);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            }
         } else {
             dataWrapper.setErrorCode(ErrorCodeEnum.Username_Already_Exist);
-            dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
         }
         return dataWrapper;
     }
@@ -116,23 +110,17 @@ public class UserServiceImpl implements UserService {
         DataWrapper<User> dataWrapper = new DataWrapper<User>();
         User user = userDao.getUserByPhone(phone);
         if (user != null) {
-            String serverCode = VerifyCodeManager.getPhoneCode(phone);
-            if (serverCode.equals("noCode")) {
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_notExist);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            } else if (serverCode.equals("overdue")) {
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_5min);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            } else if (serverCode.equals(code)) {
+                ErrorCodeEnum codeEnum= VerifiCodeValidateUtil.verifiCodeValidate(phone,code);
+                if(!codeEnum.equals(ErrorCodeEnum.No_Error)){
+                    dataWrapper.setErrorCode(codeEnum);
+                    return dataWrapper;
+                }
                 dataWrapper.setData(user);
                 dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
                 dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 int num = userDao.getCartNum(user);
                 dataWrapper.setNum(num);
                 String token =tokenService.getToken(user.getUserId());
-                //--
-
-
                 if (SessionManager.getSessionByUserID(user.getUserId()) == null) {
                     String sessionKey = SessionManager.newSession(user);
                     dataWrapper.setToken(token);
@@ -142,15 +130,6 @@ public class UserServiceImpl implements UserService {
                     dataWrapper.setErrorCode(ErrorCodeEnum.Error);
                     return dataWrapper;
                 }
-
-                //--
-
-            } else {
-                System.out.println("code:" + code);
-                System.out.println("VerifyCode:" + VerifyCodeManager.getPhoneCode(phone));
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_Error);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            }
         } else {
             dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
             dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
@@ -177,20 +156,6 @@ public class UserServiceImpl implements UserService {
                 dataWrapper.setErrorCode(ErrorCodeEnum.Password_error);
                 dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
             }
-            //--
-
-
-			/*if(SessionManager.getSessionByUserID(seUser.getUserId())==null){
-                String sessionKey=SessionManager.newSession(seUser);
-				dataWrapper.setToken(token);
-				return dataWrapper;
-			}else{
-				dataWrapper.setMsg("该账户已经登录");
-				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-				return dataWrapper;
-			}*/
-
-            //--
         } else {
             dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
             dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
@@ -204,10 +169,6 @@ public class UserServiceImpl implements UserService {
         userDao.deleteToken(token);
         dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
         dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-        //--
-        /*String userId=utilsDao.getUserID(token);
-		SessionManager.removeSessionByUserId(userId);*/
-        //---
         return dataWrapper;
     }
 
@@ -215,14 +176,11 @@ public class UserServiceImpl implements UserService {
     public DataWrapper<Void> forgetPwd(String phone, String code, String password) {
         DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
         if (userDao.getUserByPhone(phone) != null) {
-            String serverCode = VerifyCodeManager.getPhoneCode(phone);
-            if (serverCode.equals("noCode")) {
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_notExist);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            } else if (serverCode.equals("overdue")) {
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_5min);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            } else if (serverCode.equals(code)) {
+            ErrorCodeEnum codeEnum= VerifiCodeValidateUtil.verifiCodeValidate(phone,code);
+            if(!codeEnum.equals(ErrorCodeEnum.No_Error)){
+                dataWrapper.setErrorCode(codeEnum);
+                return dataWrapper;
+            }
                 try {
                     userDao.updatePwd(phone,MD5Util.getMD5String(password));
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
@@ -232,12 +190,6 @@ public class UserServiceImpl implements UserService {
                     dataWrapper.setErrorCode(ErrorCodeEnum.Error);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 }
-            } else {
-                System.out.println("code:" + code);
-                System.out.println("VerifyCode:" + VerifyCodeManager.getPhoneCode(phone));
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_Error);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            }
         } else {
             dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
             dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());

@@ -19,7 +19,6 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
-import java.util.HashMap;
 import java.util.Map;
 import java.util.UUID;
 
@@ -78,6 +77,11 @@ public class WxLoginServiceImpl implements WxLoginService {
     @Override
     public DataWrapper<Object> bindUser(String phone, String verifyCode,String type) {
         DataWrapper<Object> dataWrapper = new DataWrapper<Object>();
+        if(wxAppDao.getPhoneCount(phone)!=0){
+            dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+            dataWrapper.setMsg("该账号已经绑定过其他微信了");
+            return dataWrapper;
+        }
         if ("1".equals(type)){
             User seUser = userDao.getUserByPhone(phone);
             /*String serverCode = VerifyCodeManager.getPhoneCode(phone);
@@ -149,7 +153,7 @@ public class WxLoginServiceImpl implements WxLoginService {
             }
 			String token=tokenService.getToken(userId);
             User seUser = userDao.getUserByPhone(user.getPhone());
-            wxAppDao.addUser(userId,openid);
+            wxAppDao.addUser(userId,openid,user.getPhone());
             dataWrapper.setData(seUser);
 			dataWrapper.setToken(token);
 		}else{
@@ -167,7 +171,7 @@ public class WxLoginServiceImpl implements WxLoginService {
                     user.setUserId(newUser.getUserId());
                     userDao.registerUserInfo(user);
                     userDao.registerUserCertification(user);
-                    wxAppDao.addUser(newUser.getUserId(),openid);
+                    wxAppDao.addUser(newUser.getUserId(),openid,user.getPhone());
                     dataWrapper.setToken(token);
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
@@ -191,7 +195,7 @@ public class WxLoginServiceImpl implements WxLoginService {
 			saleInfoDao.updateSaleInfo(saleInfo);
 			String saleId=saleInfoDao.getSaleIdBySalePhone(saleInfo.getPhone());
 			String token=tokenService.getSaleToken(saleId);
-            wxAppDao.addSaleUser(saleId,openid);
+            wxAppDao.addSaleUser(saleId,openid,saleInfo.getPhone());
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			dataWrapper.setToken(token);
 		}else{//未注册
@@ -205,7 +209,7 @@ public class WxLoginServiceImpl implements WxLoginService {
                     VerifyCodeManager.removePhoneCodeByPhoneNum(saleInfo.getPhone());
                     String token = tokenService.getSaleToken(saleInfoTwo.getSaleId());
                     saleInfoDao.updateSaleInfo(saleInfo);
-                    wxAppDao.addSaleUser(saleInfoTwo.getSaleId(),openid);
+                    wxAppDao.addSaleUser(saleInfoTwo.getSaleId(),openid,saleInfo.getPhone());
                     dataWrapper.setToken(token);
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());

@@ -300,19 +300,7 @@ public class ItemManageServiceImpl implements ItemManageService{
 
 
 
-	/*@Override
-	public DataWrapper<Void> addItemClassify(String itemClassifyName,
-			String itemPreviousClassify,Integer itemClassifyGrade) {
-		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		ItemClassify itemClassify=new ItemClassify();
-		itemClassify.setItemClassifyName(itemClassifyName);
-		itemClassify.setItemClassifyGrade(itemClassifyGrade);
-		itemClassify.setItemPreviousClassify(itemPreviousClassify);
-		itemManageDao.addItemClassify(itemClassify);
-		ClassifyManage.classifyList=itemClassifyDao.showsTreeClassify();
-		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-		return dataWrapper;
-	}*/
+
 
 	@Override
 	public DataWrapper<Void> addPropertyAndPropertyName(
@@ -328,12 +316,8 @@ public class ItemManageServiceImpl implements ItemManageService{
 			map.put("itemPparamList", itemPparamList);
 			itemManageDao.addPropertyd(map);
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-			String msg=dataWrapper.getErrorCode().getLabel();
-			dataWrapper.setMsg(msg);
 		}else{
 			dataWrapper.setErrorCode(ErrorCodeEnum.PROPERTY_ALREADY_EXIST);
-			String msg=dataWrapper.getErrorCode().getLabel();
-			dataWrapper.setMsg(msg);
 		}
 		
 		return dataWrapper;

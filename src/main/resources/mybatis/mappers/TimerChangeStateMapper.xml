@@ -84,7 +84,7 @@
 			stock_num = ${plid.num}+stock_num
 			</set>
 			where 
-			 item_sKU=#{plid.itemSKU}
+			 item_sKU=#{plid.itemSKU} and stock_num >=0
 		</foreach>
 	</update>
 </mapper>

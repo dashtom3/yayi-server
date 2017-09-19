@@ -7,6 +7,7 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Invoice;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
+import com.yayiabc.http.mvc.pojo.model.FinalList;
 
 
 public interface PlaceOrderService {
@@ -31,4 +32,8 @@ public interface PlaceOrderService {
 
 
 	DataWrapper<Invoice> queryLastInvoice(String token);
+	
+	
+	//更改库存
+	 boolean changeStockNum(List<OrderItem> orderItemList,List<FinalList> finalList);
 }

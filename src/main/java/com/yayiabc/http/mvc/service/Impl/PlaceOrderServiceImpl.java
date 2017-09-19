@@ -153,9 +153,11 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			order.setQbDed(0);
 		}
 		DataWrapper<Integer> data=ded(token,order.getQbDed());
+		if(data!=null){
 		int qbBalance=data.getData();
 		if(qbBalance<order.getQbDed()){
 			throw new OrderException(ErrorCodeEnum.QBDED_Error);
+		}
 		}
 		//记录工具设备类的商品 个数
 		int TooldevicesSumCount=0;
@@ -203,26 +205,12 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			double AllTooldevicesSumPrice=0;	
 
 
-			//把传过来的 List<OrderItem> 遍历到order_item 表中
 			Double sumPrice=0.0;
 			int itemSum=orderItemList.size();//商品总数量
-
 			List<FinalList> finalList=placeOrderDao.queryFinalList(orderItemList);
-			for(int i=0;i<orderItemList.size();i++){
-				for(int x=0;x<finalList.size();x++){
-					if(orderItemList.get(i).getItemSKU().equals(finalList.get(x).getItemSKU())){
-						orderItemList.get(i).setItemBrandName(finalList.get(x).getItemBrandName());
-						orderItemList.get(i).setItemName(finalList.get(x).getItemName());
-						orderItemList.get(i).setPicPath(finalList.get(x).getPicPath());
-						orderItemList.get(i).setItemPropertyNamea(finalList.get(x).getItemPropertyInfo());
-						orderItemList.get(i).setItemPropertyNameb(finalList.get(x).getItemPropertyTwoValue());
-						orderItemList.get(i).setItemPropertyNamec(finalList.get(x).getItemPropertyThreeValue());
-						orderItemList.get(i).setPrice(finalList.get(x).getItemSkuPrice());
-						orderItemList.get(i).setOrderId(orderId);
-						orderItemList.get(i).setItemType(finalList.get(x).getItemType());
-					}
-				}
-			}
+			//填充orderItemList
+			orderItemList=goodOrderItemList(orderItemList,orderId,finalList);
+			
 			//计算改单商品金额
 			HashMap<String, Object> priceMap=partItemPrices(orderItemList,AllSuppliesSumPrice,AllTooldevicesSumPrice);
 			sumPrice=(Double) priceMap.get("sumPrice");
@@ -318,7 +306,9 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		return hm;
      }
 	//下单更改订单里的商品库存
-	private boolean changeStockNum(List<OrderItem> orderItemList,List<FinalList> finalList){
+	@Override
+	 public boolean changeStockNum(List<OrderItem> orderItemList,List<FinalList> finalList){
+		
 		if(orderItemList.size()!=finalList.size()){
 			System.out.println(orderItemList.size()+"   "+finalList.size());
 			return false;
@@ -326,21 +316,15 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			for(int i=0;i<orderItemList.size();i++){
 				//判断当前商品是否在售卖状态
 				if(finalList.get(i).getCanUse()==1){
-				if(finalList.get(i).getStockNum()>=orderItemList.get(i).getNum()){
-					//如果库存数量大于购买数量  就去库存减去购买数
-					//更改库存数量
-					placeOrderDao.updateInventNum(
-							String.valueOf(finalList.get(i).getStockNum()-orderItemList.get(i).getNum()),finalList.get(i).getItemSKU()
-							);
-					//---
-				}else{
-					//删除该订单   和订单商品表里的信息
+				if(finalList.get(i).getStockNum()<orderItemList.get(i).getNum()){
 					return false;
 				}
 				}else{
 					return false;
 				}
 			}
+			//根据影响行数判断库存是否已经正确扣除
+			placeOrderDao.updateInventNums(orderItemList);
 		}
 		return true;
 	}
@@ -401,7 +385,26 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		}
 		return dataWrapper;
 	}
-	
+	//填充orderItemList
+	private List<OrderItem> goodOrderItemList(List<OrderItem> orderItemList,String orderId,List<FinalList> finalList){
+		
+		for(int i=0;i<orderItemList.size();i++){
+			for(int x=0;x<finalList.size();x++){
+				if(orderItemList.get(i).getItemSKU().equals(finalList.get(x).getItemSKU())){
+					orderItemList.get(i).setItemBrandName(finalList.get(x).getItemBrandName());
+					orderItemList.get(i).setItemName(finalList.get(x).getItemName());
+					orderItemList.get(i).setPicPath(finalList.get(x).getPicPath());
+					orderItemList.get(i).setItemPropertyNamea(finalList.get(x).getItemPropertyInfo());
+					orderItemList.get(i).setItemPropertyNameb(finalList.get(x).getItemPropertyTwoValue());
+					orderItemList.get(i).setItemPropertyNamec(finalList.get(x).getItemPropertyThreeValue());
+					orderItemList.get(i).setPrice(finalList.get(x).getItemSkuPrice());
+					orderItemList.get(i).setOrderId(orderId);
+					orderItemList.get(i).setItemType(finalList.get(x).getItemType());
+				}
+			}
+		}
+		return orderItemList;
+	}
 	//double保留最后两位小数
     private Double keepTwo(Double ouble){
       return (double) Math.round(ouble);

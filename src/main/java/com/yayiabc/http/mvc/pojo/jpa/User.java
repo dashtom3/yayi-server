@@ -50,14 +50,14 @@ public class User extends BasePojo implements Serializable {
 	private int bQb;
 	private int cQb;
 	
-	private UserWitSetUp userWitSetUp;
-	
-	public UserWitSetUp getUserWitSetUp() {
-		return userWitSetUp;
+	private List<UserWith> UserWith;
+
+	public List<UserWith> getUserWith() {
+		return UserWith;
 	}
 
-	public void setUserWitSetUp(UserWitSetUp userWitSetUp) {
-		this.userWitSetUp = userWitSetUp;
+	public void setUserWith(List<UserWith> userWith) {
+		UserWith = userWith;
 	}
 
 	public int getaQb() {

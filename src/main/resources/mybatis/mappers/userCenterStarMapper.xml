@@ -10,12 +10,13 @@
 		<result column="item_price" property="item_price" />
 		<result column="qb_num" property="qb_num" />
 		<result column="itemId" property="item_id" />
+		<result column="item_brand_name" property="itemBrandName"/>
 	</resultMap>
 	<select id="shows" resultMap="mystar">
-		SELECT idl.item_pica,iio.item_name,iio.item_id, iio.item_price,idl.qb_num 
+		SELECT idl.item_pica,iio.item_name,iio.item_id, iio.item_price,idl.qb_num,ib.item_brand_name 
 		FROM item_star
 		isr JOIN item_info iio ON isr.item_id = iio.item_id JOIN item_detail
-		idl ON isr.item_id =idl.item_id 
+		idl ON isr.item_id =idl.item_id JOIN item_brand  ib ON iio.item_brand_id=ib.item_brand_id
 
 		where isr.user_id=#{userId} <!-- limit ${page.currentPage},${page.numberPerPage} -->
 	

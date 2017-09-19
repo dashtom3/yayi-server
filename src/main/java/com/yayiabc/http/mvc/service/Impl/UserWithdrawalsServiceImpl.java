@@ -30,37 +30,21 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 	@Override
 	public DataWrapper<Object> show(HashMap<String, Object> hm) {
 		// TODO Auto-generated method stub   currentPage
-		/**
-		 * DataWrapper<List<CusResources>> dataWrapper=new DataWrapper<List<CusResources>>();
-		Page page=new Page();
-		page.setNumberPerPage(numberPerPage);
-		page.setCurrentPage(currentPage);
-		//总条数
-		Integer count=findDao.queryCount(state);
-		Integer numberPerpage=page.getNumberPerPage();
-		Integer currentNum=page.getCurrentNumber();
-		dataWrapper.setPage(page,count);
-       hm.put("nameOrPhone", nameOrPhone);
-	   hm.put("numberPerpage", numberPerpage);
-	   hm.put("currentPage", currentPage);
-	   hm.put("orderCTime", orderCTime);
-	   hm.put("orderETime", orderETime);
-		dataWrapper.setData(findDao.shows(state,currentNum,numberPerpage));
-		return dataWrapper;
-		 */
 		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
 		Page page=new Page();
 		page.setNumberPerPage((Integer)hm.get("numberPerpage"));
 		page.setCurrentPage((Integer)hm.get("currentPage"));
 		hm.remove("numberPerpage");
 		hm.remove("currentPage");
+		System.out.println(page.getNumberPerPage());
+		System.out.println(page.getCurrentNumber());
 		hm.put("numberPerpage", page.getNumberPerPage());
 		hm.put("currentNum", page.getCurrentNumber());
 		//总条数
 		int count=userWithdrawalsServiceDao.queryCount(hm);//totalnumber
 		//				hMap.put("currentPage", page.getCurrentPage());
 
-		List<UserWith> userWithList=userWithdrawalsServiceDao.show(hm);
+		List<User> userWithList=userWithdrawalsServiceDao.show(hm);
 		dataWrapper.setPage(page,count);
 		if(userWithList.isEmpty()){
 			dataWrapper.setMsg("暂无数据");

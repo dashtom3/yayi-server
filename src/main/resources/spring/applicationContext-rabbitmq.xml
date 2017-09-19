@@ -32,18 +32,21 @@
   
     <!-- 连接服务配置  -->  
     <rabbit:connection-factory id="connectionFactory" host="47.93.48.111" username="lihui"  
-        password="123456" port="5672"  virtual-host="/" />  
+        password="123456" port="5672" publisher-confirms="true"  virtual-host="/" />  
   
     <rabbit:admin connection-factory="connectionFactory" />  
   
     <!-- queue 队列声明 需要发送消息到哪些队列-->  
-    <!-- 消息系统监听队列 -->  
+    <!-- 消息系统监听队列   处理订单队列-->  
     <rabbit:queue id="message_queue" durable="true" auto-delete="false" exclusive="false" name="message_queue"/>  
-      
+    <!-- 消息系统监听队列   处理库存队列-->
+     <rabbit:queue id="stock_queue" durable="true" auto-delete="false" exclusive="false" name="stock_queue"/>    
+       
     <!-- exchange queue binging key 绑定 -->  
     <rabbit:topic-exchange name="message-exchange" durable="true" auto-delete="false" id="message-exchange">  
         <rabbit:bindings>  
             <rabbit:binding queue="message_queue" pattern="message.*" />  
+            <rabbit:binding queue="stock_queue" pattern="stock.*" />  
         </rabbit:bindings>  
     </rabbit:topic-exchange>  
   
@@ -51,8 +54,8 @@
     <bean id="jsonMessageConverter"  class="com.yayiabc.http.rabbitmq.FastJsonMessageConverter"></bean>  
        
     <!-- spring template声明-->  
-    <rabbit:template exchange="message-exchange" id="amqpTemplate"  connection-factory="connectionFactory"  message-converter="jsonMessageConverter"/>  
-      
+    <rabbit:template exchange="message-exchange" id="amqpTemplate"  connection-factory="connectionFactory" 
+     message-converter="jsonMessageConverter"/>  
     <!-- 默认消息处理类，可以重写 -->  
     <bean id="messageHandler" class="com.yayiabc.http.rabbitmq.MessageHandler"></bean>  
       
@@ -60,18 +63,37 @@
     <bean id="messageQueueListenerAdapter"    
         class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">    
         <constructor-arg ref="messageHandler" />    
-        <property name="defaultListenerMethod" value="handleMessage"></property>    
+        <property name="defaultListenerMethod" value="onMessage"></property>    
         <property name="messageConverter" ref="jsonMessageConverter"></property>    
     </bean>   
-      
-    <!-- cus监听 -->  
+      <!-- 123 -->
+       <bean id="messageQueueListenerAdapters"    
+        class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">    
+        <constructor-arg ref="messageHandler" />    
+        <property name="defaultListenerMethod" value="dedStock"></property>    
+        <property name="messageConverter" ref="jsonMessageConverter"></property>    
+    </bean> 
+    
+    <!-- cus监听 --> 
+    <!-- 监听器acknowledge=manual表示手工确认消息已处理（异常时可以不确认消息），auto表示自动确认（只要不抛出异常，消息就会被消费） -->   
     <rabbit:listener-container  
         connection-factory="connectionFactory" acknowledge="auto"  
         task-executor="taskExecutor">  
-        <rabbit:listener queues="message_queue" ref="messageQueueListenerAdapter" />  
-        </rabbit:listener-container>  
+        <rabbit:listener queues="message_queue" ref="messageQueueListenerAdapter" />
+        <rabbit:listener queues="stock_queue" ref="messageQueueListenerAdapters" />
+    </rabbit:listener-container>  
         <bean id="messageSender"    
                 class="com.yayiabc.http.rabbitmq.MessageSender">    
                 <property name="amqpTemplate" ref="amqpTemplate"></property>    
         </bean>  
+       <!-- 重发？ --> 
+     <bean  id = "retryTemplate" class = "org.springframework.retry.support.RetryTemplate" > 
+    <property  name = "backOffPolicy" > 
+        <bean  class = "org.springframework.retry.backoff.ExponentialBackOffPolicy"> 
+            <property  name = "initialInterval"  value = "500" /> 
+            <property  name = "multiplier"  value = "10.0"/> 
+            <property  name = "maxInterval" value = "10000"/>
+        </bean> 
+    </property> 
+</bean>
  </beans>  

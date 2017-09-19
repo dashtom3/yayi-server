@@ -144,4 +144,7 @@ public interface PlaceOrderDao {
 	List<FinalList> queryFinalList(List<OrderItem> orderItemList);
 
 
+	int dedItemStockNum(List<OrderItem> orderItemList);
+
+
 }

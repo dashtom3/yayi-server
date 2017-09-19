@@ -1,15 +1,17 @@
 package com.yayiabc.http.rabbitmq;
 
-import java.io.UnsupportedEncodingException;  
-
-import org.apache.commons.logging.Log;  
-import org.apache.commons.logging.LogFactory;
-import org.springframework.amqp.core.Message;  
-import org.springframework.amqp.core.MessageProperties;  
-import org.springframework.amqp.support.converter.AbstractMessageConverter;  
-import org.springframework.amqp.support.converter.MessageConversionException;
 
 import com.alibaba.fastjson.JSONObject;
+import org.apache.commons.logging.Log;
+import org.apache.commons.logging.LogFactory;
+import org.springframework.amqp.core.Message;
+import org.springframework.amqp.core.MessageProperties;
+import org.springframework.amqp.support.converter.AbstractMessageConverter;
+import org.springframework.amqp.support.converter.MessageConversionException;
+
+import java.io.UnsupportedEncodingException;
+
+
 
 
   
@@ -52,7 +54,7 @@ public class FastJsonMessageConverter extends AbstractMessageConverter {
         } catch (UnsupportedEncodingException e) {  
             e.printStackTrace();  
         }  
-        return (T) JSONObject.parseObject(json, t.getClass());  
+        return (T) JSONObject.parseObject(json, t.getClass());
     }  
   
     protected Message createMessage(Object objectToConvert,  

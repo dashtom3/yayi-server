@@ -80,6 +80,7 @@ public class WXPhonePayController {
 			reqData.put("scene_info","{'h5_info': {'type':'Wap','wap_url': 'https://pay.qq.com','wap_name': '牙医abc商品购买'}}" );//场景描述
 			System.out.println(reqData);
 			Map<String,String> respMap=wxPay.unifiedOrder(reqData);
+			System.out.println(respMap);
 			System.out.println(respMap.get("mweb_url"));
 			response.addHeader("location",respMap.get("mweb_url"));
 			response.setStatus(302);

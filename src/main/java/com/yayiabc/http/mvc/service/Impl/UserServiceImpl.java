@@ -3,15 +3,11 @@ package com.yayiabc.http.mvc.service.Impl;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.sessionManager.SessionManager;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
-
-import com.yayiabc.common.utils.*;
-import com.yayiabc.http.mvc.controller.unionpay.sdk.LogUtil;
-
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.HttpUtil;
 import com.yayiabc.common.utils.MD5Util;
 import com.yayiabc.common.utils.VerifiCodeValidateUtil;
-
+import com.yayiabc.http.mvc.controller.unionpay.sdk.LogUtil;
 import com.yayiabc.http.mvc.dao.SaleLogDao;
 import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.UserManageListDao;
@@ -23,7 +19,6 @@ import com.yayiabc.http.mvc.service.TokenService;
 import com.yayiabc.http.mvc.service.UserMyQbService;
 import com.yayiabc.http.mvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.annotation.Bean;
 import org.springframework.stereotype.Service;
 
 import java.util.UUID;
@@ -79,25 +74,20 @@ public class UserServiceImpl implements UserService {
                 newUser.setUserId(UUID.randomUUID().toString());
                 newUser.setPhone(phone);
                 newUser.setPwd(MD5Util.getMD5String(password));
-                Integer count=userDao.getSaleCount(phone);
-                if(count==0){
-                	if (1 == userDao.register(newUser)) {
-	                    //绉婚櫎楠岃瘉鐮�
-	                    VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
-	                    String token = tokenService.getToken(newUser.getUserId());
-	                    QbRecord qbRecord=new QbRecord();
-	                    qbRecord.setQbRget(60);
-	                    qbRecord.setRemark("注册送60乾币");
-	                    qbRecord.setQbType("qb_balance");
-	                    userMyQbService.add(qbRecord, token);
-	                    dataWrapper.setToken(token);
-	                    dataWrapper.setData(newUser);
-                        if (openid != null) wxAppDao.addUser(newUser.getUserId(),openid,newUser.getPhone());
-	                } else {
-	                    dataWrapper.setErrorCode(ErrorCodeEnum.Register_Error);
-	                }
-                }else{
-                	dataWrapper.setErrorCode(ErrorCodeEnum.NO_POWER);
+                if (1 == userDao.register(newUser)) {
+                    //绉婚櫎楠岃瘉鐮�
+                    VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
+                    String token = tokenService.getToken(newUser.getUserId());
+                    QbRecord qbRecord=new QbRecord();
+                    qbRecord.setQbRget(60);
+                    qbRecord.setRemark("注册送60乾币");
+                    qbRecord.setQbType("qb_balance");
+                    userMyQbService.add(qbRecord, token);
+                    dataWrapper.setToken(token);
+                    dataWrapper.setData(newUser);
+                    if (openid != null) wxAppDao.addUser(newUser.getUserId(),openid,newUser.getPhone());
+                } else {
+                    dataWrapper.setErrorCode(ErrorCodeEnum.Register_Error);
                 }
         } else {
             dataWrapper.setErrorCode(ErrorCodeEnum.Username_Already_Exist);

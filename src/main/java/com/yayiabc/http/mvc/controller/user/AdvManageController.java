@@ -1,24 +1,16 @@
 package com.yayiabc.http.mvc.controller.user;
 
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.ModelAttribute;
-import org.springframework.web.bind.annotation.RequestHeader;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
 import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.sdk.LogisticsMain;
-import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.common.utils.PayAfterOrderUtil;
 import com.yayiabc.http.mvc.pojo.jpa.AdvChart;
-import com.yayiabc.http.mvc.pojo.jpa.Test;
 import com.yayiabc.http.mvc.service.AdvManageService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.*;
+
+import java.util.List;
 
 @Controller
 @RequestMapping("api/adv")
@@ -95,11 +87,5 @@ public class AdvManageController {
 		}
 		return LogisticCode;
     }
-    @RequestMapping("test")
-    @ResponseBody
-    public void da(
-    		Test  t
-    		){
-    	  System.out.println(t);
-    }
+
 }

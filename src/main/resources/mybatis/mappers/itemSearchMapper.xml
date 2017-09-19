@@ -4,18 +4,21 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
  <mapper namespace="com.yayiabc.http.mvc.dao.ItemSearchDao">
 	<select id="itemSearch" resultMap="itemInfoRM">
-		 SELECT d.item_id,d.x_id,d.item_name,d.item_price,d.item_pica,d.one_classify,d.sales,d.two_classify,d.three_classify,c.item_brand_name,d.updated FROM
- (SELECT * FROM
- (SELECT item_id,item_name,sales,item_brand_id,item_price,one_classify,two_classify,three_classify,updated FROM item_info where state=1) a
- LEFT JOIN
- (SELECT item_id x_id,item_pica FROM item_detail) b
- ON a.item_id=b.x_id) d
- LEFT JOIN
- (SELECT item_brand_id p_id,item_brand_name FROM item_brand) c
- ON d.item_brand_id=c.p_id
+        select * from
+        (SELECT * FROM
+        (SELECT * FROM
+        (select * from item_info where state=1) a
+        INNER JOIN
+        (SELECT item_id x_id,item_pica FROM item_detail) b
+        ON a.item_id=b.x_id) c
+        INNER JOIN
+        (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) d
+        ON c.item_brand_id=d.p_id)o
+        inner JOIN
+        (SELECT item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,item_qb,item_value_id FROM item_value) q
+        ON o.item_id=q.prop_id
  WHERE item_name like '%${itemBrandName}%' or one_classify like '%${itemBrandName}%'
- or two_classify like '%${itemBrandName}%' or three_classify like '%${itemBrandName}%'
- or item_brand_name like '%${itemBrandName}%'
+ or two_classify like '%${itemBrandName}%' or item_brand_name like '%${itemBrandName}%'
  order by 
     <choose>
     	<when test="rule=1">updated desc</when>
@@ -39,15 +42,18 @@
  or two_classify like '%${itemBrandName}%' or three_classify like '%${itemBrandName}%'
  or item_brand_name like '%${itemBrandName}%'
 	</select>
-	<resultMap type="ItemInfo" id="itemInfoRM" autoMapping="true">
-		<id property="itemId" column="item_id"/>
-		<association property="itemDetail" javaType="ItemDetail">
-			<id property="itemId" column="x_id"/>
-			<result property="itemPica" column="item_pica"/>
-		</association>
-		<association property="itemBrand" javaType="ItemBrand">
-			<id property="itemBrandId" column="item_brand_id"/>
-			<result property="itemBrandName" column="item_brand_name"/>
-		</association>
-	</resultMap>
+    <resultMap type="ItemInfo" id="itemInfoRM" autoMapping="true">
+        <id property="itemId" column="item_id"/>
+        <association property="itemDetail" javaType="ItemDetail">
+            <id property="itemId" column="x_id"/>
+            <result property="itemPica" column="item_pica"/>
+        </association>
+        <association property="itemBrand" javaType="ItemBrand" autoMapping="true">
+            <id property="itemBrandId" column="p_id"/>
+        </association>
+        <collection property="itemValueList" ofType="ItemValue" autoMapping="true">
+            <id column="item_value_id" property="itemValueId"/>
+            <result column="s_num" property="stockNum"/>
+        </collection>
+    </resultMap>
 </mapper>       

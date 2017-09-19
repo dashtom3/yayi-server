@@ -21,7 +21,7 @@ public interface UserWithdrawalsDao {
 	Integer queryCount(HashMap<String, Object> hm);
 
 
-	List<UserWith> show(HashMap<String, Object> hm);
+	List<User> show(HashMap<String, Object> hm);
 
 
 	UserWith queryFourQb(String withId);

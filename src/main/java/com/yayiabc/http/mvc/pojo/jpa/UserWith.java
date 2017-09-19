@@ -3,7 +3,6 @@ package com.yayiabc.http.mvc.pojo.jpa;
 import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
-
 public class UserWith {
 	private  String userId;
 	private  int withId;
@@ -13,14 +12,15 @@ public class UserWith {
 	private double giveType;
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss",style="GMT+8")
 	private Date created; //发起申请时间
-	
 	private Date determineTime;  //批准提现时间
 	private int sign;  //提现标志位  1表示 待审核  2  表示审核成功
-    private int witSetupId;  //提现设置表的主键
+  //  private int witSetupId;  //提现设置表的主键#{witType},#{accountHolder},#{cardNumber},#{oBank}
+	
+     private String witType;
+     private String accountHolder;
+     private  String cardNumber;
+     private String oBank;
      
-	public int getWitSetupId() {
-		return witSetupId;
-	}
 
 	public Date getDetermineTime() {
 		return determineTime;
@@ -28,10 +28,6 @@ public class UserWith {
 
 	public void setDetermineTime(Date determineTime) {
 		this.determineTime = determineTime;
-	}
-
-	public void setWitSetupId(int witSetupId) {
-		this.witSetupId = witSetupId;
 	}
 
 	public int getWithId() {
@@ -85,6 +81,38 @@ public class UserWith {
 	}
 	public void setSign(int sign) {
 		this.sign = sign;
+	}
+
+	public String getWitType() {
+		return witType;
+	}
+
+	public void setWitType(String witType) {
+		this.witType = witType;
+	}
+
+	public String getAccountHolder() {
+		return accountHolder;
+	}
+
+	public void setAccountHolder(String accountHolder) {
+		this.accountHolder = accountHolder;
+	}
+
+	public String getCardNumber() {
+		return cardNumber;
+	}
+
+	public void setCardNumber(String cardNumber) {
+		this.cardNumber = cardNumber;
+	}
+
+	public String getoBank() {
+		return oBank;
+	}
+
+	public void setoBank(String oBank) {
+		this.oBank = oBank;
 	}
 
 	public UserWith() {

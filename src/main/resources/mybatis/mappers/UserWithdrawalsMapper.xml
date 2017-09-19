@@ -7,8 +7,9 @@
 
 	<insert id="submit">
 		insert into
-		user_with(a_type,b_type,c_type,give_type,created,wit_setup_id,user_id) values(
-		#{aType},#{bType},#{cType},#{giveType},now(),(select max(wit_setup_id) from cash_withdrawal_type where user_id=#{userId}),#{userId}
+		user_with(a_type,b_type,c_type,give_type,created,wit_type,account_holder,card_number,o_bank,user_id)
+		values(
+		#{aType},#{bType},#{cType},#{giveType},now(),#{witType},#{accountHolder},#{cardNumber},#{oBank},#{userId}
 		)
 	</insert>
 
@@ -33,12 +34,11 @@
 
 
 	<select id="queryCount" resultType="int">
-		SELECT  count(1)
-		 FROM 
-		 `user` us JOIN cash_withdrawal_type cwt ON
-		us.user_id=cwt.user_id JOIN user_with uw
-		ON cwt.wit_setup_id
-		=uw.wit_setup_id
+		SELECT
+		 us.user_id,us.true_name,us.phone,uw.*
+		FROM
+		`user` us JOIN
+		user_with uw ON uw.user_id=us.user_id
 		<where>
 			<if test="nameOrPhone!=null and nameOrPhone!=''">
 				#{nameOrPhone} in (us.true_name,us.phone)
@@ -51,54 +51,40 @@
 	<!-- 12 hm.put("nameOrPhone", nameOrPhone); hm.put("sign", sign); hm.put("currentPage", 
 		currentPage); hm.put("numberPerpage", numberPerpage); hm.put("orderCTime", 
 		orderCTime); hm.put("orderETime", orderETime); -->
-		
-		
+
+
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.User" id="cctvt">
-		<id property="userId" column="user_id" />
+		<result property="userId" column="user_id" />
 		<result property="trueName" column="true_name" />
 		<result property="phone" column="phone" />
-		<association property="userWitSetUp"
-			javaType="com.yayiabc.http.mvc.pojo.jpa.UserWitSetUp">
-			<!-- <result property="aType" column="a_type" /> <result property="bType" 
-				column="b_type" /> <result property="cType" column="c_type" /> <result property="giveType" 
-				column="give_type" /> -->
-			<id property="witSetupId" column="wit_setup_id" />
+		<collection property="userWitSetUp"
+			ofType="com.yayiabc.http.mvc.pojo.jpa.UserWith">
 			<result property="witType" column="wit_type" />
 			<result property="accountHolder" column="account_holder" />
 			<result property="cardNumber" column="card_number" />
 			<result property="oBank" column="o_bank" />
-			<association property="userWith" javaType="com.yayiabc.http.mvc.pojo.jpa.UserWith">
-			     <id property="withId" column="with_id"/>
-				<result property="aType" column="a_type" />
-				<result property="bType" column="b_type" />
-				<result property="cType" column="c_type" />
-				<result property="giveType" column="give_type" />
-				<result property="created" column="created" />
-				<result property="determineTime" column="determine_time"/>
-				<result property="sign" column="sign"/>
-			</association>
-		</association>
+			<result property="withId" column="with_id" />
+			<result property="aType" column="a_type" />
+			<result property="bType" column="b_type" />
+			<result property="cType" column="c_type" />
+			<result property="giveType" column="give_type" />
+			<result property="created" column="created" />
+			<result property="determineTime" column="determine_time" />
+			<result property="sign" column="sign" />
+		</collection>
 	</resultMap>
 	<select id="show" resultMap="cctvt">
-		SELECT us.user_id,us.true_name,us.phone,cwt.wit_setup_id,cwt.wit_type,cwt.account_holder,cwt.card_number
-		,cwt.o_bank,uw.a_type,uw.b_type,uw.c_type,uw.give_type,uw.created,uw.determine_time,uw.sign,uw.with_id
-		 FROM 
-		 `user` us JOIN cash_withdrawal_type cwt ON
-		us.user_id=cwt.user_id JOIN user_with uw
-		ON cwt.wit_setup_id
-		=uw.wit_setup_id
+		SELECT
+		 us.user_id,us.true_name,us.phone,uw.*
+		FROM
+		`user` us JOIN
+		user_with uw ON uw.user_id=us.user_id
 		<where>
 			<if test="nameOrPhone!=null and nameOrPhone!=''">
 				#{nameOrPhone} in (us.true_name,us.phone)
 			</if>
 			<if test="sign!=null and sign!=''">
-				uw.sign=#{sign}
-			</if>
-			<if test="orderCTime !=null and orderCTime !=''">
-				and DATE_FORMAT(uw.created,'%Y-%m-%d') <![CDATA[  >=  ]]>#{orderCTime}
-			</if>
-			<if test="orderETime !=null and orderETime !=''">
-				and DATE_FORMAT(uw.created,'%Y-%m-%d') <![CDATA[  <=  ]]>#{orderETime}
+				uw.sign=${sign}
 			</if>
 		</where>
 		order by uw.created desc limit ${currentNum} ,${numberPerpage}
@@ -114,11 +100,13 @@
 	</resultMap>
 	<select id="queryFourQb" resultMap="vvx">
 		select with_id,user_id,
-		a_type,b_type,c_type,give_type,sign from user_with where with_id=#{withId}
+		a_type,b_type,c_type,give_type,sign from user_with where
+		with_id=#{withId}
 	</select>
 
 	<update id="determine">
-		update user_with set sign=#{sign},determine_time=now()
+		update user_with set
+		sign=#{sign},determine_time=now()
 		where with_id=#{withId}
 	</update>
 
@@ -136,7 +124,8 @@
 		where user_id=#{userId}
 	</update>
 	<insert id="insertWitType">
-		insert into cash_withdrawal_type(user_id,wit_type,account_holder,card_number,o_bank,create_time)
+		insert into
+		cash_withdrawal_type(user_id,wit_type,account_holder,card_number,o_bank,create_time)
 		values(#{userId},#{witType},#{accountHolder},#{cardNumber},#{oBank},NOW())
 	</insert>
 
@@ -147,16 +136,17 @@
 		cash_withdrawal_type WHERE user_id=#{userId})
 	</select>
 	<select id="queryWitSign" resultType="java.lang.Integer">
-	   SELECT sign FROM user_with WHERE user_id=#{userId}  ORDER BY created DESC    LIMIT 0,1 
+		SELECT sign FROM user_with WHERE user_id=#{userId} ORDER BY created DESC
+		LIMIT 0,1
 	</select>
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.User" id="qwaz">
-	 <result property="aQb" column="a_qb"/>
-	 <result property="bQb" column="b_qb"/>
-	  <result property="cQb" column="c_qb"/>
-	   <result property="qbBalance" column="qb_balance"/>
-	    <result property="phone" column="phone"/>
+		<result property="aQb" column="a_qb" />
+		<result property="bQb" column="b_qb" />
+		<result property="cQb" column="c_qb" />
+		<result property="qbBalance" column="qb_balance" />
+		<result property="phone" column="phone" />
 	</resultMap>
-   <select id="showUserQbNum" resultMap="qwaz">
-    select a_qb,b_qb,c_qb,qb_balance,phone from user where user_id=#{userId}
-   </select>
+	<select id="showUserQbNum" resultMap="qwaz">
+		select a_qb,b_qb,c_qb,qb_balance,phone from user where user_id=#{userId}
+	</select>
 </mapper>       

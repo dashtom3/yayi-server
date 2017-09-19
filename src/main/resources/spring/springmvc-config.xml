@@ -13,7 +13,7 @@
         http://www.springframework.org/schema/cache http://www.springframework.org/schema/cache/spring-cache.xsd http://www.springframework.org/schema/tx http://www.springframework.org/schema/tx/spring-tx.xsd">
 
 
-
+<!-- <import resource="/Yayi/src/main/resources/rabbitmq/rabbitmq.xml" /> -->
 	<!-- MVC注解驱动 -->
 	<mvc:annotation-driven/>
 
@@ -39,6 +39,7 @@
 	<context:component-scan base-package="com.yayiabc.http.filter"/>
 	<context:component-scan base-package="com.yayiabc.http.mvc"/>
     <context:component-scan base-package="com.yayiabc.http.aop"/>
+    <context:component-scan base-package="com.yayiabc.http.rabbitmq"/>
 	<!-- 强制使用cglib代理方式 -->
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
 

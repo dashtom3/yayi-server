@@ -48,7 +48,7 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 					dataWrapper.setMsg("乾币增减错误！");
 				} else {
 					userMyQbDao.updateUserQb(qbRecord.getQbRout(), userId,qbRecord.getQbType());
-					//qbRecord.setQbBalances(qb+qbRecord.getQbRout());
+					qbRecord.setQbBalances(qb+qbRecord.getQbRout());
 					qbRecord.setMillisecond(MI);
 					userMyQbDao.add(qbRecord);
 				}

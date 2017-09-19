@@ -49,7 +49,7 @@ public class CoinRechargeController {
 			if(money==0.0){
 				throw new RuntimeException();
 			}
-			utilsdao.saveRechargeMessage(codeId,userId,String.valueOf(qbNum),qbType,String.valueOf(Math.round(money)));
+			utilsdao.saveRechargeMessage(codeId,userId,String.valueOf(qbNum),qbType,String.valueOf((money*100)/100));
 			//test  钱币充值  前台传来的钱币类型 为: a_qb b_qb ,c_qb
 			if(computerOrPhone.equals("computer")){
 				//调用PC网页支付宝.
@@ -74,7 +74,7 @@ public class CoinRechargeController {
 	@RequestMapping("appRecharge")
 	@ResponseBody
 	public DataWrapper<Object> appRecharge(
-			@RequestHeader(value="token",required=true)String token,
+			@RequestParam(value="token",required=true)String token,
 			@RequestParam(value="qbNum",required=true)String qbNum,
 			@RequestParam(value="qbType",required=true)String qbType
 			){

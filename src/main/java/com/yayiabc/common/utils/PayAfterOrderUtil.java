@@ -34,8 +34,8 @@ public class PayAfterOrderUtil {
 	@Autowired
 	private OrderManagementDao orderManagementDao;
 
-	public  boolean universal(String orderId,String type){
 		//更改支付类型
+	public  boolean universal(String orderId,String type){
 		int tt=0;
 		if(type!=null){
 			tt=aliPayDao.updatePayType(orderId,type);
@@ -171,9 +171,10 @@ public class PayAfterOrderUtil {
 			 System.out.println(out_trade_no);
 			 System.out.println("123123123213   "+charge);
 			 System.out.println(amount+"    "+charge.getMoney());
-            if(!amount.equals(charge.getMoney())){
+			 //验证金额
+           /*if(!amount.split(".")[0].equals(charge.getMoney().split(".")[0])){
             	return false;
-            }
+            }*/
             //商户订单号
 			if(charge!=null){
 				if(charge.getState()==1){

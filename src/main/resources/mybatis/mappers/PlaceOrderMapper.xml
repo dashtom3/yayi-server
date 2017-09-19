@@ -157,7 +157,7 @@
 		创建时间，买家昵称，买家是否留言 -->
 	<insert id="createOrder">
 		insert into
-		ordera(state,order_id,user_id,qb_ded,invoice_hand,is_register,buyer_message,total_fee,actual_pay
+		ordera(state, order_id,user_id,qb_ded,invoice_hand,is_register,buyer_message,total_fee,actual_pay
 		,post_fee,give_qb,created,receiver_id,refund_info
 		<!-- ,buyer_nick,buyer_rate -->
 
@@ -213,7 +213,7 @@
 	<update id="updateInventNum">
 		update item_value set stock_num=(#{NUM})
 		where
-		item_sKU=#{itemSKU} and stock_num >= 0
+		item_sKU=#{itemSKU} and stock_num > 0
 	</update>
 
 	<select id="queryItemsort" resultType="java.lang.String">
@@ -429,7 +429,7 @@
 			<set>
 				stock_num = stock_num-${cc.num}
 			</set>
-			where item_sKU=#{cc.itemSKU} and stock_num-${cc.num}>=0
+			where item_sKU=#{cc.itemSKU} and stock_num-${cc.num}>0
 		</foreach>
 	</update>
 </mapper>

@@ -6,6 +6,14 @@ public class  MyStar extends BasePojo{
     private String item_price;
     private String qb_num;
     private String itemId;
+    private String itemBrandName;
+    
+	public String getItemBrandName() {
+		return itemBrandName;
+	}
+	public void setItemBrandName(String itemBrandName) {
+		this.itemBrandName = itemBrandName;
+	}
 	public String getItemId() {
 		return itemId;
 	}

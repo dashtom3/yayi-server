@@ -71,6 +71,9 @@ public class SaleMyClientServiceImpl implements SaleMyClientService {
 				}
 			});
 		}
+		/*
+		 *list分页
+		 */
 		PageModel pm = new PageModel(list,numberPerPage);
 		List sublist=pm.getObjects(currentPage);
 		dataWrapper.setData(sublist);

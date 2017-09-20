@@ -1,14 +1,12 @@
 package com.yayiabc.http.mvc.controller.user;
 
+import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestMethod;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.bind.annotation.*;
 
 import javax.servlet.http.HttpServletRequest;
 
@@ -105,9 +103,10 @@ public class UserController {
 	//彻底删除
 	@RequestMapping(value = "deleteInGrainUser",method = RequestMethod.POST)
 	@ResponseBody
+	@AdminTokenValidate
 	public DataWrapper<Void> deleteInGrainUser(
-			//@RequestParam("token") String token,
-			@RequestParam("userId") String userId
+			@RequestHeader("adminToken") String adminToken,
+			@RequestParam("userId") Integer userId
 	){
 		return userService.deleteInGrainUser(userId);
 	}

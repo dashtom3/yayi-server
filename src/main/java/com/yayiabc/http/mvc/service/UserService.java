@@ -19,5 +19,5 @@ public interface UserService {
 
 	DataWrapper<Void> bindSale(String token, String salePhone);
 
-	DataWrapper<Void> deleteInGrainUser(String userId);
+	DataWrapper<Void> deleteInGrainUser(Integer userId);
 }

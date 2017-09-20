@@ -207,11 +207,11 @@ public class UserServiceImpl implements UserService {
     }
 
     @Override
-    public DataWrapper<Void> deleteInGrainUser(String userId) {
+    public DataWrapper<Void> deleteInGrainUser(Integer userId) {
         DataWrapper<Void> dataWrapper= new DataWrapper<Void>();
-        userDao.deleteInGrainUser(userId);
-//        SendToSaleMessage sendToSaleMessage= BeanUtil.getBean("SendToSaleMessage");
-//        sendToSaleMessage.send("42c3ae9e-95d3-4e5b-9347-48fe27f9dfda","fd48c46d9499408b9a9a05215edae56e701");
+
+
+        int sign =userDao.deleteInGrainUser(userId);
         return dataWrapper;
     }
 

@@ -52,7 +52,7 @@ public interface UserDao {
 	int getCountByUserId(@Param("userId") String userId);
 
     //彻底删除用户信息
-    void deleteInGrainUser(@Param("userId")String userId);
+    Integer deleteInGrainUser(@Param("userId")Integer userId);
 
     String getUserPhoneByToken(@Param("token")String token);
 

@@ -1,14 +1,11 @@
 package com.yayiabc.http.mvc.service.Impl;
 
 import java.text.SimpleDateFormat;
-import java.util.ArrayList;
-import java.util.Calendar;
-import java.util.Date;
-import java.util.HashMap;
-import java.util.List;
-import java.util.Map;
-import java.util.TimeZone;
+import java.util.*;
 
+import com.yayiabc.common.utils.RedisClient;
+import com.yayiabc.common.utils.SerializeUtil;
+import org.apache.poi.ss.formula.functions.Rank;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -18,10 +15,11 @@ import com.yayiabc.http.mvc.dao.RankingDao;
 import com.yayiabc.http.mvc.dao.SaleLogDao;
 import com.yayiabc.http.mvc.pojo.jpa.Ranking;
 import com.yayiabc.http.mvc.service.RankingService;
+import redis.clients.jedis.Jedis;
 
 @Service
 public class RankingServiceImpl implements RankingService {
-
+	private Jedis jedis;
 	@Autowired
 	RankingDao rankingDao;
 	@Autowired
@@ -36,7 +34,10 @@ public class RankingServiceImpl implements RankingService {
 		Integer nowMonth = (cal.get(Calendar.MONTH)+1); // 获取当前月份
 		Integer year = Integer.parseInt(beYearMonth.substring(0, 4)); // 获取输入的年份
 		Integer month = Integer.parseInt(beYearMonth.substring(5, 7)); // 获取输入的月份
-		if (nowYear.equals(year) && nowMonth.equals(month)) { // 返回当月销售排行榜
+		if (nowYear.equals(year) && nowMonth.equals(month)) {
+			/**
+			 * 返回当月销售排行榜数据
+			 */
 			String startDate = getTimeUtil.getFirstDayOfMonth(year, month); // 获得该月第一天
 			SimpleDateFormat sdf = new SimpleDateFormat("yyyy-MM-dd");
 			String endDate = sdf.format(new Date());
@@ -46,16 +47,48 @@ public class RankingServiceImpl implements RankingService {
 			}else{
 				dataWrapper.setData(list);
 			}
-		} else { // 返回往月销售排行榜
+		} else {
+			/**
+			 * 连接redis
+			 */
+			jedis=new Jedis("127.0.0.1",6379);
+			jedis.auth("123");
+			System.out.println("连接redis服务成功");
+			RedisClient.getJedis();
+			/**
+			 * 返回往月销售排行榜数据
+			 */
 			String tableName="rank_"+beYearMonth.substring(0, 4)+"_"+beYearMonth.substring(5, 7);
-			int sign=rankingDao.queryRankingExist(tableName);
+			int sign=jedis.keys(tableName+"*").size();
+			//int sign=rankingDao.queryRankingExist(tableName);		//查询月排行榜表是否存在
 			if(sign==0){
 				dataWrapper.setData(null);
 				dataWrapper.setMsg("无该月排行榜数据");
 			}else{
-				list = rankingDao.queryMonthRankingOld(tableName);
+				//list = rankingDao.queryMonthRankingOld(tableName);
+				for(int i=0;i<sign;i++){
+					byte[] ranking=jedis.get((tableName+i).getBytes());
+					Ranking r=(Ranking) SerializeUtil.unserialize(ranking);
+					list.add(r);
+				}
+				/**
+				 * 对list集合进行排序根据RowNum
+				 */
+//				Collections.sort(list, new Comparator<Ranking>() {
+//					@Override
+//					public int compare(Ranking o1, Ranking o2) {
+//						if(o1.getRowNum()>o2.getRowNum()){
+//							return 1;
+//						}
+//						if(o1.getRowNum()==o2.getRowNum()){
+//							return 0;
+//						}
+//						return -1;
+//					}
+//				});
 				dataWrapper.setData(list);
 			}
+			RedisClient.returnResource(jedis);		//释放连接池
 		}
 		return dataWrapper;
 	}
@@ -106,13 +139,30 @@ public class RankingServiceImpl implements RankingService {
 				dataWrapper.setData(ranking);
 			}
 		} else { 	// 返回往月销售员排行榜排名信息
+			/**
+			 * 连接redis
+			 */
+			jedis=new Jedis("127.0.0.1",6379);
+			jedis.auth("123");
+			System.out.println("连接redis服务成功");
+			RedisClient.getJedis();
 			String tableName="rank_"+beYearMonth.substring(0, 4)+"_"+beYearMonth.substring(5, 7);
 			Integer saleNum=rankingDao.getSaleCount(beYearMonth);
-			int sign=rankingDao.queryRankingExist(tableName);
+			//int sign=rankingDao.queryRankingExist(tableName);
+			int sign=jedis.keys(tableName+"*").size();
 			if(sign==0){
 				dataWrapper.setMsg("无该月排行榜数据");
 			}else{
-				ranking = rankingDao.getSaleRankingOld(saleId, tableName);
+				//ranking = rankingDao.getSaleRankingOld(saleId, tableName);
+				for(int i=0;i<sign;i++){
+					byte[] rank=jedis.get((tableName+i).getBytes());
+					Ranking r=(Ranking) SerializeUtil.unserialize(rank);
+					if(saleId.equals(r.getSaleId())){
+						ranking=r;
+						break;
+					}
+					ranking=null;
+				}
 				if(ranking == null){
 					dataWrapper.setMsg("当前销售员未上榜"+year+month);
 					dataWrapper.setNum(saleNum);
@@ -121,6 +171,7 @@ public class RankingServiceImpl implements RankingService {
 					dataWrapper.setData(ranking);
 				}
 			}
+			RedisClient.returnResource(jedis);		//释放连接池
 		}
 		return dataWrapper;
 	}

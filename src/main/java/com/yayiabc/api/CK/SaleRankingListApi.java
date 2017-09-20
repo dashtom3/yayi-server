@@ -3,7 +3,7 @@ package com.yayiabc.api.CK;
 public interface SaleRankingListApi {
 	/**
      * @api {get} http://47.93.48.111:6181/api/rankingList/list （创客系统）销售总排行榜
-     * @apiName salelist
+     * @apiName list
      * @apiGroup rankingList
      * @apiVersion 0.1.0
      * @apiDescription 销售排行榜

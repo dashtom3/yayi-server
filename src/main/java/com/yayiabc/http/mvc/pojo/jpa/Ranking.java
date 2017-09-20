@@ -1,18 +1,29 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
+import java.io.Serializable;
+
 /**
  * 月排名表
  * 
  * @author me
  * 
  */
-public class Ranking extends BasePojo {
+public class Ranking extends BasePojo implements Serializable {
 	private String rankingId;
+	private String saleId;		//销售员ID
 	private String phone; // 销售员手机号
 	private Integer bindUserNum; // 客户数
 	private Integer orderCount; // 订单总数
 	private double saleMoney; // 销售额
 	private Integer rowNum; // 排名
+
+	public String getSaleId() {
+		return saleId;
+	}
+
+	public void setSaleId(String saleId) {
+		this.saleId = saleId;
+	}
 
 	public String getRankingId() {
 		return rankingId;
@@ -66,10 +77,11 @@ public class Ranking extends BasePojo {
 		super();
 	}
 
-	public Ranking(String rankingId, String phone, Integer bindUserNum,
+	public Ranking(String rankingId,String saleId, String phone, Integer bindUserNum,
 			Integer orderCount, double saleMoney, Integer rowNum) {
 		super();
 		this.rankingId = rankingId;
+		this.saleId=saleId;
 		this.phone = phone;
 		this.bindUserNum = bindUserNum;
 		this.orderCount = orderCount;
@@ -79,9 +91,14 @@ public class Ranking extends BasePojo {
 
 	@Override
 	public String toString() {
-		return "Ranking [rankingId=" + rankingId + ", phone=" + phone
-				+ ", bindUserNum=" + bindUserNum + ", orderCount=" + orderCount
-				+ ", saleMoney=" + saleMoney + ", rowNum=" + rowNum + "]";
+		return "Ranking{" +
+				"rankingId='" + rankingId + '\'' +
+				", saleId='" + saleId + '\'' +
+				", phone='" + phone + '\'' +
+				", bindUserNum=" + bindUserNum +
+				", orderCount=" + orderCount +
+				", saleMoney=" + saleMoney +
+				", rowNum=" + rowNum +
+				'}';
 	}
-
 }

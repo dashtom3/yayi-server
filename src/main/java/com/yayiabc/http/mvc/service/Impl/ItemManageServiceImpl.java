@@ -3,7 +3,6 @@ package com.yayiabc.http.mvc.service.Impl;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
-import com.yayiabc.http.mvc.controller.item.ClassifyManage;
 import com.yayiabc.http.mvc.dao.ItemBrandDao;
 import com.yayiabc.http.mvc.dao.ItemClassifyDao;
 import com.yayiabc.http.mvc.dao.ItemManageDao;
@@ -207,66 +206,14 @@ public class ItemManageServiceImpl implements ItemManageService{
 	public DataWrapper<Void> updateItemClassify(ItemClassify itemClassify) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		itemManageDao.updateItemClassify(itemClassify);
-		ClassifyManage.classifyList=itemClassifyDao.showsTreeClassify();
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
 	}
 
-	/*@Override
-	public DataWrapper<Void> deleteItemClassify(Integer itemClassifyId,String itemClassifyName,Integer itemClassifyGrade) {
-		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		ItemClassify itemClassify =new ItemClassify();
-		itemClassify.setItemClassifyId(itemClassifyId);
-		itemClassify.setItemClassifyName(itemClassifyName);
-		itemClassify.setItemClassifyGrade(itemClassifyGrade);
-		Integer count =itemManageDao.getCountItemClassify(itemClassifyName);
-		if(count==0){
-			if(itemClassifyGrade==1){
-				itemManageDao.deleteItemClassifyOne(itemClassify);
-				List<String> itemClassifyTwo=itemManageDao.queryItemClassifyByName(itemClassify);
-				itemManageDao.deleteItemClassifyOneSon(itemClassify);
-				if(itemClassifyTwo!=null&&itemClassifyTwo.size()!=0){
-					itemManageDao.deleteItemClassifySon(itemClassifyTwo);
-				}
-			}else if(itemClassifyGrade==2){
-				itemManageDao.deleteItemClassifyTwo(itemClassify);
-				itemManageDao.deleteItemClassifyTwoSon(itemClassify);
-
-			}else if(itemClassifyGrade==3){
-				itemManageDao.deleteItemClassifyThree(itemClassify);
-			}
-			String itemClassifyNameA =itemManageDao.queryItemClassifyName(itemClassifyId);
-			List<String> itemClassifySon=itemManageDao.queryItemClassifyByNameOne(itemClassify);
-			if(itemClassifySon!=null&&itemClassifySon.size()!=0){
-				itemManageDao.deleteClassify(itemClassifySon);
-			}
-			itemManageDao.deleteItemClassify(itemClassifyNameA);
-			ClassifyManage.classifyList=itemClassifyDao.showsTreeClassify();
-			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-		}else{
-			dataWrapper.setErrorCode(ErrorCodeEnum.ITEM_LEAVE);
-		}
-		String msg=dataWrapper.getErrorCode().getLabel();
-		dataWrapper.setMsg(msg);
-		return dataWrapper;
-	}*/
 
 
 
-	/*@Override
-	public DataWrapper<Void> updateItemClassify(Integer itemClassifyId,String itemClassifyName, 
-			String itemOldName,Integer itemClassifyGrade) {
-		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		ItemClassify itemClassify =new ItemClassify();
-		itemClassify.setItemClassifyId(itemClassifyId);
-		itemClassify.setItemPreviousClassify(itemOldName);
-		itemClassify.setItemClassifyName(itemClassifyName);
-		itemClassify.setItemClassifyGrade(itemClassifyGrade);
-		itemManageDao.updateItemClassify(itemClassify);
-		ClassifyManage.classifyList=itemClassifyDao.showsTreeClassify();
-		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-		return dataWrapper;
-	}*/
+
 
 	@Override
 	public DataWrapper<Void> addItemBrand(String itemBrandName,
@@ -293,7 +240,6 @@ public class ItemManageServiceImpl implements ItemManageService{
 	public DataWrapper<Void> addItemClassify(ItemClassify itemClassify) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		itemManageDao.addItemClassify(itemClassify);
-		ClassifyManage.classifyList=itemClassifyDao.showsTreeClassify();
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
 	}

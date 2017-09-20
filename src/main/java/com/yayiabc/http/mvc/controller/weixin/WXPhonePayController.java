@@ -120,17 +120,16 @@ public class WXPhonePayController {
 			reqData.put("body","乾币充值");//必传
 			reqData.put("out_trade_no",chargeId);
 			reqData.put("fee_type", "CNY");
-//			reqData.put("total_fee",totalFee);//必传,总金额,接口中单位为分,对账单中的单位为元,必须为整数,可以通过参数传进来
-			reqData.put("spbill_create_ip","47.93.48.111");//终端ip,必传,APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP。
 			reqData.put("out_trade_no",chargeId);
 			reqData.put("fee_type", "CNY");
 			//获取终端ip
 			reqData.put("spbill_create_ip",request.getRemoteAddr());
-			if(totalFee!=null&&!"".equals(totalFee)){
-				reqData.put("total_fee",totalFee);//必传,总金额,接口中单位为分,对账单中的单位为元,必须为整数,可以通过参数传进来
-			}else {
-				reqData.put("total_fee","1");
-			}
+//			if(totalFee!=null&&!"".equals(totalFee)){
+//				reqData.put("total_fee",totalFee);//必传,总金额,接口中单位为分,对账单中的单位为元,必须为整数,可以通过参数传进来
+//			}else {
+//				reqData.put("total_fee","1");
+//			}
+			reqData.put("total_fee","1");
 			//终端ip,必传,APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP。
 			reqData.put("trade_type","MWEB");//必传,H5支付
 			reqData.put("product_id",System.currentTimeMillis()+"");//扫码支付时此参数必传,可以通过参数传进来,trade_type=NATIVE，此参数必传。此id为二维码中包含的商品ID，商户自行定义。

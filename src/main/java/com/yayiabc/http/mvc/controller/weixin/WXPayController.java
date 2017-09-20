@@ -218,7 +218,7 @@ public class WXPayController {
 		charge.setState(1);
 		charge.setToken(utilsDao.getUserID(token));
 		charge.setQbType(qbType);
-		wXPayDao.deleteChargeByToken(token);
+		wXPayDao.deleteChargeByToken(utilsDao.getUserID(token));
 		wXPayDao.addCharge(charge);
 		double totalMoney= QbExchangeUtil.getQbByMoney(money,qbType);
 		money=(int)Math.round(totalMoney);

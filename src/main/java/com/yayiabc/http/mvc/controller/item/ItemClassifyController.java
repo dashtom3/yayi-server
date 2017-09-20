@@ -34,7 +34,7 @@ public class ItemClassifyController {
       @RequestMapping("getAllClassifyAndBrand")
       @ResponseBody
       public DataWrapper<SysResult> getAllClassifyAndBrand(){
-      	return itemClassifyService.getAllClassifyAndBrand();
+          return itemClassifyService.getAllClassifyAndBrand();
       }
     
       @RequestMapping("queryItemSearch")
@@ -51,19 +51,7 @@ public class ItemClassifyController {
     	  return itemClassifyService.queryItemSearch(oneClassify,twoClassify,threeClassify,itemBrandName,rule,currentPage,numberPerPage);
       }
       
-      @RequestMapping("queryItemSearchGet")
-      @ResponseBody
-      public DataWrapper<List<ItemInfo>> queryItemSearchGet(
-    		  @RequestParam(value="oneClassify",required=false) String oneClassify,
-    		  @RequestParam(value="twoClassify",required=false) String twoClassify,
-    		  @RequestParam(value="threeClassify",required=false) String threeClassify,
-    		  @RequestParam(value="itemBrandName",required=false) String itemBrandName,
-    		  @RequestParam(value="rule",required=false,defaultValue="1") Integer rule,
-    		  @RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
-    		  @RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
-    		  ){
-    	  return itemClassifyService.queryItemSearchGet(oneClassify,twoClassify,threeClassify,itemBrandName,rule,currentPage,numberPerPage);
-      }
+
       
       @RequestMapping("getAllRecommendItemList")
       @ResponseBody

@@ -1,13 +1,11 @@
 package com.yayiabc.http.mvc.dao;
 
-import java.util.HashMap;
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
-import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.model.OrderNums;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.HashMap;
+import java.util.List;
 
 public interface OrderDetailsDao {
 	List<Ordera> orderDetailsShow(
@@ -25,13 +23,13 @@ public interface OrderDetailsDao {
      //确定评论#{userId},#{itemId} ,#{orderId},#{commentGrade} ,#{commentContent}
 	/**
 	 * 
-	 * @param userPhone
+	 * @param
 	 * @param userId
 	 * @param itemId
 	 * @param orderId
 	 * @param commentGrade
 	 * @param commentContent
-	 * @param userName
+	 * @param
 	 * @return
 	 * userId,itemIdListy.get(i).getItemId(),orderId,itemIdListy.get(i).getScore(),
 					itemIdListy.get(i).getData(),itemIdListy.get(i).getItemSKU(),sb.toString()

@@ -95,7 +95,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	@Override
 	public DataWrapper<Integer> ded(String token, int num/*,Integer  receiverId*/) {
 		DataWrapper<Integer> dataWrapper=new DataWrapper<Integer>();
-		// TODO Auto-generated method stub
+
 		String userId=utilsDao.getUserID(token);
 		if(userId==null){
 			dataWrapper.setMsg("token验证过期");

@@ -1,12 +1,9 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
-import java.util.Date;
-
 import org.springframework.format.annotation.DateTimeFormat;
+
+import java.util.Date;
 public class UserWith {
-	/**
-	 * 
-	 */
 	private  String userId;
 	private  int withId;
 	private double aType;

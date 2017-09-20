@@ -1,13 +1,12 @@
 package com.yayiabc.http.mvc.dao;
 
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
 
 public interface UtilsDao {
 

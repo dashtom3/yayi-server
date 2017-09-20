@@ -113,7 +113,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 			userWith.setbType(-Math.round(userWith.getbType()/0.9));
 			userWith.setcType(-Math.round(userWith.getcType()/0.95));
 			userWith.setGiveType(-Math.round(userWith.getGiveType()));
-			int a=userWithdrawalsServiceDao.updateUserQb(userWith);
+			int a=userWithdrawalsServiceDao.submit(userWith);
 			if(a>0){
 				if(userWithdrawalsServiceDao.determine(withId,sign)>0){
 				dataWrapper.setMsg("拒绝提现申请，成功");
@@ -148,7 +148,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		//先查询该用户是否已经设置过提现类型   如果已  update ; 未 insert
 		//int isNo=userWithdrawalsServiceDao.queryIsSetUp(userId);
 		/*if(isNo>0){
-			//update 
+			//update
 			if(userWithdrawalsServiceDao.updateWitType(userId,accountHolder,cardNumber,witType,oBank)>0){
 				dataWrapper.setMsg("操作成功");
 			}else{
@@ -161,7 +161,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		}else{
 			dataWrapper.setMsg("操作失败");
 		}
-		//}    
+		//}
 		return dataWrapper;
 	}
 	//显示体现设置
@@ -189,10 +189,8 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		if(userId==null){
 			dataWrapper.setMsg("NONONO");
 		}else{
-			User user=userWithdrawalsServiceDao.showUserQbNum(userId);
-			dataWrapper.setData(user);
+			dataWrapper.setData(userWithdrawalsServiceDao.showUserQbNum(userId));
 			dataWrapper.setMsg(sign+"");
-			dataWrapper.setFl(user.getaQb()+user.getbQb()+user.getcQb()+user.getQbBalance()+"");
 		}
 		return dataWrapper;
 	}

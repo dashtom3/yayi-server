@@ -86,53 +86,35 @@
     LIMIT #{currentNumber},#{numberPerPage}
    </select>
 
-   <select id="getCountGet" resultType="int" parameterType="Search">
-   	SELECT count(0) FROM
-    (SELECT * FROM
-    (select * from item_info where state=1 and is_throw=1) a
-    INNER JOIN
-    (SELECT item_id x_id,item_pica FROM item_detail) b
-    ON a.item_id=b.x_id) c
-    INNER JOIN
-    (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) d
-    ON c.item_brand_id=d.p_id
-    <where>
-    	<if test="oneClassify!=null">one_classify like '%${oneClassify}%'</if>
-    	<if test="twoClassify!=null">and two_classify like '%${twoClassify}%'</if>
-    	<if test="threeClassify!=null">and three_classify=#{threeClassify}</if>
-    	<if test="itemBrandName!=null">and item_brand_name=#{itemBrandName}</if>
-    </where>
-   </select>
+    <!--<select id="queryItemSearch" resultMap="itemInfoRM" parameterType="Search">-->
+        <!--select * from-->
+        <!--(SELECT * FROM-->
+        <!--(SELECT * FROM-->
+        <!--(select * from item_info where state=1) a-->
+        <!--INNER JOIN (SELECT item_id x_id,item_pica FROM item_detail) b ON a.item_id=b.x_id) c-->
+        <!--INNER JOIN (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) d ON c.item_brand_id=d.p_id)o-->
+        <!--inner JOIN item_value q ON o.item_id=q.prop_id-->
+        <!--<where>-->
+            <!--<if test="oneClassify!=null">one_classify like '%${oneClassify}%'</if>-->
+            <!--<if test="twoClassify!=null">and two_classify like '%${twoClassify}%'</if>-->
+            <!--<if test="threeClassify!=null">and three_classify=#{threeClassify}</if>-->
+            <!--<if test="itemBrandName!=null">and item_brand_name=#{itemBrandName}</if>-->
+        <!--</where>-->
+        <!--order by-->
+        <!--<choose>-->
+            <!--<when test="rule==1">updated desc</when>-->
+            <!--<when test="rule==2">sales desc</when>-->
+            <!--<when test="rule==3">item_price desc</when>-->
+            <!--<when test="rule==4">item_price asc</when>-->
+        <!--</choose>-->
+        <!--LIMIT #{currentNumber},#{numberPerPage}-->
+    <!--</select>-->
 
-   <select id="queryItemSearchGet" resultMap="itemInfoRM" parameterType="Search">
-       select * from
-       (SELECT * FROM
-       (SELECT * FROM
-       (select * from item_info where state=1) a
-       INNER JOIN
-       (SELECT item_id x_id,item_pica FROM item_detail) b
-       ON a.item_id=b.x_id) c
-       INNER JOIN
-       (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) d
-       ON c.item_brand_id=d.p_id)o
-       inner JOIN
-       (SELECT item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,item_qb,item_value_id FROM item_value) q
-       ON o.item_id=q.prop_id
-    <where>
-    	<if test="oneClassify!=null">one_classify like '%${oneClassify}%'</if>
-    	<if test="twoClassify!=null">and two_classify like '%${twoClassify}%'</if>
-    	<if test="threeClassify!=null">and three_classify=#{threeClassify}</if>
-    	<if test="itemBrandName!=null">and item_brand_name=#{itemBrandName}</if>
-    </where>
-    order by
-    <choose>
-    	<when test="rule==1">updated desc</when>
-    	<when test="rule==2">sales desc</when>
-    	<when test="rule==3">item_price desc</when>
-    	<when test="rule==4">item_price asc</when>
-    </choose>
-    LIMIT #{currentNumber},#{numberPerPage}
-   </select>
+
+
+
+
+
 
    <select id="getAllRecommendItemList" resultMap="itemInfoRM">
     select * from

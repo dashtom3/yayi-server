@@ -17,14 +17,11 @@ public class OrderIdUtils {
 		}
 		return orderId+new Random().nextInt(1000);
 	}*/
-	public static String createOrderId(String userId) {  
+	public static String createOrderId(String userId) {
 		 
 		String a= UUID.randomUUID().toString();/*userId.replaceAll("[a-zA-Z]","" ).replace("-", "").substring(0,8)+*///String.valueOf(System.currentTimeMillis());
 		//userId.split("-");
 		return a;
 	}
-	public static void main(String[] args) {
-		System.out.println(createOrderId("b43d02eb-f076-4b77-a081-d28fe81b1a83"));
-		
-	}
+
 }

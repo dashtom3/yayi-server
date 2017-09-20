@@ -1,10 +1,10 @@
 package com.yayiabc.http.mvc.dao;
 
-import java.util.List;
-
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
 import com.yayiabc.http.mvc.pojo.model.Classify;
 import com.yayiabc.http.mvc.pojo.model.Search;
+
+import java.util.List;
 
 public interface ItemClassifyDao {
  List<Classify> showsTreeClassify();
@@ -13,9 +13,6 @@ public interface ItemClassifyDao {
 
 int getCount(Search search);
 
-int getCountGet(Search search);
-
-List<ItemInfo> queryItemSearchGet(Search search);
 
 List<ItemInfo> getAllRecommendItemList();
 }

@@ -1,12 +1,5 @@
 package com.yayiabc.http.mvc.service.Impl;
 
-import java.util.ArrayList;
-import java.util.HashMap;
-import java.util.List;
-
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.exceptionHandler.OrderException;
 import com.yayiabc.common.utils.BeanUtil;
@@ -19,11 +12,16 @@ import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.Receiver;
-import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.OrderNums;
 import com.yayiabc.http.mvc.pojo.model.itemIdList;
 import com.yayiabc.http.mvc.service.OrderDetailsService;
 import com.yayiabc.http.mvc.service.TimerChangeStateService;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
+import java.util.ArrayList;
+import java.util.HashMap;
+import java.util.List;
 
 @Service
 public class OrderDetailsServiceImpl implements OrderDetailsService {
@@ -59,12 +57,12 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		map.put("numberPerpage", String.valueOf(page.getNumberPerPage()));
 		Integer currentNum=page.getCurrentNumber();
 		map.put("currentNum", String.valueOf(currentNum));
-		map.put("userId", userId);
+		map.put("userId", userId+"");
 		
 		List<Ordera> orderDetailsList=orderdetailsDao.orderDetailsShow(map);
 		/*orderDetailsList.get(0).setOrderNums(String.valueOf(orderDetailsList));*/
 		//总条数
-	    int count=orderdetailsDao.queryCount(userId,map.get("state"));//totalnumber
+	    int count=orderdetailsDao.queryCount(userId+"",map.get("state"));//totalnumber
 		dataWrapper.setPage(page, count);
 		dataWrapper.setData(orderDetailsList);
 		if(orderDetailsList.isEmpty()){

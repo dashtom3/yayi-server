@@ -16,10 +16,6 @@ public interface ItemClassifyService {
 			String twoClassify, String threeClassify, String itemBrandName,
 			Integer rule,Integer currentPage,Integer numberPerPage);
 
-	DataWrapper<List<ItemInfo>> queryItemSearchGet(String oneClassify,
-			String twoClassify, String threeClassify, String itemBrandName,
-			Integer rule, Integer currentPage, Integer numberPerPage);
-
 	DataWrapper<List<ItemInfo>> getAllRecommendItemList();
 
     DataWrapper<SysResult> getAllClassifyAndBrand();

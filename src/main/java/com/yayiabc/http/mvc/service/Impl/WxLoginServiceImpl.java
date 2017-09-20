@@ -5,6 +5,7 @@ import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.HttpUtil;
 import com.yayiabc.common.utils.MD5Util;
+import com.yayiabc.common.utils.VerifiCodeValidateUtil;
 import com.yayiabc.http.mvc.dao.SaleInfoDao;
 import com.yayiabc.http.mvc.dao.SaleLogDao;
 import com.yayiabc.http.mvc.dao.UserDao;
@@ -57,8 +58,8 @@ public class WxLoginServiceImpl implements WxLoginService {
         if (userId != null){
             String type = userId.get("type");
             if ("1".equals(type)){
-                User user = userDao.getUserByUserId(userId.get("userId"));
-                String token = tokenService.getToken(userId.get("userId"));
+                User user = userDao.getUserByUserId(Integer.parseInt(userId.get("userId")));
+                String token = tokenService.getToken(Integer.parseInt(userId.get("userId")));
                 dataWrapper.setToken(token);
                 dataWrapper.setData(user);
             }else if ("2".equals(type)){
@@ -82,50 +83,36 @@ public class WxLoginServiceImpl implements WxLoginService {
             dataWrapper.setMsg("该账号已经绑定过其他微信了");
             return dataWrapper;
         }
+        ErrorCodeEnum codeEnum= VerifiCodeValidateUtil.verifiCodeValidate(phone,verifyCode);
+        dataWrapper.setErrorCode(codeEnum);
+        if(!codeEnum.equals(ErrorCodeEnum.No_Error)){
+            return dataWrapper;
+        }
         if ("1".equals(type)){
             User seUser = userDao.getUserByPhone(phone);
-            /*String serverCode = VerifyCodeManager.getPhoneCode(phone);
-            if (verifyCode.equals(serverCode)) {*/
-            	if (seUser != null) {
-	                dataWrapper.setData(seUser);
-	                int num = userDao.getCartNum(seUser);
-	                dataWrapper.setNum(num);
-	                dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-	                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-	                String userId = seUser.getUserId();
-	                String token =tokenService.getToken(userId);
-	                dataWrapper.setData(seUser);
-	                dataWrapper.setToken(token);
-            	}else {
-                    dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
-                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-                }
-           /* } else {
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_Error);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-            }*/
+            if (seUser != null) {
+                VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
+                dataWrapper.setData(seUser);
+                int num = userDao.getCartNum(seUser);
+                dataWrapper.setNum(num);
+                String token =tokenService.getToken(seUser.getUserId());
+                dataWrapper.setData(seUser);
+                dataWrapper.setToken(token);
+            }else {
+                dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
+            }
         }else if ("2".equals(type)){
             SaleInfo saleInfo = saleLogDao.getSaleInfoByPhone(phone);
-            String serverCode = VerifyCodeManager.getPhoneCode(phone);
-            if (verifyCode.equals(serverCode)) {
-            	if (saleInfo != null) {
+            if (saleInfo != null) {
+                dataWrapper.setData(saleInfo);
+                String saleId = saleInfo.getSaleId();
+                if (saleId != null) {
+                    String token =tokenService.getSaleToken(saleId);
+                    dataWrapper.setToken(token);
                     dataWrapper.setData(saleInfo);
-                    dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-                    String saleId = saleInfo.getSaleId();
-                    if (saleId != null) {
-                        String token =tokenService.getSaleToken(saleId);
-                        dataWrapper.setToken(token);
-                        dataWrapper.setData(saleInfo);
-
-                    }
-            	}else {
-                    dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
-                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 }
-            } else {
-                dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_Error);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+            }else {
+                dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
             }
         }
         return dataWrapper;
@@ -143,7 +130,7 @@ public class WxLoginServiceImpl implements WxLoginService {
 		DataWrapper<User> dataWrapper =new DataWrapper<User>();
 		if(number==1){//已注册
 			userDao.updateUserInfo(user);
-			String userId=userDao.getUserIdByPhone(user.getPhone());
+			Integer userId=userDao.getUserIdByPhone(user.getPhone());
 			user.setUserId(userId);
 			Integer count=userDao.getCountByUserId(userId);
 			if(count!=0){
@@ -158,7 +145,6 @@ public class WxLoginServiceImpl implements WxLoginService {
 			dataWrapper.setToken(token);
 		}else{
 			 User newUser = new User();
-             newUser.setUserId(UUID.randomUUID().toString());
              newUser.setPhone(user.getPhone());
              newUser.setPwd(MD5Util.getMD5String("123456"));
              if (1 == userDao.register(newUser)) {
@@ -174,10 +160,8 @@ public class WxLoginServiceImpl implements WxLoginService {
                     wxAppDao.addUser(newUser.getUserId(),openid,user.getPhone());
                     dataWrapper.setToken(token);
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
             } else {
                 dataWrapper.setErrorCode(ErrorCodeEnum.Register_Error);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
             }
 		}
 		return dataWrapper;
@@ -229,7 +213,7 @@ public class WxLoginServiceImpl implements WxLoginService {
             dataWrapper.setErrorCode(ErrorCodeEnum.OPENID_NOT_EXIST);
         }else if(map.get("getType").equals(state)){
             if ("ds".equals(map.get("getType"))){
-                User seUser = userDao.getUserByUserId(map.get("uid"));
+                User seUser = userDao.getUserByUserId(Integer.parseInt(map.get("uid")));
                 if (seUser != null) {
                     dataWrapper.setData(seUser);
                     int num = userDao.getCartNum(seUser);
@@ -241,7 +225,6 @@ public class WxLoginServiceImpl implements WxLoginService {
                     dataWrapper.setToken(token);
                 }else {
                     dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
-                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 }
             }else if ("ck".equals(map.get("getType"))){
                 SaleInfo saleInfo = saleLogDao.getSaleInfoById(map.get("uid"));
@@ -254,7 +237,6 @@ public class WxLoginServiceImpl implements WxLoginService {
                         dataWrapper.setData(saleInfo);
                     }else {
                         dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
-                        dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                     }
             }
         }else{

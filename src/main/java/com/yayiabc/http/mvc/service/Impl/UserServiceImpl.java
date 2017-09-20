@@ -1,7 +1,6 @@
 package com.yayiabc.http.mvc.service.Impl;
 
 import com.yayiabc.common.enums.ErrorCodeEnum;
-import com.yayiabc.common.sessionManager.SessionManager;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.HttpUtil;
@@ -20,8 +19,6 @@ import com.yayiabc.http.mvc.service.UserMyQbService;
 import com.yayiabc.http.mvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-import java.util.UUID;
 
 @Service
 public class UserServiceImpl implements UserService {
@@ -70,25 +67,24 @@ public class UserServiceImpl implements UserService {
             if(!codeEnum.equals(ErrorCodeEnum.No_Error)){
                 return dataWrapper;
             }
-                User newUser = new User();
-                newUser.setUserId(UUID.randomUUID().toString());
-                newUser.setPhone(phone);
-                newUser.setPwd(MD5Util.getMD5String(password));
-                if (1 == userDao.register(newUser)) {
-                    //绉婚櫎楠岃瘉鐮�
-                    VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
-                    String token = tokenService.getToken(newUser.getUserId());
-                    QbRecord qbRecord=new QbRecord();
-                    qbRecord.setQbRget(60);
-                    qbRecord.setRemark("注册送60乾币");
-                    qbRecord.setQbType("qb_balance");
-                    userMyQbService.add(qbRecord, token);
-                    dataWrapper.setToken(token);
-                    dataWrapper.setData(newUser);
-                    if (openid != null) wxAppDao.addUser(newUser.getUserId(),openid,newUser.getPhone());
-                } else {
-                    dataWrapper.setErrorCode(ErrorCodeEnum.Register_Error);
-                }
+            User newUser = new User();
+            newUser.setPhone(phone);
+            newUser.setPwd(MD5Util.getMD5String(password));
+            if (1 == userDao.register(newUser)) {
+                //绉婚櫎楠岃瘉鐮�
+                VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
+                String token = tokenService.getToken(newUser.getUserId());
+                QbRecord qbRecord=new QbRecord();
+                qbRecord.setQbRget(60);
+                qbRecord.setRemark("注册送60乾币");
+                qbRecord.setQbType("qb_balance");
+                userMyQbService.add(qbRecord, token);
+                dataWrapper.setToken(token);
+                dataWrapper.setData(newUser);
+                if (openid != null) wxAppDao.addUser(newUser.getUserId(),openid,newUser.getPhone());
+            } else {
+                dataWrapper.setErrorCode(ErrorCodeEnum.Register_Error);
+            }
         } else {
             dataWrapper.setErrorCode(ErrorCodeEnum.Username_Already_Exist);
         }
@@ -111,15 +107,6 @@ public class UserServiceImpl implements UserService {
                 int num = userDao.getCartNum(user);
                 dataWrapper.setNum(num);
                 String token =tokenService.getToken(user.getUserId());
-                if (SessionManager.getSessionByUserID(user.getUserId()) == null) {
-                    String sessionKey = SessionManager.newSession(user);
-                    dataWrapper.setToken(token);
-                    return dataWrapper;
-                } else {
-                    dataWrapper.setMsg("该账户已经登录");
-                    dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-                    return dataWrapper;
-                }
         } else {
             dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
             dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
@@ -139,8 +126,7 @@ public class UserServiceImpl implements UserService {
                 dataWrapper.setNum(num);
                 dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
                 dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-                String userId = seUser.getUserId();
-                token = tokenService.getToken(userId);
+                token = tokenService.getToken(seUser.getUserId());
                 dataWrapper.setToken(token);
             } else {
                 dataWrapper.setErrorCode(ErrorCodeEnum.Password_error);

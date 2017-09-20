@@ -12,7 +12,7 @@ import java.util.List;
  * @author xiaojiang 用户表
  */
 public class User extends BasePojo implements Serializable {
-	private String userId;
+	private Integer userId;
 
     private String saleId;
 
@@ -84,12 +84,12 @@ public class User extends BasePojo implements Serializable {
 		this.cQb = cQb;
 	}
 
-	public String getUserId() {
+	public Integer getUserId() {
 		return userId;
 	}
 
-	public void setUserId(String userId) {
-		this.userId = userId == null ? null : userId.trim();
+	public void setUserId(Integer userId) {
+		this.userId = userId;
 	}
 
 	public String getReflect() {
@@ -217,7 +217,7 @@ public class User extends BasePojo implements Serializable {
 		super();
 	}
 
-	public User(String userId, String phone, String pwd, Integer identity,
+	public User(Integer userId, String phone, String pwd, Integer identity,
 			String trueName, Integer sex, String userPic, Date birthday,
 			String qq, Integer qbBalance, String reflect,
 			Certification certification, SaleInfo saleinfo,

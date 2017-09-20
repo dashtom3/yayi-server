@@ -107,7 +107,7 @@ public class WXPhonePayController {
 		Charge charge=new Charge();
 		charge.setChargeId(chargeId);
 		charge.setQbNum(money);
-		String totalFee=(int)(Math.round(totalMoney)*100)+"";
+		String totalFee=(int)(totalMoney*100)+"";
 		charge.setMoney(totalFee);
 		charge.setState(1);
 		charge.setToken(utilsDao.getUserID(token));

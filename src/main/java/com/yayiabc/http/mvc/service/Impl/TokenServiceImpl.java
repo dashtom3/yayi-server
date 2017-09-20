@@ -24,7 +24,7 @@ public class TokenServiceImpl implements TokenService {
     private AdminstratorDao adminstratorDao;
 
     @Override
-    public String getToken(String userId) {
+    public String getToken(Integer userId) {
         String token = UUID.randomUUID().toString();
         UserToken userToken = new UserToken();
         userToken.setUserId(userId);

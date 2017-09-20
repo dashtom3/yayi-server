@@ -5,9 +5,9 @@
 <mapper namespace="com.yayiabc.http.mvc.dao.UserDao">
 
 
-	<insert id="register" parameterType="User">
-		insert into user(user_id,phone,pwd,created,updated)
-		values(#{userId},#{phone},#{pwd},now(),now())
+	<insert id="register" parameterType="User" useGeneratedKeys="true" keyProperty="userId">
+		insert into user(phone,pwd,created,updated)
+		values(#{phone},#{pwd},now(),now())
 	</insert>
 
 	<select id="getUserByUserId" resultMap="userMap">
@@ -144,4 +144,6 @@
 	<select id="getTypeByOpenid" resultType="java.util.Map">
 		SELECT uid,IF(type =1,'ds',if(type = 2,'ck',NULL)) AS getType FROM wx_userlink WHERE openid=#{openid};
 	</select>
+
+
 </mapper>       

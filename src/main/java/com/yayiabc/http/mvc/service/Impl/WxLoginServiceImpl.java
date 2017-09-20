@@ -240,13 +240,6 @@ public class WxLoginServiceImpl implements WxLoginService {
                         dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
                     }
             }
-        }else{
-            dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-            if("ds".equals(map.get("getType"))){
-                dataWrapper.setMsg("该微信号已绑定牙医账号！");
-            }else if("ck".equals(map.get("getType"))){
-                dataWrapper.setMsg("该微信号已绑定创客账号！");
-            }
         }
         return dataWrapper;
     }

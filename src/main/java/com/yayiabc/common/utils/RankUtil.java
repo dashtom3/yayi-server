@@ -45,7 +45,6 @@ public class RankUtil {
 		//序列化后向redis集合添加数据
 		for(int i=0;i<rankingList.size();i++){
 			jedis.set((tableName+i).getBytes(),SerializeUtil.serialize(rankingList.get(i)));
-			System.out.println(i);
 		}
 		//反序列化
 //		for(int i=0;i<rankingList.size();i++){

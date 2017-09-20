@@ -158,6 +158,7 @@ public class WxLoginServiceImpl implements WxLoginService {
                     userDao.registerUserInfo(user);
                     userDao.registerUserCertification(user);
                     wxAppDao.addUser(newUser.getUserId(),openid,user.getPhone());
+                    dataWrapper.setData(user);
                     dataWrapper.setToken(token);
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
             } else {

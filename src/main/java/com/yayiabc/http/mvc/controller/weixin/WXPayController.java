@@ -317,7 +317,7 @@ public class WXPayController {
 						String token=userDao.getTokenByUserId(userId);
 						System.out.println("处理回掉成功");
 						QbRecord qbRecord =new QbRecord();
-						qbRecord.setQbRget(charge.getQbNum());
+						qbRecord.setQbRget(String.valueOf(charge.getQbNum()));
 						qbRecord.setQbType(charge.getQbType());
 						qbRecord.setRemark("乾币充值"+charge.getQbNum());
 						userMyQbService.add(qbRecord, token);

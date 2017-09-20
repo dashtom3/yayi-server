@@ -42,53 +42,68 @@ public class UserQbListServiceImpl implements UserQbListService {
 	}
 
 	@Override
-	public DataWrapper<Void> update(Integer qbBalance, String phone) {
+	public DataWrapper<Void> update(Integer qbBalance, String phone,String qbType,String sign) {
 		DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
 		String userId = userDao.getUserId(phone);
 		Calendar Cld = Calendar.getInstance();
 		int MI = Cld.get(Calendar.MILLISECOND);		//获取毫秒
-		if (qbBalance.equals(userQbListDao.queryQb(phone))==true) {		//判断现有乾币余额和输入乾币数是否相同
+		if (qbBalance.equals(userQbListDao.queryQb(phone,qbType))==true) {		//判断现有乾币余额和输入乾币数是否相同
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			dataWrapper.setMsg("乾币无修改");
 		} else if (qbBalance < 0) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("请填写正确的乾币数");
 		} else {
-			int i = userQbListDao.update(qbBalance, phone);
-			if (i > 0) {
-				QbRecord qbRecord = new QbRecord();
-				qbRecord.setUserId(userId);
-				Integer newQb = userQbListDao.queryQb(phone); // 用户表乾币余额
-				Integer oldQb = userQbListDao.queryQbBalances(userId);
-				if (newQb == 0 || newQb < 0 || oldQb == null) { // 判断用户刚注册时，没有乾币加减记录
-					qbRecord.setQbRget(qbBalance);
-					qbRecord.setRemark("管理员修改乾币余额，新增乾币" + qbBalance);
-				} else if (newQb > oldQb) {
-					qbRecord.setQbRget(newQb - oldQb);
-					qbRecord.setRemark("管理员修改乾币余额，新增乾币" + qbRecord.getQbRget());
-				} else if (newQb < oldQb) {
-					qbRecord.setQbRout(newQb - oldQb);
-					qbRecord.setRemark("管理员修改乾币余额，扣除乾币" + qbRecord.getQbRout());
+			if(sign.equals("1")){
+				//减少
+				 if(userQbListDao.update(-qbBalance, phone)>0){
+					 if(!addQbRecord(userId,qbBalance,phone,qbType,sign,MI)){
+						 dataWrapper.setMsg("增加钱币记录失败");
+					 } 
+				 }else{
+					 dataWrapper.setMsg("减少失败");
+				 }
+				//增加钱币记录
+			}else if(sign.equals("2")){
+				//增加
+				if(userQbListDao.update(qbBalance, phone)>0){
+					if(!addQbRecord(userId,qbBalance,phone,qbType,sign,MI)){
+						 dataWrapper.setMsg("增加钱币记录失败");
+					 } 
+				}else{
+					dataWrapper.setMsg("增加失败");
 				}
-				//qbRecord.setQbBalances(qbBalance);
-				qbRecord.setMillisecond(MI);
-				userMyQbDao.add(qbRecord);
-				dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-			} else {
-				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			}
-		}
+	}
 		return dataWrapper;
 	}
-
+  private boolean addQbRecord(String userId,Integer qbBalance,String phone,String qbType,String sign,int  MI){
+	    QbRecord qbRecord = new QbRecord();
+		qbRecord.setUserId(userId);
+		if(sign.equals("1")){
+			//增加 钱币减少记录
+			qbRecord.setQbRout("（"+zh(qbType)+"） 乾币 "+qbBalance);
+			qbRecord.setRemark("管理员修改乾币余额，扣除'"+qbBalance+"'乾币");
+		}else if(sign.equals("2")){
+			//增加 钱币增加记录
+			qbRecord.setQbRget("（"+zh(qbType)+"） 乾币 "+qbBalance);
+			qbRecord.setRemark("管理员修改乾币余额，新增'"+qbBalance+"'乾币");
+		}
+		//qbRecord.setQbBalances(qbBalance);
+		qbRecord.setMillisecond(MI);
+		if(userMyQbDao.add(qbRecord)>0){
+			return true;
+		}
+		 return false;
+  }
 	@Override
-	public DataWrapper<Map<String, Integer>> queryQb(String userPhone) {
+	public DataWrapper<Map<String, Integer>> queryQb(String userPhone,String qbType) {
 		DataWrapper<Map<String, Integer>> dataWrapper = new DataWrapper<Map<String, Integer>>();
 		String userId = userDao.getUserId(userPhone);
 		if (userId == null) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
 		} else {
-			Integer qbBalance = userQbListDao.queryQb(userPhone);
+			Integer qbBalance = userQbListDao.queryQb(userPhone,qbType);
 			Map<String, Integer> map = new HashMap<String, Integer>();
 			if (qbBalance == null) {
 				map.put("qbBalance", 0);
@@ -99,5 +114,15 @@ public class UserQbListServiceImpl implements UserQbListService {
 		}
 		return dataWrapper;
 	}
-
+	private String zh(String zh){
+		  if(zh.equals("a_qb")){
+			  return "\"8.0折\" ";
+		  } else if(zh.equals("b_qb"))
+		  {
+			  return "\"9.0折\" ";
+		  }else if(zh.equals("c_qb")){
+			  return "\"9.5折\" ";
+		  }
+		  return "非法钱币类型";
+	}
 }

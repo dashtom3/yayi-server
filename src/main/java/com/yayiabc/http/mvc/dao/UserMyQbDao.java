@@ -10,13 +10,13 @@ import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 
 @Repository
 public interface UserMyQbDao {
-	void add(QbRecord qbRecord);
+	int add(QbRecord qbRecord);
 
 	List<QbRecord> query(@Param("userId") String userId,@Param("page") Page page);
 
 	int getCount(@Param("userId") String userId);
 
-	void updateUserQb(@Param("qbNum") Integer qbNum,@Param("userId") String userId
+	void updateUserQb(@Param("qbNum") String qbNum,@Param("userId") String userId
 			,@Param("qbType")String qbType
 			);
 	
@@ -25,7 +25,7 @@ public interface UserMyQbDao {
 	int updateDataToUser(@Param("list")List<Integer> listData,@Param("userId")String userId);
 
 	
-	int addMessageQbQ(@Param("dedNums")int dedNums, @Param("userId")String userId, @Param("message")String s
+	int addMessageQbQ(@Param("dedNums")String dedNums, @Param("userId")String userId, @Param("message")String s
 			,@Param("millisecond")int Mi
 			);
 }

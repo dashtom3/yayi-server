@@ -35,7 +35,7 @@
 
 	<select id="queryCount" resultType="int">
 		SELECT
-		 us.user_id,us.true_name,us.phone,uw.*
+		count(1)
 		FROM
 		`user` us JOIN
 		user_with uw ON uw.user_id=us.user_id
@@ -54,16 +54,16 @@
 
 
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.User" id="cctvt">
-		<result property="userId" column="user_id" />
+		<id property="userId" column="user_id" />
 		<result property="trueName" column="true_name" />
 		<result property="phone" column="phone" />
-		<collection property="userWitSetUp"
-			ofType="com.yayiabc.http.mvc.pojo.jpa.UserWith">
+		<collection property="userWithList"
+			ofType="UserWith">
+			<id property="withId" column="with_id" />
 			<result property="witType" column="wit_type" />
 			<result property="accountHolder" column="account_holder" />
 			<result property="cardNumber" column="card_number" />
 			<result property="oBank" column="o_bank" />
-			<result property="withId" column="with_id" />
 			<result property="aType" column="a_type" />
 			<result property="bType" column="b_type" />
 			<result property="cType" column="c_type" />
@@ -75,7 +75,8 @@
 	</resultMap>
 	<select id="show" resultMap="cctvt">
 		SELECT
-		 us.user_id,us.true_name,us.phone,uw.*
+		 us.user_id,us.true_name,us.phone,uw.wit_type,uw.account_holder,uw.card_number,uw.o_bank,
+		 uw.with_id,uw.a_type,uw.b_type,uw.c_type,uw.give_type,uw.created,uw.determine_time,uw.sign
 		FROM
 		`user` us JOIN
 		user_with uw ON uw.user_id=us.user_id
@@ -84,7 +85,7 @@
 				#{nameOrPhone} in (us.true_name,us.phone)
 			</if>
 			<if test="sign!=null and sign!=''">
-				uw.sign=${sign}
+				uw.sign=#{sign}
 			</if>
 		</where>
 		order by uw.created desc limit ${currentNum} ,${numberPerpage}

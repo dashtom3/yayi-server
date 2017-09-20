@@ -12,5 +12,5 @@ public interface UserMyQbService {
 
 	int updateDataToUser(List<Integer> listData,String userId);
 
-	int addMessageQbQ(int dedNums, String userId, String s,int Mi);
+	int addMessageQbQ(String dedNums, String userId, String s,int Mi);
 }

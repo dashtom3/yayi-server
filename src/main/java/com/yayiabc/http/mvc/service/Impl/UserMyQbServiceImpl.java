@@ -38,20 +38,15 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 		} else {
 			qbRecord.setUserId(userId);
 			Integer qb = userMyQbDao.queryQbbalance(userId,qbRecord.getQbType());
-			if (qbRecord.getQbRget() != null && qbRecord.getQbRget() > 0) {
+			if (qbRecord.getQbRget() != null) {
 				userMyQbDao.updateUserQb(qbRecord.getQbRget(), userId,qbRecord.getQbType());
 				
 				qbRecord.setMillisecond(MI);
 				userMyQbDao.add(qbRecord);
-			} else if (qbRecord.getQbRout() != null && qbRecord.getQbRout() < 0) {
-				if (Math.abs(qbRecord.getQbRout()) > qb) { // 判断支出乾币数是否大于已有余额
-					dataWrapper.setMsg("乾币增减错误！");
-				} else {
+			} else if (qbRecord.getQbRout() != null) {
 					userMyQbDao.updateUserQb(qbRecord.getQbRout(), userId,qbRecord.getQbType());
-					qbRecord.setQbBalances(qb+qbRecord.getQbRout());
 					qbRecord.setMillisecond(MI);
 					userMyQbDao.add(qbRecord);
-				}
 			} else  {
 				dataWrapper.setMsg("请正确填写的乾币增减数额！");
 			}
@@ -85,7 +80,7 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 	}
 
 	@Override
-	public int addMessageQbQ(int dedNums, String userId, String s,int Mi) {
+	public int addMessageQbQ(String dedNums, String userId, String s,int Mi) {
 		// TODO Auto-generated method stub
 		return userMyQbDao.addMessageQbQ(dedNums,userId,s,Mi);
 	}

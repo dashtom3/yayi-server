@@ -304,7 +304,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			/*int sign=orderManagementDao.dedQbNum(dedQbNum,order.getUserId());*/
 			QbRecord q=new QbRecord();
 			q.setRemark("订单有退款，下单时赠送的乾币需扣除："+dedQbNum+"。（订单编号:"+SendorderItemList.get(0).getOrderId()+"）");
-			q.setQbRout(-dedQbNum);
+			q.setQbRout(-dedQbNum+"");
 			q.setQbType("qb_balance");
 			String token= utilsDao.queryTokenByOrderId(SendorderItemList.get(0).getOrderId());
 			//放入钱币记录表
@@ -438,7 +438,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		s=s+sb.toString()+"）。（订单编号:"+order.getOrderId()+"）";
 		Calendar Cld = Calendar.getInstance();
 		int MI = Cld.get(Calendar.MILLISECOND);
-		userMyQbDao.addMessageQbQ(returnQbNum, order.getUserId(), s, MI);
+		userMyQbDao.addMessageQbQ(sb.toString(), order.getUserId(), s, MI);
 	}
 	//仓库发货
 	@Override

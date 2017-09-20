@@ -14,7 +14,7 @@ public interface UserQbListDao {
 	
 	int update(@Param("qbBalance")Integer qbBalance,@Param("phone")String phone);
 	
-	Integer queryQb(@Param("userPhone")String userPhone);	//查询用户乾币余额
+	Integer queryQb(@Param("userPhone")String userPhone,@Param("qbType")String qbType);	//查询用户某类型乾币余额
 	
 	int getCount(@Param("phone")String phone,@Param("startDate")String startDate,@Param("endDate")String endDate);
 

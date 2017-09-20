@@ -11,9 +11,9 @@ public class QbRecord extends BasePojo {
 
 	private String userId;
 
-	private Integer qbRget;
+	private String qbRget;
 
-	private Integer qbRout;
+	private String qbRout;
 
 	private String qbTime;
 
@@ -37,16 +37,18 @@ public class QbRecord extends BasePojo {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public Integer getQbRget() {
+	
+	public String getQbRget() {
 		return qbRget;
 	}
-	public void setQbRget(Integer qbRget) {
+	public void setQbRget(String qbRget) {
 		this.qbRget = qbRget;
 	}
-	public Integer getQbRout() {
+
+	public String getQbRout() {
 		return qbRout;
 	}
-	public void setQbRout(Integer qbRout) {
+	public void setQbRout(String qbRout) {
 		this.qbRout = qbRout;
 	}
 	public String getQbTime() {

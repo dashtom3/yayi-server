@@ -66,7 +66,8 @@
 	<select id="orderDetailsShow" parameterType="java.util.Map"
 		resultMap="orderDetailsResultMap">
 		SELECT
-		orde.user_id ouserId ,orde.order_id,orde.created,orde_it.num,orde_it.price,orde.actual_pay,orde.give_qb,
+		orde.user_id ouserId ,orde.order_id,DATE_FORMAT(orde.created,
+		'%Y-%m-%d %H:%i:%S') created,orde_it.num,orde_it.price,orde.actual_pay,orde.give_qb,
 		orde.pay_type,orde.invoice_hand,orde.is_register,orde.buyer_message,
 		orde_it.item_name,orde_it.pic_path,orde_it.itm_SKU,
 		orde_it.item_property_namea,orde_it.item_brand_name,orde_it.item_type,

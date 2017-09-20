@@ -10,7 +10,7 @@ public interface UserQbListService {
 	DataWrapper<List<QbRecord>> list(String phone, String startDate,
 			String endDate, Integer currentPage, Integer numberPerPage);
 
-	DataWrapper<Void> update(Integer qbBalance, String phone);
+	DataWrapper<Void> update(Integer qbBalance, String phone, String qbType,String sign);
 	
-	DataWrapper<Map<String, Integer>> queryQb(String userPhone);
+	DataWrapper<Map<String, Integer>> queryQb(String userPhone,String qbType);
 }

@@ -19,7 +19,7 @@ public interface UserDao {
 	
 	String getUserId(String phone);
 
-	String getTokenByUserId(Integer userId);
+	String getTokenByUserId(String userId);
 
 	void addToken(UserToken userToken);
 
@@ -41,7 +41,7 @@ public interface UserDao {
 
 	void updateCertification(User user);
 
-	Integer getUserIdByPhone(@Param("phone")String phone);
+	String getUserIdByPhone(@Param("phone")String phone);
 
 	void registerUserInfo(User user);
 
@@ -49,7 +49,7 @@ public interface UserDao {
 
 	User getUserByPhone(@Param("phone")String phone);
 
-    Integer getCountByUserId(@Param("userId") Integer userId);
+	int getCountByUserId(@Param("userId") String userId);
 
     //彻底删除用户信息
     void deleteInGrainUser(@Param("userId")String userId);

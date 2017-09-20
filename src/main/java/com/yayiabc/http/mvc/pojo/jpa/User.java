@@ -12,7 +12,7 @@ import java.util.List;
  * @author xiaojiang 用户表
  */
 public class User extends BasePojo implements Serializable {
-	private Integer userId;
+	private String userId;
 
     private String saleId;
 
@@ -50,14 +50,25 @@ public class User extends BasePojo implements Serializable {
 	private int bQb;
 	private int cQb;
 	
-	private List<UserWith> UserWith;
+	private List<UserWith> userWithList;
 
-	public List<UserWith> getUserWith() {
-		return UserWith;
+	
+
+
+	public String getUserId() {
+		return userId;
 	}
 
-	public void setUserWith(List<UserWith> userWith) {
-		UserWith = userWith;
+	public void setUserId(String userId) {
+		this.userId = userId;
+	}
+
+	public List<UserWith> getUserWithList() {
+		return userWithList;
+	}
+
+	public void setUserWithList(List<UserWith> userWithList) {
+		this.userWithList = userWithList;
 	}
 
 	public int getaQb() {
@@ -84,13 +95,7 @@ public class User extends BasePojo implements Serializable {
 		this.cQb = cQb;
 	}
 
-	public Integer getUserId() {
-		return userId;
-	}
-
-	public void setUserId(Integer userId) {
-		this.userId = userId;
-	}
+	
 
 	public String getReflect() {
 		return reflect;
@@ -217,39 +222,6 @@ public class User extends BasePojo implements Serializable {
 		super();
 	}
 
-	public User(Integer userId, String phone, String pwd, Integer identity,
-			String trueName, Integer sex, String userPic, Date birthday,
-			String qq, Integer qbBalance, String reflect,
-			Certification certification, SaleInfo saleinfo,
-			List<Ordera> orderaList, List<QbRecord> qbRecordList) {
-		super();
-		this.userId = userId;
-		this.phone = phone;
-		this.pwd = pwd;
-		this.identity = identity;
-		this.trueName = trueName;
-		this.sex = sex;
-		this.userPic = userPic;
-		this.birthday = birthday;
-		this.qq = qq;
-		this.qbBalance = qbBalance;
-		this.reflect = reflect;
-		this.certification = certification;
-		this.saleinfo = saleinfo;
-		this.orderaList = orderaList;
-		this.qbRecordList = qbRecordList;
-	}
-
-	public User(String phone, String trueName, Integer sex, String userPic,
-			Date birthday, String qq) {
-		super();
-		this.phone = phone;
-		this.trueName = trueName;
-		this.sex = sex;
-		this.userPic = userPic;
-		this.birthday = birthday;
-		this.qq = qq;
-	}
 
 	@Override
 	public String toString() {

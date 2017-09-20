@@ -77,7 +77,7 @@ public class BenefitChangeServiceImpl implements BenefitChangeService{
 				if(data.getTime()<benefit.getUpdated().getTime()){
 					//4.开始兑换乾币
 					QbRecord qbRecord =new QbRecord();
-					qbRecord.setQbRget(benefit.getBenefitQb());
+					qbRecord.setQbRget(benefit.getBenefitQb()+"");
 					qbRecord.setRemark("优惠码兑换"+benefit.getBenefitQb()+"乾币");
 					qbRecord.setQbType("qb_balance");
 					userMyQbService.add(qbRecord, token);

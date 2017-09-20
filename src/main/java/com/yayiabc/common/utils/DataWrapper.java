@@ -19,6 +19,7 @@ public class DataWrapper<T>  {
     private int totalPage;
     private int num;
     private String msg;
+    private String fl;
 
     public DataWrapper() {
         callStatus = CallStatusEnum.SUCCEED;
@@ -50,7 +51,15 @@ public class DataWrapper<T>  {
         return data;
     }
 
-    public void setData(T data) {
+    public String getFl() {
+		return fl;
+	}
+
+	public void setFl(String fl) {
+		this.fl = fl;
+	}
+
+	public void setData(T data) {
         this.data = data;
     }
 

@@ -50,11 +50,13 @@ public class UserQbListController {
 	@AdminTokenValidate
 	@AdminLog(description="管理员修改用户乾币")
 	public DataWrapper<Void> update(
+			@RequestHeader(value="adminToken",required=true)String adminToken,
 			@RequestParam(value = "phone", required = true) String phone,
 			@RequestParam(value = "qbBalance", required = true) Integer qbBalance,
-			@RequestHeader(value="adminToken",required=true)String adminToken
+			@RequestParam(value = "qbType", required = true) String qbType,
+			@RequestParam(value = "sign",required=true)String sign 
 			) {
-		return userQbListService.update(qbBalance, phone);
+		return userQbListService.update(qbBalance, phone,qbType,sign);
 	}
 	
 	/**
@@ -65,8 +67,9 @@ public class UserQbListController {
 	@AdminTokenValidate
 	public DataWrapper<Map<String, Integer>> queryQb(
 			@RequestParam(value = "userPhone", required = true) String userPhone,
-			@RequestHeader(value="adminToken",required=true)String adminToken
+			@RequestHeader(value="adminToken",required=true)String adminToken,
+			@RequestParam(value = "qbType", required = true) String qbType
 			) {
-		return userQbListService.queryQb(userPhone);
+		return userQbListService.queryQb(userPhone,qbType);
 	}
 }

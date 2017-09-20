@@ -113,7 +113,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 			userWith.setbType(-Math.round(userWith.getbType()/0.9));
 			userWith.setcType(-Math.round(userWith.getcType()/0.95));
 			userWith.setGiveType(-Math.round(userWith.getGiveType()));
-			int a=userWithdrawalsServiceDao.submit(userWith);
+			int a=userWithdrawalsServiceDao.updateUserQb(userWith);
 			if(a>0){
 				if(userWithdrawalsServiceDao.determine(withId,sign)>0){
 				dataWrapper.setMsg("拒绝提现申请，成功");
@@ -189,8 +189,10 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		if(userId==null){
 			dataWrapper.setMsg("NONONO");
 		}else{
-			dataWrapper.setData(userWithdrawalsServiceDao.showUserQbNum(userId));
+			User user=userWithdrawalsServiceDao.showUserQbNum(userId);
+			dataWrapper.setData(user);
 			dataWrapper.setMsg(sign+"");
+			dataWrapper.setFl(user.getaQb()+user.getbQb()+user.getcQb()+user.getQbBalance()+"");
 		}
 		return dataWrapper;
 	}

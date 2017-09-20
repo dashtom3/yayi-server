@@ -23,7 +23,7 @@ public interface WxAppDao {
 
 
 
-    void addUser(@Param("saleId")Integer saleId,@Param("openid") String openid,@Param("phone")String phone);
+    void addUser(@Param("saleId")String saleId,@Param("openid") String openid,@Param("phone")String phone);
 
 	void addSaleUser(@Param("saleId")String saleId,@Param("openid") String openid,@Param("phone")String phone);
 

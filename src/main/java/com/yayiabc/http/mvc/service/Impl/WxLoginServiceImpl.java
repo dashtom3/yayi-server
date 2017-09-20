@@ -59,7 +59,7 @@ public class WxLoginServiceImpl implements WxLoginService {
             String type = userId.get("type");
             if ("1".equals(type)){
                 User user = userDao.getUserByUserId(Integer.parseInt(userId.get("userId")));
-                String token = tokenService.getToken(Integer.parseInt(userId.get("userId")));
+                String token = tokenService.getToken(userId.get("userId"));
                 dataWrapper.setToken(token);
                 dataWrapper.setData(user);
             }else if ("2".equals(type)){
@@ -130,7 +130,7 @@ public class WxLoginServiceImpl implements WxLoginService {
 		DataWrapper<User> dataWrapper =new DataWrapper<User>();
 		if(number==1){//已注册
 			userDao.updateUserInfo(user);
-			Integer userId=userDao.getUserIdByPhone(user.getPhone());
+			String userId=userDao.getUserIdByPhone(user.getPhone());
 			user.setUserId(userId);
 			Integer count=userDao.getCountByUserId(userId);
 			if(count!=0){
@@ -150,7 +150,7 @@ public class WxLoginServiceImpl implements WxLoginService {
              if (1 == userDao.register(newUser)) {
                     String token = tokenService.getToken(newUser.getUserId());
                     QbRecord qbRecord=new QbRecord();
-                    qbRecord.setQbRget(60);
+                    qbRecord.setQbRget(60+"");
                     qbRecord.setRemark("注册送60乾币");
                     qbRecord.setQbType("qb_balance");
                     userMyQbService.add(qbRecord, token);

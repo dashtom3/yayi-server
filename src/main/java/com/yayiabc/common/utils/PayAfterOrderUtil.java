@@ -74,9 +74,9 @@ public class PayAfterOrderUtil {
  		if(o.getGiveQb()!=0){
  			QbRecord q=new QbRecord();
  			//----
- 			q.setQbRget(o.getGiveQb());
+ 			q.setQbRget(String.valueOf(o.getGiveQb()));
  			q.setQbType("qb_balance");
- 			q.setRemark("下单获得"+o.getGiveQb()+"个乾币，（0类型"+o.getGiveQb()+"个）。（订单编号:"+orderId+"）");
+ 			q.setRemark("下单获得"+o.getGiveQb()+"个乾币。订单编号："+orderId);
  			String token=utilsDao.queryTokenByOrderId(orderId);
  			userMyQbService.add(q, token);
  		}
@@ -135,7 +135,7 @@ public class PayAfterOrderUtil {
 			if(listData.get(i)>=DedNum&&listData.get(i)!=0){
 				
 				qbDes=sb1.toString()+DedNum;
-				s="下单使用"+a+"个钱币，（"+sb.toString()+i+"类型"+DedNum+"个"+"）。"+"（订单编号："+orderId+"）";
+				s=sb.toString()+ut(i)+DedNum+"。";
 				DedNum=listData.get(i)-DedNum;
 				//listData.get(i)=listData.get(i)-DedNum;  这个
 				listData.set(i, DedNum);
@@ -143,7 +143,7 @@ public class PayAfterOrderUtil {
 			}else if(listData.get(i)<DedNum&&listData.get(i)!=0){
 				
 				
-				sb.append(i+"类型"+listData.get(i)+"个,");
+				sb.append(ut(i)+listData.get(i)+"；");
 				sb1.append(listData.get(i)+",");
 				DedNum=DedNum-listData.get(i);
 				System.err.println(DedNum);
@@ -155,8 +155,24 @@ public class PayAfterOrderUtil {
 		int MI = Cld.get(Calendar.MILLISECOND);
 		
 		userMyQbService.updateDataToUser(listData,userId); //更改user 表  各种钱币类型
-		userMyQbService.addMessageQbQ(a,userId,s,MI); //新增钱币记录表   
+		userMyQbService.addMessageQbQ(s,userId,"下单使用"+DedNum+"个乾币。订单编号："+orderId,MI); //新增钱币记录表   
 		return qbDes;
+	}
+	
+	private String ut(int i){
+		 switch (i) {
+		case 0:
+			 return "赠";
+		case 1:
+			 return "9.5折";
+		case 2:
+			return "9折";
+		case 3:
+			return "8折";
+		default:
+			break;
+		}
+		 return "";
 	}
 	/**
 	 * 安全验证方法
@@ -181,9 +197,9 @@ public class PayAfterOrderUtil {
 					aliPayDao.updateState(out_trade_no);
 					String token=utilsDao.getToken(charge.getToken());
 					QbRecord q=new QbRecord();
-					q.setQbRget(charge.getQbNum());
+					q.setQbRget(String.valueOf(charge.getQbNum()));
 					q.setQbType(charge.getQbType());
-					q.setRemark(charge.getQbType()+"乾币充值(支付宝)");
+					q.setRemark(zh(charge.getQbType())+"乾币充值"+charge.getQbNum()+"个。");
 					userMyQbService.add(q, token);
 					return true;
 				}/*else{
@@ -211,4 +227,15 @@ public class PayAfterOrderUtil {
 					}
 					return false;
 	  }
+	private String zh(String zh){
+		  if(zh.equals("a_qb")){
+			  return "\"8.0折\" ";
+		  } else if(zh.equals("b_qb"))
+		  {
+			  return "\"9.0折\" ";
+		  }else if(zh.equals("c_qb")){
+			  return "\"9.5折\" ";
+		  }
+		  return "非法钱币类型";
+	}
 }

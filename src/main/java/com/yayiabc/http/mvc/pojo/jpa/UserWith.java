@@ -4,6 +4,9 @@ import java.util.Date;
 
 import org.springframework.format.annotation.DateTimeFormat;
 public class UserWith {
+	/**
+	 * 
+	 */
 	private  String userId;
 	private  int withId;
 	private double aType;

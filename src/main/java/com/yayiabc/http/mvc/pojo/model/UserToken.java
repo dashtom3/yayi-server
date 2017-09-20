@@ -4,7 +4,7 @@ import java.util.Date;
 
 public class UserToken {
 	private String token;
-	private Integer userId;
+	private String userId;
 	private Date loginDate;
 
 	public String getToken() {
@@ -15,11 +15,11 @@ public class UserToken {
 		this.token = token;
 	}
 
-	public Integer getUserId() {
+	public String getUserId() {
 		return userId;
 	}
 
-	public void setUserId(Integer userId) {
+	public void setUserId(String userId) {
 		this.userId = userId;
 	}
 
@@ -34,7 +34,7 @@ public class UserToken {
 	public UserToken() {
 	}
 
-	public UserToken(String token, Integer userId, Date loginDate) {
+	public UserToken(String token, String userId, Date loginDate) {
 		this.token = token;
 		this.userId = userId;
 		this.loginDate = loginDate;

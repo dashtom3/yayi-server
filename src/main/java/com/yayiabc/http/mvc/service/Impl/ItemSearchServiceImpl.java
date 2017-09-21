@@ -77,8 +77,9 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 		DataWrapper<List<ItemInfo>> dataWrapper =new DataWrapper<List<ItemInfo>>();
 		Page page=new Page();
 		Integer numberPerPage=search.getNumberPerPage()==null?10:search.getNumberPerPage();
+		search.setNumberPerPage(numberPerPage);
 		page.setNumberPerPage(numberPerPage);
-		Integer currentPage=search.getCurrentPage()==null?1:search.getNumberPerPage();
+		Integer currentPage=search.getCurrentPage()==null?1:search.getCurrentPage();
 		page.setCurrentPage(currentPage);
 		int totalNumber=itemSearchDao.getSearchCount(search);
 		dataWrapper.setPage(page, totalNumber);

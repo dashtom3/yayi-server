@@ -45,6 +45,32 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 		return dataWrapper;
 	}
 
+//	@Override
+//	public DataWrapper<List<ItemInfo>> search(String oneClassify, String twoClassify, String itemBrandName, String keyWord, Integer rule, Integer currentPage, Integer numberPerPage) {
+//		DataWrapper<List<ItemInfo>> dataWrapper =new DataWrapper<List<ItemInfo>>();
+////		Search search =new Search();
+////		search.setCurrentPage(currentPage);
+////		search.setNumberPerPage(numberPerPage);
+////		search.setItemBrandName(itemBrandName);
+////		search.setOneClassify(oneClassify);
+////		search.setTwoClassify(twoClassify);
+////		search.setRule(rule);
+////		search.setKeyWord(keyWord);
+//		Page page=new Page();
+//		page.setNumberPerPage(search.getNumberPerPage());
+//		page.setCurrentPage(search.getCurrentPage());
+//		int totalNumber=itemSearchDao.getSearchCount(search);
+//		dataWrapper.setPage(page, totalNumber);
+//		search.setCurrentNumber(page.getCurrentNumber());
+//		List<ItemInfo> itemInfoList=itemSearchDao.search(search);
+//		if(itemInfoList==null){
+//			dataWrapper.setErrorCode(ErrorCodeEnum.NO_MESSAGE);
+//		}else{
+//			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+//		}
+//		dataWrapper.setData(itemInfoList);
+//		return dataWrapper;
+//	}
 
 	@Override
 	public DataWrapper<List<ItemInfo>> search(Search search) {
@@ -55,13 +81,13 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 		page.setNumberPerPage(numberPerPage);
 		Integer currentPage=search.getCurrentPage()==null?1:search.getCurrentPage();
 		page.setCurrentPage(currentPage);
+		int totalNumber=itemSearchDao.getSearchCount(search);
+		dataWrapper.setPage(page, totalNumber);
 		search.setCurrentNumber(page.getCurrentNumber());
 		List<ItemInfo> itemInfoList=itemSearchDao.search(search);
 		if(itemInfoList==null){
 			dataWrapper.setErrorCode(ErrorCodeEnum.NO_MESSAGE);
 		}
-		Integer totalNumber=itemInfoList.size();
-		dataWrapper.setPage(page,totalNumber);
 		dataWrapper.setData(itemInfoList);
 		return dataWrapper;
 	}

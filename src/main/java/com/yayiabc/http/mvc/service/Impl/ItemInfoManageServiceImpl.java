@@ -43,12 +43,13 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 				isThrow=2;
 			}
 		}
+		Integer totalNumber=0;
 	    itemInfo.setIsThrow(isThrow);
+		totalNumber=itemInfoManageDao.getCountOne(itemInfo);
+		dataWrapper.setPage(page, totalNumber);
 		itemInfo.setSales(page.getCurrentNumber());
 		itemInfo.setItemStockNum(page.getNumberPerPage());
 		itemInfoList=itemInfoManageDao.itemInfoListOne(itemInfo);
-		Integer totalNumber=itemInfoList.size();
-		dataWrapper.setPage(page,totalNumber);
 		dataWrapper.setData(itemInfoList);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;

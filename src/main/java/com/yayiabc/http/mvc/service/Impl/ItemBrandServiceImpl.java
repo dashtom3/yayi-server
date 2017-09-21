@@ -50,10 +50,10 @@ public class ItemBrandServiceImpl implements ItemBrandService{
         Page page=new Page();
         page.setNumberPerPage(search.getNumberPerPage());
         page.setCurrentPage(search.getCurrentPage());
+        int totalNumber=itemBrandDao.getCount(search);
+        dataWrapper.setPage(page, totalNumber);
         search.setCurrentNumber(page.getCurrentNumber());
         List<ItemInfo> itemInfoList = itemBrandDao.brandItemList(search);
-        Integer totalNumber=itemInfoList.size();
-        dataWrapper.setPage(page,totalNumber);
         dataWrapper.setData(itemInfoList);
         dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
         return dataWrapper;

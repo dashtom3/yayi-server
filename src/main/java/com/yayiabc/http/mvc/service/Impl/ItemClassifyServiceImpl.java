@@ -54,10 +54,10 @@ public class ItemClassifyServiceImpl implements ItemClassifyService {
 		Page page=new Page();
         page.setNumberPerPage(search.getNumberPerPage());
         page.setCurrentPage(search.getCurrentPage());
+		int totalNumber=itemClassifyDao.getCount(search);
+		dataWrapper.setPage(page, totalNumber);
 		search.setCurrentNumber(page.getCurrentNumber());
 		List<ItemInfo> itemInfoList=itemClassifyDao.queryItemSearch(search);
-		Integer totalNumber=itemInfoList.size();
-		dataWrapper.setPage(page,totalNumber);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		dataWrapper.setData(itemInfoList);
 		return dataWrapper;

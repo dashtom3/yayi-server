@@ -69,7 +69,10 @@ public class UserManageListServiceImpl implements UserManageListService {
 		String saleId=saleListDao.getSaleId(salePhone);
 		if(userId == null || saleId == null){
 			dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
-		}else{
+		}else if(salePhone.equals(userPhone)){
+			dataWrapper.setErrorCode(ErrorCodeEnum.OPERATION_ERROR);
+			dataWrapper.setMsg("绑定失败，手机号相同！");
+		} else{
 			int i = userManageListDao.bind(salePhone, userPhone);
 			if (i > 0) {
 				userManageListDao.bindUpdateNum(saleId);

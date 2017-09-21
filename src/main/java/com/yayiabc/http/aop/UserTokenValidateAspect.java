@@ -42,15 +42,15 @@ public class UserTokenValidateAspect {
 		UserToken userToken =tokenValidateService.getUserTokenByLoginToken(loginToken);
 		if(userToken!=null){
 			if(userToken.getLoginDate()!=null){
-				if((System.currentTimeMillis()-userToken.getLoginDate().getTime())<30*60*1000){
+//				if((System.currentTimeMillis()-userToken.getLoginDate().getTime())<30*60*1000){
 					try {
 						result=joinpoint.proceed();//放行
 					} catch (Throwable e) {
 						e.printStackTrace();
 					}
-				}else{
-					throw new AuthException(ErrorCodeEnum.RE_LOGIN);
-				}
+//				}else{
+//					throw new AuthException(ErrorCodeEnum.RE_LOGIN);
+//				}
 			}else{
 				throw new AuthException(ErrorCodeEnum.RE_LOGIN);
 			}

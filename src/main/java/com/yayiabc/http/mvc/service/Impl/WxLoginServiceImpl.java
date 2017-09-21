@@ -44,6 +44,7 @@ public class WxLoginServiceImpl implements WxLoginService {
 
 
 
+
     @Override
     public DataWrapper<Object> login(String code) {
         DataWrapper<Object> dataWrapper = new DataWrapper<Object>();
@@ -181,6 +182,7 @@ public class WxLoginServiceImpl implements WxLoginService {
 			String saleId=saleInfoDao.getSaleIdBySalePhone(saleInfo.getPhone());
 			String token=tokenService.getSaleToken(saleId);
             wxAppDao.addSaleUser(saleId,openid,saleInfo.getPhone());
+            saleInfo =saleLogDao.getSaleInfoByPhone(saleInfo.getPhone());
             dataWrapper.setData(saleInfo);
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			dataWrapper.setToken(token);

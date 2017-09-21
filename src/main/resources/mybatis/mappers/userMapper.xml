@@ -112,10 +112,10 @@
 	</update>
 	
 	<insert id="registerUserCertification">
-		insert into certification(user_id,type,company_name,part,work_address,doctor_pic,medical_license,business_license,tax_registration,opening_permit,radiological_permit,id_card_positive,id_card_otherside)
+		insert into certification(user_id,type,company_name,part,work_address,doctor_pic,medical_license,business_license,tax_registration,opening_permit,radiological_permit,id_card_positive,id_card_otherside,state)
 		values(#{userId},#{certification.type},#{certification.companyName},#{certification.part},#{certification.workAddress},
 		#{certification.doctorPic},#{certification.medicalLicense},#{certification.businessLicense},#{certification.taxRegistration},#{certification.openingPermit},#{certification.radiologicalPermit},
-		#{certification.idCardPositive},#{certification.idCardOtherside})
+		#{certification.idCardPositive},#{certification.idCardOtherside},1)
 	</insert>
 
 	<select id="getCountByUserId" resultType="java.lang.Integer">

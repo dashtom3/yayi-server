@@ -11,6 +11,7 @@ import java.io.Serializable;
 public class Ranking extends BasePojo implements Serializable {
 	private String rankingId;
 	private String saleId;		//销售员ID
+	private String saleName; //销售员姓名
 	private String phone; // 销售员手机号
 	private Integer bindUserNum; // 客户数
 	private Integer orderCount; // 订单总数
@@ -73,14 +74,23 @@ public class Ranking extends BasePojo implements Serializable {
 		this.rowNum = rowNum;
 	}
 
+	public String getSaleName() {
+		return saleName;
+	}
+
+	public void setSaleName(String saleName) {
+		this.saleName = saleName;
+	}
+
 	public Ranking() {
 		super();
 	}
 
-	public Ranking(String rankingId,String saleId, String phone, Integer bindUserNum,
+	public Ranking(String rankingId,String saleName,String saleId, String phone, Integer bindUserNum,
 			Integer orderCount, double saleMoney, Integer rowNum) {
 		super();
 		this.rankingId = rankingId;
+		this.saleName=saleName;
 		this.saleId=saleId;
 		this.phone = phone;
 		this.bindUserNum = bindUserNum;
@@ -94,6 +104,7 @@ public class Ranking extends BasePojo implements Serializable {
 		return "Ranking{" +
 				"rankingId='" + rankingId + '\'' +
 				", saleId='" + saleId + '\'' +
+				", saleName='" + saleName + '\'' +
 				", phone='" + phone + '\'' +
 				", bindUserNum=" + bindUserNum +
 				", orderCount=" + orderCount +

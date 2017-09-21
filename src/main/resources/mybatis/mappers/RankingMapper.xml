@@ -8,6 +8,7 @@
 	<select id="queryMonthRanking" resultType="Ranking">
 		SELECT
 		obj_new.sale_id,
+		obj_new.sale_name,
 		obj_new.phone,
 		obj_new.bind_user_num,
 		obj_new.order_count,
@@ -17,6 +18,7 @@
 		(
 		SELECT
 		obj.sale_id,
+		obj.sale_name,
 		obj.phone,
 		obj.bind_user_num,
 		obj.order_count,
@@ -30,7 +32,7 @@
 		END AS rownum
 		FROM
 		(
-		SELECT s.sale_id,s.phone,s.bind_user_num,COUNT(si.order_id) AS order_count,
+		SELECT s.sale_id,s.true_name AS sale_name,s.phone,s.bind_user_num,COUNT(si.order_id) AS order_count,
 		(IF(ROUND(SUM(si.order_money_haocai),2) IS NOT NULL,ROUND(SUM(si.order_money_haocai),2),0)+IF(ROUND(SUM(si.order_money_gongju),2) IS NOT NULL,ROUND(SUM(si.order_money_gongju),2),0))-
 		(IF(ROUND(SUM(si.refund_money_haocai),2) IS NOT NULL,ROUND(SUM(si.refund_money_haocai),2),0)+IF(ROUND(SUM(si.refund_money_gongju),2) IS NOT NULL,ROUND(SUM(si.refund_money_gongju),2),0)) AS sale_money
 		FROM sale_income si
@@ -46,9 +48,10 @@
 	</select>
 	
 	<select id="getSaleRankingNow" resultType="Ranking">
-		SELECT phone,bind_user_num,order_count,sale_money,rownum FROM (
+		SELECT phone,sale_name,bind_user_num,order_count,sale_money,rownum FROM (
 		SELECT
     	obj_new.phone,
+    	obj_new.sale_name,
     	obj_new.bind_user_num,
     	obj_new.order_count,
     	obj_new.sale_money,
@@ -57,6 +60,7 @@
     	(
         SELECT
             obj.phone,
+            obj.sale_name,
             obj.bind_user_num,
             obj.order_count,
             obj.sale_money,
@@ -69,7 +73,7 @@
         END AS rownum
         FROM
             (
-	     SELECT s.phone,s.bind_user_num,COUNT(si.order_id) AS order_count,
+	     SELECT s.phone,s.true_name AS sale_name,s.bind_user_num,COUNT(si.order_id) AS order_count,
 	     (IF(ROUND(SUM(si.order_money_haocai),2) IS NOT NULL,ROUND(SUM(si.order_money_haocai),2),0)+IF(ROUND(SUM(si.order_money_gongju),2) IS NOT NULL,ROUND(SUM(si.order_money_gongju),2),0))-
 	     (IF(ROUND(SUM(si.refund_money_haocai),2) IS NOT NULL,ROUND(SUM(si.refund_money_haocai),2),0)+IF(ROUND(SUM(si.refund_money_gongju),2) IS NOT NULL,ROUND(SUM(si.refund_money_gongju),2),0)) AS sale_money	
              FROM sale_income si 

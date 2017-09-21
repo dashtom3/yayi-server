@@ -31,7 +31,8 @@ public enum ErrorCodeEnum implements Serializable {
 	ITEMSTOCK_Error("取消订单失败,原因库存未全部还原",18),
 	ORDER_ERROR("订单错误",19),
 	OPENID_NOT_EXIST("openid不存在",20),
-	REFUND_ERROR("退款错误",19);
+	REFUND_ERROR("退款错误",19),
+    OPERATION_ERROR("操作错误",50);
     private String label;
     private Integer code;
 

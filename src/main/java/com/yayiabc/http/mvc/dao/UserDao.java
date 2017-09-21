@@ -57,7 +57,6 @@ public interface UserDao {
     String getUserPhoneByToken(@Param("token")String token);
 
 
-	Map<String,String> getTypeByOpenid(@Param("openid")String openid);
-
+	Map<String,String> getTypeByOpenid(@Param("openid")String openid,@Param("type")String type);
 
 }

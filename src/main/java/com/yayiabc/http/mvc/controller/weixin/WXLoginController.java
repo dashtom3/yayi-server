@@ -98,18 +98,4 @@ public class WXLoginController {
             @RequestParam(value = "state",required = true)String state){
         return wxLoginService.judgeOpenid(openid,state);
     }
-
-
-
-
-
-
-
-
-
-
-
-
-
-
 }

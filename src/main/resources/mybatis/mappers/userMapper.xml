@@ -142,7 +142,7 @@
 	</delete>
 
 	<select id="getTypeByOpenid" resultType="java.util.Map">
-		SELECT uid,IF(type =1,'ds',if(type = 2,'ck',NULL)) AS getType FROM wx_userlink WHERE openid=#{openid};
+		SELECT uid,IF(type =1,'ds',if(type = 2,'ck',NULL)) AS getType FROM wx_userlink WHERE openid=#{openid} AND type =#{type};
 	</select>
 
 

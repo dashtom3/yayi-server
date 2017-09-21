@@ -209,26 +209,33 @@ public class WxLoginServiceImpl implements WxLoginService {
     @Override
     public DataWrapper<Object> judgeOpenid(String openid, String state) {
         DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
-        Map<String, String> map=userDao.getTypeByOpenid(openid);
-        if( map==null || map.isEmpty() ){
-            dataWrapper.setErrorCode(ErrorCodeEnum.OPENID_NOT_EXIST);
-        }else if(map.get("getType").equals(state)){
-            if ("ds".equals(map.get("getType"))){
-                User seUser = userDao.getUserByUserId(Integer.parseInt(map.get("uid")));
-                if (seUser != null) {
-                    dataWrapper.setData(seUser);
-                    int num = userDao.getCartNum(seUser);
-                    dataWrapper.setNum(num);
-                    dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-                    String token =tokenService.getToken(seUser.getUserId());
-                    dataWrapper.setData(seUser);
-                    dataWrapper.setToken(token);
-                }else {
-                    dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
+        if("ds".equals(state)){
+            Map<String, String> map=userDao.getTypeByOpenid(openid,"1");
+            if(map == null || map.isEmpty()){
+                dataWrapper.setErrorCode(ErrorCodeEnum.OPENID_NOT_EXIST);
+            }else{
+                if("ds".equals(map.get("getType"))){
+                    User user=userDao.getUserByUserId(Integer.parseInt(map.get("uid")));
+                    if (user != null) {
+                        dataWrapper.setData(user);
+                        int num = userDao.getCartNum(user);
+                        dataWrapper.setNum(num);
+                        dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
+                        dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+                        String token =tokenService.getToken(user.getUserId());
+                        dataWrapper.setData(user);
+                        dataWrapper.setToken(token);
+                        return dataWrapper;
+                    }
                 }
-            }else if ("ck".equals(map.get("getType"))){
-                SaleInfo saleInfo = saleLogDao.getSaleInfoById(map.get("uid"));
+            }
+        }else if("ck".equals(state)){
+            Map<String, String> map=userDao.getTypeByOpenid(openid,"2");
+            if(map == null || map.isEmpty()){
+                dataWrapper.setErrorCode(ErrorCodeEnum.OPENID_NOT_EXIST);
+            }else{
+                if("ck".equals(map.get("getType"))){
+                    SaleInfo saleInfo = saleLogDao.getSaleInfoById(map.get("uid"));
                     if (saleInfo != null) {
                         dataWrapper.setData(saleInfo);
                         dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
@@ -236,11 +243,12 @@ public class WxLoginServiceImpl implements WxLoginService {
                         String token =tokenService.getSaleToken(saleInfo.getSaleId());
                         dataWrapper.setToken(token);
                         dataWrapper.setData(saleInfo);
-                    }else {
-                        dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
+                        return dataWrapper;
                     }
+                }
             }
         }
+        dataWrapper.setErrorCode(ErrorCodeEnum.OPENID_NOT_EXIST);
         return dataWrapper;
     }
 

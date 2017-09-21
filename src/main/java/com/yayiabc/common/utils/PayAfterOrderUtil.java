@@ -16,6 +16,7 @@ import com.yayiabc.common.exceptionHandler.OrderException;
 import com.yayiabc.http.mvc.dao.AliPayDao;
 import com.yayiabc.http.mvc.dao.OrderManagementDao;
 import com.yayiabc.http.mvc.dao.PlaceOrderDao;
+import com.yayiabc.http.mvc.dao.UserMyQbDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Charge;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
@@ -33,6 +34,9 @@ public class PayAfterOrderUtil {
 	private UserMyQbService userMyQbService;
 	@Autowired
 	private OrderManagementDao orderManagementDao;
+	
+	@Autowired
+	private UserMyQbDao userMyQbDao;
 
 		//更改支付类型
 	public  boolean universal(String orderId,String type){
@@ -74,11 +78,14 @@ public class PayAfterOrderUtil {
  		if(o.getGiveQb()!=0){
  			QbRecord q=new QbRecord();
  			//----
- 			q.setQbRget(String.valueOf(o.getGiveQb()));
- 			q.setQbType("qb_balance");
+ 			q.setQbRget("（\"赠\"乾币） "+o.getGiveQb());
  			q.setRemark("下单获得"+o.getGiveQb()+"个乾币。订单编号："+orderId);
- 			String token=utilsDao.queryTokenByOrderId(orderId);
- 			userMyQbService.add(q, token);
+ 			q.setUserId(o.getUserId()+"");
+ 			Calendar Cld = Calendar.getInstance();
+ 			int MI = Cld.get(Calendar.MILLISECOND);	
+ 			q.setMillisecond(MI);
+ 			userMyQbDao.updateUserQb(o.getGiveQb()+"", o.getUserId(),"qb_balance");
+ 			userMyQbDao.add(q);
  		}
  		//判断 该用户是否绑定了销售员
  		String saleId=utilsDao.getSaleIdByOrderId(orderId);
@@ -123,52 +130,62 @@ public class PayAfterOrderUtil {
 		
 		List<Integer> listData=new ArrayList<Integer>();
 		listData.add(u.getQbBalance()); //"qb_balance"
-		listData.add( u.getaQb());      //"a_qb"
-		listData.add( u.getbQb());         //"b_qb"
-		listData.add( u.getcQb());           //"c_qb"
+		listData.add( u.getcQb());      
+		listData.add( u.getbQb());      
+		listData.add( u.getaQb());         
 		int a=DedNum;
 		String qbDes=null;
 		StringBuffer sb=new StringBuffer();
 		StringBuilder sb1=new StringBuilder();
 		String s=null;
 		for(int i=0;i<listData.size();i++){
-			if(listData.get(i)>=DedNum&&listData.get(i)!=0){
-				
-				qbDes=sb1.toString()+DedNum;
-				s=sb.toString()+ut(i)+DedNum+"。";
+			
+			if(listData.get(i)>=DedNum){
+				System.out.println(listData.get(i)+"   "+DedNum);
+				if(listData.get(i).equals(DedNum)){
+					sb1.append(DedNum);
+					qbDes=sb1.toString();
+				}else if(listData.get(i)>DedNum){
+					qbDes=sb1.toString()+(DedNum);
+				}
+				/*sb1.append(DedNum);
+				qbDes=sb1.toString();*/
+				s=sb.toString()+ut(i)+DedNum+"个。";
 				DedNum=listData.get(i)-DedNum;
 				//listData.get(i)=listData.get(i)-DedNum;  这个
 				listData.set(i, DedNum);
+				
 				break;
-			}else if(listData.get(i)<DedNum&&listData.get(i)!=0){
+			}else if(listData.get(i)<DedNum){
 				
 				
-				sb.append(ut(i)+listData.get(i)+"；");
+				sb.append(ut(i)+listData.get(i)+"个；");
 				sb1.append(listData.get(i)+",");
 				DedNum=DedNum-listData.get(i);
-				System.err.println(DedNum);
 				listData.set(i, 0);
+				
 			}
-		}
-		System.out.println(listData);
+		} 
+		System.err.println(qbDes);
+		System.err.println(listData);
 		Calendar Cld = Calendar.getInstance();
 		int MI = Cld.get(Calendar.MILLISECOND);
 		
 		userMyQbService.updateDataToUser(listData,userId); //更改user 表  各种钱币类型
-		userMyQbService.addMessageQbQ(s,userId,"下单使用"+DedNum+"个乾币。订单编号："+orderId,MI); //新增钱币记录表   
+		userMyQbService.addMessageQbQ(s,userId,"下单使用"+a+"个乾币。订单编号："+orderId,MI); //新增钱币记录表   
 		return qbDes;
 	}
 	
 	private String ut(int i){
 		 switch (i) {
 		case 0:
-			 return "赠";
+			 return "\"赠\" ";
 		case 1:
-			 return "9.5折";
+			 return "\"9.5折\" ";
 		case 2:
-			return "9折";
+			return "\"9.0折\" ";
 		case 3:
-			return "8折";
+			return "\"8.0折\" ";
 		default:
 			break;
 		}

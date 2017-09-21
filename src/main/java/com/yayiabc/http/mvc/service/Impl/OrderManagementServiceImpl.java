@@ -18,6 +18,7 @@ import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.OrderDetailsDao;
 import com.yayiabc.http.mvc.dao.OrderManagementDao;
 import com.yayiabc.http.mvc.dao.PlaceOrderDao;
+import com.yayiabc.http.mvc.dao.UserMyQbDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Invoice;
 import com.yayiabc.http.mvc.pojo.jpa.ItemValue;
@@ -37,7 +38,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 	@Autowired
 	private UserMyQbService userMyQbService;
 	@Autowired
-	private UserMyQbService userMyQbDao;
+	private UserMyQbDao userMyQbDao;
 	@Autowired
 	private UtilsDao utilsDao;
 	@Autowired
@@ -301,14 +302,33 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			double dedQbNums=order.getGiveQb()-refundAfterGiveQbNum;
 			Integer dedQbNum=(int) Math.round(dedQbNums);
 			//扣除该用户钱币
-			/*int sign=orderManagementDao.dedQbNum(dedQbNum,order.getUserId());*/
+			/*int sign=orderManagementDao.dedQbNum(dedQbNum,order.getUserId());
+			 * QbRecord q=new QbRecord();
+ 			//----
+ 			q.setQbRget("（\"赠\"乾币） "+o.getGiveQb());
+ 			q.setRemark("下单获得"+o.getGiveQb()+"个乾币。订单编号："+orderId);
+ 			q.setUserId(o.getUserId()+"");
+ 			Calendar Cld = Calendar.getInstance();
+ 			int MI = Cld.get(Calendar.MILLISECOND);	
+ 			q.setMillisecond(MI);
+ 			userMyQbDao.updateUserQb(o.getGiveQb()+"", o.getUserId(),"qb_balance");
+ 			userMyQbDao.add(q);
+			 * 
+			 * 
+			 * */
 			QbRecord q=new QbRecord();
 			q.setRemark("订单有退款，下单时赠送的乾币需扣除："+dedQbNum+"。（订单编号:"+SendorderItemList.get(0).getOrderId()+"）");
-			q.setQbRout(-dedQbNum+"");
+			q.setQbRout("（\"赠\"乾币） "+dedQbNum);
 			q.setQbType("qb_balance");
+			q.setUserId(order.getUserId());
+			Calendar Cld = Calendar.getInstance();
+ 			int MI = Cld.get(Calendar.MILLISECOND);	
+ 			q.setMillisecond(MI);
+ 			userMyQbDao.updateUserQb(-dedQbNum+"",order.getUserId(),"qb_balance");
+ 			userMyQbDao.add(q);
 			String token= utilsDao.queryTokenByOrderId(SendorderItemList.get(0).getOrderId());
 			//放入钱币记录表
-			userMyQbService.add(q, token);
+			//userMyQbService.add(q, token);
 
 			//退回钱币数
 			if(order.getActualPay()>refundSumPrice){
@@ -363,6 +383,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 					throw new OrderException(ErrorCodeEnum.REFUND_ERROR);
 				}
 				//退款信息保存到 sale_income 里c
+				System.err.println(SendorderItemList.get(0).getOrderId());
 				int si=orderManagementDao.saveRefundMessToSaleIncome(
 						saleId,SendorderItemList.get(0).getOrderId(),
 						haoCaiRefundSumMoney,
@@ -414,7 +435,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		if(sum==rQbNum){
 			//退 完
 			orderManagementDao.returnQbAll(str,order.getUserId());
-			s=  ""+rQbNum+"（该订单已全部退回）。（订单编号:"+order.getOrderId()+"）";
+			s=  ""+rQbNum+"（该订单已全部退回）。";
 		}else{
 			for(int x=0;x<str.length;x++){
 				if(rQbNum>Integer.parseInt(str[x])){
@@ -435,7 +456,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		for(int q=0;q<list.size();q++){
 			returnQbNum+=list.get(q);
 		}
-		s=s+sb.toString()+"）。（订单编号:"+order.getOrderId()+"）";
+		s=s+sb.toString()+"订单编号:"+order.getOrderId()+"";
 		Calendar Cld = Calendar.getInstance();
 		int MI = Cld.get(Calendar.MILLISECOND);
 		userMyQbDao.addMessageQbQ(sb.toString(), order.getUserId(), s, MI);

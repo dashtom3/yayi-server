@@ -37,23 +37,30 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 			dataWrapper.setMsg("token错误");
 		} else {
 			qbRecord.setUserId(userId);
-			Integer qb = userMyQbDao.queryQbbalance(userId,qbRecord.getQbType());
+			//Integer qb = userMyQbDao.queryQbbalance(userId,qbRecord.getQbType());
 			if (qbRecord.getQbRget() != null) {
 				userMyQbDao.updateUserQb(qbRecord.getQbRget(), userId,qbRecord.getQbType());
 				
 				qbRecord.setMillisecond(MI);
-				userMyQbDao.add(qbRecord);
+				adds(qbRecord);
 			} else if (qbRecord.getQbRout() != null) {
 					userMyQbDao.updateUserQb(qbRecord.getQbRout(), userId,qbRecord.getQbType());
 					qbRecord.setMillisecond(MI);
-					userMyQbDao.add(qbRecord);
+					adds(qbRecord);
 			} else  {
 				dataWrapper.setMsg("请正确填写的乾币增减数额！");
 			}
 		}
 		return dataWrapper;
 	}
-
+   
+	public boolean adds(QbRecord qbRecord){
+		if(userMyQbDao.add(qbRecord)>0){
+			return true;
+		}else{
+			return false;
+		}
+	}
 	@Override
 	public DataWrapper<List<QbRecord>> query(String token,Integer currentPage, Integer numberPerPage) {
 		DataWrapper<List<QbRecord>> dataWrapper = new DataWrapper<List<QbRecord>>();

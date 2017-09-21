@@ -13,4 +13,6 @@ public interface UserMyQbService {
 	int updateDataToUser(List<Integer> listData,String userId);
 
 	int addMessageQbQ(String dedNums, String userId, String s,int Mi);
+	
+	 boolean adds(QbRecord qbRecord);
 }

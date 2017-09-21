@@ -15,7 +15,7 @@ import net.sf.json.JSONObject;
 @RequestMapping("api/c")
 public class RabbitMQDemo {  
 
-	@Autowired  
+	//@Autowired  
 	private MessageSender messageSender;  
 
 	@RequestMapping("d")  

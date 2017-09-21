@@ -8,15 +8,12 @@ import java.util.List;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
-import org.springframework.web.bind.annotation.RequestHeader;
 
-import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.UserWithdrawalsDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
-import com.yayiabc.http.mvc.pojo.jpa.CusResources;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.jpa.UserWitSetUp;
 import com.yayiabc.http.mvc.pojo.jpa.UserWith;
@@ -103,7 +100,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 					//增加钱币记录
 					Calendar Cld = Calendar.getInstance();
 					int MI = Cld.get(Calendar.MILLISECOND);
-					userMyQbService.addMessageQbQ("\"赠\" '"+give+"'个， \"9.5折\" '"+c+"'个 ， \"9.0折\" '"+b+"'个， \"8.0折\" '"+a+"'个",user.getUserId(),"乾币提现",MI); //新增钱币记录表   
+					userMyQbService.addMessageQbQ("\"赠\" "+give+"个， \"9.5折\" "+c+"个 ， \"9.0折\" "+b+"个， \"8.0折\" "+a+"个",user.getUserId(),"乾币提现",MI); //新增钱币记录表   
 				}
 			}
 		}else {
@@ -138,7 +135,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 				//增加钱币记录
 					Calendar Cld = Calendar.getInstance();
 					int MI = Cld.get(Calendar.MILLISECOND);
-					userMyQbService.addMessageQbQRget("\"赠\" '"+give+"'个， \"9.5折\" '"+c+"'个 ， \"9.0折\" '"+b+"'个， \"8.0折\" '"+a+"'个",userWith.getUserId(),"乾币提现",MI); //新增钱币记录表   
+					userMyQbService.addMessageQbQRget("\"赠\" "+give+"个， \"9.5折\" "+c+"个 ， \"9.0折\" "+b+"个， \"8.0折\" "+a+"个",userWith.getUserId(),"乾币提现",MI); //新增钱币记录表   
 				dataWrapper.setMsg("拒绝提现申请，成功");
 				}
 			}else{
@@ -222,5 +219,13 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 	//保留两位小数
 	private double utilsTwo(double i){
 		return i*100/100;
+	}
+	@Override
+	public DataWrapper<Object> latelyWithRecord(String token) {
+		// TODO Auto-generated method stub
+		String userId=utilsDao.getUserID(token);
+		DataWrapper<Object> da=new DataWrapper<Object>();
+		da.setData(userWithdrawalsServiceDao.latelyWithRecord(userId));
+		return da;
 	}
 }

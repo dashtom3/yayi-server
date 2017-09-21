@@ -217,7 +217,7 @@ public class WXAuthentController{
 	@ResponseBody
 	public DataWrapper<Object> getQRCode(){
 		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
-		dataWrapper.setData("https://open.weixin.qq.com/connect/qrconnect?appid=wxd342cb43ba1b1e6f&redirect_uri=http%3a%2f%2fwww.yayiabc.com%3a100&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect");
+		dataWrapper.setData("https://open.weixin.qq.com/connect/qrconnect?appid=wx4b1a6fde77626a32&redirect_uri=http%3a%2f%2fwww.yayiabc.com&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect");
 		return dataWrapper;
 	}
 	@RequestMapping("appWXLoginCode")

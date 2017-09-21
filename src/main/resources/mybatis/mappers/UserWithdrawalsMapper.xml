@@ -150,4 +150,8 @@
 	<select id="showUserQbNum" resultMap="qwaz">
 		select a_qb,b_qb,c_qb,qb_balance,phone from user where user_id=#{userId}
 	</select>
+	
+	<select id="latelyWithRecord" parameterType="com.yayiabc.http.mvc.pojo.jpa.UserWith">
+	 select * from user_with where  user_id=#{userId}
+	</select>
 </mapper>       

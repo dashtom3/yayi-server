@@ -199,11 +199,11 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 				throw new OrderException(ErrorCodeEnum.REFUND_ERROR);
 			}
 			//把退货数量放入order_item表中
-		   if(orderManagementDao.saveRefundNumToOrderItems(
+			if(orderManagementDao.saveRefundNumToOrderItems(
 					SendorderItemList
 					)<=0){
 				throw new OrderException(ErrorCodeEnum.REFUND_ERROR);
-		   }
+			}
 			//保存该订单的退款商品分类金额到 sale_income中 
 			String saleId=utilsDao.getSaleIdByOrderId(SendorderItemList.get(0).getOrderId());
 
@@ -322,10 +322,10 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			q.setQbType("qb_balance");
 			q.setUserId(order.getUserId());
 			Calendar Cld = Calendar.getInstance();
- 			int MI = Cld.get(Calendar.MILLISECOND);	
- 			q.setMillisecond(MI);
- 			userMyQbDao.updateUserQb(-dedQbNum+"",order.getUserId(),"qb_balance");
- 			userMyQbDao.add(q);
+			int MI = Cld.get(Calendar.MILLISECOND);	
+			q.setMillisecond(MI);
+			userMyQbDao.updateUserQb(-dedQbNum+"",order.getUserId(),"qb_balance");
+			userMyQbDao.add(q);
 			String token= utilsDao.queryTokenByOrderId(SendorderItemList.get(0).getOrderId());
 			//放入钱币记录表
 			//userMyQbService.add(q, token);
@@ -421,7 +421,8 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 	} 
 
 	//退款退回钱币的规则顺序
-	void returnQbUtils(int rQbNum,Ordera order){
+
+			void returnQbUtils(int rQbNum,Ordera order){
 		String qbDe=order.getQbDes();
 		List<Integer> list=new ArrayList<Integer>();
 		String[] str=qbDe.split(",");
@@ -441,10 +442,10 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 				if(rQbNum>Integer.parseInt(str[x])){
 					rQbNum=rQbNum-Integer.parseInt(str[x]);
 					list.add(Integer.parseInt(str[x]));
-					sb.append("（"+x+"类型 "+"退回个数:"+Integer.parseInt(str[x]));
+					sb.append("（"+ut(x)+Integer.parseInt(str[x])+"个，");
 				}else if(rQbNum<Integer.parseInt(str[x])){
 					list.add(rQbNum);
-					sb.append("（"+x+"类型 "+"退回个数:"+rQbNum);
+					sb.append(""+ut(x)+rQbNum+"个）");
 					break;
 				}
 			}
@@ -456,10 +457,23 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		for(int q=0;q<list.size();q++){
 			returnQbNum+=list.get(q);
 		}
-		s=s+sb.toString()+"订单编号:"+order.getOrderId()+"";
+		s=s+sb.toString()+"订单编号:"+order.getOrderId();
 		Calendar Cld = Calendar.getInstance();
 		int MI = Cld.get(Calendar.MILLISECOND);
 		userMyQbDao.addMessageQbQ(sb.toString(), order.getUserId(), s, MI);
+	}
+	String ut(int i){
+    switch (i) {
+	case 0:
+	       return "\"赠\"钱币 ";
+	case 1:
+		   return "\"8.0折\" ";
+	case 2:
+		   return "\"9.0折 \" ";
+	case 3:
+		   return "\"9.5折 \" ";
+	}
+	return null;
 	}
 	//仓库发货
 	@Override

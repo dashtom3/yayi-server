@@ -49,7 +49,7 @@
 		SELECT ${qbType} FROM `user` WHERE user_id = #{userId}
 	</select>
 	
-
+		
 	<update id="updateDataToUser" parameterType="java.util.List">
 	<foreach collection="list" item="nn" index="index" open=""
 			close="" separator=";">
@@ -58,13 +58,13 @@
 			<if test="index==0">
 			qb_balance = ${nn},
 			</if>
-			<if test="index==3">
+			<if test="index==1">
 			a_qb = ${nn},
 			</if>
 			<if test="index==2">
 			b_qb = ${nn},
 			</if>
-			<if test="index==1">
+			<if test="index==3">
 			c_qb = ${nn}
 			</if>
 			</set>

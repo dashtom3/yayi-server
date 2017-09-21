@@ -105,4 +105,12 @@ public class UserWithdrawalsController {
 		   ){
 	  return  userWithdrawalsService.showUserQbNum(token);
    }
+   //获取单用户最近的一次提现记录
+   @ResponseBody
+   @RequestMapping("latelyWithRecord")
+   DataWrapper<Object> latelyWithRecord(
+		   @RequestHeader(value="token",required=true) String token
+		   ){
+	  return  userWithdrawalsService.latelyWithRecord(token);
+   }
 }

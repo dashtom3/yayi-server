@@ -47,16 +47,13 @@ public class UserQbListServiceImpl implements UserQbListService {
 		String userId = userDao.getUserId(phone);
 		Calendar Cld = Calendar.getInstance();
 		int MI = Cld.get(Calendar.MILLISECOND);		//获取毫秒
-		if (qbBalance.equals(userQbListDao.queryQb(phone,qbType))==true) {		//判断现有乾币余额和输入乾币数是否相同
-			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-			dataWrapper.setMsg("乾币无修改");
-		} else if (qbBalance < 0) {
+		if (qbBalance < 0) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("请填写正确的乾币数");
 		} else {
 			if(sign.equals("1")){
 				//减少
-				 if(userQbListDao.update(-qbBalance, phone)>0){
+				 if(userQbListDao.updateDed(qbBalance, phone,qbType)>0){
 					 if(!addQbRecord(userId,qbBalance,phone,qbType,sign,MI)){
 						 dataWrapper.setMsg("增加钱币记录失败");
 					 } 
@@ -66,7 +63,8 @@ public class UserQbListServiceImpl implements UserQbListService {
 				//增加钱币记录
 			}else if(sign.equals("2")){
 				//增加
-				if(userQbListDao.update(qbBalance, phone)>0){
+				System.out.println(qbBalance+"  "+phone);
+				if(userQbListDao.updateAdd(qbBalance, phone,qbType)>0){
 					if(!addQbRecord(userId,qbBalance,phone,qbType,sign,MI)){
 						 dataWrapper.setMsg("增加钱币记录失败");
 					 } 

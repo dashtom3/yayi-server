@@ -129,10 +129,10 @@ public class PayAfterOrderUtil {
 		User u=utilsDao.queryUserByUserId(userId);
 		
 		List<Integer> listData=new ArrayList<Integer>();
-		listData.add(u.getQbBalance()); //"qb_balance"
-		listData.add( u.getcQb());      
+		listData.add(u.getQbBalance()); 
+		listData.add( u.getaQb());      
 		listData.add( u.getbQb());      
-		listData.add( u.getaQb());         
+		listData.add( u.getcQb());         
 		int a=DedNum;
 		String qbDes=null;
 		StringBuffer sb=new StringBuffer();
@@ -181,11 +181,11 @@ public class PayAfterOrderUtil {
 		case 0:
 			 return "\"赠\" ";
 		case 1:
-			 return "\"9.5折\" ";
+			 return "\"8.0折\" ";
 		case 2:
 			return "\"9.0折\" ";
 		case 3:
-			return "\"8.0折\" ";
+			return "\"9.5折\" ";
 		default:
 			break;
 		}

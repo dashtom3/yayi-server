@@ -65,7 +65,7 @@ public class OrderDetailsController {
 	@UserTokenValidate
 	@UserLog(description="前台取消订单")
 	public DataWrapper<Void> cancel(
-			@RequestParam(value="token",required=true) String token,
+			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderId",required=true) String orderId
 			){
 		System.out.println(12312321);

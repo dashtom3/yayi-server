@@ -54,7 +54,7 @@ public class UserQbListController {
 			@RequestParam(value = "phone", required = true) String phone,
 			@RequestParam(value = "qbBalance", required = true) Integer qbBalance,
 			@RequestParam(value = "qbType", required = true) String qbType,
-			@RequestParam(value = "sign",required=true)String sign 
+			@RequestParam(value = "sign",required=true)String sign   //1是减少   2是增加 
 			) {
 		return userQbListService.update(qbBalance, phone,qbType,sign);
 	}

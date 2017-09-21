@@ -17,4 +17,6 @@ public interface UserWithdrawalsService {
 	DataWrapper<Object> witSetUpShow(String token);
 
 	DataWrapper<Object> showUserQbNum(String token);
+
+	DataWrapper<Object> latelyWithRecord(String token);
 }

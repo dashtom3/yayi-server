@@ -236,10 +236,11 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//该单计算运费
 			Receiver receiver=placeOrderDao.queryReceiver(order.getReceiverId());
 			Integer postFee=getFreight(receiver,sumPrice,itemSum);
-			//生产发票性质
+			//是否需要发票
 			if("1".equals(order.getInvoiceHand())){
 				invoice.setOrderId(orderId);
 				invoice.setUserId(userId);
+				System.out.println(invoice);
 				int  sign=placeOrderDao.saveInvoiced(invoice);
 				if(sign<=0){
 					throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 

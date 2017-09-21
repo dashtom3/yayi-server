@@ -42,6 +42,7 @@ public class OrderDetailsController {
 	private LogisticsService logisticsService;
 	@Autowired
 	private OrderManagementService orderManagementService;
+	
 	@RequestMapping("show")
 	@ResponseBody
 	@UserTokenValidate
@@ -63,11 +64,11 @@ public class OrderDetailsController {
 	@ResponseBody
 	@UserTokenValidate
 	@UserLog(description="前台取消订单")
-	@ExceptionHandler
 	public DataWrapper<Void> cancel(
-			@RequestHeader(value="token",required=true) String token,
+			@RequestParam(value="token",required=true) String token,
 			@RequestParam(value="orderId",required=true) String orderId
 			){
+		System.out.println(12312321);
 		return orderDetailsService.cancel(orderId,token);
 	}
 	//查看物流

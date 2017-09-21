@@ -15,4 +15,6 @@ public interface UserMyQbService {
 	int addMessageQbQ(String dedNums, String userId, String s,int Mi);
 	
 	 boolean adds(QbRecord qbRecord);
+
+	int addMessageQbQRget(String string, String userId, String string2, int mI);
 }

@@ -1,11 +1,13 @@
 package com.yayiabc.http.mvc.service.Impl;
 
 
+import java.util.Calendar;
 import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.RequestHeader;
 
 import com.yayiabc.common.enums.ErrorCodeEnum;
@@ -18,6 +20,7 @@ import com.yayiabc.http.mvc.pojo.jpa.CusResources;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.jpa.UserWitSetUp;
 import com.yayiabc.http.mvc.pojo.jpa.UserWith;
+import com.yayiabc.http.mvc.service.UserMyQbService;
 import com.yayiabc.http.mvc.service.UserWithdrawalsService;
 @Service
 public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
@@ -25,6 +28,8 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 	private UserWithdrawalsDao userWithdrawalsServiceDao;
 	@Autowired
 	private UtilsDao utilsDao;
+	@Autowired
+	private UserMyQbService userMyQbService;
 
 	//提现列表的显示
 	@Override
@@ -56,6 +61,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 	}
 	//提交提现申请
 	@Override
+	@Transactional
 	public  DataWrapper<Object> submit(UserWith userWith,String token,String vCode) {
 		// TODO Auto-generated method stub
 		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
@@ -81,14 +87,23 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 					throw new RuntimeException("提现错误");
 				}else{
 					//根据用户的提现选择 ，更改user表用户的钱币类型的个数
-					userWithdrawalsServiceDao.updateUserQb(userWith);
+					if(userWithdrawalsServiceDao.updateUserQb(userWith)<=0){
+						throw new RuntimeException("提现错误");
+					}
 					//这里做处理 保存到用户提现表中  String.format("%.2f", f)
-			
-					userWith.setaType(utilsTwo(userWith.getaType()*0.8));    //a
-					userWith.setbType(utilsTwo(userWith.getbType()*0.9));    //b
-					userWith.setcType(utilsTwo(userWith.getcType()*0.95));    //c
+					int a=(int) userWith.getaType();
+					int b=(int) userWith.getbType();
+					int c=(int) userWith.getcType();
+					int give=(int) userWith.getGiveType();
+					userWith.setaType(utilsTwo(a*0.8));    //a
+					userWith.setbType(utilsTwo(b*0.9));    //b
+					userWith.setcType(utilsTwo(c*0.95));    //c
 					userWith.setGiveType(utilsTwo(userWith.getGiveType()));    //give
 					dataWrapper.setData( userWithdrawalsServiceDao.submit(userWith));
+					//增加钱币记录
+					Calendar Cld = Calendar.getInstance();
+					int MI = Cld.get(Calendar.MILLISECOND);
+					userMyQbService.addMessageQbQ("\"赠\" '"+give+"'个， \"9.5折\" '"+c+"'个 ， \"9.0折\" '"+b+"'个， \"8.0折\" '"+a+"'个",user.getUserId(),"乾币提现",MI); //新增钱币记录表   
 				}
 			}
 		}else {
@@ -108,14 +123,22 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 			// withId 获取此用户 此次提现的内容
 			UserWith userWith=userWithdrawalsServiceDao.queryFourQb(withId);
 			System.out.println(userWith);
+			int a=(int) (userWith.getaType()/0.8);
+			int b=(int) (userWith.getbType()/0.9);
+			int c=(int) (userWith.getcType()/0.95);
+			int give=(int) userWith.getGiveType();
             if(userWith!=null){
-			userWith.setaType(-Math.round(userWith.getaType()/0.8));
-			userWith.setbType(-Math.round(userWith.getbType()/0.9));
-			userWith.setcType(-Math.round(userWith.getcType()/0.95));
+			userWith.setaType(-Math.round(a));
+			userWith.setbType(-Math.round(b));
+			userWith.setcType(-Math.round(c));
 			userWith.setGiveType(-Math.round(userWith.getGiveType()));
-			int a=userWithdrawalsServiceDao.updateUserQb(userWith);
-			if(a>0){
+			int q=userWithdrawalsServiceDao.updateUserQb(userWith);
+			if(q>0){
 				if(userWithdrawalsServiceDao.determine(withId,sign)>0){
+				//增加钱币记录
+					Calendar Cld = Calendar.getInstance();
+					int MI = Cld.get(Calendar.MILLISECOND);
+					userMyQbService.addMessageQbQRget("\"赠\" '"+give+"'个， \"9.5折\" '"+c+"'个 ， \"9.0折\" '"+b+"'个， \"8.0折\" '"+a+"'个",userWith.getUserId(),"乾币提现",MI); //新增钱币记录表   
 				dataWrapper.setMsg("拒绝提现申请，成功");
 				}
 			}else{

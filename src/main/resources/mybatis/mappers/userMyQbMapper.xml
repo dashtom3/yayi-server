@@ -75,4 +75,10 @@
 	  INSERT INTO qb_record(user_id,qb_rout,qb_time,remark,created,millisecond)
 			VALUE(#{userId},#{dedNums},now(),#{message},NOW(),#{millisecond});
 	</insert>
+	
+	
+	<insert id="addMessageQbQRget" parameterType="java.util.List">
+	  INSERT INTO qb_record(user_id,qb_rget,qb_time,remark,created,millisecond)
+			VALUE(#{userId},#{dedNums},now(),#{message},NOW(),#{millisecond});
+	</insert>
 </mapper>        

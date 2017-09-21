@@ -86,6 +86,7 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		int sign=aliPayDao.querySatetIsTwo(orderId);
 		if(sign==1){
 		//还原库存
+			System.out.println(userId);
 		TimerChangeStateService timerChangeStateService=BeanUtil.getBean("TimerChangeStateServiceImpl");
 		List<String> l=new ArrayList<String>();
 		l.add(orderId);

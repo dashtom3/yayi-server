@@ -389,10 +389,10 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 						haoCaiRefundSumMoney,
 						ToolRefundSumMoney
 						);
-				if(si<=0){
+				//----------
+				/*if(si<=0){
 					throw new OrderException(ErrorCodeEnum.REFUND_ERROR);
-				}
-
+				}*/
 				//更新到订单表
 				orderManagementDao.updateOrderMessage(
 						SendorderItemList.get(0).getOrderId()

@@ -17,13 +17,13 @@
 		update user
 		<set>
 			<if test="aType!=null and aType!='' and aType!=0">
-				a_qb=a_qb-#{aType}
+				a_qb=a_qb-#{aType},
 			</if>
 			<if test="bType!=null and bType!='' and bType!=0">
-				b_qb=b_qb-#{bType}
+				b_qb=b_qb-#{bType},
 			</if>
 			<if test="cType!=null and cType!='' and cType!=0">
-				c_qb=c_qb-#{cType}
+				c_qb=c_qb-#{cType},
 			</if>
 			<if test="giveType!=null and giveType!='' and giveType!=0">
 				qb_balance=qb_balance-#{giveType}

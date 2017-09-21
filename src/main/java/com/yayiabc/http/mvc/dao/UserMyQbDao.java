@@ -28,4 +28,10 @@ public interface UserMyQbDao {
 	int addMessageQbQ(@Param("dedNums")String dedNums, @Param("userId")String userId, @Param("message")String s
 			,@Param("millisecond")int Mi
 			);
+	
+	
+	int addMessageQbQRget(@Param("dedNums")String dedNums, @Param("userId")String userId, @Param("message")String s
+			,@Param("millisecond")int Mi
+			);
+
 }

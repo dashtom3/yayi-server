@@ -91,4 +91,10 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 		// TODO Auto-generated method stub
 		return userMyQbDao.addMessageQbQ(dedNums,userId,s,Mi);
 	}
+
+	@Override
+	public int addMessageQbQRget(String string, String userId, String string2, int mI) {
+		// TODO Auto-generated method stub
+		return userMyQbDao.addMessageQbQRget(string,userId,string2,mI);
+	}
 }

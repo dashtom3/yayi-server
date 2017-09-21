@@ -55,17 +55,7 @@ ON d.p_id=c.item_brand_id
     </choose>
         LIMIT ${currentNumber},${numberPerPage} 
 	</select>
-	<select id="getCount" resultType="int">
-		SELECT count(0) FROM
-(SELECT * FROM
-(SELECT item_id,item_name,item_brand_id p_id,item_price,sales,updated FROM item_info where state=1) a
-INNER JOIN
-(SELECT item_id did,item_pica FROM item_detail) b
-ON a.item_id=b.did) d
-INNER JOIN
-(SELECT * FROM item_brand WHERE item_brand_id=#{itemBrandId} and state=1) c
-ON d.p_id=c.item_brand_id
-	</select>
+
 	
 	<resultMap type="ItemInfo" id="itemInfoR" autoMapping="true">
 		<id property="itemId" column="item_id"/>
@@ -109,45 +99,45 @@ ON d.p_id=c.item_brand_id
 		</collection>
 	</resultMap>
 	<!-- 根据商品id查询商品详情 -->
-	<!--<select id="itemDetailDes" resultMap="itemInfoR">-->
-	  <!--SELECT * FROM-->
-<!--(SELECT o.item_sort,o.is_throw,o.item_id,o.item_name,o.item_brand_id,o.item_brand_logo,o.item_brand_home,o.item_brand_name,o.item_price,o.sales,o.state,o.one_classify,o.two_classify,q.prop_id,q.item_property_name,-->
-<!--q.item_property_info,o.d_id,o.video,o.item_pica,o.item_picb,o.item_picc,o.item_picd,o.item_pice,o.commission,o.is_qb_buy,o.qb_num,o.store_item_id,o.apparatus_type,o.unit,o.produce_pompany,o.register_id,o.register_date,o.item_packing,o.item_levels,o.item_range,o.remark,o.item_desc,o.item_use,-->
-<!--o.comment_id,o.true_name,o.phone,o.comment_grade,o.comment_content,o.reply_content,o.co_created,o.co_updated,q.item_sku_price,q.item_sKU,q.item_property_name_two,q.item_property_two_value,q.item_property_name_three,q.item_property_three_value,q.can_use,-->
-<!--q.item_property_four_name,q.item_property_four_value,q.item_property_five_name,q.item_property_five_value,q.item_property_six_name,q.item_property_six_value,q.s_num,q.ti_chen,q.item_qb,q.item_value_id FROM-->
-<!--(SELECT * FROM-->
-<!--(SELECT * FROM-->
-         <!--(SELECT * FROM-->
-             <!--item_info a-->
-              <!--inner JOIN-->
-                <!--(SELECT item_id d_id,item_desc,item_use,video,item_pica,item_picb,item_picc,item_picd,item_pice,commission,is_qb_buy,qb_num,store_item_id,apparatus_type,unit,produce_pompany,register_id,register_date,item_packing,item_levels,item_range,remark FROM item_detail) b-->
-                   <!--ON a.item_id=b.d_id) g-->
-<!--inner JOIN-->
-<!--(SELECT item_brand_id br_id,item_brand_logo,item_brand_home,item_brand_name FROM item_brand) d-->
-<!--ON d.br_id=g.item_brand_id) n-->
-<!--LEFT JOIN-->
-              <!--(SELECT c.comment_id,c.user_id,c.s_id,c.order_id,c.comment_grade,c.comment_content,c.reply_content,c.co_created,c.co_updated,f.true_name,f.phone FROM-->
-                  <!--(SELECT comment_id,user_id,item_id s_id,order_id,comment_grade,comment_content,reply_content,created co_created,updated co_updated FROM comments) c-->
-              <!--inner JOIN-->
-              <!--user f-->
-              <!--ON c.user_id=f.user_id order by c.co_created desc) m-->
-<!--ON n.item_id=m.s_id ) o-->
-<!--inner JOIN-->
-<!--(SELECT item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,item_qb,item_value_id FROM item_value) q-->
-<!--ON o.item_id=q.prop_id) s-->
-<!--WHERE s.item_id=#{itemId}-->
-	<!--</select>-->
-
 	<select id="itemDetailDes" resultMap="itemInfoR">
-		SELECT a.*,b.*,d.*,f.true_name,f.phone,q.* FROM
-		(select * from item_info WHERE item_id=#{itemId}) a
-		inner JOIN item_detail b ON a.item_id=b.item_id
-		inner JOIN item_brand d  ON a.item_brand_id=d.item_brand_id
-		LEFT JOIN comments c on a.item_id=c.item_id
-		inner JOIN user f ON c.user_id=f.user_id
-		inner JOIN item_value q ON a.item_id=q.item_id
-		order by c.created desc
+	  SELECT * FROM
+(SELECT o.item_sort,o.is_throw,o.item_id,o.item_name,o.item_brand_id,o.item_brand_logo,o.item_brand_home,o.item_brand_name,o.item_price,o.sales,o.state,o.one_classify,o.two_classify,q.prop_id,q.item_property_name,
+q.item_property_info,o.d_id,o.video,o.item_pica,o.item_picb,o.item_picc,o.item_picd,o.item_pice,o.commission,o.is_qb_buy,o.qb_num,o.store_item_id,o.apparatus_type,o.unit,o.produce_pompany,o.register_id,o.register_date,o.item_packing,o.item_levels,o.item_range,o.remark,o.item_desc,o.item_use,
+o.comment_id,o.true_name,o.phone,o.comment_grade,o.comment_content,o.reply_content,o.co_created,o.co_updated,q.item_sku_price,q.item_sKU,q.item_property_name_two,q.item_property_two_value,q.item_property_name_three,q.item_property_three_value,q.can_use,
+q.item_property_four_name,q.item_property_four_value,q.item_property_five_name,q.item_property_five_value,q.item_property_six_name,q.item_property_six_value,q.s_num,q.ti_chen,q.item_qb,q.item_value_id FROM
+(SELECT * FROM
+(SELECT * FROM
+         (SELECT * FROM
+             item_info a
+              inner JOIN
+                (SELECT item_id d_id,item_desc,item_use,video,item_pica,item_picb,item_picc,item_picd,item_pice,commission,is_qb_buy,qb_num,store_item_id,apparatus_type,unit,produce_pompany,register_id,register_date,item_packing,item_levels,item_range,remark FROM item_detail) b
+                   ON a.item_id=b.d_id) g
+inner JOIN
+(SELECT item_brand_id br_id,item_brand_logo,item_brand_home,item_brand_name FROM item_brand) d
+ON d.br_id=g.item_brand_id) n
+LEFT JOIN
+              (SELECT c.comment_id,c.user_id,c.s_id,c.order_id,c.comment_grade,c.comment_content,c.reply_content,c.co_created,c.co_updated,f.true_name,f.phone FROM
+                  (SELECT comment_id,user_id,item_id s_id,order_id,comment_grade,comment_content,reply_content,created co_created,updated co_updated FROM comments) c
+              inner JOIN
+              user f
+              ON c.user_id=f.user_id order by c.co_created desc) m
+ON n.item_id=m.s_id ) o
+inner JOIN
+(SELECT item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,item_qb,item_value_id FROM item_value) q
+ON o.item_id=q.prop_id) s
+WHERE s.item_id=#{itemId}
 	</select>
+
+	<!--<select id="itemDetailDes" resultMap="itemInfoR">-->
+		<!--SELECT a.*,b.*,d.*,f.true_name,f.phone,q.* FROM-->
+		<!--(select * from item_info WHERE item_id=#{itemId}) a-->
+		<!--inner JOIN item_detail b ON a.item_id=b.item_id-->
+		<!--inner JOIN item_brand d  ON a.item_brand_id=d.item_brand_id-->
+		<!--LEFT JOIN comments c on a.item_id=c.item_id-->
+		<!--inner JOIN user f ON c.user_id=f.user_id-->
+		<!--inner JOIN (select item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,item_qb,item_value_id FROM item_value) q ON a.item_id=q.prop_id-->
+		<!--order by c.created desc-->
+	<!--</select>-->
 	
 	
 	<!-- 根据品牌id删除品牌 -->

@@ -63,7 +63,7 @@ public class WXLoginController {
     
     @RequestMapping("updateSaleInfo")
     @ResponseBody
-    public DataWrapper<Void> updateSaleInfo(
+    public DataWrapper<SaleInfo> updateSaleInfo(
     		@ModelAttribute SaleInfo saleInfo,
             @RequestParam(value="openid",required=true) String openid,
     		@RequestParam(value="number",required=true) Integer number//1表示已注册2.表示未注册

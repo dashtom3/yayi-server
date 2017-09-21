@@ -174,13 +174,14 @@ public class WxLoginServiceImpl implements WxLoginService {
 
 
 	@Override
-	public DataWrapper<Void> updateSaleInfo(SaleInfo saleInfo, Integer number,String openid) {
-		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+	public DataWrapper<SaleInfo> updateSaleInfo(SaleInfo saleInfo, Integer number,String openid) {
+		DataWrapper<SaleInfo> dataWrapper =new DataWrapper<SaleInfo>();
 		if(number==1){//已注册
 			saleInfoDao.updateSaleInfo(saleInfo);
 			String saleId=saleInfoDao.getSaleIdBySalePhone(saleInfo.getPhone());
 			String token=tokenService.getSaleToken(saleId);
             wxAppDao.addSaleUser(saleId,openid,saleInfo.getPhone());
+            dataWrapper.setData(saleInfo);
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 			dataWrapper.setToken(token);
 		}else{//未注册
@@ -195,6 +196,7 @@ public class WxLoginServiceImpl implements WxLoginService {
                     String token = tokenService.getSaleToken(saleInfoTwo.getSaleId());
                     saleInfoDao.updateSaleInfo(saleInfo);
                     wxAppDao.addSaleUser(saleInfoTwo.getSaleId(),openid,saleInfo.getPhone());
+                    dataWrapper.setData(saleInfo);
                     dataWrapper.setToken(token);
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());

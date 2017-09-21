@@ -3,9 +3,6 @@ package com.yayiabc.http.mvc.service;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
-import org.apache.poi.ss.formula.functions.T;
-
-import java.util.Map;
 
 /**
  *
@@ -18,7 +15,7 @@ public interface WxLoginService {
 
 	DataWrapper<User> updateUserInfo(User user,Integer number,String openid);
 
-	DataWrapper<Void> updateSaleInfo(SaleInfo saleInfo, Integer number,String openid);
+	DataWrapper<SaleInfo> updateSaleInfo(SaleInfo saleInfo, Integer number,String openid);
 
 	DataWrapper<Object> judgeOpenid(String openid, String state);
 }

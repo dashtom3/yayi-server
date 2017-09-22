@@ -11,11 +11,17 @@
 		SELECT uid FROM wx_userlink WHERE openid = {_parameter}
 	</select>
 
+    <update id="updateUser">
+        update wx_userlink set uid=#{userId},phone=#{phone} where openid=#{openid} and type=1
+    </update>
+
 	<insert id="addUser">
 		INSERT INTO wx_userlink (uid,openid,type,phone) VALUES (#{saleId},#{openid},1,#{phone})
 	</insert>
 
-
+    <update id="updateSaleUser">
+        update wx_userlink set uid=#{saleId},phone=#{phone} where openid=#{openid} and type=2
+    </update>
 	
 	<insert id="addSaleUser">
 		INSERT INTO wx_userlink (uid,openid,type,phone) VALUES (#{saleId},#{openid},2,#{phone})

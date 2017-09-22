@@ -38,4 +38,8 @@ public interface WxAppDao {
 	SaleInfo querySale(@Param("uid")String uid);
 
 	Integer getPhoneCount(@Param("phone")String phone);
+
+    void updateSaleUser(String saleId, String openid, String phone);
+
+	void updateUser(String userId, String openid, String phone);
 }

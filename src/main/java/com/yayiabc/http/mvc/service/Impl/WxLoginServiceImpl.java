@@ -79,11 +79,6 @@ public class WxLoginServiceImpl implements WxLoginService {
     @Override
     public DataWrapper<Object> bindUser(String phone, String verifyCode,String type) {
         DataWrapper<Object> dataWrapper = new DataWrapper<Object>();
-        if(wxAppDao.getPhoneCount(phone)!=0){
-            dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-            dataWrapper.setMsg("该账号已经绑定过其他微信了");
-            return dataWrapper;
-        }
         ErrorCodeEnum codeEnum= VerifiCodeValidateUtil.verifiCodeValidate(phone,verifyCode);
         dataWrapper.setErrorCode(codeEnum);
         if(!codeEnum.equals(ErrorCodeEnum.No_Error)){
@@ -96,9 +91,9 @@ public class WxLoginServiceImpl implements WxLoginService {
                 dataWrapper.setData(seUser);
                 int num = userDao.getCartNum(seUser);
                 dataWrapper.setNum(num);
-                String token =tokenService.getToken(seUser.getUserId());
+//                String token =tokenService.getToken(seUser.getUserId());
                 dataWrapper.setData(seUser);
-                dataWrapper.setToken(token);
+//                dataWrapper.setToken(token);
             }else {
                 dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
             }
@@ -108,8 +103,8 @@ public class WxLoginServiceImpl implements WxLoginService {
                 dataWrapper.setData(saleInfo);
                 String saleId = saleInfo.getSaleId();
                 if (saleId != null) {
-                    String token =tokenService.getSaleToken(saleId);
-                    dataWrapper.setToken(token);
+//                    String token =tokenService.getSaleToken(saleId);
+//                    dataWrapper.setToken(token);
                     dataWrapper.setData(saleInfo);
                 }
             }else {
@@ -141,7 +136,11 @@ public class WxLoginServiceImpl implements WxLoginService {
             }
 			String token=tokenService.getToken(userId);
             User seUser = userDao.getUserByPhone(user.getPhone());
-            wxAppDao.addUser(userId,openid,user.getPhone());
+            if(userDao.getCount(openid)==0){
+                wxAppDao.addUser(userId,openid,user.getPhone());
+            }else{
+                wxAppDao.updateUser(userId,openid,user.getPhone());
+            }
             dataWrapper.setData(seUser);
 			dataWrapper.setToken(token);
 		}else{
@@ -181,7 +180,11 @@ public class WxLoginServiceImpl implements WxLoginService {
 			saleInfoDao.updateSaleInfo(saleInfo);
 			String saleId=saleInfoDao.getSaleIdBySalePhone(saleInfo.getPhone());
 			String token=tokenService.getSaleToken(saleId);
-            wxAppDao.addSaleUser(saleId,openid,saleInfo.getPhone());
+			if(saleInfoDao.getCount(openid)==0){
+                wxAppDao.addSaleUser(saleId,openid,saleInfo.getPhone());
+            }else{
+			    wxAppDao.updateSaleUser(saleId,openid,saleInfo.getPhone());
+            }
             saleInfo =saleLogDao.getSaleInfoByPhone(saleInfo.getPhone());
             dataWrapper.setData(saleInfo);
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);

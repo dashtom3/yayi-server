@@ -22,4 +22,6 @@ public interface SaleInfoDao {
 	String getSaleIdBySalePhone(@Param("phone")String phone);
 
 	void testProcedure();
+
+    int getCount(String openid);
 }

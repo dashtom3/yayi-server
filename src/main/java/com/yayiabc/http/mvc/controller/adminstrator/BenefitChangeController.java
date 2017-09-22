@@ -1,11 +1,12 @@
 package com.yayiabc.http.mvc.controller.adminstrator;
 
 
-import java.util.List;
-
-
-import javax.servlet.http.HttpServletResponse;
-
+import com.yayiabc.common.annotation.AdminTokenValidate;
+import com.yayiabc.common.annotation.UserTokenValidate;
+import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.pojo.jpa.Benefit;
+import com.yayiabc.http.mvc.pojo.jpa.BenefitDetail;
+import com.yayiabc.http.mvc.service.BenefitChangeService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -13,12 +14,8 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
-import com.yayiabc.common.annotation.AdminTokenValidate;
-import com.yayiabc.common.annotation.UserTokenValidate;
-import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.http.mvc.pojo.jpa.Benefit;
-import com.yayiabc.http.mvc.pojo.jpa.BenefitDetail;
-import com.yayiabc.http.mvc.service.BenefitChangeService;
+import javax.servlet.http.HttpServletResponse;
+import java.util.List;
 
 @Controller
 @RequestMapping("api/benefit")
@@ -92,9 +89,9 @@ public class BenefitChangeController {
 	//删除优惠码
 	@RequestMapping("delete")
 	@ResponseBody
-	@AdminTokenValidate
+//	@AdminTokenValidate
 	public DataWrapper<Void> delete(
-			@RequestHeader(value="adminToken",required=true) String adminToken,
+//			@RequestHeader(value="adminToken",required=true) String adminToken,
 			@RequestParam(value="benefitId",required=true) Integer benefitId
 			){
 		

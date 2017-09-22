@@ -145,5 +145,9 @@
 		SELECT uid,IF(type =1,'ds',if(type = 2,'ck',NULL)) AS getType FROM wx_userlink WHERE openid=#{openid} AND type =#{type};
 	</select>
 
+	<select id="getCount" resultType="int">
+		select count(0) from wx_userlink where openid=#{openid} and type=1
+	</select>
+
 
 </mapper>       

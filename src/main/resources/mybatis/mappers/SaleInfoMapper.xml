@@ -52,7 +52,7 @@
 			<if test="education!=null">education=#{education},</if>
 			<if test="weChar!=null">we_char=#{weChar},</if>
 			<if test="email!=null">email=#{email},</if>
-			<if test="referrals!=null">referrals=#{referrals},</if>
+			<if test="referrals!=null">referrals=#{referrals}</if>
 		</set>
 		where phone=#{phone}
 	</update>
@@ -60,6 +60,12 @@
 	<select id="getSaleIdBySalePhone" resultType="string">
 		select sale_id from sale_info where phone=#{phone}
 	</select>
+
+	<select id="getCount" resultType="int">
+		select count(0) from wx_userlink where openid=#{openid} and type=2
+	</select>
+
+
 
 
 </mapper>

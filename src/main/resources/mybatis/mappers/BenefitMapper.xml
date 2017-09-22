@@ -7,8 +7,14 @@
 		insert into benefit(benefit_name,benefit_qb,benefit_num,benefit_value_num,created,updated) values(#{benefitName},#{benefitQb},#{benefitNum},#{benefitValueNum},now(),#{updated})
 	</insert>
 	
+	<!--<insert id="addBenefitDetail">-->
+		<!--insert into benefit_detail values(null,#{benefitId},#{benefitCode},1,null,null)-->
+	<!--</insert>-->
 	<insert id="addBenefitDetail">
-		insert into benefit_detail values(null,#{benefitId},#{benefitCode},1,null,null)
+		insert into benefit_detail(benefit_id,benefit_code,state) VALUES
+		<foreach collection="benefitCodeList" separator=","  item="item" index="index">
+			(#{benefitId},#{item},1)
+		</foreach>
 	</insert>
 	
 	<select id="getBenefitByBenefitCode" resultType="BenefitDetail">

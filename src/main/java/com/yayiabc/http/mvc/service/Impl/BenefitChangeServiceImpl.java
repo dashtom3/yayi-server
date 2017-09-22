@@ -48,13 +48,19 @@ public class BenefitChangeServiceImpl implements BenefitChangeService{
 			benefitChangeDao.addBenefit(benefit);
 			System.out.println(benefit.getBenefitId());
 			Integer benefitId =benefit.getBenefitId();
+			List benefitCodeList=new ArrayList();
 			for(int i=0;i<benefitNum;i++){
-				String benefitCode="";
-				do{
-					benefitCode=ValidateCodeUtil.getCode();
-				}while(benefitChangeDao.getBenefitCodeCount(benefitCode)!=0);
-				benefitChangeDao.addBenefitDetail(benefitId,benefitCode);
+//				String benefitCode="";
+//				do{
+//					benefitCode=ValidateCodeUtil.getCode();
+//				}while(benefitChangeDao.getBenefitCodeCount(benefitCode)!=0);
+//				benefitChangeDao.addBenefitDetail(benefitId,benefitCode);
+				benefitCodeList.add(ValidateCodeUtil.getCode());
 			}
+			Map<String,Object> map=new HashMap<String,Object>();
+			map.put("benefitId",benefitId);
+			map.put("benefitCodeList",benefitCodeList);
+			benefitChangeDao.addBenefitDetail(map);
 			dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		} catch (ParseException e) {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
@@ -236,13 +242,13 @@ public class BenefitChangeServiceImpl implements BenefitChangeService{
 	public DataWrapper<Void> delete(Integer benefitId) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		//1.清除code_map中的缓存的验证码
-		List<String> validateCodeList=benefitChangeDao.queryValidateCode(benefitId);
-		Map map =ValidateCodeUtil.codeMap;
-		for (String validateCode : validateCodeList) {
-			if(map.containsValue(validateCode)){
-				map.remove(validateCode);
-			}
-		}
+//		List<String> validateCodeList=benefitChangeDao.queryValidateCode(benefitId);
+//		Map map =ValidateCodeUtil.codeMap;
+//		for (String validateCode : validateCodeList) {
+//			if(map.containsValue(validateCode)){
+//				map.remove(validateCode);
+//			}
+//		}
 		//2.清除benefit_detail记录
 		benefitChangeDao.deleteBenefitDetailByBenefitId(benefitId);
 		//3.清除benefit表记录

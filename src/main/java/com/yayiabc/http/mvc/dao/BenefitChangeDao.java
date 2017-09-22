@@ -1,20 +1,21 @@
 package com.yayiabc.http.mvc.dao;
 
-import java.util.Date;
-import java.util.List;
-
-import org.apache.ibatis.annotations.Param;
-
 import com.yayiabc.http.mvc.pojo.jpa.Benefit;
 import com.yayiabc.http.mvc.pojo.jpa.BenefitDetail;
 import com.yayiabc.http.mvc.pojo.jpa.ExcelEntry;
+import org.apache.ibatis.annotations.Param;
+
+import java.util.List;
+import java.util.Map;
 
 public interface BenefitChangeDao {
 
 	void addBenefit(Benefit benefit);
 
-	void addBenefitDetail(@Param("benefitId")Integer benefitId,@Param("benefitCode") String benefitCode);
+//	void addBenefitDetail(@Param("benefitId")Integer benefitId,@Param("benefitCode") String benefitCode);
 
+	
+	
 	BenefitDetail getBenefitByBenefitCode(@Param("benefitCode")String benefitCode);
 
 	Benefit getBenefitByBenefitId(@Param("benefitId")Integer benefitId);
@@ -44,8 +45,6 @@ public interface BenefitChangeDao {
 
 	void deleteBenefitByBenefitId(@Param("benefitId")Integer benefitId);
 
-	
 
-	
-
+	void addBenefitDetail(Map<String, Object> map);
 }

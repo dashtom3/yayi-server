@@ -12,6 +12,8 @@ import com.yayiabc.http.mvc.service.TokenService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.UUID;
+
 /**
  * Created by 小月亮 on 2017/9/4.
  */
@@ -33,6 +35,7 @@ public class AppSaleServiceImpl implements AppSaleService{
             if(!codeEnum.equals(ErrorCodeEnum.No_Error)){
                 return dataWrapper;
             }
+            saleInfo.setSaleId(UUID.randomUUID().toString());
             if (1 == saleLogDao.appRegister(saleInfo)) {
                 VerifyCodeManager.removePhoneCodeByPhoneNum(saleInfo.getPhone());
                 String token =tokenService.getSaleToken(saleInfo.getSaleId());

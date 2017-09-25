@@ -99,7 +99,7 @@
             <when test="rule==1">updated desc</when>
             <when test="rule==2">sales desc</when>
             <when test="rule==3">item_price desc</when>
-            <when test="rule==4">item_price aesc</when>
+            <when test="rule==4">item_price asc</when>
         </choose>
         LIMIT #{currentNumber},#{numberPerPage}
     </select>

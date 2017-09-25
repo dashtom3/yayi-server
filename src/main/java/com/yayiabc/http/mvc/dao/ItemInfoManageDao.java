@@ -35,4 +35,6 @@ public interface ItemInfoManageDao {
 	void addItemValue(List<ItemValue> itemValueList);
 
 	Integer getCountOneClassify(String itemClassify);
+
+    void deleteItemStar(String itemId);
 }

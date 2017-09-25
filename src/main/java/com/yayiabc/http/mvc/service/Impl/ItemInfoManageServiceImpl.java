@@ -78,6 +78,7 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 		itemInfoManageDao.deleteItemValue(itemId);
 		itemInfoManageDao.deleteItemDetail(itemId);
 		itemInfoManageDao.deleteItemInfo(itemId);
+		itemInfoManageDao.deleteItemStar(itemId);
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
 	}

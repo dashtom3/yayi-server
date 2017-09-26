@@ -3,6 +3,7 @@ package com.yayiabc.http.mvc.pojo.jpa;
 import java.util.Date;
 import java.util.List;
 
+import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 /**
@@ -66,9 +67,9 @@ public class Ordera extends BasePojo {
     private String qbDes;
     
     private int createState;  //0  购物车       1 立即购买
-    
-    
 
+
+	@JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
 	public int getCreateState() {
 		return createState;
 	}
@@ -116,11 +117,11 @@ public class Ordera extends BasePojo {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getCreated() {
 		return created;
 	}
-
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public void setCreated(Date created) {
 		this.created = created;
 	}

@@ -1,0 +1,54 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.FeedbackDao">
+    <insert id="addFeed">
+        INSERT INTO feedback(phone,message,state,created,updated)
+        VALUES(#{phone},#{message},1,NOW(),NOW());
+    </insert>
+
+    <update id="updateState">
+        UPDATE feedback
+        SET state=2,updated=now()
+        WHERE feed_id=#{feedId}
+    </update>
+
+    <select id="feedList" resultType="Feedback">
+        SELECT feed_id,phone,message,state,created
+        FROM feedback
+       <where>
+           <if test="phone !=null and phone !=''">
+              phone LIKE '%${phone}%'
+           </if>
+           <if test="state==1">
+               AND state = 1
+           </if>
+           <if test="state==2">
+               AND state = 2
+           </if>
+       </where>
+        ORDER BY created DESC
+        LIMIT ${page.currentNumber},${page.numberPerPage}
+    </select>
+
+    <select id="getCount" resultType="int">
+        SELECT COUNT(0)
+        FROM feedback
+        <where>
+            <if test="phone !=null and phone !=''">
+                phone LIKE '%${phone}%'
+            </if>
+            <if test="state==1">
+                AND state = 1
+            </if>
+            <if test="state==2">
+                AND state = 2
+            </if>
+        </where>
+    </select>
+
+    <delete id="deleteFeed">
+        DELETE FROM feedback WHERE feed_id=#{feedId};
+    </delete>
+</mapper>

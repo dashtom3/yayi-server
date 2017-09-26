@@ -96,7 +96,4 @@ public class SaleMyOrderServiceImpl implements SaleMyOrderService {
 		dataWrapper.setData(orderVo);
 		return dataWrapper;
 	}
-
-
-
 }

@@ -13,6 +13,7 @@ public interface UserQbListApi {
      * @apiParam {String} endDate 结束时间（非必须，格式'yyyy-MM-dd hh:mm'）     
      * @apiParam {int} currentPage （非必须）
      * @apiParam {int} numberPerPage （非必须）
+     * @apiParam {String} adminToken （身份凭证）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -68,6 +69,8 @@ public interface UserQbListApi {
      * @apiDescription 查询具体某位用户的钱币余额
      *
      * @apiParam {String} userPhone 手机号码（必须）
+     * @apiParam {String} qbType    乾币类型（必须）
+     * @apiParam {String} adminToken  身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      *  HTTP/1.1 200 OK
@@ -112,6 +115,9 @@ public interface UserQbListApi {
      *
      * @apiParam {String} phone 手机号码（必须）
      * @apiParam {int} qbBalance 乾币数（必须）
+     * @apiParam {int} qbType 乾币类型（必须）
+     * @apiParam {String} sign 类型（必须，1减少，2增加）
+     * @apiParam {String} adminToken 身份凭证（必须）
      *
      * @apiSuccessExample {json} Success-Response:
      * HTTP/1.1 200 OK

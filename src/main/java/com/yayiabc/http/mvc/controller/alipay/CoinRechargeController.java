@@ -49,7 +49,7 @@ public class CoinRechargeController {
 			if(money==0.0){
 				throw new RuntimeException();
 			}
-			utilsdao.saveRechargeMessage(codeId,userId,String.valueOf(qbNum),qbType,String.valueOf((money*100)/100));
+			utilsdao.saveRechargeMessage(codeId,userId,String.valueOf(qbNum),qbType,money+"");
 			//test  钱币充值  前台传来的钱币类型 为: a_qb b_qb ,c_qb
 			if(computerOrPhone.equals("computer")){
 				//调用PC网页支付宝.
@@ -81,7 +81,8 @@ public class CoinRechargeController {
 		String userId=utilsdao.getUserID(token);
 		String codeId=createId(userId);
 		double money=QbExchangeUtil.getQbByMoney(Integer.parseInt(qbNum),qbType);
-		int sign=utilsdao.saveRechargeMessage(codeId,userId,String.valueOf(qbNum),qbType,String.valueOf(Math.round(money)));
+		System.out.println("money   money   money "+money);
+		int sign=utilsdao.saveRechargeMessage(codeId,userId,qbNum,qbType,money+"");
 		if(sign>0){
 			return appPayService.packingParameter(codeId, codeId, String.valueOf(money), "乾币充值", "乾币", "QUICK_MSECURITY_PAY");
 		}

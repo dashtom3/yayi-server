@@ -22,7 +22,7 @@ import java.util.List;
 public class BenefitChangeController {
 	@Autowired
 	private BenefitChangeService benefitChangeService;
-
+	
 	//添加优惠码
 	@RequestMapping("add")
 	@ResponseBody
@@ -36,7 +36,7 @@ public class BenefitChangeController {
 			){
 		return benefitChangeService.add(benefitName,benefitQb,benefitNum,updated);
 	}
-
+	
 	//使用优惠码
 	@RequestMapping("use")
 	@ResponseBody
@@ -47,7 +47,7 @@ public class BenefitChangeController {
 			){
 		return benefitChangeService.use(token,benefitCode);
 	}
-
+	
 	//查询优惠码
 	@RequestMapping("list")
 	@ResponseBody
@@ -59,10 +59,10 @@ public class BenefitChangeController {
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
 			){
-
+		
 		return benefitChangeService.list(benefitName,enable,currentPage,numberPerPage);
 	}
-
+	
 	//查询优惠码详情
 	@RequestMapping("detail")
 	@ResponseBody
@@ -75,7 +75,7 @@ public class BenefitChangeController {
 			){
 		return benefitChangeService.detail(benefitId,currentPage,numberPerPage);
 	}
-
+	
 	//下载未兑换的优惠码
 	@RequestMapping("downLoad")
 	@ResponseBody
@@ -85,7 +85,7 @@ public class BenefitChangeController {
 			){
 		return benefitChangeService.downLoad(benefitId,response);
 	}
-
+	
 	//删除优惠码
 	@RequestMapping("delete")
 	@ResponseBody
@@ -94,7 +94,7 @@ public class BenefitChangeController {
 			@RequestHeader(value="adminToken",required=true) String adminToken,
 			@RequestParam(value="benefitId",required=true) Integer benefitId
 			){
-
+		
 		return benefitChangeService.delete(benefitId);
 	}
 }

@@ -402,6 +402,7 @@
 			<result property="dedQb" column="ded_qb" />
 			<result property="returnQb" column="return_qb" />
 			<result property="returnMoney" column="return_money" />
+			<result property="returnQbMsg" column="return_qbmsg" />
 		</association>
 		<collection property="orderitemList"
 			ofType="com.yayiabc.http.mvc.pojo.jpa.OrderItem">
@@ -424,7 +425,7 @@
 		orde_it.item_name,orde_it.num,orde_it.price,orde_it.item_property_namea,orde_it.item_property_nameb,
 		orde_it.item_property_namec,orde_it.refund_num,orde_it.itm_SKU
 
-		,refu.refund_id,refu.refund_money_haocai,refu.refund_money_gongju,refu.return_qb,refu.ded_qb,refu.return_money
+		,refu.refund_id,refu.refund_money_haocai,refu.refund_money_gongju,refu.return_qb,refu.ded_qb,refu.return_money,refu.return_qbmsg
 		FROM
 		ordera orde JOIN order_item orde_it ON
 		orde.order_id=orde_it.order_id
@@ -543,5 +544,8 @@
 			</set>
 			where user_id=#{userId}
 		</foreach>
+	</update>
+	<update id="saveRefundMessageToReturnQbMsg">
+	  update refund set return_qbmsg=#{returnQbMsg} where order_id=#{orderId}
 	</update>
 </mapper>

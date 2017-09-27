@@ -44,25 +44,22 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
         jedis.expire(orderId,120);*/
 		
 		Page page=new Page();
-		if(currentPage!=null&numberPerpage!=null){
+		
 		page.setNumberPerPage(numberPerpage);
 		page.setCurrentPage(currentPage);
-		}else{
-			page.setNumberPerPage(10);
-			page.setCurrentPage(1);
-		}
+		
 		DataWrapper<List<Ordera>> dataWrapper=new DataWrapper<List<Ordera>>();
 		
 //		hMap.put("currentPage", page.getCurrentPage());
 		map.put("numberPerpage", String.valueOf(page.getNumberPerPage()));
 		Integer currentNum=page.getCurrentNumber();
 		map.put("currentNum", String.valueOf(currentNum));
-		map.put("userId", userId+"");
-		
+		map.put("userId", userId);
+		System.out.println(String.valueOf(page.getNumberPerPage())+"        "+String.valueOf(currentNum));
 		List<Ordera> orderDetailsList=orderdetailsDao.orderDetailsShow(map);
 		/*orderDetailsList.get(0).setOrderNums(String.valueOf(orderDetailsList));*/
 		//总条数
-	    int count=orderdetailsDao.queryCount(userId+"",map.get("state"));//totalnumber
+	    int count=orderdetailsDao.queryCount(userId,map.get("state"));//totalnumber
 		dataWrapper.setPage(page, count);
 		dataWrapper.setData(orderDetailsList);
 		if(orderDetailsList.isEmpty()){

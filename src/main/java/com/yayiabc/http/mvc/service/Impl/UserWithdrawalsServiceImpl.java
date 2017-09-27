@@ -100,7 +100,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 					//增加钱币记录
 					Calendar Cld = Calendar.getInstance();
 					int MI = Cld.get(Calendar.MILLISECOND);
-					userMyQbService.addMessageQbQ("\"赠\" "+give+"个， \"9.5折\" "+c+"个 ， \"9.0折\" "+b+"个， \"8.0折\" "+a+"个",user.getUserId(),"乾币提现",MI); //新增钱币记录表   
+					userMyQbService.addMessageQbQ("\"赠\"："+give+"个， \"9.5折\"："+c+"个 ， \"9.0折\"："+b+"个， \"8.0折\"："+a+"个",user.getUserId(),"乾币提现",MI); //新增钱币记录表   
 				}
 			}
 		}else {
@@ -110,7 +110,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		return dataWrapper;
 	}
 
-	//确定或者取消
+	//确定或者取消   x4wQPQTAcEwC 28571
 	@Override
 	public DataWrapper<Object> yesOrNo(String withId, Integer sign) {
 		// TODO Auto-generated method stub
@@ -135,7 +135,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 				//增加钱币记录
 					Calendar Cld = Calendar.getInstance();
 					int MI = Cld.get(Calendar.MILLISECOND);
-					userMyQbService.addMessageQbQRget("\"赠\" "+give+"个， \"9.5折\" "+c+"个 ， \"9.0折\" "+b+"个， \"8.0折\" "+a+"个",userWith.getUserId(),"乾币提现",MI); //新增钱币记录表   
+					userMyQbService.addMessageQbQRget("\"赠\"："+give+"个， \"9.5折\"："+c+"个 ， \"9.0折\"："+b+"个， \"8.0折\"："+a+"个",userWith.getUserId(),"乾币提现",MI); //新增钱币记录表   
 				dataWrapper.setMsg("拒绝提现申请，成功");
 				}
 			}else{
@@ -218,7 +218,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 	}
 	//保留两位小数
 	private double utilsTwo(double i){
-		return i*100/100;
+		return Double.parseDouble(String.format("%.2f", i));
 	}
 	@Override
 	public DataWrapper<Object> latelyWithRecord(String token) {

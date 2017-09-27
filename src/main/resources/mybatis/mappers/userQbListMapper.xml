@@ -77,7 +77,7 @@
 	UPDATE `user` 
 		set
 		${qbType}=${qbType}-${qbBalance}
-		WHERE phone=#{phone} and ${qbType} <![CDATA[  >=  ]]> 0;
+		WHERE phone=#{phone} and ${qbType}-${qbBalance} <![CDATA[  >=  ]]> 0;
 	
 	</update>
 </mapper>

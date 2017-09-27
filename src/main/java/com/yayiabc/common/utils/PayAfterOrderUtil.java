@@ -1,6 +1,7 @@
 package com.yayiabc.common.utils;
 
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
 import java.util.HashMap;
@@ -46,12 +47,7 @@ public class PayAfterOrderUtil {
 		}
 		//更改订单状态与付款时间
 		/*int ax=aliPayDao.updateStateAndPayTime(orderId);*/
-		if(tt>0){
-			//清楚缓存中的
-			CacheUtils cache=	CacheUtils.getInstance();
-			Map<String,Date> map=cache.getCacheMap();
-			map.remove(orderId);
-		}
+		
 		Ordera o=aliPayDao.queryOrder(orderId);
 		//QbRecord q=new QbRecord();
 		if(o.getQbDed()!=0){
@@ -78,7 +74,7 @@ public class PayAfterOrderUtil {
  		if(o.getGiveQb()!=0){
  			QbRecord q=new QbRecord();
  			//----
- 			q.setQbRget("（\"赠\"乾币） "+o.getGiveQb());
+ 			q.setQbRget("\"赠\"乾币  "+o.getGiveQb()+"个");
  			q.setRemark("下单获得"+o.getGiveQb()+"个乾币。订单编号："+orderId);
  			q.setUserId(o.getUserId()+"");
  			Calendar Cld = Calendar.getInstance();
@@ -90,8 +86,16 @@ public class PayAfterOrderUtil {
  		//判断 该用户是否绑定了销售员
  		String saleId=utilsDao.getSaleIdByOrderId(orderId);
  		if(saleId!=null&&!saleId.equals("")){
+ 			//清楚缓存中的orderId
+			CacheUtils cache=	CacheUtils.getInstance();
+			Map<String,Date> map=cache.getCacheMap();
+			map.remove(orderId);
  			return SetSaleInCome(orderId,o.getUserId(),saleId);
  		}
+ 		//清楚缓存中的orderId
+		CacheUtils cache=	CacheUtils.getInstance();
+		Map<String,Date> map=cache.getCacheMap();
+		map.remove(orderId);
 		return true;
 	}
 	//结账时放入到SaleIncome表里的数据 并把 到账到该销售员
@@ -102,25 +106,9 @@ public class PayAfterOrderUtil {
         
 		int sign=utilsDao.insert(saleId, orderId, 0.0,0.0,order.getSupplies_sumprice(), order.getTooldevices_sumprice());
 		SendToSaleMessage sendToSaleMessage= BeanUtil.getBean("SendToSaleMessage");
-		boolean b=sendToSaleMessage.send(userId,orderId);
-		if(!b){
-			throw new RuntimeException();
-		}
-		/*//获取该订单的赠送钱币数
-		Ordera o=utilsDao.queryGiveQBNumByOrderId(orderId);
-		//查询该用户钱包余额
-		//int qbNum=utilsDao.queryUserQbNum(o.getUserId());
-
-		Ordera oo=aliPayDao.queryOrder(orderId);
-		if(oo.getGiveQb()!=0){
-			QbRecord q=new QbRecord();
-			//----
-			q.setQbRget(oo.getGiveQb());
-			q.setQbType("qb_balance");
-			q.setRemark("下单获得"+oo.getGiveQb()+"个乾币，（0类型"+oo.getGiveQb()+"个）。（订单编号:"+orderId+"）");
-			String token=utilsDao.queryTokenByOrderId(orderId);
-			userMyQbService.add(q, token);
-		}*/
+		//短信通知
+		sendToSaleMessage.send(userId,orderId);
+		
 		return true;
 	} 
 	//下单钱币扣除规则 先。。。后。。。。。。。
@@ -142,24 +130,17 @@ public class PayAfterOrderUtil {
 			
 			if(listData.get(i)>=DedNum){
 				System.out.println(listData.get(i)+"   "+DedNum);
-				if(listData.get(i).equals(DedNum)){
-					sb1.append(DedNum);
-					qbDes=sb1.toString();
-				}else if(listData.get(i)>DedNum){
-					qbDes=sb1.toString()+(DedNum);
-				}
-				/*sb1.append(DedNum);
-				qbDes=sb1.toString();*/
+				System.err.println("en");
+				sb1.append(DedNum+",");
+				qbDes=sb1.toString();
 				s=sb.toString()+ut(i)+DedNum+"个。";
 				DedNum=listData.get(i)-DedNum;
-				//listData.get(i)=listData.get(i)-DedNum;  这个
 				listData.set(i, DedNum);
-				
 				break;
 			}else if(listData.get(i)<DedNum){
 				
-				
-				sb.append(ut(i)+listData.get(i)+"个；");
+				System.out.println(i+"  DedNum=listData.get(i)-DedNum  "+listData.get(i)+"    "+DedNum);
+				sb.append(ut(i)+listData.get(i)+"个，");
 				sb1.append(listData.get(i)+",");
 				DedNum=DedNum-listData.get(i);
 				listData.set(i, 0);
@@ -173,19 +154,19 @@ public class PayAfterOrderUtil {
 		
 		userMyQbService.updateDataToUser(listData,userId); //更改user 表  各种钱币类型
 		userMyQbService.addMessageQbQ(s,userId,"下单使用"+a+"个乾币。订单编号："+orderId,MI); //新增钱币记录表   
-		return qbDes;
+		return mosaicString(qbDes);
 	}
 	
 	private String ut(int i){
 		 switch (i) {
 		case 0:
-			 return "\"赠\" ";
+			 return "\"赠\"：";
 		case 1:
-			 return "\"8.0折\" ";
+			 return "\"8.0折\"：";
 		case 2:
-			return "\"9.0折\" ";
+			return "\"9.0折\"：";
 		case 3:
-			return "\"9.5折\" ";
+			return "\"9.5折\"：";
 		default:
 			break;
 		}
@@ -254,5 +235,16 @@ public class PayAfterOrderUtil {
 			  return "\"9.5折\" ";
 		  }
 		  return "非法钱币类型";
+	}
+	
+	private String  mosaicString(String str){
+		
+		StringBuffer sb=new StringBuffer(str);
+   		String[] orderDesArray=str.split(",");
+   		System.out.println(orderDesArray.length);
+   		for(int i=orderDesArray.length;i<4;i++){
+   			sb.append("0,");
+   		}
+		return sb.toString();
 	}
 }

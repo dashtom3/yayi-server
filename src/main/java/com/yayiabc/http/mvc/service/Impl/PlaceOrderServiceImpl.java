@@ -186,8 +186,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				//set datawrapper
 				return  dataWrapper;
 			}
-			//创建订单并保存订单数据
-			placeOrderDao.createOrder(orderId,userId,order);
+			
 			//本单赠送钱币百分比
 			double giveQbNum=0;
 			//道邦总价
@@ -220,8 +219,12 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//更改库存 与校验商品是否在售卖状态
 			boolean flag=changeStockNum(orderItemList,finalList);
 			if(!flag){
-				throw new OrderException(ErrorCodeEnum.ITEMSTOCK_Error); 
+				dataWrapper.setMsg("库存不足");
+				return dataWrapper;
 			}
+			//创建订单并保存订单数据
+			placeOrderDao.createOrder(orderId,userId,order);
+			
 			//将商品 同步到 订单商品表里--------双休优化  批量 插入到order_item表中
 			int a=placeOrderDao.batchSynchronization(orderItemList);
 			//清空购物车 双休优化
@@ -262,6 +265,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			hashMap.put("TooldevicesSumPrice", TooldevicesSumPrice);
 			hashMap.put("daoBnagSumPrice", daoBnagSumPrice);
 
+			
+			
 			//本单赠送钱币数保存到数据库
 			if(
 					placeOrderDao.saveGiveQbNum(String.valueOf(giveQbNum),String.valueOf(postFee),

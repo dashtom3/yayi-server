@@ -1,6 +1,22 @@
 package com.yayiabc.http.mvc.controller.wexinli;
 
 
+import java.io.UnsupportedEncodingException;
+import java.net.URLEncoder;
+import java.util.HashMap;
+import java.util.Map;
+import java.util.Timer;
+import java.util.TimerTask;
+import java.util.UUID;
+
+import javax.servlet.http.HttpServletRequest;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.dao.SaleLogDao;
 import com.yayiabc.http.mvc.dao.UserDao;
@@ -11,16 +27,7 @@ import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.jpa.WXUserLink;
 import com.yayiabc.http.mvc.pojo.model.UserToken;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.RequestMapping;
-import org.springframework.web.bind.annotation.RequestParam;
-import org.springframework.web.bind.annotation.ResponseBody;
-
-import javax.servlet.http.HttpServletRequest;
-import java.io.UnsupportedEncodingException;
-import java.net.URLEncoder;
-import java.util.*;
+import com.yayiabc.http.mvc.service.TokenService;
 
 
 
@@ -29,6 +36,8 @@ import java.util.*;
  * 描述: 授权后的回调请求处理 </br>WXAuthentController
  * 开发人员： souvc </br>
  * 创建时间：  2015-11-27 </br>
+ *  wxd342cb43ba1b1e6f
+ * de7d6594c39476a0e45e8acf4bb6c9f7
  * 发布版本：V1.0  </br>
  */
 @Controller
@@ -43,6 +52,8 @@ public class WXAuthentController{
 	private UserDao userDao;
 	@Autowired
 	private SaleLogDao saleLogDao;
+	@Autowired 
+	private TokenService tokenService;
 	static HashMap<String, String> hm=new HashMap<String,String>();
 	@RequestMapping("returnSignAndMessage")
 	@ResponseBody
@@ -73,6 +84,10 @@ public class WXAuthentController{
 		// 获取网页授权access_token
 		WeixinOauth2Token weixinOauth2Token = AdvancedUtil.getOauth2AccessToken(code,appid,secret);
 		// 网页授权接口访问凭证
+		if(weixinOauth2Token==null){
+			dataWrapper.setMsg("code错误");;
+			return dataWrapper;
+		}
 		String accessToken = weixinOauth2Token.getAccessToken();
 		// 用户标识
 		String openId = weixinOauth2Token.getOpenId();
@@ -109,7 +124,7 @@ public class WXAuthentController{
 				sa=utilsDao.getSaleBySaleId(wXUserLink.getUid());
 				dataWrapper.setData(sa);
 				dataWrapper.setMsg("该销售员信息");
-				String saleToken = getToken(wXUserLink.getUid());
+				String saleToken = getSaleToken(wXUserLink.getUid());
 				dataWrapper.setToken(saleToken);
 			}
 		}
@@ -162,62 +177,25 @@ public class WXAuthentController{
 	}
 
 	private String getToken(String userId) {
-		String token = UUID.randomUUID().toString();
+		String token = tokenService.getToken(userId);
 		UserToken userToken = new UserToken();
 		userToken.setUserId(userId);
 		userToken.setToken(token);
-		String oldToken = userDao.getTokenByUserId(userId);
-		if (oldToken == null) {
-			userDao.addToken(userToken);
-		} else {
-			userDao.updateToken(userToken);
-		}
-		new Timer().schedule(new TokenTask(token), 2 * 3600 * 1000);
 		return token;
 	}
 
-	private class TokenTask extends TimerTask {
-		private String token;
-
-		public TokenTask(String token) {
-			this.token = token;
-		}
-
-		@Override
-		public void run() {
-			userDao.deleteToken(token);
-		}
-	}
+	
 
 	private String getSaleToken(String id) {
-		String token = UUID.randomUUID().toString();
-		String oldToken = saleLogDao.getTokenBySaleId(id);
-		if (oldToken == null) {
-			saleLogDao.addSaleToken(id, token);
-		} else {
-			saleLogDao.updateSaleToken(id, token);
-		}
-		new Timer().schedule(new SaleTokenTask(token), 2 * 3600 * 1000);
+		String token = tokenService.getSaleToken(id);
 		return token;
 	}
 
-	private class SaleTokenTask extends TimerTask {
-		private String token;
-
-		public SaleTokenTask(String token) {
-			this.token = token;
-		}
-
-		@Override
-		public void run() {
-			saleLogDao.deleteSaleToken(token);
-		}
-	}
 	@RequestMapping("getQRCode")
 	@ResponseBody
 	public DataWrapper<Object> getQRCode(){
 		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
-		dataWrapper.setData("https://open.weixin.qq.com/connect/qrconnect?appid=wx4b1a6fde77626a32&redirect_uri=http%3a%2f%2fwww.yayiabc.com&response_type=code&scope=snsapi_login&state=STATE#wechat_redirect");
+		dataWrapper.setData("https://open.weixin.qq.com/connect/qrconnect?appid=wxd342cb43ba1b1e6f&redirect_uri=http%3a%2f%2fwww.yayiabc.com&response_type=code&scope=snsapi_login&state=123#wechat_redirect");
 		return dataWrapper;
 	}
 	@RequestMapping("appWXLoginCode")

@@ -26,7 +26,16 @@ public class Refund extends BasePojo {
     private Integer dedQb;
     private Integer returnQb;
     private Integer returnMoney;
+    private String returnQbMsg;
     
+	public String getReturnQbMsg() {
+		return returnQbMsg;
+	}
+
+	public void setReturnQbMsg(String returnQbMsg) {
+		this.returnQbMsg = returnQbMsg;
+	}
+
 	public Integer getDedQb() {
 		return dedQb;
 	}

@@ -43,8 +43,8 @@ public class OrderManagementController {
 		   @RequestParam(value="orderCTime",required=false)String orderCTime,
 		   @RequestParam(value="orderETime",required=false)String orderETime,
 		   @RequestParam(value="isRefund",required=false)String isRefund,
-		   @RequestParam(value="currentPage",required=false)Integer currentPage,
-		   @RequestParam(value="numberPerpage",required=false)Integer numberPerpage
+		   @RequestParam(value="currentPage",required=false,defaultValue="1")Integer currentPage,
+		   @RequestParam(value="numberPerpage",required=false,defaultValue="10")Integer numberPerpage
 		   ){
 	   if("".equals(orderState)){
 		   orderState=null;  

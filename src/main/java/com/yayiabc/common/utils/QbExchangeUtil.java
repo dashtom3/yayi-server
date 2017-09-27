@@ -1,11 +1,11 @@
 package com.yayiabc.common.utils;
 
 public class QbExchangeUtil {
-	public static Double getQbByMoney(Integer qbNum,String qbType){
+	public static double getQbByMoney(Integer qbNum,String qbType){
 		
 		
 		
-		Double monery=0.0;
+		double monery=0;
 		/*StringBuffer  sb=new StringBuffer();
 		if(0<qbNum&&qbNum<3000){
 			sb.append(qbNum*0.95);
@@ -24,6 +24,9 @@ public class QbExchangeUtil {
 		}else{
 			 
 		}
-		return monery;
+		return Double.parseDouble(String.format("%.2f", monery));
+	}
+	public static void main(String[] args) {
+		System.out.println(getQbByMoney(12,"c_qb"));
 	}
 }

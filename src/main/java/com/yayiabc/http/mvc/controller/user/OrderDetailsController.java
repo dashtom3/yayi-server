@@ -50,8 +50,8 @@ public class OrderDetailsController {
 	public DataWrapper<List<Ordera>> show(
 			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="state",required=false) String state,
-			@RequestParam(value="currentPage",required=false) Integer currentPage,
-			@RequestParam(value="numberPerpage",required=false) Integer numberPerpage
+			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
+			@RequestParam(value="numberPerpage",required=false,defaultValue="10") Integer numberPerpage
 			){
 		HashMap<String,String>map=new HashMap<String,String>();
 		map.put("state", state);

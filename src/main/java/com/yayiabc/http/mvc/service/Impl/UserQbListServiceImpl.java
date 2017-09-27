@@ -55,7 +55,7 @@ public class UserQbListServiceImpl implements UserQbListService {
 				//减少
 				 if(userQbListDao.updateDed(qbBalance, phone,qbType)>0){
 					 if(!addQbRecord(userId,qbBalance,phone,qbType,sign,MI)){
-						 dataWrapper.setMsg("增加钱币记录失败");
+						 dataWrapper.setMsg("减少钱币记录失败");
 					 } 
 				 }else{
 					 dataWrapper.setMsg("减少失败");
@@ -120,6 +120,8 @@ public class UserQbListServiceImpl implements UserQbListService {
 			  return "\"9.0折\" ";
 		  }else if(zh.equals("c_qb")){
 			  return "\"9.5折\" ";
+		  }else if(zh.equals("qb_balance")){
+			  return "\"赠\" ";
 		  }
 		  return "非法钱币类型";
 	}

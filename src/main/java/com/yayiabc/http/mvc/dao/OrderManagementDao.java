@@ -99,4 +99,6 @@ public interface OrderManagementDao {
 	int returnQbAll(@Param("array")String[] str,@Param("userId") String userId);
 
 	int  returnQbAnyOthes(@Param("list")List<Integer> list,@Param("userId") String userId);
+
+	int saveRefundMessageToReturnQbMsg(@Param("returnQbMsg")String returnQbMsg, @Param("orderId")String orderId);
 }

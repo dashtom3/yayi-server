@@ -21,10 +21,10 @@
  or two_classify like '%${itemBrandName}%' or item_brand_name like '%${itemBrandName}%'
  order by 
     <choose>
-    	<when test="rule==1">updated desc</when>
-    	<when test="rule==2">sales desc</when>
-    	<when test="rule==3">item_price desc</when>
-    	<when test="rule==4">item_price asc</when>
+    	<when test="rule=1">updated desc</when>
+    	<when test="rule=2">sales desc</when>
+    	<when test="rule=3">item_price desc</when>
+    	<when test="rule=4">item_price asc</when>
     </choose>
  LIMIT #{currentNumber},#{numberPerPage}
 	</select>
@@ -58,14 +58,11 @@
 
     <select id="getSearchCount" resultType="int">
         select count(0) from
-        (select count(item_id) from
         (select a.*,b.item_pica,c.item_brand_name,q.* from
         (select * from item_info where state=1) a
         INNER JOIN (SELECT item_id x_id,item_pica FROM item_detail) b ON a.item_id=b.x_id
         INNER JOIN (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) c ON a.item_brand_id=c.p_id
-        LEFT JOIN (select item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,
-        item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,item_qb,item_value_id FROM item_value)
-        q ON a.item_id=q.prop_id
+        inner JOIN (select item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,item_qb,item_value_id FROM item_value) q ON a.item_id=q.prop_id
         <where>
             <if test="oneClassify!=null">one_classify like '%${oneClassify}%'</if>
             <if test="twoClassify!=null">and two_classify like '%${twoClassify}%'</if>
@@ -77,20 +74,19 @@
                 or two_classify like '%${keyWord}%' or item_brand_name like '%${keyWord}%'
             </if>
         </where>
-        GROUP  by item_id) n
     </select>
 
     <select id="search" resultMap="itemInfoRM">
         select * from
-        (select * from
-        (select a.*,b.item_pica,c.item_brand_name from
+        (select a.*,b.item_pica,c.item_brand_name,q.* from
         (select * from item_info where state=1) a
         INNER JOIN (SELECT item_id x_id,item_pica FROM item_detail) b ON a.item_id=b.x_id
         INNER JOIN (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) c ON a.item_brand_id=c.p_id
+        inner JOIN (select item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,item_qb,item_value_id FROM item_value) q ON a.item_id=q.prop_id
         <where>
             <if test="oneClassify!=null">one_classify like '%${oneClassify}%'</if>
             <if test="twoClassify!=null">and two_classify like '%${twoClassify}%'</if>
-            <if test="itemBrandName!=null">and item_brand_name='${itemBrandName}'</if>
+            <if test="itemBrandName!=null">and item_brand_name=#{itemBrandName}</if>
         </where>) m
         <where>
             <if test="keyWord!=null and keyWord!=''">
@@ -105,10 +101,6 @@
             <when test="rule==3">item_price desc</when>
             <when test="rule==4">item_price asc</when>
         </choose>
-        LIMIT ${currentNumber},${numberPerPage}) x
-        LEFT JOIN (select item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,
-        item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,
-        item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,
-        item_qb,item_value_id FROM item_value) q ON x.item_id=q.prop_id
+        LIMIT #{currentNumber},#{numberPerPage}
     </select>
 </mapper>       

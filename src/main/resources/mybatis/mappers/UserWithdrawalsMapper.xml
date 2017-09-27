@@ -151,7 +151,7 @@
 		select a_qb,b_qb,c_qb,qb_balance,phone from user where user_id=#{userId}
 	</select>
 	
-	<select id="latelyWithRecord" parameterType="com.yayiabc.http.mvc.pojo.jpa.UserWith">
-	 select * from user_with where  user_id=#{userId}
+	<select id="latelyWithRecord" resultType="com.yayiabc.http.mvc.pojo.jpa.UserWith">
+	 select * from user_with where  user_id=#{userId} order by created    DESC limit 0,1
 	</select>
 </mapper>       

@@ -124,9 +124,14 @@
 			<if test="userId !=null and userId!=''">
 				orde.user_id=#{userId}
 			</if>
-
-			<if test="state !=null and state!=''">
-				and orde.state=#{state}  <!-- 待付款 -->
+			<!-- <choose> <when test="state==3 and state!='' and state !=null"> and 
+				orde.state=#{state} or orde.state=5 </when> <otherwise> and orde.state=#{state} 
+				</otherwise> </choose> -->
+			<if test="state !=null and state!=''  and state !=2">
+			and	orde.state=#{state} 
+			</if>
+			<if test="state==2">
+			  and	orde.state in(2,5)
 			</if>
 		</where>
 		group by orde.order_id) a

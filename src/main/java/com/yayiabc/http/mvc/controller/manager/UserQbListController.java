@@ -52,7 +52,7 @@ public class UserQbListController {
 	public DataWrapper<Void> update(
 			@RequestHeader(value="adminToken",required=true)String adminToken,
 			@RequestParam(value = "phone", required = true) String phone,
-			@RequestParam(value = "qbBalance", required = true) Integer qbBalance,
+			@RequestParam(value = "qbBalance", required = true,defaultValue="0") Integer qbBalance,
 			@RequestParam(value = "qbType", required = true) String qbType,
 			@RequestParam(value = "sign",required=true)String sign   //1是减少   2是增加 
 			) {

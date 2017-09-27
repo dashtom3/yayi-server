@@ -21,6 +21,7 @@ import com.yayiabc.http.mvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
 import java.util.UUID;
 
 @Service
@@ -84,6 +85,7 @@ public class UserServiceImpl implements UserService {
                     qbRecord.setQbType("qb_balance");
                     userMyQbService.add(qbRecord, token);
                     dataWrapper.setToken(token);
+                    newUser.setCreated(new Date());
                     dataWrapper.setData(newUser);
                     if (openid != null) wxAppDao.addUser(newUser.getUserId(),openid,newUser.getPhone());
                 } else {

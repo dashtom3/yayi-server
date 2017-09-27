@@ -63,6 +63,7 @@ public class WXAppPayController {
         System.out.println("开始处理回调");
         HashMap<String, String> hashMap=aliPayService.queryY(orderId);
         String total_fee=hashMap.get("WIDtotal_fee");
+        System.out.println(total_fee);
         Double total=Double.parseDouble(total_fee);
         Integer totalFee=(int)(total*100);
         String body=hashMap.get("WIDsubject");

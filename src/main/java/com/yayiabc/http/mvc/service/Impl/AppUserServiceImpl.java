@@ -15,6 +15,8 @@ import com.yayiabc.http.mvc.service.UserMyQbService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import java.util.Date;
+
 /**
  * Created by 小月亮 on 2017/8/29.
  */
@@ -49,6 +51,7 @@ public class AppUserServiceImpl implements AppUserService {
                 userMyQbService.add(qbRecord, token);
                 userDao.registerUserInfo(user);
                 userDao.registerUserCertification(user);
+                user.setCreated(new Date());
                 dataWrapper.setData(user);
                 dataWrapper.setToken(token);
             } else {

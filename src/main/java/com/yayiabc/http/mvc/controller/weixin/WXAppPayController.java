@@ -1,20 +1,22 @@
 package com.yayiabc.http.mvc.controller.weixin;
 
 import com.yayiabc.common.enums.ErrorCodeEnum;
-import com.yayiabc.common.utils.BeanUtil;
+import com.yayiabc.common.enums.WXPayEnum;
 import com.yayiabc.common.utils.DataWrapper;
-import com.yayiabc.common.utils.PayAfterOrderUtil;
 import com.yayiabc.common.utils.QbExchangeUtil;
-import com.yayiabc.common.weixin.*;
+import com.yayiabc.common.weixin.WXAppPayConfigImpl;
+import com.yayiabc.common.weixin.WXPay;
+import com.yayiabc.common.weixin.WXPayConstants;
+import com.yayiabc.common.weixin.WXPayUtil;
 import com.yayiabc.http.mvc.dao.AliPayDao;
 import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.dao.WXPayDao;
 import com.yayiabc.http.mvc.pojo.jpa.Charge;
-import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.jpa.WXAppEntry;
 import com.yayiabc.http.mvc.service.AliPayService;
 import com.yayiabc.http.mvc.service.UserMyQbService;
+import com.yayiabc.http.mvc.service.WXPayService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -24,10 +26,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
-import java.io.BufferedOutputStream;
-import java.io.BufferedReader;
-import java.io.InputStream;
-import java.io.InputStreamReader;
 import java.util.*;
 
 /**
@@ -50,6 +48,9 @@ public class WXAppPayController {
 
     @Autowired
     private UserMyQbService userMyQbService;
+
+    @Autowired
+    private WXPayService wxPayService;
 
     @Autowired
     private UtilsDao utilsDao;
@@ -116,85 +117,7 @@ public class WXAppPayController {
     @RequestMapping("getReturnUrl")
     @ResponseBody
     public void getReturnUrl(HttpServletRequest request,HttpServletResponse response) throws Exception{
-
-        WXPay wxPay =new WXPay(WXAppPayConfigImpl.getInstance());
-        //读取参数
-        InputStream inputStream;
-        StringBuffer sb=new StringBuffer();
-        inputStream=request.getInputStream();
-        String s;
-        BufferedReader in=new BufferedReader(new InputStreamReader(inputStream,"UTF-8"));
-        while((s=in.readLine())!=null){
-            sb.append(s);
-        }
-        in.close();
-        inputStream.close();
-
-        //解析XML成MAP
-        Map<String, String> map =new HashMap<String,String>();
-        map=WXPayUtil.xmlToMap(sb.toString());
-        System.out.println(map);
-
-        //过滤空,设置treeMap
-        SortedMap<Object, Object> packageParam=new TreeMap<Object, Object>();
-        Iterator it=map.keySet().iterator();
-        while(it.hasNext()){
-            String parameter=(String)it.next();
-            String parameterValue=map.get(parameter);
-            String v="";
-            if(null!=parameterValue){
-                v=parameterValue.trim();
-            }
-            packageParam.put(parameter, v);
-        }
-
-        //账号信息
-        String out_trade_no =(String)packageParam.get("out_trade_no");
-        System.out.println(out_trade_no);
-        System.out.println("开始判断签名是否正确");
-        //判断签名是否正确
-        if(wxPay.isPayResultNotifySignatureValid(map)){
-            System.out.println("签名验证成功");
-            //处理业务开始
-            String resXml="";
-            if("SUCCESS".equals((String)packageParam.get("result_code"))){
-                System.out.println("返回结果成功");
-                //判断返回结果中的金额是否和数据库中查出来的订单金额一致
-                String outTradeNo=(String)packageParam.get("out_trade_no");
-                String orderId=wXPayDao.getOrderIdByOutTradeNo(outTradeNo);
-                HashMap<String, String> hashMap=aliPayService.queryY(orderId);
-                System.out.println(hashMap);
-                if(aliPayDao.querySatetIsTwo(orderId)==2) {
-                    resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>"+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
-                }else{
-                    System.out.println("开始处理流程");
-                    String total_fee=hashMap.get("WIDtotal_fee");//0.01
-                    Double total=Double.parseDouble(total_fee);
-                    Integer totalFee=(int)(total*100);
-                    Integer totalTwo=Integer.parseInt((String)packageParam.get("total_fee"));
-                    if(totalFee==totalTwo){
-                        System.out.println("付款金额与实际消费金额一致");
-                        PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-                        payAfterOrderUtil.universal(orderId,"1");
-                        //这里是支付成功
-                        System.out.println("支付成功");
-                        //改变订单状态
-						/*aliPayDao.updateStateAndPayTime(orderId);*/
-                        resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>"+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
-                    }else{
-                        resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"+ "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
-                    }
-                }
-            }else{
-                resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"+ "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
-            }
-            BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());
-            out.write(resXml.getBytes());
-            out.flush();
-            out.close();
-        }else{
-            System.out.println("签名验证失败");
-        }
+        wxPayService.callBack(request,response,WXPayEnum.ORDER_APP);
     }
 
     @RequestMapping("unifiedOrderCharge")
@@ -268,97 +191,7 @@ public class WXAppPayController {
     @RequestMapping("getChargeReturnUrl")
     @ResponseBody
     public void getChargeReturnUrl(HttpServletRequest request,HttpServletResponse response) throws Exception{
-        System.out.println("开始处理回掉");
-        WXPay wxPay =new WXPay(WXAppPayConfigImpl.getInstance());
-        //读取参数
-        InputStream inputStream;
-        StringBuffer sb=new StringBuffer();
-        inputStream=request.getInputStream();
-        String s;
-        BufferedReader in=new BufferedReader(new InputStreamReader(inputStream,"UTF-8"));
-        while((s=in.readLine())!=null){
-            sb.append(s);
-        }
-        in.close();
-        inputStream.close();
-
-        //解析XML成MAP
-        Map<String, String> map =new HashMap<String,String>();
-        map=WXPayUtil.xmlToMap(sb.toString());
-        System.out.println(map);
-
-        //过滤空,设置treeMap
-        SortedMap<Object, Object> packageParam=new TreeMap<Object, Object>();
-        Iterator it=map.keySet().iterator();
-        while(it.hasNext()){
-            String parameter=(String)it.next();
-            String parameterValue=map.get(parameter);
-            String v="";
-            if(null!=parameterValue){
-                v=parameterValue.trim();
-            }
-            packageParam.put(parameter, v);
-        }
-
-        //账号信息
-        String out_trade_no =(String)packageParam.get("out_trade_no");
-        System.out.println(out_trade_no);
-        System.out.println("开始验证签名");
-        System.out.println(wxPay.isPayResultNotifySignatureValid(map));
-        //判断签名是否正确
-        if(wxPay.isPayResultNotifySignatureValid(map)){
-            System.out.println("签名验证成功");
-            //处理业务开始
-            String resXml="";
-            if("SUCCESS".equals((String)packageParam.get("result_code"))){
-                System.out.println("返回成功");
-                //判断返回结果中的金额是否和数据库中查出来的订单金额一致
-                String chargeId=(String)packageParam.get("out_trade_no");
-                System.out.println(chargeId);
-                Integer chargeState=wXPayDao.getChargeStateByChargeId(chargeId);
-                if(chargeState==1){
-                    System.out.println("状态成功");
-                    String money=wXPayDao.getMoneyByChargeId(chargeId);
-                    System.out.println(money);
-                    String totalFee=(String)packageParam.get("total_fee");
-                    System.out.println(totalFee);
-                    if(money.equals(totalFee)){
-                        //这里是支付成功
-                        System.out.println("支付成功");
-                        //给客户的钱包充值
-                        Charge charge=aliPayDao.queryUserId(out_trade_no);
-                        System.out.println(charge);
-                        String userId=wXPayDao.getTokenByChargeId(chargeId);
-                        String token=userDao.getTokenByUserId(userId);
-                        System.out.println("处理回掉成功");
-                        QbRecord qbRecord =new QbRecord();
-                        qbRecord.setQbRget(String.valueOf(charge.getQbNum()));
-                        qbRecord.setQbType(charge.getQbType());
-                        qbRecord.setRemark("乾币充值"+charge.getQbNum());
-                        userMyQbService.add(qbRecord, token);
-                        System.out.println("开始改变订单状态");
-                        wXPayDao.updateChargeState(chargeId);
-                        System.out.println("改变订单状态成功");
-                        resXml = "<xml>" + "<return_code><" +
-                                "![CDATA[SUCCESS]]></return_code>"+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
-                    }else{
-                        resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"+ "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
-                    }
-                }else{
-                    resXml = "<xml>" + "<return_code><" +
-                            "![CDATA[SUCCESS]]></return_code>"+ "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
-                }
-
-            }else{
-                resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>"+ "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
-            }
-            BufferedOutputStream out = new BufferedOutputStream(response.getOutputStream());
-            out.write(resXml.getBytes());
-            out.flush();
-            out.close();
-        }else{
-            System.out.println("签名验证失败");
-        }
+        wxPayService.callBack(request,response,WXPayEnum.QB_APP);
     }
 
 

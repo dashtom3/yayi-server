@@ -176,6 +176,7 @@ public class BenefitChangeServiceImpl implements BenefitChangeService{
         } catch (IOException e) {
             e.printStackTrace();
         }
+        
         byte[] content = os.toByteArray();
         InputStream is = new ByteArrayInputStream(content);
         // 设置response参数，可以打开下载页面

@@ -83,7 +83,7 @@ public class BenefitChangeController {
 			@RequestParam(value="benefitId",required=true) Integer benefitId,
 			HttpServletResponse response
 			){
-		return benefitChangeService.downLoad(benefitId,response);
+		return  benefitChangeService.downLoad(benefitId,response);
 	}
 	
 	//删除优惠码

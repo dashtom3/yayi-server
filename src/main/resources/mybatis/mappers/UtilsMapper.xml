@@ -126,13 +126,32 @@
 		<result property="bQb" column="b_qb" />
 		<result property="cQb" column="c_qb" />
 		<result property="qbBalance" column="qb_balance" />
+		<association property="certification"
+			javaType="com.yayiabc.http.mvc.pojo.jpa.Certification">
+			<result property="type" column="type" />
+			<result property="companyName" column="company_name" />
+			<result property="part" column="part" />
+			<result property="doctorPic" column="doctor_pic" />
+			<result property="state" column="state" />
+			<result property="failReason" column="fail_reason" />
+			<result property="judge" column="judge" />
+			<result property="created" column="created" />
+			<result property="updated" column="updated" />
+			<result property="medicalLicense" column="medical_license" />
+			<result property="businessLicense" column="business_license" />
+			<result property="taxRegistration" column="tax_registration" />
+			<result property="openingPermit" column="opening_permit" />
+			<result property="radiologicalPermit" column="radiological_permit" />
+			<result property="idCardPositive" column="id_card_positive" />
+			<result property="idCardOtherside" column="id_card_otherside" />
+		</association>
 	</resultMap>
 	<select id="queryUserByUserId" resultMap="userss">
 		select
-		user_id,true_name,phone,sale_id
-		,a_qb,b_qb,c_qb,qb_balance
-		from `user`
-		where user_id=#{uid}
+		us.user_id,us.true_name,us.phone,us.sale_id
+		,us.a_qb,us.b_qb,us.c_qb,us.qb_balance,ce.*
+		from `user` us join certification ce on  us.user_id=ce.user_id 
+		where us.user_id=#{uid}
 	</select>
 
 	<select id="queryUserByPhone" resultType="com.yayiabc.http.mvc.pojo.jpa.User">

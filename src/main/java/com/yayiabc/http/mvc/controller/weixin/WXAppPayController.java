@@ -182,11 +182,7 @@ public class WXAppPayController {
     public DataWrapper<Void> checkChargeState(
             @RequestHeader(value="token",required=true) String token
             ){
-        DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-        String userId=userDao.getUserIdByToken(token);
-        Integer num=wXPayDao.getStateByToken(userId);
-        dataWrapper.setNum(num);
-        return dataWrapper;
+        return wxPayService.checkChargeState(token);
     }
 
     @RequestMapping("getChargeReturnUrl")

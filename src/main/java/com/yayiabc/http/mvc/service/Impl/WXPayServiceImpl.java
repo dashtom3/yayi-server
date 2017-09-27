@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.service.Impl;
 
 import com.yayiabc.common.enums.WXPayEnum;
 import com.yayiabc.common.utils.BeanUtil;
+import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.PayAfterOrderUtil;
 import com.yayiabc.common.weixin.WXAppPayConfigImpl;
 import com.yayiabc.common.weixin.WXPay;
@@ -231,9 +232,9 @@ public class WXPayServiceImpl implements WXPayService{
     @Override
     public void callBack(HttpServletRequest request, HttpServletResponse response, WXPayEnum wxPayEnum) throws Exception {
         WXPay wxPay = null;
-        if (wxPayEnum.equals(WXPayEnum.QB_PC)) {
+        if (wxPayEnum.equals(WXPayEnum.QB_PC)||wxPayEnum.equals(WXPayEnum.ORDER_PC)) {
             wxPay = new WXPay(WXPayConfigImpl.getInstance());
-        } else if (wxPayEnum.equals(WXPayEnum.QB_APP)) {
+        } else if (wxPayEnum.equals(WXPayEnum.QB_APP)||wxPayEnum.equals(WXPayEnum.ORDER_APP)) {
             wxPay = new WXPay(WXAppPayConfigImpl.getInstance());
         }
         //读取参数
@@ -330,6 +331,23 @@ public class WXPayServiceImpl implements WXPayService{
         } else {
             System.out.println("签名验证失败");
         }
+    }
+
+    @Override
+    public DataWrapper<Void> checkOrderState(String out_trade_no) {
+        DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		Integer num=aliPayDao.querySatetIsTwo(out_trade_no);
+		dataWrapper.setNum(num);
+		return dataWrapper;
+    }
+
+    @Override
+    public DataWrapper<Void> checkChargeState(String token) {
+        DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
+		String userId=userDao.getUserIdByToken(token);
+		Integer num=wXPayDao.getStateByToken(userId);
+		dataWrapper.setNum(num);
+		return dataWrapper;
     }
 }
 

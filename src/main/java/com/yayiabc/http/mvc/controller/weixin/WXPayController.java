@@ -64,6 +64,7 @@ public class WXPayController {
 		HashMap<String, String> hashMap=aliPayService.queryY(orderId);
 		String total_fee=hashMap.get("WIDtotal_fee");//0.01
 		Double total=Double.parseDouble(total_fee);
+		System.out.println(total_fee);
 		Integer totalFee=(int)(total*100);
 		String body=hashMap.get("WIDsubject");
 		try {
@@ -120,10 +121,7 @@ public class WXPayController {
 	@RequestMapping("checkOrderState")
 	@ResponseBody
 	public DataWrapper<Void> checkOrderState(String out_trade_no){
-		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		Integer num=aliPayDao.querySatetIsTwo(out_trade_no);
-		dataWrapper.setNum(num);
-		return dataWrapper;
+		return wxPayService.checkOrderState(out_trade_no);
 	}
 	
 	@RequestMapping("unifiedOrderCharge")
@@ -188,10 +186,6 @@ public class WXPayController {
 	@ResponseBody
 	public DataWrapper<Void> checkChargeState(
 			@RequestParam(value="token",required=true) String token){
-		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		String userId=userDao.getUserIdByToken(token);
-		Integer num=wXPayDao.getStateByToken(userId);
-		dataWrapper.setNum(num);
-		return dataWrapper;
+		return wxPayService.checkChargeState(token);
 	}
 }

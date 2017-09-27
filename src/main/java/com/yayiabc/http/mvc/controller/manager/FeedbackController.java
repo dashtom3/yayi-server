@@ -38,7 +38,7 @@ public class FeedbackController {
             @RequestParam(value = "feedId",required = true)int feedId,
             @RequestHeader(value = "adminToken",required = true)String adminToken
     ){
-            return feedbackService.updateState(feedId);
+        return feedbackService.updateState(feedId);
     }
 
     /**
@@ -67,6 +67,6 @@ public class FeedbackController {
             @RequestParam(value = "feedId",required = true)int feedId,
             @RequestHeader(value = "adminToken",required = true)String adminToken
     ){
-                return feedbackService.deleteFeed(feedId);
+        return feedbackService.deleteFeed(feedId);
     }
 }

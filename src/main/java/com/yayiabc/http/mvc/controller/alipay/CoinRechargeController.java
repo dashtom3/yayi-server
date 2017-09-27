@@ -19,6 +19,7 @@ import com.yayiabc.http.mvc.service.AppPayService;
 import com.yayiabc.http.mvc.service.PhoneAliPayService;
 
 
+
 @Controller
 @RequestMapping("api/pay")
 public class CoinRechargeController {
@@ -80,7 +81,10 @@ public class CoinRechargeController {
 			){
 		String userId=utilsdao.getUserID(token);
 		String codeId=createId(userId);
+		System.out.println("qbType  qbType   qbType   "+qbType);
+		
 		double money=QbExchangeUtil.getQbByMoney(Integer.parseInt(qbNum),qbType);
+		
 		System.out.println("money   money   money "+money);
 		int sign=utilsdao.saveRechargeMessage(codeId,userId,qbNum,qbType,money+"");
 		if(sign>0){

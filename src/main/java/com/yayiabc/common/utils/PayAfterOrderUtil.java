@@ -186,9 +186,9 @@ public class PayAfterOrderUtil {
 			 System.out.println("123123123213   "+charge);
 			 System.out.println(amount+"    "+charge.getMoney());
 			 //验证金额
-           /*if(!amount.split(".")[0].equals(charge.getMoney().split(".")[0])){
+           if(!amount.equals(charge.getMoney())){
             	return false;
-            }*/
+            }
             //商户订单号
 			if(charge!=null){
 				if(charge.getState()==1){

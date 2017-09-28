@@ -6,7 +6,7 @@ import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 public interface SaleLogService {
 
 	
-	DataWrapper<SaleInfo> register(String phone, String password, String code,String openid);
+	DataWrapper<SaleInfo> register(SaleInfo sale,String password, String code,String openid);
 
 	DataWrapper<SaleInfo> noteLogin(String phone, String code);
 

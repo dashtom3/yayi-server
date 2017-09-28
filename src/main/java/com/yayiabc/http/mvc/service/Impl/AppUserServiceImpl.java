@@ -50,6 +50,7 @@ public class AppUserServiceImpl implements AppUserService {
                 qbRecord.setQbType("qb_balance");
                 userMyQbService.add(qbRecord, token);
                 userDao.registerUserInfo(user);
+                //注册时判断资质认证相关信息是否填写
                 if(user.getCertification().getType()==1){
                     if(user.getCertification().getDoctorPic().isEmpty() ||user.getCertification().getDoctorPic()==""){
                         user.getCertification().setState(null);

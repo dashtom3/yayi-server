@@ -116,6 +116,7 @@
 		values(#{userId},#{certification.type},#{certification.companyName},#{certification.part},#{certification.workAddress},
 		#{certification.doctorPic},#{certification.medicalLicense},#{certification.businessLicense},#{certification.taxRegistration},#{certification.openingPermit},#{certification.radiologicalPermit},
 		#{certification.idCardPositive},#{certification.idCardOtherside},#{certification.state})
+		ON DUPLICATE KEY UPDATE state=1;
 	</insert>
 
 	<select id="getCountByUserId" resultType="java.lang.Integer">

@@ -5,6 +5,7 @@ import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.MD5Util;
 import com.yayiabc.common.utils.VerifiCodeValidateUtil;
+import com.yayiabc.http.mvc.dao.SaleInfoDao;
 import com.yayiabc.http.mvc.dao.SaleLogDao;
 import com.yayiabc.http.mvc.dao.WxAppDao;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
@@ -23,32 +24,34 @@ public class SaleLogServiceImpl implements SaleLogService {
     private SaleLogDao saleLogDao;
     @Autowired
     WxAppDao wxAppDao;
-
+    @Autowired
+    SaleInfoDao saleInfoDao;
 
 
     @Override
-    public DataWrapper<SaleInfo> register(String phone, String password,
+    public DataWrapper<SaleInfo> register(SaleInfo sale,String password,
                                           String code, String openid) {
         DataWrapper<SaleInfo> dataWrapper = new DataWrapper<SaleInfo>();
-        SaleInfo saleInfo = saleLogDao.getSaleInfoByPhone(phone);
+        SaleInfo saleInfo = saleLogDao.getSaleInfoByPhone(sale.getPhone());
         if (saleInfo == null) {
-            ErrorCodeEnum codeEnum= VerifiCodeValidateUtil.verifiCodeValidate(phone,code);
+            ErrorCodeEnum codeEnum= VerifiCodeValidateUtil.verifiCodeValidate(sale.getPhone(),code);
             if(!codeEnum.equals(ErrorCodeEnum.No_Error)){
                 dataWrapper.setErrorCode(codeEnum);
                 return dataWrapper;
             }
                 SaleInfo saleInfoTwo = new SaleInfo();
                 saleInfoTwo.setSaleId(UUID.randomUUID().toString());
-                saleInfoTwo.setPhone(phone);
+                saleInfoTwo.setPhone(sale.getPhone());
                 saleInfoTwo.setSalePwd(MD5Util.getMD5String(password));
                 saleInfoTwo.setUpdated(new Date());
                 saleInfoTwo.setCreated(new Date());
                 if (1 == saleLogDao.register(saleInfoTwo)) {
-                    VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
+                    VerifyCodeManager.removePhoneCodeByPhoneNum(sale.getPhone());
                     String token = getToken(saleInfoTwo.getSaleId());
                     if (openid != null) wxAppDao.addSaleUser(saleInfoTwo.getSaleId(), openid,saleInfoTwo.getPhone());
                     dataWrapper.setToken(token);
-                    dataWrapper.setData(saleInfoTwo);
+                    saleInfoDao.updateSaleInfo(sale);
+                    dataWrapper.setData(sale);
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
                     dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                     } else {

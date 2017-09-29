@@ -71,7 +71,7 @@ public class WXAppPayController {
             WXPay wxPay = new WXPay(WXAppPayConfigImpl.getInstance(), "http://47.93.48.111:6181/api/appPay/getReturnUrl");
             Map<String,String> reqData =new HashMap<String,String>();
             if(body!=null&&!"".equals(body)){
-                reqData.put("body","牙医abc-"+body);//必传
+                reqData.put("body","牙医abc-"+body);//必传+
             }else{
                 reqData.put("body", "牙医abc-"+"商品");
             }

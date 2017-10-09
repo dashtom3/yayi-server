@@ -78,11 +78,11 @@
 
     <select id="search" resultMap="itemInfoRM">
         select * from
-        (select a.*,b.item_pica,c.item_brand_name,q.* from
+        (select * from
+        (select a.*,b.item_pica,c.item_brand_name from
         (select * from item_info where state=1) a
         INNER JOIN (SELECT item_id x_id,item_pica FROM item_detail) b ON a.item_id=b.x_id
         INNER JOIN (SELECT item_brand_id p_id,item_brand_name FROM item_brand where state=1) c ON a.item_brand_id=c.p_id
-        inner JOIN (select item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,item_qb,item_value_id FROM item_value) q ON a.item_id=q.prop_id
         <where>
             <if test="oneClassify!=null">one_classify like '%${oneClassify}%'</if>
             <if test="twoClassify!=null">and two_classify like '%${twoClassify}%'</if>
@@ -101,6 +101,8 @@
             <when test="rule==3">item_price desc</when>
             <when test="rule==4">item_price asc</when>
         </choose>
-        LIMIT #{currentNumber},#{numberPerPage}
+        LIMIT #{currentNumber},#{numberPerPage})z
+        inner JOIN (select item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,item_qb,item_value_id FROM item_value) q ON z.item_id=q.prop_id
+
     </select>
 </mapper>       

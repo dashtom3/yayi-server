@@ -7,7 +7,16 @@ public class  MyStar extends BasePojo{
     private String qb_num;
     private String itemId;
     private String itemBrandName;
+    private Integer state;
     
+    
+    
+	public Integer getState() {
+		return state;
+	}
+	public void setState(Integer state) {
+		this.state = state;
+	}
 	public String getItemBrandName() {
 		return itemBrandName;
 	}

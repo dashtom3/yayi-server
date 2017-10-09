@@ -93,7 +93,7 @@
                 or two_classify like '%${keyWord}%' or item_brand_name like '%${keyWord}%'
             </if>
         </where>
-        order by
+		order by
         <choose>
             <when test="rule==1">updated desc</when>
             <when test="rule==2">sales desc</when>
@@ -101,7 +101,6 @@
             <when test="rule==4">item_price asc</when>
         </choose>
         LIMIT #{currentNumber},#{numberPerPage})z
-        inner JOIN (select item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,item_qb,item_value_id FROM item_value) q ON z.item_id=q.prop_id
-
+        left JOIN (select item_id prop_id,item_property_name,item_property_info,item_property_name_two,item_property_two_value,item_property_name_three,item_property_three_value,item_property_four_name,item_property_four_value,item_property_five_name,item_property_five_value,item_property_six_name,item_property_six_value,stock_num s_num,item_sku_price,item_sKU,can_use,ti_chen,item_qb,item_value_id FROM item_value) q ON z.item_id=q.prop_id
     </select>
 </mapper>       

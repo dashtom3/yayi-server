@@ -62,4 +62,8 @@ public class FileUtil {
 		return true;
 	}
 
+	public void test(){
+		
+	}
+
 }

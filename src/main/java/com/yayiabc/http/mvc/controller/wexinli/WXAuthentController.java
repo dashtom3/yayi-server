@@ -17,7 +17,9 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.tencent.mm.opensdk.modelmsg.SendAuth;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.HttpUtil;
 import com.yayiabc.http.mvc.dao.SaleLogDao;
 import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
@@ -28,6 +30,8 @@ import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.jpa.WXUserLink;
 import com.yayiabc.http.mvc.pojo.model.UserToken;
 import com.yayiabc.http.mvc.service.TokenService;
+
+import net.sf.json.JSONObject;
 
 
 
@@ -84,18 +88,26 @@ public class WXAuthentController{
 		// 获取网页授权access_token
 		WeixinOauth2Token weixinOauth2Token = AdvancedUtil.getOauth2AccessToken(code,appid,secret);
 		// 网页授权接口访问凭证
+		System.out.println("12312312312312i93879k7ikumk uyiyijsadbnaskdvasbh dasgjdasgjdvjasdgvjdadgvbasjdgvbyasjdgvjsad");
 		if(weixinOauth2Token==null){
-			dataWrapper.setMsg("code错误");;
+			dataWrapper.setMsg("code错误");
+			System.out.println("code错误code错误code错误code错误code错误");
 			return dataWrapper;
 		}
 		String accessToken = weixinOauth2Token.getAccessToken();
 		// 用户标识
 		String openId = weixinOauth2Token.getOpenId();
+		
+		String unionid=weixinOauth2Token.getUnionid();
 		// 获取用户信息
-		snsUserInfo = AdvancedUtil.getSNSUserInfo(accessToken, openId);
-		snsUserInfo.setOpenId(openId);
+		snsUserInfo = AdvancedUtil.getSNSUserInfo(accessToken, unionid);
+		snsUserInfo.setUnionid(unionid);
+		snsUserInfo.setOpenId(unionid);
+		//snsUserInfo.setOpenId(openId);
 		//根据 openId 判断 该用户 是否绑定过
-		wXUserLink=wxAppDao.queryIsBD(openId);
+		wXUserLink=wxAppDao.queryIsBD(unionid); //这里数据库里的openid实际是 unionid，因为时间仓促 改动较大 这里便不更改了
+		System.out.println("openId  openId   openId   "+openId);
+		System.out.println("unionid  unionid   unionid   "+unionid);
 		StringBuffer sb=new StringBuffer();
 		if(wXUserLink==null){
 			sb.append(0+"");
@@ -137,6 +149,36 @@ public class WXAuthentController{
 		dataWrapper.setData(model);
 		return dataWrapper;
 	}
+	@RequestMapping("getUnionid")
+	@ResponseBody
+	public String getUnionid(String code){
+		//通过code获取access_token
+		String requestUrl="https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxd342cb43ba1b1e6f&secret=de7d6594c39476a0e45e8acf4bb6c9f7&code="+code+"&grant_type=authorization_code";
+		 Map<String, Object> response = HttpUtil.sendGet(requestUrl);
+		 String accessToken=(String) response.get("access_token");
+		 String openid=(String) response.get("openid");
+		//通过access_token获取用户的所有信息
+		 String getUnionUrl="https://api.weixin.qq.com/sns/userinfo?access_token="+accessToken+"&openid="+openid+"";
+		 JSONObject jsonObject = CommonUtil.httpsRequest(getUnionUrl, "GET", null);
+		// String unionid=jsonObject.getString("unionid");
+		 String jsonString =jsonObject.toString();
+		 return jsonString;
+	}
+/*	@RequestMapping("getUnionIdByOpenId")
+	@ResponseBody
+	public String getUnionIdByOpenId(String openId){
+		//通过code获取access_token
+		String requestUrl="https://api.weixin.qq.com/sns/oauth2/access_token?appid=wxd342cb43ba1b1e6f&secret=de7d6594c39476a0e45e8acf4bb6c9f7&code="+code+"&grant_type=authorization_code";
+		 Map<String, Object> response = HttpUtil.sendGet(requestUrl);
+		 String accessToken=(String) response.get("access_token");
+		 String openid=(String) response.get("openid");
+		//通过access_token获取用户的所有信息
+		 String getUnionUrl="https://api.weixin.qq.com/sns/userinfo?access_token="+accessToken+"&openid="+openid+"";
+		 JSONObject jsonObject = CommonUtil.httpsRequest(getUnionUrl, "GET", null);
+		// String unionid=jsonObject.getString("unionid");
+		 String jsonString =jsonObject.toString();
+		 return jsonString;
+	}*/
 	//点击下一步    验证是否注册过
 	@RequestMapping("check")
 	@ResponseBody

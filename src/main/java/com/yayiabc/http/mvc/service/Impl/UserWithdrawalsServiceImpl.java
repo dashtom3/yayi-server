@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
+import com.yayiabc.http.mvc.dao.UserMyQbDao;
 import com.yayiabc.http.mvc.dao.UserWithdrawalsDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.User;
@@ -27,7 +28,9 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 	private UtilsDao utilsDao;
 	@Autowired
 	private UserMyQbService userMyQbService;
-
+   @Autowired 
+   private UserMyQbDao  userMyQbDao;
+   
 	//提现列表的显示
 	@Override
 	public DataWrapper<Object> show(HashMap<String, Object> hm) {
@@ -38,8 +41,6 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		page.setCurrentPage((Integer)hm.get("currentPage"));
 		hm.remove("numberPerpage");
 		hm.remove("currentPage");
-		System.out.println(page.getNumberPerPage());
-		System.out.println(page.getCurrentNumber());
 		hm.put("numberPerpage", page.getNumberPerPage());
 		hm.put("currentNum", page.getCurrentNumber());
 		//总条数
@@ -73,7 +74,6 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		}
 		userWith.setUserId(user.getUserId());
 		//校验 用户是否是提现成功状态下 发起的提现申请
-		System.out.println(user);
 		Integer sign=userWithdrawalsServiceDao.queryWitSign(user.getUserId());
 		if(sign==null||sign==2){
 			int userQb=user.getaQb()+user.getbQb()+user.getcQb()+user.getQbBalance();
@@ -100,7 +100,9 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 					//增加钱币记录
 					Calendar Cld = Calendar.getInstance();
 					int MI = Cld.get(Calendar.MILLISECOND);
-					userMyQbService.addMessageQbQ("\"赠\"："+give+"个， \"9.5折\"："+c+"个 ， \"9.0折\"："+b+"个， \"8.0折\"："+a+"个",user.getUserId(),"乾币提现",MI); //新增钱币记录表   
+					//用户钱币余额
+					Integer userQbNum=userMyQbDao.getUserQbNum(user.getUserId());
+					userMyQbService.addMessageQbQ("\"赠\"："+give+"个， \"9.5折\"："+c+"个 ， \"9.0折\"："+b+"个， \"8.0折\"："+a+"个",user.getUserId(),"乾币提现。（乾币余额："+userQbNum+"个）",MI); //新增钱币记录表   
 				}
 			}
 		}else {
@@ -119,7 +121,6 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		if(sign==3){
 			// withId 获取此用户 此次提现的内容
 			UserWith userWith=userWithdrawalsServiceDao.queryFourQb(withId);
-			System.out.println(userWith);
 			int a=(int) (userWith.getaType()/0.8);
 			int b=(int) (userWith.getbType()/0.9);
 			int c=(int) (userWith.getcType()/0.95);
@@ -135,7 +136,9 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 				//增加钱币记录
 					Calendar Cld = Calendar.getInstance();
 					int MI = Cld.get(Calendar.MILLISECOND);
-					userMyQbService.addMessageQbQRget("\"赠\"："+give+"个， \"9.5折\"："+c+"个 ， \"9.0折\"："+b+"个， \"8.0折\"："+a+"个",userWith.getUserId(),"乾币提现",MI); //新增钱币记录表   
+					//用户钱币余额
+					Integer userQbNum=userMyQbDao.getUserQbNum(userWith.getUserId());
+					userMyQbService.addMessageQbQRget("\"赠\"："+give+"个， \"9.5折\"："+c+"个 ， \"9.0折\"："+b+"个， \"8.0折\"："+a+"个",userWith.getUserId(),"乾币提现。（乾币余额："+userQbNum+"个）",MI); //新增钱币记录表   
 				dataWrapper.setMsg("拒绝提现申请，成功");
 				}
 			}else{

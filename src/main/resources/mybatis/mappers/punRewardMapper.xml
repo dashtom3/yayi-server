@@ -15,12 +15,12 @@
 	<!-- @Param("saleId")String saleId, @Param("balanceIn") Double balance_in, 
 		@Param("balanceOut")Double balance_out) -->
 	<insert id="addMoney">
-		insert into balance(sale_id,balance_in,balance,created,describey)
-		values(#{saleId},#{balanceIn},#{balance},now(),'进账管理员增加')
+		insert into balance(sale_id,balance_in,balance,created,adopt_time,describey)
+		values(#{saleId},#{balanceIn},#{balance},now(),now(),'进账管理员增加')
 	</insert>
 	<insert id="delMoney">
-		insert into balance(sale_id,balance_out,balance,created,describey)
-		values(#{saleId},#{balanceOut},#{balance},now(),'出账管理员减少')
+		insert into balance(sale_id,balance_out,balance,created,adopt_time,describey)
+		values(#{saleId},#{balanceOut},#{balance},now(),now(),'出账管理员减少')
 	</insert>
 
 	<select id="pd" resultType="java.lang.String">

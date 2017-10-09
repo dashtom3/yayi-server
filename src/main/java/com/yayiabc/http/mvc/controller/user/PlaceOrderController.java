@@ -56,7 +56,6 @@ public class PlaceOrderController {
 			,@RequestParam(value="sumPrice") Double sumPrice,
 			@RequestParam(value="itemSum") Integer itemSum
 			){
-		System.out.println(123);
 		return placeOrderService.upateAddress(receiverId,sumPrice,itemSum);
 	}
 

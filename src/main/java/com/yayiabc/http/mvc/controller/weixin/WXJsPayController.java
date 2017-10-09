@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.controller.weixin;
 
+import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.HttpUtil;
@@ -10,12 +11,21 @@ import com.yayiabc.http.mvc.dao.WXPayDao;
 import com.yayiabc.http.mvc.pojo.jpa.Charge;
 import com.yayiabc.http.mvc.pojo.jpa.WXAppEntry;
 import com.yayiabc.http.mvc.service.AliPayService;
+
+import org.apache.http.HttpEntity;
+import org.apache.http.HttpResponse;
+import org.apache.http.HttpStatus;
+import org.apache.http.client.HttpClient;
+import org.apache.http.client.methods.HttpPost;
+import org.apache.http.impl.client.DefaultHttpClient;
+import org.apache.http.util.EntityUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+import org.springframework.web.servlet.ModelAndView;
 
 import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
@@ -132,7 +142,7 @@ public class WXJsPayController {
         try {
             WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:8080/api/weixin/getChargeReturnUrl",false,true);
             Map<String,String> reqData =new HashMap<String,String>();
-            reqData.put("body","乾币充值");//必传
+            reqData.put("body","qb");//必传
             reqData.put("out_trade_no",chargeId);
             reqData.put("fee_type", "CNY");
             System.out.println(totalFee+"总价");
@@ -141,18 +151,23 @@ public class WXJsPayController {
             reqData.put("trade_type","JSAPI");//必传,现场扫码付
             reqData.put("product_id",System.currentTimeMillis()+"");//扫码支付时此参数必传,可以通过参数传进来,trade_type=NATIVE，此参数必传。此id为二维码中包含的商品ID，商户自行定义。
             reqData.put("openid",accessToken(code));
-            System.out.println(reqData);
             Map<String,String> respMap=wxPay.unifiedOrder(reqData);
             System.out.println(respMap);
             SortedMap<String, String> parameterMap = new TreeMap<String, String>();
             String packages = "prepay_id="+respMap.get("prepay_id");
-            parameterMap.put("appid", WXPayConfigImpl.getInstance().getAppID());
-            parameterMap.put("package", packages);
+            parameterMap.put("appId", WXPayConfigImpl.getInstance().getAppID());
+            parameterMap.put("mch_id", "1377180402");
             parameterMap.put("nonceStr", WXPayUtil.generateNonceStr());
-            parameterMap.put("timeStamp",String.valueOf(System.currentTimeMillis()/1000));
-            String sign=WXPayUtil.generateSignature(parameterMap,"90d4bae1c1843cec9aff6b4533f05881", WXPayConstants.SignType.MD5);
-            System.out.println(sign);
-            WXAppEntry wxAppEntry =new WXAppEntry(parameterMap.get("appid"),Long.parseLong(parameterMap.get("timeStamp")),parameterMap.get("partnerid"),respMap.get("prepay_id"),parameterMap.get("nonceStr"),sign);
+            parameterMap.put("signType", WXPayConstants.MD5);
+            parameterMap.put("package", packages);
+          
+            parameterMap.put("timeStamp",String.valueOf(System.currentTimeMillis()/1000));//原先的  90d4bae1c1843cec9aff6b4533f05881
+            parameterMap.put("sign", WXPayUtil.generateSignature(parameterMap, "xiaojiangxiaojiangxiaojiangjiang",WXPayConstants.SignType.MD5));
+            parameterMap.put("paySign",parameterMap.get("sign") );
+           
+            WXAppEntry wxAppEntry =new WXAppEntry(parameterMap.get("appId"),Long.parseLong(parameterMap.get("timeStamp")),respMap.get("partnerid"),respMap.get("prepay_id"),parameterMap.get("nonceStr"),parameterMap.get("paySign"));
+            System.out.println("...................."+wxAppEntry);
+          
             dataWrapper.setData(wxAppEntry);
         } catch (Exception e) {
             String msg="服务器错误";
@@ -170,4 +185,27 @@ public class WXJsPayController {
         return (String)map.get("openid");
     }
 
+    /**
+     * 通过微信用户的code换取网页授权access_token
+     * @return
+     * @throws IOException
+     * @throws
+     */
+    public List<Object> accessToken1(String code)throws IOException {
+		List<Object> list = new ArrayList<Object>();
+		String url = "https://api.weixin.qq.com/sns/oauth2/access_token?appid="
+				+  "wx4b1a6fde77626a32" + "&secret=" +  "90d4bae1c1843cec9aff6b4533f05881"+ "&code=" + code + "&grant_type=authorization_code";
+		HttpClient client = new DefaultHttpClient();
+		HttpPost post = new HttpPost(url);
+		HttpResponse res = client.execute(post);
+		if (res.getStatusLine().getStatusCode() == HttpStatus.SC_OK) {
+			HttpEntity entity = res.getEntity();
+			String str = EntityUtils.toString(entity, "utf-8");
+			ObjectMapper mapper=new ObjectMapper();
+			Map<String,Object> jsonOb=mapper.readValue(str, Map.class);
+			list.add(jsonOb.get("access_token"));
+			list.add(jsonOb.get("openid"));
+		}
+		return list;
+	}   
 }

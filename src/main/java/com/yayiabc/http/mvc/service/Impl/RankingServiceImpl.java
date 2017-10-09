@@ -53,7 +53,6 @@ public class RankingServiceImpl implements RankingService {
 			 */
 			jedis=new Jedis("127.0.0.1",6379);
 			jedis.auth("123");
-			System.out.println("连接redis服务成功");
 			RedisClient.getJedis();
 			/**
 			 * 返回往月销售排行榜数据
@@ -144,7 +143,6 @@ public class RankingServiceImpl implements RankingService {
 			 */
 			jedis=new Jedis("127.0.0.1",6379);
 			jedis.auth("123");
-			System.out.println("连接redis服务成功");
 			RedisClient.getJedis();
 			String tableName="rank_"+beYearMonth.substring(0, 4)+"_"+beYearMonth.substring(5, 7);
 			Integer saleNum=rankingDao.getSaleCount(beYearMonth);

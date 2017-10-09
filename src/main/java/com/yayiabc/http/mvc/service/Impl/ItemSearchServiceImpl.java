@@ -86,8 +86,6 @@ public class ItemSearchServiceImpl implements ItemSearchService{
 		int totalNumber=itemSearchDao.getSearchCount(search);
 		dataWrapper.setPage(page, totalNumber);
 		search.setCurrentNumber(page.getCurrentNumber());
-		System.out.println(search.getCurrentNumber());
-		System.out.println(search.getNumberPerPage());
 		List<ItemInfo> itemInfoList=itemSearchDao.search(search);
 		if(itemInfoList==null){
 			dataWrapper.setErrorCode(ErrorCodeEnum.NO_MESSAGE);

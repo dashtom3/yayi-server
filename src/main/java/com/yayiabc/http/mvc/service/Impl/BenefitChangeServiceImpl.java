@@ -50,11 +50,6 @@ public class BenefitChangeServiceImpl implements BenefitChangeService{
 			Integer benefitId =benefit.getBenefitId();
 			List benefitCodeList=new ArrayList();
 			for(int i=0;i<benefitNum;i++){
-//				String benefitCode="";
-//				do{
-//					benefitCode=ValidateCodeUtil.getCode();
-//				}while(benefitChangeDao.getBenefitCodeCount(benefitCode)!=0);
-//				benefitChangeDao.addBenefitDetail(benefitId,benefitCode);
 				benefitCodeList.add(ValidateCodeUtil.getCode());
 			}
 			Map<String,Object> map=new HashMap<String,Object>();

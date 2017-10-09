@@ -55,7 +55,6 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		Integer currentNum=page.getCurrentNumber();
 		map.put("currentNum", String.valueOf(currentNum));
 		map.put("userId", userId);
-		System.out.println(String.valueOf(page.getNumberPerPage())+"        "+String.valueOf(currentNum));
 		List<Ordera> orderDetailsList=orderdetailsDao.orderDetailsShow(map);
 		/*orderDetailsList.get(0).setOrderNums(String.valueOf(orderDetailsList));*/
 		//总条数
@@ -83,7 +82,6 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		int sign=aliPayDao.querySatetIsTwo(orderId);
 		if(sign==1){
 		//还原库存
-			System.out.println(userId);
 		TimerChangeStateService timerChangeStateService=BeanUtil.getBean("TimerChangeStateServiceImpl");
 		List<String> l=new ArrayList<String>();
 		l.add(orderId);

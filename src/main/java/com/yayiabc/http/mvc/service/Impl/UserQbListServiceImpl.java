@@ -63,7 +63,6 @@ public class UserQbListServiceImpl implements UserQbListService {
 				//增加钱币记录
 			}else if(sign.equals("2")){
 				//增加
-				System.out.println(qbBalance+"  "+phone);
 				if(userQbListDao.updateAdd(qbBalance, phone,qbType)>0){
 					if(!addQbRecord(userId,qbBalance,phone,qbType,sign,MI)){
 						 dataWrapper.setMsg("增加钱币记录失败");
@@ -78,14 +77,17 @@ public class UserQbListServiceImpl implements UserQbListService {
   private boolean addQbRecord(String userId,Integer qbBalance,String phone,String qbType,String sign,int  MI){
 	    QbRecord qbRecord = new QbRecord();
 		qbRecord.setUserId(userId);
+		//查询客户现在乾币余额
+			Integer userQbNum=userMyQbDao.getUserQbNum(userId);
 		if(sign.equals("1")){
 			//增加 钱币减少记录
 			qbRecord.setQbRout("（"+zh(qbType)+"） 乾币 "+qbBalance);
-			qbRecord.setRemark("管理员修改乾币余额，扣除'"+qbBalance+"'乾币");
+			
+			qbRecord.setRemark("管理员修改乾币余额，扣除'"+qbBalance+"'乾币。（乾币余额："+userQbNum+"个。）");
 		}else if(sign.equals("2")){
 			//增加 钱币增加记录
 			qbRecord.setQbRget("（"+zh(qbType)+"） 乾币 "+qbBalance);
-			qbRecord.setRemark("管理员修改乾币余额，新增'"+qbBalance+"'乾币");
+			qbRecord.setRemark("管理员修改乾币余额，新增'"+qbBalance+"'乾币。（乾币余额："+userQbNum+"个。）");
 		}
 		//qbRecord.setQbBalances(qbBalance);
 		qbRecord.setMillisecond(MI);

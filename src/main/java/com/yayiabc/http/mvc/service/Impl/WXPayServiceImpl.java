@@ -67,8 +67,6 @@ public class WXPayServiceImpl implements WXPayService{
         //解析XML成MAP
         Map<String, String> map = new HashMap<String, String>();
         map = WXPayUtil.xmlToMap(sb.toString());
-        System.out.println(map);
-
         //过滤空,设置treeMap
         SortedMap<Object, Object> packageParam = new TreeMap<Object, Object>();
         Iterator it = map.keySet().iterator();

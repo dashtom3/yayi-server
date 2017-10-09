@@ -91,7 +91,6 @@ public class ItemInfoManageServiceImpl implements ItemInfoManageService{
 		for (ItemValue itemValue:itemInfo.getItemValueList()) {
 			itemValue.setItemId(itemInfo.getItemId());
 		}
-		System.out.println(itemInfo.getItemValueList());
 		itemInfoManageDao.addItemValue(itemInfo.getItemValueList());
 		Double itemPrice =itemInfoManageDao.getMinPriceFromItemValue(itemInfo.getItemId());
 		itemInfo.setItemPrice(itemPrice);

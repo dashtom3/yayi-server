@@ -103,6 +103,7 @@ public class WXPayUtil {
         }
         catch (Exception ex) {
         }
+        System.out.println(output);
         return output;
     }
 
@@ -172,6 +173,7 @@ public class WXPayUtil {
      * @throws Exception
      */
     public static boolean isSignatureValid(Map<String, String> data, String key, SignType signType) throws Exception {
+    	System.out.println("lalaalalalsdkaslkdsadsdadsadsadasdgqiwguqwguqdvgavsudvudasvdjkasvbdkasjvdqjvduqvd");
         if (!data.containsKey(WXPayConstants.FIELD_SIGN) ) {
             return false;
         }
@@ -212,6 +214,7 @@ public class WXPayUtil {
         }
         sb.append("key=").append(key);
         if (SignType.MD5.equals(signType)) {
+        	System.out.println("1  拼出来的参数"+sb.toString().toUpperCase());
             return MD5(sb.toString()).toUpperCase();
         }
         else if (SignType.HMACSHA256.equals(signType)) {
@@ -246,6 +249,7 @@ public class WXPayUtil {
         for (byte item : array) {
             sb.append(Integer.toHexString((item & 0xFF) | 0x100).substring(1, 3));
         }
+        System.out.println("2 md5处理后的结果:  "+sb.toString().toUpperCase());
         return sb.toString().toUpperCase();
     }
 

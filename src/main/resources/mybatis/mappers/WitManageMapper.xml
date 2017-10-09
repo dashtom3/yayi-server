@@ -29,7 +29,7 @@
 		<!-- 默认是 审核中 state 为0 -->
 	</insert>
 	<update id="oper">
-		update balance set balance=#{dPrice},created=now(),
+		update balance set balance=#{dPrice},adopt_time=now(),
 		describey=#{describey}
 		where balance_id=#{balanceId}
 	</update>
@@ -52,12 +52,13 @@
 		<result property="phone" column="phone" />
 		<result property="balanceOut" column="balance_out" />
 		<result property="describey" column="describey" />
-		<result property="create" column="created" />
+		<result property="create" column="created" />  
+		<result property="adoptTime" column="adopt_time" />
 	</resultMap>
 	<select id="query" resultMap="c">
 		SELECT
 		sale.sale_id,sale.true_name,sale.phone,sale.postal_type,sale.open_name,sale.bank_name,sale.account_number
-		,bala.balance,bala.created,bala.balance_out,bala.describey,bala.balance_id
+		,bala.balance,bala.created,bala.balance_out,bala.describey,bala.balance_id,bala.adopt_time
 		FROM balance bala
 		JOIN sale_info sale ON bala.sale_id=sale.sale_id
 		<where>

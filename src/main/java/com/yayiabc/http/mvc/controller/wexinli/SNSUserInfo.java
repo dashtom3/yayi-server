@@ -12,6 +12,7 @@ import com.yayiabc.http.mvc.pojo.model.SaleU;
 public class SNSUserInfo {
     // 用户标识
     private String openId;
+    private String unionid;
     // 用户昵称
     private String nickname;
     // 性别（1是男性，2是女性，0是未知）
@@ -38,6 +39,14 @@ public class SNSUserInfo {
     
 	public SaleU getSaleU() {
 		return saleU;
+	}
+
+	public String getUnionid() {
+		return unionid;
+	}
+
+	public void setUnionid(String unionid) {
+		this.unionid = unionid;
 	}
 
 	public void setSaleU(SaleU saleU) {

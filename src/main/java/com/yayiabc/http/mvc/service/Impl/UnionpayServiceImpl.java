@@ -30,9 +30,7 @@ public class UnionpayServiceImpl implements UnionpayService{
 				PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 				payAfterOrderUtil.universal(orderId,"2");
 				//判断该订单是否为乾币充值订单
-				System.out.println(orderId.substring(0,4));
 				if("YLQB".equals(orderId.substring(0,4))){
-					System.out.println("乾币");
 					Charge charge = aliPayDao.queryUserId(orderId);
 					if(charge.getState() != 2){
 						aliPayDao.updateState(orderId);

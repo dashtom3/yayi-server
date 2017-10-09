@@ -18,6 +18,20 @@ public class Balance {
 	private Double CZZE;
 	private double haoCaiIncome;
 	private double gongJuIncome;
+	private Date adoptTime;
+	
+	public Date getAdoptTime() {
+		return adoptTime;
+	}
+	public void setAdoptTime(Date adoptTime) {
+		this.adoptTime = adoptTime;
+	}
+	public void setHaoCaiIncome(double haoCaiIncome) {
+		this.haoCaiIncome = haoCaiIncome;
+	}
+	public void setGongJuIncome(double gongJuIncome) {
+		this.gongJuIncome = gongJuIncome;
+	}
 	public Double getHaoCaiIncome() {
 		return haoCaiIncome;
 	}

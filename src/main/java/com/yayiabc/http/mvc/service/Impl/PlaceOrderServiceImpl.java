@@ -243,7 +243,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			if("1".equals(order.getInvoiceHand())){
 				invoice.setOrderId(orderId);
 				invoice.setUserId(userId);
-				System.out.println(invoice);
 				int  sign=placeOrderDao.saveInvoiced(invoice);
 				if(sign<=0){
 					throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
@@ -316,7 +315,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	 public boolean changeStockNum(List<OrderItem> orderItemList,List<FinalList> finalList){
 		
 		if(orderItemList.size()!=finalList.size()){
-			System.out.println(orderItemList.size()+"   "+finalList.size());
 			return false;
 		}else{
 			for(int i=0;i<orderItemList.size();i++){

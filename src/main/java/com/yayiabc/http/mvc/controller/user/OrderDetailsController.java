@@ -68,7 +68,6 @@ public class OrderDetailsController {
 			@RequestHeader(value="token",required=true) String token,
 			@RequestParam(value="orderId",required=true) String orderId
 			){
-		System.out.println(12312321);
 		return orderDetailsService.cancel(orderId,token);
 	}
 	//查看物流

@@ -33,5 +33,7 @@ public interface UserMyQbDao {
 	int addMessageQbQRget(@Param("dedNums")String dedNums, @Param("userId")String userId, @Param("message")String s
 			,@Param("millisecond")int Mi
 			);
-
+	
+   //获取用户钱币余额
+	Integer getUserQbNum(String userId);
 }

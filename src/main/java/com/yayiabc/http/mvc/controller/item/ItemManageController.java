@@ -168,7 +168,6 @@ public class ItemManageController {
 			@RequestParam(value="itemPparamList",required=false) List<String> itemPparamList,
 			@RequestHeader(value="adminToken",required=true)String adminToken
 			){
-		System.out.println(itemPparamList);
 		return itemManageService.addPropertyAndPropertyName(itemPropertyName,itemPparamList);
 	}
 	

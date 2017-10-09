@@ -37,6 +37,7 @@ public class AdvancedUtil {
                 wat.setExpiresIn(  (Integer)response.get("expires_in"));
                 wat.setRefreshToken((String)response.get("refresh_token"));
                 wat.setOpenId((String)response.get("openid"));
+                wat.setUnionid((String)response.get("unionid"));
                 wat.setScope((String)response.get("scope"));
             } catch (Exception e) {
                 wat = null;

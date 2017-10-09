@@ -81,4 +81,8 @@
 	  INSERT INTO qb_record(user_id,qb_rget,qb_time,remark,created,millisecond)
 			VALUE(#{userId},#{dedNums},now(),#{message},NOW(),#{millisecond});
 	</insert>
+	
+	<select id="getUserQbNum" resultType="java.lang.Integer">
+	  select qb_balance+a_qb+b_qb+c_qb from user where user_id=#{userId}
+	</select>
 </mapper>        

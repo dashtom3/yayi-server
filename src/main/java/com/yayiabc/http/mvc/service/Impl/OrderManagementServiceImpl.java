@@ -301,31 +301,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			//扣除钱币数
 			double dedQbNums=order.getGiveQb()-refundAfterGiveQbNum;
 			Integer dedQbNum=(int) Math.round(dedQbNums);
-			//扣除该用户钱币
-			/*int sign=orderManagementDao.dedQbNum(dedQbNum,order.getUserId());
-			 * QbRecord q=new QbRecord();
- 			//----
- 			q.setQbRget("（\"赠\"乾币） "+o.getGiveQb());
- 			q.setRemark("下单获得"+o.getGiveQb()+"个乾币。订单编号："+orderId);
- 			q.setUserId(o.getUserId()+"");
- 			Calendar Cld = Calendar.getInstance();
- 			int MI = Cld.get(Calendar.MILLISECOND);	
- 			q.setMillisecond(MI);
- 			userMyQbDao.updateUserQb(o.getGiveQb()+"", o.getUserId(),"qb_balance");
- 			userMyQbDao.add(q);
-			 * 
-			 * 
-			 * */
-			QbRecord q=new QbRecord();
-			q.setRemark("订单有退款，下单时赠送的乾币需扣除："+dedQbNum+"。（订单编号:"+SendorderItemList.get(0).getOrderId()+"）");
-			q.setQbRout("\"赠\"乾币   "+dedQbNum+"个");
-			q.setQbType("qb_balance");
-			q.setUserId(order.getUserId());
-			Calendar Cld = Calendar.getInstance();
-			int MI = Cld.get(Calendar.MILLISECOND);	
-			q.setMillisecond(MI);
-			userMyQbDao.updateUserQb(-dedQbNum+"",order.getUserId(),"qb_balance");
-			userMyQbDao.add(q);
+			
 			String token= utilsDao.queryTokenByOrderId(SendorderItemList.get(0).getOrderId());
 			//放入钱币记录表
 			//userMyQbService.add(q, token);
@@ -334,7 +310,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			if(order.getActualPay()>refundSumPrice){
 				//退钱refundSumPrice
 
-				int state=orderManagementDao.saveRefundMessage(order.getUserId(),haoCaiRefundSumMoney,ToolRefundSumMoney,
+				int states=orderManagementDao.saveRefundMessage(order.getUserId(),haoCaiRefundSumMoney,ToolRefundSumMoney,
 						dedQbNum,0,SendorderItemList.get(0).getOrderId()
 						);
 				//退款信息保存到 sale_income 里
@@ -360,8 +336,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 					//订单状态改为交易关闭
 					orderDetailsDao.cancel(itemList.get(0).getOrderId(),order.getUserId());
 				}
-				//returnQbUtils(a+isReturnPostF,order);
-				//退金币0
+				
 			}else if(order.getActualPay()<refundSumPrice){
 				//退钱order.getActualPay()
 				//保存到退款表里
@@ -369,7 +344,6 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 				int isReturnPostF=0;
 				if(countItem==befConuntItem){
 					//订单状态改为交易关闭
-					System.out.println(order.getState());
 					if(order.getState()==2||order.getState()==5){
 						isReturnPostF=Integer.parseInt(order.getPostFee().trim());
 					}
@@ -396,17 +370,21 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 				}
 				//更新到订单表
 				orderManagementDao.updateOrderMessage(
-						SendorderItemList.get(0).getOrderId()
+						order.getOrderId()
 						);
-				//退金币refundSumPrice-order.getActualPay()
-				/*int states=orderManagementDao.returnQb(refundSumPrice-order.getActualPay(),order.getUserId());*/
-				/*QbRecord w=new QbRecord();
-				w.setRemark("订单有退款，下单时使用的乾币需退回："+(a+isReturnPostF)+"。（订单编号:"+SendorderItemList.get(0).getOrderId()+"）");
-				w.setQbRget(a+isReturnPostF);
-				String token1= utilsDao.queryTokenByOrderId(SendorderItemList.get(0).getOrderId());
-				//放入钱币记录表   这里要用-----=-==-=-==-=-=-=-=-=
-				userMyQbService.add(w, token1);*/
-				returnQbUtils(a+isReturnPostF,order);
+			     //退回乾币
+				/**
+				 * 1 如果发货了 便不退回乾币
+				 * 2如果没发货  便退回乾币
+				 */
+				if(order.getState().equals("2")){
+					//付款，未发货
+					returnQbUtils(a,order);
+				}else{
+					returnQbUtils(a+isReturnPostF,order);
+				}
+				//扣除钱币
+				dedQb(dedQbNum,order);
 			}
 			afterRefundSumMoney=afterDaoBangSumMoney+afterhaoCaiSumMoney+aftergongJuSumMoney;
 
@@ -420,18 +398,35 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		}
 
 	} 
-
+   
+	private void dedQb(Integer dedQbNum,Ordera order) {
+		// TODO Auto-generated method stub
+		QbRecord q=new QbRecord();
+		
+		
+		q.setQbRout("\"赠\"乾币   "+dedQbNum+"个");
+		q.setQbType("qb_balance");
+		q.setUserId(order.getUserId());
+		Calendar Cld = Calendar.getInstance();
+		int MI = Cld.get(Calendar.MILLISECOND);	
+		q.setMillisecond(MI);
+		userMyQbDao.updateUserQb(-dedQbNum+"",order.getUserId(),"qb_balance");
+		//查询乾币余额
+		Integer userQbNums=userMyQbDao.getUserQbNum(order.getUserId());
+		q.setRemark("订单有退款，下单时赠送的乾币需扣除："+dedQbNum+"个乾币。（乾币余额："+userQbNums+"）订单编号:"+order.getOrderId());
+		userMyQbDao.add(q);
+	}
 	//退款退回钱币的规则顺序
 	String returnQbUtils(int rQbNum,Ordera order){
 		String qbDe=order.getQbDes();
 		List<Integer> list=new ArrayList<Integer>();
-		String[] str=qbDe.split(",");
+		String[] str=qbDe.split(","); // qb_balance   a_qb   b_qb   c_qb 
 		Integer sum=0;
-		String s="订单有退款，下单时使用的乾币需退回：";
+		String s="订单有退款，下单时使用的乾币需退回"+rQbNum+"个乾币。";
 		StringBuffer sb=new StringBuffer();
-		for(int i=0;i<str.length;i++){
+		/*for(int i=0;i<str.length;i++){
 			sum+=Integer.parseInt(str[i]);
-		}
+		}*/
 		/*if(sum==rQbNum){
 			//退 完
 			orderManagementDao.returnQbAll(str,order.getUserId());
@@ -444,7 +439,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 					rQbNum=rQbNum-Integer.parseInt(str[x]);
 					list.add(Integer.parseInt(str[x]));
 					sb.append(ut(x)+Integer.parseInt(str[x])+"个，");
-				}else if(rQbNum<Integer.parseInt(str[x])){
+				}else if(rQbNum<=Integer.parseInt(str[x])){
 					list.add(rQbNum);
 					sb.append(ut(x)+rQbNum+"个。");
 					break;
@@ -458,7 +453,9 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		for(int q=0;q<list.size();q++){
 			returnQbNum+=list.get(q);
 		}
-		s=s+/*s+sb.toString()+*/"订单编号:"+order.getOrderId();
+		//查询乾币余额
+				Integer userQbNums=userMyQbDao.getUserQbNum(order.getUserId());
+		s=s+/*s+sb.toString()+*/"（乾币余额："+userQbNums+"）。订单编号:"+order.getOrderId();
 		Calendar Cld = Calendar.getInstance();
 		int MI = Cld.get(Calendar.MILLISECOND);
 		userMyQbDao.addMessageQbQRget(sb.toString(), order.getUserId(), s, MI);

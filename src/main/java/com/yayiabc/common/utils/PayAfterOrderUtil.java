@@ -1,10 +1,8 @@
 package com.yayiabc.common.utils;
 
 import java.util.ArrayList;
-import java.util.Arrays;
 import java.util.Calendar;
 import java.util.Date;
-import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
@@ -16,7 +14,6 @@ import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.exceptionHandler.OrderException;
 import com.yayiabc.http.mvc.dao.AliPayDao;
 import com.yayiabc.http.mvc.dao.OrderManagementDao;
-import com.yayiabc.http.mvc.dao.PlaceOrderDao;
 import com.yayiabc.http.mvc.dao.UserMyQbDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Charge;
@@ -25,6 +22,7 @@ import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.UserMyQbService;
+import com.yayiabc.http.mvc.service.UserWithdrawalsService;
 @Component
 public class PayAfterOrderUtil {
 	@Autowired
@@ -36,14 +34,13 @@ public class PayAfterOrderUtil {
 	@Autowired
 	private OrderManagementDao orderManagementDao;
 	
+	
 	@Autowired
 	private UserMyQbDao userMyQbDao;
-
 		//更改支付类型
 	public  boolean universal(String orderId,String type){
-		int tt=0;
 		if(type!=null){
-			tt=aliPayDao.updatePayType(orderId,type);
+			aliPayDao.updatePayType(orderId,type);
 		}
 		//更改订单状态与付款时间
 		/*int ax=aliPayDao.updateStateAndPayTime(orderId);*/
@@ -73,14 +70,17 @@ public class PayAfterOrderUtil {
  		//int qbNum=utilsDao.queryUserQbNum(o.getUserId());
  		if(o.getGiveQb()!=0){
  			QbRecord q=new QbRecord();
- 			//----
- 			q.setQbRget("\"赠\"乾币  "+o.getGiveQb()+"个");
- 			q.setRemark("下单获得"+o.getGiveQb()+"个乾币。订单编号："+orderId);
+ 			
+ 			q.setQbRget("\"赠\"： "+o.getGiveQb()+"个");
+ 			
  			q.setUserId(o.getUserId()+"");
  			Calendar Cld = Calendar.getInstance();
  			int MI = Cld.get(Calendar.MILLISECOND);	
  			q.setMillisecond(MI);
  			userMyQbDao.updateUserQb(o.getGiveQb()+"", o.getUserId(),"qb_balance");
+ 			//----为了获取钱币余额。。。。。
+ 			Integer userQbNum=userMyQbDao.getUserQbNum(o.getUserId());
+ 			q.setRemark("下单获得"+o.getGiveQb()+"个乾币。（乾币余额："+userQbNum+"）订单编号："+orderId);
  			userMyQbDao.add(q);
  		}
  		//判断 该用户是否绑定了销售员
@@ -130,10 +130,9 @@ public class PayAfterOrderUtil {
 			
 			if(listData.get(i)>=DedNum){
 				System.out.println(listData.get(i)+"   "+DedNum);
-				System.err.println("en");
 				sb1.append(DedNum+",");
 				qbDes=sb1.toString();
-				s=sb.toString()+ut(i)+DedNum+"个。";
+				s=sb.toString()+ut(i)+DedNum+"个";
 				DedNum=listData.get(i)-DedNum;
 				listData.set(i, DedNum);
 				break;
@@ -153,7 +152,9 @@ public class PayAfterOrderUtil {
 		int MI = Cld.get(Calendar.MILLISECOND);
 		
 		userMyQbService.updateDataToUser(listData,userId); //更改user 表  各种钱币类型
-		userMyQbService.addMessageQbQ(s,userId,"下单使用"+a+"个乾币。订单编号："+orderId,MI); //新增钱币记录表   
+		//查询乾币余额
+		Integer userQbNum=userMyQbDao.getUserQbNum(userId);
+		userMyQbService.addMessageQbQ(s,userId,"下单使用"+a+"个乾币。（乾币余额："+userQbNum+"）订单编号："+orderId,MI); //新增钱币记录表   
 		return mosaicString(qbDes);
 	}
 	
@@ -195,7 +196,7 @@ public class PayAfterOrderUtil {
 					aliPayDao.updateState(out_trade_no);
 					String token=utilsDao.getToken(charge.getToken());
 					QbRecord q=new QbRecord();
-					q.setQbRget(String.valueOf(charge.getQbNum()));
+					q.setQbRget(zh(charge.getQbType())+":"+charge.getQbNum()+"个");
 					q.setQbType(charge.getQbType());
 					q.setRemark(zh(charge.getQbType())+"乾币充值"+charge.getQbNum()+"个。");
 					userMyQbService.add(q, token);

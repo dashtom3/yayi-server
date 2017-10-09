@@ -256,7 +256,6 @@ public class ItemManageServiceImpl implements ItemManageService{
 		if(count==0){
 			itemManageDao.addProperty(itemPropertyName);
 			Integer itemPropertyId =itemManageDao.queryItemPropertyIdByName(itemPropertyName);
-			System.out.println(itemPparamList);
 			Map<String,Object> map=new HashMap<String,Object>();
 			map.put("itemPropertyId",itemPropertyId);
 			map.put("itemPparamList", itemPparamList);

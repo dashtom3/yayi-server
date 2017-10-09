@@ -1,6 +1,8 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
 import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 /**
  * SELECT sale.true_name,sale.phone,sale.postal_type,sale.open_name,sale.bank_name,sale.account_number
 
@@ -26,9 +28,20 @@ public class With {
 	private Integer type; // 类型
 	private String phone;// 手机号码
 	private Double balanceOut;//提现金额
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private Date create;    //申请时间
 	private String describey;// 提现状态
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+	private Date adoptTime;
 	
+	
+	public Date getAdoptTime() {
+		return adoptTime;
+	}
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+	public void setAdoptTime(Date adoptTime) {
+		this.adoptTime = adoptTime;
+	}
 	public String getPostalType() {
 		return postalType;
 	}
@@ -93,6 +106,7 @@ public class With {
 	public Date getCreate() {
 		return create;
 	}
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public void setCreate(Date create) {
 		this.create = create;
 	}

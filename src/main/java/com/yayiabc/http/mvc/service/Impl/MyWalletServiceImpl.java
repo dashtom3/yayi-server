@@ -49,7 +49,6 @@ public class MyWalletServiceImpl implements MyWalletService{
 		DataWrapper<List<Balance>> dataWrapper=new DataWrapper<List<Balance>>();
 		  
 		List<Balance> blist= myWalletDao.detail(hm);
-		System.out.println(blist);
 		if(!blist.isEmpty()){
 		for(int i=0;i<blist.size();i++){
 			

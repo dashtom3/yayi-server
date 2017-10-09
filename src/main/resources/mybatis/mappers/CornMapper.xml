@@ -57,7 +57,7 @@
 
 	<insert id="addBalancePerMonth">
 		insert into balance
-		values(null,#{saleId},#{haocaiMoney},#{gongjuMoney},#{haocaiRefund},#{gongjuRefund},#{balanceIn},0,#{balance},#{created},#{describey})
+		values(null,#{saleId},#{haocaiMoney},#{gongjuMoney},#{haocaiRefund},#{gongjuRefund},#{balanceIn},0,#{balance},#{created},now(),#{describey})
 	</insert>
 	
 	<update id="updateSaleInfo">

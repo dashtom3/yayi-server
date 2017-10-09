@@ -21,7 +21,17 @@ public class WeixinOauth2Token {
     // 用户授权作用域
     private String scope;
 
-    public String getAccessToken() {
+    private String unionid;
+    
+    public String getUnionid() {
+		return unionid;
+	}
+
+	public void setUnionid(String unionid) {
+		this.unionid = unionid;
+	}
+
+	public String getAccessToken() {
         return accessToken;
     }
 

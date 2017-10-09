@@ -95,6 +95,7 @@
 		<result property="actualPay" column="actual_pay" />
 		<result property="giveQb" column="give_qb" />
 		<result property="refundInfo" column="refund_info" />
+		<result property="qbDes" column="qb_des" />
 		<association property="receiver"
 			javaType="com.yayiabc.http.mvc.pojo.jpa.Receiver">
 			<id property="receiverId" column="receiver_id" />
@@ -127,7 +128,7 @@
 	<!-- //订单详情 -->
 	<select id="queryOrderDetails" resultMap="details">
 		SELECT
-		orde.state,orde.created,orde.payment_time,orde.total_fee,orde.post_fee,orde.give_qb,
+		orde.state,orde.created,orde.payment_time,orde.total_fee,orde.post_fee,orde.give_qb,orde.qb_des,
 		orde.qb_ded,orde.order_id,orde.pay_type,orde.invoice_hand,orde.buyer_message,orde.is_register,
 		orde.actual_pay,orde.refund_info,
 		rece.user_id,rece.receiver_name,rece.province,rece.city,rece.county,rece.receiver_detail,
@@ -330,7 +331,7 @@
 		<result property="giveQb" column="give_qb" />
 		<result property="userId" column="user_id" />
 		<result property="qbDes" column="qb_des" />
-
+         <result property="state" column="state" />
 	</resultMap>
 	<select id="queryOrder" resultMap="www">
 		select * from
@@ -394,6 +395,7 @@
 		<result property="giveQb" column="give_qb" />
 		<result property="refundInfo" column="refund_info" />
 		<result property="qbDed" column="qb_ded" />
+		<result property="qbDes" column="qb_des" />
 		<association property="refund"
 			javaType="com.yayiabc.http.mvc.pojo.jpa.Refund">
 			<id property="refundId" column="refund_id" />
@@ -420,7 +422,7 @@
 	<select id="showRefundOrderMessage" resultMap="ppp">
 		SELECT
 		orde.order_id
-		o,orde.actual_pay,orde.qb_ded,orde.refund_info,orde.payment_time,orde.give_qb,
+		o,orde.actual_pay,orde.qb_ded,orde.refund_info,orde.payment_time,orde.give_qb,orde.qb_des,
 
 		orde_it.item_name,orde_it.num,orde_it.price,orde_it.item_property_namea,orde_it.item_property_nameb,
 		orde_it.item_property_namec,orde_it.refund_num,orde_it.itm_SKU

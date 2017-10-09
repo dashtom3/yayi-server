@@ -141,7 +141,6 @@ public class AliPayServiceImpl implements AliPayService{
 			String trade_status =params.get("trade_status"); /*new String(trade_statuss.getBytes("ISO-8859-1"),"UTF-8");*/
 			//付款金额
             String amount = params.get("total_fee");
-            System.out.println(amount);
 			//获取支付宝的通知返回参数，可参考技术文档中页面跳转同步通知参数列表(以上仅供参考)//
 
 			if(AlipayNotify.verify(params)){//验证成功
@@ -157,10 +156,8 @@ public class AliPayServiceImpl implements AliPayService{
 					 //安全验证
 					  PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 	                   if( payAfterOrderUtil.SecurityVerification(out_trade_no,amount,"0")){
-	                	   System.out.println("成功啦");
 	                	   return "success";
 	                   }else{
-	                	   System.out.println("失败啦");
 	                	   return "fail";
 	                   }
 					//注意：
@@ -174,10 +171,8 @@ public class AliPayServiceImpl implements AliPayService{
 					  //安全验证
 					   PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 	                   if( payAfterOrderUtil.SecurityVerification(out_trade_no,amount,"0")){
-	                	   System.out.println("成功啦");
 	                	   return "success";
 	                   }else{
-	                	   System.out.println("失败啦");
 	                	   return "fail";
 	                   }
 					//注意：

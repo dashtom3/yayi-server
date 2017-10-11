@@ -9,6 +9,7 @@ import com.yayiabc.http.mvc.service.UserService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -96,7 +97,7 @@ public class SaleLogController {
     @RequestMapping("reLogin")
     @ResponseBody
     public DataWrapper<Void> reLogin(
-            @RequestParam(value = "saleToken", required = true) String token,
+            @RequestHeader(value = "saleToken", required = true) String token,
             HttpSession session
     ) {
         //清除session(手工杀会话)

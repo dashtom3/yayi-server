@@ -86,12 +86,12 @@ public class AliPayController {
 			
 			String Sign=alipayService.ReturnUrl(params);
 			if("successQB".equals(Sign)){
-				response.sendRedirect("http://123.56.220.72:6644/center/myMoney");
+				response.sendRedirect("http://www.yayiabc.com/center/myMoney");
 			}
 			if("success".equals(Sign)){
-				response.sendRedirect("http://123.56.220.72:6644/paySuccess");
+				response.sendRedirect("http://www.yayiabc.com/paySuccess");
 			}else{
-				response.sendRedirect("http://123.56.220.72:6644/payFail");
+				response.sendRedirect("http://www.yayiabc.com/payFail");
 			}
 			/*out.write(
 					);//以UTF-8进行编码  

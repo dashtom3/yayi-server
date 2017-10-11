@@ -45,7 +45,7 @@ public class PhoneAliPayController {
 			){
 		HashMap<String , String> hm=alipayService.queryY(orderId);
 		
-		
+		System.out.println("手机网站支付进来了");
 		String product_code="QUICK_WAP_PAY";
 		String sHtmlText=phoneAlipayService.packingParameter(hm.get("WIDout_trade_no"), hm.get("WIDsubject"), hm.get("WIDtotal_fee"), hm.get("WIDbody")
 				,product_code
@@ -100,9 +100,9 @@ public class PhoneAliPayController {
 		
 			if(Sign){
 				System.out.println("已经成功  正在跳转");
-				response.sendRedirect("http://www.baidu.com");
+				response.sendRedirect("http://www.yayiabc.com/paySuccess");
 			}else{				System.out.println("已经失败  正在跳转");
-				response.sendRedirect("http://www.taobao.com");
+				response.sendRedirect("http://www.yayiabc.com/payFail");
 			}
 			/*out.write(
 					);//以UTF-8进行编码  

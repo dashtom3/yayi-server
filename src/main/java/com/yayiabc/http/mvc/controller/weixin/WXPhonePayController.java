@@ -50,7 +50,7 @@ public class WXPhonePayController {
 		Integer totalFee=(int)(total*100);
 		String body=hashMap.get("WIDsubject");
 		try {
-			WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:6181/api/weixin/getReturnUrl");
+			WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:8080/api/weixin/getReturnUrl");
 			Map<String,String> reqData =new HashMap<String,String>();
 			if(body!=null&&!"".equals(body)){
 				reqData.put("body",body);//必传
@@ -115,7 +115,7 @@ public class WXPhonePayController {
 		wXPayDao.deleteChargeByToken(utilsDao.getUserID(token));
 		wXPayDao.addCharge(charge);
 		try {
-			WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:6181/api/weixin/getChargeReturnUrl");
+			WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:8080/api/weixin/getChargeReturnUrl");
 			Map<String,String> reqData =new HashMap<String,String>();
 			reqData.put("body","乾币充值");//必传
 			reqData.put("out_trade_no",chargeId);

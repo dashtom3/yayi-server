@@ -1,7 +1,7 @@
 package com.yayiabc.http.mvc.dao;
 
-import com.alipay.api.domain.Data;
+import java.util.List;
 
 public interface AppVersionDao {
-	String ver();
+	List ver();
 }

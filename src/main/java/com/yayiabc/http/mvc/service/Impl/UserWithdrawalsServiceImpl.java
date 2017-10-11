@@ -138,7 +138,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 					int MI = Cld.get(Calendar.MILLISECOND);
 					//用户钱币余额
 					Integer userQbNum=userMyQbDao.getUserQbNum(userWith.getUserId());
-					userMyQbService.addMessageQbQRget("\"赠\"："+give+"个， \"9.5折\"："+c+"个 ， \"9.0折\"："+b+"个， \"8.0折\"："+a+"个",userWith.getUserId(),"乾币提现。（乾币余额："+userQbNum+"个）",MI); //新增钱币记录表   
+					userMyQbService.addMessageQbQRget("\"赠\"："+give+"个， \"9.5折\"："+c+"个 ， \"9.0折\"："+b+"个， \"8.0折\"："+a+"个",userWith.getUserId(),"乾币提现审核不通过。（乾币余额："+userQbNum+"个）",MI); //新增钱币记录表   
 				dataWrapper.setMsg("拒绝提现申请，成功");
 				}
 			}else{

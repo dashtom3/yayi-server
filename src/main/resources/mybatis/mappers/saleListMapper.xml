@@ -192,10 +192,13 @@
 	<select id="getSaleId" resultType="String">
 		SELECT sale_id FROM sale_info WHERE phone=#{salePhone};
 	</select> 
-	
-	<select id="queryByBalance" resultType="String">
+	<resultMap type="com.yayiabc.http.mvc.pojo.model.SaleWit" id="rewq">
+	  <result column="balance" property="balance"/>
+	  <result column="created" property="created"/>
+	</resultMap>
+	<select id="queryByBalance" resultMap="rewq">
 		SELECT 
-		balance 
+		balance,created
 		FROM 
 		balance 
 		WHERE 

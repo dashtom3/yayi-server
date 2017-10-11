@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -8,6 +9,7 @@ import org.springframework.stereotype.Repository;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
+import com.yayiabc.http.mvc.pojo.model.SaleWit;
 @Repository
 public interface SaleListDao {
 	//销售员列表
@@ -31,7 +33,7 @@ public interface SaleListDao {
 	String getSaleId(@Param("salePhone")String salePhone);
 	
 	//查询销售员钱包余额
-	String queryByBalance(@Param("phone")String phone,@Param("saleId") String saleId);
+	SaleWit queryByBalance(@Param("phone")String phone,@Param("saleId") String saleId);
 	
 	//查询销售员累计收入
 	String getTotalGetMoney(@Param("saleId")String saleId);

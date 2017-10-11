@@ -3,8 +3,9 @@ package com.yayiabc.http.mvc.pojo.jpa;
 import java.util.Date;
 import java.util.List;
 
-import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 
@@ -70,6 +71,19 @@ public class SaleInfo extends BasePojo {
 	private List<With> With;
 
 	private String describey;
+	
+	private Date created;
+	
+
+
+
+	public Date getCreated() {
+		return created;
+	}
+
+	public void setCreated(Date created) {
+		this.created = created;
+	}
 
 	public String getDescribey() {
 		return describey;

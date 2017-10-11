@@ -33,7 +33,7 @@ public class AppPayServiceImpl implements AppPayService {
         model.setTotalAmount(total_fee);  
         model.setProductCode(QUICK_MSECURITY_PAY);  
         request.setBizModel(model);  
-        request.setNotifyUrl("http://47.93.48.111:6181/api/appPay/callBack");//回调地址  
+        request.setNotifyUrl("http://47.93.48.111:8080/api/appPay/callBack");//回调地址  
         //request.setReturnUrl("http://www.yayiabc.com/center/myMoney");  
         String orderInfo = null; 
         try {  

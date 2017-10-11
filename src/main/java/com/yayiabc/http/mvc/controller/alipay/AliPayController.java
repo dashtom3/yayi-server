@@ -30,16 +30,25 @@ public class AliPayController {
 	@Autowired
 	private AliPayService alipayService;
 	
+	
+	
+	//tets
+	@RequestMapping("test")
+	void lala(@RequestParam(value="orderId",required=true) String orderId){
+			for(String key:alipayService.queryY(orderId).keySet()){
+				System.out.println(key+"    "+alipayService.queryY(orderId).get(key));
+			}
+	}
 	// 14.29  点击选择类型确定支付宝支付时
 	@RequestMapping("payParames")
-	
 	void paParames(
 			@RequestParam(value="orderId",required=true) String orderId,//订单号
 			 HttpServletResponse response
 			){
+		 if(orderId==null){
+			 return;
+		 }
 		HashMap<String , String> hm=alipayService.queryY(orderId);
-		
-		
 		String sHtmlText=alipayService.packingParameter(hm.get("WIDout_trade_no"), hm.get("WIDsubject"), hm.get("WIDtotal_fee"), hm.get("WIDbody"));
 		try {
 			//写到页面的自动提交表单数据
@@ -77,12 +86,12 @@ public class AliPayController {
 			
 			String Sign=alipayService.ReturnUrl(params);
 			if("successQB".equals(Sign)){
-				response.sendRedirect("http://www.yayiabc.com/center/myMoney");
+				response.sendRedirect("http://123.56.220.72:6644/center/myMoney");
 			}
 			if("success".equals(Sign)){
-				response.sendRedirect("http://www.yayiabc.com/paySuccess");
+				response.sendRedirect("http://123.56.220.72:6644/paySuccess");
 			}else{
-				response.sendRedirect("http://www.yayiabc.com/payFail");
+				response.sendRedirect("http://123.56.220.72:6644/payFail");
 			}
 			/*out.write(
 					);//以UTF-8进行编码  

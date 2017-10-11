@@ -34,7 +34,7 @@ public class AlipayConfig2 {
 	    public static String input_charset = "utf-8";
 
 	    // 接收通知的接口名
-	    public static String service = "http://47.93.48.111:6181/api/appPay/callBack";
+	    public static String service = "http://47.93.48.111:8080/api/appPay/callBack";
 	    //public static String service = "mobile.securitypay.pay";
 
 	    //APPID

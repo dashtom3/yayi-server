@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,6 +11,7 @@ import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.SaleListDao;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
+import com.yayiabc.http.mvc.pojo.model.SaleWit;
 import com.yayiabc.http.mvc.service.SaleListService;
 
 @Service
@@ -63,11 +65,12 @@ public class SaleListServiceImpl implements SaleListService {
 		DataWrapper<SaleInfo> dataWrapper = new DataWrapper<SaleInfo>();
 		SaleInfo saleInfo = new SaleInfo();
 		saleInfo =saleListDao.detail(phone);
-		String money=saleListDao.queryByBalance(phone,null);
+		SaleWit money=saleListDao.queryByBalance(phone,null);
 		if(money==null){
 			saleInfo.setMoney(0);
 		}else{
-			saleInfo.setMoney(Double.parseDouble(money));
+			saleInfo.setMoney(Double.parseDouble((String) money.getBalance()));
+			saleInfo.setCreated(money.getCreated());
 		}
 		Page page = new Page();
 		page.setNumberPerPage(numberPerPage);

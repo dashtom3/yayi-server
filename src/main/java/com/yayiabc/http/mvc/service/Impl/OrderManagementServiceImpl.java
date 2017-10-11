@@ -173,7 +173,6 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			int countItem=0;
 			//查看当前订单
 			Ordera order= orderManagementDao.queryOrder(SendorderItemList.get(0).getOrderId());
-
 			//根据当前的sku 得到 该商品价格  SendorderItemList  里面是有sku
 			List<ItemValue> itemVlueList=placeOrderDao.queryAttributesl(SendorderItemList);
 			//hy 根据 itemVlueList获取 对应的商品类型

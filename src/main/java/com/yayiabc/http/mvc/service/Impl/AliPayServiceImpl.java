@@ -107,10 +107,13 @@ public class AliPayServiceImpl implements AliPayService{
 
 				//——请根据您的业务逻辑来编写程序（以下代码仅作参考）——
 				if(trade_status.equals("TRADE_FINISHED") || trade_status.equals("TRADE_SUCCESS")){
-					Ordera order=aliPayDao.queryOrder(out_trade_no);
+					/*Ordera order=aliPayDao.queryOrder(out_trade_no);
+					System.out.println("orderorderorderorder   "+order);
+					System.out.println("amountamountamount   "+amount);
+					System.out.println("out_trade_noout_tra      "+out_trade_no);
 					if(!amount.equals(order.getActualPay())&&order.getOrderId().equals(out_trade_no)){
 						 return "fail";
-					}
+					}*/
 					 return "success";
 				}
 				//验证成功  支付失败 123
@@ -213,6 +216,9 @@ public class AliPayServiceImpl implements AliPayService{
 		}
 		//订单留言
 		String WIDbody=aliPayDao.queryYorderMessage(orderId);
+		if(WIDbody==null){
+			WIDbody="此订单无用户留言";
+		}
 		hmHashMap.put("WIDout_trade_no", orderId);  //
 		hmHashMap.put("WIDtotal_fee",String.valueOf(WIDtotal_fee)); //交易金额 WIDtotal_fee
 		hmHashMap.put("WIDsubject", sb.toString());  //描述

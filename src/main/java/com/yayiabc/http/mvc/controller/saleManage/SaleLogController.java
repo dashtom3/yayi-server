@@ -96,7 +96,7 @@ public class SaleLogController {
     @RequestMapping("reLogin")
     @ResponseBody
     public DataWrapper<Void> reLogin(
-            @RequestParam(value = "token", required = true) String token,
+            @RequestParam(value = "saleToken", required = true) String token,
             HttpSession session
     ) {
         //清除session(手工杀会话)

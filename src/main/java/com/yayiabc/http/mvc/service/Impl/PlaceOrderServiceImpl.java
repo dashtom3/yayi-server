@@ -155,6 +155,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		DataWrapper<Integer> data=ded(token,order.getQbDed());
 		if(data!=null){
 		int qbBalance=data.getData();
+		System.out.println(qbBalance+"   qbBalanceqbBalanceqbBalanceqbBalance");
 		if(qbBalance<order.getQbDed()){
 			throw new OrderException(ErrorCodeEnum.QBDED_Error);
 		}

@@ -22,7 +22,7 @@ public class AppVersionContrller {
 	 */
 	@RequestMapping("Ver")
 	@ResponseBody
-	 public DataWrapper<Void> ver(){
+	 public DataWrapper<String> ver(){
 		return  appVersionservic.ver();
 		 
 		

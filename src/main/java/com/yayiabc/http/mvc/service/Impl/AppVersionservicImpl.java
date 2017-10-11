@@ -11,9 +11,9 @@ public class AppVersionservicImpl implements AppVersionservic{
 	@Autowired
 	private AppVersionDao appVersiondao;
 	@Override
-	public DataWrapper<Void> ver() {
-		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-		dataWrapper.setMsg(appVersiondao.ver());
+	public DataWrapper<String> ver() {
+		DataWrapper<String> dataWrapper =new DataWrapper<String>();
+		dataWrapper.setData(appVersiondao.ver());
 		return dataWrapper;
 		
 	}

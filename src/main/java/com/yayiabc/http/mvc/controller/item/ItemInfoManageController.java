@@ -1,5 +1,8 @@
 package com.yayiabc.http.mvc.controller.item;
 
+
+
+
 import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.enums.ErrorCodeEnum;
@@ -12,8 +15,6 @@ import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
-
-
 
 @Controller
 @RequestMapping("api/item")
@@ -108,7 +109,7 @@ public class ItemInfoManageController {
 				e.printStackTrace();
 				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			}
-			itemId=ItemIdUtils.getItemId();
+			itemId= ItemIdUtils.getItemId();
 		}
 		dataWrapper.setMsg(itemId);
 		return dataWrapper;

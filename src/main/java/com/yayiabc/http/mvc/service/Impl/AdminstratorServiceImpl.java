@@ -92,7 +92,7 @@ public class AdminstratorServiceImpl implements AdminstratorService {
         }
         System.out.println(adminstratorPwd +"           123123123              ");
             Adminstrator adminstrator = adminstratorDao.loginAdminstrator(phone, adminstratorPwd);
-          
+           System.err.println(adminstrator);
             if (adminstrator != null) {
                 String token = tokenService.getAdminToken(adminstrator.getAdminstratorId());
                 dataWrapper.setToken(token);

@@ -1,5 +1,7 @@
 package com.yayiabc.http.mvc.controller.app;
 
+import java.util.List;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestMapping;
@@ -22,9 +24,8 @@ public class AppVersionContrller {
 	 */
 	@RequestMapping("Ver")
 	@ResponseBody
-	 public DataWrapper<Void> ver(){
+	 public DataWrapper<List> ver(){
 		return  appVersionservic.ver();
 		 
-		
 	 }
 }

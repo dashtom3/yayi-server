@@ -1,7 +1,9 @@
 package com.yayiabc.common.utils;
 
 import java.text.SimpleDateFormat;
-import java.util.*;
+import java.util.Calendar;
+import java.util.Date;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Component;
@@ -9,6 +11,7 @@ import org.springframework.stereotype.Component;
 import com.yayiabc.http.mvc.dao.RankingDao;
 import com.yayiabc.http.mvc.pojo.jpa.Ranking;
 import com.yayiabc.http.mvc.service.RankingService;
+
 import redis.clients.jedis.Jedis;
 
 @Component
@@ -24,10 +27,10 @@ public class RankUtil {
 	 * 每月将销售员排行榜插入数据库中
 	 */
 	public void rank(){
-		jedis = new Jedis("127.0.0.1", 6379);	//连接redis服务器(在这里是连接本地的)
-		jedis.auth("123");		//权限认证
+		RedisClient red=RedisClient.getInstance();
+		Jedis jedis=red.getJedis();	//连接redis服务器
+			//权限认证
 		System.out.println("连接redis服务成功");
-		RedisClient.getJedis();		//获取连接池
 		Date date=new Date();
 		Calendar calendar=Calendar.getInstance();
 		calendar.setTime(date);
@@ -52,6 +55,6 @@ public class RankUtil {
 //			Ranking r = (Ranking)SerializeUtil.unserialize(ranking);
 //			System.out.println(r.toString());
 //		}
-		RedisClient.returnResource(jedis);		//释放连接池
+		 RedisClient.getInstance().returnJedis(jedis);		//释放连接池
 	}
 }

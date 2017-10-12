@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
+import java.io.Serializable;
 import java.util.Date;
 import java.util.List;
 
@@ -10,7 +11,7 @@ import org.springframework.format.annotation.DateTimeFormat;
  * 
  * @author xiaojiang 订单表
  */
-public class Ordera extends BasePojo {
+public class Ordera extends BasePojo implements Serializable{
 	private String orderId;
 	private String userId;
 	private Double actualPay;

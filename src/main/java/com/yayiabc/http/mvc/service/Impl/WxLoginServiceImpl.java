@@ -143,6 +143,9 @@ public class WxLoginServiceImpl implements WxLoginService {
             }
             dataWrapper.setData(seUser);
 			dataWrapper.setToken(token);
+            //返回资质审核状态
+            int cercount=userDao.getCertificationCount(userId);
+            dataWrapper.setMsg(cercount+"");
 		}else{
 			 User newUser = new User();
              newUser.setPhone(user.getPhone());
@@ -243,7 +246,10 @@ public class WxLoginServiceImpl implements WxLoginService {
                         int num = userDao.getCartNum(user);
                         dataWrapper.setNum(num);
                         dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-                        dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+//                        dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+                        //返回资质审核状态
+                        int count=userDao.getCertificationCount(user.getUserId());
+                        dataWrapper.setMsg(count+"");
                         String token =tokenService.getToken(user.getUserId());
                         dataWrapper.setData(user);
                         dataWrapper.setToken(token);

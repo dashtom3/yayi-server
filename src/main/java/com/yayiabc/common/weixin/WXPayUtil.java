@@ -214,7 +214,6 @@ public class WXPayUtil {
         }
         sb.append("key=").append(key);
         if (SignType.MD5.equals(signType)) {
-        	System.out.println("1  拼出来的参数"+sb.toString().toUpperCase());
             return MD5(sb.toString()).toUpperCase();
         }
         else if (SignType.HMACSHA256.equals(signType)) {

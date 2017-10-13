@@ -120,7 +120,7 @@
 	</insert>
 
 	<select id="getCountByUserId" resultType="java.lang.Integer">
-		select count(0) from certification where user_id=#{userId}
+		select count(0) from certification where user_id=#{userId} and state=2
 	</select>
 
 	<delete id="deleteInGrainUser">
@@ -148,6 +148,10 @@
 
 	<select id="getCount" resultType="int">
 		select count(0) from wx_userlink where openid=#{openid} and type=1
+	</select>
+
+	<select id="getCertificationCount" resultType="int">
+		select count(0) from certification
 	</select>
 
 

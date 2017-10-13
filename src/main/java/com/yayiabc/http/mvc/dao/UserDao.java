@@ -60,4 +60,6 @@ public interface UserDao {
 	Map<String,String> getTypeByOpenid(@Param("openid")String openid,@Param("type")String type);
 
     int getCount(String openid);
+
+    int getCertificationCount(String userId);
 }

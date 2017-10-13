@@ -98,7 +98,7 @@ public class WXJsPayController {
             parameterMap.put("package", packages);
             parameterMap.put("nonceStr", WXPayUtil.generateNonceStr());
             parameterMap.put("timeStamp",String.valueOf(System.currentTimeMillis()/1000));
-            String sign=WXPayUtil.generateSignature(parameterMap,"90d4bae1c1843cec9aff6b4533f05881", WXPayConstants.SignType.MD5);
+            String sign=WXPayUtil.generateSignature(parameterMap,"xiaojiangxiaojiangxiaojiangjiang",WXPayConstants.SignType.MD5);
             System.out.println(sign);
             WXAppEntry wxAppEntry =new WXAppEntry(parameterMap.get("appid"),Long.parseLong(parameterMap.get("timeStamp")),parameterMap.get("partnerid"),respMap.get("prepay_id"),parameterMap.get("nonceStr"),sign);
             dataWrapper.setData(wxAppEntry);
@@ -158,14 +158,14 @@ public class WXJsPayController {
             parameterMap.put("appId", WXPayConfigImpl.getInstance().getAppID());
             parameterMap.put("mch_id", "1377180402");
             parameterMap.put("nonceStr", WXPayUtil.generateNonceStr());
-            parameterMap.put("signType", WXPayConstants.MD5);
+//            parameterMap.put("signType", WXPayConstants.MD5);
             parameterMap.put("package", packages);
           
             parameterMap.put("timeStamp",String.valueOf(System.currentTimeMillis()/1000));//原先的  90d4bae1c1843cec9aff6b4533f05881
             parameterMap.put("sign", WXPayUtil.generateSignature(parameterMap, "xiaojiangxiaojiangxiaojiangjiang",WXPayConstants.SignType.MD5));
-            parameterMap.put("paySign",parameterMap.get("sign") );
+//            parameterMap.put("paySign",parameterMap.get("sign") );
            
-            WXAppEntry wxAppEntry =new WXAppEntry(parameterMap.get("appId"),Long.parseLong(parameterMap.get("timeStamp")),respMap.get("partnerid"),respMap.get("prepay_id"),parameterMap.get("nonceStr"),parameterMap.get("paySign"));
+            WXAppEntry wxAppEntry =new WXAppEntry(parameterMap.get("appId"),Long.parseLong(parameterMap.get("timeStamp")),respMap.get("partnerid"),respMap.get("prepay_id"),parameterMap.get("nonceStr"),parameterMap.get("sign"));
             System.out.println("...................."+wxAppEntry);
           
             dataWrapper.setData(wxAppEntry);

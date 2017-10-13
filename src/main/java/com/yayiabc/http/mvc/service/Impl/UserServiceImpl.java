@@ -116,6 +116,9 @@ public class UserServiceImpl implements UserService {
                 if (SessionManager.getSessionByUserID(user.getUserId()) == null) {
                     String sessionKey = SessionManager.newSession(user);
                     dataWrapper.setToken(token);
+                    //返回资质审核状态
+                    int cercount=userDao.getCertificationCount(user.getUserId());
+                    dataWrapper.setMsg(cercount+"");
                     return dataWrapper;
                 } else {
                     dataWrapper.setMsg("该账户已经登录");
@@ -140,9 +143,11 @@ public class UserServiceImpl implements UserService {
                 int num = userDao.getCartNum(seUser);
                 dataWrapper.setNum(num);
                 dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-                dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
                 String userId = seUser.getUserId();
                 token = tokenService.getToken(userId);
+                //返回资质审核状态
+                int cercount=userDao.getCertificationCount(userId);
+                dataWrapper.setMsg(cercount+"");
                 dataWrapper.setToken(token);
             } else {
                 dataWrapper.setErrorCode(ErrorCodeEnum.Password_error);
@@ -167,7 +172,8 @@ public class UserServiceImpl implements UserService {
     @Override
     public DataWrapper<Void> forgetPwd(String phone, String code, String password) {
         DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
-        if (userDao.getUserByPhone(phone) != null) {
+        User user=userDao.getUserByPhone(phone);
+        if (user != null) {
             ErrorCodeEnum codeEnum= VerifiCodeValidateUtil.verifiCodeValidate(phone,code);
             if(!codeEnum.equals(ErrorCodeEnum.No_Error)){
                 dataWrapper.setErrorCode(codeEnum);
@@ -176,7 +182,9 @@ public class UserServiceImpl implements UserService {
                 try {
                     userDao.updatePwd(phone,MD5Util.getMD5String(password));
                     dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-                    dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
+                    //返回资质审核状态
+                    int cercount=userDao.getCertificationCount(user.getUserId());
+                    dataWrapper.setMsg(cercount+"");
                 } catch (Exception e) {
                     e.printStackTrace();
                     dataWrapper.setErrorCode(ErrorCodeEnum.Error);

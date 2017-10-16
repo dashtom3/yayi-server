@@ -24,6 +24,7 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 	@Override
 	public DataWrapper<Void> add(QbRecord qbRecord, String token) {
 		String userId=null;
+		System.out.println("tokentokentokentoken   "+token);
 		if(token.contains("userId")){
 			userId=token.substring(0, 6);
 		}else{
@@ -40,7 +41,7 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 			//Integer qb = userMyQbDao.queryQbbalance(userId,qbRecord.getQbType());
 			if (qbRecord.getQbRget() != null) {
 				userMyQbDao.updateUserQb(qbRecord.getQbRget(), userId,qbRecord.getQbType());
-				
+				System.out.println("到这里了");
 				qbRecord.setMillisecond(MI);
 				adds(qbRecord);
 			} else if (qbRecord.getQbRout() != null) {
@@ -56,6 +57,7 @@ public class UserMyQbServiceImpl implements UserMyQbService {
    
 	public boolean adds(QbRecord qbRecord){
 		if(userMyQbDao.add(qbRecord)>0){
+			System.out.println("到这里了了了了");
 			return true;
 		}else{
 			return false;
@@ -87,13 +89,13 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 	}
 
 	@Override
-	public int addMessageQbQ(String dedNums, String userId, String s,int Mi) {
+	public int addMessageQbQ(String dedNums, String userId, String s,long Mi) {
 		// TODO Auto-generated method stub
 		return userMyQbDao.addMessageQbQ(dedNums,userId,s,Mi);
 	}
 
 	@Override
-	public int addMessageQbQRget(String string, String userId, String string2, int mI) {
+	public int addMessageQbQRget(String string, String userId, String string2, long mI) {
 		// TODO Auto-generated method stub
 		return userMyQbDao.addMessageQbQRget(string,userId,string2,mI);
 	}

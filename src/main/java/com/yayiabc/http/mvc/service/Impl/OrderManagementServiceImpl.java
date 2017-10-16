@@ -406,9 +406,8 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		q.setQbRout("\"赠\"乾币   "+dedQbNum+"个");
 		q.setQbType("qb_balance");
 		q.setUserId(order.getUserId());
-		Calendar Cld = Calendar.getInstance();
-		int MI = Cld.get(Calendar.MILLISECOND);	
-		q.setMillisecond(MI);
+		
+		q.setMillisecond(System.nanoTime());
 		userMyQbDao.updateUserQb(-dedQbNum+"",order.getUserId(),"qb_balance");
 		//查询乾币余额
 		Integer userQbNums=userMyQbDao.getUserQbNum(order.getUserId());
@@ -455,9 +454,8 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		//查询乾币余额
 				Integer userQbNums=userMyQbDao.getUserQbNum(order.getUserId());
 		s=s+/*s+sb.toString()+*/"（乾币余额："+userQbNums+"）。订单编号:"+order.getOrderId();
-		Calendar Cld = Calendar.getInstance();
-		int MI = Cld.get(Calendar.MILLISECOND);
-		userMyQbDao.addMessageQbQRget(sb.toString(), order.getUserId(), s, MI);
+		
+		userMyQbDao.addMessageQbQRget(sb.toString(), order.getUserId(), s, System.nanoTime());
 		//---无语
 		orderManagementDao.saveRefundMessageToReturnQbMsg(sb.toString(),order.getOrderId());
 		return sb.toString();

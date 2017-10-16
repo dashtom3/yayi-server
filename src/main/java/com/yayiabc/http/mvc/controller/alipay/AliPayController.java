@@ -97,6 +97,7 @@ public class AliPayController {
 					);//以UTF-8进行编码  
 */
 		} catch (Exception e) {
+			 e.printStackTrace();  
 			// TODO: handle exception
 		}
 	}

@@ -21,7 +21,7 @@ public class QbRecord extends BasePojo {
 
 	private String remark;
 
-	private Integer millisecond; // 毫秒
+	private long millisecond; // 毫秒
 
 	private User user;
 	private String qbType;
@@ -69,10 +69,10 @@ public class QbRecord extends BasePojo {
 	public void setRemark(String remark) {
 		this.remark = remark;
 	}
-	public Integer getMillisecond() {
+	public long getMillisecond() {
 		return millisecond;
 	}
-	public void setMillisecond(Integer millisecond) {
+	public void setMillisecond(long millisecond) {
 		this.millisecond = millisecond;
 	}
 	public User getUser() {
@@ -93,4 +93,5 @@ public class QbRecord extends BasePojo {
 				+ ", qbTime=" + qbTime + ", qbBalances=" + qbBalances + ", remark=" + remark + ", millisecond="
 				+ millisecond + ", user=" + user + ", qbType=" + qbType + "]";
 	}
+
 }

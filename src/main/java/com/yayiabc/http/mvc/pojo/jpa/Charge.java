@@ -53,5 +53,10 @@ public class Charge {
 	public void setMoney(String money) {
 		this.money = money;
 	}
+	@Override
+	public String toString() {
+		return "Charge [chargeId=" + chargeId + ", token=" + token + ", qbNum=" + qbNum + ", state=" + state
+				+ ", qbType=" + qbType + ", money=" + money + ", created=" + created + "]";
+	}
 	
 }

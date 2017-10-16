@@ -74,9 +74,9 @@ public class PayAfterOrderUtil {
  			q.setQbRget("\"赠\"： "+o.getGiveQb()+"个");
  			
  			q.setUserId(o.getUserId()+"");
- 			Calendar Cld = Calendar.getInstance();
- 			int MI = Cld.get(Calendar.MILLISECOND);	
- 			q.setMillisecond(MI);
+ 			/*Calendar Cld = Calendar.getInstance();
+ 			int MI = Cld.get(Calendar.MILLISECOND);	*/
+ 			q.setMillisecond(System.nanoTime());
  			userMyQbDao.updateUserQb(o.getGiveQb()+"", o.getUserId(),"qb_balance");
  			//----为了获取钱币余额。。。。。
  			Integer userQbNum=userMyQbDao.getUserQbNum(o.getUserId());
@@ -98,6 +98,7 @@ public class PayAfterOrderUtil {
 		map.remove(orderId);
 		return true;
 	}
+	
 	//结账时放入到SaleIncome表里的数据 并把 到账到该销售员
 	private boolean SetSaleInCome(String orderId,String userId,String saleId){
 		//查出此单的  supplies_sumprice    tooldevices_sumprice
@@ -138,7 +139,6 @@ public class PayAfterOrderUtil {
 				break;
 			}else if(listData.get(i)<DedNum){
 				
-				System.out.println(i+"  DedNum=listData.get(i)-DedNum  "+listData.get(i)+"    "+DedNum);
 				sb.append(ut(i)+listData.get(i)+"个，");
 				sb1.append(listData.get(i)+",");
 				DedNum=DedNum-listData.get(i);
@@ -148,13 +148,13 @@ public class PayAfterOrderUtil {
 		} 
 		System.err.println(qbDes);
 		System.err.println(listData);
-		Calendar Cld = Calendar.getInstance();
-		int MI = Cld.get(Calendar.MILLISECOND);
+		/*Calendar Cld = Calendar.getInstance();
+		int MI = Cld.get(Calendar.MILLISECOND);*/
 		
 		userMyQbService.updateDataToUser(listData,userId); //更改user 表  各种钱币类型
 		//查询乾币余额
 		Integer userQbNum=userMyQbDao.getUserQbNum(userId);
-		userMyQbService.addMessageQbQ(s,userId,"下单使用"+a+"个乾币。（乾币余额："+userQbNum+"）订单编号："+orderId,MI); //新增钱币记录表   
+		userMyQbService.addMessageQbQ(s,userId,"下单使用"+a+"个乾币。（乾币余额："+userQbNum+"）订单编号："+orderId,System.nanoTime()); //新增钱币记录表   
 		return mosaicString(qbDes);
 	}
 	
@@ -185,21 +185,43 @@ public class PayAfterOrderUtil {
 			Charge charge=aliPayDao.queryUserId(out_trade_no);
 			 System.out.println(out_trade_no);
 			 System.out.println("123123123213   "+charge);
-			 System.out.println(amount+"    "+charge.getMoney());
-			 //验证金额
-           if(!amount.equals(charge.getMoney())){
+			if(charge==null){
+				return false;
+			}
+			/* //验证金额
+			 Double amount1=Double.parseDouble(amount)*100;
+			 Double amount2=Double.parseDouble(charge.getMoney())*100;
+             if(amount1!=amount2){
             	return false;
-            }
+            }*/
             //商户订单号
+           System.out.println("chargechargechargechargechargecharge     "+charge);
 			if(charge!=null){
 				if(charge.getState()==1){
 					aliPayDao.updateState(out_trade_no);
-					String token=utilsDao.getToken(charge.getToken());
+					System.out.println(1);
+					//String token=utilsDao.getToken(charge.getToken());
+					System.out.println(2);
 					QbRecord q=new QbRecord();
-					q.setQbRget(zh(charge.getQbType())+":"+charge.getQbNum()+"个");
+					q.setUserId(charge.getToken());
+					q.setQbRget(zh(charge.getQbType())+":"+String.valueOf(charge.getQbNum())+"个");
 					q.setQbType(charge.getQbType());
 					q.setRemark(zh(charge.getQbType())+"乾币充值"+charge.getQbNum()+"个。");
-					userMyQbService.add(q, token);
+					System.out.println(q);
+					
+					Calendar Cld = Calendar.getInstance();
+					int MI = Cld.get(Calendar.MILLISECOND);		//获取毫秒
+					q.setMillisecond(MI);
+					
+					//这里手动的  更改用户钱币 与 增加钱币记录   1更改用户钱币   2增加钱币记录
+					userMyQbDao.updateUserQb(String.valueOf(charge.getQbNum()), charge.getToken(), charge.getQbType());  //1
+					
+					//----为了获取钱币余额。。。。。
+		 			Integer userQbNum=userMyQbDao.getUserQbNum(charge.getToken());
+		 			q.setRemark(zh(charge.getQbType())+"乾币充值"+charge.getQbNum()+"个。（乾币余额："+userQbNum+"个）");
+					userMyQbDao.add(q);
+					//userMyQbService.add(q, token);
+					System.out.println(3);
 					return true;
 				}/*else{
 					//这里是不是应该 把state状态重置为1
@@ -210,7 +232,7 @@ public class PayAfterOrderUtil {
 		}
 	   //订单支付安全检查
 		Ordera order=aliPayDao.queryOrder(out_trade_no);
-		if(!amount.equals(order.getActualPay())&&!order.getOrderId().equals(out_trade_no)){
+		if(/*!amount.equals(order.getActualPay())&&*/!order.getOrderId().equals(out_trade_no)){
 			 return false;
 		}
 					if(order!=null){
@@ -235,7 +257,7 @@ public class PayAfterOrderUtil {
 		  }else if(zh.equals("c_qb")){
 			  return "\"9.5折\" ";
 		  }
-		  return "非法钱币类型";
+		  return "非法乾币类型";
 	}
 	
 	private String  mosaicString(String str){
@@ -248,4 +270,6 @@ public class PayAfterOrderUtil {
    		}
 		return sb.toString();
 	}
+	
+	//取出
 }

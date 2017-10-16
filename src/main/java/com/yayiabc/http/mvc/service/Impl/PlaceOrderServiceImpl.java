@@ -185,7 +185,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				}
 			} else {
 				//set datawrapper
-				return  dataWrapper;
+				throw new OrderException(ErrorCodeEnum.QBDED_Error);
 			}
 			
 			//本单赠送钱币百分比
@@ -316,12 +316,14 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	 public boolean changeStockNum(List<OrderItem> orderItemList,List<FinalList> finalList){
 		
 		if(orderItemList.size()!=finalList.size()){
+			System.out.println("orderItemList.size()与 finalList.size()不同！");
 			return false;
 		}else{
 			for(int i=0;i<orderItemList.size();i++){
 				//判断当前商品是否在售卖状态
 				if(finalList.get(i).getCanUse()==1){
 				if(finalList.get(i).getStockNum()<orderItemList.get(i).getNum()){
+					System.out.println("库存不足");
 					return false;
 				}
 				}else{
@@ -329,7 +331,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				}
 			}
 			//根据影响行数判断库存是否已经正确扣除
-			placeOrderDao.updateInventNums(orderItemList);
+			int c=placeOrderDao.updateInventNums(orderItemList);
+			System.out.println(c   +"ccccccccccccccccccccccccccccccccccccccccc");
 		}
 		return true;
 	}
@@ -405,6 +408,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					orderItemList.get(i).setPrice(finalList.get(x).getItemSkuPrice());
 					orderItemList.get(i).setOrderId(orderId);
 					orderItemList.get(i).setItemType(finalList.get(x).getItemType());
+					//orderItemList.get(i).setItemType(finalList.get(x).getVersion());
 				}
 			}
 		}

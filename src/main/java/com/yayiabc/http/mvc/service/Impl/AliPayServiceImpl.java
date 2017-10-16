@@ -125,6 +125,7 @@ public class AliPayServiceImpl implements AliPayService{
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();  
 		}
 		return "fail";
 	}
@@ -194,6 +195,7 @@ public class AliPayServiceImpl implements AliPayService{
 			}
 		} catch (Exception e) {
 			// TODO: handle exception
+			e.printStackTrace();  
 		}
 		return "fail";
 	}

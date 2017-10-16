@@ -26,12 +26,12 @@ public interface UserMyQbDao {
 
 	
 	int addMessageQbQ(@Param("dedNums")String dedNums, @Param("userId")String userId, @Param("message")String s
-			,@Param("millisecond")int Mi
+			,@Param("millisecond")long Mi
 			);
 	
 	
 	int addMessageQbQRget(@Param("dedNums")String dedNums, @Param("userId")String userId, @Param("message")String s
-			,@Param("millisecond")int Mi
+			,@Param("millisecond")long Mi
 			);
 	
    //获取用户钱币余额

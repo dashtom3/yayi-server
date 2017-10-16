@@ -63,6 +63,7 @@ public class CoinRechargeController {
 				ppp.write(sHtmlText);
 			}
 		} catch (Exception e) {
+			e.printStackTrace();  
 			// TODO: handle exception
 		}finally{
 			if(ppp != null){
@@ -94,7 +95,7 @@ public class CoinRechargeController {
 	}
 	//生成 id的方法
 	String createId(String USERiD){
-		String codeId=("zfb"+USERiD.substring(0,5)+System.currentTimeMillis());
+		String codeId=("zfb"+USERiD.substring(0,3)+System.currentTimeMillis());
 		return codeId;
 	}
 }

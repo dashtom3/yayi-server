@@ -4,10 +4,7 @@ import com.yayiabc.common.enums.WXPayEnum;
 import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.PayAfterOrderUtil;
-import com.yayiabc.common.weixin.WXAppPayConfigImpl;
-import com.yayiabc.common.weixin.WXPay;
-import com.yayiabc.common.weixin.WXPayConfigImpl;
-import com.yayiabc.common.weixin.WXPayUtil;
+import com.yayiabc.common.weixin.*;
 import com.yayiabc.http.mvc.dao.AliPayDao;
 import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.WXPayDao;
@@ -46,11 +43,14 @@ public class WXPayServiceImpl implements WXPayService{
 
     @Override
     public void callBack(HttpServletRequest request, HttpServletResponse response, WXPayEnum wxPayEnum) throws Exception {
+        System.out.println("开始处理回掉请求");
         WXPay wxPay = null;
         if (wxPayEnum.equals(WXPayEnum.QB_PC)||wxPayEnum.equals(WXPayEnum.ORDER_PC)) {
             wxPay = new WXPay(WXPayConfigImpl.getInstance());
         } else if (wxPayEnum.equals(WXPayEnum.QB_APP)||wxPayEnum.equals(WXPayEnum.ORDER_APP)) {
             wxPay = new WXPay(WXAppPayConfigImpl.getInstance());
+        }else if(wxPayEnum.equals(WXPayEnum.QB_JS)||wxPayEnum.equals(WXPayEnum.ORDER_JS)){
+            wxPay=new WXPay(WXPayConfigImpl.getInstance(),true,true);
         }
         //读取参数
         InputStream inputStream;
@@ -83,8 +83,16 @@ public class WXPayServiceImpl implements WXPayService{
         //账号信息
         String out_trade_no = (String) packageParam.get("out_trade_no");
         System.out.println(out_trade_no);
+        System.out.println("微信返回参数为"+map);
+        Boolean validate=true;
+        String key="xiaojiangxiaojiangxiaojiangjiang";
+        if(wxPayEnum.equals(WXPayEnum.QB_JS)||wxPayEnum.equals(WXPayEnum.ORDER_JS)){
+            validate=WXPayUtil.isSignatureValid(map, key, WXPayConstants.SignType.MD5);
+        }else{
+            validate=WXPayUtil.isSignatureValid(map, key, WXPayConstants.SignType.HMACSHA256);
+        }
         //判断签名是否正确
-        if (wxPay.isPayResultNotifySignatureValid(map)) {
+        if (validate) {
             //处理业务开始
             String resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>" + "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
             if ("SUCCESS".equals((String) packageParam.get("result_code"))) {

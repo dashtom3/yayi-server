@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.controller.weixin;
 
 import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yayiabc.common.enums.ErrorCodeEnum;
+import com.yayiabc.common.enums.WXPayEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.HttpUtil;
 import com.yayiabc.common.utils.QbExchangeUtil;
@@ -12,6 +13,7 @@ import com.yayiabc.http.mvc.pojo.jpa.Charge;
 import com.yayiabc.http.mvc.pojo.jpa.WXAppEntry;
 import com.yayiabc.http.mvc.service.AliPayService;
 
+import com.yayiabc.http.mvc.service.WXPayService;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -48,6 +50,9 @@ public class WXJsPayController {
     @Autowired
     private UtilsDao utilsDao;
 
+    @Autowired
+    private WXPayService wxPayService;
+
     @RequestMapping("unifiedOrderReturnUrl")
     @ResponseBody
     public DataWrapper<WXAppEntry> unifiedOrderReturnUrl(
@@ -62,7 +67,7 @@ public class WXJsPayController {
         Integer totalFee=(int)(total*100);
         String body=hashMap.get("WIDsubject");
         try {
-            WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:8080/api/weixin/getReturnUrl",false,true);
+            WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:8080/api/wxRoom/getReturnUrl",false,true);
             Map<String,String> reqData =new HashMap<String,String>();
             if(body!=null&&!"".equals(body)){
                 reqData.put("body",body);//必传
@@ -95,10 +100,11 @@ public class WXJsPayController {
             SortedMap<String, String> parameterMap = new TreeMap<String, String>();
             String packages = "prepay_id="+respMap.get("prepay_id");
             parameterMap.put("appid", WXPayConfigImpl.getInstance().getAppID());
-            parameterMap.put("package", packages);
-            parameterMap.put("nonceStr", WXPayUtil.generateNonceStr());
             parameterMap.put("timeStamp",String.valueOf(System.currentTimeMillis()/1000));
-            String sign=WXPayUtil.generateSignature(parameterMap,"xiaojiangxiaojiangxiaojiangjiang",WXPayConstants.SignType.MD5);
+            parameterMap.put("nonceStr", WXPayUtil.generateNonceStr());
+            parameterMap.put("package", packages);
+            parameterMap.put("signType", WXPayConstants.MD5);
+            String sign=WXPayUtil.generateSignature(parameterMap,WXPayConfigImpl.getInstance().getKey(),WXPayConstants.SignType.MD5);
             System.out.println(sign);
             WXAppEntry wxAppEntry =new WXAppEntry(parameterMap.get("appid"),Long.parseLong(parameterMap.get("timeStamp")),parameterMap.get("partnerid"),respMap.get("prepay_id"),parameterMap.get("nonceStr"),sign);
             dataWrapper.setData(wxAppEntry);
@@ -121,6 +127,8 @@ public class WXJsPayController {
                                    @RequestHeader(value="token",required=true) String token,
                                    HttpServletRequest request,
                                    HttpServletResponse response){
+        System.out.println(qbType+"钱币类型");
+        System.out.println(money+"钱币金额");
         DataWrapper<WXAppEntry> dataWrapper =new DataWrapper<WXAppEntry>();
         String chargeId=UUID.randomUUID().toString();
         String[] str=chargeId.split("-");
@@ -140,7 +148,7 @@ public class WXJsPayController {
         wXPayDao.deleteChargeByToken(utilsDao.getUserID(token));
         wXPayDao.addCharge(charge);
         try {
-            WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:8080/api/weixin/getChargeReturnUrl",false,true);
+            WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:8080/api/wxRoom/getChargeReturnUrl",false,true);
             Map<String,String> reqData =new HashMap<String,String>();
             reqData.put("body","qb");//必传
             reqData.put("out_trade_no",chargeId);
@@ -156,16 +164,16 @@ public class WXJsPayController {
             SortedMap<String, String> parameterMap = new TreeMap<String, String>();
             String packages = "prepay_id="+respMap.get("prepay_id");
             parameterMap.put("appId", WXPayConfigImpl.getInstance().getAppID());
-            parameterMap.put("mch_id", "1377180402");
-            parameterMap.put("nonceStr", WXPayUtil.generateNonceStr());
-//            parameterMap.put("signType", WXPayConstants.MD5);
-            parameterMap.put("package", packages);
-          
+//            parameterMap.put("mch_id", "1377180402");
             parameterMap.put("timeStamp",String.valueOf(System.currentTimeMillis()/1000));//原先的  90d4bae1c1843cec9aff6b4533f05881
-            parameterMap.put("sign", WXPayUtil.generateSignature(parameterMap, "xiaojiangxiaojiangxiaojiangjiang",WXPayConstants.SignType.MD5));
+            parameterMap.put("nonceStr", WXPayUtil.generateNonceStr());
+            parameterMap.put("package", packages);
+            parameterMap.put("signType", WXPayConstants.MD5);
+            String sign=WXPayUtil.generateSignature(parameterMap,WXPayConfigImpl.getInstance().getKey(),WXPayConstants.SignType.MD5);
+//            parameterMap.put("sign", WXPayUtil.generateSignature(parameterMap, "xiaojiangxiaojiangxiaojiangjiang",WXPayConstants.SignType.MD5));
 //            parameterMap.put("paySign",parameterMap.get("sign") );
            
-            WXAppEntry wxAppEntry =new WXAppEntry(parameterMap.get("appId"),Long.parseLong(parameterMap.get("timeStamp")),respMap.get("partnerid"),respMap.get("prepay_id"),parameterMap.get("nonceStr"),parameterMap.get("sign"));
+            WXAppEntry wxAppEntry =new WXAppEntry(parameterMap.get("appId"),Long.parseLong(parameterMap.get("timeStamp")),respMap.get("partnerid"),respMap.get("prepay_id"),parameterMap.get("nonceStr"),sign);
             System.out.println("...................."+wxAppEntry);
           
             dataWrapper.setData(wxAppEntry);
@@ -207,5 +215,11 @@ public class WXJsPayController {
 			list.add(jsonOb.get("openid"));
 		}
 		return list;
-	}   
+	}
+
+    @RequestMapping("getChargeReturnUrl")
+    @ResponseBody
+    public void getChargeReturnUrl(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        wxPayService.callBack(request,response, WXPayEnum.QB_JS);
+    }
 }

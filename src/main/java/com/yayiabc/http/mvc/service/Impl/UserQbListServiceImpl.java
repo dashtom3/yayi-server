@@ -81,13 +81,13 @@ public class UserQbListServiceImpl implements UserQbListService {
 			Integer userQbNum=userMyQbDao.getUserQbNum(userId);
 		if(sign.equals("1")){
 			//增加 钱币减少记录
-			qbRecord.setQbRout("（"+zh(qbType)+"） 乾币 "+qbBalance);
+			qbRecord.setQbRout(zh(qbType)+"："+qbBalance+"个");
 			
-			qbRecord.setRemark("管理员修改乾币余额，扣除'"+qbBalance+"'乾币。（乾币余额："+userQbNum+"个。）");
+			qbRecord.setRemark("管理员修改乾币余额，扣除"+qbBalance+"个乾币。（乾币余额："+userQbNum+"个。）");
 		}else if(sign.equals("2")){
 			//增加 钱币增加记录
-			qbRecord.setQbRget("（"+zh(qbType)+"） 乾币 "+qbBalance);
-			qbRecord.setRemark("管理员修改乾币余额，新增'"+qbBalance+"'乾币。（乾币余额："+userQbNum+"个。）");
+			qbRecord.setQbRget(zh(qbType)+"："+qbBalance+"个");
+			qbRecord.setRemark("管理员修改乾币余额，新增"+qbBalance+"个乾币。（乾币余额："+userQbNum+"个。）");
 		}
 		//qbRecord.setQbBalances(qbBalance);
 		qbRecord.setMillisecond(MI);

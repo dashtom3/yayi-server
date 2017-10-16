@@ -143,7 +143,6 @@ public class PayAfterOrderUtil {
 				sb1.append(listData.get(i)+",");
 				DedNum=DedNum-listData.get(i);
 				listData.set(i, 0);
-				
 			}
 		} 
 		System.err.println(qbDes);

@@ -155,7 +155,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		DataWrapper<Integer> data=ded(token,order.getQbDed());
 		if(data!=null){
 		int qbBalance=data.getData();
-		System.out.println(qbBalance+"   qbBalanceqbBalanceqbBalanceqbBalance");
 		if(qbBalance<order.getQbDed()){
 			throw new OrderException(ErrorCodeEnum.QBDED_Error);
 		}
@@ -208,6 +207,14 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			Double sumPrice=0.0;
 			int itemSum=orderItemList.size();//商品总数量
 			List<FinalList> finalList=placeOrderDao.queryFinalList(orderItemList);
+			
+			//校验 商品是否在售卖状态与校检库存是否正确 与更改库存
+			boolean flag=changeStockNum(orderItemList,finalList);
+			if(!flag){
+				dataWrapper.setMsg("库存不足");
+				return dataWrapper;
+			}
+			
 			//填充orderItemList
 			orderItemList=goodOrderItemList(orderItemList,orderId,finalList);
 			
@@ -217,12 +224,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			AllSuppliesSumPrice=(Double) priceMap.get("AllSuppliesSumPrice");
 			AllTooldevicesSumPrice=(Double) priceMap.get("AllTooldevicesSumPrice");
 			
-			//更改库存 与校验商品是否在售卖状态
-			boolean flag=changeStockNum(orderItemList,finalList);
-			if(!flag){
-				dataWrapper.setMsg("库存不足");
-				return dataWrapper;
-			}
+			
 			//创建订单并保存订单数据
 			placeOrderDao.createOrder(orderId,userId,order);
 			

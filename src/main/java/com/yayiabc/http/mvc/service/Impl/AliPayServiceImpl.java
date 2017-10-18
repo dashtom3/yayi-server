@@ -214,8 +214,9 @@ public class AliPayServiceImpl implements AliPayService{
 			if(i<=2){
 				sb.append(itemList.get(i));
 			}
-			sb.append("...");
+
 		}
+		sb.append("...");
 		//订单留言
 		String WIDbody=aliPayDao.queryYorderMessage(orderId);
 		if(WIDbody==null){

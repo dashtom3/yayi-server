@@ -7,6 +7,7 @@ import com.yayiabc.common.utils.PayAfterOrderUtil;
 import com.yayiabc.common.weixin.*;
 import com.yayiabc.http.mvc.dao.AliPayDao;
 import com.yayiabc.http.mvc.dao.UserDao;
+import com.yayiabc.http.mvc.dao.UserMyQbDao;
 import com.yayiabc.http.mvc.dao.WXPayDao;
 import com.yayiabc.http.mvc.pojo.jpa.Charge;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
@@ -40,6 +41,9 @@ public class WXPayServiceImpl implements WXPayService{
 
     @Autowired
     private AliPayService aliPayService;
+
+    @Autowired
+    private UserMyQbDao userMyQbDao;
 
     @Override
     public void callBack(HttpServletRequest request, HttpServletResponse response, WXPayEnum wxPayEnum) throws Exception {
@@ -96,7 +100,7 @@ public class WXPayServiceImpl implements WXPayService{
             //处理业务开始
             String resXml = "<xml>" + "<return_code><![CDATA[FAIL]]></return_code>" + "<return_msg><![CDATA[报文为空]]></return_msg>" + "</xml> ";
             if ("SUCCESS".equals((String) packageParam.get("result_code"))) {
-                if (wxPayEnum.equals(WXPayEnum.ORDER_PC) || wxPayEnum.equals(WXPayEnum.ORDER_APP)) {
+                if (wxPayEnum.equals(WXPayEnum.ORDER_PC) || wxPayEnum.equals(WXPayEnum.ORDER_APP)||wxPayEnum.equals(WXPayEnum.ORDER_JS)) {
                     String outTradeNo = (String) packageParam.get("out_trade_no");
                     String orderId = wXPayDao.getOrderIdByOutTradeNo(outTradeNo);
                     HashMap<String, String> hashMap = aliPayService.queryY(orderId);
@@ -112,7 +116,7 @@ public class WXPayServiceImpl implements WXPayService{
                             Boolean flag = payAfterOrderUtil.universal(orderId, "1");
                             if (flag) {
                                 //这里是支付成功
-                                System.out.println("支付成功");
+                                System.out.println("支付成功"+wxPayEnum);
                                 //改变订单状态
                                 resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>" + "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
                             }
@@ -131,10 +135,14 @@ public class WXPayServiceImpl implements WXPayService{
                             String userId = wXPayDao.getTokenByChargeId(chargeId);
                             String token = userDao.getTokenByUserId(userId);
                             QbRecord qbRecord = new QbRecord();
-                            qbRecord.setQbRget(String.valueOf(charge.getQbNum()));
+//                            qbRecord.setQbRget(String.valueOf(charge.getQbNum()));
                             qbRecord.setQbType(charge.getQbType());
                             String zh=zh(charge.getQbType());
-                            qbRecord.setRemark(zh+"乾币充值" + charge.getQbNum()+"个");
+                            qbRecord.setQbRget(zh+":"+String.valueOf(charge.getQbNum())+"个");
+//                            qbRecord.setRemark(zh+"乾币充值" + charge.getQbNum()+"个");
+                            //----为了获取钱币余额。。。。。
+                            Integer userQbNum=userMyQbDao.getUserQbNum(charge.getToken())+charge.getQbNum();
+                            qbRecord.setRemark(zh+"乾币充值"+charge.getQbNum()+"个。（乾币余额："+userQbNum+"个）");
                             userMyQbService.add(qbRecord, token);
                             wXPayDao.updateChargeState(chargeId);
                             resXml = "<xml>" + "<return_code><" +

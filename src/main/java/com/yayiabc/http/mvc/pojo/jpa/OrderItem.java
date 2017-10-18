@@ -35,12 +35,24 @@ public class OrderItem extends BasePojo {
 	private String refunNum;
 
 	private String itemBrandName;//商品品牌
-	
+	private int version;
 	public String getItemBrandName() {
 		return itemBrandName;
 	}
 
-	
+
+	public int getVersion() {
+		return version;
+	}
+
+
+
+
+	public void setVersion(int version) {
+		this.version = version+1;
+	}
+
+
 
 
 	public String getRefunNum() {

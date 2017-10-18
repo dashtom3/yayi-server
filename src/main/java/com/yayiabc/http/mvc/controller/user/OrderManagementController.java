@@ -109,7 +109,7 @@ public class OrderManagementController {
 		ArrayList<OrderItem> orderItemList = (ArrayList<OrderItem>)JSONArray.toCollection(json,OrderItem.class);
 	   return  orderManagementService.makeRefundData(orderItemList);
    }
-   //模拟失去焦点事件
+  /* //模拟失去焦点事件
    @RequestMapping("loseFocus")
    @ResponseBody
    public DataWrapper<Map<String, Object>> loseFocus(
@@ -119,7 +119,7 @@ public class OrderManagementController {
 		   @RequestParam(value="num",required=true) Integer num  
 		   ){
 	   return  orderManagementService.loseFocus(num,orderId,itemId);
-   }
+   }*/
    
    //仓库发货 Warehouse delivery warehouseDelivery
    @RequestMapping("warehouseDelivery")

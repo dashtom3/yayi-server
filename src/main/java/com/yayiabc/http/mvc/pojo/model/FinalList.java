@@ -25,12 +25,12 @@ public class FinalList {
     private String itemType;//商品类型
     private String itemBrandName;
     private String picPath;
-    private String version;
+    private int version;
     
-	public String getVersion() {
+	public int getVersion() {
 		return version;
 	}
-	public void setVersion(String version) {
+	public void setVersion(int version) {
 		this.version = version;
 	}
 	public String getItemId() {

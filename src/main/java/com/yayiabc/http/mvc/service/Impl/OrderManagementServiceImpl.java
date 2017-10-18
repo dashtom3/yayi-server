@@ -36,8 +36,6 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 	@Autowired
 	private PlaceOrderDao placeOrderDao;
 	@Autowired
-	private UserMyQbService userMyQbService;
-	@Autowired
 	private UserMyQbDao userMyQbDao;
 	@Autowired
 	private UtilsDao utilsDao;
@@ -103,50 +101,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 	}
 	//检查此订单是否包邮   如果是 那就是 如果不包邮就查出 该订单运费   (此处的 是否包邮应该在下订单模块里实现 这里 不需要  先暂时搁置)
 
-	//模拟失去焦点事件
-	public  DataWrapper<Map<String, Object>> loseFocus(int refundNum,String OrederId,String itemId){
-		DataWrapper<Map<String, Object>> dataWrapper=new DataWrapper<Map<String, Object>>();
-		//根据订单id 查询出 当前订单的用户id 去钱币表 查看 该用户的钱币余额   queryUser
-		String userId=orderManagementDao.queryUser(OrederId);
-		//根据userId 查询用户余额
-		Integer balance=orderManagementDao.userBalance(userId);
-		if(null==balance){
-			dataWrapper.setMsg("这个用户钱币null呀");
-			return dataWrapper;
-		}
-		List<OrderItem> list=orderManagementDao.showFund(OrederId,itemId);
-		Double price=0.0;
-		if(!list.isEmpty()){
-			String itemIdy=  list.get(0).getItemId();
-			int QbDed= list.get(0).getQbDed();
-			price= list.get(0).getPrice();
-			int num = list.get(0).getNum();
-		}
-		//单个商品的退回钱币数
-		Double returnQbNum=price*refundNum;
-
-		//退款金额
-		Double returnMoneyNum;
-		if(balance>=returnQbNum){
-			returnMoneyNum=0.0;
-		}else{
-			returnMoneyNum=returnQbNum-balance;
-		}
-		//扣除钱币数  需要先获取当前商品的对应钱币百分比    int percent=queryQbPercent(num,itemId);
-		int percent=0;
-		Double dedQb=returnQbNum*percent;
-		Map<String, Object> map=new HashMap<String, Object>();
-		map.put("returnQbNum", returnQbNum);
-		map.put("returnMoneyNum", returnMoneyNum);
-		map.put("dedQb", dedQb);
-		map.put("userQianBiYE", balance);
-		//这里的  我可以直接就把这条数据 插入到退货管理数据库中了  考虑到 用户又可能不退  暂时搁置 明天再写
-		/*if(refundNum>num){  这里前端做判断
-			dataWrapper.setMsg("");
-		}*/
-		dataWrapper.setData(map);
-		return dataWrapper;
-	}
+	
 	/*private void ut(int sign,List l,String bz){
 		if(sign!=l.size()<=0){
 			throw new RuntimeException(bz+"    失败");

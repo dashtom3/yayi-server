@@ -207,6 +207,9 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			int itemSum=orderItemList.size();//商品总数量
 			List<FinalList> finalList=placeOrderDao.queryFinalList(orderItemList);
 			
+			//填充orderItemList
+			 orderItemList=goodOrderItemList(orderItemList,orderId,finalList);
+			
 			//校验 商品是否在售卖状态与校检库存是否正确 与更改库存
 			boolean flag=changeStockNum(orderItemList,finalList);
 			if(!flag){
@@ -214,8 +217,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				return dataWrapper;
 			}
 			
-			//填充orderItemList
-			orderItemList=goodOrderItemList(orderItemList,orderId,finalList);
+			
 			
 			//计算改单商品金额
 			HashMap<String, Object> priceMap=partItemPrices(orderItemList,AllSuppliesSumPrice,AllTooldevicesSumPrice);
@@ -324,6 +326,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			for(int i=0;i<orderItemList.size();i++){
 				//判断当前商品是否在售卖状态
 				if(finalList.get(i).getCanUse()==1){
+				//判断库存
 				if(finalList.get(i).getStockNum()<orderItemList.get(i).getNum()){
 					System.out.println("库存不足");
 					return false;
@@ -332,8 +335,11 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					return false;
 				}
 			}
-			//根据影响行数判断库存是否已经正确扣除
-			placeOrderDao.updateInventNums(orderItemList);
+			int state=placeOrderDao.updateInventNums(orderItemList);
+			//乐观锁 解决一致性与并发性的矛盾
+			if(state==0){
+				return false;
+			}
 		}
 		return true;
 	}
@@ -409,7 +415,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					orderItemList.get(i).setPrice(finalList.get(x).getItemSkuPrice());
 					orderItemList.get(i).setOrderId(orderId);
 					orderItemList.get(i).setItemType(finalList.get(x).getItemType());
-					//orderItemList.get(i).setItemType(finalList.get(x).getVersion());
+					orderItemList.get(i).setVersion(finalList.get(x).getVersion());
 				}
 			}
 		}

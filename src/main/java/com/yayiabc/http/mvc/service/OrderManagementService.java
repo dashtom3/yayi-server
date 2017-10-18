@@ -25,8 +25,6 @@ public interface OrderManagementService {
     //操作退款数据
 	DataWrapper<HashMap<String, Object>> makeRefundData(ArrayList<OrderItem> list);
     
-    //模拟失去焦点事件
-    public  DataWrapper<Map<String, Object>> loseFocus(int refundNum,String OrederId,String itemId);
     
     
     //仓库发货

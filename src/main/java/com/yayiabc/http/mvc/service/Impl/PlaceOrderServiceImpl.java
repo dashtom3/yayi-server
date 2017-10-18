@@ -196,8 +196,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			double SuppliesSumPrice=0;
 			//除道邦之外的工具设备类总价格
 			double TooldevicesSumPrice=0;	
-			//存放 商品名称的 
-			StringBuffer sb=new StringBuffer();
+			
 			//全部的耗材类总价格
 			double AllSuppliesSumPrice=0;
 			//全部的工具设备类总价格
@@ -227,6 +226,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			
 			//创建订单并保存订单数据
 			placeOrderDao.createOrder(orderId,userId,order);
+			
 			
 			//将商品 同步到 订单商品表里--------双休优化  批量 插入到order_item表中
 			int a=placeOrderDao.batchSynchronization(orderItemList);
@@ -333,8 +333,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				}
 			}
 			//根据影响行数判断库存是否已经正确扣除
-			int c=placeOrderDao.updateInventNums(orderItemList);
-			System.out.println(c   +"ccccccccccccccccccccccccccccccccccccccccc");
+			placeOrderDao.updateInventNums(orderItemList);
 		}
 		return true;
 	}

@@ -104,13 +104,19 @@ public class WXPayServiceImpl implements WXPayService{
                     String outTradeNo = (String) packageParam.get("out_trade_no");
                     String orderId = wXPayDao.getOrderIdByOutTradeNo(outTradeNo);
                     HashMap<String, String> hashMap = aliPayService.queryY(orderId);
+                    System.out.println("查询出来的hashMap"+hashMap);
+                    System.out.println("开始判断订单的状态");
                     if (aliPayDao.querySatetIsTwo(orderId) == 2) {
+                        System.out.println("正确返回");
                         resXml = "<xml>" + "<return_code><![CDATA[SUCCESS]]></return_code>" + "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";
                     } else {
                         String total_fee = hashMap.get("WIDtotal_fee");//0.01
                         Double total = Double.parseDouble(total_fee);
                         Integer totalFee = (int) (total * 100);
+                        System.out.println("totalFee"+totalFee);
                         Integer totalTwo = Integer.parseInt((String) packageParam.get("total_fee"));
+                        System.out.println("totalTwo"+totalTwo);
+                        System.out.println("开始判断金额是否正确");
                         if (totalFee == totalTwo) {
                             PayAfterOrderUtil payAfterOrderUtil = BeanUtil.getBean("PayAfterOrderUtil");
                             Boolean flag = payAfterOrderUtil.universal(orderId, "1");

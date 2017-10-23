@@ -9,21 +9,10 @@ import java.io.UnsupportedEncodingException;
 
 public class Sign {
 	public static Map<String, Object> map=new HashMap<String,Object>();
-    public static void main(String[] args) {
-        String jsapi_ticket = "jsapi_ticket";
 
-        // 注意 URL 一定要动态获取，不能 hardcode
-        String url = "http://example.com";
-        Map<String, String> ret = sign(jsapi_ticket, url);
-        for (Map.Entry entry : ret.entrySet()) {
-            System.out.println(entry.getKey() + ", " + entry.getValue());
-        }
-    };
 
-    public static Map<String, String> sign(String jsapi_ticket, String url) {
+    public static Map<String, String> sign(String jsapi_ticket, String url,String nonce_str,String timestamp) {
         Map<String, String> ret = new HashMap<String, String>();
-        String nonce_str = create_nonce_str();
-        String timestamp = create_timestamp();
         String string1;
         String signature = "";
 

@@ -5,9 +5,10 @@ import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import org.apache.ibatis.annotations.Param;
+import org.springframework.stereotype.Repository;
 
 import java.util.List;
-
+@Repository
 public interface UtilsDao {
 
 	String getUserID(@Param("token")String token);

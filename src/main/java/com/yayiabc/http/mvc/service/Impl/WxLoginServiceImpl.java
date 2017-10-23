@@ -161,7 +161,7 @@ public class WxLoginServiceImpl implements WxLoginService {
                     userDao.registerUserInfo(user);
                     //微信注册完善资料时判断资质认证相关信息是否填写
                     if(user.getCertification().getType()==1){
-                        if(user.getCertification().getDoctorPic().isEmpty() || user.getCertification().getDoctorPic()==""){
+                        if(user.getCertification().getDoctorPic()==null|| "".equals(user.getCertification().getDoctorPic())){
                             user.getCertification().setState(null);
                         }else{
                             user.getCertification().setState(1);

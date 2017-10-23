@@ -39,7 +39,7 @@ public interface WxAppDao {
 
 	Integer getPhoneCount(@Param("phone")String phone);
 
-    void updateSaleUser(String saleId, String openid, String phone);
+    void updateSaleUser(@Param("saleId")String saleId,@Param("openid") String openid,@Param("phone") String phone);
 
-	void updateUser(String userId, String openid, String phone);
+	void updateUser(@Param("userId")String userId,@Param("openid") String openid,@Param("phone") String phone);
 }

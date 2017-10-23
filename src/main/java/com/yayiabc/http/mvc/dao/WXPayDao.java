@@ -4,7 +4,9 @@ import org.apache.ibatis.annotations.Param;
 
 
 import com.yayiabc.http.mvc.pojo.jpa.Charge;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface WXPayDao {
 
 	void addCharge(Charge charge);

@@ -4,6 +4,7 @@ import com.fasterxml.jackson.databind.ObjectMapper;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.enums.WXPayEnum;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.GlobalVariables;
 import com.yayiabc.common.utils.HttpUtil;
 import com.yayiabc.common.utils.QbExchangeUtil;
 import com.yayiabc.common.weixin.*;
@@ -11,6 +12,7 @@ import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.dao.WXPayDao;
 import com.yayiabc.http.mvc.pojo.jpa.Charge;
 import com.yayiabc.http.mvc.pojo.jpa.WXAppEntry;
+import com.yayiabc.http.mvc.pojo.jpa.WXEntry;
 import com.yayiabc.http.mvc.service.AliPayService;
 
 import com.yayiabc.http.mvc.service.WXPayService;
@@ -67,7 +69,7 @@ public class WXJsPayController {
         Integer totalFee=(int)(total*100);
         String body=hashMap.get("WIDsubject");
         try {
-            WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:8080/api/wxRoom/getReturnUrl",false,true);
+            WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), GlobalVariables.domain+"/api/wxRoom/getReturnUrl",false,true);
             Map<String,String> reqData =new HashMap<String,String>();
             if(body!=null&&!"".equals(body)){
                 reqData.put("body",body);//必传
@@ -99,14 +101,42 @@ public class WXJsPayController {
             System.out.println(respMap);
             SortedMap<String, String> parameterMap = new TreeMap<String, String>();
             String packages = "prepay_id="+respMap.get("prepay_id");
-            parameterMap.put("appid", WXPayConfigImpl.getInstance().getAppID());
-            parameterMap.put("timeStamp",String.valueOf(System.currentTimeMillis()/1000));
+            parameterMap.put("appId", WXPayConfigImpl.getInstance().getAppID());
+//            parameterMap.put("mch_id", "1377180402");
+            parameterMap.put("timeStamp",String.valueOf(System.currentTimeMillis()/1000));//原先的  90d4bae1c1843cec9aff6b4533f05881
             parameterMap.put("nonceStr", WXPayUtil.generateNonceStr());
             parameterMap.put("package", packages);
             parameterMap.put("signType", WXPayConstants.MD5);
             String sign=WXPayUtil.generateSignature(parameterMap,WXPayConfigImpl.getInstance().getKey(),WXPayConstants.SignType.MD5);
-            System.out.println(sign);
-            WXAppEntry wxAppEntry =new WXAppEntry(parameterMap.get("appid"),Long.parseLong(parameterMap.get("timeStamp")),parameterMap.get("partnerid"),respMap.get("prepay_id"),parameterMap.get("nonceStr"),sign);
+//            parameterMap.put("sign", WXPayUtil.generateSignature(parameterMap, "xiaojiangxiaojiangxiaojiangjiang",WXPayConstants.SignType.MD5));
+//            parameterMap.put("paySign",parameterMap.get("sign") );
+
+            WXAppEntry wxAppEntry =new WXAppEntry(parameterMap.get("appId"),Long.parseLong(parameterMap.get("timeStamp")),respMap.get("partnerid"),respMap.get("prepay_id"),parameterMap.get("nonceStr"),sign);
+            System.out.println("...................."+wxAppEntry);
+            //获取签名
+            String url="wap.yayiabc.com";
+            Map<String, Object> cache=Sign.map;
+            WXEntry wXEntry =new WXEntry();
+            wXEntry.setAppId("wx4b1a6fde77626a32");
+            //1.获取ACCESS_token,
+            Long dateTime=(Long)cache.get("date");
+            String jsapi_ticket="";
+            if(!cache.isEmpty()&&dateTime!=null&&(new Date().getTime()-dateTime<7200000)){
+                jsapi_ticket=(String)cache.get("jsapi_ticket");
+            }else{
+                Map<String, Object> map=HttpUtil.sendGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx4b1a6fde77626a32&secret=90d4bae1c1843cec9aff6b4533f05881");
+                String access_token=(String)map.get("access_token");
+                //https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi
+                //2.生成jsapi_ticket
+                Map<String, Object> mapTwo=HttpUtil.sendGet("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+access_token+"&type=jsapi");
+                jsapi_ticket=(String)mapTwo.get("ticket");
+                cache.put("jsapi_ticket",jsapi_ticket);
+                cache.put("date",System.currentTimeMillis());
+            }
+            System.out.println(jsapi_ticket);
+            String signature =Sign.sign(jsapi_ticket,url,parameterMap.get("nonceStr"),parameterMap.get("timeStamp")).get("signature");
+            System.out.println(signature);
+            wxAppEntry.setPartnerid(signature);
             dataWrapper.setData(wxAppEntry);
         } catch (Exception e) {
             String msg="服务器错误";
@@ -148,12 +178,14 @@ public class WXJsPayController {
         wXPayDao.deleteChargeByToken(utilsDao.getUserID(token));
         wXPayDao.addCharge(charge);
         try {
-            WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:8080/api/wxRoom/getChargeReturnUrl",false,true);
+            WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), GlobalVariables.domain+"/api/wxRoom/getChargeReturnUrl",false,true);
             Map<String,String> reqData =new HashMap<String,String>();
             reqData.put("body","qb");//必传
             reqData.put("out_trade_no",chargeId);
             reqData.put("fee_type", "CNY");
-            System.out.println(totalFee+"总价");
+
+
+
             reqData.put("total_fee",totalFee);//必传,总金额,接口中单位为分,对账单中的单位为元,必须为整数,可以通过参数传进来
             reqData.put("spbill_create_ip",request.getRemoteAddr());//终端ip,必传,APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP。
             reqData.put("trade_type","JSAPI");//必传,现场扫码付
@@ -175,7 +207,30 @@ public class WXJsPayController {
            
             WXAppEntry wxAppEntry =new WXAppEntry(parameterMap.get("appId"),Long.parseLong(parameterMap.get("timeStamp")),respMap.get("partnerid"),respMap.get("prepay_id"),parameterMap.get("nonceStr"),sign);
             System.out.println("...................."+wxAppEntry);
-          
+            //获取签名
+            String url="wap.yayiabc.com";
+            Map<String, Object> cache=Sign.map;
+            WXEntry wXEntry =new WXEntry();
+            wXEntry.setAppId("wx4b1a6fde77626a32");
+            //1.获取ACCESS_token,
+            Long dateTime=(Long)cache.get("date");
+            String jsapi_ticket="";
+            if(!cache.isEmpty()&&dateTime!=null&&(new Date().getTime()-dateTime<7200000)){
+                jsapi_ticket=(String)cache.get("jsapi_ticket");
+            }else{
+                Map<String, Object> map=HttpUtil.sendGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx4b1a6fde77626a32&secret=90d4bae1c1843cec9aff6b4533f05881");
+                String access_token=(String)map.get("access_token");
+                //https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token=ACCESS_TOKEN&type=jsapi
+                //2.生成jsapi_ticket
+                Map<String, Object> mapTwo=HttpUtil.sendGet("https://api.weixin.qq.com/cgi-bin/ticket/getticket?access_token="+access_token+"&type=jsapi");
+                jsapi_ticket=(String)mapTwo.get("ticket");
+                cache.put("jsapi_ticket",jsapi_ticket);
+                cache.put("date",System.currentTimeMillis());
+            }
+            System.out.println(jsapi_ticket);
+            String signature =Sign.sign(jsapi_ticket,url,parameterMap.get("nonceStr"),parameterMap.get("timeStamp")).get("signature");
+            System.out.println(signature);
+            wxAppEntry.setPartnerid(signature);
             dataWrapper.setData(wxAppEntry);
         } catch (Exception e) {
             String msg="服务器错误";
@@ -221,5 +276,18 @@ public class WXJsPayController {
     @ResponseBody
     public void getChargeReturnUrl(HttpServletRequest request,HttpServletResponse response) throws Exception{
         wxPayService.callBack(request,response, WXPayEnum.QB_JS);
+    }
+
+    /**
+     * 下订单付款完成后接收微信系统发送的回掉的请求
+     * @param request
+     * @param response
+     * @return
+     * @throws Exception
+     */
+    @RequestMapping("getReturnUrl")
+    @ResponseBody
+    public void getReturnUrl(HttpServletRequest request,HttpServletResponse response) throws Exception{
+        wxPayService.callBack(request,response,WXPayEnum.ORDER_JS);
     }
 }

@@ -261,7 +261,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			//userMyQbService.add(q, token);
 
 			//退回钱币数
-			if(order.getActualPay()>refundSumPrice){
+			if(order.getActualPay()>=refundSumPrice){
 				//退钱refundSumPrice
 
 				int states=orderManagementDao.saveRefundMessage(order.getUserId(),haoCaiRefundSumMoney,ToolRefundSumMoney,

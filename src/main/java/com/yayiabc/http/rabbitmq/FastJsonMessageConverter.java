@@ -11,10 +11,6 @@ import org.springframework.amqp.support.converter.MessageConversionException;
 
 import java.io.UnsupportedEncodingException;
 
-
-
-
-  
   
 public class FastJsonMessageConverter extends AbstractMessageConverter {  
   

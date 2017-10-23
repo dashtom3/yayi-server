@@ -3,6 +3,8 @@ package com.yayiabc.http.mvc.controller.user;
 import java.util.ArrayList;
 import java.util.HashMap;
 
+import javax.servlet.http.HttpServletRequest;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ControllerAdvice;
@@ -82,7 +84,6 @@ public class PlaceOrderController {
 		JSONArray json = JSONArray.fromObject(orderItem);
 		ArrayList<OrderItem> orderItemList = (ArrayList<OrderItem>)JSONArray.toCollection(json,OrderItem.class);
 		//接入 支付   订单号  商品名称    付款金额    商品描述
-		
 		return placeOrderService.generaOrder(token,orderItemList,order,invoice);
 	}
 	//提交订单前显示上次填写发票信息

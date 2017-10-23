@@ -126,14 +126,14 @@ public class PayAfterOrderUtil {
 		String qbDes=null;
 		StringBuffer sb=new StringBuffer();
 		StringBuilder sb1=new StringBuilder();
-		String s=null;
+		String qbRout=null;
 		for(int i=0;i<listData.size();i++){
 			
 			if(listData.get(i)>=DedNum){
 				System.out.println(listData.get(i)+"   "+DedNum);
 				sb1.append(DedNum+",");
 				qbDes=sb1.toString();
-				s=sb.toString()+ut(i)+DedNum+"个";
+				qbRout=sb.toString()+ut(i)+DedNum+"个";
 				DedNum=listData.get(i)-DedNum;
 				listData.set(i, DedNum);
 				break;
@@ -145,18 +145,41 @@ public class PayAfterOrderUtil {
 				listData.set(i, 0);
 			}
 		} 
-		System.err.println(qbDes);
-		System.err.println(listData);
 		/*Calendar Cld = Calendar.getInstance();
 		int MI = Cld.get(Calendar.MILLISECOND);*/
 		
-		userMyQbService.updateDataToUser(listData,userId); //更改user 表  各种钱币类型
+		//userMyQbService.updateDataToUser(listData,userId); //更改user 表  各种钱币类型
 		//查询乾币余额
 		Integer userQbNum=userMyQbDao.getUserQbNum(userId);
-		userMyQbService.addMessageQbQ(s,userId,"下单使用"+a+"个乾币。（乾币余额："+userQbNum+"）订单编号："+orderId,System.nanoTime()); //新增钱币记录表   
+		QbRecord qr=new QbRecord();
+		qr.setQbRout(qbRout);
+		//根据orderId  来判断这个方法的使用。---代加 
+		qr.setRemark("下单使用"+a+"个乾币。（乾币余额："+userQbNum+"）订单编号："+orderId);
+		qr.setMillisecond(System.nanoTime());
+		addQbRecord(listData,userId,qr);
+		//userMyQbService.addMessageQbQ(qbRout,userId,"下单使用"+a+"个乾币。（乾币余额："+userQbNum+"）订单编号："+orderId,System.nanoTime()); //新增钱币记录表   
 		return mosaicString(qbDes);
 	}
-	
+	/**
+	 * 增加乾币记录工具类（更改用户乾币）
+	 * listData，0下标是qb_balance，1下标是a_qb，2下标是b_qb，3下标是c_qb
+	 * userId，用户id
+	 * 
+	 * @return
+	 */
+	public  boolean addQbRecord(List<Integer> listData,String userId,QbRecord qr){
+		//更改用户乾币
+		int i=userMyQbService.updateDataToUser(listData,userId);
+		//查询乾币余额
+		//int ii=userMyQbDao.getUserQbNum(userId);
+	    //增加乾币记录
+	 
+	   int iii=userMyQbService.addMessageQbQ(qr.getQbRout(),userId,qr.getRemark(),qr.getMillisecond());
+	   if(i+iii>=2){
+		   return true;
+	   }
+		return false;
+	}
 	private String ut(int i){
 		 switch (i) {
 		case 0:
@@ -180,7 +203,7 @@ public class PayAfterOrderUtil {
 	 */
 	public boolean SecurityVerification(String out_trade_no,String amount,String payType){
 		//充值乾币安全检查
-		if("zfb".equals(out_trade_no.substring(0, 3))||"wx".equals(out_trade_no.substring(0, 2))){
+		if("zfb".equals(out_trade_no.substring(0, 3))/*||"wx".equals(out_trade_no.substring(0, 2))*/){
 			Charge charge=aliPayDao.queryUserId(out_trade_no);
 			 System.out.println(out_trade_no);
 			 System.out.println("123123123213   "+charge);
@@ -208,9 +231,8 @@ public class PayAfterOrderUtil {
 					q.setRemark(zh(charge.getQbType())+"乾币充值"+charge.getQbNum()+"个。");
 					System.out.println(q);
 					
-					Calendar Cld = Calendar.getInstance();
-					int MI = Cld.get(Calendar.MILLISECOND);		//获取毫秒
-					q.setMillisecond(MI);
+					//获取毫秒
+					q.setMillisecond(System.nanoTime());
 					
 					//这里手动的  更改用户钱币 与 增加钱币记录   1更改用户钱币   2增加钱币记录
 					userMyQbDao.updateUserQb(String.valueOf(charge.getQbNum()), charge.getToken(), charge.getQbType());  //1
@@ -220,7 +242,6 @@ public class PayAfterOrderUtil {
 		 			q.setRemark(zh(charge.getQbType())+"乾币充值"+charge.getQbNum()+"个。（乾币余额："+userQbNum+"个）");
 					userMyQbDao.add(q);
 					//userMyQbService.add(q, token);
-					System.out.println(3);
 					return true;
 				}/*else{
 					//这里是不是应该 把state状态重置为1

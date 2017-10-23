@@ -290,7 +290,8 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 					//订单状态改为交易关闭
 					orderDetailsDao.cancel(itemList.get(0).getOrderId(),order.getUserId());
 				}
-				
+				//扣除钱币
+				dedQb(dedQbNum,order);
 			}else if(order.getActualPay()<refundSumPrice){
 				//退钱order.getActualPay()
 				//保存到退款表里
@@ -358,7 +359,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		QbRecord q=new QbRecord();
 		
 		
-		q.setQbRout("\"赠\"乾币   "+dedQbNum+"个");
+		q.setQbRout("\"赠\" "+dedQbNum+"个");
 		q.setQbType("qb_balance");
 		q.setUserId(order.getUserId());
 		
@@ -435,7 +436,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		//通过orderId查找到userId
-		String userId=orderManagementDao.queryUserId(orderId);
+		//String userId=orderManagementDao.queryUserId(orderId);
 		int state =orderManagementDao.warehouseDelivery(orderId,logisticsName,logisticsCode);
 		if(state>0){
 			dataWrapper.setMsg("操作成功");

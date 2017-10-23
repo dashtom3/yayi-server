@@ -3,6 +3,8 @@ package com.yayiabc.http.mvc.service.Impl;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
+import java.util.regex.Matcher;
+import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -149,6 +151,12 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			Invoice  invoice
 			) {
 		//判断  乾币！！！、
+		  Pattern pattern = Pattern.compile("[0-9]*"); 
+		   Matcher isNum = pattern.matcher(order.getQbDed()+"");
+		   if( !isNum.matches() ){
+		       return null; 
+		   } 
+		   
 		if(order.getQbDed()==null){
 			order.setQbDed(0);
 		}
@@ -338,6 +346,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			int state=placeOrderDao.updateInventNums(orderItemList);
 			//乐观锁 解决一致性与并发性的矛盾
 			if(state==0){
+			   System.out.println("乐观锁,false");
 				return false;
 			}
 		}

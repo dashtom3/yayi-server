@@ -7,7 +7,9 @@ import org.apache.ibatis.annotations.Param;
 import com.yayiabc.http.mvc.pojo.jpa.Charge;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface AliPayDao {
      //更改 订单状态
 	int updateStateAndPayTime(@Param("orderId")String orderId);

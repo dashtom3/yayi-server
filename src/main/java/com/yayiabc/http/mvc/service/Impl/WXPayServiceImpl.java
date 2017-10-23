@@ -137,13 +137,19 @@ public class WXPayServiceImpl implements WXPayService{
                             QbRecord qbRecord = new QbRecord();
 //                            qbRecord.setQbRget(String.valueOf(charge.getQbNum()));
                             qbRecord.setQbType(charge.getQbType());
+                            qbRecord.setUserId(userId);
+                            qbRecord.setMillisecond(System.nanoTime());
                             String zh=zh(charge.getQbType());
                             qbRecord.setQbRget(zh+":"+String.valueOf(charge.getQbNum())+"个");
+                            qbRecord.setRemark(zh(charge.getQbType())+"乾币充值"+charge.getQbNum()+"个。");
+                            userMyQbDao.updateUserQb(String.valueOf(charge.getQbNum()), charge.getToken(), charge.getQbType());
 //                            qbRecord.setRemark(zh+"乾币充值" + charge.getQbNum()+"个");
                             //----为了获取钱币余额。。。。。
-                            Integer userQbNum=userMyQbDao.getUserQbNum(charge.getToken())+charge.getQbNum();
+                            Integer userQbNum=userMyQbDao.getUserQbNum(charge.getToken());
+
                             qbRecord.setRemark(zh+"乾币充值"+charge.getQbNum()+"个。（乾币余额："+userQbNum+"个）");
-                            userMyQbService.add(qbRecord, token);
+                            userMyQbDao.add(qbRecord);
+//                            userMyQbService.add(qbRecord, token);
                             wXPayDao.updateChargeState(chargeId);
                             resXml = "<xml>" + "<return_code><" +
                                     "![CDATA[SUCCESS]]></return_code>" + "<return_msg><![CDATA[OK]]></return_msg>" + "</xml> ";

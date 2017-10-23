@@ -3,6 +3,7 @@ package com.yayiabc.http.mvc.controller.weixin;
 import com.yayiabc.common.enums.WXPayEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.GetQCode;
+import com.yayiabc.common.utils.GlobalVariables;
 import com.yayiabc.common.utils.QbExchangeUtil;
 import com.yayiabc.common.weixin.WXPay;
 import com.yayiabc.common.weixin.WXPayConfigImpl;
@@ -68,7 +69,7 @@ public class WXPayController {
 		Integer totalFee=(int)(total*100);
 		String body=hashMap.get("WIDsubject");
 		try {
-			WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:8080/api/weixin/getReturnUrl");
+			WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), GlobalVariables.domain+"/api/weixin/getReturnUrl");
 			Map<String,String> reqData =new HashMap<String,String>();
 			if(body!=null&&!"".equals(body)){
 				reqData.put("body",body);//必传
@@ -148,7 +149,7 @@ public class WXPayController {
 		wXPayDao.deleteChargeByToken(utilsDao.getUserID(token));
 		wXPayDao.addCharge(charge);
 		try {
-			WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), "http://47.93.48.111:8080/api/weixin/getChargeReturnUrl");
+			WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), GlobalVariables.domain+"/api/weixin/getChargeReturnUrl");
 			Map<String,String> reqData =new HashMap<String,String>();
 			reqData.put("body","乾币充值");//必传
 			reqData.put("out_trade_no",chargeId);

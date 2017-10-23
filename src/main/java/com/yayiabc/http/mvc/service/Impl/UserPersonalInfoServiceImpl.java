@@ -110,9 +110,9 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 		}else{
 			if(state==1){
 				List<String> list=userPersonalInfoDao.queryBind(userId);
-				map.put("isBindSale", list.get(0));
-				map.put("saleName", list.get(1));
-				map.put("salePhone",list.get(2));
+					map.put("isBindSale", list.get(0));
+					map.put("saleName", list.get(1));
+					map.put("salePhone",list.get(2));
 				dataWrapper.setData(map);
 			}else{
 				map=userPersonalInfoDao.querySale(salePhone);

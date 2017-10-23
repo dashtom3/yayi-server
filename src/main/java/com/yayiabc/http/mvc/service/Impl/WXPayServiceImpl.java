@@ -118,8 +118,11 @@ public class WXPayServiceImpl implements WXPayService{
                         System.out.println("totalTwo"+totalTwo);
                         System.out.println("开始判断金额是否正确");
                         if (totalFee == totalTwo) {
+                            System.out.println("金额相等");
                             PayAfterOrderUtil payAfterOrderUtil = BeanUtil.getBean("PayAfterOrderUtil");
+                            System.out.println("payAfterOrderUtil:"+payAfterOrderUtil);
                             Boolean flag = payAfterOrderUtil.universal(orderId, "1");
+                            System.out.println("flag"+flag);
                             if (flag) {
                                 //这里是支付成功
                                 System.out.println("支付成功"+wxPayEnum);

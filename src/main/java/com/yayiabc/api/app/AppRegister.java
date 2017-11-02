@@ -8,7 +8,7 @@ public interface AppRegister {
      * @apiVersion 0.1.0
      * @apiDescription 查看或者修改用户信息
      *
-     * @apiParam {String} trueName 真实姓名（必须）
+     * @apiParam {String} [trueName=zhangsan] 真实姓名
      * @apiParam {String} birthday 生日 yyyy-MM-dd（必须）
      * @apiParam {Integer} sex 性别 1.男 2.女  (必须)
      * @apiParam {Integer} certification.type 类型 1.个人 2.机构（必须）

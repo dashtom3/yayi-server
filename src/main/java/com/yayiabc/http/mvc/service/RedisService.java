@@ -1,4 +1,12 @@
-package com.yayiabc.common.utils;
+package com.yayiabc.http.mvc.service;
+
+import org.springframework.stereotype.Service;
+import redis.clients.jedis.BinaryClient.LIST_POSITION;
+import redis.clients.jedis.Jedis;
+import redis.clients.jedis.JedisPool;
+import redis.clients.jedis.JedisPoolConfig;
+import redis.clients.jedis.SortingParams;
+import redis.clients.util.SafeEncoder;
 
 import java.util.List;
 import java.util.Map;
@@ -6,39 +14,32 @@ import java.util.Set;
 
 //import org.apache.log4j.Logger;
 
-
-import redis.clients.jedis.Jedis;
-import redis.clients.jedis.JedisPool;
-import redis.clients.jedis.JedisPoolConfig; 
-import redis.clients.jedis.SortingParams;
-import redis.clients.jedis.BinaryClient.LIST_POSITION;
-import redis.clients.util.SafeEncoder;
-
 /**
  * @author Mr.hu
  * @version crateTime：2013-10-30 下午5:41:30
  * Class Explain:JedisUtil  
  */
-public class RedisClient { 
-	
-	 //private Logger log = Logger.getLogger(this.getClass());  
+@Service("redisService")
+public class RedisService {
+
+	 //private Logger log = Logger.getLogger(this.getClass());
 	 /**缓存生存时间 */
 	 private final int expire = 60000;
 	 /** 操作Key的方法 */
-	 public Keys KEYS;
+	 public Keys KEYS=new Keys();
 	 /** 对存储结构为String类型的操作 */
-	 public Strings STRINGS;
+	 public Strings STRINGS=new Strings();
 	 /** 对存储结构为List类型的操作 */
-	 public Lists LISTS;
+	 public Lists LISTS=new Lists();
  	 /** 对存储结构为Set类型的操作 */
-	 public Sets SETS;
+	 public Sets SETS=new Sets();
 	 /** 对存储结构为HashMap类型的操作 */
-	 public Hash HASH;
+	 public Hash HASH=new Hash();
 	 /** 对存储结构为Set(排序的)类型的操作 */
-	 public SortSet SORTSET;
-	 private static JedisPool jedisPool = null;  
-		 
-	 private RedisClient() {   
+	 public SortSet SORTSET=new SortSet();
+	 private static JedisPool jedisPool = null;
+
+	 private RedisService() {
 		
 	 } 
      static {  
@@ -59,7 +60,7 @@ public class RedisClient {
             		10000,"123456");    
             
             //redis未设置了密码：
-           //jedisPool = new JedisPool(config, "172.30.37.73",6379); 
+           //jedisPool = new JedisPool(config, "172.30.37.73",6379);
 	   }
      
  	public JedisPool getPool() {  
@@ -75,14 +76,14 @@ public class RedisClient {
  	}
      
      
-     private static final RedisClient jedisUtil = new RedisClient();
+     private static final RedisService jedisUtil = new RedisService();
 	 
  
     /**
      * 获取JedisUtil实例
      * @return
      */
-    public static RedisClient getInstance() {
+    public static RedisService getInstance() {
 		return jedisUtil; 
 	}
 

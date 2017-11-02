@@ -1,0 +1,79 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.MomentManageDao">
+	<insert id="addLower" parameterType="Moment" useGeneratedKeys="true" keyProperty="momentId">
+		insert into moment(user_name,user_id,moment_content,moment_picture,moment_type)
+		VALUE (#{userName},#{userId},#{momentContent},#{momentPicture},#{momentType})
+	</insert>
+
+	<insert id="addHigh" parameterType="Moment" useGeneratedKeys="true" keyProperty="momentId">
+		insert into moment(user_name,user_id,moment_content_id,moment_content_title,moment_type)
+		VALUE (#{userName},#{userId},#{momentContentId},#{momentContentTitle},#{momentType})
+	</insert>
+
+	<delete id="deleteMoment">
+		delete from moment where moment_id=#{momentId}
+	</delete>
+
+	<delete id="deleteMomentComment">
+		delete from moment_comment where moment_id=#{momentId}
+	</delete>
+
+	<select id="getMomentTotalNumber" resultType="int">
+		select count(0) from moment
+	</select>
+
+	<resultMap id="moment" type="Moment" autoMapping="true">
+		<id property="momentId" column="moment_id"/>
+		<collection property="momentCommentList" ofType="MomentComment" autoMapping="true">
+			<id property="momentCommentId" column="moment_comment_id"/>
+			<collection property="subMomentCommentList" ofType="SubMomentComment" autoMapping="true" >
+				<id property="subMomentCommentId" column="sub_moment_comment_id"/>
+			</collection>
+		</collection>
+	</resultMap>
+
+
+	<select id="queryList" resultMap="moment">
+		SELECT
+		d.*,c.moment_comment_id AS sub_moment_comment_id,
+		c.moment_comment_content AS sub_moment_comment_content,
+		c.user_id AS sub_userId,
+		c.user_name AS sub_user_name,
+		c.reply_user_id AS sub_reply_userId,
+		c.reply_user_name AS sub_reply_user_name
+		FROM
+		(SELECT a.*,b.moment_comment_id,b.moment_comment_content,b.user_id AS comment_userId,b.user_name AS comment_user_name,b.upvote FROM
+		(SELECT * from moment order by moment_time desc limit #{currentNumber},#{numberPerPage}) a
+		LEFT JOIN moment_comment b ON a.moment_id=b.moment_id WHERE  b.moment_comment_previous_id IS NULL) d
+		LEFT JOIN moment_comment c ON d.moment_id=c.moment_id AND c.moment_comment_previous_id IS NOT NULL
+	</select>
+
+
+	<insert id="addComment">
+		insert into moment_comment(moment_id,moment_comment_content,moment_comment_previous_id,user_id,user_name,reply_user_id,reply_user_name)
+		VALUE (#{momentId},#{momentCommentContent},#{momentCommentPreviousId},#{usrId},#{userName},#{replyUserId},#{replyUserName})
+	</insert>
+
+	<delete id="deleteComment">
+		delete from moment_comment where moment_comment_id=#{momentCommentId} or moment_comment_previous_id=#{momentCommentId}
+	</delete>
+
+	<select id="querySubCommentList" resultType="SubMomentComment">
+		select
+		moment_comment_id AS sub_moment_comment_id,
+		moment_comment_content AS sub_moment_comment_content,
+		user_id AS sub_user_id,
+		user_name AS sub_user_name,
+		reply_user_id AS sub_reply_user_id,
+		reply_user_name AS sub_reply_user_name
+		FROM moment_comment where moment_comment_previous_id=#{momentCommentId}
+	</select>
+
+	<update id="upvote">
+		update moment_comment set upvote+=1 where moment_comment_id=#{momentCommentId}
+	</update>
+
+</mapper>       

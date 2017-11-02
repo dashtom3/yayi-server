@@ -5,7 +5,7 @@ import com.yayiabc.http.mvc.pojo.jpa.User;
 
 public interface UserService {
 
-	DataWrapper<Void> getVerifyCode(String phone);
+	DataWrapper<Void> getVerifyCode(String phone,Integer type);
 
 	DataWrapper<User> register(String phone, String password, String code,String openid);
 

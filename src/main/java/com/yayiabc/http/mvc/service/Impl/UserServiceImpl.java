@@ -40,8 +40,13 @@ public class UserServiceImpl implements UserService {
     private TokenService tokenService;
 
 
-    public DataWrapper<Void> getVerifyCode(String phone) {
+    public DataWrapper<Void> getVerifyCode(String phone,Integer type) {
         DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
+        ErrorCodeEnum errorCodeEnum=checkState(phone,type);
+        if(errorCodeEnum!=null){
+            dataWrapper.setErrorCode(errorCodeEnum);
+            return dataWrapper;
+        }
         String code = VerifyCodeManager.newPhoneCode(phone);
         if (code == null) {
             dataWrapper.setErrorCode(ErrorCodeEnum.Verify_Code_5min);
@@ -49,14 +54,37 @@ public class UserServiceImpl implements UserService {
             return dataWrapper;
         }
         boolean result = HttpUtil.sendPhoneVerifyCode(code, phone);
-        if (result) {
-            dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-            dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
-        } else {
+        if (!result) {
             dataWrapper.setErrorCode(ErrorCodeEnum.Error);
             dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());
         }
         return dataWrapper;
+    }
+
+    //判断用户是否已经注册
+    public boolean checkIfRegistered(String phone){
+        boolean flag=true;
+        if (userDao.getUserByPhone(phone) == null) {
+            flag=false;
+        }
+        return flag;
+    }
+
+    //判断两种情况下,是否发送消息
+    public ErrorCodeEnum checkState(String phone,Integer type){
+        boolean flag=checkIfRegistered(phone);
+        if(type!=null){
+            if(type==1){//注册时发送验证码
+                if(flag){
+                    return ErrorCodeEnum.Username_Already_Exist;
+                }
+            }else if(type==2){//登录时发送的验证码
+                if(!flag){
+                    return ErrorCodeEnum.Username_NOT_Exist;
+                }
+            }
+        }
+        return null;
     }
     
    
@@ -113,18 +141,11 @@ public class UserServiceImpl implements UserService {
                 int num = userDao.getCartNum(user);
                 dataWrapper.setNum(num);
                 String token =tokenService.getToken(user.getUserId());
-                if (SessionManager.getSessionByUserID(user.getUserId()) == null) {
-                    String sessionKey = SessionManager.newSession(user);
-                    dataWrapper.setToken(token);
-                    //返回资质审核状态
-                    int cercount=userDao.getCertificationCount(user.getUserId());
-                    dataWrapper.setMsg(cercount+"");
-                    return dataWrapper;
-                } else {
-                    dataWrapper.setMsg("该账户已经登录");
-                    dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-                    return dataWrapper;
-                }
+                dataWrapper.setToken(token);
+                //返回资质审核状态
+                int cercount=userDao.getCertificationCount(user.getUserId());
+                dataWrapper.setMsg(cercount+"");
+                return dataWrapper;
         } else {
             dataWrapper.setErrorCode(ErrorCodeEnum.Username_NOT_Exist);
             dataWrapper.setMsg(dataWrapper.getErrorCode().getLabel());

@@ -10,7 +10,7 @@ import com.yayiabc.http.mvc.pojo.jpa.VidManage;
 
 public interface VideoManageService {
      //show
-	DataWrapper<List<VidManage>>  showVid();
+	DataWrapper<List<VidManage>>  showVid(Integer rule,Integer videoCategory,Integer currentPage,Integer numberPerPage);
 	  //update
 	DataWrapper<Void> updateVid(VidManage vidManage);
 	//insert 

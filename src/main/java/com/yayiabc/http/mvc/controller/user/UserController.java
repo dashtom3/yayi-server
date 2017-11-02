@@ -22,8 +22,11 @@ public class UserController {
 	//获取验证码
 	@RequestMapping("getVerifyCode")
 	@ResponseBody
-	public DataWrapper<Void> getVerifyCode(@RequestParam(value = "phone", required = true) String phone) {
-	        return userService.getVerifyCode(phone);
+	public DataWrapper<Void> getVerifyCode(
+			@RequestParam(value = "phone", required = true) String phone,
+			@RequestParam(value="type",required = false) Integer type
+			) {
+	        return userService.getVerifyCode(phone,type);
 	}
 	
 	//用户注册

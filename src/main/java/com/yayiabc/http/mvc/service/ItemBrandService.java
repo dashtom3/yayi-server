@@ -17,5 +17,7 @@ public interface ItemBrandService{
     public  DataWrapper<ItemInfo> itemDetailDes(String itemId,String token);
 
 	public DataWrapper<List<ItemShow>> itemShow();
+
+
 }
 

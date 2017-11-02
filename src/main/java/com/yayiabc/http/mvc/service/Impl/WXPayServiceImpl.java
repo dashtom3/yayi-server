@@ -117,7 +117,7 @@ public class WXPayServiceImpl implements WXPayService{
                         Integer totalTwo = Integer.parseInt((String) packageParam.get("total_fee"));
                         System.out.println("totalTwo"+totalTwo);
                         System.out.println("开始判断金额是否正确");
-                        if (totalFee == totalTwo) {
+                        if (totalFee .equals(totalTwo)) {
                             System.out.println("金额相等");
                             PayAfterOrderUtil payAfterOrderUtil = BeanUtil.getBean("PayAfterOrderUtil");
                             System.out.println("payAfterOrderUtil:"+payAfterOrderUtil);

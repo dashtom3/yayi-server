@@ -5,21 +5,12 @@
 
 <mapper namespace="com.yayiabc.http.mvc.dao.VideoManageDao">
 
-	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.VidManage" id="c">
-		<id column="vi_id" property="viId" />
-		<result column="video_name" property="vidName" />
-		<result column="video_type" property="videoType" />
-		<result column="video_route" property="vidRoute" />
-	</resultMap>
-	<select id="showVid" resultMap="c">
-		select * from vid_manage
-	</select>
 
-	<insert id="insertVid" parameterType="com.yayiabc.http.mvc.pojo.jpa.VidManage">
-		<if test="vidManage!=null">
-			insert into vid_manage(video_name,video_type,video_route)
-			values(#{vidManage.vidName},#{vidManage.videoType},#{vidManage.vidRoute})
-		</if>
+
+
+	<insert id="insertVid" parameterType="VidManage" useGeneratedKeys="true" keyProperty="viId">
+			insert into vid_manage(video_name,video_route,video_category)
+			values(#{vidName},#{vidRoute},#{videoCategory})
 	</insert>
 
 	<update id="updateVid" parameterType="com.yayiabc.http.mvc.pojo.jpa.VidManage">
@@ -34,14 +25,50 @@
 			<if test="vidRoute!=null">
 				video_route=#{vidRoute},
 			</if>
-		</set>
-		<where>
-			<if test="viId!=null">
-				vi_id=#{viId}
+			<if test="videoCategory!=null">
+				video_category=#{videoCategory}
 			</if>
-		</where>
+		</set>
+		where vi_id=#{viId}
 	</update>
 	<delete id="deleteVid">
 		delete from vid_manage where vi_id= #{viId}
 	</delete>
+
+	<delete id="deleteVedioComment">
+		delete from vedio_comment where vi_id=#{viId}
+	</delete>
+
+	<select id="getTotalNumber" resultType="int">
+		select count(*) from vid_manage
+		<where>
+			<if test="videoCategory!=null and videoCategory!=6">
+				video_category=#{videoCategory}
+			</if>
+		</where>
+	</select>
+
+	<resultMap id="videoRM" type="VidManage" autoMapping="true">
+		<id property="viId" column="vi_id"/>
+		<collection property="vedioCommentList" select="showVidComment" column="vi_id" ofType="VedioComment"/>
+	</resultMap>
+
+	<select id="showVid" resultMap="videoRM">
+		select * from vid_manage
+		<where>
+			<if test="videoCategory!=null and videoCategory!=6">
+				video_category=#{videoCategory}
+			</if>
+		</where>
+		order by 
+		<choose>
+			<when test="rule==1">vedio_play_number desc</when>
+			<when test="rule==2">vedio_comment_number desc</when>
+			<otherwise>vedio_time DESC </otherwise>
+		</choose>
+	</select>
+
+	<select id="showVidComment" resultType="VedioComment">
+		select * FROM  vedio_comment where vi_id=#{vi_id}
+	</select>
 </mapper>

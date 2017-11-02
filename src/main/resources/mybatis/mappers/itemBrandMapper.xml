@@ -273,4 +273,6 @@ q.stock_num,q.item_value_id FROM
 	<select id="getCommentNumber" resultType="java.lang.Integer">
 		select count(0) from comments where item_id=#{itemId}
 	</select>
+
+
 </mapper>       

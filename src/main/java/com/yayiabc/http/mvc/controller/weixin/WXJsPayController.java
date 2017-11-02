@@ -180,7 +180,7 @@ public class WXJsPayController {
         try {
             WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), GlobalVariables.domain+"/api/wxRoom/getChargeReturnUrl",false,true);
             Map<String,String> reqData =new HashMap<String,String>();
-            reqData.put("body","qb");//必传
+            reqData.put("body","乾币充值");//必传
             reqData.put("out_trade_no",chargeId);
             reqData.put("fee_type", "CNY");
 

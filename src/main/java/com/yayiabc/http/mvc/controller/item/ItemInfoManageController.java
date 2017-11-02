@@ -6,10 +6,13 @@ package com.yayiabc.http.mvc.controller.item;
 import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.enums.ErrorCodeEnum;
+import com.yayiabc.common.listener.MyServletContextListener;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.ItemIdUtils;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
 import com.yayiabc.http.mvc.service.ItemInfoManageService;
+import org.apache.log4j.LogManager;
+import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -19,6 +22,8 @@ import java.util.List;
 @Controller
 @RequestMapping("api/item")
 public class ItemInfoManageController {
+
+	private Logger logger= LogManager.getLogger(ItemInfoManageController.class);
 	@Autowired
 	private ItemInfoManageService itemInfoManageService;
 	/**
@@ -102,6 +107,8 @@ public class ItemInfoManageController {
 	public DataWrapper<Void> getItemId(){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		String itemId;
+		logger.debug("log日志");
+		logger.error("log错误日志");
 		synchronized (this){
 			try {
 				Thread.sleep(1000);

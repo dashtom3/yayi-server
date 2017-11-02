@@ -167,7 +167,7 @@ public class WxLoginServiceImpl implements WxLoginService {
                             user.getCertification().setState(1);
                         }
                     }else if(user.getCertification().getType()==2){
-                        if(user.getCertification().getMedicalLicense().isEmpty() ||user.getCertification().getBusinessLicense().isEmpty() ||user.getCertification().getTaxRegistration().isEmpty()
+                        if(user.getCertification().getMedicalLicense()==null||user.getCertification().getBusinessLicense()==null ||user.getCertification().getTaxRegistration()==null
                                 ||user.getCertification().getMedicalLicense()=="" ||user.getCertification().getBusinessLicense()=="" ||user.getCertification().getTaxRegistration()=="") {
                             user.getCertification().setState(null);
                         }else if(user.getCertification().getMedicalLicense()!=null && user.getCertification().getBusinessLicense()!=null && user.getCertification().getTaxRegistration()!=null){

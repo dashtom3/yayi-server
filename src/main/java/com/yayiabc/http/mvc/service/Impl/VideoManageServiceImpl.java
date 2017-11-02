@@ -2,6 +2,10 @@ package com.yayiabc.http.mvc.service.Impl;
 
 import java.util.List;
 
+import com.yayiabc.common.enums.ErrorCodeEnum;
+import com.yayiabc.common.utils.Page;
+import com.yayiabc.common.utils.SerializeUtil;
+import com.yayiabc.http.mvc.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -14,11 +18,28 @@ public class VideoManageServiceImpl implements VideoManageService {
      @Autowired
      private VideoManageDao videoManageDao;
 
+     @Autowired
+	 private RedisService redisService;
+
+
+
 	@Override
-	public DataWrapper<List<VidManage>> showVid() {
-		// TODO Auto-generated method stub
-		 DataWrapper<List<VidManage>> dataWrapper=new DataWrapper<List<VidManage>>();
-		    dataWrapper.setData(videoManageDao.showVid());
+	public DataWrapper<List<VidManage>> showVid(Integer rule, Integer videoCategory, Integer currentPage, Integer numberPerPage) {
+		DataWrapper<List<VidManage>> dataWrapper=new DataWrapper<List<VidManage>>();
+		Page page=new Page();
+		page.setNumberPerPage(numberPerPage);
+		page.setCurrentPage(currentPage);
+//		int totalNumber=videoManageDao.getTotalNumber(videoCategory);
+//		List<VidManage> vidManageList=videoManageDao.showVid(rule,videoCategory,page.getCurrentNumber(),page.getNumberPerPage());
+		String cat="";
+		if(videoCategory!=null&&videoCategory!=6){
+			cat=videoCategory+"";
+		}else{
+			cat="*";
+		}
+		List<VidManage> vidManageList=(List<VidManage>)SerializeUtil.unserialize((redisService.STRINGS.get(("video:"+cat).getBytes())+"").getBytes());
+		System.out.println(vidManageList);
+		dataWrapper.setData(vidManageList);
 		return dataWrapper;
 	}
 
@@ -27,10 +48,8 @@ public class VideoManageServiceImpl implements VideoManageService {
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		int state=videoManageDao.updateVid(vidManage);
-		if(state>0){
-			dataWrapper.setMsg("操作成功");
-		}else{
-			dataWrapper.setMsg("操作失败");
+		if(state==0){
+			dataWrapper.setErrorCode(ErrorCodeEnum.OPERATION_ERROR);
 		}
 		return dataWrapper;
 	}
@@ -39,12 +58,9 @@ public class VideoManageServiceImpl implements VideoManageService {
 	public DataWrapper<Void> insertVid(VidManage vidManage) {
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
-		int state=videoManageDao.insertVid(vidManage);
-		if(state>0){
-			dataWrapper.setMsg("操作成功");
-		}else{
-			dataWrapper.setMsg("操作失败");
-		}
+		videoManageDao.insertVid(vidManage);
+		redisService.STRINGS.set(("video:"+vidManage.getVideoCategory()).getBytes(), SerializeUtil.serialize(vidManage));
+		System.out.println(SerializeUtil.unserialize(redisService.STRINGS.get(("video:"+vidManage.getViId()).getBytes())));
 		return dataWrapper;
 	}
 
@@ -53,6 +69,7 @@ public class VideoManageServiceImpl implements VideoManageService {
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		int state=videoManageDao.deleteVid(viId);
+		videoManageDao.deleteVedioComment(viId);
 		if(state>0){
 			dataWrapper.setMsg("操作成功");
 		}else{

@@ -15,6 +15,8 @@
  */
 package com.yayiabc.http.mvc.controller.unionpay.sdk;
 
+import org.apache.commons.lang3.StringUtils;
+
 import static com.yayiabc.http.mvc.controller.unionpay.sdk.SDKConstants.CERTTYPE_01;
 import static com.yayiabc.http.mvc.controller.unionpay.sdk.SDKConstants.CERTTYPE_02;
 import static com.yayiabc.http.mvc.controller.unionpay.sdk.SDKConstants.POINT;
@@ -46,7 +48,7 @@ import java.util.TreeMap;
 import java.util.zip.Deflater;
 import java.util.zip.Inflater;
 
-import org.apache.commons.lang.StringUtils;
+
 /**
  * 
  * @ClassName SDKUtil

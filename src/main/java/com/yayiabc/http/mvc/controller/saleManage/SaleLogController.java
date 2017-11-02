@@ -32,9 +32,10 @@ public class SaleLogController {
     @RequestMapping("getVerifyCode")
     @ResponseBody
     public DataWrapper<Void> getVerifyCode(
-            @RequestParam(value = "phone", required = true) String phone
+            @RequestParam(value = "phone", required = true) String phone,
+            @RequestParam(value="type",required = false)Integer type
     ) {
-        return userService.getVerifyCode(phone);
+        return userService.getVerifyCode(phone,type);
     }
 
 

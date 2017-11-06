@@ -206,6 +206,12 @@ public class ItemManageServiceImpl implements ItemManageService{
 	public DataWrapper<Void> updateItemClassify(ItemClassify itemClassify) {
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		itemManageDao.updateItemClassify(itemClassify);
+		itemManageDao.updateItemSubClassify(itemClassify);
+		if(itemClassify.getItemClassifyGrade()==1){
+			itemManageDao.updateItemInfo(itemClassify);
+		}else if(itemClassify.getItemClassifyGrade()==2){
+			itemManageDao.updateItemClassifyTwo(itemClassify);
+		}
 		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 		return dataWrapper;
 	}

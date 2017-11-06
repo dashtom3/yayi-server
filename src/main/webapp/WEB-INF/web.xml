@@ -136,6 +136,10 @@
 		<url-pattern>/form_6_2_FrontConsume2</url-pattern>
 	</servlet-mapping> -->
 	<!--  -->
+
+	<listener>
+		<listener-class>com.yayiabc.common.listener.MyServletContextListener</listener-class>
+	</listener>
 	
 
 	

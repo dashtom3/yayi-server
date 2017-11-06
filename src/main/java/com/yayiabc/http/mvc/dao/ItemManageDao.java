@@ -53,4 +53,10 @@ public interface ItemManageDao {
 
 
     void deleteItemClassifyById(@Param("itemClassifyId")Integer itemClassifyId);
+
+    void updateItemSubClassify(ItemClassify itemClassify);
+
+	void updateItemInfo(ItemClassify itemClassify);
+
+	void updateItemClassifyTwo(ItemClassify itemClassify);
 }

@@ -73,6 +73,18 @@
 			update item_classify set item_classify_name=#{itemClassifyName}
 			where item_classify_id=#{itemClassifyId}
 		</update>
+
+		<update id="updateItemSubClassify">
+			update item_classify set item_previous_classify=#{itemClassifyName} where item_previous_classify=#{itemPreviousClassify}
+		</update>
+
+		<update id="updateItemInfo">
+			update item_info set one_classify=#{itemClassifyName} where one_classify=#{itemPreviousClassify}
+		</update>
+
+		<update id="updateItemClassifyTwo">
+			update item_info set two_classify=#{itemClassifyName} where two_classify=#{itemPreviousClassify}
+		</update>
 	<!--update end-->
 
 	<!--select begin-->

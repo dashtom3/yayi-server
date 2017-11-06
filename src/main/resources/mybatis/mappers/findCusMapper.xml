@@ -60,6 +60,7 @@
 	  and us.sale_id is null and  
 	  </if>
 	 us.sale_id is null
+	  order by us.created DESC
 	 </where> 
 	 limit #{currentNum} ,#{numberPerpage}
 	 <!--  true_name ='%${state}%' and sale_id is null  or phone='%${state}%' and sale_id is null -->

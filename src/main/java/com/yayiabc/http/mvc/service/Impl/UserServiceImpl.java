@@ -1,17 +1,13 @@
 package com.yayiabc.http.mvc.service.Impl;
 
 import com.yayiabc.common.enums.ErrorCodeEnum;
-import com.yayiabc.common.sessionManager.SessionManager;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.HttpUtil;
 import com.yayiabc.common.utils.MD5Util;
 import com.yayiabc.common.utils.VerifiCodeValidateUtil;
 import com.yayiabc.http.mvc.controller.unionpay.sdk.LogUtil;
-import com.yayiabc.http.mvc.dao.SaleLogDao;
-import com.yayiabc.http.mvc.dao.UserDao;
-import com.yayiabc.http.mvc.dao.UserManageListDao;
-import com.yayiabc.http.mvc.dao.WxAppDao;
+import com.yayiabc.http.mvc.dao.*;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
@@ -38,6 +34,8 @@ public class UserServiceImpl implements UserService {
     private UserManageListDao userManageListDao;
     @Autowired
     private TokenService tokenService;
+    @Autowired
+    private SaleInfoDao saleInfoDao;
 
 
     public DataWrapper<Void> getVerifyCode(String phone,Integer type) {
@@ -62,32 +60,39 @@ public class UserServiceImpl implements UserService {
     }
 
     //判断用户是否已经注册
-    public boolean checkIfRegistered(String phone){
+    public boolean checkIfRegistered(String phone,Integer type){
         boolean flag=true;
-        if (userDao.getUserByPhone(phone) == null) {
-            flag=false;
+        if(type!=null){
+            if(type<=2){
+                if (userDao.getUserByPhone(phone) == null) {
+                    flag=false;
+                }
+            }else{
+                if(saleInfoDao.getSaleIdBySalePhone(phone)==null){
+                    flag=false;
+                }
+            }
         }
         return flag;
     }
 
     //判断两种情况下,是否发送消息
-    public ErrorCodeEnum checkState(String phone,Integer type){
-        boolean flag=checkIfRegistered(phone);
-        if(type!=null){
-            if(type==1){//注册时发送验证码
-                if(flag){
+    public ErrorCodeEnum checkState(String phone,Integer type) {
+        boolean flag = checkIfRegistered(phone, type);
+        if (type != null) {
+            if (type % 2 == 1) {//注册时发送验证码
+                if (flag) {
                     return ErrorCodeEnum.Username_Already_Exist;
                 }
-            }else if(type==2){//登录时发送的验证码
-                if(!flag){
+            } else if (type % 2 == 0) {//登录时发送的验证码
+                if (!flag) {
                     return ErrorCodeEnum.Username_NOT_Exist;
                 }
             }
         }
         return null;
     }
-    
-   
+
 
     @Override
     public DataWrapper<User> register(String phone, String password, String code,String openid) {
@@ -99,31 +104,33 @@ public class UserServiceImpl implements UserService {
             if(!codeEnum.equals(ErrorCodeEnum.No_Error)){
                 return dataWrapper;
             }
-                User newUser = new User();
-                newUser.setUserId(UUID.randomUUID().toString());
-                newUser.setPhone(phone);
-                newUser.setPwd(MD5Util.getMD5String(password));
-                if (1 == userDao.register(newUser)) {
-                    //绉婚櫎楠岃瘉鐮�
-                    VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
-                    String token = tokenService.getToken(newUser.getUserId());
-                    QbRecord qbRecord=new QbRecord();
-                    qbRecord.setQbRget(60+"");
-                    qbRecord.setRemark("注册送60乾币");
-                    qbRecord.setQbType("qb_balance");
-                    userMyQbService.add(qbRecord, token);
-                    dataWrapper.setToken(token);
-                    newUser.setCreated(new Date());
-                    dataWrapper.setData(newUser);
-                    if (openid != null) wxAppDao.addUser(newUser.getUserId(),openid,newUser.getPhone());
-                } else {
-                    dataWrapper.setErrorCode(ErrorCodeEnum.Register_Error);
-                }
+            User newUser = new User();
+            newUser.setUserId(UUID.randomUUID().toString());
+            newUser.setPhone(phone);
+            newUser.setPwd(MD5Util.getMD5String(password));
+            if (1 == userDao.register(newUser)) {
+                //绉婚櫎楠岃瘉鐮�
+                VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
+                String token = tokenService.getToken(newUser.getUserId());
+                QbRecord qbRecord=new QbRecord();
+                qbRecord.setQbRget(60+"");
+                qbRecord.setRemark("注册送60乾币");
+                qbRecord.setQbType("qb_balance");
+                userMyQbService.add(qbRecord, token);
+                dataWrapper.setToken(token);
+                newUser.setCreated(new Date());
+                dataWrapper.setData(newUser);
+                if (openid != null) wxAppDao.addUser(newUser.getUserId(),openid,newUser.getPhone());
+            } else {
+                dataWrapper.setErrorCode(ErrorCodeEnum.Register_Error);
+            }
         } else {
             dataWrapper.setErrorCode(ErrorCodeEnum.Username_Already_Exist);
         }
         return dataWrapper;
     }
+
+
 
     @Override
     public DataWrapper<User> noteLogin(String phone, String code) {

@@ -42,12 +42,14 @@ public class VideoManageController {
         Set<String> videoIdSet= redisService.SORTSET.zrange("videoTime",0,-1);
         List<VidManage> videoList=new ArrayList<VidManage>();
         VidManage vidManage=null;
-         for (String videoId:videoIdSet
-              ) {
+        Long start=System.currentTimeMillis();
+         for (String videoId:videoIdSet) {
             String jsonObjec= redisService.HASH.hget("videoList",videoId);
             vidManage= JSON.parseObject(jsonObjec,VidManage.class);
             videoList.add(vidManage);
          }
+         Long end=System.currentTimeMillis();
+         System.out.println("共花了"+(end-start)+"秒");
          DataWrapper<List<VidManage>> dataWrapper=new DataWrapper<List<VidManage>>();
          dataWrapper.setData(videoList);
          return dataWrapper;

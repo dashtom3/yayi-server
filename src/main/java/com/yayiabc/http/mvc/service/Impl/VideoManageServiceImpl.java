@@ -29,15 +29,8 @@ public class VideoManageServiceImpl implements VideoManageService {
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-//		int totalNumber=videoManageDao.getTotalNumber(videoCategory);
-//		List<VidManage> vidManageList=videoManageDao.showVid(rule,videoCategory,page.getCurrentNumber(),page.getNumberPerPage());
-		String cat="";
-		if(videoCategory!=null&&videoCategory!=6){
-			cat=videoCategory+"";
-		}else{
-			cat="*";
-		}
-		List<VidManage> vidManageList=(List<VidManage>)SerializeUtil.unserialize((redisService.STRINGS.get(("video:"+cat).getBytes())+"").getBytes());
+		int totalNumber=videoManageDao.getTotalNumber(videoCategory);
+		List<VidManage> vidManageList=videoManageDao.showVid(rule,videoCategory,page.getCurrentNumber(),page.getNumberPerPage());
 		System.out.println(vidManageList);
 		dataWrapper.setData(vidManageList);
 		return dataWrapper;

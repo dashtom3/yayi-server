@@ -211,13 +211,17 @@ public class ItemManageController {
 	@AdminTokenValidate
 	@AdminLog(description="管理员修改分类")
 	public DataWrapper<Void> updateItemClassify(
-			/*@RequestParam(value="itemClassifyId",required=true) Integer itemClassifyId,
+			@RequestParam(value="itemClassifyId",required=true) Integer itemClassifyId,
 			@RequestParam(value="itemClassifyName",required=true) String itemClassifyName,
 			@RequestParam(value="itemOldName",required=true) String itemOldName,
-			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade,*/
-			@ModelAttribute ItemClassify itemClassify,
+			@RequestParam(value="itemClassifyGrade",required=true) Integer itemClassifyGrade,
 			@RequestHeader(value="adminToken",required=true)String adminToken
 			){
+		ItemClassify itemClassify=new ItemClassify();
+		itemClassify.setItemClassifyId(itemClassifyId);
+		itemClassify.setItemClassifyName(itemClassifyName);
+		itemClassify.setItemClassifyGrade(itemClassifyGrade);
+		itemClassify.setItemPreviousClassify(itemOldName);
 		return itemManageService.updateItemClassify(itemClassify);
 	}
 	

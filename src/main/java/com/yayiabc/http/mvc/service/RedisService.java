@@ -40,8 +40,8 @@ public class RedisService {
 	 private static JedisPool jedisPool = null;
 
 	 private RedisService() {
-		
-	 } 
+
+	 }
      static {  
             JedisPoolConfig config = new JedisPoolConfig();  
             //控制一个pool可分配多少个jedis实例，通过pool.getResource()来获取；  

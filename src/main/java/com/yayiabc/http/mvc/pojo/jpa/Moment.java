@@ -17,7 +17,7 @@ public class Moment {
     private Integer momentType;//发表到朋友圈的内容的类型标识 (1.纯文字；2.纯文字+1张图；3.纯文字+2张图；4.纯文字+3张（4、5、6）；5.纯文字+6（7、8）张图；6.分享视频、7.病例、8.培训。8种情况)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date momentTime;//发表到朋友圈的时间
-    private List<MomentComment> momentCommentList;
+    private List<Comment> commentList;
 
     public Integer getMomentId() {
         return momentId;
@@ -83,7 +83,6 @@ public class Moment {
         this.momentType = momentType;
     }
 
-    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
     public Date getMomentTime() {
         return momentTime;
     }
@@ -92,18 +91,18 @@ public class Moment {
         this.momentTime = momentTime;
     }
 
-    public List<MomentComment> getMomentCommentList() {
-        return momentCommentList;
+    public List<Comment> getCommentList() {
+        return commentList;
     }
 
-    public void setMomentCommentList(List<MomentComment> momentCommentList) {
-        this.momentCommentList = momentCommentList;
+    public void setCommentList(List<Comment> commentList) {
+        this.commentList = commentList;
     }
 
     public Moment() {
     }
 
-    public Moment(Integer momentId, String userId, String userName, String momentContent, String momentPicture, Integer momentContentId, String momentContentTitle, Integer momentType, Date momentTime, List<MomentComment> momentCommentList) {
+    public Moment(Integer momentId, String userId, String userName, String momentContent, String momentPicture, Integer momentContentId, String momentContentTitle, Integer momentType, Date momentTime, List<Comment> commentList) {
         this.momentId = momentId;
         this.userId = userId;
         this.userName = userName;
@@ -113,7 +112,7 @@ public class Moment {
         this.momentContentTitle = momentContentTitle;
         this.momentType = momentType;
         this.momentTime = momentTime;
-        this.momentCommentList = momentCommentList;
+        this.commentList = commentList;
     }
 
     @Override
@@ -128,7 +127,7 @@ public class Moment {
                 ", momentContentTitle='" + momentContentTitle + '\'' +
                 ", momentType=" + momentType +
                 ", momentTime=" + momentTime +
-                ", momentCommentList=" + momentCommentList +
+                ", commentList=" + commentList +
                 '}';
     }
 }

@@ -79,11 +79,11 @@
 		</update>
 
 		<update id="updateItemInfo">
-			update item_info set one_classify=#{itemClassifyName} where one_classify=#{itemPreviousClassify}
+			update item_info set one_classify=replace(one_classify,#{itemPreviousClassify},#{itemClassifyName})
 		</update>
 
 		<update id="updateItemClassifyTwo">
-			update item_info set two_classify=#{itemClassifyName} where two_classify=#{itemPreviousClassify}
+			update item_info set two_classify=replace(two_classify,#{itemPreviousClassify},#{itemClassifyName})
 		</update>
 	<!--update end-->
 

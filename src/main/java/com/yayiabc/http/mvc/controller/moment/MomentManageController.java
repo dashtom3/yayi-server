@@ -3,8 +3,6 @@ package com.yayiabc.http.mvc.controller.moment;
 import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Moment;
-import com.yayiabc.http.mvc.pojo.jpa.MomentCommentModel;
-import com.yayiabc.http.mvc.pojo.jpa.SubMomentComment;
 import com.yayiabc.http.mvc.service.MomentManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -50,44 +48,18 @@ public class MomentManageController {
         return momentManageService.queryList(currentPage,numberPerPage);
     }
 
-    //写评论包括回复评论
-    @RequestMapping("addComment")
-    @ResponseBody
-    @UserTokenValidate
-    public DataWrapper<Void> addComment(
-            @ModelAttribute MomentCommentModel momentCommentModel,
-            @RequestHeader("token") String token
-    ){
-        return momentManageService.addComment(momentCommentModel,token);
-    }
 
-    //删除一个动态的评论
-    @RequestMapping("deleteComment")
-    @ResponseBody
-    @UserTokenValidate
-    public DataWrapper<Void> deleteComment(
-            @RequestParam("momentCommentId") Integer momentCommentId,
-            @RequestHeader("token") String token
-    ){
-        return momentManageService.deleteComment(momentCommentId);
-    }
 
-    //查看单个父评论下面的所有评论
-    @RequestMapping("querySubCommentList")
-    @ResponseBody
-    public DataWrapper<List<SubMomentComment>> querySubCommentList(
-            @RequestParam("momentCommentId")Integer momentCommentId
-    ){
-        return momentManageService.querySubCommentList(momentCommentId);
-    }
 
-    //为牙医圈的一级评论点赞
+    //为牙医圈的动态点赞和取消点赞
     @RequestMapping("upvote")
     @ResponseBody
+    @UserTokenValidate
     public DataWrapper<Void> upvote(
-            @RequestParam(value="momentCommentId",required = true) Integer momentCommentId
+      @RequestParam("momentId") Integer momentId,
+      @RequestHeader("token") String token
     ){
-        return momentManageService.upvote(momentCommentId);
+              return momentManageService.upvote(momentId,token);
     }
 
 }

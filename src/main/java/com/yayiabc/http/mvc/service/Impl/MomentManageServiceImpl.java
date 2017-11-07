@@ -32,7 +32,7 @@ public class MomentManageServiceImpl implements MomentManageService{
         moment.setUserId(user.getUserId());
         moment.setUserName(user.getTrueName());
         try {
-            if (moment.getMomentType() < 6) {
+            if (moment.getMomentType() < 3) {
                 momentManageDao.addLower(moment);
             } else {
                 momentManageDao.addHigh(moment);
@@ -66,39 +66,13 @@ public class MomentManageServiceImpl implements MomentManageService{
         return dataWrapper;
     }
 
+
     @Override
-    public DataWrapper<Void> addComment(MomentCommentModel momentCommentModel, String token) {
+    public DataWrapper<Void> upvote(Integer momentId,String token) {
         DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-        User user=utilsDao.getUserByToken(token);
-        momentCommentModel.setUsrId(user.getUserId());
-        momentCommentModel.setUserName(user.getTrueName());
-        int influnceRowNo=momentManageDao.addComment(momentCommentModel);
-        return dataWrapper;
+
+        return null;
     }
 
-    @Override
-    public DataWrapper<Void> deleteComment(Integer momentCommentId) {
-        DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
-        momentManageDao.deleteComment(momentCommentId);
-        return dataWrapper;
-    }
-
-    @Override
-    public DataWrapper<List<SubMomentComment>> querySubCommentList(Integer momentCommentId) {
-        DataWrapper<List<SubMomentComment>> dataWrapper=new DataWrapper<List<SubMomentComment>>();
-        List<SubMomentComment> subMomentCommentList =momentManageDao.querySubCommentList(momentCommentId);
-        dataWrapper.setData(subMomentCommentList);
-        return dataWrapper;
-    }
-
-    @Override
-    public DataWrapper<Void> upvote(Integer momentCommentId) {
-        DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
-        int influnceRow=momentManageDao.upvote(momentCommentId);
-        if(influnceRow==0){
-            dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-        }
-        return dataWrapper;
-    }
 
 }

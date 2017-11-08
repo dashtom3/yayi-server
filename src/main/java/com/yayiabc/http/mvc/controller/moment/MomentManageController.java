@@ -4,6 +4,8 @@ import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Moment;
 import com.yayiabc.http.mvc.service.MomentManageService;
+
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -16,6 +18,7 @@ public class MomentManageController {
     @Autowired
     private MomentManageService momentManageService;
 
+    
     //在朋友圈发布新动态
     @RequestMapping("add")
     @ResponseBody

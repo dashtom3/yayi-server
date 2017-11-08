@@ -2,23 +2,25 @@ package com.yayiabc.http.mvc.service.Impl;
 
 import java.util.List;
 
-import com.yayiabc.common.enums.ErrorCodeEnum;
-import com.yayiabc.common.utils.Page;
-import com.yayiabc.common.utils.SerializeUtil;
-import com.yayiabc.http.mvc.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
 
+import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.Page;
+import com.yayiabc.common.utils.SerializeUtil;
 import com.yayiabc.http.mvc.dao.VideoManageDao;
 import com.yayiabc.http.mvc.pojo.jpa.VidManage;
+import com.yayiabc.http.mvc.service.RedisService;
 import com.yayiabc.http.mvc.service.VideoManageService;
 @Service
 public class VideoManageServiceImpl implements VideoManageService {
      @Autowired
      private VideoManageDao videoManageDao;
 
-     @Autowired
+    /* @Autowired
+     @Qualifier("redisService")*/
 	 private RedisService redisService;
 
 

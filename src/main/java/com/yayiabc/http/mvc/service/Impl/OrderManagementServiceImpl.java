@@ -1,11 +1,28 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import java.io.BufferedOutputStream;
+import java.io.File;
+import java.io.FileInputStream;
+import java.io.FileOutputStream;
+import java.io.FileWriter;
+import java.io.IOException;
+import java.io.OutputStream;
+import java.net.URLEncoder;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Calendar;
+import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRichTextString;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
+import org.apache.poi.hssf.util.CellRangeAddress;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.transaction.annotation.Transactional;
@@ -14,6 +31,7 @@ import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.exceptionHandler.OrderException;
 import com.yayiabc.common.sdk.KDN;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.FolderTOZip;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.OrderDetailsDao;
 import com.yayiabc.http.mvc.dao.OrderManagementDao;
@@ -25,9 +43,9 @@ import com.yayiabc.http.mvc.pojo.jpa.ItemValue;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
+import com.yayiabc.http.mvc.pojo.jpa.Receiver;
 import com.yayiabc.http.mvc.pojo.model.OrderManagement;
 import com.yayiabc.http.mvc.service.OrderManagementService;
-import com.yayiabc.http.mvc.service.UserMyQbService;
 
 @Service
 public class OrderManagementServiceImpl implements OrderManagementService{
@@ -41,6 +59,9 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 	private UtilsDao utilsDao;
 	@Autowired
 	private OrderDetailsDao orderDetailsDao;
+
+
+
 	@Override
 	public DataWrapper<List<OrderManagement>> showOrder(HashMap<String, Object> hMap,
 			Integer currentPage,Integer numberPerpage
@@ -101,7 +122,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 	}
 	//检查此订单是否包邮   如果是 那就是 如果不包邮就查出 该订单运费   (此处的 是否包邮应该在下订单模块里实现 这里 不需要  先暂时搁置)
 
-	
+
 	/*private void ut(int sign,List l,String bz){
 		if(sign!=l.size()<=0){
 			throw new RuntimeException(bz+"    失败");
@@ -255,7 +276,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			//扣除钱币数
 			double dedQbNums=order.getGiveQb()-refundAfterGiveQbNum;
 			Integer dedQbNum=(int) Math.round(dedQbNums);
-			
+
 			String token= utilsDao.queryTokenByOrderId(SendorderItemList.get(0).getOrderId());
 			//放入钱币记录表
 			//userMyQbService.add(q, token);
@@ -327,7 +348,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 				orderManagementDao.updateOrderMessage(
 						order.getOrderId()
 						);
-			     //退回乾币
+				//退回乾币
 				/**
 				 * 1 如果发货了 便不退回乾币
 				 * 2如果没发货  便退回乾币
@@ -353,16 +374,16 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		}
 
 	} 
-   
+
 	private void dedQb(Integer dedQbNum,Ordera order) {
 		// TODO Auto-generated method stub
 		QbRecord q=new QbRecord();
-		
-		
+
+
 		q.setQbRout("\"赠\" "+dedQbNum+"个");
 		q.setQbType("qb_balance");
 		q.setUserId(order.getUserId());
-		
+
 		q.setMillisecond(System.nanoTime());
 		userMyQbDao.updateUserQb(-dedQbNum+"",order.getUserId(),"qb_balance");
 		//查询乾币余额
@@ -408,9 +429,9 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			returnQbNum+=list.get(q);
 		}
 		//查询乾币余额
-				Integer userQbNums=userMyQbDao.getUserQbNum(order.getUserId());
+		Integer userQbNums=userMyQbDao.getUserQbNum(order.getUserId());
 		s=s+/*s+sb.toString()+*/"（乾币余额："+userQbNums+"）。订单编号:"+order.getOrderId();
-		
+
 		userMyQbDao.addMessageQbQRget(sb.toString(), order.getUserId(), s, System.nanoTime());
 		//---无语
 		orderManagementDao.saveRefundMessageToReturnQbMsg(sb.toString(),order.getOrderId());
@@ -473,5 +494,333 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		DataWrapper<Invoice> dataWrapper=new DataWrapper<Invoice>();
 		dataWrapper.setData(orderManagementDao.queryOrderInvoice(orderId));
 		return dataWrapper;
+	}
+	@Override
+	public DataWrapper<Void> exportExcel(String orderId, String buyerInfo, String orderState, 
+			String orderCTime, String orderETime, String isRefund,HttpServletResponse response) {
+		// TODO Auto-generated method stub
+		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
+
+		/**
+		 * 检查打包文件夹是否存在   不存在就创建
+		 */
+		File file = new File("C:/yayi");
+		if(!file.exists()){
+			file.mkdirs();
+		}else{
+			if(deleteDir(file)){
+				File fileZip = new File("C:/后台订单详情.zip");
+				fileZip.delete();
+				file.mkdirs();
+			}
+		}
+
+		//根据条件到数据库查询数据
+		HashMap<String, String> hMap=new HashMap<String,String>();
+		hMap.put("orderId", orderId);
+		hMap.put("buyerInfo", buyerInfo);
+		hMap.put("orderState", orderState);
+		hMap.put("orderCTime", orderCTime);
+		hMap.put("orderETime", orderETime);
+		hMap.put("isRefund", isRefund);
+		hMap.put("numberPerpage",null);
+		hMap.put("currentNum", null);
+		Date currentTime = new Date();
+		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
+		List<Ordera> OrderManagementList= orderDetailsDao.orderDetailsShow(hMap);
+		// 第一步，得到excel工作簿对象
+		HSSFWorkbook wb = new HSSFWorkbook();  
+		// 第二步 得到excel工作表对象中  
+		HSSFSheet sheet = wb.createSheet("-后台订单列表");  
+		//第一行宽高
+		sheet.setColumnWidth(0,  20 * 256); 
+		sheet.autoSizeColumn(1, true);
+		// 第三步，创建工作表的行
+		HSSFRow row = sheet.createRow((int) 0);  //创建工作表的行
+		// 第四步，创建单元格样式
+		HSSFCellStyle style = wb.createCellStyle();  
+
+		CellRangeAddress region = new CellRangeAddress(1, OrderManagementList.size(),0 , 0); // 参数都是从O开始   
+		sheet.addMergedRegion(region);   
+
+		style.setWrapText(true);//设置自动换行
+		style.setAlignment(HSSFCellStyle.ALIGN_CENTER); // 居中  
+		style.setVerticalAlignment(HSSFCellStyle.VERTICAL_CENTER);  
+
+
+
+		HSSFCell cell = row.createCell((short) 0);  //创建第一列
+		//高度row
+
+
+		cell.setCellValue("查询时间");  
+		cell.setCellStyle(style); 
+
+		cell = row.createCell((short) 1);  
+		cell.setCellValue("下单时间");  
+		cell.setCellStyle(style);  
+
+		cell = row.createCell((short) 2);  
+		cell.setCellValue("订单编号");  
+		cell.setCellStyle(style);  
+
+		cell = row.createCell((short) 3);  
+		cell.setCellValue("收件人手机号");
+		cell.setCellStyle(style);  
+
+		cell = row.createCell((short) 4); 
+		cell.setCellValue("所在地区");  
+		cell.setCellStyle(style);  
+
+		cell = row.createCell((short) 5);  
+		cell.setCellValue("详细地址");  
+		cell.setCellStyle(style);  
+
+		cell = row.createCell((short) 6);  
+		cell.setCellValue("商品名称");  
+		cell.setCellStyle(style);  
+
+		cell = row.createCell((short) 7);  
+		cell.setCellValue("单价（元）");  
+		cell.setCellStyle(style);  
+
+		cell = row.createCell((short) 8);  
+		cell.setCellValue("数量");  
+		cell.setCellStyle(style);  
+
+		cell = row.createCell((short) 9);  
+		cell.setCellValue("商品总价（元）");  
+		cell.setCellStyle(style);  
+
+		cell = row.createCell((short) 10);  
+		cell.setCellValue("商品合计（元）");  
+		cell.setCellStyle(style);
+
+		cell = row.createCell((short) 11);  
+		cell.setCellValue("运费");  
+		cell.setCellStyle(style);
+
+		cell = row.createCell((short) 12);  
+		cell.setCellValue("乾币抵扣");  
+		cell.setCellStyle(style);
+
+		cell = row.createCell((short) 13);  
+		cell.setCellValue("乾币抵扣明细");  
+		cell.setCellStyle(style);
+
+		cell = row.createCell((short) 14);  
+		cell.setCellValue("实际付款（元）");  
+		cell.setCellStyle(style);
+
+		cell = row.createCell((short) 15);  
+		cell.setCellValue("订单留言");  
+		cell.setCellStyle(style);
+
+		cell = row.createCell((short) 16);  
+		cell.setCellValue("是否申请发票");  
+		cell.setCellStyle(style);
+
+		cell = row.createCell((short) 17);  
+		cell.setCellValue("是否需要产品注册证");  
+		cell.setCellStyle(style);
+
+
+		//写入表格
+		for (int i = 0; i < OrderManagementList.size(); i++)  
+		{  
+
+
+			row = sheet.createRow((int) i + 1);  
+			int x=i;
+			Ordera order=OrderManagementList.get(i);
+			Receiver receiver=order.getReceiver();
+
+			//导出发票信息到txt文档
+			try {
+				writer(order);
+			} catch (IOException e) {
+				// TODO Auto-generated catch block
+				e.printStackTrace();
+			}
+			  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			// 第四步，创建单元格，并设置值  
+			row.createCell((short) 0).setCellValue(orderCTime+"-"+orderETime);  
+			row.createCell((short) 1).setCellValue( simpleDateFormat.format(order.getCreated()));  
+			row.createCell((short) 2).setCellValue(order.getOrderId()); 
+			row.createCell((short) 3).setCellValue("17621302014");  
+			row.createCell((short) 4).setCellValue(receiver.getCounty()+"/"+receiver.getCity()+"/"+receiver.getProvince());  
+			row.createCell((short) 5).setCellValue(receiver.getReceiverDetail()); 
+			//获取订单里的商品 判断商品种类 个数
+			List<OrderItem> orderItemList=order.getOrderitemList();
+			//这里判断 orderItemList长度 是否大于1
+			if(!orderItemList.isEmpty()){
+				if(orderItemList.size()==1){ 
+					OrderItem orderItem =orderItemList.get(0);
+					row.createCell((short) 6).setCellValue(orderItem.getItemName());
+					row.createCell((short) 7).setCellValue(orderItem.getPrice());
+					row.createCell((short) 8).setCellValue(orderItem.getNum());
+					row.createCell((short) 9).setCellValue(orderItem.getNum()*orderItem.getPrice());
+				}else{
+					System.out.println(orderItemList);
+
+					System.out.println(orderItemList.size());
+					HSSFRow rows=null;
+					for(int q=0;q<orderItemList.size();q++){
+						OrderItem orderItem =orderItemList.get(q);
+						if(q==0){
+							row.createCell((short) 6).setCellValue(orderItem.getItemName());
+							row.createCell((short) 7).setCellValue(orderItem.getPrice());
+							row.createCell((short) 8).setCellValue(orderItem.getNum());
+							row.createCell((short) 9).setCellValue(orderItem.getNum()*orderItem.getPrice());
+						}else{
+							x++;
+							rows = sheet.createRow((int)  x + 1);
+							rows.createCell((short) 6).setCellValue( orderItem.getItemName());
+							rows.createCell((short) 7).setCellValue(orderItem.getPrice());
+							rows.createCell((short) 8).setCellValue(orderItem.getNum());
+							rows.createCell((short) 9).setCellValue(new HSSFRichTextString(String.valueOf(orderItem.getNum()*orderItem.getPrice())));
+						}
+
+
+					}
+					/* CellRangeAddress regions = new CellRangeAddress(i + 1,i + 1+orderItemList.size(),6 , 9); // 参数都是从O开始   
+		                 sheet.addMergedRegion(regions);*/
+				}
+			}
+
+
+			row.createCell((short) 10).setCellValue(order.getTotalFee());
+			row.createCell((short) 11).setCellValue(order.getPostFee());
+			row.createCell((short) 12).setCellValue(order.getQbDed());
+			row.createCell((short) 13).setCellValue(QbDes(order.getQbDes()));
+			row.createCell((short) 14).setCellValue(order.getActualPay());
+			row.createCell((short) 15).setCellValue(order.getBuyerMessage());
+			row.createCell((short) 16).setCellValue(isNeedInv(order.getInvoiceHand()));
+			cell = row.createCell((short) 17); 
+			//new SimpleDateFormat("yyyy-mm-dd").format(order.getActualPay())
+			cell.setCellValue(isNeedIsg(order.getIsRegister()));  
+
+			style.setWrapText(true);//设置自动换行
+		} 
+
+		try  
+		{ 
+			FileOutputStream fout = new FileOutputStream("C:/yayi/order.xls");  
+			wb.write(fout);  
+			fout.close();  
+			//压缩
+			FolderTOZip ftz=new FolderTOZip();
+			ftz.zip("C:/yayi", "C:/后台订单详情.zip");
+
+			/**
+			 * 把包发送给浏览器
+			 */
+			File fil = new File("C:/后台订单详情.zip"); 
+
+			System.out.println(fil);
+			FileInputStream fis = new FileInputStream(fil);  
+			byte [] buffer = new byte[fis.available()];
+			System.out.println("buffer.length"+buffer.length);
+			fis.read(buffer);  
+			fis.close();  
+
+			response.reset();  
+			response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(orderCTime+"-"+orderCTime+" 后台订单.zip", "UTF-8"));  
+			response.addHeader("Content-Length", "" + file.length());  
+			OutputStream ous = new BufferedOutputStream(response.getOutputStream());  
+			response.setContentType("application/octet-stream");  
+			ous.write(buffer);  
+			ous.flush();  
+			ous.close();
+
+		}  
+		catch (Exception e)  
+		{  
+			e.printStackTrace();  
+		}finally {
+
+		}
+		return dataWrapper;
+	}
+
+	private String isNeedIsg(Integer isRegister) {
+		// TODO Auto-generated method stub
+		if(isRegister==1){
+			return "是";
+		}else{
+			return "否";
+		}
+	}
+	/**
+	 * 是否需要发票
+	 * @param invoiceHand
+	 * @return
+	 */
+	private String isNeedInv(String invoiceHand) {
+		// TODO Auto-generated method stub
+		if("1".equals(invoiceHand)){
+			return "是";
+		}else{
+			return "否";
+		}
+	}
+	/**
+	 * 抵扣明细
+	 * @param qbDes
+	 * @return
+	 */
+	private String QbDes(String qbDes) {
+		// TODO Auto-generated method stub'
+		if("暂无".equals(qbDes)){
+           return  "'赠' 0个；'9.5折' 0个；'9.0折' 0个；'8.0折' 0个；";
+		}
+
+
+		String[] str=qbDes.split(",");
+		return "'赠' "+str[0]+"个；'9.5折' "+str[1]+"个；'9.0折' "+str[2]+"个；'8.0折' "+str[3]+"个；";
+	}
+	/*
+	 * 发票写入txt方法
+	 */
+	private void writer(Ordera  ordera) throws IOException{
+
+		FileWriter writer = null;
+		try {
+			if("1".equals(ordera.getInvoiceHand())){
+				writer=new FileWriter("C:/yayi/"+ordera.getOrderId()+"订单发票信息.txt");
+				Invoice invoice	=utilsDao.getInvoiceByOrderId(ordera.getOrderId());
+				writer.write(invoice.toString());
+			}else{
+				writer=new FileWriter("C:/yayi/"+ordera.getOrderId()+"不需要发票");
+			}
+		} catch (Exception e) {
+			// TODO: handle exception
+		}finally {
+			if(writer!=null){
+				writer.flush();
+				writer.close();
+			}
+		}
+	}
+	/**
+	 * 递归删除目录下的所有文件及子目录下所有文件
+	 * @param dir 将要删除的文件目录
+	 * @return boolean Returns "true" if all deletions were successful.
+	 *                 If a deletion fails, the method stops attempting to
+	 *                 delete and returns "false".
+	 */
+	private static boolean deleteDir(File dir) {
+		if (dir.isDirectory()) {
+			String[] children = dir.list();
+
+			for (int i=0; i<children.length; i++) {
+				boolean success = deleteDir(new File(dir, children[i]));
+				if (!success) {
+					return false;
+				}
+			}
+		}
+		// 目录此时为空，可以删除
+		return dir.delete();
 	}
 }

@@ -185,6 +185,8 @@
 		where user_id=(select user_id from user_token where token=#{token})
 	</select>
 
-
+  <select id="getInvoiceByOrderId" resultType="com.yayiabc.http.mvc.pojo.jpa.Invoice">
+   select * from invoice where order_id=#{orderId}
+  </select>
 
 </mapper>       

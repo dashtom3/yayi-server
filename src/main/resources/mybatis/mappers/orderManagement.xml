@@ -25,7 +25,23 @@
 		<result property="qbDes" column="qb_des" />
 	</resultMap>
 
-
+	<!-- 导出excel表格 -->
+	
+	<select id="exportExcel" resultMap="userOrderManageResultMap">
+		SELECT
+		orde.order_id,orde.total_fee,orde.qb_ded,orde.actual_pay,us.phone,DATE_FORMAT(orde.created,
+		'%Y-%m-%d %H:%i:%S') created,us.true_name,
+		orde.payment_time,
+		orde.state,orde.refund_info,
+		CONCAT(shipping_name,shipping_code) AS
+		information,orde.refund_info,orde.shipping_name,orde.shipping_code,orde.qb_des
+		FROM
+		ordera orde JOIN `user`
+		us ON us.user_id=orde.user_id JOIN receiver
+		rece
+		ON rece.receiver_id=orde.receiver_id
+	</select>
+	
 	<select id="showOrder" resultMap="userOrderManageResultMap">
 		SELECT
 		orde.order_id,orde.total_fee,orde.qb_ded,orde.actual_pay,us.phone,DATE_FORMAT(orde.created,
@@ -331,7 +347,7 @@
 		<result property="giveQb" column="give_qb" />
 		<result property="userId" column="user_id" />
 		<result property="qbDes" column="qb_des" />
-         <result property="state" column="state" />
+		<result property="state" column="state" />
 	</resultMap>
 	<select id="queryOrder" resultMap="www">
 		select * from
@@ -548,6 +564,6 @@
 		</foreach>
 	</update>
 	<update id="saveRefundMessageToReturnQbMsg">
-	  update refund set return_qbmsg=#{returnQbMsg} where order_id=#{orderId}
+		update refund set return_qbmsg=#{returnQbMsg} where order_id=#{orderId}
 	</update>
 </mapper>

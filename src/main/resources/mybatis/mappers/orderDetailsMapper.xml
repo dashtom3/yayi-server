@@ -31,6 +31,7 @@
 		<result property="isRegister" column="is_register" />
 		<result property="buyerMessage" column="buyer_message" />
 		<result property="qbDes" column="qb_des" />
+		<result property="invoiceHand" column="invoice_hand" />
 		<association property="receiver"
 			javaType="com.yayiabc.http.mvc.pojo.jpa.Receiver">
 			<id property="receiverId" column="receiver_id" />
@@ -56,6 +57,7 @@
 			<result property="itemPropertyNamec" column="item_property_namec" />
 			<result property="itemBrandName" column="item_brand_name" />
 			<result property="itemType" column="item_type" />
+		    <result property="itemName" column="orderit_item" />
 			<!-- 商品表 信息表 -->
 			 <association property="itemInfo"
 				javaType="com.yayiabc.http.mvc.pojo.jpa.ItemInfo">
@@ -66,7 +68,7 @@
 	<select id="orderDetailsShow" parameterType="java.util.Map"
 		resultMap="orderDetailsResultMap">
 		SELECT
-		orde.user_id ouserId ,orde.order_id,DATE_FORMAT(orde.created,
+		orde_it.item_name orderit_item,orde.invoice_hand,orde.user_id ouserId ,orde.order_id,DATE_FORMAT(orde.created,
 		'%Y-%m-%d %H:%i:%S') created,orde_it.num,orde_it.price,orde.actual_pay,orde.give_qb,
 		orde.pay_type,orde.invoice_hand,orde.is_register,orde.buyer_message,
 		orde_it.item_name,orde_it.pic_path,orde_it.itm_SKU,
@@ -101,7 +103,10 @@
 			  and	orde.state in(2,5)
 			</if>
 		</where>
-		order by orde.created desc limit ${currentNum} , ${numberPerpage}
+		order by orde.created desc 
+		<if test="currentNum!=null and numberPerpage!=null">
+		limit ${currentNum} , ${numberPerpage}
+		</if>
 	</select>
 
 

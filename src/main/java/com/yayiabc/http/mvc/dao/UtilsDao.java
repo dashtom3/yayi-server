@@ -1,13 +1,16 @@
 package com.yayiabc.http.mvc.dao;
 
-import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
-import com.yayiabc.http.mvc.pojo.jpa.Ordera;
-import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
-import com.yayiabc.http.mvc.pojo.jpa.User;
+import java.util.List;
+
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
-import java.util.List;
+import com.yayiabc.http.mvc.pojo.jpa.Invoice;
+import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
+import com.yayiabc.http.mvc.pojo.jpa.Ordera;
+import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
+import com.yayiabc.http.mvc.pojo.jpa.TrainOrdera;
+import com.yayiabc.http.mvc.pojo.jpa.User;
 @Repository
 public interface UtilsDao {
 
@@ -71,6 +74,11 @@ public interface UtilsDao {
 	
 	//通过token 获取user实体
 	User getUserByToken(String token);
+
+
+	TrainOrdera queryTrainOrder(String trainOrderaId);
+
+	Invoice getInvoiceByOrderId(@Param("orderId")String orderId);
 	
 
 }

@@ -81,6 +81,8 @@ public class PlaceOrderController {
 			@ModelAttribute Ordera order,
 			@ModelAttribute Invoice  invoice
 			){
+		System.out.println(order.getQbDed()+",");
+		System.out.println(order.getQbDed());
 		JSONArray json = JSONArray.fromObject(orderItem);
 		ArrayList<OrderItem> orderItemList = (ArrayList<OrderItem>)JSONArray.toCollection(json,OrderItem.class);
 		//接入 支付   订单号  商品名称    付款金额    商品描述
@@ -95,5 +97,13 @@ public class PlaceOrderController {
 			@RequestHeader(value="token",required=true) String token
 			){
 		return placeOrderService.queryLastInvoice(token);
+	}
+	@RequestMapping("test")
+	@ResponseBody
+	public Integer  test(
+			@RequestParam(value="token",required=true) Integer token
+			){
+		System.err.println(token);
+		return token;
 	}
 }

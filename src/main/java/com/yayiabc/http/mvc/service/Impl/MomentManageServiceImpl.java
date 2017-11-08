@@ -1,19 +1,19 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Service;
+
 import com.yayiabc.common.enums.ErrorCodeEnum;
-import com.yayiabc.common.exceptionHandler.DBException;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.MomentManageDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
-import com.yayiabc.http.mvc.pojo.jpa.*;
+import com.yayiabc.http.mvc.pojo.jpa.Moment;
+import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.MomentManageService;
 import com.yayiabc.http.mvc.service.RedisService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Service;
-
-import java.util.Date;
-import java.util.List;
 
 @Service
 public class MomentManageServiceImpl implements MomentManageService{
@@ -22,8 +22,8 @@ public class MomentManageServiceImpl implements MomentManageService{
     @Autowired
     private UtilsDao utilsDao;
 
-    @Autowired
-    private RedisService redisService;
+  /*  @Autowired
+    private RedisService redisService;*/
 
     @Override
     public DataWrapper<Void> add(Moment moment,String token) {

@@ -16,6 +16,7 @@ import java.util.List;
 
 public class MyServletContextListener implements ServletContextListener{
 
+
     private RedisService redisService;
 
     private VideoManageDao videoManageDao;

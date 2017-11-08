@@ -44,7 +44,7 @@ public class SerializeUtil {
 
 
     public static Object unserialize( byte[] bytes) {
-
+    	
         ByteArrayInputStream bais = null;
 
         try {
@@ -58,13 +58,7 @@ public class SerializeUtil {
             return ois.readObject();
 
         } catch (Exception e) {
-
-
-
-
         }
-
         return null;
-
     }
 }

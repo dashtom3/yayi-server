@@ -150,13 +150,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	public DataWrapper<HashMap<String, Object>> generaOrder(String token, List<OrderItem> orderItemList, Ordera order,
 			Invoice  invoice
 			) {
-		//判断  乾币！！！、
-		  Pattern pattern = Pattern.compile("[0-9]*"); 
-		   Matcher isNum = pattern.matcher(order.getQbDed()+"");
-		   if( !isNum.matches() ){
-		       return null; 
-		   } 
-		   
+		DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String,Object>>();
+		 
 		if(order.getQbDed()==null){
 			order.setQbDed(0);
 		}
@@ -171,7 +166,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		int TooldevicesSumCount=0;
 		// TODO Auto-generated method stub
 		//  get userId
-		DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String,Object>>();
+		
 		HashMap<String, Object> hashMap=new HashMap<String, Object>();
 		String userId=null;
 		try {

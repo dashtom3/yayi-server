@@ -1,0 +1,99 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.TrainShowServiceDao">
+
+	<select id="show" resultType="com.yayiabc.http.mvc.pojo.jpa.Train">
+		select * from train
+		<where>
+			<if test="classly!=null and classly!=''">
+				train_class =#{classly}
+			</if>
+		</where>
+		order by created desc,train_num desc LIMIT
+		${currentNumber},${numberPerPage}
+	</select>
+	
+	<select id="queryCount" resultType="int">
+		select count(1) from train
+		<where>
+			<if test="classly!=null and classly!=''">
+				train_class =#{classly}
+			</if>
+		</where>
+	</select>
+
+	<insert id="insertTrain" useGeneratedKeys="true" keyProperty="trainId"
+		parameterType="com.yayiabc.http.mvc.pojo.jpa.Train">
+		insert into
+		train(teach_name,train_pic,train_name,train_class,train_price,train_ctime,train_etime,created)
+		values(#{teacherName},#{trainPic},#{trainName},#{classly},#{trainPrice},#{trainCtime},#{trainEtime},now())
+	</insert>
+
+	<insert id="insertTrainDetails" useGeneratedKeys="true" keyProperty="trainDetail.trainDetailsId"
+		parameterType="com.yayiabc.http.mvc.pojo.jpa.TrainDetail">
+		insert into
+		train_detail(train_id,train_type,train_content,teacher_introduce,sponsor_two_code,sign_up_etime)
+		values(#{trainKey},#{trainDetail.trainType},#{trainDetail.trainContent},#{trainDetail.teacherIntroduce},#{trainDetail.sponsorTwoCode},#{trainDetail.setUpETime})
+	</insert>
+
+	<!-- 培训详情 -->
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.Train" id="resRrainDetailsMap">
+		<id column="train_id" property="" />
+		<result column="train_pic" property="trainPic" />
+		<result column="train_name" property="trainName" />
+		<result column="train_num" property="trainNum" />
+		<result column="teach_name" property="teacherName" />
+		<result column="train_class" property="classly" />
+		<result column="train_ctime" property="trainCtime" />
+		<result column="train_etime" property="trainEtime" />
+		<result column="train_price" property="trainPrice" />
+		<association property="trainDetail"
+			javaType="com.yayiabc.http.mvc.pojo.jpa.TrainDetail">
+			<id column="train_details_id" property="trainDetailsId" />
+			<result column="teacher_introduce" property="teacherIntroduce" />
+			<result column="sign_up_etime" property="setUpETime" />
+			<result column="train_type" property="trainType" />
+			<result column="train_content" property="trainContent" />
+			<result column="share" property="share" />
+			<result column="collection" property="collection" />
+		</association>
+	</resultMap>
+	<select id="trainDetails" resultMap="resRrainDetailsMap">
+		select
+		tra.train_name,tra.train_pic,tra_d.teacher_introduce
+		,tra.teach_name,tra.train_class,tra.train_ctime,tra.train_etime,
+		tra_d.sign_up_etime,tra_d.train_type,tra_d.train_content,tra.train_price,
+		tra_d.share,tra_d.collection,tra.train_num
+		from train
+		tra join
+		train_detail tra_d on
+		tra.train_id=tra_d.train_id
+		where
+		tra.train_id=#{trainId}
+	</select>
+
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.Train" id="asd">
+		<result column="train_price" property="trainPrice" />
+		<result column="train_name" property="trainName" />
+	</resultMap>
+	<select id="queryTrainPrice" resultMap="asd">
+		select train_price,train_name from train where train_id=#{trainId}
+	</select>
+	<!-- 插入到订单培训表 -->
+	<insert id="insertTrainOrder" useGeneratedKeys="true"
+		keyProperty="trainOrderId" parameterType="com.yayiabc.http.mvc.pojo.jpa.TrainOrdera">
+		insert into
+		train_ordera(train_id,user_id,wechat_number,phone_number,qb_ded,actual_price
+		,pay_type,unit_price,sign_up_time
+		) values(
+		#{userId}, #{trainId},#{weChatNumber}, #{phoneNumber}, #{qbDed}, #{actualPrice},
+		#{payType}, #{unitPrice}, now()
+		)
+	</insert>
+
+	<update id="updateTrainOrderaState">
+		update train_ordera set state=2 where train_order_id=#{trainOrderaId}
+	</update>
+</mapper>       

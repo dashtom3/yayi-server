@@ -27,7 +27,7 @@ public class VideoManageController {
      @Autowired
      private VideoManageService videoManageService;
 
-     @Autowired
+    // @Autowired
      private RedisService redisService;
     
      //

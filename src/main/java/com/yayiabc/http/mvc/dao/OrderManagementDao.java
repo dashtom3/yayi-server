@@ -14,7 +14,7 @@ import com.yayiabc.http.mvc.pojo.model.OrderManagement;
 
 public interface OrderManagementDao {
    List<OrderManagement> showOrder(HashMap<String, Object> hMap);
-
+   List<OrderManagement> exportExcel();
     int  closeTrading(@Param("orderId")String orderId,@Param("flagBit") Integer flagBit);
    
     //显示退款处理

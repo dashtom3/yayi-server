@@ -25,17 +25,16 @@ public class RedisClient {
 	 /**缓存生存时间 */
 	 private final int expire = 60000;
 	 /** 操作Key的方法 */
-	 public Keys KEYS;
+	// public Keys KEYS;
 	 /** 对存储结构为String类型的操作 */
-	 public Strings STRINGS;
+//	 public Strings STRINGS;
 	 /** 对存储结构为List类型的操作 */
-	 public Lists LISTS;
+	// public Lists LISTS;
  	 /** 对存储结构为Set类型的操作 */
 	 public Sets SETS;
 	 /** 对存储结构为HashMap类型的操作 */
-	 public Hash HASH;
 	 /** 对存储结构为Set(排序的)类型的操作 */
-	 public SortSet SORTSET;
+	// public SortSet SORTSET;
 	 private static JedisPool jedisPool = null;  
 		 
 	 private RedisClient() {   
@@ -47,14 +46,14 @@ public class RedisClient {
             //如果赋值为-1，则表示不限制；如果pool已经分配了maxActive个jedis实例，则此时pool的状态为exhausted(耗尽)。  
             config.setMaxTotal(500);  
             //控制一个pool最多有多少个状态为idle(空闲的)的jedis实例。  
-            config.setMaxIdle(5);  
+            config.setMaxIdle(10);  
             //表示当borrow(引入)一个jedis实例时，最大的等待时间，如果超过等待时间，则直接抛出JedisConnectionException；  
             config.setMaxWaitMillis(1000 * 100);  
             //在borrow一个jedis实例时，是否提前进行validate操作；如果为true，则得到的jedis实例均是可用的；  
             config.setTestOnBorrow(true);  
             
             //redis如果设置了密码：
-            jedisPool = new JedisPool(config, "97.64.82.23",
+            jedisPool = new JedisPool(config, "www.liqitian.top",
             		6379,
             		10000,"123456");    
             
@@ -75,7 +74,7 @@ public class RedisClient {
  	}
      
      
-     private static final RedisClient jedisUtil = new RedisClient();
+     private static final RedisClient redisUtil = new RedisClient();
 	 
  
     /**
@@ -83,7 +82,7 @@ public class RedisClient {
      * @return
      */
     public static RedisClient getInstance() {
-		return jedisUtil; 
+		return redisUtil; 
 	}
 
     /**
@@ -134,7 +133,6 @@ public class RedisClient {
 	
 	
 	//*******************************************Keys*******************************************//
-	public class Keys {
 
 		/**
 		 * 清空所有key
@@ -320,7 +318,6 @@ public class RedisClient {
 			Set<String> set = jedis.keys(pattern);
 			return set;
 		}
-	}
 
 	//*******************************************Sets*******************************************//
 	public class Sets {
@@ -511,7 +508,6 @@ public class RedisClient {
 	}
 
 	//*******************************************SortSet*******************************************//
-	public class SortSet {
 
 		/**
 		 * 向集合中增加一条记录,如果这个值已存在，这个值对应的权重将被置为新的权重
@@ -731,10 +727,8 @@ public class RedisClient {
 				return score;
 			return 0;
 		}
-	}
 	
 	//*******************************************Hash*******************************************//
-	public class Hash {
 
 		/**
 		 * 从hash中删除指定的存储
@@ -944,11 +938,9 @@ public class RedisClient {
 			return s;
 		}
 
-	}
 	
 	
 	//*******************************************Strings*******************************************//
-	public class Strings {
 		/**
 		 * 根据key获取记录
 		 * @param String  key
@@ -1035,6 +1027,7 @@ public class RedisClient {
 		 * @return 状态码
 		 * */
 		public String set(String key, byte[] value) {
+			
 			return set(SafeEncoder.encode(key), value);
 		}
 
@@ -1171,11 +1164,9 @@ public class RedisClient {
 			returnJedis(jedis);
 			return len;
 		}
-	}
 	
 	
 	//*******************************************Lists*******************************************//
-	public class Lists {
 		/**
 		 * List长度
 		 * @param String key
@@ -1440,6 +1431,5 @@ public class RedisClient {
 		public String ltrim(String key, int start, int end) {
 			return ltrim(SafeEncoder.encode(key), start, end);
 		}
-	} 
 	
 }

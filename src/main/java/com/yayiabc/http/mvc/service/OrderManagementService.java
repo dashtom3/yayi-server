@@ -5,6 +5,8 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.apache.ibatis.annotations.Param;
 
 import com.yayiabc.common.utils.DataWrapper;
@@ -36,4 +38,5 @@ public interface OrderManagementService {
 	DataWrapper<Ordera> showRefundOrderMessage(String orderId);
 	
 	DataWrapper<Invoice> queryOrderInvoice(String orderId);
+	DataWrapper<Void> exportExcel(String orderId, String buyerInfo, String orderState, String orderCTime, String orderETime, String isRefund, HttpServletResponse response);
 }

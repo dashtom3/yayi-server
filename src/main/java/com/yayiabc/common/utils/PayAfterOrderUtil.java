@@ -1,7 +1,6 @@
 package com.yayiabc.common.utils;
 
 import java.util.ArrayList;
-import java.util.Calendar;
 import java.util.Date;
 import java.util.List;
 import java.util.Map;
@@ -14,15 +13,16 @@ import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.exceptionHandler.OrderException;
 import com.yayiabc.http.mvc.dao.AliPayDao;
 import com.yayiabc.http.mvc.dao.OrderManagementDao;
+import com.yayiabc.http.mvc.dao.TrainShowServiceDao;
 import com.yayiabc.http.mvc.dao.UserMyQbDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Charge;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
+import com.yayiabc.http.mvc.pojo.jpa.TrainOrdera;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.UserMyQbService;
-import com.yayiabc.http.mvc.service.UserWithdrawalsService;
 @Component
 public class PayAfterOrderUtil {
 	@Autowired
@@ -33,90 +33,97 @@ public class PayAfterOrderUtil {
 	private UserMyQbService userMyQbService;
 	@Autowired
 	private OrderManagementDao orderManagementDao;
-	
+
+	@Autowired
+	private TrainShowServiceDao trainShowServiceDao;
 	
 	@Autowired
 	private UserMyQbDao userMyQbDao;
-		//更改支付类型
+	//更改支付类型
 	public  boolean universal(String orderId,String type){
 		if(type!=null){
 			aliPayDao.updatePayType(orderId,type);
 		}
 		//更改订单状态与付款时间
 		/*int ax=aliPayDao.updateStateAndPayTime(orderId);*/
-		
+
 		Ordera o=aliPayDao.queryOrder(orderId);
 		//QbRecord q=new QbRecord();
 		if(o.getQbDed()!=0){
 			//
 			//更新到订单表最后一列
-			int a=aliPayDao.saveLast(newQbDed(o.getUserId(),o.getQbDed(),o.getOrderId()),o.getOrderId());
+			int a=aliPayDao.saveLast(newQbDed(o.getUserId(),o.getQbDed(),o.getOrderId()
+					,"下单使用"+o.getQbDed()+"个乾币。（乾币余额：userQbNum）订单编号："+orderId
+					),o.getOrderId());
 			if(a<=0){
 				throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
 			}
 		}
-		
+
 		//统计销量
 		List<OrderItem> orderItemList=orderManagementDao.queryOrderItemList(orderId);
 		//双休优化增加销量
 		int t=aliPayDao.addSalesList(orderItemList);
 		//增加 itemvalue表里面的销量信息
 		int c=aliPayDao.addSalesListTOitemValue(orderItemList);
-         if(t<=0&&c<=0){
-        	 throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
-         }
-         //关于钱币
- 		//查询该用户钱包余额
- 		//int qbNum=utilsDao.queryUserQbNum(o.getUserId());
- 		if(o.getGiveQb()!=0){
- 			QbRecord q=new QbRecord();
- 			
- 			q.setQbRget("\"赠\"： "+o.getGiveQb()+"个");
- 			
- 			q.setUserId(o.getUserId()+"");
- 			/*Calendar Cld = Calendar.getInstance();
+		if(t<=0&&c<=0){
+			throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
+		}
+		//关于钱币
+		//查询该用户钱包余额
+		//int qbNum=utilsDao.queryUserQbNum(o.getUserId());
+		if(o.getGiveQb()!=0){
+			QbRecord q=new QbRecord();
+
+			q.setQbRget("\"赠\"： "+o.getGiveQb()+"个");
+
+			q.setUserId(o.getUserId()+"");
+			/*Calendar Cld = Calendar.getInstance();
  			int MI = Cld.get(Calendar.MILLISECOND);	*/
- 			q.setMillisecond(System.nanoTime());
- 			userMyQbDao.updateUserQb(o.getGiveQb()+"", o.getUserId(),"qb_balance");
- 			//----为了获取钱币余额。。。。。
- 			Integer userQbNum=userMyQbDao.getUserQbNum(o.getUserId());
- 			q.setRemark("下单获得"+o.getGiveQb()+"个乾币。（乾币余额："+userQbNum+"）订单编号："+orderId);
- 			userMyQbDao.add(q);
- 		}
- 		//判断 该用户是否绑定了销售员
- 		String saleId=utilsDao.getSaleIdByOrderId(orderId);
- 		if(saleId!=null&&!saleId.equals("")){
- 			//清楚缓存中的orderId
+			q.setMillisecond(System.nanoTime());
+			userMyQbDao.updateUserQb(o.getGiveQb()+"", o.getUserId(),"qb_balance");
+			//查询乾币余额
+			Integer userQbNum=userMyQbDao.getUserQbNum(o.getUserId());
+
+			q.setRemark("下单获得"+o.getGiveQb()+"个乾币。（乾币余额："+userQbNum+"）订单编号："+orderId);
+			userMyQbDao.add(q);
+		}
+		//判断 该用户是否绑定了销售员
+		String saleId=utilsDao.getSaleIdByOrderId(orderId);
+		if(saleId!=null&&!saleId.equals("")){
+			//清楚缓存中的orderId
 			CacheUtils cache=	CacheUtils.getInstance();
 			Map<String,Date> map=cache.getCacheMap();
 			map.remove(orderId);
- 			return SetSaleInCome(orderId,o.getUserId(),saleId);
- 		}
- 		//清楚缓存中的orderId
+			return SetSaleInCome(orderId,o.getUserId(),saleId);
+		}
+		//清楚缓存中的orderId
 		CacheUtils cache=	CacheUtils.getInstance();
 		Map<String,Date> map=cache.getCacheMap();
 		map.remove(orderId);
 		return true;
 	}
-	
+
 	//结账时放入到SaleIncome表里的数据 并把 到账到该销售员
 	private boolean SetSaleInCome(String orderId,String userId,String saleId){
 		//查出此单的  supplies_sumprice    tooldevices_sumprice
 		Ordera order=utilsDao.queryCalssSumPrice(orderId);
 		//保存到 sale_income 表里
-        
+
 		int sign=utilsDao.insert(saleId, orderId, 0.0,0.0,order.getSupplies_sumprice(), order.getTooldevices_sumprice());
 		SendToSaleMessage sendToSaleMessage= BeanUtil.getBean("SendToSaleMessage");
 		//短信通知
 		sendToSaleMessage.send(userId,orderId);
-		
+
 		return true;
 	} 
 	//下单钱币扣除规则 先。。。后。。。。。。。
-	String  newQbDed(String userId,Integer  DedNum,String orderId){
+	String  newQbDed(String userId,Integer  DedNum,String orderId
+			,String remark
+			){
 		//dednum <= max used qb //钱币够用
 		User u=utilsDao.queryUserByUserId(userId);
-		
+
 		List<Integer> listData=new ArrayList<Integer>();
 		listData.add(u.getQbBalance()); 
 		listData.add( u.getaQb());      
@@ -128,7 +135,7 @@ public class PayAfterOrderUtil {
 		StringBuilder sb1=new StringBuilder();
 		String qbRout=null;
 		for(int i=0;i<listData.size();i++){
-			
+
 			if(listData.get(i)>=DedNum){
 				System.out.println(listData.get(i)+"   "+DedNum);
 				sb1.append(DedNum+",");
@@ -138,28 +145,23 @@ public class PayAfterOrderUtil {
 				listData.set(i, DedNum);
 				break;
 			}else if(listData.get(i)<DedNum){
-				
+
 				sb.append(ut(i)+listData.get(i)+"个，");
 				sb1.append(listData.get(i)+",");
 				DedNum=DedNum-listData.get(i);
 				listData.set(i, 0);
 			}
 		} 
-		/*Calendar Cld = Calendar.getInstance();
-		int MI = Cld.get(Calendar.MILLISECOND);*/
-		
-		//userMyQbService.updateDataToUser(listData,userId); //更改user 表  各种钱币类型
-		//查询乾币余额
-		Integer userQbNum=userMyQbDao.getUserQbNum(userId);
 		QbRecord qr=new QbRecord();
 		qr.setQbRout(qbRout);
 		//根据orderId  来判断这个方法的使用。---代加 
-		qr.setRemark("下单使用"+a+"个乾币。（乾币余额："+userQbNum+"）订单编号："+orderId);
+		qr.setRemark(remark);
 		qr.setMillisecond(System.nanoTime());
 		addQbRecord(listData,userId,qr);
 		//userMyQbService.addMessageQbQ(qbRout,userId,"下单使用"+a+"个乾币。（乾币余额："+userQbNum+"）订单编号："+orderId,System.nanoTime()); //新增钱币记录表   
 		return mosaicString(qbDes);
 	}
+
 	/**
 	 * 增加乾币记录工具类（更改用户乾币）
 	 * listData，0下标是qb_balance，1下标是a_qb，2下标是b_qb，3下标是c_qb
@@ -171,21 +173,20 @@ public class PayAfterOrderUtil {
 		//更改用户乾币
 		int i=userMyQbService.updateDataToUser(listData,userId);
 		//查询乾币余额
-		//int ii=userMyQbDao.getUserQbNum(userId);
-	    //增加乾币记录
-	 
-	   int iii=userMyQbService.addMessageQbQ(qr.getQbRout(),userId,qr.getRemark(),qr.getMillisecond());
-	   if(i+iii>=2){
-		   return true;
-	   }
+		Integer userQbNum=userMyQbDao.getUserQbNum(userId);
+
+		int iii=userMyQbService.addMessageQbQ(qr.getQbRout(),userId,qr.getRemark().replace("userQbNum",userQbNum+""),qr.getMillisecond());
+		if(i+iii>=2){
+			return true;
+		}
 		return false;
 	}
 	private String ut(int i){
-		 switch (i) {
+		switch (i) {
 		case 0:
-			 return "\"赠\"：";
+			return "\"赠\"：";
 		case 1:
-			 return "\"8.0折\"：";
+			return "\"8.0折\"：";
 		case 2:
 			return "\"9.0折\"：";
 		case 3:
@@ -193,7 +194,7 @@ public class PayAfterOrderUtil {
 		default:
 			break;
 		}
-		 return "";
+		return "";
 	}
 	/**
 	 * 安全验证方法
@@ -205,8 +206,8 @@ public class PayAfterOrderUtil {
 		//充值乾币安全检查
 		if("zfb".equals(out_trade_no.substring(0, 3))/*||"wx".equals(out_trade_no.substring(0, 2))*/){
 			Charge charge=aliPayDao.queryUserId(out_trade_no);
-			 System.out.println(out_trade_no);
-			 System.out.println("123123123213   "+charge);
+			System.out.println(out_trade_no);
+			System.out.println("123123123213   "+charge);
 			if(charge==null){
 				return false;
 			}
@@ -216,8 +217,8 @@ public class PayAfterOrderUtil {
              if(amount1!=amount2){
             	return false;
             }*/
-            //商户订单号
-           System.out.println("chargechargechargechargechargecharge     "+charge);
+			//商户订单号
+			System.out.println("chargechargechargechargechargecharge     "+charge);
 			if(charge!=null){
 				if(charge.getState()==1){
 					aliPayDao.updateState(out_trade_no);
@@ -230,16 +231,16 @@ public class PayAfterOrderUtil {
 					q.setQbType(charge.getQbType());
 					q.setRemark(zh(charge.getQbType())+"乾币充值"+charge.getQbNum()+"个。");
 					System.out.println(q);
-					
+
 					//获取毫秒
 					q.setMillisecond(System.nanoTime());
-					
+
 					//这里手动的  更改用户钱币 与 增加钱币记录   1更改用户钱币   2增加钱币记录
 					userMyQbDao.updateUserQb(String.valueOf(charge.getQbNum()), charge.getToken(), charge.getQbType());  //1
-					
+
 					//----为了获取钱币余额。。。。。
-		 			Integer userQbNum=userMyQbDao.getUserQbNum(charge.getToken());
-		 			q.setRemark(zh(charge.getQbType())+"乾币充值"+charge.getQbNum()+"个。（乾币余额："+userQbNum+"个）");
+					Integer userQbNum=userMyQbDao.getUserQbNum(charge.getToken());
+					q.setRemark(zh(charge.getQbType())+"乾币充值"+charge.getQbNum()+"个。（乾币余额："+userQbNum+"个）");
 					userMyQbDao.add(q);
 					//userMyQbService.add(q, token);
 					return true;
@@ -248,48 +249,73 @@ public class PayAfterOrderUtil {
 					return "success";
 				}*/
 			}
-			
+
 		}
-	   //订单支付安全检查
+		//订单支付安全检查
 		Ordera order=aliPayDao.queryOrder(out_trade_no);
-		if(/*!amount.equals(order.getActualPay())&&*/!order.getOrderId().equals(out_trade_no)){
-			 return false;
+		if(order!=null){
+			if(/*!amount.equals(order.getActualPay())&&*/!order.getOrderId().equals(out_trade_no)){
+				return false;
+			}
 		}
-					if(order!=null){
-						if(1==order.getState()){
-							PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-							boolean falg=payAfterOrderUtil.universal(out_trade_no,payType);
-							if(falg){
-								return true;
-							}else{
-								return false;
-							}
-						}
-					}
+		if(order!=null){
+			if(1==order.getState()){
+				PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
+				boolean falg=payAfterOrderUtil.universal(out_trade_no,payType);
+				if(falg){
+					return true;
+				}else{
 					return false;
-	  }
-	private String zh(String zh){
-		  if(zh.equals("a_qb")){
-			  return "\"8.0折\" ";
-		  } else if(zh.equals("b_qb"))
-		  {
-			  return "\"9.0折\" ";
-		  }else if(zh.equals("c_qb")){
-			  return "\"9.5折\" ";
-		  }
-		  return "非法乾币类型";
+				}
+			}
+		}
+		return false;
 	}
-	
+	private String zh(String zh){
+		if(zh.equals("a_qb")){
+			return "\"8.0折\" ";
+		} else if(zh.equals("b_qb"))
+		{
+			return "\"9.0折\" ";
+		}else if(zh.equals("c_qb")){
+			return "\"9.5折\" ";
+		}
+		return "非法乾币类型";
+	}
+
 	private String  mosaicString(String str){
-		
+
 		StringBuffer sb=new StringBuffer(str);
-   		String[] orderDesArray=str.split(",");
-   		System.out.println(orderDesArray.length);
-   		for(int i=orderDesArray.length;i<4;i++){
-   			sb.append("0,");
-   		}
+		String[] orderDesArray=str.split(",");
+		System.out.println(orderDesArray.length);
+		for(int i=orderDesArray.length;i<4;i++){
+			sb.append("0,");
+		}
 		return sb.toString();
 	}
-	
-	//取出
+
+	//
+	public boolean trainOrderCallBackUtils(String trainOrderaId, String amount){
+		TrainOrdera trainOrdera=utilsDao.queryTrainOrder(trainOrderaId);
+		if(trainOrdera==null){
+			return false;
+		}
+		System.out.println(amount+"     "+trainOrdera.getActualPrice());
+		if(!trainOrderaId.equals(trainOrdera.getTrainOrderId())||!amount.equals(trainOrdera.getActualPrice())){
+			return false;
+		}
+		
+		//更改用户乾币
+		if(trainOrdera.getQbDed()!=null&&trainOrdera.getQbDed()>0){
+			newQbDed(trainOrdera.getUserId(),trainOrdera.getQbDed(),trainOrdera.getTrainOrderId()+""
+					,"报名培训使用"+trainOrdera.getQbDed()+"个乾币。（乾币余额：userQbNum）"
+					);
+		}
+		//更改培训订单表订单 状态
+		int s=trainShowServiceDao.updateTrainOrderaState(trainOrderaId);
+		if(s<0){
+			return false;
+		}
+		return true;
+	}
 }

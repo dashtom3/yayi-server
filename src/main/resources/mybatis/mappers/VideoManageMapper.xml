@@ -35,9 +35,7 @@
 		delete from vid_manage where vi_id= #{viId}
 	</delete>
 
-	<delete id="deleteVedioComment">
-		delete from vedio_comment where vi_id=#{viId}
-	</delete>
+
 
 	<select id="getTotalNumber" resultType="int">
 		select count(*) from vid_manage
@@ -50,11 +48,17 @@
 
 	<resultMap id="videoRM" type="VidManage" autoMapping="true">
 		<id property="viId" column="vi_id"/>
-		<collection property="vedioCommentList" select="showVidComment" column="vi_id" ofType="VedioComment"/>
+		<result property="vidName" column="video_name"/>
+		<result property="videoType" column="video_type"/>
+		<result property="vidRoute" column="video_route"/>
+		<result property="videoCategory" column="video_category"/>
+		<result property="vedioPlayNumber" column="vedio_play_number"/>
+		<result property="vedioCommentNumber" column="vedio_comment_number"/>
+		<result property="vedioTime" column="vedio_time"/>
 	</resultMap>
 
 	<select id="showVid" resultMap="videoRM">
-		select * from vid_manage
+		select vi_id,video_name,video_type,video_route,video_category,vedio_play_number,vedio_comment_number,DATE_FORMAT(vedio_time,'%Y-%m-%d %H:%i:%s') As vedio_time from vid_manage
 		<where>
 			<if test="videoCategory!=null and videoCategory!=6">
 				video_category=#{videoCategory}
@@ -68,7 +72,5 @@
 		</choose>
 	</select>
 
-	<select id="showVidComment" resultType="VedioComment">
-		select * FROM  vedio_comment where vi_id=#{vi_id}
-	</select>
+
 </mapper>

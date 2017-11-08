@@ -30,21 +30,22 @@ public interface CottomsPostDao {
 			@Param("classify")String classify,
 			@Param("order")Integer order);
 	public List<CottomsPost> queryPost(Page page);
-	public int getTotalNumber();
+	public int getTotalNumber(@Param("classify") String classify);
 	public int getTotalCommentNumber();
 	public CottomsPost cottomsDetail(CottomsPost cottomsPost);
 	public void comment(CottomsComment cottomsComment);
-	public void reply(CottomsReply cottomsReply);
+	//public void reply(CottomsReply cottomsReply);
 	
 	public int postLike(CottomsPost cottomsPost);
 	public void postLikeAdd(CottomsPost cottomsPost);
 	
 	public int postReaderNumber(CottomsPost cottomsPost);
-	public int commentNumber(CottomsPost cottomsPost);
+	//public int commentNumber(CottomsPost cottomsPost);
 	public void postReader(CottomsPost cottomsPost);
-	public int commentsLike(CottomsComment cottomsComment);
+	//public int commentsLike(CottomsComment cottomsComment);
 	public void commentsLikeAdd(CottomsComment cottomsComment);
 	//查询
 	public List<See> see();
+	public List<String> queryFees(CottomsPost cottomsPost);
 	
 }

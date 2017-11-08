@@ -13,7 +13,6 @@ public class CottomsPost {
 	private int postId;
 	private String headline;
 	private String classify;
-	private String chargeType;
 	private String freeContent;
 	private String chargeContent;
 	@DateTimeFormat(pattern="yy-MM-dd HH:mm:ss")
@@ -24,11 +23,12 @@ public class CottomsPost {
 	private int postFavour;
 	private List<Comments> commentsList;
 	private String cover;
-	private List<String> url;
+	private String printUrl;
 	private Date replyTime;
 	private String token;
 	private Integer postStater;
 	private Integer chargeNumber;
+	private String headPic;
 	public String getUserId() {
 		return userId;
 	}
@@ -53,12 +53,6 @@ public class CottomsPost {
 	public void setClassify(String classify) {
 		this.classify = classify;
 	}
-	public String getChargeType() {
-		return chargeType;
-	}
-	public void setChargeType(String chargeType) {
-		this.chargeType = chargeType;
-	}
 	public String getFreeContent() {
 		return freeContent;
 	}
@@ -71,6 +65,7 @@ public class CottomsPost {
 	public void setChargeContent(String chargeContent) {
 		this.chargeContent = chargeContent;
 	}
+	@JsonFormat(pattern="yy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getPostTime() {
 		return postTime;
 	}
@@ -113,11 +108,11 @@ public class CottomsPost {
 	public void setCover(String cover) {
 		this.cover = cover;
 	}
-	public List<String> getUrl() {
-		return url;
+	public String getPrintUrl() {
+		return printUrl;
 	}
-	public void setUrl(List<String> url) {
-		this.url = url;
+	public void setPrintUrl(String printUrl) {
+		this.printUrl = printUrl;
 	}
 	public Date getReplyTime() {
 		return replyTime;
@@ -143,25 +138,30 @@ public class CottomsPost {
 	public void setChargeNumber(Integer chargeNumber) {
 		this.chargeNumber = chargeNumber;
 	}
+	public String getHeadPic() {
+		return headPic;
+	}
+	public void setHeadPic(String headPic) {
+		this.headPic = headPic;
+	}
 	@Override
 	public String toString() {
 		return "CottomsPost [userId=" + userId + ", postId=" + postId + ", headline=" + headline + ", classify="
-				+ classify + ", chargeType=" + chargeType + ", freeContent=" + freeContent + ", chargeContent="
-				+ chargeContent + ", postTime=" + postTime + ", writer=" + writer + ", readNumber=" + readNumber
-				+ ", commentNumber=" + commentNumber + ", postFavour=" + postFavour + ", commentsList=" + commentsList
-				+ ", cover=" + cover + ", url=" + url + ", replyTime=" + replyTime + ", token=" + token
-				+ ", postStater=" + postStater + ", chargeNumber=" + chargeNumber + "]";
+				+ classify + ", freeContent=" + freeContent + ", chargeContent=" + chargeContent + ", postTime="
+				+ postTime + ", writer=" + writer + ", readNumber=" + readNumber + ", commentNumber=" + commentNumber
+				+ ", postFavour=" + postFavour + ", commentsList=" + commentsList + ", cover=" + cover + ", printUrl="
+				+ printUrl + ", replyTime=" + replyTime + ", token=" + token + ", postStater=" + postStater
+				+ ", chargeNumber=" + chargeNumber + ", headPic=" + headPic + "]";
 	}
-	public CottomsPost(String userId, int postId, String headline, String classify, String chargeType,
-			String freeContent, String chargeContent, Date postTime, String writer, int readNumber, int commentNumber,
-			int postFavour, List<Comments> commentsList, String cover, List<String> url, Date replyTime, String token,
-			Integer postStater, Integer chargeNumber) {
+	public CottomsPost(String userId, int postId, String headline, String classify, String freeContent,
+			String chargeContent, Date postTime, String writer, int readNumber, int commentNumber, int postFavour,
+			List<Comments> commentsList, String cover, String printUrl, Date replyTime, String token,
+			Integer postStater, Integer chargeNumber, String headPic) {
 		super();
 		this.userId = userId;
 		this.postId = postId;
 		this.headline = headline;
 		this.classify = classify;
-		this.chargeType = chargeType;
 		this.freeContent = freeContent;
 		this.chargeContent = chargeContent;
 		this.postTime = postTime;
@@ -171,11 +171,12 @@ public class CottomsPost {
 		this.postFavour = postFavour;
 		this.commentsList = commentsList;
 		this.cover = cover;
-		this.url = url;
+		this.printUrl = printUrl;
 		this.replyTime = replyTime;
 		this.token = token;
 		this.postStater = postStater;
 		this.chargeNumber = chargeNumber;
+		this.headPic = headPic;
 	}
 	public CottomsPost() {
 		super();

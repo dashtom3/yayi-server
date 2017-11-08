@@ -7,9 +7,7 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
-import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
@@ -17,20 +15,10 @@ import java.util.Map;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.poi.hssf.usermodel.HSSFCell;
-import org.apache.poi.hssf.usermodel.HSSFCellStyle;
-import org.apache.poi.hssf.usermodel.HSSFRow;
-import org.apache.poi.hssf.usermodel.HSSFSheet;
-import org.apache.poi.hssf.usermodel.HSSFWorkbook;
-import org.apache.poi.ss.usermodel.CellStyle;
-import org.apache.poi.ss.usermodel.Row;
-import org.apache.poi.ss.usermodel.Sheet;
-import org.apache.poi.ss.usermodel.Workbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.alibaba.druid.sql.ast.statement.SQLInsertStatement.ValuesClause;
-import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.ExcelUtil;
 import com.yayiabc.common.utils.Page;
@@ -41,6 +29,7 @@ import com.yayiabc.http.mvc.pojo.jpa.CottomsPost;
 import com.yayiabc.http.mvc.pojo.jpa.CottomsReply;
 import com.yayiabc.http.mvc.pojo.jpa.ExcelEntry;
 import com.yayiabc.http.mvc.pojo.jpa.See;
+import com.yayiabc.http.mvc.pojo.model.Classify;
 import com.yayiabc.http.mvc.service.CottomsPostService;
 @Service
 public class CottomsPostServiceImpl implements CottomsPostService{
@@ -51,26 +40,28 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	private UtilsDao utilsDao;
 	//发布病例
 	@Override
-	public void addPost(CottomsPost cottomsPost) {
-		String userId=utilsDao.getUserID(cottomsPost.getToken());
-		System.out.println(userId);
+	public void addPost(CottomsPost cottomsPost,String token) {
+		String userId=utilsDao.getUserID(token);
 		cottomsPost.setUserId(userId);
 		String trueName= cottomsPostDao.gettrueName(userId);
 		cottomsPost.setWriter(trueName);
 		cottomsPostDao.addPost(cottomsPost);
+
 	}
 
 	//显示病例
 	@Override
 	public DataWrapper<List<Map<String,Object>>> queryPost(Integer currentPage,Integer numberPerPage,String classify,Integer order) {
 		DataWrapper<List<Map<String,Object>>> dataWrapper=new DataWrapper<List<Map<String,Object>>>();
-		int totalNumber=cottomsPostDao.getTotalNumber();
 		CottomsPost cottomsPost = new CottomsPost();
+		cottomsPost.setClassify(classify);
+		int totalNumber=cottomsPostDao.getTotalNumber(classify);
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		cottomsPost.setClassify(classify);
 		List<Map<String,Object>> cottomsPosts=cottomsPostDao.queryPost(page,classify,order);
+		cottomsPost.setChargeContent(null);
+		cottomsPost.setFreeContent(null);
 		dataWrapper.setData(cottomsPosts);
 		dataWrapper.setPage(page, totalNumber);
 
@@ -81,7 +72,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	public DataWrapper<List<Map<String, Object>>> queryDraft(Integer currentPage, Integer numberPerPage, String classify,
 			Integer order) {
 		DataWrapper<List<Map<String,Object>>> dataWrapper=new DataWrapper<List<Map<String,Object>>>();
-		int totalNumber=cottomsPostDao.getTotalNumber();
+		int totalNumber=cottomsPostDao.getTotalNumber(classify);
 		CottomsPost cottomsPost = new CottomsPost();
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
@@ -106,43 +97,63 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		dataWrapper.setPage(page, totalNumber);
 		return dataWrapper;
 	}
+	//查看病例详情
 	@Override
-	public DataWrapper<CottomsPost> cottomsDetail(CottomsPost cottomsPost) {
+	public DataWrapper<CottomsPost> cottomsDetail(CottomsPost cottomsPost,String token) {
+		String userId=null;
+		if(token!=null){
+			userId=utilsDao.getUserID(cottomsPost.getToken());
+		}
 		DataWrapper<CottomsPost> dataWrapper=new DataWrapper<CottomsPost>();
-		CottomsPost cottomsPostl=cottomsPostDao.cottomsDetail(cottomsPost);
-		dataWrapper.setData(cottomsPostl);
-		return dataWrapper;
-	}
-	//评论
-	@Override
-	public void comment(CottomsComment cottomsComment) {
-		cottomsPostDao.comment(cottomsComment);
-	}
-	//回复
-	@Override
-	public void reply(CottomsReply cottomsReply) {
-		cottomsPostDao.reply(cottomsReply);
+		List<String> postIdFees=cottomsPostDao.queryFees(cottomsPost);
+		boolean userIde=false;
+		for(int i=0;i<postIdFees.size();i++){
+			if(postIdFees.get(i).equals(userId)){
+				userIde=true;
+			}
+		}
+		CottomsPost cottomsPostl=cottomsPostDao.cottomsDetail(cottomsPost);;
+		if(token!=null&&userIde==true) {
+			dataWrapper.setData(cottomsPostl);
+			return dataWrapper;
+		}else{
+			cottomsPost.setChargeContent(null);
+			dataWrapper.setData(cottomsPostl);
+			return dataWrapper;
+		}
 
 	}
+	//评论
+	//	@Override
+	//	public void comment(CottomsComment cottomsComment) {
+	//		cottomsPostDao.comment(cottomsComment);
+	//	}
+	//回复
+	//	@Override
+	//	public void reply(CottomsReply cottomsReply) {
+	//		cottomsPostDao.reply(cottomsReply);
+	//
+	//	}
 	@Override
 	public void postLike(CottomsPost cottomsPost) {
 		int like=cottomsPostDao.postLike(cottomsPost)+1;
 		cottomsPost.setPostFavour(like);
 		cottomsPostDao.postLikeAdd(cottomsPost);
 	}
-	public void postReader(CottomsPost cottomsPost){
-		int reader=cottomsPostDao.postReaderNumber(cottomsPost)+1;
-		cottomsPost.setReadNumber(reader);
-		int commentNumber=cottomsPostDao.commentNumber(cottomsPost);
-		cottomsPost.setReadNumber(commentNumber);
-		cottomsPostDao.postReader(cottomsPost);
-	}
 	@Override
-	public void commentsLike(CottomsComment cottomsComment) {
-		int like=cottomsPostDao.commentsLike(cottomsComment)+1;
-		cottomsComment.setCommentFavour(like);
-		cottomsPostDao.commentsLikeAdd(cottomsComment);
+	public void postReader(CottomsPost cottomsPost){
+		//		int reader=cottomsPostDao.postReaderNumber(cottomsPost)+1;
+		//		cottomsPost.setReadNumber(reader);
+		//		int commentNumber=cottomsPostDao.commentNumber(cottomsPost);
+		//		cottomsPost.setReadNumber(commentNumber);
+		//		cottomsPostDao.postReader(cottomsPost);
 	}
+	//	@Override
+	//	public void commentsLike(CottomsComment cottomsComment) {
+	//		int like=cottomsPostDao.commentsLike(cottomsComment)+1;
+	//		cottomsComment.setCommentFavour(like);
+	//		cottomsPostDao.commentsLikeAdd(cottomsComment);
+	//	}
 	public void see(HttpServletResponse response){
 
 		List<See> listsee = cottomsPostDao.see();

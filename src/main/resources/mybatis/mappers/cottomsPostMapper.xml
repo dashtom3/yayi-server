@@ -3,15 +3,17 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yayiabc.http.mvc.dao.CottomsPostDao">
+
 	<select id="gettrueName" resultType="java.lang.String">
 		select true_name,phone from user where user_id=#{userId}
 	</select>
+	<!--添加病例  -->
 	<insert id="addPost">
 		insert into cottoms_post
-		(headline,classify,charge_type,free_content,charge_content,writer,userId,read_number,post_favour,charge_number,post_stater)
-		values(#{headline},#{classify},#{chargeType},#{freeContent},#{chargeContent},#{writer},#{userId},0,0,#{chargeNumber},#{postStater})
+		(headline,classify,charge_type,free_content,charge_content,writer,userId,read_number,post_favour,charge_number,post_stater,cover)
+		values(#{headline},#{classify},#{chargeType},#{freeContent},#{chargeContent},#{writer},#{userId},0,0,#{chargeNumber},#{postStater},#{cover})
 	</insert>
-
+	<!--显示病例  -->
 	<select id="queryPost" resultType="java.util.Map">
 		select * from cottoms_post
 		<where>
@@ -28,7 +30,7 @@
 		</choose>
 		limit #{page.currentNumber},#{page.numberPerPage}
 	</select>
-	
+	<!--显示草稿  -->
 	<select id="queryDraft" resultType="java.util.Map">
 		select * from cottoms_post
 		<where>
@@ -49,50 +51,24 @@
 	<select id="getTotalNumber" resultType="int">
 		select count(0) from
 		cottoms_post
+		<where>
+			<if test="classify!=null and classify!=''">
+				classify=#{classify}
+			</if>
+		</where>
 	</select>
 	<select id="getTotalCommentNumber" resultType="int">
 		select count(0)
 		from cottoms_post
 	</select>
-
-	<resultMap type="CottomsPost" id="cottomsDetail" autoMapping="true">
-		<id property="postId" column="post_id" />
-		<collection property="commentsList" select="cottomsCommentDetail"
-			column="post_id" ofType="CottomsComment" />
-	</resultMap>
-	<resultMap type="CottomsComment" id="cottomsCommentDetail"
-		autoMapping="true">
-		<id property="commentId" column="comment_id" />
-		<collection property="cottomsReplyList" select="cottomsReplyDetail"
-			column="comment_id" ofType="CottomsReply" />
-	</resultMap>
-	<select id="cottomsDetail" resultMap="cottomsDetail">
-		select * from cottoms_post
-		where post_id=#{postId} order by post_time
+	<!-- 查看用户付费病例 -->
+	<select id="queryFees" resultType="java.lang.String">
+		select post_id from user_to_post where user_id=#{userId}
 	</select>
-	<select id="cottomsCommentDetail" parameterType="java.lang.Integer"
-		resultMap="cottomsCommentDetail">
-		select * from cottoms_comment where post_id=#{post_id} order
-		by comment_time
+	<!--查看病例详情  -->
+	<select id="cottomsDetail" resultType="CottomsPost">
+		select * from cottoms_post where post_id=#{postId}
 	</select>
-	<select id="cottomsReplyDetail" resultType="CottomsReply"
-		parameterType="java.lang.Integer">
-		select * from cottoms_reply where
-		comment_id=#{comment_id} order by reply_time
-	</select>
-
-	<insert id="comment">
-		insert into cottoms_comment
-		(comment,by_critic,comment_content,post_id,commentFavour) values
-		(#{comment},#{byCritic},#{commentContent},#{postId},0)
-	</insert>
-
-	<insert id="reply">
-		insert into cottoms_reply
-		(replyer,by_reply,reply_content,comment_id,reply_favour) values
-		(#{replyer},#{byReply},#{replyContent},#{commentId},0)
-	</insert>
-
 	<select id="postLike" resultType="java.lang.Integer">
 		select post_favour from
 		cottoms_post where post_id=#{postId}
@@ -103,7 +79,7 @@
 		where post_id=#{postId}
 	</update>
 
-	<select id="commentsLike" resultType="java.lang.Integer">
+	<!-- <select id="commentsLike" resultType="java.lang.Integer">
 		select comment_favour from
 		cottoms_comment where comment_id=#{commentId}
 	</select>
@@ -112,15 +88,18 @@
 		set
 		comment_favour=#{commentFavour}
 		where comment_id=#{commentId}
-	</update>
+	</update> -->
+	
 	<select id="postReaderNumber" resultType="java.lang.Integer">
 		select read_number from
 		cottoms_post where post_id=#{postId}
 	</select>
-	<select id="commentNumber" resultType="java.lang.Integer">
+	
+	<!-- <select id="commentNumber" resultType="java.lang.Integer">
 		select count(0) from
 		cottoms_comment where post_id=#{postId}
-	</select>
+	</select> -->
+	
 	<update id="postReader">
 		update cottoms_post
 		set read_number=#{readNumber}

@@ -18,7 +18,6 @@ public class AppVersionservicImpl implements AppVersionservic{
 		DataWrapper<List> dataWrapper =new DataWrapper<List>();
 		dataWrapper.setData(appVersiondao.ver());
 		return dataWrapper;
-		
-	}
 
+	}
 }

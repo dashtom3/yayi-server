@@ -10,7 +10,7 @@
 
 	<insert id="addHigh" parameterType="Moment" useGeneratedKeys="true" keyProperty="momentId">
 		insert into moment(user_name,user_id,moment_content_id,moment_content_title,moment_type)
-		VALUE (#{userName},#{userId},#{momentContentId},#{momentContentTitle},#{momentType})
+		VALUE (#{userName},#{userId},#{momentContentId},#{momentType})
 	</insert>
 
 	<delete id="deleteMoment">

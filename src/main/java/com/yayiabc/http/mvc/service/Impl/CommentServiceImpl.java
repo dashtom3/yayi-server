@@ -4,6 +4,7 @@ package com.yayiabc.http.mvc.service.Impl;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Comment;
+
 import com.yayiabc.http.mvc.pojo.jpa.SubComment;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.CommentService;
@@ -34,10 +35,11 @@ public class CommentServiceImpl implements CommentService {
         comment.setUserId(user.getUserId());
         comment.setUserName(user.getTrueName());
         //生成自增主键的STRING类型
-        Long commentId = redisService.STRINGS.incrBy(type + beCommentedId + "id", 1);
+        Long commentId = redisService.STRINGS.incrBy(type + beCommentedId+"的自增id序列" , 1);
         comment.setCommentId(commentId);
         //生成某一内容对应下的评论List的key
-        String key = type + "pl" + beCommentedId;
+        String key = type + "评论" + beCommentedId;
+        //生成点赞对应的用户列表
         //将对象存储进List
         JSONObject jsonObject = JSONObject.fromObject(comment);
         String json = jsonObject.toString();
@@ -51,7 +53,7 @@ public class CommentServiceImpl implements CommentService {
     public DataWrapper<List<Comment>> queryCom(String type, Integer beCommentedId) {
         DataWrapper<List<Comment>> dataWrapper = new DataWrapper<List<Comment>>();
         List<Comment> commentModelList = new ArrayList<Comment>();
-        String key = type + "pl" + beCommentedId;
+        String key = type + "评论" + beCommentedId+"的子评论";
         List<String> jsonList = redisService.LISTS.lrange(key, 0, -1);
         System.out.println(jsonList);
         for (String json : jsonList
@@ -61,7 +63,7 @@ public class CommentServiceImpl implements CommentService {
             commentModelList.add(commentModel);
         }
         System.out.println(commentModelList);
-        Set<String> idSet = redisService.SORTSET.zrevrange(type + beCommentedId + "zan", 0, -1);
+        Set<String> idSet = redisService.SORTSET.zrange(type + beCommentedId + "zan", 0, -1);
         System.out.println(idSet);
         List<Comment> comments = new ArrayList<Comment>();
         for (String id : idSet
@@ -86,7 +88,8 @@ public class CommentServiceImpl implements CommentService {
         subComment.setUserId(user.getUserId());
         subComment.setUserName(user.getTrueName());
         //生成自增主键的STRING类型
-        Long commentId = redisService.STRINGS.incrBy("sub" + "id", 1);
+        Long commentId = redisService.STRINGS.incrBy("sub" + "生成id自增主键", 1);
+        subComment.setCommentId(commentId);
         //生成某一内容对应下的评论List的key
         String key = "plsub" + preCommentId;
         //将对象存储进List
@@ -114,39 +117,7 @@ public class CommentServiceImpl implements CommentService {
         return dataWrapper;
     }
 
-    @Override
-    public DataWrapper<Void> zan(String type, Integer beCommentedId, Integer category, Long commentId) {
-        DataWrapper<Void> dataWrapper = new DataWrapper<>();
-        if (category == 1) {//一级分类
-            //先取出list
-            String key = type + "pl" + beCommentedId;
-            List<String> jsonList = redisService.LISTS.lrange(key, 0, -1);
-            Comment comment = null;
-            for (int i = 0; i < jsonList.size(); i++) {
-                JSONObject jsonObject = JSONObject.fromObject(jsonList.get(i));
-                comment = (Comment) JSONObject.toBean(jsonObject, Comment.class);
-                if (commentId == comment.getCommentId()) {
-                    comment.setZan(comment.getZan() + 1);
-                    redisService.LISTS.lset(key, i, JSONObject.fromObject(comment).toString());
-                    return dataWrapper;
-                }
-            }
-        }else if (category == 2) {//二级分类
-                //先取出list
-                String keySub = "plsub" + beCommentedId;
-                List<String> jsons = redisService.LISTS.lrange(keySub, 0, -1);
-                SubComment subComment = null;
-                for (int i = 0; i < jsons.size(); i++) {
-                    JSONObject object = JSONObject.fromObject(jsons.get(i));
-                    subComment = (SubComment) JSONObject.toBean(object, SubComment.class);
-                    if (subComment.getCommentId() == commentId) {
-                        subComment.setZan(subComment.getZan() + 1);
-                        redisService.LISTS.lset(keySub, i, JSONObject.fromObject(subComment).toString());
-                        return dataWrapper;
-                    }
-                }
-            }
-            return dataWrapper;
-        }
+
+
     }
 

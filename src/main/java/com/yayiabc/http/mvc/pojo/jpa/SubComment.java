@@ -5,7 +5,7 @@ import java.util.Date;
 public class SubComment {
     private String userId;
     private String userName;
-    private Long commentId;
+    private long commentId;
     private String commentContent;
     private Date commentTime;
     private String replyUserId;
@@ -28,11 +28,11 @@ public class SubComment {
         this.userName = userName;
     }
 
-    public Long getCommentId() {
+    public long getCommentId() {
         return commentId;
     }
 
-    public void setCommentId(Long commentId) {
+    public void setCommentId(long commentId) {
         this.commentId = commentId;
     }
 
@@ -79,7 +79,7 @@ public class SubComment {
     public SubComment() {
     }
 
-    public SubComment(String userId, String userName, Long commentId, String commentContent, Date commentTime, String replyUserId, String replyUserName, int zan) {
+    public SubComment(String userId, String userName, long commentId, String commentContent, Date commentTime, String replyUserId, String replyUserName, int zan) {
         this.userId = userId;
         this.userName = userName;
         this.commentId = commentId;

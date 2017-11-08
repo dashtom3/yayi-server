@@ -54,8 +54,6 @@ public class VideoManageServiceImpl implements VideoManageService {
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		videoManageDao.insertVid(vidManage);
-		redisService.STRINGS.set(("video:"+vidManage.getVideoCategory()).getBytes(), SerializeUtil.serialize(vidManage));
-		System.out.println(SerializeUtil.unserialize(redisService.STRINGS.get(("video:"+vidManage.getViId()).getBytes())));
 		return dataWrapper;
 	}
 

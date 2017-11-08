@@ -19,5 +19,4 @@ public interface CommentService {
 
     DataWrapper<List<SubComment>> querySubCom(Long preCommentId);
 
-    DataWrapper<Void> zan(String type, Integer beCommentedId, Integer category, Long commentId);
 }

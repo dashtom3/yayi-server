@@ -29,7 +29,6 @@ public class CommentController {
             @RequestParam(value="beCommentedId",required = true) Integer beCommentedId,
             @ModelAttribute Comment comment
             ){
-        System.out.println(comment);
        return commentService.addCom(token,type,beCommentedId,comment);
     }
 
@@ -64,17 +63,7 @@ public class CommentController {
           return commentService.querySubCom(preCommentId);
     }
 
-    //评论点赞
-    @RequestMapping("zan")
-    @ResponseBody
-    public DataWrapper<Void> zan(
-            @RequestParam(value="type",required = true)String type,
-            @RequestParam(value="beCommentedId",required = true)Integer beCommentedId,
-            @RequestParam(value="category",required = true)Integer category,//1.一级分类2.二级分类
-            @RequestParam(value="commentId",required = true)Long commentId
-    ){
-         return commentService.zan(type,beCommentedId,category,commentId);
-    }
+
 
 
 

@@ -6,7 +6,7 @@ import java.util.List;
 public class Comment {
     private String userId;
     private String userName;
-    private Long commentId;
+    private long commentId;
     private String commentContent;
     private Date commentTime;
     private int zan=0;
@@ -28,11 +28,11 @@ public class Comment {
         this.userName = userName;
     }
 
-    public Long getCommentId() {
+    public long getCommentId() {
         return commentId;
     }
 
-    public void setCommentId(Long commentId) {
+    public void setCommentId(long commentId) {
         this.commentId = commentId;
     }
 
@@ -71,7 +71,7 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(String userId, String userName, Long commentId, String commentContent, Date commentTime, int zan, int replyNumber) {
+    public Comment(String userId, String userName, long commentId, String commentContent, Date commentTime, int zan, int replyNumber) {
         this.userId = userId;
         this.userName = userName;
         this.commentId = commentId;

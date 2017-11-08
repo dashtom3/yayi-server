@@ -10,8 +10,8 @@
 	<!--添加病例  -->
 	<insert id="addPost">
 		insert into cottoms_post
-		(headline,classify,charge_type,free_content,charge_content,writer,userId,read_number,post_favour,charge_number,post_stater,cover)
-		values(#{headline},#{classify},#{chargeType},#{freeContent},#{chargeContent},#{writer},#{userId},0,0,#{chargeNumber},#{postStater},#{cover})
+		(headline,classify,free_content,charge_content,writer,userId,read_number,post_favour,charge_number,post_stater,cover)
+		values(#{headline},#{classify},#{freeContent},#{chargeContent},#{writer},#{userId},0,0,#{chargeNumber},#{postStater},#{cover})
 	</insert>
 	<!--显示病例  -->
 	<select id="queryPost" resultType="java.util.Map">

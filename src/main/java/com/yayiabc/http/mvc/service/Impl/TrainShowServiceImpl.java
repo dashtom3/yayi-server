@@ -24,9 +24,9 @@ import com.yayiabc.http.mvc.pojo.jpa.Train;
 import com.yayiabc.http.mvc.pojo.jpa.TrainDetail;
 import com.yayiabc.http.mvc.pojo.jpa.TrainOrdera;
 import com.yayiabc.http.mvc.pojo.jpa.User;
+import com.yayiabc.http.mvc.service.RedisService;
 import com.yayiabc.http.mvc.service.TrainShowService;
 
-import net.sf.json.JSONObject;
 import redis.clients.jedis.Jedis;
 
 @Service
@@ -35,6 +35,8 @@ public class TrainShowServiceImpl implements TrainShowService {
 	private TrainShowServiceDao trainShowServiceDao;
 	@Autowired 
 	private  UtilsDao utilsDao;
+	@Autowired
+	private RedisService rediService;
 	@Override 
 	public DataWrapper<List<Train>> show(String classly, Integer currentPage, Integer numberPerpage) {
 		// TODO Auto-generated method stub

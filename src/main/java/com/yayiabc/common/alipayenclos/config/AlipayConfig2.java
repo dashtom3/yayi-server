@@ -1,5 +1,7 @@
 package com.yayiabc.common.alipayenclos.config;
 
+import com.yayiabc.common.utils.GlobalVariables;
+
 /* *
  *类名：AlipayConfig
  *功能：基础配置类
@@ -34,7 +36,7 @@ public class AlipayConfig2 {
 	    public static String input_charset = "utf-8";
 
 	    // 接收通知的接口名
-	    public static String service = "http://47.93.48.111:8080/api/appPay/callBack";
+	    public static String service =  GlobalVariables.domain+"/api/appPay/callBack";
 	    //public static String service = "mobile.securitypay.pay";
 
 	    //APPID

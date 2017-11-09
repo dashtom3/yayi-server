@@ -10,6 +10,7 @@ import com.alipay.api.request.AlipayTradeAppPayRequest;
 import com.alipay.api.response.AlipayTradeAppPayResponse;
 import com.yayiabc.common.alipayenclos.config.AlipayConfig;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.GlobalVariables;
 import com.yayiabc.http.mvc.service.AppPayService;
 @Service
 public class AppPayServiceImpl implements AppPayService {
@@ -33,7 +34,7 @@ public class AppPayServiceImpl implements AppPayService {
         model.setTotalAmount(total_fee);  
         model.setProductCode(QUICK_MSECURITY_PAY);  
         request.setBizModel(model);  
-        request.setNotifyUrl("http://47.93.48.111:8080/api/appPay/callBack");//回调地址  
+        request.setNotifyUrl( GlobalVariables.domain+"/api/appPay/callBack");//回调地址  
         //request.setReturnUrl("http://www.yayiabc.com/center/myMoney");  
         String orderInfo = null; 
         try {  

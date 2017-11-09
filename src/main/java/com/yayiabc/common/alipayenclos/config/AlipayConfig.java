@@ -1,5 +1,7 @@
 package com.yayiabc.common.alipayenclos.config;
 
+import com.yayiabc.common.utils.GlobalVariables;
+
 /* *
  *类名：AlipayConfig
  *功能：基础配置类
@@ -26,10 +28,10 @@ public class AlipayConfig {
       public static String key ="qk5s6ct89j54syu3v84m32b0s5oie1to";//妆前
     
 	// 服务器异步通知页面路径  需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String notify_url = "http://47.93.48.111:8080/api/pay/notifyVerifica";
+	public static String notify_url = GlobalVariables.domain+"/api/pay/notifyVerifica";
 
 	// 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String return_url = "http://47.93.48.111:8080/api/pay/payVerifica";
+	public static String return_url =  GlobalVariables.domain+"/api/pay/payVerifica";
 	//public static String return_url = "http://47.93.48.111:85/paySuccess";
 	
 
@@ -83,10 +85,10 @@ public class AlipayConfig {
 	// RSA2
 	public static String SIGNTYPE = "RSA";
 	
-	public static String phoneNotify_url = "http://47.93.48.111:8080/api/phonePay/notifyVerifica";
+	public static String phoneNotify_url =  GlobalVariables.domain+"/api/phonePay/notifyVerifica";
 
 	// 页面跳转同步通知页面路径 需http://格式的完整路径，不能加?id=123这类自定义参数，必须外网可以正常访问
-	public static String phoneReturn_url = "http://47.93.48.111:8080/api/phonePay/payVerifica";
+	public static String phoneReturn_url =  GlobalVariables.domain+"/api/phonePay/payVerifica";
 	
 	//---------------------------------------
 	//app支付 接受通知的接口名

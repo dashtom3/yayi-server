@@ -52,7 +52,7 @@ public class PostController {
 	
 	@RequestMapping("queryPost")//显示病例
 	@ResponseBody
-	public DataWrapper<List<Map<String,Object>>> queryPost(
+	public DataWrapper<List<CottomsPost>> queryPost(
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
 			@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
 			@RequestParam(value="classify",required=false) String classify,//分类

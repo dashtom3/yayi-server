@@ -236,6 +236,11 @@
 			<artifactId>qiniu-java-sdk</artifactId>
 			<version>[7.2.0, 7.2.99]</version>
 		</dependency>
+		<dependency>
+			<groupId>com.qiniu</groupId>
+			<artifactId>sdk</artifactId>
+			<version>6.1.0</version>
+		</dependency>
 
 
 
@@ -284,16 +289,26 @@
 			<version>3.13</version>
 		</dependency>
 		<!-- rabbitmq -->
-		<dependency>  
-            <groupId>com.rabbitmq</groupId>  
-            <artifactId>amqp-client</artifactId>  
-            <version>3.6.0</version>  
-        </dependency>  
+		<dependency>
+            <groupId>com.rabbitmq</groupId>
+            <artifactId>amqp-client</artifactId>
+            <version>3.6.0</version>
+        </dependency>
         <dependency>
         <groupId>org.springframework.amqp</groupId>
         <artifactId>spring-rabbit</artifactId>
         <version>1.4.5.RELEASE</version>
     </dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>RELEASE</version>
+		</dependency>
+		<dependency>
+			<groupId>org.junit.jupiter</groupId>
+			<artifactId>junit-jupiter-api</artifactId>
+			<version>RELEASE</version>
+		</dependency>
 	</dependencies>
 
 

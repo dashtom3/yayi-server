@@ -19,6 +19,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 
+import com.tencent.mm.opensdk.channel.a.a;
+import com.tencent.wxop.stat.common.q;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.ExcelUtil;
 import com.yayiabc.common.utils.Page;
@@ -45,21 +47,25 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		cottomsPost.setUserId(userId);
 		String trueName= cottomsPostDao.gettrueName(userId);
 		cottomsPost.setWriter(trueName);
-		cottomsPostDao.addPost(cottomsPost);
-
+		if(cottomsPost.getUserId()==null){
+			cottomsPostDao.addPost(cottomsPost);
+		}else{
+			cottomsPostDao.setPost(cottomsPost);
+		}
 	}
 
 	//显示病例
 	@Override
-	public DataWrapper<List<Map<String,Object>>> queryPost(Integer currentPage,Integer numberPerPage,String classify,Integer order) {
-		DataWrapper<List<Map<String,Object>>> dataWrapper=new DataWrapper<List<Map<String,Object>>>();
+	public DataWrapper<List<CottomsPost>> queryPost(Integer currentPage,Integer numberPerPage,String classify,Integer order) {
+		DataWrapper<List<CottomsPost>> dataWrapper=new DataWrapper<List<CottomsPost>>();
 		CottomsPost cottomsPost = new CottomsPost();
 		cottomsPost.setClassify(classify);
 		int totalNumber=cottomsPostDao.getTotalNumber(classify);
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		List<Map<String,Object>> cottomsPosts=cottomsPostDao.queryPost(page,classify,order);
+		List<CottomsPost> cottomsPosts=cottomsPostDao.queryPost(page,classify,order);
+		System.out.println(cottomsPosts);
 		cottomsPost.setChargeContent(null);
 		cottomsPost.setFreeContent(null);
 		dataWrapper.setData(cottomsPosts);
@@ -86,13 +92,13 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	}
 	@Override
 	//查看评论
-	public DataWrapper<List<CottomsPost>> queryComment(Integer currentPage, Integer numberPerPage) {
-		DataWrapper<List<CottomsPost>> dataWrapper=new DataWrapper<List<CottomsPost>>();
+	public DataWrapper<List<Map<String,Object>>> queryComment(Integer currentPage, Integer numberPerPage) {
+		DataWrapper<List<Map<String,Object>>> dataWrapper=new DataWrapper<List<Map<String,Object>>>();
 		int totalNumber=cottomsPostDao.getTotalCommentNumber();
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		List<CottomsPost> cottomsPosts=cottomsPostDao.queryPost(page);
+		List<Map<String,Object>> cottomsPosts=cottomsPostDao.queryPost(page);
 		dataWrapper.setData(cottomsPosts);
 		dataWrapper.setPage(page, totalNumber);
 		return dataWrapper;
@@ -105,10 +111,11 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			userId=utilsDao.getUserID(cottomsPost.getToken());
 		}
 		DataWrapper<CottomsPost> dataWrapper=new DataWrapper<CottomsPost>();
-		List<String> postIdFees=cottomsPostDao.queryFees(cottomsPost);
+		List<String> postIdFees=cottomsPostDao.queryFees(cottomsPost);//获取本用户付费病例id
 		boolean userIde=false;
+		String post=cottomsPost.getPostId()+"";
 		for(int i=0;i<postIdFees.size();i++){
-			if(postIdFees.get(i).equals(userId)){
+			if(postIdFees.get(i).equals(post)){
 				userIde=true;
 			}
 		}

@@ -7,15 +7,26 @@
 	<select id="gettrueName" resultType="java.lang.String">
 		select true_name,phone from user where user_id=#{userId}
 	</select>
+	
 	<!--添加病例  -->
 	<insert id="addPost">
 		insert into cottoms_post
-		(headline,classify,free_content,charge_content,writer,userId,read_number,post_favour,charge_number,post_stater,cover)
+		(headline,classify,free_content,charge_content,writer,user_id,read_number,post_favour,charge_number,post_stater,cover)
 		values(#{headline},#{classify},#{freeContent},#{chargeContent},#{writer},#{userId},0,0,#{chargeNumber},#{postStater},#{cover})
 	</insert>
+	
+	<!-- 更改病历 -->
+	<update id="setPost">
+		update cottoms_post
+		set
+		headline=#{headline},classify=#{classify},free_content=#{freeContent},charge_content=#{chargeContent},writer=#{writer},
+		user_id=#{userId},read_number=0,post_favour=0,charge_number=#{chargeNumber},post_stater=#{postStater},cover=#{cover}
+		where post_id=#{postId}
+	</update>
+	
 	<!--显示病例  -->
-	<select id="queryPost" resultType="java.util.Map">
-		select * from cottoms_post
+	<select id="queryPost" resultType="CottomsPost">
+		select * from cottoms_post left join user on cottoms_post.user_id=user.user_id
 		<where>
 			<if test="classify!=null and classify!=''">
 				classify=#{classify} and
@@ -30,6 +41,7 @@
 		</choose>
 		limit #{page.currentNumber},#{page.numberPerPage}
 	</select>
+	
 	<!--显示草稿  -->
 	<select id="queryDraft" resultType="java.util.Map">
 		select * from cottoms_post
@@ -109,10 +121,10 @@
 	<select id="see" resultType="com.yayiabc.http.mvc.pojo.jpa.See">
 		SELECT
 		true_name,phone,qb_rget,qb_rout,qb_time,remark
-		FROM qb_record LEFT JOIN
+		FROM qb_record JOIN
 		USER ON qb_record.user_id=user.user_id
-		AND qb_time between '2017-10-25'
-		AND '2017-10-29'
+		AND qb_time&gt;='2017-10-25 00:00:00'
+		AND qb_time&lt;='2017-10-29 24:00:00'
 		AND remark LIKE '%充值%'
 	</select>
 </mapper>

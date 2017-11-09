@@ -28,7 +28,7 @@ public class CottomsPost {
 	private String token;
 	private Integer postStater;
 	private Integer chargeNumber;
-	private String headPic;
+	private String userPic;
 	public String getUserId() {
 		return userId;
 	}
@@ -65,7 +65,6 @@ public class CottomsPost {
 	public void setChargeContent(String chargeContent) {
 		this.chargeContent = chargeContent;
 	}
-	@JsonFormat(pattern="yy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getPostTime() {
 		return postTime;
 	}
@@ -138,11 +137,11 @@ public class CottomsPost {
 	public void setChargeNumber(Integer chargeNumber) {
 		this.chargeNumber = chargeNumber;
 	}
-	public String getHeadPic() {
-		return headPic;
+	public String getUserPic() {
+		return userPic;
 	}
-	public void setHeadPic(String headPic) {
-		this.headPic = headPic;
+	public void setUserPic(String userPic) {
+		this.userPic = userPic;
 	}
 	@Override
 	public String toString() {
@@ -151,12 +150,12 @@ public class CottomsPost {
 				+ postTime + ", writer=" + writer + ", readNumber=" + readNumber + ", commentNumber=" + commentNumber
 				+ ", postFavour=" + postFavour + ", commentsList=" + commentsList + ", cover=" + cover + ", printUrl="
 				+ printUrl + ", replyTime=" + replyTime + ", token=" + token + ", postStater=" + postStater
-				+ ", chargeNumber=" + chargeNumber + ", headPic=" + headPic + "]";
+				+ ", chargeNumber=" + chargeNumber + ", userPic=" + userPic + "]";
 	}
 	public CottomsPost(String userId, int postId, String headline, String classify, String freeContent,
 			String chargeContent, Date postTime, String writer, int readNumber, int commentNumber, int postFavour,
 			List<Comments> commentsList, String cover, String printUrl, Date replyTime, String token,
-			Integer postStater, Integer chargeNumber, String headPic) {
+			Integer postStater, Integer chargeNumber, String userPic) {
 		super();
 		this.userId = userId;
 		this.postId = postId;
@@ -176,7 +175,7 @@ public class CottomsPost {
 		this.token = token;
 		this.postStater = postStater;
 		this.chargeNumber = chargeNumber;
-		this.headPic = headPic;
+		this.userPic = userPic;
 	}
 	public CottomsPost() {
 		super();

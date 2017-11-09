@@ -20,7 +20,7 @@ public interface CottomsPostDao {
 	//发布病例
 	public void addPost(CottomsPost cottomsPost);
 	//显示病例
-	public List<Map<String, Object>> queryPost(
+	public List<CottomsPost> queryPost(
 			@Param("page") Page page,
 			@Param("classify")String classify,
 			@Param("order")Integer order);
@@ -29,7 +29,7 @@ public interface CottomsPostDao {
 			@Param("page") Page page,
 			@Param("classify")String classify,
 			@Param("order")Integer order);
-	public List<CottomsPost> queryPost(Page page);
+	public List<Map<String,Object>> queryPost(Page page);
 	public int getTotalNumber(@Param("classify") String classify);
 	public int getTotalCommentNumber();
 	public CottomsPost cottomsDetail(CottomsPost cottomsPost);
@@ -47,5 +47,6 @@ public interface CottomsPostDao {
 	//查询
 	public List<See> see();
 	public List<String> queryFees(CottomsPost cottomsPost);
+	public void setPost(CottomsPost cottomsPost);
 	
 }

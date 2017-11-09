@@ -15,7 +15,7 @@ public interface CommentService {
 
     DataWrapper<List<Comment>> queryCom(String type,Integer beCommentedId);
 
-    DataWrapper<Void> addSubCom(String token, Long preCommentId, SubComment subComment);
+    DataWrapper<Void> addSubCom(String token, Long preCommentId, SubComment subComment,String type);
 
     DataWrapper<List<SubComment>> querySubCom(Long preCommentId);
 

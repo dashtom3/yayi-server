@@ -25,7 +25,7 @@ public class CommentController {
     @ResponseBody
     public DataWrapper<Void> addCom(
             @RequestHeader(value="token",required = true) String token,
-            @RequestParam(value="type",required = true) String type,
+            @RequestParam(value="type",required = true) String type,//1.视频2.病例3.培训4.牙医圈
             @RequestParam(value="beCommentedId",required = true) Integer beCommentedId,
             @ModelAttribute Comment comment
             ){
@@ -38,9 +38,10 @@ public class CommentController {
     public DataWrapper<Void> addSubCom(
             @RequestHeader(value="token",required = true)String token,
             @RequestParam(value="preCommentId",required = true) Long preCommentId,
-            @ModelAttribute SubComment subComment
+            @ModelAttribute SubComment subComment,
+            @RequestParam(value="type",required = true) String type//1.视频2.病例3.培训4.牙医圈
             ){
-        return commentService.addSubCom(token,preCommentId,subComment);
+        return commentService.addSubCom(token,preCommentId,subComment,type);
     }
 
 

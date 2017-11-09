@@ -5,7 +5,9 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.yayiabc.http.mvc.pojo.jpa.VidManage;
+import org.springframework.stereotype.Repository;
 
+@Repository
 public interface VideoManageDao {
 
 			
@@ -20,5 +22,5 @@ public interface VideoManageDao {
 
 	int getTotalNumber(@Param("videoCategory")Integer videoCategory);
 
-	List<VidManage> showVid(@Param("rule")Integer rule,@Param("videoCategory") Integer videoCategory,@Param("currentNumber") Integer currentNumber,@Param("numberPerPage") Integer numberPerPage);
+	List<VidManage> showVid(@Param("rule")Integer rule,@Param("videoCategory") Integer videoCategory);
 }

@@ -6,16 +6,22 @@ import org.springframework.format.annotation.DateTimeFormat;
 import java.util.Date;
 import java.util.List;
 
-public class Moment {
+public class Moment<T> {
     private Integer momentId; //牙医圈id
     private String userId; //发表者id
     private String userName; //发表者姓名
+    private String userPic;//发表者的头像
+    private User user;//发表者
     private String momentContent; //发表到牙医圈的文字内容
     private String momentPicture; //发表到牙医圈的图片
     private Integer momentContentId;//发表到朋友圈的内容的id,可能为空
-    private Integer momentType;//发表到朋友圈的内容的类型标识 (1.纯文字；2.纯文字+1张图；3.纯文字+2张图；4.纯文字+3张（4、5、6）；5.纯文字+6（7、8）张图；6.分享视频、7.病例、8.培训。8种情况)
+    private T t;//发表内容
+    private Integer momentType;//发表到朋友圈的内容的类型标识 (1.纯文字；2.文字+图；3.分享视频、4.病例、5.培训。5种情况)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date momentTime;//发表到朋友圈的时间
+    private Integer commentNumber;//评论数
+    private Integer zanNumber;//点赞数
+
     private List<Comment> commentList;
 
     public Integer getMomentId() {

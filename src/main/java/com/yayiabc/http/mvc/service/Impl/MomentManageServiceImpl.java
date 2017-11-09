@@ -21,6 +21,8 @@ public class MomentManageServiceImpl implements MomentManageService{
     private MomentManageDao momentManageDao;
     @Autowired
     private UtilsDao utilsDao;
+    @Autowired
+    private RedisService redisService;
 
   /*  @Autowired
     private RedisService redisService;*/
@@ -30,7 +32,6 @@ public class MomentManageServiceImpl implements MomentManageService{
         DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
         User user=utilsDao.getUserByToken(token);
         moment.setUserId(user.getUserId());
-        moment.setUserName(user.getTrueName());
         try {
             if (moment.getMomentType() < 3) {
                 momentManageDao.addLower(moment);
@@ -47,7 +48,7 @@ public class MomentManageServiceImpl implements MomentManageService{
     public DataWrapper<Void> delete(Integer momentId) {
         DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
         momentManageDao.deleteMoment(momentId);
-        momentManageDao.deleteMomentComment(momentId);
+        //TODO delete the comments of moment
         return dataWrapper;
     }
 
@@ -67,12 +68,7 @@ public class MomentManageServiceImpl implements MomentManageService{
     }
 
 
-    @Override
-    public DataWrapper<Void> upvote(Integer momentId,String token) {
-        DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 
-        return null;
-    }
 
 
 }

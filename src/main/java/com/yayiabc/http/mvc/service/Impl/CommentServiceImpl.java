@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.service.Impl;
 
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.ScoreUtil;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Comment;
 
@@ -34,8 +35,11 @@ public class CommentServiceImpl implements CommentService {
         User user = utilsDao.getUserByToken(token);
         comment.setUserId(user.getUserId());
         comment.setUserName(user.getTrueName());
+        if(type.equals("视频")){//添加评论数
+            redisService.SORTSET.zincrby("视频评论数",1,beCommentedId+"");
+        }
         //生成自增主键的STRING类型
-        Long commentId = redisService.STRINGS.incrBy(type + beCommentedId+"的自增id序列" , 1);
+        long commentId = redisService.STRINGS.incrBy(type + beCommentedId+"的自增id序列" , 1);
         comment.setCommentId(commentId);
         //生成某一内容对应下的评论List的key
         String key = type + "评论" + beCommentedId;
@@ -44,8 +48,9 @@ public class CommentServiceImpl implements CommentService {
         JSONObject jsonObject = JSONObject.fromObject(comment);
         String json = jsonObject.toString();
         redisService.LISTS.rpush(key, json);
-        //将点赞数放进一个ZSET中
-        redisService.SORTSET.zadd(type + beCommentedId + "zan", comment.getZan(), String.valueOf(commentId));
+        //将点赞数和时间数放进一个ZSET中
+        double score= ScoreUtil.getScore(commentId);
+        redisService.SORTSET.zadd("点赞数+时间数"+type+beCommentedId,score,commentId+"");
         return dataWrapper;
     }
 
@@ -53,7 +58,7 @@ public class CommentServiceImpl implements CommentService {
     public DataWrapper<List<Comment>> queryCom(String type, Integer beCommentedId) {
         DataWrapper<List<Comment>> dataWrapper = new DataWrapper<List<Comment>>();
         List<Comment> commentModelList = new ArrayList<Comment>();
-        String key = type + "评论" + beCommentedId+"的子评论";
+        String key = type + "评论" + beCommentedId;
         List<String> jsonList = redisService.LISTS.lrange(key, 0, -1);
         System.out.println(jsonList);
         for (String json : jsonList
@@ -63,7 +68,7 @@ public class CommentServiceImpl implements CommentService {
             commentModelList.add(commentModel);
         }
         System.out.println(commentModelList);
-        Set<String> idSet = redisService.SORTSET.zrange(type + beCommentedId + "zan", 0, -1);
+        Set<String> idSet=redisService.SORTSET.zrevrange("点赞数+时间数"+type+beCommentedId,0,-1);
         System.out.println(idSet);
         List<Comment> comments = new ArrayList<Comment>();
         for (String id : idSet
@@ -71,6 +76,8 @@ public class CommentServiceImpl implements CommentService {
             for (Comment comment : commentModelList
                     ) {
                 if (String.valueOf(comment.getCommentId()).equals(id)) {
+                    int zan=(int)redisService.SORTSET.zcard("点赞数+时间数"+type+beCommentedId);
+                    comment.setZan(zan);
                     comments.add(comment);
                 }
             }
@@ -81,7 +88,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public DataWrapper<Void> addSubCom(String token, Long preCommentId, SubComment subComment) {
+    public DataWrapper<Void> addSubCom(String token, Long preCommentId, SubComment subComment,String type) {
         DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
         //通过token来获取用户的信息
         User user = utilsDao.getUserByToken(token);
@@ -91,13 +98,14 @@ public class CommentServiceImpl implements CommentService {
         Long commentId = redisService.STRINGS.incrBy("sub" + "生成id自增主键", 1);
         subComment.setCommentId(commentId);
         //生成某一内容对应下的评论List的key
-        String key = "plsub" + preCommentId;
+        String key = type+"评论"+ preCommentId;
         //将对象存储进List
         JSONObject jsonObject = JSONObject.fromObject(subComment);
         String json = jsonObject.toString();
         redisService.LISTS.rpush(key, json);
         //将点赞数放进一个ZSET中
-        redisService.SORTSET.zadd("pl" + preCommentId + "zan", subComment.getZan(), String.valueOf(commentId));
+        double score=ScoreUtil.getScore(commentId);
+        redisService.SORTSET.zadd("点赞数+时间数"+type+preCommentId,score,commentId+"");
         return dataWrapper;
     }
 
@@ -116,6 +124,10 @@ public class CommentServiceImpl implements CommentService {
         dataWrapper.setData(subCommentList);
         return dataWrapper;
     }
+
+
+
+
 
 
 

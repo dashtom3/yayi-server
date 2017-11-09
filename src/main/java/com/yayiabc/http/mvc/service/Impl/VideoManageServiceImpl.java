@@ -1,7 +1,11 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import java.util.ArrayList;
 import java.util.List;
+import java.util.Set;
 
+import com.yayiabc.common.utils.ScoreUtil;
+import com.yayiabc.http.mvc.service.VideoScreenPicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.stereotype.Service;
@@ -19,9 +23,11 @@ public class VideoManageServiceImpl implements VideoManageService {
      @Autowired
      private VideoManageDao videoManageDao;
 
-    /* @Autowired
-     @Qualifier("redisService")*/
+     @Autowired
 	 private RedisService redisService;
+
+     @Autowired
+	 private VideoScreenPicService videoScreenPicService;
 
 
 
@@ -31,10 +37,30 @@ public class VideoManageServiceImpl implements VideoManageService {
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		int totalNumber=videoManageDao.getTotalNumber(videoCategory);
-		List<VidManage> vidManageList=videoManageDao.showVid(rule,videoCategory,page.getCurrentNumber(),page.getNumberPerPage());
-		System.out.println(vidManageList);
-		dataWrapper.setData(vidManageList);
+//		int totalNumber=videoManageDao.getTotalNumber(videoCategory);
+		List<VidManage> vidManageList=videoManageDao.showVid(rule,videoCategory);
+		int totalNumber=vidManageList.size();
+		Set<String> viIdSet=null;
+		if(rule==2){//最多评论
+			viIdSet=redisService.SORTSET.zrevrange("视频评论数",page.getCurrentNumber(),currentPage*numberPerPage);
+		}else{//最多播放
+			viIdSet=redisService.SORTSET.zrevrange("视频播放量",page.getCurrentNumber(),currentPage*numberPerPage);
+		}
+		List<VidManage> vidManages=new ArrayList<VidManage>();
+		Integer id;
+		for (String viId:viIdSet
+			 ) {
+			id=Integer.parseInt(viId);
+			for (VidManage vidManage:vidManageList
+				 ) {
+				if(vidManage.getViId().equals(id)){
+					vidManages.add(vidManage);
+					break;
+				}
+			}
+		}
+		dataWrapper.setData(vidManages);
+		dataWrapper.setPage(page,totalNumber);
 		return dataWrapper;
 	}
 
@@ -53,7 +79,20 @@ public class VideoManageServiceImpl implements VideoManageService {
 	public DataWrapper<Void> insertVid(VidManage vidManage) {
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
+		String fileName=getFileName(vidManage.getVidRoute());
+		videoScreenPicService.qiNiuMediaPrtScreen(fileName,"jpg");
+		int index=fileName.indexOf(".");
+		String vedioPic=vidManage.getVidRoute()+".jpg";
+		if(index!=-1){
+			vedioPic=vidManage.getVidRoute().substring(0,vidManage.getVidRoute().lastIndexOf("."))+".jpg";
+		}
+		vidManage.setVedioPic(vedioPic);
 		videoManageDao.insertVid(vidManage);
+		Integer viId=vidManage.getViId();
+		//视频播放量+时间混合排序
+		redisService.SORTSET.zadd("视频播放量",0,viId+"");
+		//视频评论数+时间混合排序
+		redisService.SORTSET.zadd("视频评论数",0,viId+"");
 		return dataWrapper;
 	}
 
@@ -70,4 +109,18 @@ public class VideoManageServiceImpl implements VideoManageService {
 		}
 		return dataWrapper;
 	}
+
+	@Override
+	public DataWrapper<Void> play(Integer viId) {
+		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
+		redisService.SORTSET.zincrby("视频播放量",1,viId+"");
+		return dataWrapper;
+	}
+
+	//获取七牛文件名称
+	public String getFileName(String videoRout){
+		String fileName=videoRout.substring(videoRout.lastIndexOf("/"));
+		return fileName;
+	}
+
 }

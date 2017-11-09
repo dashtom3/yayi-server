@@ -43,13 +43,5 @@ public class MyServletContextListener implements ServletContextListener{
         logger.debug("一系列逆初始化操作");
     }
 
-    //加载所有的视频列表进redis中,采用redis的map进行存储
-    public void putVedioToRedis(){
-        List<VidManage> videoList=videoManageDao.showVid(3,6,0,100000000);
-        for (VidManage video:videoList
-             ) {
-            redisService.HASH.hset("videoList",video.getViId()+"", JSON.toJSONString(video));
-            redisService.SORTSET.zadd("videoTime",video.getVedioTime().getTime(),video.getViId()+"");
-        }
-    }
+
 }

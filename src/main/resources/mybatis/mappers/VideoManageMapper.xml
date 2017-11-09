@@ -9,11 +9,11 @@
 
 
 	<insert id="insertVid" parameterType="VidManage" useGeneratedKeys="true" keyProperty="viId">
-			insert into vid_manage(video_name,video_route,video_category)
-			values(#{vidName},#{vidRoute},#{videoCategory})
+			insert into vid_manage(video_name,video_route,video_category,vedio_pic)
+			values(#{vidName},#{vidRoute},#{videoCategory},#{vedioPic})
 	</insert>
 
-	<update id="updateVid" parameterType="com.yayiabc.http.mvc.pojo.jpa.VidManage">
+	<update id="updateVid">
 		update vid_manage
 		<set>
 			<if test="vidName!=null">
@@ -52,24 +52,16 @@
 		<result property="videoType" column="video_type"/>
 		<result property="vidRoute" column="video_route"/>
 		<result property="videoCategory" column="video_category"/>
-		<result property="vedioPlayNumber" column="vedio_play_number"/>
-		<result property="vedioCommentNumber" column="vedio_comment_number"/>
 		<result property="vedioTime" column="vedio_time"/>
 	</resultMap>
 
 	<select id="showVid" resultMap="videoRM">
-		select vi_id,video_name,video_type,video_route,video_category,vedio_play_number,vedio_comment_number,DATE_FORMAT(vedio_time,'%Y-%m-%d %H:%i:%s') As vedio_time from vid_manage
+		select vi_id,video_name,video_type,video_route,video_category,DATE_FORMAT(vedio_time,'%Y-%m-%d %H:%i:%s') As vedio_time from vid_manage
 		<where>
 			<if test="videoCategory!=null and videoCategory!=6">
 				video_category=#{videoCategory}
 			</if>
 		</where>
-		order by 
-		<choose>
-			<when test="rule==1">vedio_play_number desc</when>
-			<when test="rule==2">vedio_comment_number desc</when>
-			<otherwise>vedio_time DESC </otherwise>
-		</choose>
 	</select>
 
 

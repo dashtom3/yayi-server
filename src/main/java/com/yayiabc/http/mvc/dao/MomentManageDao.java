@@ -15,7 +15,6 @@ public interface MomentManageDao {
 
     void deleteMoment(Integer momentId);
 
-    void deleteMomentComment(Integer momentId);
 
     int getMomentTotalNumber();
 

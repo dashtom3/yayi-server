@@ -30,9 +30,10 @@ public class ZanController {
     public DataWrapper<Void> upvote(
             @RequestHeader(value="token",required = true) String token,
             @RequestParam(value="type",required = true) Integer type,
-            @RequestParam(value="typeId",required = true) Integer typeId
+            @RequestParam(value="typeId",required = true) Integer typeId,
+            @RequestParam(value="parentId",required =false) Integer parentId
     ){
-        return zanService.upvote(token,type,typeId);
+        return zanService.upvote(token,type,typeId,parentId);
     }
 
 

@@ -13,20 +13,11 @@ public class VidManage implements Serializable{
 	private String videoType;
 	private String vidRoute;
 	private Integer videoCategory;
-	private Integer vedioPlayNumber;
 	private Integer vedioCommentNumber;
 	private String vedioPic;
 	@DateTimeFormat(pattern = "yy-MM-dd HH:mm:ss")
 	private Date vedioTime;
 	private List<VedioComment> vedioCommentList;
-
-	public String getVedioPic() {
-		return vedioPic;
-	}
-
-	public void setVedioPic(String vedioPic) {
-		this.vedioPic = vedioPic;
-	}
 
 	public Integer getViId() {
 		return viId;
@@ -68,20 +59,20 @@ public class VidManage implements Serializable{
 		this.videoCategory = videoCategory;
 	}
 
-	public Integer getVedioPlayNumber() {
-		return vedioPlayNumber;
-	}
-
-	public void setVedioPlayNumber(Integer vedioPlayNumber) {
-		this.vedioPlayNumber = vedioPlayNumber;
-	}
-
 	public Integer getVedioCommentNumber() {
 		return vedioCommentNumber;
 	}
 
 	public void setVedioCommentNumber(Integer vedioCommentNumber) {
 		this.vedioCommentNumber = vedioCommentNumber;
+	}
+
+	public String getVedioPic() {
+		return vedioPic;
+	}
+
+	public void setVedioPic(String vedioPic) {
+		this.vedioPic = vedioPic;
 	}
 
 	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
@@ -104,13 +95,12 @@ public class VidManage implements Serializable{
 	public VidManage() {
 	}
 
-	public VidManage(Integer viId, String vidName, String videoType, String vidRoute, Integer videoCategory, Integer vedioPlayNumber, Integer vedioCommentNumber, String vedioPic, Date vedioTime, List<VedioComment> vedioCommentList) {
+	public VidManage(Integer viId, String vidName, String videoType, String vidRoute, Integer videoCategory, Integer vedioCommentNumber, String vedioPic, Date vedioTime, List<VedioComment> vedioCommentList) {
 		this.viId = viId;
 		this.vidName = vidName;
 		this.videoType = videoType;
 		this.vidRoute = vidRoute;
 		this.videoCategory = videoCategory;
-		this.vedioPlayNumber = vedioPlayNumber;
 		this.vedioCommentNumber = vedioCommentNumber;
 		this.vedioPic = vedioPic;
 		this.vedioTime = vedioTime;
@@ -125,7 +115,6 @@ public class VidManage implements Serializable{
 				", videoType='" + videoType + '\'' +
 				", vidRoute='" + vidRoute + '\'' +
 				", videoCategory=" + videoCategory +
-				", vedioPlayNumber=" + vedioPlayNumber +
 				", vedioCommentNumber=" + vedioCommentNumber +
 				", vedioPic='" + vedioPic + '\'' +
 				", vedioTime=" + vedioTime +

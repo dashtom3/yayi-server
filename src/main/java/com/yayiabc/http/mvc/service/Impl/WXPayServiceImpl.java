@@ -48,6 +48,8 @@ public class WXPayServiceImpl implements WXPayService{
     @Override
     public void callBack(HttpServletRequest request, HttpServletResponse response, WXPayEnum wxPayEnum) throws Exception {
         System.out.println("开始处理回掉请求");
+        //获取支付方式
+        int type=getReferer(wxPayEnum);
         WXPay wxPay = null;
         if (wxPayEnum.equals(WXPayEnum.QB_PC)||wxPayEnum.equals(WXPayEnum.ORDER_PC)) {
             wxPay = new WXPay(WXPayConfigImpl.getInstance());
@@ -121,7 +123,7 @@ public class WXPayServiceImpl implements WXPayService{
                             System.out.println("金额相等");
                             PayAfterOrderUtil payAfterOrderUtil = BeanUtil.getBean("PayAfterOrderUtil");
                             System.out.println("payAfterOrderUtil:"+payAfterOrderUtil);
-                            Boolean flag = payAfterOrderUtil.universal(orderId, "1");
+                            Boolean flag = payAfterOrderUtil.universal(orderId, type+"");//1网页扫码/微信 2.APP
                             System.out.println("flag"+flag);
                             if (flag) {
                                 //这里是支付成功
@@ -132,6 +134,7 @@ public class WXPayServiceImpl implements WXPayService{
                         }
                     }
                 } else {
+                    type++;//支付类型自增,方便下面进行传参
                     //判断返回结果中的金额是否和数据库中查出来的订单金额一致
                     String chargeId = (String) packageParam.get("out_trade_no");
                     Integer chargeState = wXPayDao.getChargeStateByChargeId(chargeId);
@@ -153,11 +156,11 @@ public class WXPayServiceImpl implements WXPayService{
                             qbRecord.setRemark(zh(charge.getQbType())+"乾币充值"+charge.getQbNum()+"个。");
                             userMyQbDao.updateUserQb(String.valueOf(charge.getQbNum()), charge.getToken(), charge.getQbType());
 //                            qbRecord.setRemark(zh+"乾币充值" + charge.getQbNum()+"个");
-                            //----为了获取钱币余额。。。。。
+                            //----为了获取钱币余额
                             Integer userQbNum=userMyQbDao.getUserQbNum(charge.getToken());
-
+                            qbRecord.setReferer(type);
                             qbRecord.setRemark(zh+"乾币充值"+charge.getQbNum()+"个。（乾币余额："+userQbNum+"个）");
-                            userMyQbDao.add(qbRecord);
+                            userMyQbDao.add(qbRecord);//refer :2.网页扫码/微信公众号 3.APP
 //                            userMyQbService.add(qbRecord, token);
                             wXPayDao.updateChargeState(chargeId);
                             resXml = "<xml>" + "<return_code><" +
@@ -205,6 +208,15 @@ public class WXPayServiceImpl implements WXPayService{
 		Integer num=wXPayDao.getStateByToken(userId);
 		dataWrapper.setNum(num);
 		return dataWrapper;
+    }
+
+    //通过枚举
+    public int getReferer(WXPayEnum wxPayEnum){
+        int number=1;
+        if(wxPayEnum.equals(WXPayEnum.ORDER_APP)||wxPayEnum.equals(WXPayEnum.QB_APP)){
+            number=2;
+        }
+        return number;
     }
 }
 

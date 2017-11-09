@@ -57,8 +57,6 @@ public class VideoManageController {
      //insert
      @RequestMapping("insertVid")
      @ResponseBody
-     @AdminTokenValidate
-     @AdminLog(description="插入视频到管理列表")
      public DataWrapper<Void> insertVid(
     		 @RequestHeader(value="adminToken",required=true) String adminToken,
     		 @ModelAttribute VidManage vidManage
@@ -77,4 +75,13 @@ public class VideoManageController {
      		){
      	return videoManageService.deleteVid(viId);
      }
+
+     //播放视频
+    @RequestMapping("play")
+    @ResponseBody
+    public DataWrapper<Void> play(
+            @RequestParam(value="viId",required = true)Integer viId
+    ){
+    	return videoManageService.play(viId);
+    }
 }

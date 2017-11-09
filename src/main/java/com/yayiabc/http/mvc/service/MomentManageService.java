@@ -13,5 +13,5 @@ public interface MomentManageService {
 
     DataWrapper<List<Moment>> queryList(Integer currentPage, Integer numberPerPage);
 
-    DataWrapper<Void> upvote(Integer momentId,String token);
+
 }

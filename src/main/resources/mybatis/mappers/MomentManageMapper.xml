@@ -4,22 +4,20 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yayiabc.http.mvc.dao.MomentManageDao">
 	<insert id="addLower" parameterType="Moment" useGeneratedKeys="true" keyProperty="momentId">
-		insert into moment(user_name,user_id,moment_content,moment_picture,moment_type)
-		VALUE (#{userName},#{userId},#{momentContent},#{momentPicture},#{momentType})
+		insert into moment(user_id,moment_content,moment_picture,moment_type)
+		VALUE (#{userId},#{momentContent},#{momentPicture},#{momentType})
 	</insert>
 
 	<insert id="addHigh" parameterType="Moment" useGeneratedKeys="true" keyProperty="momentId">
 		insert into moment(user_name,user_id,moment_content_id,moment_content_title,moment_type)
-		VALUE (#{userName},#{userId},#{momentContentId},#{momentType})
+		VALUE (#{userId},#{momentContentId},#{momentType})
 	</insert>
 
 	<delete id="deleteMoment">
 		delete from moment where moment_id=#{momentId}
 	</delete>
 
-	<delete id="deleteMomentComment">
-		delete from comment_total where comment_to_id=#{momentId} and comment_type=3
-	</delete>
+
 
 
 
@@ -29,7 +27,7 @@
 
 	<resultMap id="moment" type="Moment" autoMapping="true">
 		<id property="momentId" column="moment_id"/>
-		<collection property="commentList" ofType="Comment" select="com.yayiabc.http.mvc.dao.CommentManageDao.queryComment" column="{commentToId=moment_id,commentType=3,currentNumber=0,numberPerPage=10}"/>
+
 	</resultMap>
 
 

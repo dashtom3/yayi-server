@@ -54,15 +54,4 @@ public class MomentManageController {
 
 
 
-    //为牙医圈的动态点赞和取消点赞
-    @RequestMapping("upvote")
-    @ResponseBody
-    @UserTokenValidate
-    public DataWrapper<Void> upvote(
-      @RequestParam("momentId") Integer momentId,
-      @RequestHeader("token") String token
-    ){
-              return momentManageService.upvote(momentId,token);
-    }
-
 }

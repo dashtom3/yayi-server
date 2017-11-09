@@ -17,22 +17,16 @@ import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-import org.springframework.web.bind.annotation.RequestMapping;
 
-import com.tencent.mm.opensdk.channel.a.a;
-import com.tencent.wxop.stat.common.q;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.ExcelUtil;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.CottomsPostDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
-import com.yayiabc.http.mvc.pojo.jpa.CottomsComment;
 import com.yayiabc.http.mvc.pojo.jpa.CottomsPost;
-import com.yayiabc.http.mvc.pojo.jpa.CottomsReply;
-import com.yayiabc.http.mvc.pojo.jpa.ExcelEntry;
 import com.yayiabc.http.mvc.pojo.jpa.See;
-import com.yayiabc.http.mvc.pojo.model.Classify;
 import com.yayiabc.http.mvc.service.CottomsPostService;
+import com.yayiabc.http.mvc.service.RedisService;
 @Service
 public class CottomsPostServiceImpl implements CottomsPostService{
 	@Autowired
@@ -40,18 +34,24 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 
 	@Autowired
 	private UtilsDao utilsDao;
+	
+	@Autowired
+	private RedisService RedisService;
 	//发布病例
 	@Override
-	public void addPost(CottomsPost cottomsPost,String token) {
+	public DataWrapper<Void> addPost(CottomsPost cottomsPost,String token) {
+		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		String userId=utilsDao.getUserID(token);
 		cottomsPost.setUserId(userId);
 		String trueName= cottomsPostDao.gettrueName(userId);
 		cottomsPost.setWriter(trueName);
-		if(cottomsPost.getUserId()==null){
+		if(cottomsPost.getPostId()==0){
 			cottomsPostDao.addPost(cottomsPost);
 		}else{
 			cottomsPostDao.setPost(cottomsPost);
 		}
+		dataWrapper.setNum(cottomsPost.getPostId());
+		return dataWrapper;
 	}
 
 	//显示病例
@@ -65,7 +65,12 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
 		List<CottomsPost> cottomsPosts=cottomsPostDao.queryPost(page,classify,order);
-		System.out.println(cottomsPosts);
+		for (CottomsPost cottomsPost2 : cottomsPosts) {
+			int readNumber = (int)RedisService.LISTS.llen("2评论"+cottomsPost2.getPostId());
+			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表2"+cottomsPost2.getPostId());
+			cottomsPost2.setCommentNumber(favourNumber);
+			cottomsPost2.setCommentNumber(readNumber);
+		}
 		cottomsPost.setChargeContent(null);
 		cottomsPost.setFreeContent(null);
 		dataWrapper.setData(cottomsPosts);
@@ -112,6 +117,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		}
 		DataWrapper<CottomsPost> dataWrapper=new DataWrapper<CottomsPost>();
 		List<String> postIdFees=cottomsPostDao.queryFees(cottomsPost);//获取本用户付费病例id
+		
 		boolean userIde=false;
 		String post=cottomsPost.getPostId()+"";
 		for(int i=0;i<postIdFees.size();i++){
@@ -119,13 +125,17 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 				userIde=true;
 			}
 		}
-		CottomsPost cottomsPostl=cottomsPostDao.cottomsDetail(cottomsPost);;
+		CottomsPost cottomsPost1=cottomsPostDao.cottomsDetail(cottomsPost);;
+		int readNumber = (int)RedisService.LISTS.llen("2评论"+cottomsPost1.getPostId());
+		int favourNumber = (int)RedisService.SETS.scard("点赞用户列表2"+cottomsPost1.getPostId());
+		cottomsPost1.setCommentNumber(favourNumber);
+		cottomsPost1.setCommentNumber(readNumber);
 		if(token!=null&&userIde==true) {
-			dataWrapper.setData(cottomsPostl);
+			dataWrapper.setData(cottomsPost1);
 			return dataWrapper;
 		}else{
-			cottomsPost.setChargeContent(null);
-			dataWrapper.setData(cottomsPostl);
+			cottomsPost1.setChargeContent(null);
+			dataWrapper.setData(cottomsPost1);
 			return dataWrapper;
 		}
 

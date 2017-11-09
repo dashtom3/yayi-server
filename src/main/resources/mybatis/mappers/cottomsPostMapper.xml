@@ -9,10 +9,10 @@
 	</select>
 	
 	<!--添加病例  -->
-	<insert id="addPost">
+	<insert id="addPost" useGeneratedKeys="true" keyProperty="postId">
 		insert into cottoms_post
 		(headline,classify,free_content,charge_content,writer,user_id,read_number,post_favour,charge_number,post_stater,cover)
-		values(#{headline},#{classify},#{freeContent},#{chargeContent},#{writer},#{userId},0,0,#{chargeNumber},#{postStater},#{cover})
+		values(#{headline},#{classify},#{freeContent},#{chargeContent},#{writer},#{userId},0,0,#{chargeNumber},#{postStater},#{cover});
 	</insert>
 	
 	<!-- 更改病历 -->
@@ -25,11 +25,27 @@
 	</update>
 	
 	<!--显示病例  -->
-	<select id="queryPost" resultType="CottomsPost">
-		select * from cottoms_post left join user on cottoms_post.user_id=user.user_id
+	<resultMap type="CottomsPost" id="map">
+		<result property="headline" column="headline"/>
+		<result property="classify" column="classify"/>
+		<result property="freeContent" column="free_content"/>
+		<result property="chargeContent" column="charge_content"/>
+		<result property="writer" column="writer"/>
+		<result property="readNumber" column="read_number"/>
+		<result property="chargeNumber" column="charge_number"/>
+		<result property="cover" column="cover"/>
+		<result property="userId" column="user_id"/>
+		<result property="postId" column="post_id"/>
+		<result property="postTime" column="post_time"/>
+		<association property="user" javaType="User">
+		<result property="userPic" column="user_pic"/>
+		</association>
+	</resultMap>
+	<select id="queryPost" resultMap="map">
+		select cottoms_post.*, user.user_pic from cottoms_post left join user on cottoms_post.user_id=user.user_id
 		<where>
 			<if test="classify!=null and classify!=''">
-				classify=#{classify} and
+				classify like "%${classify}%" and
 			</if>
 				post_Stater=1
 		</where>

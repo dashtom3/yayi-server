@@ -9,7 +9,7 @@ import com.yayiabc.http.mvc.pojo.jpa.CottomsPost;
 
 public interface CottomsPostService {
 	//发布病例
-	public void addPost(CottomsPost cottomsPost,String token);
+	public DataWrapper<Void> addPost(CottomsPost cottomsPost,String token);
 	//显示病例
 	public DataWrapper<List<CottomsPost>> queryPost(Integer currentPage,Integer numberPerPage,String classify,Integer order);
 	//显示草稿

@@ -28,7 +28,7 @@ public class CottomsPost {
 	private String token;
 	private Integer postStater;
 	private Integer chargeNumber;
-	private String userPic;
+	private User user;
 	public String getUserId() {
 		return userId;
 	}
@@ -65,6 +65,7 @@ public class CottomsPost {
 	public void setChargeContent(String chargeContent) {
 		this.chargeContent = chargeContent;
 	}
+	@JsonFormat(pattern="yy-MM-dd HH:mm:ss")
 	public Date getPostTime() {
 		return postTime;
 	}
@@ -137,11 +138,11 @@ public class CottomsPost {
 	public void setChargeNumber(Integer chargeNumber) {
 		this.chargeNumber = chargeNumber;
 	}
-	public String getUserPic() {
-		return userPic;
+	public User getUser() {
+		return user;
 	}
-	public void setUserPic(String userPic) {
-		this.userPic = userPic;
+	public void setUser(User user) {
+		this.user = user;
 	}
 	@Override
 	public String toString() {
@@ -150,12 +151,12 @@ public class CottomsPost {
 				+ postTime + ", writer=" + writer + ", readNumber=" + readNumber + ", commentNumber=" + commentNumber
 				+ ", postFavour=" + postFavour + ", commentsList=" + commentsList + ", cover=" + cover + ", printUrl="
 				+ printUrl + ", replyTime=" + replyTime + ", token=" + token + ", postStater=" + postStater
-				+ ", chargeNumber=" + chargeNumber + ", userPic=" + userPic + "]";
+				+ ", chargeNumber=" + chargeNumber + ", user=" + user + "]";
 	}
 	public CottomsPost(String userId, int postId, String headline, String classify, String freeContent,
 			String chargeContent, Date postTime, String writer, int readNumber, int commentNumber, int postFavour,
 			List<Comments> commentsList, String cover, String printUrl, Date replyTime, String token,
-			Integer postStater, Integer chargeNumber, String userPic) {
+			Integer postStater, Integer chargeNumber, User user) {
 		super();
 		this.userId = userId;
 		this.postId = postId;
@@ -175,11 +176,11 @@ public class CottomsPost {
 		this.token = token;
 		this.postStater = postStater;
 		this.chargeNumber = chargeNumber;
-		this.userPic = userPic;
+		this.user = user;
 	}
 	public CottomsPost() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
-	
+
 }

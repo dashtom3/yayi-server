@@ -2,26 +2,27 @@
 <!DOCTYPE mapper
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
-<mapper namespace="com.yayiabc.http.mvc.dao.UserQbListDao">	
+<mapper namespace="com.yayiabc.http.mvc.dao.UserQbListDao">
 	<resultMap type="QbRecord" id="qbRecordListRM">
-		<id column="qb_rid" property="qbRid"/>
-			<result column="qb_rget" property="qbRget"/>
-			<result column="qb_rout" property="qbRout"/>
-			<result column="qb_time" property="qbTime"/>
-			<result column="qb_balances" property="qbBalances"/>
-			<result column="remark" property="remark"/>
+		<id column="qb_rid" property="qbRid" />
+		<result column="qb_rget" property="qbRget" />
+		<result column="qb_rout" property="qbRout" />
+		<result column="qb_time" property="qbTime" />
+		<result column="qb_balances" property="qbBalances" />
+		<result column="remark" property="remark" />
 		<association property="user" javaType="com.yayiabc.http.mvc.pojo.jpa.User">
-			<id column="user_id" property="userId"/>
-			<result column="phone" property="phone"/>
-			<result column="a_qb" property="aQb"/>
-			<result column="b_qb" property="bQb"/>
-			<result column="c_qb" property="cQb"/>
-			<result column="qb_balance" property="qbBalance"/>
+			<id column="user_id" property="userId" />
+			<result column="phone" property="phone" />
+			<result column="a_qb" property="aQb" />
+			<result column="b_qb" property="bQb" />
+			<result column="c_qb" property="cQb" />
+			<result column="qb_balance" property="qbBalance" />
 		</association>
 	</resultMap>
-	
+
 	<select id="list" resultMap="qbRecordListRM">
-		SELECT q.qb_rid,u.phone,q.qb_rget,q.qb_rout,DATE_FORMAT(q.qb_time, '%Y-%c-%e %T') AS qb_time,q.remark,u.qb_balance,u.a_qb,u.b_qb,u.c_qb
+		SELECT q.qb_rid,u.phone,q.qb_rget,q.qb_rout,DATE_FORMAT(q.qb_time,
+		'%Y-%c-%e %T') AS qb_time,q.remark,u.qb_balance,u.a_qb,u.b_qb,u.c_qb
 		FROM qb_record q
 		LEFT JOIN `user` u
 		ON u.user_id=q.user_id
@@ -37,14 +38,16 @@
 			</if>
 		</where>
 		ORDER BY q.qb_time DESC,q.millisecond DESC
-        LIMIT ${page.currentNumber},${page.numberPerPage}
+		LIMIT
+		${page.currentNumber},${page.numberPerPage}
 	</select>
-	
+
 	<select id="getCount" resultType="int">
-		SELECT COUNT(0) 
+		SELECT COUNT(0)
 		FROM qb_record q
 		LEFT JOIN `user` u
-		ON u.user_id=q.user_id
+		ON
+		u.user_id=q.user_id
 		<where>
 			<if test="phone !=null and phone !=''">
 				u.phone LIKE '%${phone}%'
@@ -57,27 +60,92 @@
 			</if>
 		</where>
 	</select>
-	
+
 	<select id="queryQb" resultType="java.lang.Integer">
-		SELECT ${qbType} FROM `user` WHERE phone = #{userPhone};
+		SELECT ${qbType} FROM `user`
+		WHERE phone = #{userPhone};
 	</select>
-	
+
 	<select id="queryQbBalances" resultType="java.lang.Integer">
-		SELECT qb_balances FROM qb_record WHERE user_id = #{userId}
-		ORDER BY qb_time DESC,millisecond DESC LIMIT 1
+		SELECT qb_balances FROM
+		qb_record WHERE user_id = #{userId}
+		ORDER BY qb_time DESC,millisecond
+		DESC LIMIT 1
 	</select>
-	
+
 	<update id="updateAdd">
-		UPDATE `user` 
+		UPDATE `user`
 		set
 		${qbType}=${qbType}+${qbBalance}
 		WHERE phone=${phone};
 	</update>
 	<update id="updateDed">
-	UPDATE `user` 
+		UPDATE `user`
 		set
 		${qbType}=${qbType}-${qbBalance}
-		WHERE phone=#{phone} and ${qbType}-${qbBalance} <![CDATA[  >=  ]]> 0;
-	
+		WHERE phone=#{phone}
+		and
+		${qbType}-${qbBalance} <![CDATA[  >=  ]]>
+		0;
+
 	</update>
+
+	<select id="queryCount" resultType="int">
+		select count(1) from qb_record qr join user us on
+		qr.user_id=us.user_id join charge ch on qr.charge_id=ch.charge_id
+		<where>
+			<if test="userMessage!=null and userMessage!=''">
+				userMessage in (us.true_name,us.phone)
+			</if>
+			<if test="qbType!=null and qbType!=''">
+				and qr.remark like '%${qbType}%'
+			</if>
+			<if test="payType!=null and payType!=''">
+				and qr.referer=#{payType}
+			</if>
+			<if test="orderCTime !=null and orderCTime !=''">
+				and DATE_FORMAT(qr.created,'%Y-%m-%d') <![CDATA[  >=  ]]>#{orderCTime}
+			</if>
+			<if test="orderETime !=null and orderETime !=''">
+				and DATE_FORMAT(qr.created,'%Y-%m-%d') <![CDATA[  <=  ]]>#{orderETime}
+			</if>
+		</where>
+	</select>
+
+	<resultMap type="com.yayiabc.http.mvc.pojo.model.qbRecordModel"
+		id="qbListMaps">
+		<result property="trueName" column="true_name" />
+		<result property="phone" column="phone" />
+		<result property="qbDes" column="qb_rget" />
+		<result property="rechargeMoney" column="money" />
+		<result property="referer" column="referer" />
+		<result property="created" column="created" />
+	</resultMap>
+	<select id="queryQbRecord" resultMap="qbListMaps">
+		select us.true_name,us.phone,qr.qb_rget,ch.money,qr.referer,qr.created
+		from qb_record qr join user us on
+		qr.user_id=us.user_id join charge ch
+		on qr.charge_id=ch.charge_id
+		<where>
+			<if test="userMessage!=null and userMessage!=''">
+				userMessage in (us.true_name,us.phone)
+			</if>
+			<if test="qbType!=null and qbType!=''">
+				and qr.remark like '%${qbType}%'
+			</if>
+			<if test="payType!=null and payType!=''">
+				and qr.referer=#{payType}
+			</if>
+			<if test="orderCTime !=null and orderCTime !=''">
+				and DATE_FORMAT(qr.created,'%Y-%m-%d') <![CDATA[  >=  ]]>#{orderCTime}
+			</if>
+			<if test="orderETime !=null and orderETime !=''">
+				and DATE_FORMAT(qr.created,'%Y-%m-%d') <![CDATA[  <=  ]]>#{orderETime}
+			</if>
+		</where>
+		order by qr.created desc
+		<if test="currentNum!=null and numberPerpage!=null">
+			limit ${currentNum} , ${numberPerpage}
+		</if>
+	</select>
 </mapper>

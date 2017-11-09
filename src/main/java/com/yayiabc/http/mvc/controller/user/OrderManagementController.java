@@ -24,6 +24,7 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Invoice;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
+import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.model.OrderManagement;
 import com.yayiabc.http.mvc.service.OrderManagementService;
 
@@ -167,5 +168,16 @@ public class OrderManagementController {
 			){
 	        
 		return orderManagementService.exportExcel(orderId,buyerInfo,orderState,orderCTime,orderETime,isRefund,response);
+	}
+	 //后台订单点击 显示该用户的充值记录
+	@RequestMapping("queryUserQbList")
+	@ResponseBody
+	//@AdminLog(description="后台订单列表导出Excel表格")
+	public DataWrapper<QbRecord> queryUserQbList(
+		/*	@RequestHeader(value="adminToken",required=true) String adminToken,*/
+			@RequestParam(value="userId",required=false) String userId
+			){
+	        
+		return orderManagementService.queryUserQbList(userId);
 	}
 }

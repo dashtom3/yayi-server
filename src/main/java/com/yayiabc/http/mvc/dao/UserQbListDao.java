@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.dao;
 
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -7,6 +8,7 @@ import org.springframework.stereotype.Repository;
 
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
+import com.yayiabc.http.mvc.pojo.model.qbRecordModel;
 
 @Repository
 public interface UserQbListDao {
@@ -21,4 +23,10 @@ public interface UserQbListDao {
 	
 	int updateAdd(@Param("qbBalance")Integer qbBalance,@Param("phone")String phone,@Param("qbType")String qbType);
 	int updateDed(@Param("qbBalance")Integer qbBalance,@Param("phone")String phone,@Param("qbType")String qbType);
+
+
+	int queryCount(HashMap<String, String> hm);
+
+
+	List<qbRecordModel> queryQbRecord(HashMap<String, String> hm);
 }

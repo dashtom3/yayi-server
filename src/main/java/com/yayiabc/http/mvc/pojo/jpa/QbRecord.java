@@ -7,8 +7,8 @@ import java.util.Date;
  * @author xiaojiang 乾币记录表
  */
 public class QbRecord extends BasePojo {
-	private Integer qbRid;
-
+	private String chargeId;
+  private Integer qbRid;
 	private String userId;
 
 	private String qbRget;
@@ -17,7 +17,7 @@ public class QbRecord extends BasePojo {
 
 	private String qbTime;
 
-	private Integer qbBalances;
+	private Integer referer; //充值的  支付方式
 
 	private String remark;
 
@@ -25,11 +25,20 @@ public class QbRecord extends BasePojo {
 
 	private User user;
 	private String qbType;
+	
+	
+	
 	public Integer getQbRid() {
 		return qbRid;
 	}
 	public void setQbRid(Integer qbRid) {
 		this.qbRid = qbRid;
+	}
+	public String getChargeId() {
+		return chargeId;
+	}
+	public void setChargeId(String chargeId) {
+		this.chargeId = chargeId;
 	}
 	public String getUserId() {
 		return userId;
@@ -57,12 +66,6 @@ public class QbRecord extends BasePojo {
 	public void setQbTime(String qbTime) {
 		this.qbTime = qbTime;
 	}
-	public Integer getQbBalances() {
-		return qbBalances;
-	}
-	public void setQbBalances(Integer qbBalances) {
-		this.qbBalances = qbBalances;
-	}
 	public String getRemark() {
 		return remark;
 	}
@@ -87,11 +90,17 @@ public class QbRecord extends BasePojo {
 	public void setQbType(String qbType) {
 		this.qbType = qbType;
 	}
+	public Integer getReferer() {
+		return referer;
+	}
+	public void setReferer(Integer referer) {
+		this.referer = referer;
+	}
 	@Override
 	public String toString() {
-		return "QbRecord [qbRid=" + qbRid + ", userId=" + userId + ", qbRget=" + qbRget + ", qbRout=" + qbRout
-				+ ", qbTime=" + qbTime + ", qbBalances=" + qbBalances + ", remark=" + remark + ", millisecond="
-				+ millisecond + ", user=" + user + ", qbType=" + qbType + "]";
+		return "QbRecord [chargeId=" + chargeId + ", userId=" + userId + ", qbRget=" + qbRget + ", qbRout=" + qbRout
+				+ ", qbTime=" + qbTime + ", referer=" + referer + ", remark=" + remark + ", millisecond=" + millisecond
+				+ ", user=" + user + ", qbType=" + qbType + "]";
 	}
 
 }

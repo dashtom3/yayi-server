@@ -519,7 +519,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		HashMap<String, String> hMap=new HashMap<String,String>();
 		hMap.put("orderId", orderId);
 		hMap.put("buyerInfo", buyerInfo);
-		hMap.put("orderState", orderState);
+		hMap.put("orderState", "11");
 		hMap.put("orderCTime", orderCTime);
 		hMap.put("orderETime", orderETime);
 		hMap.put("isRefund", isRefund);
@@ -562,65 +562,69 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 
 		cell = row.createCell((short) 2);  
 		cell.setCellValue("订单编号");  
+		cell.setCellStyle(style); 
+		
+		cell = row.createCell((short) 3);  
+		cell.setCellValue("收件人");  
 		cell.setCellStyle(style);  
 
-		cell = row.createCell((short) 3);  
+		cell = row.createCell((short) 4);  
 		cell.setCellValue("收件人手机号");
 		cell.setCellStyle(style);  
 
-		cell = row.createCell((short) 4); 
+		cell = row.createCell((short) 5); 
 		cell.setCellValue("所在地区");  
 		cell.setCellStyle(style);  
 
-		cell = row.createCell((short) 5);  
+		cell = row.createCell((short) 6);  
 		cell.setCellValue("详细地址");  
 		cell.setCellStyle(style);  
 
-		cell = row.createCell((short) 6);  
+		cell = row.createCell((short) 7);  
 		cell.setCellValue("商品名称");  
 		cell.setCellStyle(style);  
 
-		cell = row.createCell((short) 7);  
+		cell = row.createCell((short) 8);  
 		cell.setCellValue("单价（元）");  
 		cell.setCellStyle(style);  
 
-		cell = row.createCell((short) 8);  
+		cell = row.createCell((short) 9);  
 		cell.setCellValue("数量");  
 		cell.setCellStyle(style);  
 
-		cell = row.createCell((short) 9);  
+		cell = row.createCell((short) 10);  
 		cell.setCellValue("商品总价（元）");  
 		cell.setCellStyle(style);  
 
-		cell = row.createCell((short) 10);  
+		cell = row.createCell((short) 11);  
 		cell.setCellValue("商品合计（元）");  
 		cell.setCellStyle(style);
 
-		cell = row.createCell((short) 11);  
+		cell = row.createCell((short) 12);  
 		cell.setCellValue("运费");  
 		cell.setCellStyle(style);
 
-		cell = row.createCell((short) 12);  
+		cell = row.createCell((short) 13);  
 		cell.setCellValue("乾币抵扣");  
 		cell.setCellStyle(style);
 
-		cell = row.createCell((short) 13);  
+		cell = row.createCell((short) 14);  
 		cell.setCellValue("乾币抵扣明细");  
 		cell.setCellStyle(style);
 
-		cell = row.createCell((short) 14);  
+		cell = row.createCell((short) 15);  
 		cell.setCellValue("实际付款（元）");  
 		cell.setCellStyle(style);
 
-		cell = row.createCell((short) 15);  
+		cell = row.createCell((short) 16);  
 		cell.setCellValue("订单留言");  
 		cell.setCellStyle(style);
 
-		cell = row.createCell((short) 16);  
+		cell = row.createCell((short) 17);  
 		cell.setCellValue("是否申请发票");  
 		cell.setCellStyle(style);
 
-		cell = row.createCell((short) 17);  
+		cell = row.createCell((short) 18);  
 		cell.setCellValue("是否需要产品注册证");  
 		cell.setCellStyle(style);
 
@@ -647,19 +651,20 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			row.createCell((short) 0).setCellValue(orderCTime+"-"+orderETime);  
 			row.createCell((short) 1).setCellValue( simpleDateFormat.format(order.getCreated()));  
 			row.createCell((short) 2).setCellValue(order.getOrderId()); 
-			row.createCell((short) 3).setCellValue("17621302014");  
-			row.createCell((short) 4).setCellValue(receiver.getCounty()+"/"+receiver.getCity()+"/"+receiver.getProvince());  
-			row.createCell((short) 5).setCellValue(receiver.getReceiverDetail()); 
+			row.createCell((short) 3).setCellValue(receiver.getReceiverName());
+			row.createCell((short) 4).setCellValue(order.getUser().getPhone());  
+			row.createCell((short) 5).setCellValue(receiver.getCounty()+"/"+receiver.getCity()+"/"+receiver.getProvince());  
+			row.createCell((short) 6).setCellValue(receiver.getReceiverDetail()); 
 			//获取订单里的商品 判断商品种类 个数
 			List<OrderItem> orderItemList=order.getOrderitemList();
 			//这里判断 orderItemList长度 是否大于1
 			if(!orderItemList.isEmpty()){
 				if(orderItemList.size()==1){ 
 					OrderItem orderItem =orderItemList.get(0);
-					row.createCell((short) 6).setCellValue(orderItem.getItemName());
-					row.createCell((short) 7).setCellValue(orderItem.getPrice());
-					row.createCell((short) 8).setCellValue(orderItem.getNum());
-					row.createCell((short) 9).setCellValue(orderItem.getNum()*orderItem.getPrice());
+					row.createCell((short) 7).setCellValue(orderItem.getItemName());
+					row.createCell((short) 8).setCellValue(orderItem.getPrice());
+					row.createCell((short) 9).setCellValue(orderItem.getNum());
+					row.createCell((short) 10).setCellValue(orderItem.getNum()*orderItem.getPrice());
 				}else{
 					System.out.println(orderItemList);
 
@@ -668,17 +673,17 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 					for(int q=0;q<orderItemList.size();q++){
 						OrderItem orderItem =orderItemList.get(q);
 						if(q==0){
-							row.createCell((short) 6).setCellValue(orderItem.getItemName());
-							row.createCell((short) 7).setCellValue(orderItem.getPrice());
-							row.createCell((short) 8).setCellValue(orderItem.getNum());
-							row.createCell((short) 9).setCellValue(orderItem.getNum()*orderItem.getPrice());
+							row.createCell((short) 7).setCellValue(orderItem.getItemName());
+							row.createCell((short) 8).setCellValue(orderItem.getPrice());
+							row.createCell((short) 9).setCellValue(orderItem.getNum());
+							row.createCell((short) 10).setCellValue(orderItem.getNum()*orderItem.getPrice());
 						}else{
 							x++;
 							rows = sheet.createRow((int)  x + 1);
-							rows.createCell((short) 6).setCellValue( orderItem.getItemName());
-							rows.createCell((short) 7).setCellValue(orderItem.getPrice());
-							rows.createCell((short) 8).setCellValue(orderItem.getNum());
-							rows.createCell((short) 9).setCellValue(new HSSFRichTextString(String.valueOf(orderItem.getNum()*orderItem.getPrice())));
+							rows.createCell((short) 7).setCellValue( orderItem.getItemName());
+							rows.createCell((short) 8).setCellValue(orderItem.getPrice());
+							rows.createCell((short) 9).setCellValue(orderItem.getNum());
+							rows.createCell((short) 10).setCellValue(new HSSFRichTextString(String.valueOf(orderItem.getNum()*orderItem.getPrice())));
 						}
 
 
@@ -689,14 +694,14 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			}
 
 
-			row.createCell((short) 10).setCellValue(order.getTotalFee());
-			row.createCell((short) 11).setCellValue(order.getPostFee());
-			row.createCell((short) 12).setCellValue(order.getQbDed());
-			row.createCell((short) 13).setCellValue(QbDes(order.getQbDes()));
-			row.createCell((short) 14).setCellValue(order.getActualPay());
-			row.createCell((short) 15).setCellValue(order.getBuyerMessage());
-			row.createCell((short) 16).setCellValue(isNeedInv(order.getInvoiceHand()));
-			cell = row.createCell((short) 17); 
+			row.createCell((short) 11).setCellValue(order.getTotalFee());
+			row.createCell((short) 12).setCellValue(order.getPostFee());
+			row.createCell((short) 13).setCellValue(order.getQbDed());
+			row.createCell((short) 14).setCellValue(QbDes(order.getQbDes()));
+			row.createCell((short) 15).setCellValue(order.getActualPay());
+			row.createCell((short) 16).setCellValue(order.getBuyerMessage());
+			row.createCell((short) 17).setCellValue(isNeedInv(order.getInvoiceHand()));
+			cell = row.createCell((short) 18); 
 			//new SimpleDateFormat("yyyy-mm-dd").format(order.getActualPay())
 			cell.setCellValue(isNeedIsg(order.getIsRegister()));  
 
@@ -725,7 +730,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			fis.close();  
 
 			response.reset();  
-			response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(orderCTime+"-"+orderCTime+" 后台订单.zip", "UTF-8"));  
+			response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(orderCTime+"~~"+orderCTime+" 后台订单.zip", "UTF-8"));  
 			response.addHeader("Content-Length", "" + file.length());  
 			OutputStream ous = new BufferedOutputStream(response.getOutputStream());  
 			response.setContentType("application/octet-stream");  
@@ -822,5 +827,16 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		}
 		// 目录此时为空，可以删除
 		return dir.delete();
+	}
+	/**
+	 * 后台订单点击 显示该用户的充值记录
+	 */
+	@Override
+	public DataWrapper<QbRecord> queryUserQbList(String userId) {
+		// TODO Auto-generated method stub
+		DataWrapper<QbRecord> dataWrapper=new DataWrapper<QbRecord>();
+		QbRecord qr=orderManagementDao.queryUserQbList(userId);
+		dataWrapper.setData(qr);
+		return dataWrapper;
 	}
 }

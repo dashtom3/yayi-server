@@ -32,6 +32,10 @@
 		<result property="buyerMessage" column="buyer_message" />
 		<result property="qbDes" column="qb_des" />
 		<result property="invoiceHand" column="invoice_hand" />
+	    <!-- 一对多的   订单 到用户   -->
+		<association property="user" javaType="com.yayiabc.http.mvc.pojo.jpa.User">
+		<result property="phone" column="phone" />
+		</association>
 		<association property="receiver"
 			javaType="com.yayiabc.http.mvc.pojo.jpa.Receiver">
 			<id property="receiverId" column="receiver_id" />
@@ -74,7 +78,7 @@
 		orde_it.item_name,orde_it.pic_path,orde_it.itm_SKU,
 		orde_it.item_property_namea,orde_it.item_brand_name,orde_it.item_type,
 		orde_it.item_property_nameb,orde_it.item_property_namec,orde_it.item_id,orde.post_fee,orde.qb_ded,orde.state,
-		orde.actual_pay,orde.total_fee,orde.qb_des
+		orde.actual_pay,orde.total_fee,orde.qb_des,us.phone
 		,rece.*
 		FROM<!--  `user` us
 		JOIN -->
@@ -88,7 +92,7 @@
 		JOIN
 		order_item orde_it
 		ON
-		orde.order_id=orde_it.order_id
+		orde.order_id=orde_it.order_id join `user` us on orde.user_id=us.user_id
 		<where>
 			<if test="userId !=null and userId!=''">
 				orde.user_id=#{userId}
@@ -99,9 +103,21 @@
 			<if test="state !=null and state!=''  and state !=2">
 			and	orde.state=#{state} 
 			</if>
+			<!-- 满足导出后台excel表格 -->
+			<if test="orderState==11">
+			  and	orde.state not in(0,1)
+			</if>
 			<if test="state==2">
 			  and	orde.state in(2,5)
 			</if>
+			
+			<if test="orderCTime !=null and orderCTime !=''">
+				and DATE_FORMAT(orde.created,'%Y-%m-%d') <![CDATA[  >=  ]]>#{orderCTime}
+			</if>
+			<if test="orderETime !=null and orderETime !=''">
+				and DATE_FORMAT(orde.created,'%Y-%m-%d') <![CDATA[  <=  ]]>#{orderETime}
+			</if>
+			
 		</where>
 		order by orde.created desc 
 		<if test="currentNum!=null and numberPerpage!=null">

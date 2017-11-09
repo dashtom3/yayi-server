@@ -10,6 +10,7 @@ import org.apache.ibatis.annotations.Param;
 import com.yayiabc.http.mvc.pojo.jpa.Invoice;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
+import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.model.OrderManagement;
 
 public interface OrderManagementDao {
@@ -101,4 +102,6 @@ public interface OrderManagementDao {
 	int  returnQbAnyOthes(@Param("list")List<Integer> list,@Param("userId") String userId);
 
 	int saveRefundMessageToReturnQbMsg(@Param("returnQbMsg")String returnQbMsg, @Param("orderId")String orderId);
+	
+	QbRecord queryUserQbList(@Param("userId")String userId);
 }

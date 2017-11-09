@@ -13,6 +13,7 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.Invoice;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
+import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.model.OrderManagement;
 
 public interface OrderManagementService {
@@ -39,4 +40,5 @@ public interface OrderManagementService {
 	
 	DataWrapper<Invoice> queryOrderInvoice(String orderId);
 	DataWrapper<Void> exportExcel(String orderId, String buyerInfo, String orderState, String orderCTime, String orderETime, String isRefund, HttpServletResponse response);
+	DataWrapper<QbRecord> queryUserQbList(String userId);
 }

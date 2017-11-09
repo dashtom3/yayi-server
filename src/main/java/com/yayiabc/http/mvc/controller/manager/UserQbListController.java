@@ -3,6 +3,8 @@ package com.yayiabc.http.mvc.controller.manager;
 import java.util.List;
 import java.util.Map;
 
+import javax.servlet.http.HttpServletResponse;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -15,6 +17,7 @@ import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
+import com.yayiabc.http.mvc.pojo.model.qbRecordModel;
 import com.yayiabc.http.mvc.service.UserQbListService;
 
 @Controller
@@ -71,5 +74,27 @@ public class UserQbListController {
 			@RequestParam(value = "qbType", required = true) String qbType
 			) {
 		return userQbListService.queryQb(userPhone,qbType);
+	}
+	/**
+	 * 查询乾币充值记录
+	 * 导出查询数据
+	 */
+	/**
+	 * 查询具体某位用户的钱币余额
+	 */
+	@RequestMapping(value = "queryQbRecord")
+	@ResponseBody
+	//@AdminTokenValidate
+	public DataWrapper<List<qbRecordModel>> queryQbRecord(
+			@RequestParam(value = "userMessage", required = false) String userMessage,
+			@RequestParam(value="QbType",required=false)String QbType,
+			@RequestParam(value = "payType", required = false) String payType,
+			@RequestParam(value="orderCTime",required=false)String orderCTime,
+			@RequestParam(value="orderETime",required=false)String orderETime,
+			@RequestParam(value="currentPage",required=false)Integer currentPage,
+			@RequestParam(value="numberPerpage",required=false)Integer numberPerpage,
+			HttpServletResponse response
+			) {
+		return userQbListService.queryQbRecord(userMessage,QbType,payType,orderCTime,orderETime,currentPage,numberPerpage,response);
 	}
 }

@@ -70,7 +70,6 @@ public class Ordera extends BasePojo implements Serializable{
     private int createState;  //0  购物车       1 立即购买
 
 
-	@JsonFormat(pattern="yyyy-MM-dd",timezone = "GMT+8")
 	public int getCreateState() {
 		return createState;
 	}

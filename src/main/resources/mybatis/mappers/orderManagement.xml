@@ -566,4 +566,8 @@
 	<update id="saveRefundMessageToReturnQbMsg">
 		update refund set return_qbmsg=#{returnQbMsg} where order_id=#{orderId}
 	</update>
+	
+	<select id="queryUserQbList" resultType="com.yayiabc.http.mvc.pojo.jpa.QbRecord">
+	 select * from qb_record where user_id=#{userId} and remark like '%充值%' order by created desc
+	</select>
 </mapper>

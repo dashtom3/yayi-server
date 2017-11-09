@@ -227,6 +227,7 @@ public class PayAfterOrderUtil {
 					System.out.println(2);
 					QbRecord q=new QbRecord();
 					q.setUserId(charge.getToken());
+					q.setChargeId(out_trade_no);
 					q.setQbRget(zh(charge.getQbType())+":"+String.valueOf(charge.getQbNum())+"个");
 					q.setQbType(charge.getQbType());
 					q.setRemark(zh(charge.getQbType())+"乾币充值"+charge.getQbNum()+"个。");
@@ -241,6 +242,8 @@ public class PayAfterOrderUtil {
 					//----为了获取钱币余额。。。。。
 					Integer userQbNum=userMyQbDao.getUserQbNum(charge.getToken());
 					q.setRemark(zh(charge.getQbType())+"乾币充值"+charge.getQbNum()+"个。（乾币余额："+userQbNum+"个）");
+					//支付宝乾币充值
+					q.setReferer(1);
 					userMyQbDao.add(q);
 					//userMyQbService.add(q, token);
 					return true;

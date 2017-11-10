@@ -48,5 +48,9 @@ public interface CottomsPostDao {
 	public List<See> see();
 	public List<String> queryFees(CottomsPost cottomsPost);
 	public void setPost(CottomsPost cottomsPost);
+	//查看用户的帖子
+	public List<Integer> queryByIdPost(String userId);
+	public void deletePost(Integer postId);
+	public void insertUserToPost(Integer postId, String userId);
 	
 }

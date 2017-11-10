@@ -18,13 +18,16 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
+import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.ExcelUtil;
 import com.yayiabc.common.utils.Page;
+import com.yayiabc.common.utils.PayAfterOrderUtil;
 import com.yayiabc.http.mvc.dao.CottomsPostDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.CottomsPost;
 import com.yayiabc.http.mvc.pojo.jpa.See;
+import com.yayiabc.http.mvc.service.CommentService;
 import com.yayiabc.http.mvc.service.CottomsPostService;
 import com.yayiabc.http.mvc.service.RedisService;
 @Service
@@ -34,9 +37,10 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 
 	@Autowired
 	private UtilsDao utilsDao;
-	
+
 	@Autowired
 	private RedisService RedisService;
+	@Autowired CommentService commentService;
 	//发布病例
 	@Override
 	public DataWrapper<Void> addPost(CottomsPost cottomsPost,String token) {
@@ -117,7 +121,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		}
 		DataWrapper<CottomsPost> dataWrapper=new DataWrapper<CottomsPost>();
 		List<String> postIdFees=cottomsPostDao.queryFees(cottomsPost);//获取本用户付费病例id
-		
+
 		boolean userIde=false;
 		String post=cottomsPost.getPostId()+"";
 		for(int i=0;i<postIdFees.size();i++){
@@ -138,7 +142,6 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			dataWrapper.setData(cottomsPost1);
 			return dataWrapper;
 		}
-
 	}
 	//评论
 	//	@Override
@@ -261,8 +264,33 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 				}
 		}
 	}
-
-
+	//删除病例
+	@Override
+	public DataWrapper<Void> deletePost(String token, Integer postId) {
+		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
+		String userId=utilsDao.getUserID(token);
+		List<Integer> postIdNumber =  cottomsPostDao.queryByIdPost(userId);
+		for(int i=0;i<postIdNumber.size();i++){
+			if(postIdNumber.get(i)==postId){
+				cottomsPostDao.deletePost(postId);
+				dataWrapper.setMsg("删除成功");
+				break;
+			}
+		}
+		return dataWrapper;
+	}
+	
+	//付费病例
+	public DataWrapper<Void> playChargePost(String token, Integer chargeNumber, Integer postId){
+		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
+		PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
+		String userId=utilsDao.getUserID(token);
+		String remark = "付费病例:支付"+chargeNumber+"个乾币。(乾币余额:userQbNum个)";
+		payAfterOrderUtil.newQbDed(userId, chargeNumber, "", remark);
+		cottomsPostDao.insertUserToPost(postId,userId);
+		return dataWrapper;
+	}
+	//导出表格
 	private List<Map<String, Object>> createExcel(List<See> sees) {
 		List<Map<String, Object>> listmap = new ArrayList<Map<String, Object>>();
 		Map<String, Object> map = new HashMap<String, Object>();
@@ -283,4 +311,5 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		}
 		return listmap;
 	}
+
 }

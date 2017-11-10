@@ -5,51 +5,54 @@
 <mapper namespace="com.yayiabc.http.mvc.dao.CottomsPostDao">
 
 	<select id="gettrueName" resultType="java.lang.String">
-		select true_name,phone from user where user_id=#{userId}
+		select true_name,phone from
+		user where user_id=#{userId}
 	</select>
-	
-	<!--添加病例  -->
+
+	<!--添加病例 -->
 	<insert id="addPost" useGeneratedKeys="true" keyProperty="postId">
-		insert into cottoms_post
-		(headline,classify,free_content,charge_content,writer,user_id,read_number,post_favour,charge_number,post_stater,cover)
-		values(#{headline},#{classify},#{freeContent},#{chargeContent},#{writer},#{userId},0,0,#{chargeNumber},#{postStater},#{cover});
+		insert
+		into cottoms_post
+		(headline,classify,free_content,charge_content,writer,user_id,read_number,charge_number,post_stater,cover)
+		values(#{headline},#{classify},#{freeContent},#{chargeContent},#{writer},#{userId},0,#{chargeNumber},#{postStater},#{cover});
 	</insert>
-	
+
 	<!-- 更改病历 -->
 	<update id="setPost">
 		update cottoms_post
 		set
 		headline=#{headline},classify=#{classify},free_content=#{freeContent},charge_content=#{chargeContent},writer=#{writer},
-		user_id=#{userId},read_number=0,post_favour=0,charge_number=#{chargeNumber},post_stater=#{postStater},cover=#{cover}
+		user_id=#{userId},read_number=0,charge_number=#{chargeNumber},post_stater=#{postStater},cover=#{cover}
 		where post_id=#{postId}
 	</update>
-	
-	<!--显示病例  -->
+
+	<!--显示病例 -->
 	<resultMap type="CottomsPost" id="map">
-		<result property="headline" column="headline"/>
-		<result property="classify" column="classify"/>
-		<result property="freeContent" column="free_content"/>
-		<result property="chargeContent" column="charge_content"/>
-		<result property="writer" column="writer"/>
-		<result property="readNumber" column="read_number"/>
-		<result property="chargeNumber" column="charge_number"/>
-		<result property="cover" column="cover"/>
-		<result property="userId" column="user_id"/>
-		<result property="postId" column="post_id"/>
-		<result property="postTime" column="post_time"/>
+		<result property="headline" column="headline" />
+		<result property="classify" column="classify" />
+		<result property="freeContent" column="free_content" />
+		<result property="chargeContent" column="charge_content" />
+		<result property="writer" column="writer" />
+		<result property="readNumber" column="read_number" />
+		<result property="chargeNumber" column="charge_number" />
+		<result property="cover" column="cover" />
+		<result property="userId" column="user_id" />
+		<result property="postId" column="post_id" />
+		<result property="postTime" column="post_time" />
 		<association property="user" javaType="User">
-		<result property="userPic" column="user_pic"/>
+			<result property="userPic" column="user_pic" />
 		</association>
 	</resultMap>
 	<select id="queryPost" resultMap="map">
-		select cottoms_post.*, user.user_pic from cottoms_post left join user on cottoms_post.user_id=user.user_id
+		select cottoms_post.*, user.user_pic from cottoms_post left join user
+		on cottoms_post.user_id=user.user_id
 		<where>
 			<if test="classify!=null and classify!=''">
 				classify like "%${classify}%" and
 			</if>
-				post_Stater=1
+			post_Stater=1
 		</where>
-		order by 
+		order by
 		<choose>
 			<when test="order=0">post_time</when>
 			<when test="order=1">post_favour desc</when>
@@ -57,17 +60,17 @@
 		</choose>
 		limit #{page.currentNumber},#{page.numberPerPage}
 	</select>
-	
-	<!--显示草稿  -->
+
+	<!--显示草稿 -->
 	<select id="queryDraft" resultType="java.util.Map">
 		select * from cottoms_post
 		<where>
 			<if test="classify!=null and classify!=''">
 				classify=#{classify} and
 			</if>
-				post_Stater=2
+			post_Stater=2
 		</where>
-		order by 
+		order by
 		<choose>
 			<when test="order=0">post_time</when>
 			<when test="order=1">post_favour desc</when>
@@ -75,7 +78,18 @@
 		</choose>
 		limit #{page.currentNumber},#{page.numberPerPage}
 	</select>
-	
+
+	<!--查看用户的病例 -->
+	<select id="queryByIdPost" resultType="java.lang.Integer">
+		select post_id from
+		cottoms_post where user_id=#{userId}
+	</select>
+
+	<!--删除列子 -->
+	<update id="deletePost">
+		update cottoms_post set post_stater=3 where
+		post_id=#{postId}
+	</update>
 	<select id="getTotalNumber" resultType="int">
 		select count(0) from
 		cottoms_post
@@ -89,56 +103,45 @@
 		select count(0)
 		from cottoms_post
 	</select>
+
 	<!-- 查看用户付费病例 -->
 	<select id="queryFees" resultType="java.lang.String">
-		select post_id from user_to_post where user_id=#{userId}
+		select post_id from
+		user_to_post where user_id=#{userId}
 	</select>
-	<!--查看病例详情  -->
+
+	<!--查看病例详情 -->
 	<select id="cottomsDetail" resultType="CottomsPost">
-		select * from cottoms_post where post_id=#{postId}
+		select * from cottoms_post
+		where post_id=#{postId}
 	</select>
 	<select id="postLike" resultType="java.lang.Integer">
 		select post_favour from
 		cottoms_post where post_id=#{postId}
 	</select>
-	<update id="postLikeAdd">
-		update cottoms_post
-		set post_favour=#{postFavour}
-		where post_id=#{postId}
-	</update>
-
-	<!-- <select id="commentsLike" resultType="java.lang.Integer">
-		select comment_favour from
-		cottoms_comment where comment_id=#{commentId}
-	</select>
-	<update id="commentsLikeAdd">
-		update cottoms_comment
-		set
-		comment_favour=#{commentFavour}
-		where comment_id=#{commentId}
-	</update> -->
+	<!--用户购买病例表 -->
+	<insert id="insertUserToPost">
+		insert user_to_post (user_id,post_id) values (#{userId},#{postId})
+	</insert>
 	
+	<!-- <select id="commentsLike" resultType="java.lang.Integer"> select comment_favour 
+		from cottoms_comment where comment_id=#{commentId} </select> <update id="commentsLikeAdd"> 
+		update cottoms_comment set comment_favour=#{commentFavour} where comment_id=#{commentId} 
+		</update> -->
+
 	<select id="postReaderNumber" resultType="java.lang.Integer">
 		select read_number from
 		cottoms_post where post_id=#{postId}
 	</select>
-	
-	<!-- <select id="commentNumber" resultType="java.lang.Integer">
-		select count(0) from
-		cottoms_comment where post_id=#{postId}
-	</select> -->
-	
-	<update id="postReader">
-		update cottoms_post
-		set read_number=#{readNumber}
-		where post_id=#{postId}
-	</update>
 
+	<!-- <select id="commentNumber" resultType="java.lang.Integer"> select count(0) 
+		from cottoms_comment where post_id=#{postId} </select> -->
 	<select id="see" resultType="com.yayiabc.http.mvc.pojo.jpa.See">
 		SELECT
 		true_name,phone,qb_rget,qb_rout,qb_time,remark
 		FROM qb_record JOIN
-		USER ON qb_record.user_id=user.user_id
+		USER
+		ON qb_record.user_id=user.user_id
 		AND qb_time&gt;='2017-10-25 00:00:00'
 		AND qb_time&lt;='2017-10-29 24:00:00'
 		AND remark LIKE '%充值%'

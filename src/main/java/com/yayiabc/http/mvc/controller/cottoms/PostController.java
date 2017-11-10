@@ -5,7 +5,9 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -31,9 +33,9 @@ public class PostController {
 	public DataWrapper<Void> addPost(
 			@RequestHeader String token,
 			@ModelAttribute(value="CottomsPost") CottomsPost cottomsPost){
-		cottomsPost.setToken(token);
 		return cottomsPostService.addPost(cottomsPost,token);
 	}
+	
 	//显示病例
 	@RequestMapping("queryPost")
 	@ResponseBody
@@ -60,12 +62,34 @@ public class PostController {
 	@RequestMapping("cottomsDetail")
 	@ResponseBody
 	public DataWrapper<CottomsPost> cottomsDetail(
-			@RequestHeader(value="token") String token,
+			@RequestHeader(value="token",required=false) String token,
 			@ModelAttribute(value="CottomsPost")CottomsPost cottomsPost
 			){
 		cottomsPostService.postReader(cottomsPost);
 		return cottomsPostService.cottomsDetail(cottomsPost,token);
 		
+	}
+	//删除病例
+	@RequestMapping("deletePost")
+	@ResponseBody
+	public DataWrapper<Void> deletePost(
+			@RequestHeader(value="token") String token,
+			@RequestParam(value="postId") Integer postId
+			){
+		cottomsPostService.deletePost(token,postId);
+		return cottomsPostService.deletePost(token,postId);
+		
+	}
+	
+	//病例付费
+	@RequestMapping("playChargePost")
+	@ResponseBody
+	public DataWrapper<Void> playChargePost(
+			@RequestHeader(value="token") String token,
+			@RequestParam(value="chargeNumber") Integer chargeNumber,
+			@RequestParam(value="postId") Integer postId
+			){
+		return cottomsPostService.playChargePost(token,chargeNumber,postId);
 	}
 //	@RequestMapping("comment")//评论
 //	@ResponseBody

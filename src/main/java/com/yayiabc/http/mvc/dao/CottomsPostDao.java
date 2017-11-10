@@ -51,6 +51,6 @@ public interface CottomsPostDao {
 	//查看用户的帖子
 	public List<Integer> queryByIdPost(String userId);
 	public void deletePost(Integer postId);
-	public void insertUserToPost(Integer postId, String userId);
+	public void insertUserToPost(@Param("postId")Integer postId, @Param("userId")String userId);
 	
 }

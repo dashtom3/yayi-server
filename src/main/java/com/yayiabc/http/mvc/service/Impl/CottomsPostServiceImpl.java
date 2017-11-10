@@ -70,10 +70,10 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		page.setCurrentPage(currentPage);
 		List<CottomsPost> cottomsPosts=cottomsPostDao.queryPost(page,classify,order);
 		for (CottomsPost cottomsPost2 : cottomsPosts) {
-			int readNumber = (int)RedisService.LISTS.llen("2评论"+cottomsPost2.getPostId());
+			int commentNumber = (int)RedisService.LISTS.llen("2评论"+cottomsPost2.getPostId());
 			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表2"+cottomsPost2.getPostId());
 			cottomsPost2.setCommentNumber(favourNumber);
-			cottomsPost2.setCommentNumber(readNumber);
+			cottomsPost2.setCommentNumber(commentNumber);
 		}
 		cottomsPost.setChargeContent(null);
 		cottomsPost.setFreeContent(null);
@@ -279,15 +279,17 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		}
 		return dataWrapper;
 	}
-	
+
 	//付费病例
 	public DataWrapper<Void> playChargePost(String token, Integer chargeNumber, Integer postId){
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 		String userId=utilsDao.getUserID(token);
 		String remark = "付费病例:支付"+chargeNumber+"个乾币。(乾币余额:userQbNum个)";
-		payAfterOrderUtil.newQbDed(userId, chargeNumber, "", remark);
-		cottomsPostDao.insertUserToPost(postId,userId);
+		if(payAfterOrderUtil.newQbDed(userId, chargeNumber, "", remark)!=null){
+			cottomsPostDao.insertUserToPost(postId,userId);
+			
+		}
 		return dataWrapper;
 	}
 	//导出表格

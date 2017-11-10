@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -9,6 +10,7 @@ import org.springframework.stereotype.Service;
 import com.yayiabc.http.mvc.dao.PlaceOrderDao;
 import com.yayiabc.http.mvc.dao.TimerChangeStateDao;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
+import com.yayiabc.http.mvc.pojo.model.ExpireOrder;
 import com.yayiabc.http.mvc.service.TimerChangeStateService;
 @Service
 public class TimerChangeStateServiceImpl implements TimerChangeStateService{
@@ -52,5 +54,15 @@ public class TimerChangeStateServiceImpl implements TimerChangeStateService{
 	public int stillItemsListValueNum(List<OrderItem> orderItemNums) {
 		// TODO Auto-generated method stub
 		return timerChangeStateDao.stillItemsListValueNum(orderItemNums);
+	}
+	@Override
+	public int closeOrder2(String orderId) {
+		// TODO Auto-generated method stub
+		return  timerChangeStateDao.closeOrder2(orderId);
+	}
+	@Override
+	public int returnStackItemNum(ArrayList<ExpireOrder> expireOrderItemList) {
+		// TODO Auto-generated method stub
+		return timerChangeStateDao.returnStackItemNum(expireOrderItemList);
 	}
 }

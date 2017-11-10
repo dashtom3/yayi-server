@@ -39,7 +39,7 @@
 	<context:component-scan base-package="com.yayiabc.http.filter"/>
 	<context:component-scan base-package="com.yayiabc.http.mvc"/>
     <context:component-scan base-package="com.yayiabc.http.aop"/>
-    <context:component-scan base-package="com.yayiabc.http.rabbitmq"/>
+   <!--  <context:component-scan base-package="com.yayiabc.http.rabbitmq"/> -->
 	<!-- 强制使用cglib代理方式 -->
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
 
@@ -70,6 +70,7 @@
     <bean id="BeanUtil" class="com.yayiabc.common.utils.BeanUtil"></bean>
     <bean id="PayAfterOrderUtil" class="com.yayiabc.common.utils.PayAfterOrderUtil"></bean>
     <bean id="SendToSaleMessage" class="com.yayiabc.common.utils.SendToSaleMessage"></bean>
+    <bean id="testTimer" class="com.yayiabc.http.mvc.controller.user.testTimer" init-method="afterPropertiesSet"></bean>
     <!-- 配置视图解析器，把控制器的逻辑视频映射为真正的视图 -->
     <bean class="org.springframework.web.servlet.view.UrlBasedViewResolver">
         <property name="viewClass" value="org.springframework.web.servlet.view.JstlView"/>

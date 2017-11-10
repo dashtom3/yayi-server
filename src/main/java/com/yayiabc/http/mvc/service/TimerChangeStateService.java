@@ -1,8 +1,10 @@
 package com.yayiabc.http.mvc.service;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
+import com.yayiabc.http.mvc.pojo.model.ExpireOrder;
 
 public interface TimerChangeStateService{
 
@@ -21,4 +23,8 @@ public interface TimerChangeStateService{
 	List<OrderItem> queryOrderItemNums(List<String> temporaryList);
 
 	int stillItemsListValueNum(List<OrderItem> orderItemNums);
+
+	int closeOrder2(String orderId );
+
+	int returnStackItemNum(ArrayList<ExpireOrder> expireOrderItemList);
 }

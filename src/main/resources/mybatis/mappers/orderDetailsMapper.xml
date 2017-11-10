@@ -104,8 +104,8 @@
 			and	orde.state=#{state} 
 			</if>
 			<!-- 满足导出后台excel表格 -->
-			<if test="orderState==11">
-			  and	orde.state not in(0,1)
+			<if test="orderState!=null and orderState!=''">
+			  and	orde.state =#{orderState}
 			</if>
 			<if test="state==2">
 			  and	orde.state in(2,5)

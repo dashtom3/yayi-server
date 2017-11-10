@@ -11,8 +11,16 @@
 				train_class =#{classly}
 			</if>
 		</where>
-		order by created desc,train_num desc LIMIT
+		order by created desc,train_num desc
+		<if test="currentNumber!=null and currentNumber!='' and numberPerPage!=null and numberPerPage!=''">
+		 LIMIT
 		${currentNumber},${numberPerPage}
+		</if>
+	</select>
+	
+	<!-- 获取所有的培训详情 -->
+	<select id="getAllTrainDetails" resultType="com.yayiabc.http.mvc.pojo.jpa.TrainDetail">
+	select * from  train_detail
 	</select>
 	
 	<select id="queryCount" resultType="int">
@@ -96,4 +104,8 @@
 	<update id="updateTrainOrderaState">
 		update train_ordera set state=2 where train_order_id=#{trainOrderaId}
 	</update>
+	
+	<select id="getTrainId" resultType="java.lang.String">
+	select train_id from train_ordera where train_order_id=#{out_trade_no}
+	</select>
 </mapper>       

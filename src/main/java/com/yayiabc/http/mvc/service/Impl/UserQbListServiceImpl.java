@@ -327,9 +327,9 @@ System.err.println( qbRecordList.size());
 		case 1: 
 			return "支付宝";
 		case 2: 
-			return "微信公众号支付/电脑网站微信支付";
+			return "微信支付(公众号/网站)";
 		default: 
-			return "app微信支付";
+			return "微信支付（app";
 		} 
 	}
 }

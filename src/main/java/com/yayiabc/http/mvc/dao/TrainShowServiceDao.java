@@ -43,4 +43,8 @@ public interface TrainShowServiceDao {
 	int updateTrainOrderaState(@Param("trainOrderaId")String trainOrderaId);
 
 	int queryCount(@Param("classly")String classly);
+
+	List<TrainDetail> getAllTrainDetails();
+
+	String getTrainId(@Param("out_trade_no")String out_trade_no);
 }

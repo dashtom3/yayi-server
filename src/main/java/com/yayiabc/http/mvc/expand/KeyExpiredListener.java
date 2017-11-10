@@ -1,86 +1,81 @@
 package com.yayiabc.http.mvc.expand;
+import java.util.ArrayList;
+
+import org.springframework.stereotype.Component;
+import org.springframework.transaction.annotation.Transactional;
+
+import com.yayiabc.common.utils.BeanUtil;
+import com.yayiabc.common.utils.RedisClient;
+import com.yayiabc.http.mvc.pojo.model.ExpireOrder;
+import com.yayiabc.http.mvc.service.TimerChangeStateService;
+
+import net.sf.json.JSONArray;
+import redis.clients.jedis.Jedis;
 import redis.clients.jedis.JedisPubSub;  
-  
+
 /**  
  * Created by denglinjie on 2017/8/28.
  * 类  
     /**  
-     * Created by denglinjie  
-     */  
-    public class KeyExpiredListener extends JedisPubSub {  
-        @Override  
-        public void unsubscribe() {  
-        	System.out.println(1);
-            super.unsubscribe();  
-        }  
-      
-        @Override  
-        public void unsubscribe(String... channels) {  
-        	System.out.println(2);
-            super.unsubscribe(channels);  
-        }  
-      
-        @Override  
-        public void subscribe(String... channels) {  
-        	System.out.println(3);
-            super.subscribe(channels);  
-        }  
-      
-        @Override  
-        public void psubscribe(String... patterns) { 
-        	System.out.println(4);
-            super.psubscribe(patterns);  
-        }  
-      
-        @Override  
-        public void punsubscribe() { 
-        	System.out.println(5);
-            super.punsubscribe();  
-        }  
-      
-        @Override  
-        public void punsubscribe(String... patterns) {  
-        	System.out.println(6);
-            super.punsubscribe(patterns);  
-        }  
-      
-        @Override  
-        public void onMessage(String channel, String message) {  
-        	System.out.println(7);
-            System.out.println("channel:" + channel + "receives message :" + message);  
-            
-           // this.unsubscribe();  
-        }  
-      
-        @Override  
-        public void onPMessage(String pattern, String channel, String message) {  
-        	System.out.println(8);
-        	System.out.println("onPMessage pattern "
-                    + pattern + " " + channel + " " + message);
-        	// this.unsubscribe();
-        }  
-      
-        @Override  
-        public void onSubscribe(String channel, int subscribedChannels) {  
-        	System.out.println(9);
-            System.out.println("channel:" + channel + "is been subscribed:" + subscribedChannels);  
-        }  
-      
-        @Override  
-        public void onPUnsubscribe(String pattern, int subscribedChannels) {  
-        	System.out.println(10);
-        }  
-      
-        @Override  
-        public void onPSubscribe(String pattern, int subscribedChannels) {  
-        	System.out.println(11);
-        	System.out.println("onPSubscribe "
-                    + pattern + " " + subscribedChannels);
-        }  
-      
-        @Override  
-        public void onUnsubscribe(String channel, int subscribedChannels) {  
-        	System.out.println(12);
-            System.out.println("channel:" + channel + "is been unsubscribed:" + subscribedChannels);  
-        }
-}
+ * Created by lihui  
+ */ 
+public class KeyExpiredListener extends JedisPubSub {  
+
+	TimerChangeStateService timerChangeStateService=BeanUtil.getBean("TimerChangeStateServiceImpl");
+	@Override  
+	public void onPSubscribe(String pattern, int subscribedChannels) {  
+		System.out.println("到这里了");
+		
+		System.out.println("onPSubscribe "  
+				+ pattern + " " + subscribedChannels);  
+	}  
+
+	@Override 
+	@Transactional
+	public void onPMessage(String pattern, String channel, String message) {  
+		System.err.println(message);
+
+		RedisClient rc=RedisClient.getInstance();
+		Jedis jedis=rc.getJedis();
+		jedis.select(1);
+		//获取失效订单里的主要内容  [{"itemId":"170719105543","itemNum":1,"itemSKU":"1707191055431","orderId":"100015868863920151"}]
+		String invalidOrder=jedis.hget("expireOrder", message);
+		//将失效订单json字符串 转为list集合
+		JSONArray json = JSONArray.fromObject(invalidOrder);
+		ArrayList<ExpireOrder> expireOrderItemList = (ArrayList<ExpireOrder>)JSONArray.toCollection(json,ExpireOrder.class);
+		
+		//关闭订单  
+		int sign=timerChangeStateService.closeOrder2(expireOrderItemList.get(0).getOrderId());
+		if(sign>0){
+			//返还库存
+			timerChangeStateService.returnStackItemNum(expireOrderItemList);
+		}
+		System.out.println(expireOrderItemList);
+		jedis.hdel("expireOrder", message);
+		jedis.close();
+	}
+
+	@Override
+	public void onMessage(String channel, String message) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onSubscribe(String channel, int subscribedChannels) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onUnsubscribe(String channel, int subscribedChannels) {
+		// TODO Auto-generated method stub
+
+	}
+
+	@Override
+	public void onPUnsubscribe(String pattern, int subscribedChannels) {
+		// TODO Auto-generated method stub
+
+	}
+}  

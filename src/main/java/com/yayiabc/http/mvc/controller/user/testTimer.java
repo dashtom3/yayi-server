@@ -4,25 +4,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Map;
 
-import javax.servlet.http.HttpServlet;
 
 import org.springframework.beans.factory.InitializingBean;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Component;
 
 import com.yayiabc.common.cahce.CacheUtils;
-import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.RedisClient;
-import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.expand.KeyExpiredListener;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.service.AdvManageService;
-import com.yayiabc.http.mvc.service.TimerChangeStateService;
-import com.yayiabc.http.mvc.service.Impl.AdvManageServiceImpl;
 
 import redis.clients.jedis.Jedis;
-@Component
-public class testTimer extends Thread implements InitializingBean{
+public class testTimer extends Thread {
 
    @Autowired 
 	private AdvManageService  advManageService;
@@ -45,22 +38,24 @@ public class testTimer extends Thread implements InitializingBean{
 			}
 		}
 	}
-	
-	public void afterPropertiesSet() throws Exception {
-		// TODO Auto-generated method stub
-		init();
-		//initTwo();
-	}
-	private void initTwo() {
+	private void initTwo(){
 		// TODO Auto-generated method stub
 		Thread thread=new  Thread(new testTimer());
 		thread.start();
 	}
 	@Override
 	public void run(){
-		RedisClient red=RedisClient.getInstance();
-		Jedis jedis=red.getJedis();
-		 jedis.psubscribe(new KeyExpiredListener(), "__keyevent@0__:expired"); 
+		RedisClient rc=RedisClient.getInstance();
+		Jedis jedis=rc.getJedis();
+        jedis.psubscribe(new KeyExpiredListener(),"__keyevent@1__:expired");  
+	}
+	
+	
+	public void afterPropertiesSet() throws Exception {
+		// TODO Auto-generated method stub
+		//init();
+		System.err.println("窝草");
+		initTwo();
 	}
 }
 

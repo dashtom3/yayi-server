@@ -10,7 +10,7 @@ import com.yayiabc.http.mvc.pojo.jpa.User;
 
 public interface TrainShowService {
 
-	DataWrapper<List<Train>> show(String classly, Integer currentPage, Integer numberPerpage);
+	DataWrapper<List<Train>> show(String classly, Integer currentPage, Integer numberPerpage, Integer state);
 
 	DataWrapper<Void> releaseTrain(Train  train, TrainDetail  trainDetails);
 
@@ -20,6 +20,8 @@ public interface TrainShowService {
 	
 	DataWrapper<Void> share(String trainId);
 	
-	DataWrapper<Void> spotFabulous(String trainId);
+	DataWrapper<Void> spotFabulous(String trainId,String token);
+
+	String getTrainId(String out_trade_no);
 
 }

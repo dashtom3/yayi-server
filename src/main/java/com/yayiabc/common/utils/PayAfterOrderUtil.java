@@ -23,6 +23,8 @@ import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.jpa.TrainOrdera;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.UserMyQbService;
+
+import redis.clients.jedis.Jedis;
 @Component
 public class PayAfterOrderUtil {
 	@Autowired
@@ -41,6 +43,15 @@ public class PayAfterOrderUtil {
 	private UserMyQbDao userMyQbDao;
 	//更改支付类型
 	public  boolean universal(String orderId,String type){
+		/**
+		 * 如果redis里没有该订单 就说明该订单已经关闭
+		 */
+		/*RedisClient rc=RedisClient.getInstance();
+		Jedis jedis=rc.getJedis();
+		jedis.select(1);
+		if(!jedis.exists("expireOrder"+orderId)){
+		     return false;	
+		}*/
 		if(type!=null){
 			aliPayDao.updatePayType(orderId,type);
 		}
@@ -70,16 +81,13 @@ public class PayAfterOrderUtil {
 			throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
 		}
 		//关于钱币
-		//查询该用户钱包余额
-		//int qbNum=utilsDao.queryUserQbNum(o.getUserId());
 		if(o.getGiveQb()!=0){
 			QbRecord q=new QbRecord();
 
 			q.setQbRget("\"赠\"： "+o.getGiveQb()+"个");
 
 			q.setUserId(o.getUserId()+"");
-			/*Calendar Cld = Calendar.getInstance();
- 			int MI = Cld.get(Calendar.MILLISECOND);	*/
+			
 			q.setMillisecond(System.nanoTime());
 			userMyQbDao.updateUserQb(o.getGiveQb()+"", o.getUserId(),"qb_balance");
 			//查询乾币余额
@@ -101,6 +109,7 @@ public class PayAfterOrderUtil {
 		CacheUtils cache=	CacheUtils.getInstance();
 		Map<String,Date> map=cache.getCacheMap();
 		map.remove(orderId);
+	
 		return true;
 	}
 
@@ -118,7 +127,7 @@ public class PayAfterOrderUtil {
 		return true;
 	} 
 	//下单钱币扣除规则 先。。。后。。。。。。。
-	String  newQbDed(String userId,Integer  DedNum,String orderId
+	public String  newQbDed(String userId,Integer  DedNum,String orderId
 			,String remark
 			){
 		//dednum <= max used qb //钱币够用

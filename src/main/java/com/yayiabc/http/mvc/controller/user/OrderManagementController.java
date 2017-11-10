@@ -140,7 +140,7 @@ public class OrderManagementController {
 			){
 		return orderManagementService.queryOrderDetails(orderId);
 	}
-	//后台显示订单详情
+	//后台显示发票详情
 	@RequestMapping("queryOrderInvoice")
 	@ResponseBody
 	@AdminTokenValidate
@@ -152,7 +152,7 @@ public class OrderManagementController {
 		return orderManagementService.queryOrderInvoice(orderId);
 	}
 
-	//后台显示订单详情
+	//后台订单列表导出Excel表格
 	@RequestMapping("exportExcel")
 	@ResponseBody
 	//@AdminLog(description="后台订单列表导出Excel表格")

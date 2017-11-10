@@ -54,8 +54,8 @@ public class RedisService {
             //在borrow一个jedis实例时，是否提前进行validate操作；如果为true，则得到的jedis实例均是可用的；  
             config.setTestOnBorrow(true);  
             
-            //redis如果设置了密码：
-            jedisPool = new JedisPool(config, "97.64.82.23",
+            //redis如果设置了密码：97.64.82.23
+            jedisPool = new JedisPool(config, "www.liqitian.top",
             		6379,
             		10000,"123456");
 //		 jedisPool = new JedisPool(config, "47.93.48.111",
@@ -537,7 +537,12 @@ public class RedisService {
 			returnJedis(jedis);
 			return s;
 		}*/
-
+		 public Long zadd(final String key, final long score, final String member) {
+				Jedis jedis = getJedis();
+				long s = jedis.zadd(key, score, member);
+				returnJedis(jedis);
+				return s;
+			    }
 		/**
 		 * 获取集合中元素的数量
 		 * @param String  key

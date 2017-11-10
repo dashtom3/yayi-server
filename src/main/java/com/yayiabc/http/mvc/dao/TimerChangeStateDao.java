@@ -1,10 +1,12 @@
 package com.yayiabc.http.mvc.dao;
 
+import java.util.ArrayList;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
 
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
+import com.yayiabc.http.mvc.pojo.model.ExpireOrder;
 public interface TimerChangeStateDao {
 /*
  * <update id="timerChangeState">
@@ -25,4 +27,8 @@ public interface TimerChangeStateDao {
 	public List<OrderItem> queryOrderItemNums(List<String> temporaryList);
 	
 	public int stillItemsListValueNum(List<OrderItem> orderItemNums);
+	
+	/*2.0*/
+	public int closeOrder2(String orderId);
+	public int returnStackItemNum(ArrayList<ExpireOrder> expireOrderItemList);
 }

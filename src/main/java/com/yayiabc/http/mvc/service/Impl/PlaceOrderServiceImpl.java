@@ -1,13 +1,13 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import java.util.ArrayList;
 import java.util.Date;
 import java.util.HashMap;
 import java.util.List;
-import java.util.regex.Matcher;
-import java.util.regex.Pattern;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import org.springframework.transaction.annotation.Transactional;
 
 import com.yayiabc.common.cahce.CacheUtils;
 import com.yayiabc.common.enums.ErrorCodeEnum;
@@ -16,6 +16,7 @@ import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.OrderIdUtils;
 import com.yayiabc.common.utils.PayAfterOrderUtil;
+import com.yayiabc.common.utils.RedisClient;
 import com.yayiabc.http.mvc.dao.PlaceOrderDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.FreeShipping;
@@ -24,10 +25,12 @@ import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.PostFee;
 import com.yayiabc.http.mvc.pojo.jpa.Receiver;
+import com.yayiabc.http.mvc.pojo.model.ExpireOrder;
 import com.yayiabc.http.mvc.pojo.model.FinalList;
 import com.yayiabc.http.mvc.service.PlaceOrderService;
 
-import org.springframework.transaction.annotation.Transactional;
+import net.sf.json.JSONArray;
+import redis.clients.jedis.Jedis;
 
 @Service
 public class PlaceOrderServiceImpl implements PlaceOrderService{
@@ -151,22 +154,22 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			Invoice  invoice
 			) {
 		DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String,Object>>();
-		 
+
 		if(order.getQbDed()==null){
 			order.setQbDed(0);
 		}
 		DataWrapper<Integer> data=ded(token,order.getQbDed());
 		if(data!=null){
-		int qbBalance=data.getData();
-		if(qbBalance<order.getQbDed()){
-			throw new OrderException(ErrorCodeEnum.QBDED_Error);
-		}
+			int qbBalance=data.getData();
+			if(qbBalance<order.getQbDed()){
+				throw new OrderException(ErrorCodeEnum.QBDED_Error);
+			}
 		}
 		//记录工具设备类的商品 个数
 		int TooldevicesSumCount=0;
 		// TODO Auto-generated method stub
 		//  get userId
-		
+
 		HashMap<String, Object> hashMap=new HashMap<String, Object>();
 		String userId=null;
 		try {
@@ -189,7 +192,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				//set datawrapper
 				throw new OrderException(ErrorCodeEnum.QBDED_Error);
 			}
-			
+
 			//本单赠送钱币百分比
 			double giveQbNum=0;
 			//道邦总价
@@ -199,7 +202,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			double SuppliesSumPrice=0;
 			//除道邦之外的工具设备类总价格
 			double TooldevicesSumPrice=0;	
-			
+
 			//全部的耗材类总价格
 			double AllSuppliesSumPrice=0;
 			//全部的工具设备类总价格
@@ -209,30 +212,30 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			Double sumPrice=0.0;
 			int itemSum=orderItemList.size();//商品总数量
 			List<FinalList> finalList=placeOrderDao.queryFinalList(orderItemList);
-			
+
 			//填充orderItemList
-			 orderItemList=goodOrderItemList(orderItemList,orderId,finalList);
-			
+			orderItemList=goodOrderItemList(orderItemList,orderId,finalList);
+
 			//校验 商品是否在售卖状态与校检库存是否正确 与更改库存
 			boolean flag=changeStockNum(orderItemList,finalList);
 			if(!flag){
 				dataWrapper.setMsg("库存不足");
 				return dataWrapper;
 			}
-			
-			
-			
+
+
+
 			//计算改单商品金额
 			HashMap<String, Object> priceMap=partItemPrices(orderItemList,AllSuppliesSumPrice,AllTooldevicesSumPrice);
 			sumPrice=(Double) priceMap.get("sumPrice");
 			AllSuppliesSumPrice=(Double) priceMap.get("AllSuppliesSumPrice");
 			AllTooldevicesSumPrice=(Double) priceMap.get("AllTooldevicesSumPrice");
-			
-			
+
+
 			//创建订单并保存订单数据
 			placeOrderDao.createOrder(orderId,userId,order);
-			
-			
+
+
 			//将商品 同步到 订单商品表里--------双休优化  批量 插入到order_item表中
 			int a=placeOrderDao.batchSynchronization(orderItemList);
 			//清空购物车 双休优化
@@ -242,8 +245,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			}
 			//计算本单赠送钱币数
 			giveQbNum=calculQbNum(daoBnagSumPrice,SuppliesSumPrice,TooldevicesSumCount,TooldevicesSumPrice,orderItemList);
-			
-			
+
+
 			//该单计算运费
 			Receiver receiver=placeOrderDao.queryReceiver(order.getReceiverId());
 			Integer postFee=getFreight(receiver,sumPrice,itemSum);
@@ -272,8 +275,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			hashMap.put("TooldevicesSumPrice", TooldevicesSumPrice);
 			hashMap.put("daoBnagSumPrice", daoBnagSumPrice);
 
-			
-			
+
+
 			//本单赠送钱币数保存到数据库
 			if(
 					placeOrderDao.saveGiveQbNum(String.valueOf(giveQbNum),String.valueOf(postFee),
@@ -285,13 +288,39 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			{
 				throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
 			}
-            //放入缓存
+			//放入缓存
 			CacheUtils.getInstance().getCacheMap().put(orderId, new Date());
+			/*
+			 * 尝试放入redis
+			 */
+			List<ExpireOrder> expireOrderList=new ArrayList<ExpireOrder>();
+			for (OrderItem oredrItem : orderItemList) {
+				ExpireOrder expireOrder=new ExpireOrder();
+				expireOrder.setOrderId(orderId);
+				expireOrder.setItemId(oredrItem.getItemId());
+				expireOrder.setItemSKU(oredrItem.getItemSKU());
+				expireOrder.setItemNum(oredrItem.getNum());
+				expireOrderList.add(expireOrder);
+			}
+			
+			JSONArray json = JSONArray.fromObject(expireOrderList); 
+			System.out.println("json.toString() "+json.toString());
+			RedisClient rc=RedisClient.getInstance();
+			Jedis jedis=rc.getJedis();
+			jedis.select(1);
+			jedis.set("expireOrder"+orderId, json.toString());  
+			jedis.expire("expireOrder"+orderId,60*60*30);
+			//保存主要数据
+            jedis.hset("expireOrder", "expireOrder"+orderId, json.toString());
+			jedis.close();
+
 			//判断客服是否全额乾币支付
 			if(actualPay==0){
 				PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
+
 				if(!payAfterOrderUtil.universal(orderId,"3")){
-					throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
+					throw new RuntimeException();
+					//throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
 				}
 			}
 			dataWrapper.setData(hashMap);
@@ -305,23 +334,23 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	private HashMap<String, Object> partItemPrices(List<OrderItem> orderItemList, double AllSuppliesSumPrice, double AllTooldevicesSumPrice){
 		HashMap<String, Object> hm=new HashMap<String,Object>();
 		if(!orderItemList.isEmpty())
-		for(int i=0;i<orderItemList.size();i++){
-			//这里计算除道邦之外的商品分类价格  耗材类  工具设备类
-			if("耗材类".equals(orderItemList.get(i).getItemType())){
-				AllSuppliesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
-			}else if("工具设备类".equals(orderItemList.get(i).getItemType())){
-				AllTooldevicesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
+			for(int i=0;i<orderItemList.size();i++){
+				//这里计算除道邦之外的商品分类价格  耗材类  工具设备类
+				if("耗材类".equals(orderItemList.get(i).getItemType())){
+					AllSuppliesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
+				}else if("工具设备类".equals(orderItemList.get(i).getItemType())){
+					AllTooldevicesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
+				}
 			}
-		}
 		hm.put("AllSuppliesSumPrice", keepTwo(AllSuppliesSumPrice));
 		hm.put("AllTooldevicesSumPrice", keepTwo(AllTooldevicesSumPrice));
 		hm.put("sumPrice",keepTwo(AllSuppliesSumPrice+AllTooldevicesSumPrice));
 		return hm;
-     }
+	}
 	//下单更改订单里的商品库存
 	@Override
-	 public boolean changeStockNum(List<OrderItem> orderItemList,List<FinalList> finalList){
-		
+	public boolean changeStockNum(List<OrderItem> orderItemList,List<FinalList> finalList){
+
 		if(orderItemList.size()!=finalList.size()){
 			System.out.println("orderItemList.size()与 finalList.size()不同！");
 			return false;
@@ -329,11 +358,11 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			for(int i=0;i<orderItemList.size();i++){
 				//判断当前商品是否在售卖状态
 				if(finalList.get(i).getCanUse()==1){
-				//判断库存
-				if(finalList.get(i).getStockNum()<orderItemList.get(i).getNum()){
-					System.out.println("库存不足");
-					return false;
-				}
+					//判断库存
+					if(finalList.get(i).getStockNum()<orderItemList.get(i).getNum()){
+						System.out.println("库存不足");
+						return false;
+					}
 				}else{
 					return false;
 				}
@@ -341,7 +370,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			int state=placeOrderDao.updateInventNums(orderItemList);
 			//乐观锁 解决一致性与并发性的矛盾
 			if(state==0){
-			   System.out.println("乐观锁,false");
+				System.out.println("乐观锁,false");
 				return false;
 			}
 		}
@@ -349,8 +378,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	}
 	private double calculQbNum(double daoBnagSumPrice,double SuppliesSumPrice,double TooldevicesSumCount,double TooldevicesSumPrice, List<OrderItem> orderItemList){
 		double giveQbNum=0.0;
-        for(int i=0;i<orderItemList.size();i++){
-        	if("上海道邦".equals(orderItemList.get(i).getItemBrandName())){
+		for(int i=0;i<orderItemList.size();i++){
+			if("上海道邦".equals(orderItemList.get(i).getItemBrandName())){
 				daoBnagSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
 			}else{
 				//这里计算除道邦之外的商品分类价格  耗材类  工具设备类
@@ -361,7 +390,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					TooldevicesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
 				}
 			}
-        }
+		}
 		//首先道邦品牌
 		if(daoBnagSumPrice>0&&daoBnagSumPrice<300){
 			giveQbNum=giveQbNum+daoBnagSumPrice*0.03;
@@ -400,13 +429,13 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		DataWrapper<Invoice> dataWrapper=new DataWrapper<Invoice>();
 		Invoice in=placeOrderDao.queryLastInvoice(userId);
 		if(in!=null){
-				dataWrapper.setData(in);
+			dataWrapper.setData(in);
 		}
 		return dataWrapper;
 	}
 	//填充orderItemList
 	private List<OrderItem> goodOrderItemList(List<OrderItem> orderItemList,String orderId,List<FinalList> finalList){
-		
+
 		for(int i=0;i<orderItemList.size();i++){
 			for(int x=0;x<finalList.size();x++){
 				if(orderItemList.get(i).getItemSKU().equals(finalList.get(x).getItemSKU())){
@@ -426,7 +455,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		return orderItemList;
 	}
 	//double保留最后两位小数
-    private Double keepTwo(Double ouble){
-      return (double) Math.round(ouble);
-    }
+	private Double keepTwo(Double ouble){
+		return (double) Math.round(ouble);
+	}
 }

@@ -87,4 +87,21 @@
 			 item_sKU=#{plid.itemSKU} and stock_num >=0
 		</foreach>
 	</update>
+	<!-- 超时关闭订单  退回库存2.0 -->
+	<update id="closeOrder2">
+	update ordera set state=0 where order_id=#{orderId}
+	</update>
+	
+	
+	<update id="returnStackItemNum" parameterType="java.util.List">
+	<foreach collection="list" item="plid" index="index" open="" close="" 
+			separator=";">
+			update item_value
+			<set>
+			stock_num = ${plid.itemNum}+stock_num
+			</set>
+			where 
+			 item_sKU=#{plid.itemSKU} and stock_num >=0
+		</foreach>
+	</update>
 </mapper>

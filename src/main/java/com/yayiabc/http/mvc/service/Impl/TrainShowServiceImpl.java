@@ -1,6 +1,9 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import java.text.ParseException;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
@@ -27,6 +30,8 @@ import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.RedisService;
 import com.yayiabc.http.mvc.service.TrainShowService;
 
+import net.sf.json.JSONArray;
+import net.sf.json.JSONObject;
 import redis.clients.jedis.Jedis;
 
 @Service
@@ -38,18 +43,19 @@ public class TrainShowServiceImpl implements TrainShowService {
 	@Autowired
 	private RedisService rediService;
 	@Override 
-	public DataWrapper<List<Train>> show(String classly, Integer currentPage, Integer numberPerpage) {
+	public DataWrapper<List<Train>> show(String classly, Integer currentPage, Integer numberPerpage,Integer state) {
 		// TODO Auto-generated method stub
 		DataWrapper< List<Train>> dataWrapper =new DataWrapper<List<Train>>();
 		//到缓存中拿 前提classly为null（非条件查询）
 		if(classly==null){
-			List<Train> list	=getUpCache(currentPage,numberPerpage);
+			List<Train> list	=getUpCache(currentPage,numberPerpage,state);
 			if(list!=null&&!list.isEmpty()){
 				dataWrapper.setData(list);
 				System.out.println(12312321);
 				return dataWrapper;
 			}
 		}
+
 		Page page=new Page();
 		page.setNumberPerPage(numberPerpage);
 		page.setCurrentPage(currentPage);
@@ -62,22 +68,59 @@ public class TrainShowServiceImpl implements TrainShowService {
 
 		return dataWrapper;
 	}
-	private List<Train> getUpCache(Integer currentPage, Integer numberPerpage){
+	private List<Train> getUpCache(Integer currentPage, Integer numberPerpage,Integer state){
 		//计算分页数据
 		Page page=new Page();
 		page.setNumberPerPage(numberPerpage);
 		page.setCurrentPage(currentPage);
-		
-		RedisClient redisClient=RedisClient.getInstance();
-		Jedis jedis=redisClient.getJedis();
+
+		//获取redisClient实例
+		Jedis jedis =rediService.getJedis();
 		System.out.println(page.getCurrentNumber()+"  "+page.getNumberPerPage());
+		List<Train> trainList =new ArrayList<Train>();
+		if(state==1){
+			//按发布时间排序
+			Set<String> sets=jedis.zrange("trainCreateTime", page.getCurrentNumber(), page.getNumberPerPage());
+			for(String trainId:sets){
+				String trainJSON=jedis.hget("allTrain", trainId+"");
+				JSONObject jsonObject=JSONObject.fromObject(trainJSON);
+				Train train=(Train)JSONObject.toBean(jsonObject, Train.class);
+				System.out.println(train+"  traintraintraintrain");
+				
+				trainList.add(train);
+			}
+		}else if(state==2){
+			//按培训最新开始时间排序
+			Set<String> sets=jedis.zrange("trainStartTime", page.getCurrentNumber(), page.getNumberPerPage());
+			for(String trainId:sets){
+				String trainJSON=jedis.hget("allTrain", trainId+"");
+				JSONObject jsonObject=JSONObject.fromObject(trainJSON);
+				Train train=(Train)JSONObject.toBean(jsonObject, Train.class);
+				Integer dianzanNum=(int)rediService.SETS.scard(train.getTrainId()+"dianzanSet");
+				
+				trainList.add(train);
+			}
+		}else{
+			//按报名数排序
+			Set<String> sets=jedis.zrange("trainSetUpNum", page.getCurrentNumber(), page.getNumberPerPage());
+			for(String trainId:sets){
+				String trainJSON=jedis.hget("allTrain", trainId+"");
+				JSONObject jsonObject=JSONObject.fromObject(trainJSON);
+				Train train=(Train)JSONObject.toBean(jsonObject, Train.class);
+				Integer dianzanNum=(int)rediService.SETS.scard(train.getTrainId()+"dianzanSet");
+				
+				trainList.add(train);
+			}
+		}
+
+
 		Set<byte[]> set=jedis.zrevrange("train:set".getBytes(), page.getCurrentNumber(),page.getNumberPerPage());
 		List<Train> catcheList=new ArrayList<Train>();
 		for (byte[] str : set) { 
 			Train train=(Train) SerializeUtil.unserialize(str);
 			catcheList.add(train);
 		}  
-		redisClient.returnJedis(jedis);
+		rediService.returnJedis(jedis);
 		System.err.println(catcheList);
 		return catcheList;
 	}
@@ -87,7 +130,7 @@ public class TrainShowServiceImpl implements TrainShowService {
 	@Override
 	public DataWrapper<Void> releaseTrain(Train  train, TrainDetail  trainDetails) {
 		// TODO Auto-generated method stub
-		
+
 		DataWrapper<Void>  dataWrapper=new DataWrapper<Void>();
 		//插入到培训表 返回主键  在train里
 		trainShowServiceDao.insertTrain(train);
@@ -105,19 +148,31 @@ public class TrainShowServiceImpl implements TrainShowService {
 
 	private void setToCache(Train  train,TrainDetail  trainDetails){
 		//获取redisClient实例
-		RedisClient redisClient=RedisClient.getInstance();
-		Jedis jedis=redisClient.getJedis();
-		//将列表页存入jedis list结构中
-		//		redisClient.set("train:findClass:"+train.getClassly()+train.getTrainId(), SerializeUtil.serialize(train));
-		//redisClient.set(("train:findClass:"+train.getClassly()+train.getTrainId()).getBytes(), SerializeUtil.serialize(train));
-		//将列表页放入zset中
-		jedis.zadd("train:set".getBytes(), System.currentTimeMillis(),  SerializeUtil.serialize(train));
-		//详情页存入到jedis hash结构中 pass
-		//redisClient.HASH.hset("TrainDetail", train.getTrainId()+"ToTrainDetails", new SerializeUtil().serialize(trainDetails));
+		Jedis jedis=rediService.getJedis();
+		JSONObject jsonStu = JSONObject.fromObject(train);
+		rediService.HASH.hset("allTrain", train.getTrainId()+"", jsonStu.toString());
+      
+		JSONObject jsonArrayDetails = JSONObject.fromObject(trainDetails);
+		rediService.HASH.hset("allTrainDetail", train.getTrainId()+"", jsonArrayDetails.toString());
+		//发布时间
+		rediService.SORTSET.zadd("trainCreateTime", System.currentTimeMillis(), train.getTrainId()+"");
 
-		//详情页放入String中
-		jedis.set((train.getTrainId()+"ToTrainDetails").getBytes(),SerializeUtil.serialize(trainDetails));
-		redisClient.returnJedis(jedis);
+		//培训开始时间
+		SimpleDateFormat sdf=new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+		Date date=null;
+		try {
+			date = sdf.parse(train.getTrainCtime());
+		} catch (ParseException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
+		//培训开始时间 
+		rediService.SORTSET.zadd("trainStartTime",date.getTime(), train.getTrainId()+"");
+		//培训报名数
+		rediService.SORTSET.zadd("trainSetUpNum",0, train.getTrainId()+"");
+		
+		
+		jedis.close();
 	}
 	/**
 	 * 培训详情的显示
@@ -126,16 +181,24 @@ public class TrainShowServiceImpl implements TrainShowService {
 	public DataWrapper<TrainDetail> trainDetails(String trainId) {
 		// TODO Auto-generated method stub
 		DataWrapper<TrainDetail>  dataWrapper=new DataWrapper<TrainDetail>();
-		//缓存中查找
-		RedisClient redisClient=RedisClient.getInstance();
-		byte[] byts=redisClient.get((trainId+"ToTrainDetails").getBytes());
-		if(byts!=null){
-			TrainDetail trainDetail=(TrainDetail) SerializeUtil.unserialize(byts);
-			System.out.println(trainDetail);
-			dataWrapper.setData(trainDetail);
+		//获取redisClient实例
+		Jedis jedis =rediService.getJedis();
+		String trainDetailJSON=jedis.hget("allTrainDetail", trainId+"");
+System.out.println(trainDetailJSON);
+		JSONObject jsonObject=JSONObject.fromObject(trainDetailJSON);
+		TrainDetail trainDetail1=(TrainDetail)JSONObject.toBean(jsonObject, TrainDetail.class);
+		
+		if(trainDetail1!=null){
+			Integer dianzanNum=(int) rediService.SETS.scard(trainId+"dianzanSet");
+			System.out.println(dianzanNum+"   dianzanNumdianzanNumdianzanNum");
+			if(dianzanNum==null){
+				trainDetail1.setCollection(0);
+			}else{
+				trainDetail1.setCollection(dianzanNum);
+			}
+			dataWrapper.setData(trainDetail1);
 			return dataWrapper;
 		}
-		
 		TrainDetail trainDetail=trainShowServiceDao.trainDetails(trainId);
 		dataWrapper.setData(trainDetail);
 		return dataWrapper;
@@ -143,7 +206,7 @@ public class TrainShowServiceImpl implements TrainShowService {
 	/**
 	 * 分享
 	 */
-	 public DataWrapper<Void> share(String trainId){
+	public DataWrapper<Void> share(String trainId){
 		RedisClient redisClient=RedisClient.getInstance();
 		Jedis jedis=redisClient.getJedis();
 		byte[] byts=redisClient.get((trainId+"ToTrainDetails").getBytes());
@@ -151,7 +214,7 @@ public class TrainShowServiceImpl implements TrainShowService {
 		trainDetail.setShareAddOne();
 		//重新添加  （覆盖作用）
 		jedis.set((trainId+"ToTrainDetails").getBytes(),SerializeUtil.serialize(trainDetail));
-		
+
 		redisClient.returnJedis(jedis);
 		return new DataWrapper<Void>();
 	}
@@ -159,19 +222,17 @@ public class TrainShowServiceImpl implements TrainShowService {
 	 * 点赞
 	 * 
 	 */
-	 public DataWrapper<Void> spotFabulous(String trainId){
-			RedisClient redisClient=RedisClient.getInstance();
-			Jedis jedis=redisClient.getJedis();
-			byte[] byts=redisClient.get((trainId+"ToTrainDetails").getBytes());
-			TrainDetail trainDetail=(TrainDetail) SerializeUtil.unserialize(byts);
-			trainDetail.setCollectionAddOne();
-			//重新添加  （覆盖作用）
-			jedis.set((trainId+"ToTrainDetails").getBytes(),SerializeUtil.serialize(trainDetail));
-			
-			redisClient.returnJedis(jedis);
-			return new DataWrapper<Void>();
-	 }
-			
+	public DataWrapper<Void> spotFabulous(String trainId,String token){
+		String userId=utilsDao.getUserID(token);
+		//点赞集合
+		if(rediService.SETS.sismember(trainId+"dianZanSet",userId)){
+			rediService.SETS.srem(trainId+"dianZanSet", userId);
+		}else{
+			rediService.SETS.sadd(trainId+"dianZanSet", userId);
+		}
+		return new DataWrapper<Void>();
+	}
+
 	/**
 	 * 确定报名
 	 */
@@ -245,6 +306,9 @@ public class TrainShowServiceImpl implements TrainShowService {
 		dataWrapper.setMsg(out_trade_no);
 		return dataWrapper; 
 	}
-
-
+	@Override
+	public String getTrainId(String out_trade_no) {
+		// TODO Auto-generated method stub
+		return trainShowServiceDao.getTrainId(out_trade_no);
+	}
 }

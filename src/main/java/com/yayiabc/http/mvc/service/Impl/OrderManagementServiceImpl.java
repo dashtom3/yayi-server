@@ -519,7 +519,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		HashMap<String, String> hMap=new HashMap<String,String>();
 		hMap.put("orderId", orderId);
 		hMap.put("buyerInfo", buyerInfo);
-		hMap.put("orderState", "11");
+		hMap.put("orderState", orderState);
 		hMap.put("orderCTime", orderCTime);
 		hMap.put("orderETime", orderETime);
 		hMap.put("isRefund", isRefund);
@@ -563,7 +563,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		cell = row.createCell((short) 2);  
 		cell.setCellValue("订单编号");  
 		cell.setCellStyle(style); 
-		
+
 		cell = row.createCell((short) 3);  
 		cell.setCellValue("收件人");  
 		cell.setCellStyle(style);  
@@ -617,14 +617,22 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		cell.setCellStyle(style);
 
 		cell = row.createCell((short) 16);  
-		cell.setCellValue("订单留言");  
+		cell.setCellValue("支付方式");  
 		cell.setCellStyle(style);
 
 		cell = row.createCell((short) 17);  
+		cell.setCellValue("订单状态");  
+		cell.setCellStyle(style);
+		
+		cell = row.createCell((short) 18);  
+		cell.setCellValue("订单留言");  
+		cell.setCellStyle(style);
+
+		cell = row.createCell((short) 19);  
 		cell.setCellValue("是否申请发票");  
 		cell.setCellStyle(style);
 
-		cell = row.createCell((short) 18);  
+		cell = row.createCell((short) 20);  
 		cell.setCellValue("是否需要产品注册证");  
 		cell.setCellStyle(style);
 
@@ -646,7 +654,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 				// TODO Auto-generated catch block
 				e.printStackTrace();
 			}
-			  SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
+			SimpleDateFormat simpleDateFormat = new SimpleDateFormat("yyyy-MM-dd HH:mm:ss");
 			// 第四步，创建单元格，并设置值  
 			row.createCell((short) 0).setCellValue(orderCTime+"-"+orderETime);  
 			row.createCell((short) 1).setCellValue( simpleDateFormat.format(order.getCreated()));  
@@ -699,9 +707,14 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			row.createCell((short) 13).setCellValue(order.getQbDed());
 			row.createCell((short) 14).setCellValue(QbDes(order.getQbDes()));
 			row.createCell((short) 15).setCellValue(order.getActualPay());
-			row.createCell((short) 16).setCellValue(order.getBuyerMessage());
-			row.createCell((short) 17).setCellValue(isNeedInv(order.getInvoiceHand()));
-			cell = row.createCell((short) 18); 
+
+			row.createCell((short) 16).setCellValue(showPayType(order.getPayType()));
+
+			row.createCell((short) 17).setCellValue(showOrderState(order.getState()));
+			
+			row.createCell((short) 18).setCellValue(order.getBuyerMessage());
+			row.createCell((short) 19).setCellValue(isNeedInv(order.getInvoiceHand()));
+			cell = row.createCell((short) 20); 
 			//new SimpleDateFormat("yyyy-mm-dd").format(order.getActualPay())
 			cell.setCellValue(isNeedIsg(order.getIsRegister()));  
 
@@ -747,7 +760,54 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		}
 		return dataWrapper;
 	}
+	/**
+	 * 显示订单状态
+	 * @param state
+	 * @return
+	 */
+	private String showOrderState(Integer state) {
+		// TODO Auto-generated method stub
+		switch(state){
+		case 0:
+			return "关闭交易";
+		case 1:
 
+			return "等待买家付款";
+		case 2:
+			return "买家已付款";
+		case 3:
+			return "卖家已发货";
+		case 4:
+			return "待评价";
+		case 5:
+			return "订单已确认";
+		}
+		
+		return null;
+	}
+	/**
+	 * 显示支付类型
+	 * @param payType
+	 * @return
+	 */
+	private String showPayType(Integer payType) {
+		// TODO Auto-generated method stub
+		switch(payType){
+		case 0:
+			return "支付宝支付";
+		case 2:
+
+			return "银联支付";
+		case 3:
+			return "乾币支付";
+		case 4:
+			return "微信支付（公众号/网站）";
+		case 5:
+			return "微信支付（app）";
+		}
+
+		return null;
+	}
 	private String isNeedIsg(Integer isRegister) {
 		// TODO Auto-generated method stub
 		if(isRegister==1){
@@ -777,7 +837,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 	private String QbDes(String qbDes) {
 		// TODO Auto-generated method stub'
 		if("暂无".equals(qbDes)){
-           return  "'赠' 0个；'9.5折' 0个；'9.0折' 0个；'8.0折' 0个；";
+			return  "'赠' 0个；'9.5折' 0个；'9.0折' 0个；'8.0折' 0个；";
 		}
 
 

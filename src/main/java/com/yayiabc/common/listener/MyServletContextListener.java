@@ -17,7 +17,7 @@ import java.util.List;
 public class MyServletContextListener implements ServletContextListener{
 
 
-    private RedisService redisService;
+   // private RedisService redisService;
 
     private VideoManageDao videoManageDao;
 
@@ -26,14 +26,7 @@ public class MyServletContextListener implements ServletContextListener{
     private Logger logger= LogManager.getLogger(MyServletContextListener.class);
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        redisService= WebApplicationContextUtils.getWebApplicationContext(sce.getServletContext()).getBean(RedisService.class);
-        videoManageDao=WebApplicationContextUtils.getWebApplicationContext(sce.getServletContext()).getBean(VideoManageDao.class);
-        System.err.println("redisService引进来了");
-        redisService.STRINGS.set("redis","创建了");
-//        putVedioToRedis();//将视频数据引入redis
-        logger.debug("servletContext初始化开始");
-        System.err.println("服务器启动了");
-        logger.debug("一系列初始化的操作");
+       
     }
 
     @Override

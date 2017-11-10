@@ -14,6 +14,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.transaction.annotation.Transactional;
 import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -27,6 +28,7 @@ import com.yayiabc.common.utils.PayAfterOrderUtil;
 import com.yayiabc.http.mvc.pojo.jpa.Train;
 import com.yayiabc.http.mvc.pojo.jpa.TrainDetail;
 import com.yayiabc.http.mvc.pojo.jpa.TrainOrdera;
+import com.yayiabc.http.mvc.service.RedisService;
 import com.yayiabc.http.mvc.service.TrainShowService;
 
 @Controller
@@ -34,6 +36,8 @@ import com.yayiabc.http.mvc.service.TrainShowService;
 public class TrainShowController {
     @Autowired
    private TrainShowService trainShowService;
+    @Autowired
+    private RedisService redisService;
     //show
     /*
      * 培训列表的显示
@@ -43,9 +47,10 @@ public class TrainShowController {
     public DataWrapper<List<Train>> show(
     		@RequestParam(value="classly",required=false)String classly,
     		@RequestParam(value="currentPage",required=false,defaultValue="1")Integer currentPage,
-   		    @RequestParam(value="numberPerpage",required=false,defaultValue="3")Integer numberPerpage
+   		    @RequestParam(value="numberPerpage",required=false,defaultValue="3")Integer numberPerpage,
+   		    @RequestParam(value="state",required=false,defaultValue="1")int state //1默认最新发布时间   2 最新培训开始时间  3最多报名人数
     		){
-    	return trainShowService.show(classly,currentPage,numberPerpage);
+    	return trainShowService.show(classly,currentPage,numberPerpage,state);
     }
     /**
      * 培训详情
@@ -102,18 +107,18 @@ public class TrainShowController {
     }
     
     /**
-     * 收藏 
+     * 点赞
      * @param trainId
      * @return
      */
     @RequestMapping("spotFabulous")
     @ResponseBody
     public DataWrapper<Void> spotFabulous(
-    	//	@RequestHeader(value="AdminToken",required=false)String AdminToken,
+    		@RequestHeader(value="token",required=false)String token,
     		@RequestParam(value="trainId",required=true) String trainId
     		){
     	
-    	return trainShowService.spotFabulous(trainId);
+    	return trainShowService.spotFabulous(trainId,token);
     }
     /**
      * 确定报名
@@ -180,7 +185,10 @@ public class TrainShowController {
 
 					PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 					if( payAfterOrderUtil.trainOrderCallBackUtils(out_trade_no,amount)){
+						String trainId=trainShowService.getTrainId(out_trade_no);
 						System.out.println("成功啦");
+						//redis缓存报名人数更新
+						redisService.SORTSET.zincrby("trainSetUpNum", 1, trainId);
 						printWriter.write("success");
 					}else{
 						System.out.println("失败啦");

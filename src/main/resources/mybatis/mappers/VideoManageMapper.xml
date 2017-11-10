@@ -37,14 +37,6 @@
 
 
 
-	<select id="getTotalNumber" resultType="int">
-		select count(*) from vid_manage
-		<where>
-			<if test="videoCategory!=null and videoCategory!=6">
-				video_category=#{videoCategory}
-			</if>
-		</where>
-	</select>
 
 	<resultMap id="videoRM" type="VidManage" autoMapping="true">
 		<id property="viId" column="vi_id"/>

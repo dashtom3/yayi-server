@@ -46,23 +46,23 @@ public class CommentController {
 
 
     //显示评论
-    @RequestMapping("queryCom")
+    /*@RequestMapping("queryCom")
     @ResponseBody
     public DataWrapper<List<Comment>> queryCom(
             @RequestParam(value="type",required = true) String type,
             @RequestParam(value="beCommentedId",required = true) Integer beCommentedId
     ){
         return commentService.queryCom(type,beCommentedId);
-    }
+    }*/
 
     //显示子评论
-    @RequestMapping("querySubCom")
+   /* @RequestMapping("querySubCom")
     @ResponseBody
     public DataWrapper<List<SubComment>> querySubCom(
             @RequestParam(value="preCommentId",required = true) Long preCommentId
     ){
           return commentService.querySubCom(preCommentId);
-    }
+    }*/
 
 
 

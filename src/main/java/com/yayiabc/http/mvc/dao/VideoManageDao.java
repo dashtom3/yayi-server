@@ -18,9 +18,7 @@ public interface VideoManageDao {
 	
 			int  deleteVid(@Param("viId")Integer viId);
 
-	void deleteVedioComment(Integer viId);
 
-	int getTotalNumber(@Param("videoCategory")Integer videoCategory);
 
 	List<VidManage> showVid(@Param("rule")Integer rule,@Param("videoCategory") Integer videoCategory);
 }

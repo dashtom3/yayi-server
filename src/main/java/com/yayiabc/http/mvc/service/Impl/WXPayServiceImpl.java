@@ -123,7 +123,7 @@ public class WXPayServiceImpl implements WXPayService{
                             System.out.println("金额相等");
                             PayAfterOrderUtil payAfterOrderUtil = BeanUtil.getBean("PayAfterOrderUtil");
                             System.out.println("payAfterOrderUtil:"+payAfterOrderUtil);
-                            Boolean flag = payAfterOrderUtil.universal(orderId, type+"");//1网页扫码/微信 2.APP
+                            Boolean flag = payAfterOrderUtil.universal(orderId, type+"");//1网页扫码/微信公众号 2.APP
                             System.out.println("flag"+flag);
                             if (flag) {
                                 //这里是支付成功
@@ -134,7 +134,7 @@ public class WXPayServiceImpl implements WXPayService{
                         }
                     }
                 } else {
-                    type++;//支付类型自增,方便下面进行传参
+                    type-=2;//支付类型自增,方便下面进行传参
                     //判断返回结果中的金额是否和数据库中查出来的订单金额一致
                     String chargeId = (String) packageParam.get("out_trade_no");
                     Integer chargeState = wXPayDao.getChargeStateByChargeId(chargeId);
@@ -212,9 +212,9 @@ public class WXPayServiceImpl implements WXPayService{
 
     //通过枚举
     public int getReferer(WXPayEnum wxPayEnum){
-        int number=1;
+        int number=4;
         if(wxPayEnum.equals(WXPayEnum.ORDER_APP)||wxPayEnum.equals(WXPayEnum.QB_APP)){
-            number=2;
+            number=5;
         }
         return number;
     }

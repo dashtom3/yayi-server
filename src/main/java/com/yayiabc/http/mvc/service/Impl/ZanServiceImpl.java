@@ -20,27 +20,29 @@ public class ZanServiceImpl implements ZanService{
     @Autowired
     private UtilsDao utilsDao;
 
+
+
     @Override
     public DataWrapper<Void> upvote(String token, Integer type, Integer typeId,Integer parentId) {
-        DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
+        DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
         //获取用户信息
-        User user=utilsDao.getUserByToken(token);
-        String userId=user.getUserId();
+        User user = utilsDao.getUserByToken(token);
+        String userId = user.getUserId();
         //获取redis中保存对用的点赞列表
         //1.判断是否已经被点赞
-        boolean flag=redisService.SETS.sismember("点赞用户列表"+type+typeId,userId);
+        boolean flag = redisService.SETS.sismember("点赞用户列表" + type + typeId, userId);
         //判断父id是否为空
-        if(parentId==null){
-            parentId=0;
+        if (parentId == null) {
+            parentId = 0;
         }
         //2.如果已经点赞,取消点赞
-        if(flag){
-            redisService.SETS.srem("点赞用户列表"+type+typeId,userId);
-            redisService.SORTSET.zincrby("点赞数+时间数"+type+parentId,-1,typeId+"");
+        if (flag) {
+            redisService.SETS.srem("点赞用户列表" + type + typeId, userId);
+            redisService.SORTSET.zincrby("点赞数" + type + parentId, -1, typeId + "");
+        } else{//3.如果未点赞,则点赞
+            redisService.SETS.sadd("点赞用户列表"+type+typeId,userId);
+            redisService.SORTSET.zincrby("点赞数"+type+parentId,1,typeId+"");
         }
-        //3.如果未点赞，则点赞
-        redisService.SETS.sadd("点赞用户列表"+type+typeId,userId);
-        redisService.SORTSET.zincrby("点赞数+时间数"+type+parentId,1,typeId+"");
         return dataWrapper;
     }
 

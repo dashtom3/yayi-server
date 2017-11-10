@@ -48,43 +48,32 @@ public class CommentServiceImpl implements CommentService {
         JSONObject jsonObject = JSONObject.fromObject(comment);
         String json = jsonObject.toString();
         redisService.LISTS.rpush(key, json);
-        //将点赞数和时间数放进一个ZSET中
-        double score= ScoreUtil.getScore(commentId);
-        redisService.SORTSET.zadd("点赞数+时间数"+type+beCommentedId,score,commentId+"");
         return dataWrapper;
     }
 
     @Override
-    public DataWrapper<List<Comment>> queryCom(String type, Integer beCommentedId) {
-        DataWrapper<List<Comment>> dataWrapper = new DataWrapper<List<Comment>>();
+    public List<Comment> queryCom(String type, Integer beCommentedId,Integer currentPage,Integer numberPerPage) {
+        Set<String> idSet=redisService.SORTSET.zrevrange("点赞数"+type+beCommentedId,(currentPage-1)*numberPerPage,currentPage*numberPerPage);
         List<Comment> commentModelList = new ArrayList<Comment>();
         String key = type + "评论" + beCommentedId;
         List<String> jsonList = redisService.LISTS.lrange(key, 0, -1);
         System.out.println(jsonList);
-        for (String json : jsonList
-                ) {
-            JSONObject jsonObject = JSONObject.fromObject(json);
-            Comment commentModel = (Comment) JSONObject.toBean(jsonObject, Comment.class);
-            commentModelList.add(commentModel);
-        }
-        System.out.println(commentModelList);
-        Set<String> idSet=redisService.SORTSET.zrevrange("点赞数+时间数"+type+beCommentedId,0,-1);
-        System.out.println(idSet);
         List<Comment> comments = new ArrayList<Comment>();
         for (String id : idSet
                 ) {
-            for (Comment comment : commentModelList
+            for (String json : jsonList
                     ) {
-                if (String.valueOf(comment.getCommentId()).equals(id)) {
-                    int zan=(int)redisService.SORTSET.zcard("点赞数+时间数"+type+beCommentedId);
-                    comment.setZan(zan);
-                    comments.add(comment);
+                JSONObject jsonObject = JSONObject.fromObject(json);
+                Comment commentModel = (Comment) JSONObject.toBean(jsonObject, Comment.class);
+                if(String.valueOf(commentModel.getCommentId()).equals(id)){
+                    int zan=(int)redisService.SORTSET.zcard("点赞数"+type+beCommentedId);
+                    commentModel.setZan(zan);
+                    comments.add(commentModel);
                 }
             }
         }
         System.out.println(comments);
-        dataWrapper.setData(comments);
-        return dataWrapper;
+        return comments;
     }
 
     @Override
@@ -110,8 +99,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public DataWrapper<List<SubComment>> querySubCom(Long preCommentId) {
-        DataWrapper<List<SubComment>> dataWrapper = new DataWrapper<List<SubComment>>();
+    public List<SubComment> querySubCom(Long preCommentId) {
         String key = "plsub" + preCommentId;
         List<String> jsonList = redisService.LISTS.lrange(key, 0, -1);
         List<SubComment> subCommentList = new ArrayList<SubComment>();
@@ -121,8 +109,7 @@ public class CommentServiceImpl implements CommentService {
             SubComment subComment = (SubComment) JSONObject.toBean(jsonObject, SubComment.class);
             subCommentList.add(subComment);
         }
-        dataWrapper.setData(subCommentList);
-        return dataWrapper;
+        return subCommentList;
     }
 
 

@@ -46,6 +46,7 @@ public class VideoManageServiceImpl implements VideoManageService {
 		}else{//最多播放
 			viIdSet=redisService.SORTSET.zrevrange("视频播放量",page.getCurrentNumber(),currentPage*numberPerPage);
 		}
+		System.out.println(viIdSet);
 		List<VidManage> vidManages=new ArrayList<VidManage>();
 		Integer id;
 		for (String viId:viIdSet
@@ -101,7 +102,10 @@ public class VideoManageServiceImpl implements VideoManageService {
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		int state=videoManageDao.deleteVid(viId);
-		videoManageDao.deleteVedioComment(viId);
+		//TODO 删除该视频下的评论
+
+		redisService.SORTSET.zrem("视频播放量",viId+"");
+		redisService.SORTSET.zrem("视频评论数",viId+"");
 		if(state>0){
 			dataWrapper.setMsg("操作成功");
 		}else{

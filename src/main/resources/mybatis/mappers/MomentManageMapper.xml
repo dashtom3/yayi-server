@@ -27,12 +27,29 @@
 
 	<resultMap id="moment" type="Moment" autoMapping="true">
 		<id property="momentId" column="moment_id"/>
-
+		<result property="userId" column="user_id"/>
+		<result property="userName" column="true_name"/>
+		<result property="userPic" column="user_pic"/>
 	</resultMap>
 
 
 	<select id="queryList" resultMap="moment">
-		SELECT * from moment order by moment_time desc limit #{currentNumber},#{numberPerPage}
+		select a.moment_id,b.user_id,b.true_name,b.user_pic,a.moment_content,a.moment_picture,a.moment_content_id,a.moment_type,a.moment_time FROM
+		moment a
+		join user b on a.user_id=b.user_id
+		limit #{currentNumber},#{numberPerPage}
+	</select>
+
+	<select id="getMomentTitleByVedio" resultType="java.util.Map">
+		select video_name as contentTitle,vedio_pic AS contentPic from vid_manage where vi_id=#{momentContentId}
+	</select>
+	
+	<select id="getMomentTitleByPost" resultType="java.util.Map">
+		select headline as contentTitle,cover as contentPic from cottoms_post where post_id=#{momentContentId}
+	</select>
+	
+	<select id="getMomentTitleByTrain" resultType="java.util.Map">
+		select train_name as contentTitle,train_pic AS contentPic from train where train_id=#{momentContentId}
 	</select>
 
 

@@ -40,11 +40,23 @@ public class VideoManageServiceImpl implements VideoManageService {
 //		int totalNumber=videoManageDao.getTotalNumber(videoCategory);
 		List<VidManage> vidManageList=videoManageDao.showVid(rule,videoCategory);
 		int totalNumber=vidManageList.size();
+		System.out.println(totalNumber);
 		Set<String> viIdSet=null;
+		//添加id进zset中
+		for (VidManage vidManage:vidManageList
+			 ) {
+			redisService.SORTSET.zincrby("视频评论数",0,vidManage.getViId()+"");
+			redisService.SORTSET.zincrby("视频播放量",0,vidManage.getViId()+"");
+			if(redisService.SORTSET.zscore("视频时间倒叙",vidManage.getViId()+"")==0){
+				redisService.SORTSET.zincrby("视频时间倒叙",vidManage.getVedioTime().getTime(),vidManage.getViId()+"");
+			}
+		}
 		if(rule==2){//最多评论
 			viIdSet=redisService.SORTSET.zrevrange("视频评论数",page.getCurrentNumber(),currentPage*numberPerPage);
-		}else{//最多播放
+		}else if(rule==1){//最多播放
 			viIdSet=redisService.SORTSET.zrevrange("视频播放量",page.getCurrentNumber(),currentPage*numberPerPage);
+		}else{//时间倒叙
+			viIdSet=redisService.SORTSET.zrevrange("视频时间倒叙",page.getCurrentNumber(),currentPage*numberPerPage);
 		}
 		System.out.println(viIdSet);
 		List<VidManage> vidManages=new ArrayList<VidManage>();
@@ -55,6 +67,9 @@ public class VideoManageServiceImpl implements VideoManageService {
 			for (VidManage vidManage:vidManageList
 				 ) {
 				if(vidManage.getViId().equals(id)){
+					//填充评论数
+					int commentNum=(int)redisService.SORTSET.zscore("视频评论数",viId);
+					vidManage.setVedioCommentNumber(commentNum);
 					vidManages.add(vidManage);
 					break;
 				}
@@ -90,10 +105,6 @@ public class VideoManageServiceImpl implements VideoManageService {
 		vidManage.setVedioPic(vedioPic);
 		videoManageDao.insertVid(vidManage);
 		Integer viId=vidManage.getViId();
-		//视频播放量+时间混合排序
-		redisService.SORTSET.zadd("视频播放量",0,viId+"");
-		//视频评论数+时间混合排序
-		redisService.SORTSET.zadd("视频评论数",0,viId+"");
 		return dataWrapper;
 	}
 

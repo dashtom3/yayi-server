@@ -23,32 +23,51 @@ public class ZanServiceImpl implements ZanService{
 
 
     @Override
-    public DataWrapper<Void> upvote(String token, Integer type, Integer typeId,Integer parentId) {
+    public DataWrapper<Void> upvote(String token, String type, Integer typeId,Integer parentId,Integer presentId) {
         DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
         //获取用户信息
         User user = utilsDao.getUserByToken(token);
         String userId = user.getUserId();
-        //获取redis中保存对用的点赞列表
-        //1.判断是否已经被点赞
-        boolean flag = redisService.SETS.sismember("点赞用户列表" + type + typeId, userId);
-        //判断父id是否为空
-        if (parentId == null) {
-            parentId = 0;
+        //剔除空，变成空串
+        String parentIdStr="";
+        String presentIdStr="";
+        if(parentId!=null){
+            parentIdStr=":"+presentId;
+            if(presentId!=null){
+                presentIdStr=":"+presentId;
+            }
         }
+        String key=type+":"+typeId+parentIdStr+presentIdStr;
+        String keyTwo=key.substring(0,key.lastIndexOf(":"));
+        String member=key.substring(key.lastIndexOf(":")+1);
+        //1.判断是否已经被点赞
+        boolean flag = redisService.SETS.sismember("点赞用户列表"+key, userId);
         //2.如果已经点赞,取消点赞
         if (flag) {
-            redisService.SETS.srem("点赞用户列表" + type + typeId, userId);
-            redisService.SORTSET.zincrby("点赞数" + type + parentId, -1, typeId + "");
+            redisService.SETS.srem("点赞用户列表"+key, userId);
+            redisService.SORTSET.zincrby("点赞计数列表"+keyTwo, -1, member);
         } else{//3.如果未点赞,则点赞
-            redisService.SETS.sadd("点赞用户列表"+type+typeId,userId);
-            redisService.SORTSET.zincrby("点赞数"+type+parentId,1,typeId+"");
+            redisService.SETS.sadd("点赞用户列表"+key,userId);
+            redisService.SORTSET.zincrby("点赞计数列表"+keyTwo,1,member);
         }
         return dataWrapper;
     }
 
     @Override
-    public long getZanNumber(Integer type,Integer typeId){
-        return redisService.SORTSET.zcard("点赞数"+type+typeId);
+    public int getZanNumber(String type,Integer typeId,Integer parentId,Integer presentId){
+        //剔除空，变成空串
+        String parentIdStr="";
+        String presentIdStr="";
+        if(parentId!=null){
+            parentIdStr=":"+presentId;
+            if(presentId!=null){
+                presentIdStr=":"+presentId;
+            }
+        }
+        String key=type+":"+typeId+parentIdStr+presentIdStr;
+        String keyTwo=key.substring(0,key.lastIndexOf(":"));
+        String member=key.substring(key.lastIndexOf(":")+1);
+        return (int)redisService.SORTSET.zscore("点赞计数列表"+keyTwo,member);
     }
 
 

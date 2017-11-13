@@ -18,9 +18,8 @@ public class Moment {
     private Integer momentType;//发表到朋友圈的内容的类型标识 (1.纯文字；2.文字+图；3.分享视频、4.病例、5.培训。5种情况)
     @DateTimeFormat(pattern = "yyyy-MM-dd HH:mm:ss")
     private Date momentTime;//发表到朋友圈的时间
-    private Integer commentNumber;//评论数
     private Integer zanNumber;//点赞数
-    private List<Comment> commentList;
+    private List<SubComment> subCommentList;//评论列表
 
     public Integer getMomentId() {
         return momentId;
@@ -102,14 +101,6 @@ public class Moment {
         this.momentTime = momentTime;
     }
 
-    public Integer getCommentNumber() {
-        return commentNumber;
-    }
-
-    public void setCommentNumber(Integer commentNumber) {
-        this.commentNumber = commentNumber;
-    }
-
     public Integer getZanNumber() {
         return zanNumber;
     }
@@ -118,18 +109,18 @@ public class Moment {
         this.zanNumber = zanNumber;
     }
 
-    public List<Comment> getCommentList() {
-        return commentList;
+    public List<SubComment> getSubCommentList() {
+        return subCommentList;
     }
 
-    public void setCommentList(List<Comment> commentList) {
-        this.commentList = commentList;
+    public void setSubCommentList(List<SubComment> subCommentList) {
+        this.subCommentList = subCommentList;
     }
 
     public Moment() {
     }
 
-    public Moment(Integer momentId, String userId, String userName, String userPic, String momentContent, String momentPicture, Integer momentContentId, String momentContentTitle, Integer momentType, Date momentTime, Integer commentNumber, Integer zanNumber, List<Comment> commentList) {
+    public Moment(Integer momentId, String userId, String userName, String userPic, String momentContent, String momentPicture, Integer momentContentId, String momentContentTitle, Integer momentType, Date momentTime, Integer zanNumber, List<SubComment> subCommentList) {
         this.momentId = momentId;
         this.userId = userId;
         this.userName = userName;
@@ -140,9 +131,8 @@ public class Moment {
         this.momentContentTitle = momentContentTitle;
         this.momentType = momentType;
         this.momentTime = momentTime;
-        this.commentNumber = commentNumber;
         this.zanNumber = zanNumber;
-        this.commentList = commentList;
+        this.subCommentList = subCommentList;
     }
 
     @Override
@@ -158,9 +148,8 @@ public class Moment {
                 ", momentContentTitle='" + momentContentTitle + '\'' +
                 ", momentType=" + momentType +
                 ", momentTime=" + momentTime +
-                ", commentNumber=" + commentNumber +
                 ", zanNumber=" + zanNumber +
-                ", commentList=" + commentList +
+                ", subCommentList=" + subCommentList +
                 '}';
     }
 }

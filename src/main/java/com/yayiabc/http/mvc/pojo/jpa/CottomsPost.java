@@ -18,14 +18,13 @@ public class CottomsPost {
 	@DateTimeFormat(pattern="yy-MM-dd HH:mm:ss")
 	private Date postTime;
 	private String writer;
-	private int readNumber;
+	private String readNumber;
 	private int commentNumber;
 	private int postFavour;
 	private List<Comments> commentsList;
 	private String cover;
 	private String printUrl;
 	private Date replyTime;
-	private String token;
 	private Integer postStater;
 	private Integer chargeNumber;
 	private User user;
@@ -78,10 +77,10 @@ public class CottomsPost {
 	public void setWriter(String writer) {
 		this.writer = writer;
 	}
-	public int getReadNumber() {
+	public String getReadNumber() {
 		return readNumber;
 	}
-	public void setReadNumber(int readNumber) {
+	public void setReadNumber(String readNumber) {
 		this.readNumber = readNumber;
 	}
 	public int getCommentNumber() {
@@ -120,12 +119,6 @@ public class CottomsPost {
 	public void setReplyTime(Date replyTime) {
 		this.replyTime = replyTime;
 	}
-	public String getToken() {
-		return token;
-	}
-	public void setToken(String token) {
-		this.token = token;
-	}
 	public Integer getPostStater() {
 		return postStater;
 	}
@@ -150,11 +143,11 @@ public class CottomsPost {
 				+ classify + ", freeContent=" + freeContent + ", chargeContent=" + chargeContent + ", postTime="
 				+ postTime + ", writer=" + writer + ", readNumber=" + readNumber + ", commentNumber=" + commentNumber
 				+ ", postFavour=" + postFavour + ", commentsList=" + commentsList + ", cover=" + cover + ", printUrl="
-				+ printUrl + ", replyTime=" + replyTime + ", token=" + token + ", postStater=" + postStater
+				+ printUrl + ", replyTime=" + replyTime + ", token=" + ", postStater=" + postStater
 				+ ", chargeNumber=" + chargeNumber + ", user=" + user + "]";
 	}
 	public CottomsPost(String userId, int postId, String headline, String classify, String freeContent,
-			String chargeContent, Date postTime, String writer, int readNumber, int commentNumber, int postFavour,
+			String chargeContent, Date postTime, String writer, String readNumber, int commentNumber, int postFavour,
 			List<Comments> commentsList, String cover, String printUrl, Date replyTime, String token,
 			Integer postStater, Integer chargeNumber, User user) {
 		super();
@@ -173,7 +166,6 @@ public class CottomsPost {
 		this.cover = cover;
 		this.printUrl = printUrl;
 		this.replyTime = replyTime;
-		this.token = token;
 		this.postStater = postStater;
 		this.chargeNumber = chargeNumber;
 		this.user = user;

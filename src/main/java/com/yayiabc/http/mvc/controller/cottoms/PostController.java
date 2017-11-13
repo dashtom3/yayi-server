@@ -5,9 +5,7 @@ import java.util.Map;
 
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.ibatis.annotations.Param;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Required;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -18,15 +16,20 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.CottomsPost;
 import com.yayiabc.http.mvc.service.CottomsPostService;
+import com.yayiabc.http.mvc.service.ReadNumberServer;
 /**
  * 严强 2017/10/23 12:13
- * 发病例
+ * 病例
  */
 @Controller
 @RequestMapping("api/cottoms")
 public class PostController {
 	@Autowired
 	private CottomsPostService cottomsPostService;
+	
+	@Autowired
+	private ReadNumberServer readNumberServer;
+	
 	//发布病例
 	@RequestMapping("add")
 	@ResponseBody
@@ -36,28 +39,19 @@ public class PostController {
 		return cottomsPostService.addPost(cottomsPost,token);
 	}
 	
-	//显示病例
+	//病例列表
 	@RequestMapping("queryPost")
 	@ResponseBody
 	public DataWrapper<List<CottomsPost>> queryPost(
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
 			@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
 			@RequestParam(value="classify",required=false) String classify,//分类
-			@RequestParam(value="order",required=false,defaultValue="0") Integer order
+			@RequestParam(value="order",required=false,defaultValue="0") Integer order,//0:按时间排序1:按阅读数排序3:暗点赞数排序
+			@RequestParam(value="postStater",required=true) Integer postStater//病例状态1：发布2：草稿3：删除
 			){
-		return cottomsPostService.queryPost(currentPage,numberPerPage,classify,order);
+		return cottomsPostService.queryPost(currentPage,numberPerPage,classify,order,postStater);
 	}
-	//显示草稿
-	@RequestMapping("queryDraft")
-	@ResponseBody
-	public DataWrapper<List<Map<String,Object>>> queryDraft(
-			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
-			@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-			@RequestParam(value="classify",required=false) String classify,//分类
-			@RequestParam(value="order",required=false,defaultValue="0") Integer order
-			){
-		return cottomsPostService.queryDraft(currentPage,numberPerPage,classify,order);
-	}
+	
 	//查看病例详情
 	@RequestMapping("cottomsDetail")
 	@ResponseBody
@@ -65,7 +59,6 @@ public class PostController {
 			@RequestHeader(value="token",required=false) String token,
 			@ModelAttribute(value="CottomsPost")CottomsPost cottomsPost
 			){
-		cottomsPostService.postReader(cottomsPost);
 		return cottomsPostService.cottomsDetail(cottomsPost,token);
 		
 	}
@@ -91,6 +84,7 @@ public class PostController {
 			){
 		return cottomsPostService.playChargePost(token,chargeNumber,postId);
 	}
+	
 //	@RequestMapping("comment")//评论
 //	@ResponseBody
 //	public void comment(
@@ -120,11 +114,11 @@ public class PostController {
 //	public void commentsLike(CottomsComment cottomsComment){
 //		cottomsPostService.commentsLike(cottomsComment);
 //	}
-	@RequestMapping("postReader")//病例阅读数
-	@ResponseBody
-	public void postReader(CottomsPost cottomsPost){
-		cottomsPostService.postReader(cottomsPost);
-	}
+//	@RequestMapping("postReader")//病例阅读数
+//	@ResponseBody
+//	public void postReader(CottomsPost cottomsPost){
+//		cottomsPostService.postReader(cottomsPost);
+//	}
 	//查询
 	@RequestMapping("see")
 	@ResponseBody

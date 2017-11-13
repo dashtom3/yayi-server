@@ -3,6 +3,8 @@ package com.yayiabc.http.mvc.service;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 
+import java.util.List;
+
 public interface UserService {
 
 	DataWrapper<Void> getVerifyCode(String phone,Integer type);
@@ -20,4 +22,6 @@ public interface UserService {
 	DataWrapper<Void> bindSale(String token, String salePhone);
 
 	DataWrapper<Void> deleteInGrainUser(Integer userId);
+
+	List<String> getAllPhoneList();
 }

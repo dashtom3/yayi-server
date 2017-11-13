@@ -11,12 +11,11 @@ public interface CommentService {
 
 
 
-    DataWrapper<Void> addCom(String token, String type,Integer beCommentedId, Comment comment);
+    DataWrapper<Void> addCom(String token, String type,Integer beCommentedId, Comment comment,Integer parentId);
 
-    List<Comment> queryCom(String type,Integer beCommentedId,Integer currentPage,Integer numberPerPage);
+    List<Comment> queryCom(String type, Integer beCommentedId,Integer currentPage,Integer numberPerPage);
 
-    DataWrapper<Void> addSubCom(String token, Long preCommentId, SubComment subComment,String type);
 
-    List<SubComment> querySubCom(Long preCommentId);
+    List<SubComment> querySubCom(String type, Integer beCommentedId,long preCommentId,Integer currentPage,Integer numberPerPage);
 
 }

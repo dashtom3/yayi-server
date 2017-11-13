@@ -15,9 +15,9 @@ public class VidManage implements Serializable{
 	private Integer videoCategory;
 	private Integer vedioCommentNumber;
 	private String vedioPic;
+	private Integer starNumber;//视频收藏数
 	@DateTimeFormat(pattern = "yy-MM-dd HH:mm:ss")
 	private Date vedioTime;
-	private List<VedioComment> vedioCommentList;
 
 	public Integer getViId() {
 		return viId;
@@ -75,7 +75,14 @@ public class VidManage implements Serializable{
 		this.vedioPic = vedioPic;
 	}
 
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+	public Integer getStarNumber() {
+		return starNumber;
+	}
+
+	public void setStarNumber(Integer starNumber) {
+		this.starNumber = starNumber;
+	}
+
 	public Date getVedioTime() {
 		return vedioTime;
 	}
@@ -84,18 +91,10 @@ public class VidManage implements Serializable{
 		this.vedioTime = vedioTime;
 	}
 
-	public List<VedioComment> getVedioCommentList() {
-		return vedioCommentList;
-	}
-
-	public void setVedioCommentList(List<VedioComment> vedioCommentList) {
-		this.vedioCommentList = vedioCommentList;
-	}
-
 	public VidManage() {
 	}
 
-	public VidManage(Integer viId, String vidName, String videoType, String vidRoute, Integer videoCategory, Integer vedioCommentNumber, String vedioPic, Date vedioTime, List<VedioComment> vedioCommentList) {
+	public VidManage(Integer viId, String vidName, String videoType, String vidRoute, Integer videoCategory, Integer vedioCommentNumber, String vedioPic, Integer starNumber, Date vedioTime) {
 		this.viId = viId;
 		this.vidName = vidName;
 		this.videoType = videoType;
@@ -103,8 +102,8 @@ public class VidManage implements Serializable{
 		this.videoCategory = videoCategory;
 		this.vedioCommentNumber = vedioCommentNumber;
 		this.vedioPic = vedioPic;
+		this.starNumber = starNumber;
 		this.vedioTime = vedioTime;
-		this.vedioCommentList = vedioCommentList;
 	}
 
 	@Override
@@ -117,8 +116,8 @@ public class VidManage implements Serializable{
 				", videoCategory=" + videoCategory +
 				", vedioCommentNumber=" + vedioCommentNumber +
 				", vedioPic='" + vedioPic + '\'' +
+				", starNumber=" + starNumber +
 				", vedioTime=" + vedioTime +
-				", vedioCommentList=" + vedioCommentList +
 				'}';
 	}
 }

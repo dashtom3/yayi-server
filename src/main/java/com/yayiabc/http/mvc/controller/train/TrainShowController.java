@@ -59,7 +59,7 @@ public class TrainShowController {
      */
     @RequestMapping("trainDetails")
     @ResponseBody
-    public DataWrapper<TrainDetail> trainDetails(
+    public DataWrapper<Train> trainDetails(
     		@RequestParam(value="trainId",required=true)String trainId
     		){
     	return trainShowService.trainDetails(trainId);

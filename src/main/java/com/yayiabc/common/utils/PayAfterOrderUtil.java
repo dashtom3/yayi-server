@@ -91,8 +91,13 @@ public class PayAfterOrderUtil {
 			q.setMillisecond(System.nanoTime());
 			userMyQbDao.updateUserQb(o.getGiveQb()+"", o.getUserId(),"qb_balance");
 			//查询乾币余额
-			Integer userQbNum=userMyQbDao.getUserQbNum(o.getUserId());
-
+			User user=userMyQbDao.getUserQbNum(o.getUserId());
+			int qbbalance=user.getQbBalance();
+			int aqb=user.getaQb();
+			int bqb=user.getbQb();
+			int cqb=user.getcQb();
+			int userQbNum=qbbalance+aqb+bqb+cqb;
+			q.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.0折\""+bqb+"个；"+"\"9.5折\""+cqb+"个；");
 			q.setRemark("下单获得"+o.getGiveQb()+"个乾币。（乾币余额："+userQbNum+"）订单编号："+orderId);
 			userMyQbDao.add(q);
 		}
@@ -182,7 +187,12 @@ public class PayAfterOrderUtil {
 		//更改用户乾币
 		int i=userMyQbService.updateDataToUser(listData,userId);
 		//查询乾币余额
-		Integer userQbNum=userMyQbDao.getUserQbNum(userId);
+		User user=userMyQbDao.getUserQbNum(userId);
+		int qbbalance=user.getQbBalance();
+		int aqb=user.getaQb();
+		int bqb=user.getbQb();
+		int cqb=user.getcQb();
+		int userQbNum=qbbalance+aqb+bqb+cqb;
 
 		int iii=userMyQbService.addMessageQbQ(qr.getQbRout(),userId,qr.getRemark().replace("userQbNum",userQbNum+""),qr.getMillisecond());
 		if(i+iii>=2){
@@ -231,9 +241,6 @@ public class PayAfterOrderUtil {
 			if(charge!=null){
 				if(charge.getState()==1){
 					aliPayDao.updateState(out_trade_no);
-					System.out.println(1);
-					//String token=utilsDao.getToken(charge.getToken());
-					System.out.println(2);
 					QbRecord q=new QbRecord();
 					q.setUserId(charge.getToken());
 					q.setChargeId(out_trade_no);
@@ -249,9 +256,15 @@ public class PayAfterOrderUtil {
 					userMyQbDao.updateUserQb(String.valueOf(charge.getQbNum()), charge.getToken(), charge.getQbType());  //1
 
 					//----为了获取钱币余额。。。。。
-					Integer userQbNum=userMyQbDao.getUserQbNum(charge.getToken());
+					User user=userMyQbDao.getUserQbNum(charge.getToken());
+					int qbbalance=user.getQbBalance();
+					int aqb=user.getaQb();
+					int bqb=user.getbQb();
+					int cqb=user.getcQb();
+					int userQbNum=qbbalance+aqb+bqb+cqb;
 					q.setRemark(zh(charge.getQbType())+"乾币充值"+charge.getQbNum()+"个。（乾币余额："+userQbNum+"个）");
 					//支付宝乾币充值
+					q.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.0折\""+bqb+"个；"+"\"9.5折\""+cqb+"个；");
 					q.setReferer(1);
 					userMyQbDao.add(q);
 					//userMyQbService.add(q, token);

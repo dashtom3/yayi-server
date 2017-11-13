@@ -14,7 +14,7 @@ public interface TrainShowService {
 
 	DataWrapper<Void> releaseTrain(Train  train, TrainDetail  trainDetails);
 
-	 DataWrapper<TrainDetail> trainDetails(String trainId);
+	 DataWrapper<Train> trainDetails(String trainId);
 
 	DataWrapper<Object> confirmRegistration(String token,TrainOrdera trainOrdera);
 	

@@ -36,6 +36,7 @@ import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.jpa.Receiver;
+import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.qbRecordModel;
 import com.yayiabc.http.mvc.service.UserQbListService;
 
@@ -97,11 +98,18 @@ public class UserQbListServiceImpl implements UserQbListService {
 		}
 		return dataWrapper;
 	}
+	
 	private boolean addQbRecord(String userId,Integer qbBalance,String phone,String qbType,String sign,int  MI){
 		QbRecord qbRecord = new QbRecord();
 		qbRecord.setUserId(userId);
 		//查询客户现在乾币余额
-		Integer userQbNum=userMyQbDao.getUserQbNum(userId);
+		User user=userMyQbDao.getUserQbNum(userId);
+		int qbbalance=user.getQbBalance();
+		int aqb=user.getaQb();
+		int bqb=user.getbQb();
+		int cqb=user.getcQb();
+		int userQbNum=qbbalance+aqb+bqb+cqb;
+		//q.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.0折\""+bqb+"个；"+"\"9.5折\""+cqb+"个；");
 		if(sign.equals("1")){
 			//增加 钱币减少记录
 			qbRecord.setQbRout(zh(qbType)+"："+qbBalance+"个");
@@ -112,7 +120,7 @@ public class UserQbListServiceImpl implements UserQbListService {
 			qbRecord.setQbRget(zh(qbType)+"："+qbBalance+"个");
 			qbRecord.setRemark("管理员修改乾币余额，新增"+qbBalance+"个乾币。（乾币余额："+userQbNum+"个。）");
 		}
-		//qbRecord.setQbBalances(qbBalance);
+		qbRecord.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.0折\""+bqb+"个；"+"\"9.5折\""+cqb+"个；");
 		qbRecord.setMillisecond(MI);
 		if(userMyQbDao.add(qbRecord)>0){
 			return true;

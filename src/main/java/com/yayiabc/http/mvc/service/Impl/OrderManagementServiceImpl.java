@@ -44,6 +44,7 @@ import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.jpa.Receiver;
+import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.OrderManagement;
 import com.yayiabc.http.mvc.service.OrderManagementService;
 
@@ -387,7 +388,13 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		q.setMillisecond(System.nanoTime());
 		userMyQbDao.updateUserQb(-dedQbNum+"",order.getUserId(),"qb_balance");
 		//查询乾币余额
-		Integer userQbNums=userMyQbDao.getUserQbNum(order.getUserId());
+		User user=userMyQbDao.getUserQbNum(order.getUserId());
+		int qbbalance=user.getQbBalance();
+		int aqb=user.getaQb();
+		int bqb=user.getbQb();
+		int cqb=user.getcQb();
+		int userQbNums=qbbalance+aqb+bqb+cqb;
+		q.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.0折\""+bqb+"个；"+"\"9.5折\""+cqb+"个；");
 		q.setRemark("订单有退款，下单时赠送的乾币需扣除："+dedQbNum+"个乾币。（乾币余额："+userQbNums+"）订单编号:"+order.getOrderId());
 		userMyQbDao.add(q);
 	}
@@ -429,7 +436,12 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			returnQbNum+=list.get(q);
 		}
 		//查询乾币余额
-		Integer userQbNums=userMyQbDao.getUserQbNum(order.getUserId());
+		User user=userMyQbDao.getUserQbNum(order.getUserId());
+		int qbbalance=user.getQbBalance();
+		int aqb=user.getaQb();
+		int bqb=user.getbQb();
+		int cqb=user.getcQb();
+		int userQbNums=qbbalance+aqb+bqb+cqb;
 		s=s+/*s+sb.toString()+*/"（乾币余额："+userQbNums+"）。订单编号:"+order.getOrderId();
 
 		userMyQbDao.addMessageQbQRget(sb.toString(), order.getUserId(), s, System.nanoTime());

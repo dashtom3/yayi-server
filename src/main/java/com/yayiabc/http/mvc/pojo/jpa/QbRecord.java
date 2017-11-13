@@ -26,8 +26,15 @@ public class QbRecord extends BasePojo {
 	private User user;
 	private String qbType;
 	
+	private String qbBalances;
 	
 	
+	public String getQbBalances() {
+		return qbBalances;
+	}
+	public void setQbBalances(String qbBalances) {
+		this.qbBalances = qbBalances;
+	}
 	public Integer getQbRid() {
 		return qbRid;
 	}

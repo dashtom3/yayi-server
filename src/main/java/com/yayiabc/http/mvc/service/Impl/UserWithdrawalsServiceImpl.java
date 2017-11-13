@@ -99,7 +99,12 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 					dataWrapper.setData( userWithdrawalsServiceDao.submit(userWith));
 					//增加钱币记录
 					//用户钱币余额
-					Integer userQbNum=userMyQbDao.getUserQbNum(user.getUserId());
+					int qbbalance=user.getQbBalance();
+					int aqb=user.getaQb();
+					int bqb=user.getbQb();
+					int cqb=user.getcQb();
+					int userQbNum=qbbalance+aqb+bqb+cqb;
+					//q.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.0折\""+bqb+"个；"+"\"9.5折\""+cqb+"个；");
 					userMyQbService.addMessageQbQ("\"赠\"："+give+"个， \"9.5折\"："+c+"个 ， \"9.0折\"："+b+"个， \"8.0折\"："+a+"个",user.getUserId(),"乾币提现。（乾币余额："+userQbNum+"个）",System.nanoTime()); //新增钱币记录表   
 				}
 			}
@@ -134,7 +139,12 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 				//增加钱币记录
 					
 					//用户钱币余额
-					Integer userQbNum=userMyQbDao.getUserQbNum(userWith.getUserId());
+					User user=userMyQbDao.getUserQbNum(userWith.getUserId());
+					int qbbalance=user.getQbBalance();
+					int aqb=user.getaQb();
+					int bqb=user.getbQb();
+					int cqb=user.getcQb();
+					int userQbNum=qbbalance+aqb+bqb+cqb;
 					userMyQbService.addMessageQbQRget("\"赠\"："+give+"个， \"9.5折\"："+c+"个 ， \"9.0折\"："+b+"个， \"8.0折\"："+a+"个",userWith.getUserId(),"乾币提现审核不通过。（乾币余额："+userQbNum+"个）",System.nanoTime()); //新增钱币记录表   
 				dataWrapper.setMsg("拒绝提现申请，成功");
 				}

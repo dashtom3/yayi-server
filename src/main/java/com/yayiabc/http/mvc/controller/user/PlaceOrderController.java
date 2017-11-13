@@ -61,14 +61,6 @@ public class PlaceOrderController {
 		return placeOrderService.upateAddress(receiverId,sumPrice,itemSum);
 	}
 
-	/*//伪清空 购物车
-	@ResponseBody
-	@RequestMapping("emptyCart")
-	 @AdminLog
-	public DataWrapper<Void> emptyCart(@RequestParam(value="token")String token){
-		return placeOrderService.emptyCart(token);
-	}
-*/
 	//1234
 	@RequestMapping("generaOrder")
 	@ResponseBody
@@ -81,8 +73,6 @@ public class PlaceOrderController {
 			@ModelAttribute Ordera order,
 			@ModelAttribute Invoice  invoice
 			){
-		System.out.println(order.getQbDed()+",");
-		System.out.println(order.getQbDed());
 		JSONArray json = JSONArray.fromObject(orderItem);
 		ArrayList<OrderItem> orderItemList = (ArrayList<OrderItem>)JSONArray.toCollection(json,OrderItem.class);
 		//接入 支付   订单号  商品名称    付款金额    商品描述

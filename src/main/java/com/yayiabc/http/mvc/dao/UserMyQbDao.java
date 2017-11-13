@@ -7,6 +7,7 @@ import org.springframework.stereotype.Repository;
 
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
+import com.yayiabc.http.mvc.pojo.jpa.User;
 
 @Repository
 public interface UserMyQbDao {
@@ -35,5 +36,5 @@ public interface UserMyQbDao {
 			);
 	
    //获取用户钱币余额
-	Integer getUserQbNum(String userId);
+	User getUserQbNum(String userId);
 }

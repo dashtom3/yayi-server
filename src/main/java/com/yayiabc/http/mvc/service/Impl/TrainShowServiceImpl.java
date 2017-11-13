@@ -178,13 +178,13 @@ public class TrainShowServiceImpl implements TrainShowService {
 	 * 培训详情的显示
 	 */
 	@Override
-	public DataWrapper<TrainDetail> trainDetails(String trainId) {
+	public DataWrapper<Train> trainDetails(String trainId) {
 		// TODO Auto-generated method stub
-		DataWrapper<TrainDetail>  dataWrapper=new DataWrapper<TrainDetail>();
+		DataWrapper<Train>  dataWrapper=new DataWrapper<Train>();
 		//获取redisClient实例
 		Jedis jedis =rediService.getJedis();
+		//获取培训详情
 		String trainDetailJSON=jedis.hget("allTrainDetail", trainId+"");
-System.out.println(trainDetailJSON);
 		JSONObject jsonObject=JSONObject.fromObject(trainDetailJSON);
 		TrainDetail trainDetail1=(TrainDetail)JSONObject.toBean(jsonObject, TrainDetail.class);
 		
@@ -196,11 +196,18 @@ System.out.println(trainDetailJSON);
 			}else{
 				trainDetail1.setCollection(dianzanNum);
 			}
-			dataWrapper.setData(trainDetail1);
+			//获取培训的基本信息  将培训详情 放入培训中
+			String trainJSON=jedis.hget("allTrain", trainId+"");
+			JSONObject jsonObject2=JSONObject.fromObject(trainJSON);
+			
+			Train train=(Train)JSONObject.toBean(jsonObject2, Train.class);
+			train.setTrainDetail(trainDetail1);
+			
+			dataWrapper.setData(train);
 			return dataWrapper;
 		}
-		TrainDetail trainDetail=trainShowServiceDao.trainDetails(trainId);
-		dataWrapper.setData(trainDetail);
+		Train train=trainShowServiceDao.trainDetails(trainId);
+		dataWrapper.setData(train);
 		return dataWrapper;
 	}
 	/**

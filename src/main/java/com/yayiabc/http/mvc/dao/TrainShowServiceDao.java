@@ -33,7 +33,7 @@ public interface TrainShowServiceDao {
 			@Param("trainDetail")TrainDetail trainDetail
 			);
 
-	TrainDetail trainDetails(@Param("trainId")String trainId);
+	Train trainDetails(@Param("trainId")String trainId);
 
 	Train queryTrainPrice(String trainId);
 

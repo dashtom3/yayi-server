@@ -11,6 +11,7 @@ import com.yayiabc.http.mvc.dao.UserMyQbDao;
 import com.yayiabc.http.mvc.dao.WXPayDao;
 import com.yayiabc.http.mvc.pojo.jpa.Charge;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
+import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.AliPayService;
 import com.yayiabc.http.mvc.service.UserMyQbService;
 import com.yayiabc.http.mvc.service.WXPayService;
@@ -157,7 +158,13 @@ public class WXPayServiceImpl implements WXPayService{
                             userMyQbDao.updateUserQb(String.valueOf(charge.getQbNum()), charge.getToken(), charge.getQbType());
 //                            qbRecord.setRemark(zh+"乾币充值" + charge.getQbNum()+"个");
                             //----为了获取钱币余额
-                            Integer userQbNum=userMyQbDao.getUserQbNum(charge.getToken());
+                            User user=userMyQbDao.getUserQbNum(userId);
+                    		int qbbalance=user.getQbBalance();
+                    		int aqb=user.getaQb();
+                    		int bqb=user.getbQb();
+                    		int cqb=user.getcQb();
+                    		int userQbNum=qbbalance+aqb+bqb+cqb;
+                    		qbRecord.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.0折\""+bqb+"个；"+"\"9.5折\""+cqb+"个；");
                             qbRecord.setReferer(type);
                             qbRecord.setRemark(zh+"乾币充值"+charge.getQbNum()+"个。（乾币余额："+userQbNum+"个）");
                             userMyQbDao.add(qbRecord);//refer :2.网页扫码/微信公众号 3.APP

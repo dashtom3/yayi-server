@@ -32,9 +32,10 @@
 		<result property="buyerMessage" column="buyer_message" />
 		<result property="qbDes" column="qb_des" />
 		<result property="invoiceHand" column="invoice_hand" />
-	    <!-- 一对多的   订单 到用户   -->
+		<result property="payType" column="pay_type" />
+		<!-- 一对多的 订单 到用户 -->
 		<association property="user" javaType="com.yayiabc.http.mvc.pojo.jpa.User">
-		<result property="phone" column="phone" />
+			<result property="phone" column="phone" />
 		</association>
 		<association property="receiver"
 			javaType="com.yayiabc.http.mvc.pojo.jpa.Receiver">
@@ -61,9 +62,9 @@
 			<result property="itemPropertyNamec" column="item_property_namec" />
 			<result property="itemBrandName" column="item_brand_name" />
 			<result property="itemType" column="item_type" />
-		    <result property="itemName" column="orderit_item" />
+			<result property="itemName" column="orderit_item" />
 			<!-- 商品表 信息表 -->
-			 <association property="itemInfo"
+			<association property="itemInfo"
 				javaType="com.yayiabc.http.mvc.pojo.jpa.ItemInfo">
 				<result property="itemName" column="item_name" />
 			</association>
@@ -72,27 +73,30 @@
 	<select id="orderDetailsShow" parameterType="java.util.Map"
 		resultMap="orderDetailsResultMap">
 		SELECT
-		orde_it.item_name orderit_item,orde.invoice_hand,orde.user_id ouserId ,orde.order_id,DATE_FORMAT(orde.created,
-		'%Y-%m-%d %H:%i:%S') created,orde_it.num,orde_it.price,orde.actual_pay,orde.give_qb,
+		orde_it.item_name orderit_item,orde.invoice_hand,orde.user_id
+		ouserId ,orde.order_id,DATE_FORMAT(orde.created,
+		'%Y-%m-%d %H:%i:%S')
+		created,orde_it.num,orde_it.price,orde.actual_pay,orde.give_qb,
 		orde.pay_type,orde.invoice_hand,orde.is_register,orde.buyer_message,
 		orde_it.item_name,orde_it.pic_path,orde_it.itm_SKU,
 		orde_it.item_property_namea,orde_it.item_brand_name,orde_it.item_type,
 		orde_it.item_property_nameb,orde_it.item_property_namec,orde_it.item_id,orde.post_fee,orde.qb_ded,orde.state,
-		orde.actual_pay,orde.total_fee,orde.qb_des,us.phone
+		orde.actual_pay,orde.total_fee,orde.pay_type,orde.qb_des,us.phone
 		,rece.*
-		FROM<!--  `user` us
-		JOIN -->
+		FROM<!-- `user` 
+			us JOIN -->
 		ordera orde
-		<!-- ON
-		us.user_id=orde.user_id -->
+		<!-- ON us.user_id=orde.user_id -->
 		JOIN
 		receiver rece
 		ON
 		rece.receiver_id=orde.receiver_id
 		JOIN
-		order_item orde_it
+		order_item
+		orde_it
 		ON
-		orde.order_id=orde_it.order_id join `user` us on orde.user_id=us.user_id
+		orde.order_id=orde_it.order_id join `user` us on
+		orde.user_id=us.user_id
 		<where>
 			<if test="userId !=null and userId!=''">
 				orde.user_id=#{userId}
@@ -101,27 +105,27 @@
 				orde.state=#{state} or orde.state=5 </when> <otherwise> and orde.state=#{state} 
 				</otherwise> </choose> -->
 			<if test="state !=null and state!=''  and state !=2">
-			and	orde.state=#{state} 
+				and orde.state=#{state}
 			</if>
 			<!-- 满足导出后台excel表格 -->
 			<if test="orderState!=null and orderState!=''">
-			  and	orde.state =#{orderState}
+				and orde.state =#{orderState}
 			</if>
 			<if test="state==2">
-			  and	orde.state in(2,5)
+				and orde.state in(2,5)
 			</if>
-			
+
 			<if test="orderCTime !=null and orderCTime !=''">
 				and DATE_FORMAT(orde.created,'%Y-%m-%d') <![CDATA[  >=  ]]>#{orderCTime}
 			</if>
 			<if test="orderETime !=null and orderETime !=''">
 				and DATE_FORMAT(orde.created,'%Y-%m-%d') <![CDATA[  <=  ]]>#{orderETime}
 			</if>
-			
+
 		</where>
-		order by orde.created desc 
+		order by orde.created desc
 		<if test="currentNum!=null and numberPerpage!=null">
-		limit ${currentNum} , ${numberPerpage}
+			limit ${currentNum} , ${numberPerpage}
 		</if>
 	</select>
 
@@ -132,14 +136,14 @@
 		(SELECT
 		count(0)
 		FROM
-		
-		ordera orde 
-		<!-- us.user_id=orde.user_id --> JOIN order_item
+
+		ordera orde
+		<!-- us.user_id=orde.user_id -->
+		JOIN order_item
 		orde_it ON
-		orde.order_id=orde_it.order_id <!-- JOIN
-		item_info item_f ON
-		orde_it.item_id
-		= item_f.item_id --> join receiver rece on
+		orde.order_id=orde_it.order_id <!-- JOIN item_info 
+			item_f ON orde_it.item_id = item_f.item_id -->
+		join receiver rece on
 		rece.receiver_id=orde.receiver_id
 		<where>
 			<if test="userId !=null and userId!=''">
@@ -149,10 +153,10 @@
 				orde.state=#{state} or orde.state=5 </when> <otherwise> and orde.state=#{state} 
 				</otherwise> </choose> -->
 			<if test="state !=null and state!=''  and state !=2">
-			and	orde.state=#{state} 
+				and orde.state=#{state}
 			</if>
 			<if test="state==2">
-			  and	orde.state in(2,5)
+				and orde.state in(2,5)
 			</if>
 		</where>
 		group by orde.order_id) a
@@ -162,7 +166,8 @@
 		update ordera
 		set
 		state=0,close_time=now(),updated=now()
-		where order_id=#{orderId} and user_id=#{userId}
+		where order_id=#{orderId} and
+		user_id=#{userId}
 	</update>
 	<!-- //确定收货 -->
 
@@ -225,17 +230,18 @@
 	<update id="updateState">
 		update ordera set state=9 where order_id =#{orderId}
 	</update>
-	
-	 <resultMap type="com.yayiabc.http.mvc.pojo.model.OrderNums" id="lo">
-	  <result property="userName" column="name"/>
-	   <result property="state" column="state"/>
-	    <result property="counts" column="count"/>
-	 </resultMap>
+
+	<resultMap type="com.yayiabc.http.mvc.pojo.model.OrderNums"
+		id="lo">
+		<result property="userName" column="name" />
+		<result property="state" column="state" />
+		<result property="counts" column="count" />
+	</resultMap>
 	<!-- 查询统计用户订单数 -->
 	<select id="queryOrderNums" resultMap="lo">
-	   SELECT us.true_name name,orde.state,COUNT(state) count FROM
-	    ordera orde JOIN `user` us ON 
-	    orde.user_id=us.user_id 
-	    WHERE orde.user_id=#{userId}  GROUP BY state
+		SELECT us.true_name name,orde.state,COUNT(state) count FROM
+		ordera orde JOIN `user` us ON
+		orde.user_id=us.user_id
+		WHERE orde.user_id=#{userId} GROUP BY state
 	</select>
 </mapper>

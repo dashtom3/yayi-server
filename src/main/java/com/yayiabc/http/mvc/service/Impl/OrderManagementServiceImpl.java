@@ -635,7 +635,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		cell = row.createCell((short) 17);  
 		cell.setCellValue("订单状态");  
 		cell.setCellStyle(style);
-		
+
 		cell = row.createCell((short) 18);  
 		cell.setCellValue("订单留言");  
 		cell.setCellStyle(style);
@@ -648,14 +648,15 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		cell.setCellValue("是否需要产品注册证");  
 		cell.setCellStyle(style);
 
-
+		int x=0;
+		int upperOrderItemListSize=0;
 		//写入表格
 		for (int i = 0; i < OrderManagementList.size(); i++)  
 		{  
 
+			x++;
+			row = sheet.createRow((int)x);  
 
-			row = sheet.createRow((int) i + 1);  
-			int x=i;
 			Ordera order=OrderManagementList.get(i);
 			Receiver receiver=order.getReceiver();
 
@@ -686,9 +687,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 					row.createCell((short) 9).setCellValue(orderItem.getNum());
 					row.createCell((short) 10).setCellValue(orderItem.getNum()*orderItem.getPrice());
 				}else{
-					System.out.println(orderItemList);
 
-					System.out.println(orderItemList.size());
 					HSSFRow rows=null;
 					for(int q=0;q<orderItemList.size();q++){
 						OrderItem orderItem =orderItemList.get(q);
@@ -698,18 +697,16 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 							row.createCell((short) 9).setCellValue(orderItem.getNum());
 							row.createCell((short) 10).setCellValue(orderItem.getNum()*orderItem.getPrice());
 						}else{
-							x++;
-							rows = sheet.createRow((int)  x + 1);
+							rows = sheet.createRow((int) ++x);
 							rows.createCell((short) 7).setCellValue( orderItem.getItemName());
 							rows.createCell((short) 8).setCellValue(orderItem.getPrice());
 							rows.createCell((short) 9).setCellValue(orderItem.getNum());
-							rows.createCell((short) 10).setCellValue(new HSSFRichTextString(String.valueOf(orderItem.getNum()*orderItem.getPrice())));
+							rows.createCell((short) 10).setCellValue(orderItem.getNum()*orderItem.getPrice());
 						}
 
 
 					}
-					/* CellRangeAddress regions = new CellRangeAddress(i + 1,i + 1+orderItemList.size(),6 , 9); // 参数都是从O开始   
-		                 sheet.addMergedRegion(regions);*/
+
 				}
 			}
 
@@ -723,7 +720,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			row.createCell((short) 16).setCellValue(showPayType(order.getPayType()));
 
 			row.createCell((short) 17).setCellValue(showOrderState(order.getState()));
-			
+
 			row.createCell((short) 18).setCellValue(order.getBuyerMessage());
 			row.createCell((short) 19).setCellValue(isNeedInv(order.getInvoiceHand()));
 			cell = row.createCell((short) 20); 
@@ -737,11 +734,20 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		{ 
 			FileOutputStream fout = new FileOutputStream("C:/yayi/order.xls");  
 			wb.write(fout);  
-			fout.close();  
+			fout.close();
+			//删除待压缩文件夹里的空发票文件
+			File files = new File("C:/yayi");
+			File[] filess = file.listFiles();
+			for(int i=0; i<filess.length; i++){
+				if(filess[i].getName().contains("不需要发票")){
+					filess[i].delete();
+				}
+			}
+			
 			//压缩
 			FolderTOZip ftz=new FolderTOZip();
 			ftz.zip("C:/yayi", "C:/后台订单详情.zip");
-
+			
 			/**
 			 * 把包发送给浏览器
 			 */
@@ -793,8 +799,10 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			return "待评价";
 		case 5:
 			return "订单已确认";
+		case 9:
+			return "买家已评论";
 		}
-		
+
 		return null;
 	}
 	/**
@@ -804,9 +812,14 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 	 */
 	private String showPayType(Integer payType) {
 		// TODO Auto-generated method stub
+		if(payType==null){
+			return "订单未付款";
+		}
 		switch(payType){
 		case 0:
 			return "支付宝支付";
+		case 1:
+			return "微信支付";
 		case 2:
 
 			return "银联支付";

@@ -288,10 +288,10 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			{
 				throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
 			}
-			//放入缓存
-			CacheUtils.getInstance().getCacheMap().put(orderId, new Date());
+			/*//放入缓存
+			CacheUtils.getInstance().getCacheMap().put(orderId, new Date());*/
 			/*
-			 * 尝试放入redis
+			 * 放入redis
 			 */
 			List<ExpireOrder> expireOrderList=new ArrayList<ExpireOrder>();
 			for (OrderItem oredrItem : orderItemList) {
@@ -321,7 +321,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				if(!payAfterOrderUtil.universal(orderId,"3")){
 					throw new RuntimeException();
 					//throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
-				}
+				 }
 			}
 			dataWrapper.setData(hashMap);
 			return dataWrapper;

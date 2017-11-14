@@ -21,7 +21,7 @@
 	</resultMap>
 
 	<select id="list" resultMap="qbRecordListRM">
-		SELECT q.qb_rid,u.phone,q.qb_rget,q.qb_rout,DATE_FORMAT(q.qb_time,
+		SELECT q.qb_rid,u.phone,q.qb_rget,q.qb_balances,q.qb_rout,DATE_FORMAT(q.qb_time,
 		'%Y-%c-%e %T') AS qb_time,q.remark,u.qb_balance,u.a_qb,u.b_qb,u.c_qb
 		FROM qb_record q
 		LEFT JOIN `user` u

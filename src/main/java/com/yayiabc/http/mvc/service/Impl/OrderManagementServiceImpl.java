@@ -787,16 +787,15 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		// TODO Auto-generated method stub
 		switch(state){
 		case 0:
-			return "关闭交易";
+			return "交易关闭";
 		case 1:
-
 			return "等待买家付款";
 		case 2:
 			return "买家已付款";
 		case 3:
 			return "卖家已发货";
 		case 4:
-			return "待评价";
+			return "待评价（交易成功）";
 		case 5:
 			return "订单已确认";
 		case 9:
@@ -821,7 +820,6 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		case 1:
 			return "微信支付";
 		case 2:
-
 			return "银联支付";
 		case 3:
 			return "乾币支付";

@@ -46,12 +46,14 @@ public class PayAfterOrderUtil {
 		/**
 		 * 如果redis里没有该订单 就说明该订单已经关闭
 		 */
-		/*RedisClient rc=RedisClient.getInstance();
+		RedisClient rc=RedisClient.getInstance();
 		Jedis jedis=rc.getJedis();
 		jedis.select(1);
 		if(!jedis.exists("expireOrder"+orderId)){
+			System.out.println("redis里不存在该订单，可能是订单已经过期...");
 		     return false;	
-		}*/
+		}
+		
 		if(type!=null){
 			aliPayDao.updatePayType(orderId,type);
 		}
@@ -104,17 +106,14 @@ public class PayAfterOrderUtil {
 		//判断 该用户是否绑定了销售员
 		String saleId=utilsDao.getSaleIdByOrderId(orderId);
 		if(saleId!=null&&!saleId.equals("")){
-			//清楚缓存中的orderId
-			CacheUtils cache=	CacheUtils.getInstance();
-			Map<String,Date> map=cache.getCacheMap();
-			map.remove(orderId);
+			//删除redis exprice key
+			jedis.del("expireOrder"+orderId);
+			jedis.close();
 			return SetSaleInCome(orderId,o.getUserId(),saleId);
 		}
-		//清楚缓存中的orderId
-		CacheUtils cache=	CacheUtils.getInstance();
-		Map<String,Date> map=cache.getCacheMap();
-		map.remove(orderId);
-	
+		//删除redis exprice key
+		jedis.del("expireOrder"+orderId);
+		jedis.close();
 		return true;
 	}
 

@@ -16,7 +16,6 @@ import org.springframework.web.bind.annotation.ResponseBody;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.CottomsPost;
 import com.yayiabc.http.mvc.service.CottomsPostService;
-import com.yayiabc.http.mvc.service.ReadNumberServer;
 /**
  * 严强 2017/10/23 12:13
  * 病例
@@ -26,9 +25,6 @@ import com.yayiabc.http.mvc.service.ReadNumberServer;
 public class PostController {
 	@Autowired
 	private CottomsPostService cottomsPostService;
-	
-	@Autowired
-	private ReadNumberServer readNumberServer;
 	
 	//发布病例
 	@RequestMapping("add")

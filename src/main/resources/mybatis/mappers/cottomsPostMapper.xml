@@ -13,7 +13,7 @@
 	<insert id="addPost" useGeneratedKeys="true" keyProperty="postId">
 		insert
 		into cottoms_post
-		(headline,classify,free_content,charge_content,writer,user_id,read_number,charge_number,post_stater,cover)
+		(headline,classify,free_content,charge_content,writer,user_id,charge_number,post_stater,cover)
 		values(#{headline},#{classify},#{freeContent},#{chargeContent},#{writer},#{userId},0,#{chargeNumber},#{postStater},#{cover});
 	</insert>
 
@@ -22,7 +22,7 @@
 		update cottoms_post
 		set
 		headline=#{headline},classify=#{classify},free_content=#{freeContent},charge_content=#{chargeContent},writer=#{writer},
-		user_id=#{userId},read_number=0,charge_number=#{chargeNumber},post_stater=#{postStater},cover=#{cover}
+		user_id=#{userId},charge_number=#{chargeNumber},post_stater=#{postStater},cover=#{cover}
 		where post_id=#{postId}
 	</update>
 
@@ -34,7 +34,6 @@
 		<result property="freeContent" column="free_content" />
 		<result property="chargeContent" column="charge_content" />
 		<result property="writer" column="writer" />
-		<result property="readNumber" column="read_number" />
 		<result property="chargeNumber" column="charge_number" />
 		<result property="cover" column="cover" />
 		<result property="userId" column="user_id" />
@@ -45,7 +44,7 @@
 		</association>
 	</resultMap>
 	<select id="queryPost" resultMap="map">
-		select cp.post_id,cp.headline,cp.classify,cp.writer,cp.read_number,cp.cover,cp.post_time,charge_number,user.user_pic from 
+		select cp.post_id,cp.headline,cp.classify,cp.writer,cp.cover,cp.post_time,charge_number,user.user_pic from 
 		cottoms_post cp 
 		left join user
 		on cp.user_id=user.user_id
@@ -61,6 +60,9 @@
 			<when test="order=2">read_number desc</when>
 		</choose>
 		limit #{page.currentNumber},#{page.numberPerPage}
+		<!-- <foreach collection="postId" item="post_id" open="AND (" close=")" separator="OR">
+			postId=#{post_id}
+		</foreach> -->
 	</select>
 
 
@@ -114,11 +116,6 @@
 		from cottoms_comment where comment_id=#{commentId} </select> <update id="commentsLikeAdd"> 
 		update cottoms_comment set comment_favour=#{commentFavour} where comment_id=#{commentId} 
 		</update> -->
-
-	<select id="postReaderNumber" resultType="java.lang.Integer">
-		select read_number from
-		cottoms_post where post_id=#{postId}
-	</select>
 
 	<!-- <select id="commentNumber" resultType="java.lang.Integer"> select count(0) 
 		from cottoms_comment where post_id=#{postId} </select> -->

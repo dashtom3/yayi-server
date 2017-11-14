@@ -71,17 +71,20 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		CottomsPost cottomsPost = new CottomsPost();
 		cottomsPost.setClassify(classify);
 		cottomsPost.setPostStater(postStater);
-		int totalNumber=cottomsPostDao.getTotalNumber(classify);
-		
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
 		
 		List<CottomsPost> cottomsPosts=cottomsPostDao.queryPost(page,classify,order,postStater);
+		int totalNumber=cottomsPostDao.getTotalNumber(classify);
+//		int start = (int)Math.floor(currentPage-1*numberPerPage);
+//		int end = (int)Math.floor((totalNumber-1)/numberPerPage+1);
 		for (CottomsPost cottomsPost2 : cottomsPosts) {
 			String readNumber = RedisService.STRINGS.get(cottomsPost.getPostId()+"");//获取阅读数
 			int commentNumber = (int)RedisService.LISTS.llen("2评论"+cottomsPost2.getPostId());//获取评论数
-			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表2"+cottomsPost2.getPostId());//获取点赞数
+//			List<String> postId=RedisService.LISTS.lrange("2评论"+cottomsPost2.getPostId(), start, end);
+			int favourNumber = (int)RedisService.SORTSET.zcard("病例:"+cottomsPost2.getPostId());//获取点赞数
+			System.err.println(favourNumber); 
 			cottomsPost2.setReadNumber(readNumber);
 			cottomsPost2.setCommentNumber(favourNumber);
 			cottomsPost2.setCommentNumber(commentNumber);
@@ -110,11 +113,10 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 				userIde=true;
 			}
 		}
-		
 		CottomsPost cottomsPost1=cottomsPostDao.cottomsDetail(cottomsPost);
 		String readNumber = RedisService.STRINGS.get(cottomsPost.getPostId()+"");//阅读数
 		int commentNumber = (int)RedisService.LISTS.llen("2评论"+cottomsPost1.getPostId());//评论数
-		int favourNumber = (int)RedisService.SETS.scard("点赞用户列表2"+cottomsPost1.getPostId());//点赞数
+		int favourNumber = (int)RedisService.SETS.scard("病例:"+cottomsPost1.getPostId());//点赞数
 		cottomsPost1.setReadNumber(readNumber);
 		cottomsPost1.setPostFavour(favourNumber);
 		cottomsPost1.setCommentNumber(commentNumber);
@@ -205,10 +207,10 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		String remark = "付费病例:支付"+chargeNumber+"个乾币。(乾币余额:userQbNum个)";
 		if(payAfterOrderUtil.newQbDed(userId, chargeNumber, "", remark)!=null){
 			cottomsPostDao.insertUserToPost(postId,userId);
-			
 		}
 		return dataWrapper;
 	}
+	
 	//导出表格
 	private List<Map<String, Object>> createExcel(List<See> sees) {
 		List<Map<String, Object>> listmap = new ArrayList<Map<String, Object>>();

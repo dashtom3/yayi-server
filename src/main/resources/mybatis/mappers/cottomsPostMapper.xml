@@ -28,6 +28,7 @@
 
 	<!--显示病例 -->
 	<resultMap type="CottomsPost" id="map">
+		<result property="postString" column="post_stater"/>
 		<result property="headline" column="headline" />
 		<result property="classify" column="classify" />
 		<result property="freeContent" column="free_content" />
@@ -44,7 +45,7 @@
 		</association>
 	</resultMap>
 	<select id="queryPost" resultMap="map">
-		select cp.headline,cp.classify,cp.writer,cp.read_number,cp.cover,cp.post_time,charge_number,user.user_pic from 
+		select cp.post_id,cp.headline,cp.classify,cp.writer,cp.read_number,cp.cover,cp.post_time,charge_number,user.user_pic from 
 		cottoms_post cp 
 		left join user
 		on cp.user_id=user.user_id
@@ -52,7 +53,7 @@
 			<if test="classify!=null and classify!=''">
 				classify like "%${classify}%" and
 			</if>
-			post_Stater=1
+			post_Stater=#{postStater}
 		</where>
 		order by
 		<choose>
@@ -62,23 +63,6 @@
 		limit #{page.currentNumber},#{page.numberPerPage}
 	</select>
 
-	<!--显示草稿 -->
-	<select id="queryDraft" resultType="java.util.Map">
-		select * from cottoms_post
-		<where>
-			<if test="classify!=null and classify!=''">
-				classify=#{classify} and
-			</if>
-			post_Stater=2
-		</where>
-		order by
-		<choose>
-			<when test="order=0">post_time</when>
-			<when test="order=1">post_favour desc</when>
-			<when test="order=2">read_number desc</when>
-		</choose>
-		limit #{page.currentNumber},#{page.numberPerPage}
-	</select>
 
 	<!--查看用户的病例 -->
 	<select id="queryByIdPost" resultType="java.lang.Integer">

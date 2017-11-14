@@ -27,8 +27,8 @@ import com.yayiabc.http.mvc.dao.CottomsPostDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.CottomsPost;
 import com.yayiabc.http.mvc.pojo.jpa.See;
-import com.yayiabc.http.mvc.service.CommentService;
 import com.yayiabc.http.mvc.service.CottomsPostService;
+import com.yayiabc.http.mvc.service.ReadNumberServer;
 import com.yayiabc.http.mvc.service.RedisService;
 @Service
 public class CottomsPostServiceImpl implements CottomsPostService{
@@ -40,8 +40,13 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 
 	@Autowired
 	private RedisService RedisService;
-	@Autowired CommentService commentService;
-	//发布病例
+	
+	@Autowired 
+	ReadNumberServer readNumberServer;
+	
+	@Autowired
+    RedisService redisService;
+	//发布或更改病例（传过来无postId为发布，有postId为更改）
 	@Override
 	public DataWrapper<Void> addPost(CottomsPost cottomsPost,String token) {
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
@@ -51,6 +56,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		cottomsPost.setWriter(trueName);
 		if(cottomsPost.getPostId()==0){
 			cottomsPostDao.addPost(cottomsPost);
+			readNumberServer.readNumber(token, cottomsPost.getPostId());
 		}else{
 			cottomsPostDao.setPost(cottomsPost);
 		}
@@ -60,18 +66,23 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 
 	//显示病例
 	@Override
-	public DataWrapper<List<CottomsPost>> queryPost(Integer currentPage,Integer numberPerPage,String classify,Integer order) {
+	public DataWrapper<List<CottomsPost>> queryPost(Integer currentPage,Integer numberPerPage,String classify,Integer order,Integer postStater) {
 		DataWrapper<List<CottomsPost>> dataWrapper=new DataWrapper<List<CottomsPost>>();
 		CottomsPost cottomsPost = new CottomsPost();
 		cottomsPost.setClassify(classify);
+		cottomsPost.setPostStater(postStater);
 		int totalNumber=cottomsPostDao.getTotalNumber(classify);
+		
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		List<CottomsPost> cottomsPosts=cottomsPostDao.queryPost(page,classify,order);
+		
+		List<CottomsPost> cottomsPosts=cottomsPostDao.queryPost(page,classify,order,postStater);
 		for (CottomsPost cottomsPost2 : cottomsPosts) {
-			int commentNumber = (int)RedisService.LISTS.llen("2评论"+cottomsPost2.getPostId());
-			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表2"+cottomsPost2.getPostId());
+			String readNumber = RedisService.STRINGS.get(cottomsPost.getPostId()+"");//获取阅读数
+			int commentNumber = (int)RedisService.LISTS.llen("2评论"+cottomsPost2.getPostId());//获取评论数
+			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表2"+cottomsPost2.getPostId());//获取点赞数
+			cottomsPost2.setReadNumber(readNumber);
 			cottomsPost2.setCommentNumber(favourNumber);
 			cottomsPost2.setCommentNumber(commentNumber);
 		}
@@ -79,49 +90,19 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		cottomsPost.setFreeContent(null);
 		dataWrapper.setData(cottomsPosts);
 		dataWrapper.setPage(page, totalNumber);
-
 		return dataWrapper;
 	}
-	//显示草稿
-	@Override
-	public DataWrapper<List<Map<String, Object>>> queryDraft(Integer currentPage, Integer numberPerPage, String classify,
-			Integer order) {
-		DataWrapper<List<Map<String,Object>>> dataWrapper=new DataWrapper<List<Map<String,Object>>>();
-		int totalNumber=cottomsPostDao.getTotalNumber(classify);
-		CottomsPost cottomsPost = new CottomsPost();
-		Page page=new Page();
-		page.setNumberPerPage(numberPerPage);
-		page.setCurrentPage(currentPage);
-		cottomsPost.setClassify(classify);
-		List<Map<String,Object>> cottomsPosts=cottomsPostDao.queryDraft(page,classify,order);
-		dataWrapper.setData(cottomsPosts);
-		dataWrapper.setPage(page, totalNumber);
-
-		return dataWrapper;
-	}
-	@Override
-	//查看评论
-	public DataWrapper<List<Map<String,Object>>> queryComment(Integer currentPage, Integer numberPerPage) {
-		DataWrapper<List<Map<String,Object>>> dataWrapper=new DataWrapper<List<Map<String,Object>>>();
-		int totalNumber=cottomsPostDao.getTotalCommentNumber();
-		Page page=new Page();
-		page.setNumberPerPage(numberPerPage);
-		page.setCurrentPage(currentPage);
-		List<Map<String,Object>> cottomsPosts=cottomsPostDao.queryPost(page);
-		dataWrapper.setData(cottomsPosts);
-		dataWrapper.setPage(page, totalNumber);
-		return dataWrapper;
-	}
-	//查看病例详情
+	//病例详情
 	@Override
 	public DataWrapper<CottomsPost> cottomsDetail(CottomsPost cottomsPost,String token) {
+		redisService.STRINGS.incrBy(cottomsPost.getPostId()+"",1);//增加阅读数
 		String userId=null;
 		if(token!=null){
-			userId=utilsDao.getUserID(cottomsPost.getToken());
+			userId=utilsDao.getUserID(token);
 		}
 		DataWrapper<CottomsPost> dataWrapper=new DataWrapper<CottomsPost>();
-		List<String> postIdFees=cottomsPostDao.queryFees(cottomsPost);//获取本用户付费病例id
-
+		 
+		List<String> postIdFees=cottomsPostDao.queryFees(userId);//获取本用户付费病例id
 		boolean userIde=false;
 		String post=cottomsPost.getPostId()+"";
 		for(int i=0;i<postIdFees.size();i++){
@@ -129,11 +110,14 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 				userIde=true;
 			}
 		}
-		CottomsPost cottomsPost1=cottomsPostDao.cottomsDetail(cottomsPost);;
-		int readNumber = (int)RedisService.LISTS.llen("2评论"+cottomsPost1.getPostId());
-		int favourNumber = (int)RedisService.SETS.scard("点赞用户列表2"+cottomsPost1.getPostId());
-		cottomsPost1.setCommentNumber(favourNumber);
-		cottomsPost1.setCommentNumber(readNumber);
+		
+		CottomsPost cottomsPost1=cottomsPostDao.cottomsDetail(cottomsPost);
+		String readNumber = RedisService.STRINGS.get(cottomsPost.getPostId()+"");//阅读数
+		int commentNumber = (int)RedisService.LISTS.llen("2评论"+cottomsPost1.getPostId());//评论数
+		int favourNumber = (int)RedisService.SETS.scard("点赞用户列表2"+cottomsPost1.getPostId());//点赞数
+		cottomsPost1.setReadNumber(readNumber);
+		cottomsPost1.setPostFavour(favourNumber);
+		cottomsPost1.setCommentNumber(commentNumber);
 		if(token!=null&&userIde==true) {
 			dataWrapper.setData(cottomsPost1);
 			return dataWrapper;
@@ -143,79 +127,12 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			return dataWrapper;
 		}
 	}
-	//评论
-	//	@Override
-	//	public void comment(CottomsComment cottomsComment) {
-	//		cottomsPostDao.comment(cottomsComment);
-	//	}
-	//回复
-	//	@Override
-	//	public void reply(CottomsReply cottomsReply) {
-	//		cottomsPostDao.reply(cottomsReply);
-	//
-	//	}
-	@Override
-	public void postLike(CottomsPost cottomsPost) {
-		int like=cottomsPostDao.postLike(cottomsPost)+1;
-		cottomsPost.setPostFavour(like);
-		cottomsPostDao.postLikeAdd(cottomsPost);
-	}
-	@Override
-	public void postReader(CottomsPost cottomsPost){
-		//		int reader=cottomsPostDao.postReaderNumber(cottomsPost)+1;
-		//		cottomsPost.setReadNumber(reader);
-		//		int commentNumber=cottomsPostDao.commentNumber(cottomsPost);
-		//		cottomsPost.setReadNumber(commentNumber);
-		//		cottomsPostDao.postReader(cottomsPost);
-	}
-	//	@Override
-	//	public void commentsLike(CottomsComment cottomsComment) {
-	//		int like=cottomsPostDao.commentsLike(cottomsComment)+1;
-	//		cottomsComment.setCommentFavour(like);
-	//		cottomsPostDao.commentsLikeAdd(cottomsComment);
-	//	}
+	
 	public void see(HttpServletResponse response){
 
 		List<See> listsee = cottomsPostDao.see();
-		/*// 第一步，创建一个webbook，对应一个Excel文件  
-		  Workbook wb = new HSSFWorkbook();
-		// 第二步，在webbook中添加一个sheet,对应Excel文件中的sheet  
-		  Sheet sheet = wb.createSheet("充值记录表");
-		// 第三步，在sheet中添加表头第0行,注意老版本poi对Excel的行数列数有限制short  
-		  Row row = sheet.createRow((short) 0);
-		// 第四步，创建单元格，并设置值表头 设置表头居中  
-		  CellStyle cs = wb.createCellStyle();
-		HSSFCell cell = null;  
-		//创建标题
-		row.createCell(0).setCellValue("姓名");
-		row.createCell(1).setCellValue("用户手机");
-		row.createCell(2).setCellValue("收入");
-		row.createCell(3).setCellValue("支出");
-		row.createCell(5).setCellValue("时间");
-		row.createCell(6).setCellValue("描述");*/
-		//创建内容
-
-
-		/*for(int i=0;i<list.size();i++){
-			row = sheet.createRow(i + 1); 
-			for(int j=0;j<6;j++){
-				See values =list.get(j);
-				row.createCell(j).setCellValue(values.getTrueName());
-				row.createCell(j).setCellValue(values.getPhone());
-				row.createCell(j).setCellValue(values.getQbRget());
-				row.createCell(j).setCellValue(values.getQbRout());
-				row.createCell(j).setCellValue(values.getQbTime());
-				row.createCell(j).setCellValue(values.getRemark());
-			}
-		}
-		return wb;*/
 		String fileName="充值支出记录表";
 		fileName =fileName+".xls";
-		/*List<ExcelEntry> excelEntryList=benefitChangeDao.getExcelEntryList(benefitId);
-		System.out.println(excelEntryList);*/
-		/*for (ExcelEntry excelEntry : excelEntryList) {
-			excelEntry.setBenefitNum(benefit.getBenefitQb());
-		}*/
 		List<Map<String,Object>> list=createExcel(listsee);
 		String columnNames[]={"姓名","手机","充值","支出","时间","描述"};//列名
 		String keys[]={"name","phone","qbRget","qbRout","qbTime","remark"};//map中的key

@@ -12,6 +12,7 @@ import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.AppUserService;
 import com.yayiabc.http.mvc.service.TokenService;
 import com.yayiabc.http.mvc.service.UserMyQbService;
+import org.apache.commons.lang3.StringUtils;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 

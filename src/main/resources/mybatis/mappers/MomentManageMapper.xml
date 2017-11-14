@@ -37,6 +37,7 @@
 		select a.moment_id,b.user_id,b.true_name,b.user_pic,a.moment_content,a.moment_picture,a.moment_content_id,a.moment_type,a.moment_time FROM
 		moment a
 		join user b on a.user_id=b.user_id
+		order by a.moment_time DESC
 		limit #{currentNumber},#{numberPerPage}
 	</select>
 

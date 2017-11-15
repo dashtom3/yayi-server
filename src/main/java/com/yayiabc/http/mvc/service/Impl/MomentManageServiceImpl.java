@@ -67,7 +67,7 @@ public class MomentManageServiceImpl implements MomentManageService{
     }
 
     @Override
-    public DataWrapper<List<Moment>> queryList(Integer currentPage, Integer numberPerPage) {
+    public DataWrapper<List<Moment>> queryList(Integer currentPage, Integer numberPerPage,String token) {
         DataWrapper<List<Moment>> dataWrapper =new DataWrapper<List<Moment>>();
         Page page=new Page();
         page.setNumberPerPage(numberPerPage);
@@ -75,6 +75,13 @@ public class MomentManageServiceImpl implements MomentManageService{
         int totalNumber=momentManageDao.getMomentTotalNumber();
         dataWrapper.setPage(page, totalNumber);
         List<Moment> momentList=momentManageDao.queryList(page);
+        User user=null;
+        String userId=null;
+        if(token!=null){
+            user=utilsDao.getUserByToken(token);
+            userId=user.getUserId();
+        }
+        System.out.println(userId);
         for (Moment moment:momentList
              ) {
             //填充评论
@@ -83,6 +90,13 @@ public class MomentManageServiceImpl implements MomentManageService{
             //填充点赞数
             int zanNumber=zanService.getZanNumber("牙医圈",moment.getMomentId(),null,null);
             moment.setZanNumber(zanNumber);
+            //判断用户是否已经点赞
+            if(userId!=null){
+                boolean flag = redisService.SETS.sismember("点赞用户列表"+"牙医圈:"+moment.getMomentId(), userId);
+                if(flag){
+                    moment.setIsZan(1);
+                }
+            }
             //如果是病例，培训，视频，填充图片和标题
             Map<String,String> map=new HashMap<String,String>();
             if(moment.getMomentType()==3){//如果是3视频

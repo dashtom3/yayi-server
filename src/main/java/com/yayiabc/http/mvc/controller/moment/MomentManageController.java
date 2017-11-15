@@ -46,9 +46,10 @@ public class MomentManageController {
     @ResponseBody
     public DataWrapper<List<Moment>> queryList(
             @RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
-            @RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
+            @RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
+            @RequestHeader(value="token",required = false) String token
     ){
-        return momentManageService.queryList(currentPage,numberPerPage);
+        return momentManageService.queryList(currentPage,numberPerPage,token);
     }
 
 

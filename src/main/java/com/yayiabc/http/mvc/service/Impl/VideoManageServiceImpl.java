@@ -61,11 +61,10 @@ public class VideoManageServiceImpl implements VideoManageService {
 		System.out.println(viIdSet);
 		List<VidManage> vidManages=new ArrayList<VidManage>();
 		Integer id;
-		for (String viId:viIdSet
+		for (VidManage vidManage:vidManageList
 			 ) {
-			id=Integer.parseInt(viId);
-			for (VidManage vidManage:vidManageList
-				 ) {
+			for(String viId:viIdSet){
+				id=Integer.parseInt(viId);
 				if(vidManage.getViId().equals(id)){
 					//填充评论数
 					int commentNum=(int)redisService.SORTSET.zscore("视频评论数",viId);
@@ -110,7 +109,6 @@ public class VideoManageServiceImpl implements VideoManageService {
 
 	@Override
 	public DataWrapper<Void> deleteVid(Integer viId) {
-		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		int state=videoManageDao.deleteVid(viId);
 		//TODO 删除该视频下的评论

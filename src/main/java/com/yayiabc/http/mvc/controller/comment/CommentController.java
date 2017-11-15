@@ -28,7 +28,7 @@ public class CommentController {
     //添加评论redis
     @RequestMapping("addCom")
     @ResponseBody
-    public DataWrapper<Void> addCom(
+    public DataWrapper<Object> addCom(
             @RequestHeader(value="token",required = true) String token,
             @RequestParam(value="type",required = true) String type,//1.视频2.病例3.培训4.牙医圈
             @RequestParam(value="beCommentedId",required = true) Integer beCommentedId,//以上内容的id
@@ -49,7 +49,7 @@ public class CommentController {
             @RequestParam(value="numberPerPage",required=false,defaultValue="10")Integer numberPerPage
     ){
         DataWrapper<List<Comment>> dataWrapper=new DataWrapper<List<Comment>>();
-        int totalNumber=(int)redisService.SORTSET.zcard("点赞计数列表"+type+":"+beCommentedId);
+        int totalNumber=(int)redisService.LISTS.llen(type+"评论"+beCommentedId);
         Page page=new Page();
         page.setNumberPerPage(numberPerPage);
         page.setCurrentPage(currentPage);
@@ -58,14 +58,18 @@ public class CommentController {
         return dataWrapper;
     }
 
-    //显示子评论
-   /* @RequestMapping("querySubCom")
+    //删除评论
+    @RequestMapping("delete")
     @ResponseBody
-    public DataWrapper<List<SubComment>> querySubCom(
-            @RequestParam(value="preCommentId",required = true) Long preCommentId
+    public DataWrapper<Void> delete(
+            @RequestHeader(value="token",required = true) String token,
+            @RequestParam(value="type",required = true) String type,
+            @RequestParam(value="beCommentedId",required = true) String beCommentedId,
+            @RequestParam(value="parentId",required = true) Integer parentId,
+            @RequestParam(value="presentId",required = false) Integer presentId
     ){
-          return commentService.querySubCom(preCommentId);
-    }*/
+        return commentService.delete(type,beCommentedId,parentId,presentId);
+    }
 
 
 

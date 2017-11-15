@@ -6,6 +6,7 @@ import java.util.List;
 public class Comment {
     private String userId;
     private String userName;
+    private String userPic;
     private long commentId;
     private String commentContent;
     private Date commentTime;
@@ -27,6 +28,14 @@ public class Comment {
 
     public void setUserName(String userName) {
         this.userName = userName;
+    }
+
+    public String getUserPic() {
+        return userPic;
+    }
+
+    public void setUserPic(String userPic) {
+        this.userPic = userPic;
     }
 
     public long getCommentId() {
@@ -80,9 +89,10 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(String userId, String userName, long commentId, String commentContent, Date commentTime, int zan, int replyNumber, List<SubComment> subCommentList) {
+    public Comment(String userId, String userName, String userPic, long commentId, String commentContent, Date commentTime, int zan, int replyNumber, List<SubComment> subCommentList) {
         this.userId = userId;
         this.userName = userName;
+        this.userPic = userPic;
         this.commentId = commentId;
         this.commentContent = commentContent;
         this.commentTime = commentTime;
@@ -96,6 +106,7 @@ public class Comment {
         return "Comment{" +
                 "userId='" + userId + '\'' +
                 ", userName='" + userName + '\'' +
+                ", userPic='" + userPic + '\'' +
                 ", commentId=" + commentId +
                 ", commentContent='" + commentContent + '\'' +
                 ", commentTime=" + commentTime +

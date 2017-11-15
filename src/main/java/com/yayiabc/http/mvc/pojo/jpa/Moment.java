@@ -20,6 +20,7 @@ public class Moment {
     private Date momentTime;//发表到朋友圈的时间
     private Integer zanNumber;//点赞数
     private List<SubComment> subCommentList;//评论列表
+    private int isZan=0;
 
     public Integer getMomentId() {
         return momentId;
@@ -117,10 +118,18 @@ public class Moment {
         this.subCommentList = subCommentList;
     }
 
+    public int getIsZan() {
+        return isZan;
+    }
+
+    public void setIsZan(int isZan) {
+        this.isZan = isZan;
+    }
+
     public Moment() {
     }
 
-    public Moment(Integer momentId, String userId, String userName, String userPic, String momentContent, String momentPicture, Integer momentContentId, String momentContentTitle, Integer momentType, Date momentTime, Integer zanNumber, List<SubComment> subCommentList) {
+    public Moment(Integer momentId, String userId, String userName, String userPic, String momentContent, String momentPicture, Integer momentContentId, String momentContentTitle, Integer momentType, Date momentTime, Integer zanNumber, List<SubComment> subCommentList, int isZan) {
         this.momentId = momentId;
         this.userId = userId;
         this.userName = userName;
@@ -133,6 +142,7 @@ public class Moment {
         this.momentTime = momentTime;
         this.zanNumber = zanNumber;
         this.subCommentList = subCommentList;
+        this.isZan = isZan;
     }
 
     @Override
@@ -150,6 +160,7 @@ public class Moment {
                 ", momentTime=" + momentTime +
                 ", zanNumber=" + zanNumber +
                 ", subCommentList=" + subCommentList +
+                ", isZan=" + isZan +
                 '}';
     }
 }

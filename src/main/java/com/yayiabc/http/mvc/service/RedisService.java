@@ -55,9 +55,9 @@ public class RedisService {
             config.setTestOnBorrow(true);  
             
             //redis如果设置了密码：97.64.82.23
-            jedisPool = new JedisPool(config, "www.liqitian.top",
+            jedisPool = new JedisPool(config, "47.93.48.111",
             		6379,
-            		10000,"123456");
+            		10000,"123");
 //		 jedisPool = new JedisPool(config, "47.93.48.111",
 //				 6379,
 //				 10000);

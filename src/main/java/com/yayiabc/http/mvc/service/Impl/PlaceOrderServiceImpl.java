@@ -311,7 +311,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			jedis.set("expireOrder"+orderId, json.toString());  
 			jedis.expire("expireOrder"+orderId,40);
 			//保存主要数据
-            jedis.hset("expireOrder", "expireOrder"+orderId, json.toString());
+            jedis.hset("expireOrder1", "expireOrder"+orderId, json.toString());
 			jedis.close();
 
 			//判断客服是否全额乾币支付

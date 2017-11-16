@@ -88,12 +88,15 @@ public class PlaceOrderController {
 			){
 		return placeOrderService.queryLastInvoice(token);
 	}
-	@RequestMapping("test")
+	/**
+	 * 添加地址
+	 */
+	@RequestMapping("addReceivingAddress")
 	@ResponseBody
-	public Integer  test(
-			@RequestParam(value="token",required=true) Integer token
+	public DataWrapper<Object> addReceivingAddress(
+			@RequestHeader(value="token",required=true) String token
 			){
-		System.err.println(token);
-		return token;
+		
+				return null;
 	}
 }

@@ -24,6 +24,7 @@ public class LogisticsServiceImpl implements LogisticsService{
 			String s=null;
 			try {                                                 //快递公司编码                                 //快递单号
 				s = new LogisticsMain().getOrderTracesByJson(order.getShippingName(), order.getShippingCode());
+				System.out.println(order.getShippingName()+",,,"+order.getShippingCode());
 			} catch (Exception e) {
 				// TODO Auto-generated catch block
 				e.printStackTrace();

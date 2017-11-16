@@ -1,5 +1,7 @@
 package com.yayiabc.http.mvc.controller.user;
 
+import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
@@ -18,9 +20,11 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.alibaba.fastjson.JSONObject;
 import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.SerializeUtil;
 import com.yayiabc.http.mvc.pojo.jpa.Invoice;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
@@ -157,7 +161,7 @@ public class OrderManagementController {
 	@ResponseBody
 	//@AdminLog(description="后台订单列表导出Excel表格")
 	public DataWrapper<Void>exportExcel(
-		/*	@RequestHeader(value="adminToken",required=true) String adminToken,*/
+			/*	@RequestHeader(value="adminToken",required=true) String adminToken,*/
 			@RequestParam(value="orderId",required=false) String orderId,
 			@RequestParam(value="buyerInfo",required=false)String buyerInfo,//卖家的姓名或者手机号码
 			@RequestParam(value="orderState",required=false)String orderState,
@@ -166,18 +170,43 @@ public class OrderManagementController {
 			@RequestParam(value="isRefund",required=false)String isRefund,
 			HttpServletResponse response
 			){
-	        
+
 		return orderManagementService.exportExcel(orderId,buyerInfo,orderState,orderCTime,orderETime,isRefund,response);
 	}
-	 //后台订单点击 显示该用户的充值记录
+	//后台订单点击 显示该用户的充值记录
 	@RequestMapping("queryUserQbList")
 	@ResponseBody
 	//@AdminLog(description="后台订单列表导出Excel表格")
 	public DataWrapper<QbRecord> queryUserQbList(
-		/*	@RequestHeader(value="adminToken",required=true) String adminToken,*/
+			/*	@RequestHeader(value="adminToken",required=true) String adminToken,*/
 			@RequestParam(value="userId",required=false) String userId
 			){
-	        
+
 		return orderManagementService.queryUserQbList(userId);
+	}
+	@RequestMapping("electronicSheet ")
+	@ResponseBody
+	//@AdminLog(description="后台订单列表导出Excel表格")
+	public  void electronicSheet(
+			/*	@RequestHeader(value="adminToken",required=true) String adminToken,*/
+			HttpServletResponse response
+			){
+
+		
+		
+		response.setCharacterEncoding("utf-8");
+		response.setHeader("contentType", "text/html; charset=utf-8");
+		response.setContentType("text/html;charset=utf-8");
+		String str=orderManagementService.electronicSheet();
+		JSONObject jsStr = JSONObject.parseObject(str);
+
+		String ssss=(String) jsStr.get("PrintTemplate");
+		System.out.println(ssss);
+		try {
+			response.getWriter().write(ssss);
+		} catch (IOException e) {
+			// TODO Auto-generated catch block
+			e.printStackTrace();
+		}
 	}
 }

@@ -33,13 +33,18 @@ public class KeyExpiredListener extends JedisPubSub {
 	@Override 
 	@Transactional
 	public void onPMessage(String pattern, String channel, String message) {  
-		System.err.println(message);
-
 		RedisClient rc=RedisClient.getInstance();
 		Jedis jedis=rc.getJedis();
 		jedis.select(1);
+		/**
+		 * 防止因意外宕机照成的失效订单永久不关闭
+		 */
+		 jedis.sadd("fangZhi", message);
+		 
+		 //System.err.println(message);
+		
 		//获取失效订单里的主要内容  [{"itemId":"170719105543","itemNum":1,"itemSKU":"1707191055431","orderId":"100015868863920151"}]
-		String invalidOrder=jedis.hget("expireOrder", message);
+		String invalidOrder=jedis.hget("expireOrder1", message);
 		//将失效订单json字符串 转为list集合
 		JSONArray json = JSONArray.fromObject(invalidOrder);
 		ArrayList<ExpireOrder> expireOrderItemList = (ArrayList<ExpireOrder>)JSONArray.toCollection(json,ExpireOrder.class);
@@ -49,6 +54,8 @@ public class KeyExpiredListener extends JedisPubSub {
 		if(sign>0){
 			//返还库存
 			timerChangeStateService.returnStackItemNum(expireOrderItemList);
+			//删除  防止队列中的订单
+			jedis.srem("fangzhi", message);
 		}
 		System.out.println(expireOrderItemList);
 		jedis.hdel("expireOrder", message);

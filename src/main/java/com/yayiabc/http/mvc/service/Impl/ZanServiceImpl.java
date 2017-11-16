@@ -57,11 +57,14 @@ public class ZanServiceImpl implements ZanService{
 		//2.如果已经点赞,取消点赞
 		if (flag1) {
 			redisService.SETS.srem("点赞用户列表", userId);
-			redisService.SORTSET.zincrby(classify, -1, typeId+"");
+			redisService.SORTSET.zincrby(classify+"点赞", -1, typeId+"");
 		} else{//3.如果未点赞,则点赞
 			redisService.SETS.sadd("点赞用户列表",userId);
-			redisService.SORTSET.zincrby(classify,1,typeId+"");
+			redisService.SORTSET.zincrby(classify+"点赞",1,typeId+"");
 		}
+		
+		//评论
+		
 		return dataWrapper;
 		
 	}

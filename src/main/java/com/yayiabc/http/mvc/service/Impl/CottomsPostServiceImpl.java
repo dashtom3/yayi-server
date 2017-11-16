@@ -16,7 +16,6 @@ import java.util.Set;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import org.apache.taglibs.standard.lang.jstl.test.beans.PublicInterface2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -61,9 +60,8 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			if(cottomsPost.getPostId()==0){
 				for (int i = 0; i < 50; i++) {
 				cottomsPostDao.addPost(cottomsPost);
-				System.out.println(cottomsPost.getPostId());
-				System.out.println(cottomsPost.getClassify()+cottomsPost.getPostId());
-				RedisService.SORTSET.zadd(cottomsPost.getClassify(), 0, cottomsPost.getPostId()+"");
+				RedisService.SORTSET.zadd(cottomsPost.getClassify()+"点赞", 0, cottomsPost.getPostId()+"");
+				RedisService.SORTSET.zadd(cottomsPost.getClassify()+"评论", 0, cottomsPost.getPostId()+"");
 				readNumberServer.readNumber(token, cottomsPost.getPostId());
 				}
 			}else{
@@ -89,7 +87,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			int totalNumber=cottomsPostDao.getTotalNumber(classify);
 			for (CottomsPost cottomsPost2 : cottomsPosts) {
 				String readNumber = RedisService.STRINGS.get(cottomsPost.getPostId()+"");//获取阅读数
-				int commentNumber = (int)RedisService.LISTS.llen("2评论"+cottomsPost2.getPostId());//获取评论数
+				int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost2.getPostId());//获取评论数
 				//			List<String> postId=RedisService.LISTS.lrange("2评论"+cottomsPost2.getPostId(), start, end);
 				int favourNumber = (int)RedisService.SETS.scard("病例:"+cottomsPost2.getPostId());//获取点赞数
 				cottomsPost2.setReadNumber(readNumber);
@@ -107,7 +105,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			//int totalNumber=(int)(RedisService.SORTSET.zcard("口腔内科")+RedisService.SORTSET.zcard("口腔外科")+RedisService.SORTSET.zcard("口腔种植")+RedisService.SORTSET.zcard("口腔修复")+RedisService.SORTSET.zcard("口腔正畸"));
 			int start = (int)Math.floor((currentPage-1)*numberPerPage);//起始 
 			int end = (int)Math.floor((totalNumber-1)/numberPerPage+1);//总页数
-			Set<String> set = RedisService.SORTSET.zrevrange(classify, start, start+numberPerPage-1);
+			Set<String> set = RedisService.SORTSET.zrevrange(classify+"点赞", start, start+numberPerPage-1);
 			List<String> list =new ArrayList<String>();
 			list.addAll(set);
 			System.out.println(list);
@@ -150,7 +148,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		}
 		CottomsPost cottomsPost1=cottomsPostDao.cottomsDetail(cottomsPost);
 		String readNumber = RedisService.STRINGS.get(cottomsPost.getPostId()+"");//阅读数
-		int commentNumber = (int)RedisService.LISTS.llen("2评论"+cottomsPost1.getPostId());//评论数
+		int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost1.getPostId());//评论数
 		int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+cottomsPost1.getPostId());//点赞数
 		cottomsPost1.setReadNumber(readNumber);
 		cottomsPost1.setPostFavour(favourNumber);

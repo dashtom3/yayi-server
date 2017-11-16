@@ -11,10 +11,12 @@ import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.taglibs.standard.lang.jstl.test.beans.PublicInterface2;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -40,12 +42,12 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 
 	@Autowired
 	private RedisService RedisService;
-	
+
 	@Autowired 
 	ReadNumberServer readNumberServer;
-	
+
 	@Autowired
-    RedisService redisService;
+	RedisService redisService;
 	//发布或更改病例（传过来无postId为发布，有postId为更改）
 	@Override
 	public DataWrapper<Void> addPost(CottomsPost cottomsPost,String token) {
@@ -53,12 +55,20 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		String userId=utilsDao.getUserID(token);
 		cottomsPost.setUserId(userId);
 		String trueName= cottomsPostDao.gettrueName(userId);
-		cottomsPost.setWriter(trueName);
-		if(cottomsPost.getPostId()==0){
-			cottomsPostDao.addPost(cottomsPost);
-			readNumberServer.readNumber(token, cottomsPost.getPostId());
-		}else{
-			cottomsPostDao.setPost(cottomsPost);
+
+
+			cottomsPost.setWriter(trueName);
+			if(cottomsPost.getPostId()==0){
+				for (int i = 0; i < 50; i++) {
+				cottomsPostDao.addPost(cottomsPost);
+				System.out.println(cottomsPost.getPostId());
+				System.out.println(cottomsPost.getClassify()+cottomsPost.getPostId());
+				RedisService.SORTSET.zadd(cottomsPost.getClassify(), 0, cottomsPost.getPostId()+"");
+				readNumberServer.readNumber(token, cottomsPost.getPostId());
+				}
+			}else{
+				cottomsPostDao.setPost(cottomsPost);
+			
 		}
 		dataWrapper.setNum(cottomsPost.getPostId());
 		return dataWrapper;
@@ -74,24 +84,50 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		
-		List<CottomsPost> cottomsPosts=cottomsPostDao.queryPost(page,classify,order,postStater);
-		int totalNumber=cottomsPostDao.getTotalNumber(classify);
-//		int start = (int)Math.floor(currentPage-1*numberPerPage);
-//		int end = (int)Math.floor((totalNumber-1)/numberPerPage+1);
-		for (CottomsPost cottomsPost2 : cottomsPosts) {
-			String readNumber = RedisService.STRINGS.get(cottomsPost.getPostId()+"");//获取阅读数
-			int commentNumber = (int)RedisService.LISTS.llen("2评论"+cottomsPost2.getPostId());//获取评论数
-//			List<String> postId=RedisService.LISTS.lrange("2评论"+cottomsPost2.getPostId(), start, end);
-			int favourNumber = (int)RedisService.SORTSET.zcard("病例:"+cottomsPost2.getPostId());//获取点赞数
-			cottomsPost2.setReadNumber(readNumber);
-			cottomsPost2.setCommentNumber(favourNumber);
-			cottomsPost2.setCommentNumber(commentNumber);
+		if(classify==null){
+			List<CottomsPost> cottomsPosts=cottomsPostDao.queryPost(page,classify,order,postStater);
+			int totalNumber=cottomsPostDao.getTotalNumber(classify);
+			for (CottomsPost cottomsPost2 : cottomsPosts) {
+				String readNumber = RedisService.STRINGS.get(cottomsPost.getPostId()+"");//获取阅读数
+				int commentNumber = (int)RedisService.LISTS.llen("2评论"+cottomsPost2.getPostId());//获取评论数
+				//			List<String> postId=RedisService.LISTS.lrange("2评论"+cottomsPost2.getPostId(), start, end);
+				int favourNumber = (int)RedisService.SETS.scard("病例:"+cottomsPost2.getPostId());//获取点赞数
+				cottomsPost2.setReadNumber(readNumber);
+				cottomsPost2.setCommentNumber(favourNumber);
+				cottomsPost2.setCommentNumber(commentNumber);
+				cottomsPost.setChargeContent(null);
+				cottomsPost.setFreeContent(null);
+				dataWrapper.setData(cottomsPosts);
+				dataWrapper.setPage(page, totalNumber);
+			}
+		}else {
+			//数据库获得总条数
+			int totalNumber=cottomsPostDao.getTotalNumber(classify);
+			//redise获取总条数
+			//int totalNumber=(int)(RedisService.SORTSET.zcard("口腔内科")+RedisService.SORTSET.zcard("口腔外科")+RedisService.SORTSET.zcard("口腔种植")+RedisService.SORTSET.zcard("口腔修复")+RedisService.SORTSET.zcard("口腔正畸"));
+			int start = (int)Math.floor((currentPage-1)*numberPerPage);//起始 
+			int end = (int)Math.floor((totalNumber-1)/numberPerPage+1);//总页数
+			Set<String> set = RedisService.SORTSET.zrevrange(classify, start, start+numberPerPage-1);
+			List<String> list =new ArrayList<String>();
+			list.addAll(set);
+			System.out.println(list);
+			System.out.println(postStater);
+			List<CottomsPost> cottomsPosts = cottomsPostDao.queryClassifyPost(list,postStater);
+			for (CottomsPost cottomsPost2 : cottomsPosts) {
+				String readNumber = RedisService.STRINGS.get(cottomsPost.getPostId()+"");//获取阅读数
+				int commentNumber = (int)RedisService.LISTS.llen("2评论"+cottomsPost2.getPostId());//获取评论数
+				//List<String> postId=RedisService.LISTS.lrange("2评论"+cottomsPost2.getPostId(), start, end);
+				int favourNumber = (int)RedisService.SETS.scard("病例:"+cottomsPost2.getPostId());//获取点赞数
+				cottomsPost2.setReadNumber(readNumber);
+				cottomsPost2.setCommentNumber(favourNumber);
+				cottomsPost2.setCommentNumber(commentNumber);
+				cottomsPost.setChargeContent(null);
+				cottomsPost.setFreeContent(null);
+				dataWrapper.setData(cottomsPosts);
+				dataWrapper.setPage(page, totalNumber);
+			}
+			System.out.println(cottomsPosts);
 		}
-		cottomsPost.setChargeContent(null);
-		cottomsPost.setFreeContent(null);
-		dataWrapper.setData(cottomsPosts);
-		dataWrapper.setPage(page, totalNumber);
 		return dataWrapper;
 	}
 	//病例详情
@@ -103,7 +139,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			userId=utilsDao.getUserID(token);
 		}
 		DataWrapper<CottomsPost> dataWrapper=new DataWrapper<CottomsPost>();
-		 
+
 		List<String> postIdFees=cottomsPostDao.queryFees(userId);//获取本用户付费病例id
 		boolean userIde=false;
 		String post=cottomsPost.getPostId()+"";
@@ -128,7 +164,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			return dataWrapper;
 		}
 	}
-	
+
 	public void see(HttpServletResponse response){
 
 		List<See> listsee = cottomsPostDao.see();
@@ -209,7 +245,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		}
 		return dataWrapper;
 	}
-	
+
 	//导出表格
 	private List<Map<String, Object>> createExcel(List<See> sees) {
 		List<Map<String, Object>> listmap = new ArrayList<Map<String, Object>>();

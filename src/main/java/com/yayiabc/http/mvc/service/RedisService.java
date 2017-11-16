@@ -40,7 +40,7 @@ public class RedisService {
 	 private static JedisPool jedisPool = null;
 
 	 private RedisService() {
-
+		 
 	 }
      static {  
             JedisPoolConfig config = new JedisPoolConfig();  
@@ -54,7 +54,8 @@ public class RedisService {
             //在borrow一个jedis实例时，是否提前进行validate操作；如果为true，则得到的jedis实例均是可用的；  
             config.setTestOnBorrow(true);  
             
-            //redis如果设置了密码：97.64.82.23
+
+            //redis如果设置了密码：
             jedisPool = new JedisPool(config, "47.93.48.111",
             		6379,
             		10000,"123");
@@ -849,7 +850,13 @@ public class RedisService {
 			returnJedis(jedis);
 			return s;
 		}
-
+		 
+		public long hsetnx1(String key, String fieid, String value) {
+			Jedis jedis = getJedis();
+			long s = jedis.hsetnx(key, fieid, value);
+			returnJedis(jedis);
+			return s;
+		}
 		/**
 		 * 获取hash中value的集合
 		 * 

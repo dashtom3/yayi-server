@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.dao;
 
 import java.util.List;
 import java.util.Map;
+import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
@@ -17,7 +18,7 @@ public interface CottomsPostDao {
 	public String gettrueName(String userId);
 	
 	//发布病例
-	public void addPost(CottomsPost cottomsPost);
+	public Integer addPost(CottomsPost cottomsPost);
 	
 	//显示病例
 	public List<CottomsPost> queryPost(
@@ -32,6 +33,14 @@ public interface CottomsPostDao {
 	public CottomsPost cottomsDetail(CottomsPost cottomsPost);
 	public void comment(CottomsComment cottomsComment);
 	//public void reply(CottomsReply cottomsReply);
+	
+	//根据type查分类
+	public String getClassify(Integer postId);
+	//分类查询排序
+	public List<CottomsPost> queryClassifyPost(
+			@Param("list") List<String> list,
+			@Param("postStater") Integer postStater
+			);
 	
 	public int postLike(CottomsPost cottomsPost);
 	public void postLikeAdd(CottomsPost cottomsPost);

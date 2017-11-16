@@ -14,7 +14,7 @@
 		insert
 		into cottoms_post
 		(headline,classify,free_content,charge_content,writer,user_id,charge_number,post_stater,cover)
-		values(#{headline},#{classify},#{freeContent},#{chargeContent},#{writer},#{userId},0,#{chargeNumber},#{postStater},#{cover});
+		values(#{headline},#{classify},#{freeContent},#{chargeContent},#{writer},#{userId},#{chargeNumber},#{postStater},#{cover});
 	</insert>
 
 	<!-- 更改病历 -->
@@ -28,7 +28,7 @@
 
 	<!--显示病例 -->
 	<resultMap type="CottomsPost" id="map">
-		<result property="postString" column="post_stater"/>
+		<result property="postString" column="post_stater" />
 		<result property="headline" column="headline" />
 		<result property="classify" column="classify" />
 		<result property="freeContent" column="free_content" />
@@ -44,13 +44,15 @@
 		</association>
 	</resultMap>
 	<select id="queryPost" resultMap="map">
-		select cp.post_id,cp.headline,cp.classify,cp.writer,cp.cover,cp.post_time,charge_number,user.user_pic from 
-		cottoms_post cp 
+		select
+		cp.post_id,cp.headline,cp.classify,cp.writer,cp.cover,cp.post_time,charge_number,user.user_pic
+		from
+		cottoms_post cp
 		left join user
 		on cp.user_id=user.user_id
 		<where>
 			<if test="classify!=null and classify!=''">
-				classify like "%${classify}%" and
+				classify = #{classify} and
 			</if>
 			post_Stater=#{postStater}
 		</where>
@@ -60,12 +62,18 @@
 			<when test="order=2">read_number desc</when>
 		</choose>
 		limit #{page.currentNumber},#{page.numberPerPage}
-		<!-- <foreach collection="postId" item="post_id" open="AND (" close=")" separator="OR">
-			postId=#{post_id}
-		</foreach> -->
+		<!-- <foreach collection="postId" item="post_id" open="AND (" close=")" 
+			separator="OR"> postId=#{post_id} </foreach> -->
 	</select>
 
-
+	<!--根据点赞分类排序 -->
+	<select id="queryClassifyPost" resultType="CottomsPost">
+		select * from cottoms_post where post_id in
+		<foreach collection="list" item="postId" index="index" open="(" separator="," close=")">
+			#{postId}
+		</foreach>
+		and post_stater=#{postStater}
+	</select>
 	<!--查看用户的病例 -->
 	<select id="queryByIdPost" resultType="java.lang.Integer">
 		select post_id from
@@ -77,7 +85,7 @@
 		update cottoms_post set post_stater=3 where
 		post_id=#{postId}
 	</update>
-	
+
 	<select id="getTotalNumber" resultType="int">
 		select count(0) from
 		cottoms_post
@@ -109,9 +117,10 @@
 	</select>
 	<!--用户购买病例表 -->
 	<insert id="insertUserToPost">
-		insert user_to_post (user_id,post_id) values (#{userId},#{postId})
+		insert user_to_post (user_id,post_id) values
+		(#{userId},#{postId})
 	</insert>
-	
+
 	<!-- <select id="commentsLike" resultType="java.lang.Integer"> select comment_favour 
 		from cottoms_comment where comment_id=#{commentId} </select> <update id="commentsLikeAdd"> 
 		update cottoms_comment set comment_favour=#{commentFavour} where comment_id=#{commentId} 

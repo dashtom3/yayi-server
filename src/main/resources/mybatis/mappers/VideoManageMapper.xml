@@ -45,16 +45,21 @@
 		<result property="vidRoute" column="video_route"/>
 		<result property="videoCategory" column="video_category"/>
 		<result property="vedioTime" column="vedio_time"/>
+		<result property="vedioPic" column="vedio_pic"/>
 	</resultMap>
 
 	<select id="showVid" resultMap="videoRM">
-		select vi_id,video_name,video_type,video_route,video_category,DATE_FORMAT(vedio_time,'%Y-%m-%d %H:%i:%s') As vedio_time from vid_manage
+		select vi_id,video_name,video_type,video_route,video_category,DATE_FORMAT(vedio_time,'%Y-%m-%d %H:%i:%s') As vedio_time,vedio_pic from vid_manage
 		<where>
 			<if test="videoCategory!=null and videoCategory!=6">
 				video_category=#{videoCategory}
 			</if>
 		</where>
 		order by vedio_time DESC
+	</select>
+
+	<select id="detail" resultMap="videoRM">
+		select vi_id,video_name,video_type,video_route,video_category,DATE_FORMAT(vedio_time,'%Y-%m-%d %H:%i:%s') As vedio_time,vedio_pic from vid_manage where vi_id=#{viId}
 	</select>
 
 

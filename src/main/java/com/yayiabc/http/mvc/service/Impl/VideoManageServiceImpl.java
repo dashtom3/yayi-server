@@ -130,6 +130,14 @@ public class VideoManageServiceImpl implements VideoManageService {
 		return dataWrapper;
 	}
 
+	@Override
+	public DataWrapper<VidManage> detail(Integer viId) {
+		DataWrapper<VidManage> dataWrapper=new DataWrapper<VidManage>();
+		VidManage vidManage=videoManageDao.detail(viId);
+		dataWrapper.setData(vidManage);
+		return dataWrapper;
+	}
+
 	//获取七牛文件名称
 	public String getFileName(String videoRout){
 		String fileName=videoRout.substring(videoRout.lastIndexOf("/"));

@@ -4,6 +4,7 @@ package com.yayiabc.http.mvc.service.Impl;
 
 import com.qiniu.util.Json;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.JsonDateValueProcessor;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.common.utils.ScoreUtil;
 import com.yayiabc.http.mvc.dao.UtilsDao;
@@ -16,6 +17,7 @@ import com.yayiabc.http.mvc.service.RedisService;
 import com.yayiabc.http.mvc.service.ZanService;
 import net.sf.json.JSON;
 import net.sf.json.JSONObject;
+import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -64,6 +66,8 @@ public class CommentServiceImpl implements CommentService {
         //生成评论的key
         String key = type + "评论" + beCommentedId+str;
         JSONObject jsonObject;
+        JsonConfig config=new JsonConfig();
+        config.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
         if("".equals(str)){//父评论
             //初始化生成评论的评论数序列,如果不存在创建，如果存在加一
             redisService.SORTSET.zincrby(type+"评论数",1,beCommentedId+"");

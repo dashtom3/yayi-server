@@ -84,4 +84,13 @@ public class VideoManageController {
     ){
     	return videoManageService.play(viId);
     }
+
+    //获取视频详情
+    @RequestMapping("detail")
+    @ResponseBody
+    public DataWrapper<VidManage> detail(
+            @RequestParam(value="viId",required = true) Integer viId
+    ){
+            return videoManageService.detail(viId);
+    }
 }

@@ -19,4 +19,6 @@ public interface VideoManageService {
 	 DataWrapper<Void> deleteVid(Integer viId);
 
 	DataWrapper<Void> play(Integer viId);
+
+	DataWrapper<VidManage> detail(Integer viId);
 }

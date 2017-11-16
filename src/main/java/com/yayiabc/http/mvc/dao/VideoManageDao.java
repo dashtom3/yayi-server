@@ -21,4 +21,6 @@ public interface VideoManageDao {
 
 
 	List<VidManage> showVid(@Param("rule")Integer rule,@Param("videoCategory") Integer videoCategory);
+
+    VidManage detail(Integer viId);
 }

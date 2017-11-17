@@ -106,13 +106,15 @@ public class MomentManageServiceImpl implements MomentManageService{
             }else if(moment.getMomentType()==4) {//如果是4培训
                 map = momentManageDao.getMomentTitleByTrain(moment.getMomentContentId());
             }
-            String momentContentTitle=map.get("contentTitle");
-            String momentPicture=map.get("contentPic");
-            if(momentContentTitle!=null){
-                moment.setMomentContentTitle(momentContentTitle);
-            }
-            if(momentPicture!=null){
-                moment.setMomentPicture(momentPicture);
+            if(map!=null){
+                String momentContentTitle=map.get("contentTitle");
+                String momentPicture=map.get("contentPic");
+                if(momentContentTitle!=null){
+                    moment.setMomentContentTitle(momentContentTitle);
+                }
+                if(momentPicture!=null){
+                    moment.setMomentPicture(momentPicture);
+                }
             }
         }
         dataWrapper.setData(momentList);

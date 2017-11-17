@@ -99,11 +99,11 @@ public class MomentManageServiceImpl implements MomentManageService{
             }
             //如果是病例，培训，视频，填充图片和标题
             Map<String,String> map=new HashMap<String,String>();
-            if(moment.getMomentType()==3){//如果是3视频
+            if(moment.getMomentType()==2){//如果是2视频
                 map=momentManageDao.getMomentTitleByVedio(moment.getMomentContentId());
-            }else if(moment.getMomentType()==4){//如果是4病例
+            }else if(moment.getMomentType()==3){//如果是3病例
                 map=momentManageDao.getMomentTitleByPost(moment.getMomentContentId());
-            }else if(moment.getMomentType()==5) {//如果是5培训
+            }else if(moment.getMomentType()==4) {//如果是4培训
                 map = momentManageDao.getMomentTitleByTrain(moment.getMomentContentId());
             }
             String momentContentTitle=map.get("contentTitle");

@@ -452,8 +452,8 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		int cqb=user.getcQb();
 		int userQbNums=qbbalance+aqb+bqb+cqb;
 		s=s+/*s+sb.toString()+*/"（乾币余额："+userQbNums+"）。订单编号:"+order.getOrderId();
-
-		userMyQbDao.addMessageQbQRget(sb.toString(), order.getUserId(), s, System.nanoTime());
+		String qbBalance="\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.0折\""+bqb+"个；"+"\"9.5折\""+cqb+"个；";
+		userMyQbDao.addMessageQbQRget(sb.toString(), order.getUserId(), s, System.nanoTime(),qbBalance);
 		//---无语
 		orderManagementDao.saveRefundMessageToReturnQbMsg(sb.toString(),order.getOrderId());
 		return sb.toString();

@@ -192,8 +192,10 @@ public class PayAfterOrderUtil {
 		int bqb=user.getbQb();
 		int cqb=user.getcQb();
 		int userQbNum=qbbalance+aqb+bqb+cqb;
+		
+		String qbBalance="\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.0折\""+bqb+"个；"+"\"9.5折\""+cqb+"个；";
 
-		int iii=userMyQbService.addMessageQbQ(qr.getQbRout(),userId,qr.getRemark().replace("userQbNum",userQbNum+""),qr.getMillisecond());
+		int iii=userMyQbService.addMessageQbQ(qr.getQbRout(),userId,qr.getRemark().replace("userQbNum",userQbNum+""),qr.getMillisecond(),qbBalance);
 		if(i+iii>=2){
 			return true;
 		}

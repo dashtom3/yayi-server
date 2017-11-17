@@ -309,7 +309,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			Jedis jedis=rc.getJedis();
 			jedis.select(1);
 			jedis.set("expireOrder"+orderId, json.toString());  
-			jedis.expire("expireOrder"+orderId,40);
+			jedis.expire("expireOrder"+orderId,60*30);
 			//保存主要数据
             jedis.hset("expireOrder1", "expireOrder"+orderId, json.toString());
 			jedis.close();

@@ -89,14 +89,14 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 	}
 
 	@Override
-	public int addMessageQbQ(String dedNums, String userId, String s,long Mi) {
+	public int addMessageQbQ(String dedNums, String userId, String s,long Mi,String qbBalance) {
 		// TODO Auto-generated method stub
-		return userMyQbDao.addMessageQbQ(dedNums,userId,s,Mi);
+		return userMyQbDao.addMessageQbQ(dedNums,userId,s,Mi,qbBalance);
 	}
 
 	@Override
-	public int addMessageQbQRget(String string, String userId, String string2, long mI) {
+	public int addMessageQbQRget(String string, String userId, String string2, long mI,String qbBalance) {
 		// TODO Auto-generated method stub
-		return userMyQbDao.addMessageQbQRget(string,userId,string2,mI);
+		return userMyQbDao.addMessageQbQRget(string,userId,string2,mI,qbBalance);
 	}
 }

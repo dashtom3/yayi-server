@@ -79,14 +79,14 @@
 		</foreach>
 	</update>
 	<insert id="addMessageQbQ" parameterType="java.util.List">
-		INSERT INTO qb_record(user_id,qb_rout,qb_time,remark,created,millisecond)
-		VALUE(#{userId},#{dedNums},now(),#{message},NOW(),#{millisecond});
+		INSERT INTO qb_record(user_id,qb_rout,qb_time,remark,created,millisecond,qb_balances)
+		VALUE(#{userId},#{dedNums},now(),#{message},NOW(),#{millisecond},#{qbBalance});
 	</insert>
 
 
 	<insert id="addMessageQbQRget" parameterType="java.util.List">
-		INSERT INTO qb_record(user_id,qb_rget,qb_time,remark,created,millisecond)
-		VALUE(#{userId},#{dedNums},now(),#{message},NOW(),#{millisecond});
+		INSERT INTO qb_record(user_id,qb_rget,qb_time,remark,created,millisecond,qb_balances)
+		VALUE(#{userId},#{dedNums},now(),#{message},NOW(),#{millisecond},#{qbBalance});
 	</insert>
 
 	<resultMap type="User" id="qbBalanceMap">

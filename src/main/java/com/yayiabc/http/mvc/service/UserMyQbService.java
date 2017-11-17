@@ -12,9 +12,9 @@ public interface UserMyQbService {
 
 	int updateDataToUser(List<Integer> listData,String userId);
 
-	int addMessageQbQ(String dedNums, String userId, String s,long Mi);
+	int addMessageQbQ(String dedNums, String userId, String s,long Mi, String qbBalance);
 	
 	 boolean adds(QbRecord qbRecord);
 
-	int addMessageQbQRget(String string, String userId, String string2, long mI);
+	int addMessageQbQRget(String string, String userId, String string2, long mI, String qbBalance);
 }

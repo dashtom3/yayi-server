@@ -22,7 +22,7 @@ public class ZanServiceImpl implements ZanService{
 
 
 	@Override
-	public DataWrapper<Void> upvote(String token, String type, Integer typeId,Integer parentId,Integer presentId,String classify) {
+	public DataWrapper<Void> upvote(String token, String type, Integer typeId,Integer parentId,Integer presentId) {
 		DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
 		//获取用户信息
 		User user = utilsDao.getUserByToken(token);
@@ -50,18 +50,18 @@ public class ZanServiceImpl implements ZanService{
 			redisService.SETS.sadd("点赞用户列表"+key,userId);
 			redisService.SORTSET.zincrby("点赞计数列表"+keyTwo,1,member);
 		}
-		System.out.println(classify+userId);
-		//1.判断是否已经被点赞
-		boolean flag1 = redisService.SETS.sismember("点赞用户列表", userId);
-		System.err.println(flag1);
-		//2.如果已经点赞,取消点赞
-		if (flag1) {
-			redisService.SETS.srem("点赞用户列表", userId);
-			redisService.SORTSET.zincrby(classify+"点赞", -1, typeId+"");
-		} else{//3.如果未点赞,则点赞
-			redisService.SETS.sadd("点赞用户列表",userId);
-			redisService.SORTSET.zincrby(classify+"点赞",1,typeId+"");
-		}
+//		System.out.println(classify+userId);
+//		//1.判断是否已经被点赞
+//		boolean flag1 = redisService.SETS.sismember("点赞用户列表", userId);
+//		System.err.println(flag1);
+//		//2.如果已经点赞,取消点赞
+//		if (flag1) {
+//			redisService.SETS.srem("点赞用户列表", userId);
+//			redisService.SORTSET.zincrby(classify+"点赞", -1, typeId+"");
+//		} else{//3.如果未点赞,则点赞
+//			redisService.SETS.sadd("点赞用户列表",userId);
+//			redisService.SORTSET.zincrby(classify+"点赞",1,typeId+"");
+//		}
 		
 		//评论
 		

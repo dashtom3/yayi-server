@@ -54,19 +54,15 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		String userId=utilsDao.getUserID(token);
 		cottomsPost.setUserId(userId);
 		String trueName= cottomsPostDao.gettrueName(userId);
-
-
-			cottomsPost.setWriter(trueName);
-			if(cottomsPost.getPostId()==0){
-				for (int i = 0; i < 50; i++) {
-				cottomsPostDao.addPost(cottomsPost);
-				RedisService.SORTSET.zadd(cottomsPost.getClassify()+"点赞", 0, cottomsPost.getPostId()+"");
-				RedisService.SORTSET.zadd(cottomsPost.getClassify()+"评论", 0, cottomsPost.getPostId()+"");
-				readNumberServer.readNumber(token, cottomsPost.getPostId());
-				}
-			}else{
-				cottomsPostDao.setPost(cottomsPost);
-			
+		cottomsPost.setWriter(trueName);
+		if(cottomsPost.getPostId()==0){
+			cottomsPostDao.addPost(cottomsPost);
+			//发布病例点赞默认为0
+			RedisService.SORTSET.zadd("点赞计数列表病例:", 0, cottomsPost.getPostId()+"");
+			//发布阅读数默认为0
+			RedisService.SORTSET.zadd("阅读数", 0, cottomsPost.getPostId()+"");
+		}else{
+			cottomsPostDao.setPost(cottomsPost);
 		}
 		dataWrapper.setNum(cottomsPost.getPostId());
 		return dataWrapper;
@@ -77,61 +73,79 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	public DataWrapper<List<CottomsPost>> queryPost(Integer currentPage,Integer numberPerPage,String classify,Integer order,Integer postStater) {
 		DataWrapper<List<CottomsPost>> dataWrapper=new DataWrapper<List<CottomsPost>>();
 		CottomsPost cottomsPost = new CottomsPost();
+		System.out.println(classify);
 		cottomsPost.setClassify(classify);
 		cottomsPost.setPostStater(postStater);
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		if(classify==null){
-			List<CottomsPost> cottomsPosts=cottomsPostDao.queryPost(page,classify,order,postStater);
-			int totalNumber=cottomsPostDao.getTotalNumber(classify);
-			for (CottomsPost cottomsPost2 : cottomsPosts) {
-				String readNumber = RedisService.STRINGS.get(cottomsPost.getPostId()+"");//获取阅读数
-				int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost2.getPostId());//获取评论数
-				//			List<String> postId=RedisService.LISTS.lrange("2评论"+cottomsPost2.getPostId(), start, end);
-				int favourNumber = (int)RedisService.SETS.scard("病例:"+cottomsPost2.getPostId());//获取点赞数
-				cottomsPost2.setReadNumber(readNumber);
-				cottomsPost2.setCommentNumber(favourNumber);
-				cottomsPost2.setCommentNumber(commentNumber);
-				cottomsPost.setChargeContent(null);
-				cottomsPost.setFreeContent(null);
-				dataWrapper.setData(cottomsPosts);
-				dataWrapper.setPage(page, totalNumber);
-			}
-		}else {
-			//数据库获得总条数
-			int totalNumber=cottomsPostDao.getTotalNumber(classify);
-			//redise获取总条数
-			//int totalNumber=(int)(RedisService.SORTSET.zcard("口腔内科")+RedisService.SORTSET.zcard("口腔外科")+RedisService.SORTSET.zcard("口腔种植")+RedisService.SORTSET.zcard("口腔修复")+RedisService.SORTSET.zcard("口腔正畸"));
-			int start = (int)Math.floor((currentPage-1)*numberPerPage);//起始 
-			int end = (int)Math.floor((totalNumber-1)/numberPerPage+1);//总页数
-			Set<String> set = RedisService.SORTSET.zrevrange(classify+"点赞", start, start+numberPerPage-1);
-			List<String> list =new ArrayList<String>();
-			list.addAll(set);
-			System.out.println(list);
-			System.out.println(postStater);
-			List<CottomsPost> cottomsPosts = cottomsPostDao.queryClassifyPost(list,postStater);
-			for (CottomsPost cottomsPost2 : cottomsPosts) {
-				String readNumber = RedisService.STRINGS.get(cottomsPost.getPostId()+"");//获取阅读数
-				int commentNumber = (int)RedisService.LISTS.llen("2评论"+cottomsPost2.getPostId());//获取评论数
-				//List<String> postId=RedisService.LISTS.lrange("2评论"+cottomsPost2.getPostId(), start, end);
-				int favourNumber = (int)RedisService.SETS.scard("病例:"+cottomsPost2.getPostId());//获取点赞数
-				cottomsPost2.setReadNumber(readNumber);
-				cottomsPost2.setCommentNumber(favourNumber);
-				cottomsPost2.setCommentNumber(commentNumber);
-				cottomsPost.setChargeContent(null);
-				cottomsPost.setFreeContent(null);
-				dataWrapper.setData(cottomsPosts);
-				dataWrapper.setPage(page, totalNumber);
-			}
-			System.out.println(cottomsPosts);
+		String key="";
+		if(order==2){
+			key="点赞计数列表";
+		}else if(order==1){
+			key="自增序列";
+		}else{
+			key="";
 		}
+		//	if(classify==null){
+		int totalNumber=(int)RedisService.SORTSET.zcard("点赞计数列表病例:");
+		System.err.println("totalNumber"+totalNumber);
+		Set<String> set = RedisService.SORTSET.zrevrange("点赞计数列表病例:", 0, totalNumber);
+		System.err.println(set);
+		List<String> list =new ArrayList<String>();
+		list.addAll(set);
+		System.out.println(list);
+		List<CottomsPost> cottomsPosts=cottomsPostDao.queryPost(page,classify,order,postStater,list);
+		for (CottomsPost cottomsPost2 : cottomsPosts) {
+			int readNumber = (int)RedisService.SORTSET.zscore("阅读数", cottomsPost2.getPostId()+"");//获取阅读数
+			System.out.println("阅读数"+readNumber);
+			int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost2.getPostId());//获取评论数
+			System.out.println("评论数"+commentNumber);
+			//			List<String> postId=RedisService.LISTS.lrange("2评论"+cottomsPost2.getPostId(), start, end);
+			int favourNumber = (int)RedisService.SETS.scard("点赞用户病例病例:"+cottomsPost2.getPostId());//获取点赞数
+			System.out.println("点赞数"+favourNumber);
+			cottomsPost2.setReadNumber(readNumber);
+			cottomsPost2.setCommentNumber(favourNumber);
+			cottomsPost2.setCommentNumber(commentNumber);
+			cottomsPost.setChargeContent(null);
+			cottomsPost.setFreeContent(null);
+			dataWrapper.setData(cottomsPosts);
+			dataWrapper.setPage(page, totalNumber);
+		}
+		//		}else {
+		//			//数据库获得总条数
+		//			int totalNumber=cottomsPostDao.getTotalNumber(classify);
+		//			//redise获取总条数
+		//			//int totalNumber=(int)(RedisService.SORTSET.zcard("口腔内科")+RedisService.SORTSET.zcard("口腔外科")+RedisService.SORTSET.zcard("口腔种植")+RedisService.SORTSET.zcard("口腔修复")+RedisService.SORTSET.zcard("口腔正畸"));
+		//			int start = (int)Math.floor((currentPage-1)*numberPerPage);//起始 
+		//			int end = (int)Math.floor((totalNumber-1)/numberPerPage+1);//总页数
+		//			Set<String> set = RedisService.SORTSET.zrevrange(classify+"点赞", start, start+numberPerPage-1);
+		//			List<String> list =new ArrayList<String>();
+		//			list.addAll(set);
+		//			System.out.println(list);
+		//			System.out.println(postStater);
+		//			List<CottomsPost> cottomsPosts = cottomsPostDao.queryClassifyPost(list,postStater);
+		//			for (CottomsPost cottomsPost2 : cottomsPosts) {
+		//				String readNumber = RedisService.STRINGS.get(cottomsPost.getPostId()+"");//获取阅读数
+		//				int commentNumber = (int)RedisService.LISTS.llen("2评论"+cottomsPost2.getPostId());//获取评论数
+		//				//List<String> postId=RedisService.LISTS.lrange("2评论"+cottomsPost2.getPostId(), start, end);
+		//				int favourNumber = (int)RedisService.SETS.scard("病例:"+cottomsPost2.getPostId());//获取点赞数
+		//				cottomsPost2.setReadNumber(readNumber);
+		//				cottomsPost2.setCommentNumber(favourNumber);
+		//				cottomsPost2.setCommentNumber(commentNumber);
+		//				cottomsPost.setChargeContent(null);
+		//				cottomsPost.setFreeContent(null);
+		//				dataWrapper.setData(cottomsPosts);
+		//				dataWrapper.setPage(page, totalNumber);
+		//			}
+		//			System.out.println(cottomsPosts);
+		//		}
 		return dataWrapper;
 	}
 	//病例详情
 	@Override
 	public DataWrapper<CottomsPost> cottomsDetail(CottomsPost cottomsPost,String token) {
-		redisService.STRINGS.incrBy(cottomsPost.getPostId()+"",1);//增加阅读数
+		RedisService.SORTSET.zincrby("阅读数", 1, cottomsPost.getPostId()+"");
 		String userId=null;
 		if(token!=null){
 			userId=utilsDao.getUserID(token);
@@ -147,8 +161,9 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			}
 		}
 		CottomsPost cottomsPost1=cottomsPostDao.cottomsDetail(cottomsPost);
-		String readNumber = RedisService.STRINGS.get(cottomsPost.getPostId()+"");//阅读数
-		int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost1.getPostId());//评论数
+		int readNumber = (int)RedisService.SORTSET.zscore("阅读数", cottomsPost1.getPostId()+"");
+		int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost.getPostId());//评论数
+		System.out.println(cottomsPost1);
 		int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+cottomsPost1.getPostId());//点赞数
 		cottomsPost1.setReadNumber(readNumber);
 		cottomsPost1.setPostFavour(favourNumber);

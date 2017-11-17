@@ -32,10 +32,9 @@ public class ZanController {
             @RequestParam(value="type",required = true) String type,
             @RequestParam(value="typeId",required = true) Integer typeId,
             @RequestParam(value="parentId",required =false) Integer parentId,
-            @RequestParam(value="presentId",required = false)Integer presentId,
-            @RequestParam(value="classify",required=false) String classify
+            @RequestParam(value="presentId",required = false)Integer presentId
     ){
-        return zanService.upvote(token,type,typeId,parentId,presentId,classify);
+        return zanService.upvote(token,type,typeId,parentId,presentId);
     }
 
 

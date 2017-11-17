@@ -25,7 +25,9 @@ public interface CottomsPostDao {
 			@Param("page") Page page,
 			@Param("classify")String classify,
 			@Param("order")Integer order,
-			@Param("postStater")Integer postStater);
+			@Param("postStater")Integer postStater,
+			@Param("list") List<String> list
+			);
 	
 	public List<Map<String,Object>> queryPost(Page page);
 	public int getTotalNumber(@Param("classify") String classify);
@@ -43,6 +45,7 @@ public interface CottomsPostDao {
 			);
 	
 	public int postLike(CottomsPost cottomsPost);
+	
 	public void postLikeAdd(CottomsPost cottomsPost);
 	
 //	public int postReaderNumber(CottomsPost cottomsPost);

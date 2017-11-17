@@ -18,7 +18,7 @@ public class CottomsPost {
 	@DateTimeFormat(pattern="yy-MM-dd HH:mm:ss")
 	private Date postTime;
 	private String writer;
-	private String readNumber;
+	private int readNumber;
 	private int commentNumber;
 	private int postFavour;
 	private List<Comments> commentsList;
@@ -64,7 +64,6 @@ public class CottomsPost {
 	public void setChargeContent(String chargeContent) {
 		this.chargeContent = chargeContent;
 	}
-	@JsonFormat(pattern="yy-MM-dd HH:mm:ss")
 	public Date getPostTime() {
 		return postTime;
 	}
@@ -77,10 +76,11 @@ public class CottomsPost {
 	public void setWriter(String writer) {
 		this.writer = writer;
 	}
-	public String getReadNumber() {
+	
+	public int getReadNumber() {
 		return readNumber;
 	}
-	public void setReadNumber(String readNumber) {
+	public void setReadNumber(int readNumber) {
 		this.readNumber = readNumber;
 	}
 	public int getCommentNumber() {
@@ -147,7 +147,7 @@ public class CottomsPost {
 				+ ", chargeNumber=" + chargeNumber + ", user=" + user + "]";
 	}
 	public CottomsPost(String userId, int postId, String headline, String classify, String freeContent,
-			String chargeContent, Date postTime, String writer, String readNumber, int commentNumber, int postFavour,
+			String chargeContent, Date postTime, String writer, int readNumber, int commentNumber, int postFavour,
 			List<Comments> commentsList, String cover, String printUrl, Date replyTime, String token,
 			Integer postStater, Integer chargeNumber, User user) {
 		super();

@@ -54,26 +54,32 @@
 			<if test="classify!=null and classify!=''">
 				classify = #{classify} and
 			</if>
-			post_Stater=#{postStater}
+			post_stater=#{postStater}
+			and
+			post_id in
+			<foreach collection="list" item="postId" index="index" open="("
+				separator="," close=")">
+				#{postId}
+			</foreach>
 		</where>
-		order by
-		<choose>
-			<when test="order=0">post_time</when>
-			<when test="order=2">read_number desc</when>
-		</choose>
-		limit #{page.currentNumber},#{page.numberPerPage}
+		limit ${page.currentNumber},${page.numberPerPage}
 		<!-- <foreach collection="postId" item="post_id" open="AND (" close=")" 
 			separator="OR"> postId=#{post_id} </foreach> -->
 	</select>
 
 	<!--根据点赞分类排序 -->
 	<select id="queryClassifyPost" resultType="CottomsPost">
-		select * from cottoms_post where post_id in
-		<foreach collection="list" item="postId" index="index" open="(" separator="," close=")">
+		select * from cottoms_post where
+		post_stater=#{postStater} and
+		classify=#{classify} and
+		post_id in
+		<foreach collection="list" item="postId" index="index" open="("
+			separator="," close=")">
 			#{postId}
 		</foreach>
-		and post_stater=#{postStater}
+		limit
 	</select>
+
 	<!--查看用户的病例 -->
 	<select id="queryByIdPost" resultType="java.lang.Integer">
 		select post_id from

@@ -107,9 +107,9 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			int readNumber = (int)RedisService.SORTSET.zscore("阅读数", cottomsPost2.getPostId()+"");//获取阅读数
 			int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost2.getPostId());//获取评论数
 			//			List<String> postId=RedisService.LISTS.lrange("2评论"+cottomsPost2.getPostId(), start, end);
-			int favourNumber = (int)RedisService.SETS.scard("点赞用户病例病例:"+cottomsPost2.getPostId());//获取点赞数
+			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+cottomsPost2.getPostId());//获取点赞数
 			cottomsPost2.setReadNumber(readNumber);
-			cottomsPost2.setCommentNumber(favourNumber);
+			cottomsPost2.setPostFavour(favourNumber);
 			cottomsPost2.setCommentNumber(commentNumber);
 			cottomsPost.setChargeContent(null);
 			cottomsPost.setFreeContent(null);

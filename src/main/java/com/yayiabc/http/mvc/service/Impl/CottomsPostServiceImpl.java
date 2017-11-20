@@ -19,7 +19,6 @@ import javax.servlet.http.HttpServletResponse;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.druid.sql.parser.Token;
 import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.ExcelUtil;
@@ -75,10 +74,10 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 
 	//显示病例
 	@Override
-	public DataWrapper<List<CottomsPost>> queryPost(Integer currentPage,Integer numberPerPage,
-			Integer classify,Integer order,Integer postStater,String token,int type) {
+	public DataWrapper<Object> queryPost(Integer currentPage,Integer numberPerPage,
+			Integer classify,Integer order,Integer postStater,String token,int type,String keyWord) {
 		
-		DataWrapper<List<CottomsPost>> dataWrapper=new DataWrapper<List<CottomsPost>>();
+		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
 		CottomsPost cottomsPost = new CottomsPost();
 		String userId=utilsDao.getUserID(token);
 		if (type==1) {
@@ -98,11 +97,11 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			key="";
 		}
 		//	if(classify==null){
-		int totalNumber=(int)RedisService.SORTSET.zcard("点赞计数列表病例:");
+		int totalNumber=cottomsPostDao.getTotalNumber(classify,keyWord);
 		Set<String> set = RedisService.SORTSET.zrevrange("点赞计数列表病例:", 0, totalNumber);
 		List<String> list =new ArrayList<String>();
 		list.addAll(set);
-		List<CottomsPost> cottomsPosts=cottomsPostDao.queryPost(page,classify,order,postStater,list,userId);
+		List<CottomsPost> cottomsPosts=cottomsPostDao.queryPost(page,classify,order,postStater,list,userId,keyWord);
 		for (CottomsPost cottomsPost2 : cottomsPosts) {
 			int readNumber = (int)RedisService.SORTSET.zscore("阅读数", cottomsPost2.getPostId()+"");//获取阅读数
 			int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost2.getPostId());//获取评论数

@@ -27,11 +27,12 @@ public interface CottomsPostDao {
 			@Param("order")Integer order,
 			@Param("postStater")Integer postStater,
 			@Param("list") List<String> list,
-			@Param("userId") String userId
+			@Param("userId") String userId,
+			@Param("keyWord") String keyWord
 			);
 	
 	public List<Map<String,Object>> queryPost(Page page);
-	public int getTotalNumber(@Param("classify") String classify);
+	public int getTotalNumber(@Param("classify") Integer classify,@Param("keyWord")String keyWord);
 	public int getTotalCommentNumber();
 	public CottomsPost cottomsDetail(String postId);
 	public void comment(CottomsComment cottomsComment);

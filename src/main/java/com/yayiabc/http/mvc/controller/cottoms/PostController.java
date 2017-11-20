@@ -37,16 +37,17 @@ public class PostController {
 	//病例列表
 	@RequestMapping("queryPost")
 	@ResponseBody
-	public DataWrapper<List<CottomsPost>> queryPost(
+	public DataWrapper<Object> queryPost(
 			@RequestHeader(value="token",required=false)String token,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
 			@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
 			@RequestParam(value="classify",required=false) Integer classify,//分类1:外科2内科3修复4种植5正畸
 			@RequestParam(value="order",required=false,defaultValue="0") Integer order,//0:按时间排序1:按阅读数排序3:暗点赞数排序
 			@RequestParam(value="postStater",required=true,defaultValue="1") Integer postStater,//病例状态1：发布2：草稿3：删除
-			@RequestParam(value="type",required=false,defaultValue="1") int type//1:病例列表。2:我的病例列表
+			@RequestParam(value="type",required=false,defaultValue="1") int type,//1:病例列表。2:我的病例列表
+			@RequestParam(value="keyWord",required=false) String keyWord
 			){
-		return cottomsPostService.queryPost(currentPage,numberPerPage,classify,order,postStater,token,type);
+		return cottomsPostService.queryPost(currentPage,numberPerPage,classify,order,postStater,token,type,keyWord);
 	}
 	
 	//查看病例详情

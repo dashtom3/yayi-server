@@ -57,6 +57,9 @@
 			<if test="classify!=null and classify!=''">
 				classify = #{classify} and
 			</if>
+			<if test="keyWord!=null and keyWord!=''">
+			 	headline like '%${keyWord}%' and
+			</if>
 			post_stater=#{postStater}
 			and
 			post_id in
@@ -101,6 +104,9 @@
 		<where>
 			<if test="classify!=null and classify!=''">
 				classify=#{classify}
+			</if>
+			<if test="keyWord!=null and keyWord!=''">
+				and headline like '%${keyWord}%'
 			</if>
 		</where>
 	</select>

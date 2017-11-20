@@ -14,7 +14,8 @@ public interface CottomsPostService {
 	public DataWrapper<Void> addPost(CottomsPost cottomsPost,String token);
 	
 	//显示病例 type:1:是病例列表。2:是我的病例列表
-	public DataWrapper<List<CottomsPost>> queryPost(Integer currentPage,Integer numberPerPage,Integer classify,Integer order,Integer postStater,String token,int type);
+	public DataWrapper<Object> queryPost(Integer currentPage,Integer numberPerPage,Integer classify,
+			Integer order,Integer postStater,String token,int type,String keyWord);
 	
 	//病例详情
 	public DataWrapper<CottomsPost> cottomsDetail(String postId,String token);

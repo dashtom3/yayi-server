@@ -7,9 +7,9 @@
 
 	<insert id="submit">
 		insert into
-		user_with(a_type,b_type,c_type,give_type,created,wit_type,account_holder,card_number,o_bank,user_id)
+		user_with(a_type,c_type,give_type,created,wit_type,account_holder,card_number,o_bank,user_id)
 		values(
-		#{aType},#{bType},#{cType},#{giveType},now(),#{witType},#{accountHolder},#{cardNumber},#{oBank},#{userId}
+		#{aType},#{cType},#{giveType},now(),#{witType},#{accountHolder},#{cardNumber},#{oBank},#{userId}
 		)
 	</insert>
 
@@ -19,9 +19,7 @@
 			<if test="aType!=null and aType!='' and aType!=0">
 				a_qb=a_qb-#{aType},
 			</if>
-			<if test="bType!=null and bType!='' and bType!=0">
-				b_qb=b_qb-#{bType},
-			</if>
+			
 			<if test="cType!=null and cType!='' and cType!=0">
 				c_qb=c_qb-#{cType},
 			</if>
@@ -142,13 +140,12 @@
 	</select>
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.User" id="qwaz">
 		<result property="aQb" column="a_qb" />
-		<result property="bQb" column="b_qb" />
 		<result property="cQb" column="c_qb" />
 		<result property="qbBalance" column="qb_balance" />
 		<result property="phone" column="phone" />
 	</resultMap>
 	<select id="showUserQbNum" resultMap="qwaz">
-		select a_qb,b_qb,c_qb,qb_balance,phone from user where user_id=#{userId}
+		select a_qb,c_qb,qb_balance,phone from user where user_id=#{userId}
 	</select>
 	
 	<select id="latelyWithRecord" resultType="com.yayiabc.http.mvc.pojo.jpa.UserWith">

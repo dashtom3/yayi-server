@@ -251,7 +251,7 @@ public class TrainShowServiceImpl implements TrainShowService {
 		trainOrdera.setUserId(user.getUserId());
 		//判断乾币抵扣的正确性
 		System.out.println(user);
-		int userTotalQbs=user.getQbBalance()+user.getaQb()+user.getbQb()+user.getcQb();
+		int userTotalQbs=user.getQbBalance()+user.getaQb()+user.getcQb();
 		if(trainOrdera.getQbDed()>userTotalQbs){
 			dataWrapper.setMsg("乾币错误，请稍后再试");
 			return dataWrapper;

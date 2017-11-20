@@ -47,7 +47,6 @@ public class User extends BasePojo implements Serializable {
 
 	private List<QbRecord> qbRecordList;
 	private int aQb;
-	private int bQb;
 	private int cQb;
 	
 	private List<UserWith> userWithList;
@@ -81,13 +80,6 @@ public class User extends BasePojo implements Serializable {
 		this.aQb = aQb;
 	}
 
-	public int getbQb() {
-		return bQb;
-	}
-
-	public void setbQb(int bQb) {
-		this.bQb = bQb;
-	}
 
 	public int getcQb() {
 		return cQb;

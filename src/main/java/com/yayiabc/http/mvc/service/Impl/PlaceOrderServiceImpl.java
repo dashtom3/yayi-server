@@ -193,7 +193,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				throw new OrderException(ErrorCodeEnum.QBDED_Error);
 			}
 
-			//本单赠送钱币百分比
+			//本单赠送钱币
 			double giveQbNum=0;
 			//道邦总价
 			double daoBnagSumPrice=0;
@@ -244,7 +244,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
 			}
 			//计算本单赠送钱币数
-			giveQbNum=calculQbNum(daoBnagSumPrice,SuppliesSumPrice,TooldevicesSumCount,TooldevicesSumPrice,orderItemList);
+			giveQbNum=calculQbNum(finalList,orderItemList);
 
 
 			//该单计算运费
@@ -288,8 +288,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			{
 				throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
 			}
-			/*//放入缓存
-			CacheUtils.getInstance().getCacheMap().put(orderId, new Date());*/
 			/*
 			 * 放入redis
 			 */
@@ -309,7 +307,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			Jedis jedis=rc.getJedis();
 			jedis.select(1);
 			jedis.set("expireOrder"+orderId, json.toString());  
-			jedis.expire("expireOrder"+orderId,50);
+			jedis.expire("expireOrder"+orderId,60*2);
 			//保存主要数据
             jedis.hset("expireOrder1", "expireOrder"+orderId, json.toString());
 			jedis.close();
@@ -376,49 +374,12 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		}
 		return true;
 	}
-	private double calculQbNum(double daoBnagSumPrice,double SuppliesSumPrice,double TooldevicesSumCount,double TooldevicesSumPrice, List<OrderItem> orderItemList){
-		double giveQbNum=0.0;
-		for(int i=0;i<orderItemList.size();i++){
-			if("上海道邦".equals(orderItemList.get(i).getItemBrandName())){
-				daoBnagSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
-			}else{
-				//这里计算除道邦之外的商品分类价格  耗材类  工具设备类
-				if("耗材类".equals(orderItemList.get(i).getItemType())){
-					SuppliesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
-				}else if("工具设备类".equals(orderItemList.get(i).getItemType())){
-					TooldevicesSumCount+=orderItemList.get(i).getNum();
-					TooldevicesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
-				}
-			}
-		}
-		//首先道邦品牌
-		if(daoBnagSumPrice>0&&daoBnagSumPrice<300){
-			giveQbNum=giveQbNum+daoBnagSumPrice*0.03;
-		}else if(daoBnagSumPrice>=300&&daoBnagSumPrice<600){
-			giveQbNum=giveQbNum+daoBnagSumPrice*0.05;
-		}else if(daoBnagSumPrice>=600&&daoBnagSumPrice<1200){
-			giveQbNum=giveQbNum+daoBnagSumPrice*0.08;
-		}else if(daoBnagSumPrice>=1200&&daoBnagSumPrice<2500){
-			giveQbNum=giveQbNum+daoBnagSumPrice*0.12;
-		}else if(daoBnagSumPrice>=2500){
-			giveQbNum=giveQbNum+daoBnagSumPrice*0.15;
-		}
-		//其他品牌 耗材类
-		if(SuppliesSumPrice>0&&SuppliesSumPrice<500){
-			giveQbNum=giveQbNum+SuppliesSumPrice*0.03;
-		}else if(SuppliesSumPrice>=500&&SuppliesSumPrice<1000){
-			giveQbNum=giveQbNum+SuppliesSumPrice*0.05;
-		}else if(SuppliesSumPrice>=1000&&SuppliesSumPrice<3000){
-			giveQbNum=giveQbNum+SuppliesSumPrice*0.08;
-		}else if(SuppliesSumPrice>=3000){
-			giveQbNum=giveQbNum+SuppliesSumPrice*0.12;
-		}
-		//其他品牌 工具设配类
-		if(TooldevicesSumCount==1){
-			giveQbNum=giveQbNum+TooldevicesSumPrice*0.05;
-		}else if(TooldevicesSumCount>=2){
-			giveQbNum=giveQbNum+TooldevicesSumPrice*0.10;
-		}
+	private double calculQbNum(List<FinalList> finalList, List<OrderItem> orderItemList){
+		double giveQbNum=0;
+	    for(int i=0;i<finalList.size();i++){
+	    	giveQbNum+=finalList.get(i).getItemQb()*orderItemList.get(i).getNum();
+	    }
+	    System.out.println("赠送乾币数:"+giveQbNum);
 		return giveQbNum;
 	}
 	//查询上次下订单时填写的发票信息

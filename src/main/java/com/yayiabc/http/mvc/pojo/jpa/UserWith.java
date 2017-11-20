@@ -7,7 +7,6 @@ public class UserWith {
 	private  String userId;
 	private  int withId;
 	private double aType;
-	private double bType;
 	private double cType;
 	private double giveType;
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss",style="GMT+8")
@@ -51,12 +50,6 @@ public class UserWith {
 	}
 	public void setaType(double aType) {
 		this.aType = aType;
-	}
-	public double getbType() {
-		return bType;
-	}
-	public void setbType(double bType) {
-		this.bType = bType;
 	}
 	public double getcType() {
 		return cType;
@@ -117,7 +110,6 @@ public class UserWith {
 
 	public UserWith() {
 		this.aType = 0;
-		this.bType = 0;
 		this.cType = 0;
 		this.giveType = 0;
 		this.sign = 1;

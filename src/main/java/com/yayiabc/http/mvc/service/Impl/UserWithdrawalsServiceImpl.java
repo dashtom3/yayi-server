@@ -12,6 +12,7 @@ import org.springframework.transaction.annotation.Transactional;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
+import com.yayiabc.common.utils.RedisClient;
 import com.yayiabc.http.mvc.dao.UserMyQbDao;
 import com.yayiabc.http.mvc.dao.UserWithdrawalsDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
@@ -20,6 +21,8 @@ import com.yayiabc.http.mvc.pojo.jpa.UserWitSetUp;
 import com.yayiabc.http.mvc.pojo.jpa.UserWith;
 import com.yayiabc.http.mvc.service.UserMyQbService;
 import com.yayiabc.http.mvc.service.UserWithdrawalsService;
+
+import redis.clients.jedis.Jedis;
 @Service
 public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 	@Autowired
@@ -28,9 +31,9 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 	private UtilsDao utilsDao;
 	@Autowired
 	private UserMyQbService userMyQbService;
-   @Autowired 
-   private UserMyQbDao  userMyQbDao;
-   
+	@Autowired 
+	private UserMyQbDao  userMyQbDao;
+
 	//提现列表的显示
 	@Override
 	public DataWrapper<Object> show(HashMap<String, Object> hm) {
@@ -64,6 +67,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		// TODO Auto-generated method stub
 		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
 		User user=utilsDao.getUserByToken(token);
+
 		if(user==null){
 			dataWrapper.setMsg("toekn验证异常");
 			return dataWrapper;
@@ -72,14 +76,31 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 			dataWrapper.setMsg("验证码错误");
 			return dataWrapper;
 		}
+		//验证是否是注册赠送乾币
+		RedisClient rc=RedisClient.getInstance();
+		Jedis jedis=rc.getJedis();
+		double giveQb=userWith.getGiveType();
+		if(giveQb!=0){
+			if(jedis.hexists("userGiveQbNums",user.getUserId())){
+				String userGiveQb=jedis.hget("userGiveQbNums", user.getUserId());
+			    if(Integer.parseInt(userGiveQb)<giveQb){
+			    	dataWrapper.setMsg("提现错误，\"赠乾币\"乾币，数额不对（里面包含注册赠送乾币）");
+			    	dataWrapper.setFl(userGiveQb);
+			    	return dataWrapper;
+			    }
+			}else{
+				dataWrapper.setMsg("提现错误，\"赠乾币\"乾币，数额不对（里面包含注册赠送乾币）");
+		    	return dataWrapper;
+			}
+		}
 		userWith.setUserId(user.getUserId());
 		//校验 用户是否是提现成功状态下 发起的提现申请
 		Integer sign=userWithdrawalsServiceDao.queryWitSign(user.getUserId());
 		if(sign==null||sign==2){
-			int userQb=user.getaQb()+user.getbQb()+user.getcQb()+user.getQbBalance();
+			int userQb=user.getaQb()+user.getcQb()+user.getQbBalance();
 
 			if(userWith!=null){
-				if(userQb<userWith.getaType()+userWith.getbType()+userWith.getcType()+userWith.getGiveType()){
+				if(userQb<userWith.getaType()+userWith.getcType()+userWith.getGiveType()){
 					dataWrapper.setMsg("提现错误操作");
 					throw new RuntimeException("提现错误");
 				}else{
@@ -89,11 +110,9 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 					}
 					//这里做处理 保存到用户提现表中  String.format("%.2f", f)
 					int a=(int) userWith.getaType();
-					int b=(int) userWith.getbType();
 					int c=(int) userWith.getcType();
 					int give=(int) userWith.getGiveType();
 					userWith.setaType(utilsTwo(a*0.8));    //a
-					userWith.setbType(utilsTwo(b*0.9));    //b
 					userWith.setcType(utilsTwo(c*0.95));    //c
 					userWith.setGiveType(utilsTwo(userWith.getGiveType()));    //give
 					dataWrapper.setData( userWithdrawalsServiceDao.submit(userWith));
@@ -101,11 +120,10 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 					//用户钱币余额
 					int qbbalance=user.getQbBalance();
 					int aqb=user.getaQb();
-					int bqb=user.getbQb();
 					int cqb=user.getcQb();
-					int userQbNum=qbbalance+aqb+bqb+cqb;
-					String qbBalance="\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.0折\""+bqb+"个；"+"\"9.5折\""+cqb+"个；";
-					userMyQbService.addMessageQbQ("\"赠\"："+give+"个， \"9.5折\"："+c+"个 ， \"9.0折\"："+b+"个， \"8.0折\"："+a+"个",user.getUserId(),"乾币提现。（乾币余额："+userQbNum+"个）",System.nanoTime(),qbBalance); //新增钱币记录表   
+					int userQbNum=qbbalance+aqb+cqb;
+					String qbBalance="\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；";
+					userMyQbService.addMessageQbQ("\"赠\"："+give+"个， \"9.5折\"："+c+"个 ，  \"8.0折\"："+a+"个",user.getUserId(),"乾币提现。（乾币余额："+userQbNum+"个）",System.nanoTime(),qbBalance); //新增钱币记录表   
 				}
 			}
 		}else {
@@ -125,33 +143,30 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 			// withId 获取此用户 此次提现的内容
 			UserWith userWith=userWithdrawalsServiceDao.queryFourQb(withId);
 			int a=(int) (userWith.getaType()/0.8);
-			int b=(int) (userWith.getbType()/0.9);
 			int c=(int) (userWith.getcType()/0.95);
 			int give=(int) userWith.getGiveType();
-            if(userWith!=null){
-			userWith.setaType(-Math.round(a));
-			userWith.setbType(-Math.round(b));
-			userWith.setcType(-Math.round(c));
-			userWith.setGiveType(-Math.round(userWith.getGiveType()));
-			int q=userWithdrawalsServiceDao.updateUserQb(userWith);
-			if(q>0){
-				if(userWithdrawalsServiceDao.determine(withId,sign)>0){
-				//增加钱币记录
-					
-					//用户钱币余额
-					User user=userMyQbDao.getUserQbNum(userWith.getUserId());
-					int qbbalance=user.getQbBalance();
-					int aqb=user.getaQb();
-					int bqb=user.getbQb();
-					int cqb=user.getcQb();
-					int userQbNum=qbbalance+aqb+bqb+cqb;
-					String qbBalance="\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.0折\""+bqb+"个；"+"\"9.5折\""+cqb+"个；";
-					userMyQbService.addMessageQbQRget("\"赠\"："+give+"个， \"9.5折\"："+c+"个 ， \"9.0折\"："+b+"个， \"8.0折\"："+a+"个",userWith.getUserId(),"乾币提现审核不通过。（乾币余额："+userQbNum+"个）",System.nanoTime(),qbBalance); //新增钱币记录表   
-				dataWrapper.setMsg("拒绝提现申请，成功");
+			if(userWith!=null){
+				userWith.setaType(-Math.round(a));
+				userWith.setcType(-Math.round(c));
+				userWith.setGiveType(-Math.round(userWith.getGiveType()));
+				int q=userWithdrawalsServiceDao.updateUserQb(userWith);
+				if(q>0){
+					if(userWithdrawalsServiceDao.determine(withId,sign)>0){
+						//增加钱币记录
+
+						//用户钱币余额
+						User user=userMyQbDao.getUserQbNum(userWith.getUserId());
+						int qbbalance=user.getQbBalance();
+						int aqb=user.getaQb();
+						int cqb=user.getcQb();
+						int userQbNum=qbbalance+aqb+cqb;
+						String qbBalance="\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；";
+						userMyQbService.addMessageQbQRget("\"赠\"："+give+"个， \"9.5折\"："+c+"个 ，  \"8.0折\"："+a+"个",userWith.getUserId(),"乾币提现审核不通过。（乾币余额："+userQbNum+"个）",System.nanoTime(),qbBalance); //新增钱币记录表   
+						dataWrapper.setMsg("拒绝提现申请，成功");
+					}
+				}else{
+					dataWrapper.setMsg("拒绝提现申请，失败");
 				}
-			}else{
-				dataWrapper.setMsg("拒绝提现申请，失败");
-			}
 			}else{
 				dataWrapper.setMsg("参数错误");
 			}
@@ -222,9 +237,9 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		}else{
 			User user=userWithdrawalsServiceDao.showUserQbNum(userId);
 			if(user!=null)
-			dataWrapper.setData(user);
+				dataWrapper.setData(user);
 			dataWrapper.setMsg(sign+"");
-			dataWrapper.setFl(user.getaQb()+user.getbQb()+user.getcQb()+user.getQbBalance()+"");
+			dataWrapper.setFl(user.getaQb()+user.getcQb()+user.getQbBalance()+"");
 		}
 		return dataWrapper;
 	}

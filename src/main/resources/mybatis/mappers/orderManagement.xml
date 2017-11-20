@@ -554,11 +554,9 @@
 					a_qb = a_qb+${nn},
 				</if>
 				<if test="index==2">
-					b_qb = b_qb+${nn},
+					c_qb = c_qb+${nn},
 				</if>
-				<if test="index==3">
-					c_qb = c_qb+${nn}
-				</if>
+				
 			</set>
 			where user_id=#{userId}
 		</foreach>
@@ -569,5 +567,17 @@
 	
 	<select id="queryUserQbList" resultType="com.yayiabc.http.mvc.pojo.jpa.QbRecord">
 	 select * from qb_record where user_id=#{userId} and remark like '%充值%' order by created desc
+	</select>
+	
+	<select id="getItemQb" parameterType="java.util.List"
+		resultType="com.yayiabc.http.mvc.pojo.jpa.ItemValue">
+		SELECT
+		item_qb,item_sku
+		from item_value
+		WHERE item_sKU in
+		<foreach collection="list" item="item" open="(" close=")"
+			separator=",">
+			#{item.itemSKU}
+		</foreach>
 	</select>
 </mapper>

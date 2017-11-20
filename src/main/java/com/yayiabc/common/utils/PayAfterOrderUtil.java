@@ -96,10 +96,13 @@ public class PayAfterOrderUtil {
 			User user=userMyQbDao.getUserQbNum(o.getUserId());
 			int qbbalance=user.getQbBalance();
 			int aqb=user.getaQb();
-			int bqb=user.getbQb();
 			int cqb=user.getcQb();
-			int userQbNum=qbbalance+aqb+bqb+cqb;
-			q.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.0折\""+bqb+"个；"+"\"9.5折\""+cqb+"个；");
+			int userQbNum=qbbalance+aqb+cqb;
+			
+			//放入redis 维护赠送乾币数
+			limitWithQb(o.getUserId(),user.getQbBalance());
+			
+			q.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；");
 			q.setRemark("下单获得"+o.getGiveQb()+"个乾币。（乾币余额："+userQbNum+"）订单编号："+orderId);
 			userMyQbDao.add(q);
 		}
@@ -140,8 +143,9 @@ public class PayAfterOrderUtil {
 		List<Integer> listData=new ArrayList<Integer>();
 		listData.add(u.getQbBalance()); 
 		listData.add( u.getaQb());      
-		listData.add( u.getbQb());      
-		listData.add( u.getcQb());         
+		listData.add( u.getcQb());   
+		//放入redis 维护赠送乾币数
+//		limitWithQb(userId,-u.getQbBalance());
 		int a=DedNum;
 		String qbDes=null;
 		StringBuffer sb=new StringBuffer();
@@ -189,11 +193,10 @@ public class PayAfterOrderUtil {
 		User user=userMyQbDao.getUserQbNum(userId);
 		int qbbalance=user.getQbBalance();
 		int aqb=user.getaQb();
-		int bqb=user.getbQb();
 		int cqb=user.getcQb();
-		int userQbNum=qbbalance+aqb+bqb+cqb;
+		int userQbNum=qbbalance+aqb+cqb;
 		
-		String qbBalance="\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.0折\""+bqb+"个；"+"\"9.5折\""+cqb+"个；";
+		String qbBalance="\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；";
 
 		int iii=userMyQbService.addMessageQbQ(qr.getQbRout(),userId,qr.getRemark().replace("userQbNum",userQbNum+""),qr.getMillisecond(),qbBalance);
 		if(i+iii>=2){
@@ -208,9 +211,8 @@ public class PayAfterOrderUtil {
 		case 1:
 			return "\"8.0折\"：";
 		case 2:
-			return "\"9.0折\"：";
-		case 3:
 			return "\"9.5折\"：";
+	
 		default:
 			break;
 		}
@@ -260,12 +262,11 @@ public class PayAfterOrderUtil {
 					User user=userMyQbDao.getUserQbNum(charge.getToken());
 					int qbbalance=user.getQbBalance();
 					int aqb=user.getaQb();
-					int bqb=user.getbQb();
 					int cqb=user.getcQb();
-					int userQbNum=qbbalance+aqb+bqb+cqb;
+					int userQbNum=qbbalance+aqb+cqb;
 					q.setRemark(zh(charge.getQbType())+"乾币充值"+charge.getQbNum()+"个。（乾币余额："+userQbNum+"个）");
 					//支付宝乾币充值
-					q.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.0折\""+bqb+"个；"+"\"9.5折\""+cqb+"个；");
+					q.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；");
 					q.setReferer(1);
 					userMyQbDao.add(q);
 					//userMyQbService.add(q, token);
@@ -343,5 +344,20 @@ public class PayAfterOrderUtil {
 			return false;
 		}
 		return true;
+	}
+	/**
+	 * 项目前期 注册送60乾币，限制用户这60乾币 不能直接提现
+	 */
+	public void  limitWithQb(String userId,int qb){
+		
+		RedisClient rc=RedisClient.getInstance();
+		Jedis jedis=rc.getJedis();
+		if(jedis.hexists("userGiveQbNums", userId)){
+			//有
+			jedis.hincrBy("userGiveQbNums", userId, qb);
+		}else{
+			 jedis.hset("userGiveQbNums", userId,qb+"");
+		}
+		jedis.close();
 	}
 }

@@ -31,7 +31,7 @@
 	</select>
 
 	<select id="ded" resultType="int">
-		select (a_qb+b_qb+c_qb+qb_balance)
+		select (a_qb+c_qb+qb_balance)
 		qb_balance from `user` where
 		user_id=#{userId}
 	</select>

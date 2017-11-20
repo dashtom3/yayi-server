@@ -39,9 +39,11 @@ import com.sun.org.apache.xerces.internal.impl.dv.util.Base64;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.exceptionHandler.OrderException;
 import com.yayiabc.common.sdk.KDN;
+import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.FolderTOZip;
 import com.yayiabc.common.utils.Page;
+import com.yayiabc.common.utils.PayAfterOrderUtil;
 import com.yayiabc.http.mvc.dao.OrderDetailsDao;
 import com.yayiabc.http.mvc.dao.OrderManagementDao;
 import com.yayiabc.http.mvc.dao.PlaceOrderDao;
@@ -219,7 +221,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 							//为订单商品表里的refundNum 更改
 						}else{
 							if(itemList.get(i).getNum()<Integer.parseInt(SendorderItemList.get(x).getRefunNum())){
-								throw new Exception();
+								throw new RuntimeException();
 							}
 							itemList.get(i).setNum(
 									itemList.get(i).getNum()-Integer.parseInt(SendorderItemList.get(x).getRefunNum())
@@ -230,49 +232,20 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 
 				}
 			}
-			for(int i=0;i<itemList.size();i++){
-				if("上海道邦".equals(itemList.get(i).getItemBrandName())){
-					afterDaoBangSumMoney+=itemList.get(i).getPrice()*itemList.get(i).getNum();
-				}else{
-					if("耗材类".equals(itemList.get(i).getItemType())){
-
-						afterhaoCaiSumMoney+=itemList.get(i).getPrice()*itemList.get(i).getNum();
-					}else if("工具设备类".equals(itemList.get(i).getItemType())){
-						count+=itemList.get(i).getNum();
-						aftergongJuSumMoney+=itemList.get(i).getPrice()*itemList.get(i).getNum();
-					}
-				}
-			}
-			//退款后的赠送钱币数
-			Double refundAfterGiveQbNum=0.0;
-			//首先道邦品牌
-			if(afterDaoBangSumMoney>0&&afterDaoBangSumMoney<300){
-				refundAfterGiveQbNum+=afterDaoBangSumMoney*0.03;
-			}else if(afterDaoBangSumMoney>=300&&afterDaoBangSumMoney<600){
-				refundAfterGiveQbNum+=afterDaoBangSumMoney*0.05;
-			}else if(afterDaoBangSumMoney>=600&&afterDaoBangSumMoney<1200){
-				refundAfterGiveQbNum+=afterDaoBangSumMoney*0.08;
-			}else if(afterDaoBangSumMoney>=1200&&afterDaoBangSumMoney<2500){
-				refundAfterGiveQbNum+=afterDaoBangSumMoney*0.12;
-			}else if(afterDaoBangSumMoney>=2500){
-				refundAfterGiveQbNum+=afterDaoBangSumMoney*0.15;
-			}
-			//其他品牌 耗材类
-			if(afterhaoCaiSumMoney>0&&afterhaoCaiSumMoney<500){
-				refundAfterGiveQbNum+=afterhaoCaiSumMoney*0.03;
-			}else if(afterhaoCaiSumMoney>=500&&afterhaoCaiSumMoney<1000){
-				refundAfterGiveQbNum=afterhaoCaiSumMoney*0.05;
-			}else if(afterhaoCaiSumMoney>=1000&&afterhaoCaiSumMoney<3000){
-				refundAfterGiveQbNum+=afterhaoCaiSumMoney*0.8;
-			}else if(afterhaoCaiSumMoney>=3000){
-				refundAfterGiveQbNum+=afterhaoCaiSumMoney*0.12;
-			}
-			//其他品牌 工具设配类
-			if(count==1){
-				refundAfterGiveQbNum+=aftergongJuSumMoney*0.05;
-			}else if(count>=2){
-				refundAfterGiveQbNum+=aftergongJuSumMoney*0.10;
-			}
+			System.out.println(itemList);
+			
+			//获取商品赠送的铅笔数
+			List<ItemValue> itemQbList=orderManagementDao.getItemQb(itemList);
+			System.out.println(itemQbList);
+			double refundAfterGiveQbNum=0;
+			  for(int i=0;i<itemList.size();i++){
+				  for(int x=0;x<itemQbList.size();x++){
+					  if(itemList.get(i).getItemSKU().equals(itemQbList.get(x).getItemSKU())){
+						  refundAfterGiveQbNum+=itemQbList.get(x).getItemQb()*itemList.get(i).getNum();
+					  }
+				  }
+			    }
+		   
 			//退款还原库存   ++
 			int d=orderManagementDao.stillItemsListValueNums(SendorderItemList);
 			//还原销量   --
@@ -284,7 +257,10 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			}
 			count=0;
 			//扣除钱币数
-			double dedQbNums=order.getGiveQb()-refundAfterGiveQbNum;
+			int dedQbNums=(int) (order.getGiveQb()-refundAfterGiveQbNum);
+			
+			
+			System.out.println("扣除乾币数："+dedQbNums);
 			Integer dedQbNum=(int) Math.round(dedQbNums);
 
 			String token= utilsDao.queryTokenByOrderId(SendorderItemList.get(0).getOrderId());
@@ -399,11 +375,15 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		//查询乾币余额
 		User user=userMyQbDao.getUserQbNum(order.getUserId());
 		int qbbalance=user.getQbBalance();
+		
+		//维护 赠送铅笔书
+		/*PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
+		payAfterOrderUtil.limitWithQb(order.getUserId(), -qbbalance);*/
+		
 		int aqb=user.getaQb();
-		int bqb=user.getbQb();
 		int cqb=user.getcQb();
-		int userQbNums=qbbalance+aqb+bqb+cqb;
-		q.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.0折\""+bqb+"个；"+"\"9.5折\""+cqb+"个；");
+		int userQbNums=qbbalance+aqb+cqb;
+		q.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；");
 		q.setRemark("订单有退款，下单时赠送的乾币需扣除："+dedQbNum+"个乾币。（乾币余额："+userQbNums+"）订单编号:"+order.getOrderId());
 		userMyQbDao.add(q);
 	}
@@ -412,6 +392,9 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		String qbDe=order.getQbDes();
 		List<Integer> list=new ArrayList<Integer>();
 		String[] str=qbDe.split(","); // qb_balance   a_qb   b_qb   c_qb 
+		
+		PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
+		payAfterOrderUtil.limitWithQb(order.getUserId(), Integer.parseInt(str[0]));
 		Integer sum=0;
 		String s="订单有退款，下单时使用的乾币需退回"+rQbNum+"个乾币。";
 		StringBuffer sb=new StringBuffer();
@@ -436,7 +419,6 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 					break;
 				}
 			}
-			System.err.println("这里");
 			System.err.println(list);
 			orderManagementDao.returnQbAnyOthes(list,order.getUserId());
 		}
@@ -448,11 +430,10 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		User user=userMyQbDao.getUserQbNum(order.getUserId());
 		int qbbalance=user.getQbBalance();
 		int aqb=user.getaQb();
-		int bqb=user.getbQb();
 		int cqb=user.getcQb();
-		int userQbNums=qbbalance+aqb+bqb+cqb;
+		int userQbNums=qbbalance+aqb+cqb;
 		s=s+/*s+sb.toString()+*/"（乾币余额："+userQbNums+"）。订单编号:"+order.getOrderId();
-		String qbBalance="\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.0折\""+bqb+"个；"+"\"9.5折\""+cqb+"个；";
+		String qbBalance="\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；";
 		userMyQbDao.addMessageQbQRget(sb.toString(), order.getUserId(), s, System.nanoTime(),qbBalance);
 		//---无语
 		orderManagementDao.saveRefundMessageToReturnQbMsg(sb.toString(),order.getOrderId());
@@ -465,8 +446,6 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		case 1:
 			return "\"8.0折\"：";
 		case 2:
-			return "\"9.0折 \"：";
-		case 3:
 			return "\"9.5折 \"：";
 		}
 		return null;

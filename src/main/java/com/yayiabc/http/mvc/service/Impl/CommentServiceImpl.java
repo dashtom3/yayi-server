@@ -7,9 +7,13 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.JsonDateValueProcessor;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.common.utils.ScoreUtil;
+import com.yayiabc.http.mvc.dao.CottomsPostDao;
+import com.yayiabc.http.mvc.dao.MomentManageDao;
+import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Comment;
 
+import com.yayiabc.http.mvc.pojo.jpa.CottomsPost;
 import com.yayiabc.http.mvc.pojo.jpa.SubComment;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.CommentService;
@@ -27,8 +31,18 @@ import java.util.Date;
 import java.util.List;
 import java.util.Set;
 
+/**
+ * 评论中心，同时推送，推送策略key为评论消息推送+userId
+ */
 @Service
 public class CommentServiceImpl implements CommentService {
+
+    private static final String MESSAGE_ONE="评论了你的牙医圈动态";
+
+    private static final String MESSAGE_TWO="回复了你的评论";
+
+    private static final String MESSAGE_THREE="评论了你发表的病例";
+
     @Autowired
     private UtilsDao utilsDao;
 
@@ -38,10 +52,19 @@ public class CommentServiceImpl implements CommentService {
     @Autowired
     private ZanService zanService;
 
+    @Autowired
+    private CottomsPostDao cottomsPostDao;
+
+    @Autowired
+    private MomentManageDao momentManageDao;
+
 
     @Override
     public DataWrapper<Object> addCom(String token, String type, Integer beCommentedId, Comment comment,Integer parentId) {
         DataWrapper<Object> dataWrapper = new DataWrapper<Object>();
+        //推送消息的后缀
+        String postFix=","+type+":"+beCommentedId;
+        String preFix="评论消息推送";
         //判断是父评论还是子评论
 //        boolean flag=checkComment(parentId);//true父评论 false 子评论
         String str="";//父评论
@@ -55,7 +78,7 @@ public class CommentServiceImpl implements CommentService {
         comment.setUserPic(user.getUserPic());
         //牙医圈的评论拿出来做
         if(type.equals("牙医圈")){
-            return addMomentCom(token,type,beCommentedId,comment,parentId,dataWrapper,str);
+            return addMomentCom(token,type,beCommentedId,comment,parentId,dataWrapper,str,postFix,preFix);
         }
         //生成评论自增主键的STRING类型
         long commentId = redisService.STRINGS.incrBy("自增序列"+type + beCommentedId+str , 1);
@@ -66,14 +89,19 @@ public class CommentServiceImpl implements CommentService {
         //生成评论的key
         String key = type + "评论" + beCommentedId+str;
         JSONObject jsonObject;
-        JsonConfig config=new JsonConfig();
-        config.registerJsonValueProcessor(Date.class,new JsonDateValueProcessor());
+        String message="";
+        String userIdStr="";
         if("".equals(str)){//父评论
             //初始化生成评论的评论数序列,如果不存在创建，如果存在加一
             redisService.SORTSET.zincrby(type+"评论数",1,beCommentedId+"");
             //将对象存储进List
             jsonObject = JSONObject.fromObject(comment);
             dataWrapper.setData(comment);
+            if("病例".equals(type)){
+                //找出发布该病例的userId
+                userIdStr=cottomsPostDao.getUserIdByPostId(beCommentedId);
+                message=MESSAGE_THREE;
+            }
         }else{
             //获取父评论的评论人和评论id
             String replyUserId="";
@@ -86,6 +114,11 @@ public class CommentServiceImpl implements CommentService {
                 if((int)comment1.getCommentId()==parentId.intValue()){
                     replyUserId=comment1.getUserId();
                     replyUserName=comment1.getUserName();
+                    if("病例".equals(type)){
+                        //被回复人的id
+                        userIdStr=replyUserId;
+                        message=MESSAGE_TWO;
+                    }
                     break;
                 }
             }
@@ -104,11 +137,14 @@ public class CommentServiceImpl implements CommentService {
         }
         String json = jsonObject.toString();
         redisService.LISTS.rpush(key, json);
+        if(!"".equals(message)){
+            redisService.LISTS.rpush(preFix+userIdStr,comment.getUserName()+message+postFix);
+        }
         return dataWrapper;
     }
 
     //牙医圈的评论,只有一级评论
-    private DataWrapper<Object> addMomentCom(String token, String type, Integer beCommentedId, Comment comment, Integer parentId,DataWrapper<Object> dataWrapper,String str) {
+    private DataWrapper<Object> addMomentCom(String token, String type, Integer beCommentedId, Comment comment, Integer parentId,DataWrapper<Object> dataWrapper,String str,String postFix,String preFix) {
         //生成评论的自增主键序列
         long commentId = redisService.STRINGS.incrBy("自增序列"+type + beCommentedId, 1);
         SubComment subComment=new SubComment();
@@ -117,10 +153,14 @@ public class CommentServiceImpl implements CommentService {
         subComment.setCommentContent(comment.getCommentContent());
         subComment.setUserId(comment.getUserId());
         subComment.setUserName(comment.getUserName());
+        String mstr=MESSAGE_ONE;
+        //获取动态的UserId
+        String userId=momentManageDao.getUserIdByMomentId(beCommentedId);
+        String userName=comment.getUserName();
         if(!"".equals(str)){//子评论
             //找出父评论的userid和username
             //得到评论列表
-           List<String> comListStr= redisService.LISTS.lrange(type+"评论"+ beCommentedId,0,-1);
+            List<String> comListStr= redisService.LISTS.lrange(type+"评论"+ beCommentedId,0,-1);
             for (String comStr:comListStr
                  ) {
                 JSONObject jsonObject= JSONObject.fromObject(comStr);
@@ -128,10 +168,15 @@ public class CommentServiceImpl implements CommentService {
                 if((int)subComment6.getCommentId()==parentId.intValue()){
                     subComment.setReplyUserId(subComment6.getUserId());
                     subComment.setReplyUserName(subComment6.getUserName());
+                    userId=subComment6.getUserId();
+                    mstr=MESSAGE_TWO;
                     break;
                 }
             }
         }
+        String key=preFix+userId;
+        String message=userName+mstr+postFix;
+        redisService.LISTS.rpush(key,message);
         String subComJsonStr= JSONObject.fromObject(subComment).toString();
         redisService.LISTS.rpush(type+"评论"+ beCommentedId,subComJsonStr);
         dataWrapper.setData(subComment);
@@ -140,7 +185,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<Comment> queryCom(String type, Integer beCommentedId,Integer currentPage,Integer numberPerPage) {
-        Set<String> idSet=redisService.SORTSET.zrevrange("点赞计数列表"+type+":"+beCommentedId,(currentPage-1)*numberPerPage,currentPage*numberPerPage);
+        Set<String> idSet=redisService.SORTSET.zrevrange("点赞计数列表"+type+":"+beCommentedId,(currentPage-1)*numberPerPage,currentPage*numberPerPage-1);
         System.out.println("点赞计数列表"+idSet);
         List<Comment> commentModelList = new ArrayList<Comment>();
         String key = type + "评论" + beCommentedId;
@@ -170,7 +215,7 @@ public class CommentServiceImpl implements CommentService {
 
     @Override
     public List<SubComment> querySubCom(String type,Integer beCommentedId,long preCommentId,Integer currentPage,Integer numberPerPage) {
-        Set<String> idSet=redisService.SORTSET.zrevrange("点赞计数列表"+type+":"+beCommentedId+":"+preCommentId,(currentPage-1)*numberPerPage,currentPage*numberPerPage);
+        Set<String> idSet=redisService.SORTSET.zrevrange("点赞计数列表"+type+":"+beCommentedId+":"+preCommentId,(currentPage-1)*numberPerPage,currentPage*numberPerPage-1);
         System.out.println("子评论idset"+idSet);
         String key = type + "评论" + beCommentedId+":"+preCommentId;
         List<String> jsonList = redisService.LISTS.lrange(key, 0, -1);
@@ -243,7 +288,6 @@ public class CommentServiceImpl implements CommentService {
             JSONObject jsonObject=JSONObject.fromObject(jsonComList.get(i));
             Comment comment=(Comment) JSONObject.toBean(jsonObject,Comment.class);
             if(parentId.intValue()==comment.getCommentId()){
-                System.out.println("进来了");
                 redisService.LISTS.lrem(type+"评论"+beCommentedId,0,jsonComList.get(i));
             }
         }

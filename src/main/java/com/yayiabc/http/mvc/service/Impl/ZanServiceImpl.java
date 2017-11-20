@@ -31,7 +31,7 @@ public class ZanServiceImpl implements ZanService{
 		String parentIdStr="";
 		String presentIdStr="";
 		if(parentId!=null){
-			parentIdStr=":"+presentId;
+			parentIdStr=":"+parentId;
 			if(presentId!=null){
 				presentIdStr=":"+presentId;
 			}
@@ -50,20 +50,6 @@ public class ZanServiceImpl implements ZanService{
 			redisService.SETS.sadd("点赞用户列表"+key,userId);
 			redisService.SORTSET.zincrby("点赞计数列表"+keyTwo,1,member);
 		}
-//		System.out.println(classify+userId);
-//		//1.判断是否已经被点赞
-//		boolean flag1 = redisService.SETS.sismember("点赞用户列表", userId);
-//		System.err.println(flag1);
-//		//2.如果已经点赞,取消点赞
-//		if (flag1) {
-//			redisService.SETS.srem("点赞用户列表", userId);
-//			redisService.SORTSET.zincrby(classify+"点赞", -1, typeId+"");
-//		} else{//3.如果未点赞,则点赞
-//			redisService.SETS.sadd("点赞用户列表",userId);
-//			redisService.SORTSET.zincrby(classify+"点赞",1,typeId+"");
-//		}
-		
-		//评论
 		
 		return dataWrapper;
 		
@@ -74,7 +60,7 @@ public class ZanServiceImpl implements ZanService{
 		String parentIdStr="";
 		String presentIdStr="";
 		if(parentId!=null){
-			parentIdStr=":"+presentId;
+			parentIdStr=":"+parentId;
 			if(presentId!=null){
 				presentIdStr=":"+presentId;
 			}

@@ -1,6 +1,7 @@
 package com.yayiabc.common.listener;
 
 import com.alibaba.fastjson.JSON;
+import com.yayiabc.http.Example.JedisSubScribe;
 import com.yayiabc.http.mvc.dao.VideoManageDao;
 import com.yayiabc.http.mvc.pojo.jpa.VidManage;
 import com.yayiabc.http.mvc.service.RedisService;
@@ -9,6 +10,7 @@ import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.web.context.support.WebApplicationContextUtils;
+import redis.clients.jedis.Jedis;
 
 import javax.servlet.ServletContextEvent;
 import javax.servlet.ServletContextListener;
@@ -17,20 +19,16 @@ import java.util.List;
 public class MyServletContextListener implements ServletContextListener{
 
 
-    private RedisService redisService;
+
 
     private VideoManageDao videoManageDao;
 
-
-
     private Logger logger= LogManager.getLogger(MyServletContextListener.class);
+
     @Override
     public void contextInitialized(ServletContextEvent sce) {
-        redisService= WebApplicationContextUtils.getWebApplicationContext(sce.getServletContext()).getBean(RedisService.class);
-        videoManageDao=WebApplicationContextUtils.getWebApplicationContext(sce.getServletContext()).getBean(VideoManageDao.class);
-        System.err.println("redisService引进来了");
-//        redisService.STRINGS.set("redis","创建了");
-//        putVedioToRedis();//将视频数据引入redis
+        /*JedisSubScribe jedisSubScribe=new JedisSubScribe();
+        jedisSubScribe.subscribe();*/
         logger.debug("servletContext初始化开始");
         System.err.println("服务器启动了");
         logger.debug("一系列初始化的操作");

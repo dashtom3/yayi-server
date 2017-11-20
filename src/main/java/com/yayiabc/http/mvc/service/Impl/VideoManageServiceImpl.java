@@ -5,6 +5,8 @@ import java.util.List;
 import java.util.Set;
 
 import com.yayiabc.common.utils.ScoreUtil;
+import com.yayiabc.http.mvc.dao.UtilsDao;
+import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.VideoScreenPicService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;
@@ -29,16 +31,19 @@ public class VideoManageServiceImpl implements VideoManageService {
      @Autowired
 	 private VideoScreenPicService videoScreenPicService;
 
+     @Autowired
+	 private UtilsDao utilsDao;
+
 
 
 	@Override
-	public DataWrapper<List<VidManage>> showVid(Integer rule, Integer videoCategory, Integer currentPage, Integer numberPerPage) {
-		DataWrapper<List<VidManage>> dataWrapper=new DataWrapper<List<VidManage>>();
+	public DataWrapper<Object> showVid(Integer rule, Integer videoCategory, Integer currentPage, Integer numberPerPage,String keyWord) {
+		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
 //		int totalNumber=videoManageDao.getTotalNumber(videoCategory);
-		List<VidManage> vidManageList=videoManageDao.showVid(rule,videoCategory);
+		List<VidManage> vidManageList=videoManageDao.showVid(rule,videoCategory,keyWord);
 		int totalNumber=vidManageList.size();
 		System.out.println(totalNumber);
 		Set<String> viIdSet=null;
@@ -54,12 +59,14 @@ public class VideoManageServiceImpl implements VideoManageService {
 		}
 		System.out.println(redisService.SORTSET.zrevrange("视频播放量",0,-1));
 		System.out.println("viIdSet"+viIdSet);
+		System.out.println(page.getCurrentNumber());
+		System.out.println(currentPage*numberPerPage);
 		if(rule==2){//最多评论
-			viIdSet=redisService.SORTSET.zrevrange("视频评论数",page.getCurrentNumber(),currentPage*numberPerPage);
+			viIdSet=redisService.SORTSET.zrevrange("视频评论数",page.getCurrentNumber(),currentPage*numberPerPage-1);
 		}else if(rule==1){//最多播放
-			viIdSet=redisService.SORTSET.zrevrange("视频播放量",page.getCurrentNumber(),currentPage*numberPerPage);
+			viIdSet=redisService.SORTSET.zrevrange("视频播放量",page.getCurrentNumber(),currentPage*numberPerPage-1);
 		}else{//时间倒叙
-			viIdSet=redisService.SORTSET.zrevrange("视频时间倒叙",page.getCurrentNumber(),currentPage*numberPerPage);
+			viIdSet=redisService.SORTSET.zrevrange("视频时间倒叙",page.getCurrentNumber(),currentPage*numberPerPage-1);
 		}
 		System.out.println(viIdSet);
 		List<VidManage> vidManages=new ArrayList<VidManage>();
@@ -72,6 +79,9 @@ public class VideoManageServiceImpl implements VideoManageService {
 					//填充评论数
 					int commentNum=(int)redisService.SORTSET.zscore("视频评论数",viId);
 					vidManage.setVedioCommentNumber(commentNum);
+					//填充收藏数
+					int starNum=(int)redisService.SETS.scard("视频收藏用户列表"+viId);
+					vidManage.setStarNumber(starNum);
 					vidManages.add(vidManage);
 					break;
 				}
@@ -141,10 +151,46 @@ public class VideoManageServiceImpl implements VideoManageService {
 		return dataWrapper;
 	}
 
+	@Override
+	public DataWrapper<Void> star(String token, Integer viId) {
+		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
+		//根据token来获取userId
+		User user=utilsDao.getUserByToken(token);
+		String userId=user.getUserId();
+		//判断是否已经收藏
+		boolean flag=isStar(userId,viId);
+		//如果已经收藏，则取消收藏
+		if(flag){
+			unStar(userId,viId);
+			return dataWrapper;
+		}
+		//如果未收藏，则添加到收藏
+		toStar(userId,viId);
+		return dataWrapper;
+	}
+
 	//获取七牛文件名称
 	public String getFileName(String videoRout){
 		String fileName=videoRout.substring(videoRout.lastIndexOf("/"));
 		return fileName;
 	}
+
+	//判断是否已经收藏,维护一个收藏的userIdSet,key为收藏用户列表
+	public boolean isStar(String userId,Integer viId){
+		return redisService.SETS.sismember("视频收藏用户列表"+viId,userId);
+	}
+
+	//如果已经收藏了，则取消收藏
+	public void unStar(String userId,Integer viId){
+		redisService.SETS.srem("视频收藏用户列表"+viId,userId);
+	}
+
+	//如果未收藏了,则收藏
+	public void toStar(String userId,Integer viId){
+		redisService.SETS.sadd("视频收藏用户列表"+viId,userId);
+	}
+
+
+
 
 }

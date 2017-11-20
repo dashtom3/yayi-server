@@ -14,4 +14,5 @@ public interface MomentManageService {
     DataWrapper<List<Moment>> queryList(Integer currentPage, Integer numberPerPage,String token);
 
 
+    DataWrapper<List<Moment>> myMoment(Integer currentPage, Integer numberPerPage, String token);
 }

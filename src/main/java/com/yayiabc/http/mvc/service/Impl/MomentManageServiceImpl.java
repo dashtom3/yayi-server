@@ -68,13 +68,36 @@ public class MomentManageServiceImpl implements MomentManageService{
 
     @Override
     public DataWrapper<List<Moment>> queryList(Integer currentPage, Integer numberPerPage,String token) {
+        return getMommentList(currentPage,numberPerPage,token,1);
+    }
+
+    @Override
+    public DataWrapper<List<Moment>> myMoment(Integer currentPage, Integer numberPerPage, String token) {
+        return getMommentList(currentPage,numberPerPage,token,2);
+    }
+
+
+    //获取牙医圈的评论列表
+    public List<SubComment> getSubCommentList(Integer parentId){
+        List<String> comListStr= redisService.LISTS.lrange("牙医圈评论"+ parentId,0,-1);
+        List<SubComment> subCommentList=new ArrayList<SubComment>();
+        JSONObject jsonObject=null;
+        SubComment subComment=null;
+        for (String jsonList:comListStr
+             ) {
+            jsonObject=JSONObject.fromObject(jsonList);
+            subComment=(SubComment)JSONObject.toBean(jsonObject,SubComment.class);
+            subCommentList.add(subComment);
+        }
+        return subCommentList;
+    }
+
+    //查询列表 1表示朋友圈的动态列表，2.表示我的个人动态
+    public DataWrapper<List<Moment>> getMommentList(Integer currentPage, Integer numberPerPage,String token,Integer type){
         DataWrapper<List<Moment>> dataWrapper =new DataWrapper<List<Moment>>();
         Page page=new Page();
         page.setNumberPerPage(numberPerPage);
         page.setCurrentPage(currentPage);
-        int totalNumber=momentManageDao.getMomentTotalNumber();
-        dataWrapper.setPage(page, totalNumber);
-        List<Moment> momentList=momentManageDao.queryList(page);
         User user=null;
         String userId=null;
         if(token!=null){
@@ -82,8 +105,10 @@ public class MomentManageServiceImpl implements MomentManageService{
             userId=user.getUserId();
         }
         System.out.println(userId);
+        int totalNumber=momentManageDao.getMomentTotalNumber(userId,type);;//总条数
+        List<Moment> momentList=momentManageDao.queryList(page,userId,type);//数据集
         for (Moment moment:momentList
-             ) {
+                ) {
             //填充评论
             List<SubComment> subCommentList=getSubCommentList(moment.getMomentId());
             moment.setSubCommentList(subCommentList);
@@ -118,23 +143,8 @@ public class MomentManageServiceImpl implements MomentManageService{
             }
         }
         dataWrapper.setData(momentList);
+        dataWrapper.setPage(page,totalNumber);
         return dataWrapper;
-    }
-
-
-    //获取牙医圈的评论列表
-    public List<SubComment> getSubCommentList(Integer parentId){
-        List<String> comListStr= redisService.LISTS.lrange("牙医圈评论"+ parentId,0,-1);
-        List<SubComment> subCommentList=new ArrayList<SubComment>();
-        JSONObject jsonObject=null;
-        SubComment subComment=null;
-        for (String jsonList:comListStr
-             ) {
-            jsonObject=JSONObject.fromObject(jsonList);
-            subComment=(SubComment)JSONObject.toBean(jsonObject,SubComment.class);
-            subCommentList.add(subComment);
-        }
-        return subCommentList;
     }
 
 

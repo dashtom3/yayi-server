@@ -52,6 +52,18 @@ public class MomentManageController {
         return momentManageService.queryList(currentPage,numberPerPage,token);
     }
 
+    //我的动态
+    @RequestMapping("myMoment")
+    @ResponseBody
+    @UserTokenValidate
+    public DataWrapper<List<Moment>> myMoment(
+            @RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
+            @RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
+            @RequestHeader(value="token",required = false) String token
+    ){
+        return momentManageService.myMoment(currentPage,numberPerPage,token);
+    }
+
 
 
 

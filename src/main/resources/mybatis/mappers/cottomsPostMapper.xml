@@ -147,4 +147,8 @@
 		AND qb_time&lt;='2017-10-29 24:00:00'
 		AND remark LIKE '%充值%'
 	</select>
+
+	<select id="getUserIdByPostId" resultType="string">
+		select user_id from cottoms_post where post_id=#{beCommentedId}
+	</select>
 </mapper>

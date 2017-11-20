@@ -54,6 +54,9 @@
 			<if test="videoCategory!=null and videoCategory!=6">
 				video_category=#{videoCategory}
 			</if>
+			<if test="keyWord!=null">
+				or video_name like '%${keyWord}%'
+			</if>
 		</where>
 		order by vedio_time DESC
 	</select>

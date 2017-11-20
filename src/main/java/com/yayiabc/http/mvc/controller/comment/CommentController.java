@@ -50,10 +50,12 @@ public class CommentController {
     ){
         DataWrapper<List<Comment>> dataWrapper=new DataWrapper<List<Comment>>();
         int totalNumber=(int)redisService.LISTS.llen(type+"评论"+beCommentedId);
+        System.out.println("totalNumber"+totalNumber);
         Page page=new Page();
         page.setNumberPerPage(numberPerPage);
         page.setCurrentPage(currentPage);
         dataWrapper.setPage(page,totalNumber);
+        System.out.println(page);
         dataWrapper.setData(commentService.queryCom(type,beCommentedId,currentPage,numberPerPage));
         return dataWrapper;
     }

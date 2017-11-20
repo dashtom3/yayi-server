@@ -120,7 +120,7 @@
 	</insert>
 
 	<select id="getCountByUserId" resultType="java.lang.Integer">
-		select count(0) from certification where user_id=#{userId} and state=2
+		select count(*) from certification where user_id=#{userId} and state=2
 	</select>
 
 	<delete id="deleteInGrainUser">

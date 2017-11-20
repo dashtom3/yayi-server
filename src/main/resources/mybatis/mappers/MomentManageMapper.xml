@@ -22,7 +22,12 @@
 
 
 	<select id="getMomentTotalNumber" resultType="int">
-		select count(0) from moment
+		select count(*) from moment
+		<where>
+			<if test="type==2">
+				user_id=#{userId}
+			</if>
+		</where>
 	</select>
 
 	<resultMap id="moment" type="Moment" autoMapping="true">
@@ -35,10 +40,15 @@
 
 	<select id="queryList" resultMap="moment">
 		select a.moment_id,b.user_id,b.true_name,b.user_pic,a.moment_content,a.moment_picture,a.moment_content_id,a.moment_type,a.moment_time FROM
-		moment a
+		(select * from moment
+			<where>
+			<if test="type==2">
+				user_id=#{userId}
+			</if>
+		</where>) a
 		join user b on a.user_id=b.user_id
 		order by a.moment_time DESC
-		limit #{currentNumber},#{numberPerPage}
+		limit #{page.currentNumber},#{page.numberPerPage}
 	</select>
 
 	<select id="getMomentTitleByVedio" resultType="java.util.Map">
@@ -51,6 +61,10 @@
 	
 	<select id="getMomentTitleByTrain" resultType="java.util.Map">
 		select train_name as contentTitle,train_pic AS contentPic from train where train_id=#{momentContentId}
+	</select>
+
+	<select id="getUserIdByMomentId" resultType="string">
+		select user_id from moment where moment_id=#{beCommentedId}
 	</select>
 
 

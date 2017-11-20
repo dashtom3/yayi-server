@@ -20,7 +20,7 @@ public interface VideoManageDao {
 
 
 
-	List<VidManage> showVid(@Param("rule")Integer rule,@Param("videoCategory") Integer videoCategory);
+	List<VidManage> showVid(@Param("rule")Integer rule,@Param("videoCategory") Integer videoCategory,@Param("keyWord")String keyWord);
 
     VidManage detail(Integer viId);
 }

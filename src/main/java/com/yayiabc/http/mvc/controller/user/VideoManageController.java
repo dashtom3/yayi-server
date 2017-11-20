@@ -33,13 +33,13 @@ public class VideoManageController {
      //
      @RequestMapping("showVid")
      @ResponseBody
-     public DataWrapper<List<VidManage>> showVid(
+     public DataWrapper<Object> showVid(
              @RequestParam(value="rule",required = false,defaultValue = "3") Integer rule,//1,最多播放//2.最多评论
              @RequestParam(value="videoCategory",required = false,defaultValue = "6")Integer videoCategory,//1.外科2.内科3.修复4.种植5.正畸6全部
              @RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
              @RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
     		 ){
-     	return videoManageService.showVid(rule,videoCategory,currentPage,numberPerPage);
+     	return videoManageService.showVid(rule,videoCategory,currentPage,numberPerPage,null);
      }
      
    //update
@@ -93,4 +93,16 @@ public class VideoManageController {
     ){
             return videoManageService.detail(viId);
     }
+
+    //添加收藏或者取消收藏
+    @RequestMapping("star")
+    @ResponseBody
+    public DataWrapper<Void> star(
+            @RequestHeader(value="token",required = true) String token,
+            @RequestParam(value="viId",required = true) Integer viId
+    ){
+                return videoManageService.star(token,viId);
+    }
+
+
 }

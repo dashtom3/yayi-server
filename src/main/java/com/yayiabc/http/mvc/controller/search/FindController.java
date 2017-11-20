@@ -22,7 +22,7 @@ public class FindController {
     public DataWrapper<Object> findList(
             @RequestParam(value="keyWord",required = true) String keyWord,
             @RequestParam(value="type",required = false,defaultValue = "1") Integer type,//1.病例 2.视频 3.问答
-            @RequestParam(value="classify",required = false,defaultValue = "6")Integer classify, //1.外科2.内科3.修复4.种植5.正畸6全部(不限)
+            @RequestParam(value="classify",required = false)Integer classify, //1.外科2.内科3.修复4.种植5.正畸
             @RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
             @RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
     ){

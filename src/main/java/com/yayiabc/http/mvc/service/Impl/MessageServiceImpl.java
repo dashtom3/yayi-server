@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.service.Impl;
 
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.dao.UtilsDao;
+import com.yayiabc.http.mvc.pojo.jpa.MessageEntry;
 import com.yayiabc.http.mvc.pojo.jpa.MessageNumber;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.MessageService;
@@ -34,19 +35,15 @@ public class MessageServiceImpl implements MessageService{
             return dataWrapper;
         }
         String userId=user.getUserId();
-        //获取系统消息的数量
-        Integer systemMessageNumber=(int)redisService.LISTS.llen("系统消息"+userId);
-        //获取点赞相关的信息
-        Integer zanNumber=(int)redisService.LISTS.llen("点赞消息"+userId);
         //获取评论相关的信息
-        Integer commentNumber=(int)redisService.LISTS.llen("评论消息"+userId);
-        MessageNumber messageNumber=new MessageNumber(systemMessageNumber,zanNumber,commentNumber);
+        Integer commentNumber=(int)redisService.LISTS.llen("评论消息推送"+userId);
+        MessageNumber messageNumber=new MessageNumber(commentNumber);
         dataWrapper.setData(messageNumber);
         return dataWrapper;
     }
 
     @Override
-    public DataWrapper<Object> getDetail(String token, Integer type) {
+    public DataWrapper<Object> getDetail(String token, Integer type,Integer numberPerPage) {
         DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
         if(token==null){//未登录
             return dataWrapper;
@@ -56,8 +53,8 @@ public class MessageServiceImpl implements MessageService{
             return dataWrapper;
         }
         String userId=user.getUserId();
-        List<String> messageList=new ArrayList<String>();
-        messageList=messageList(type,userId);
+        List<MessageEntry> messageList=new ArrayList<MessageEntry>();
+        messageList=messageList(type,userId,numberPerPage);
         if(messageList.size()==0){
             return dataWrapper;
         }
@@ -66,25 +63,26 @@ public class MessageServiceImpl implements MessageService{
     }
 
     //弹出消息,获取消息列表,这里获取消息后即会从消息列表中移除
-    public List<String> messageList(Integer type,String userId){
+    public List<MessageEntry> messageList(Integer type,String userId,Integer numberPerPage){
         String typeStr="";
-        if(type==1){//系统消息
-            typeStr="系统消息";
-        }else if(type==2){//点赞消息
-            typeStr="点赞消息";
-        }else if(type==3){//评论消息
-            typeStr="评论消息";
+        if(type==1){//评论消息
+            typeStr="评论消息推送";
         }
-        List<String> messageList=new ArrayList<String>();
-        String message="";
-        int i=0;//显示多少条,计数
-        while((int)redisService.LISTS.llen(typeStr+userId)!=0){
-            message=redisService.LISTS.lpop(typeStr+userId);
-            messageList.add(message);
-            if(++i==TOTAL){
-                break;
-            }
+        List<MessageEntry> messageList=new ArrayList<MessageEntry>();
+        int totalNumber=(int)redisService.LISTS.llen(typeStr+userId);
+        for(int i=0;i<numberPerPage;i++){
+            String messageEntryStr=redisService.LISTS.lpop(typeStr+userId);
+            MessageEntry messageEntry=new MessageEntry();
+            String message=messageEntryStr.substring(0,messageEntryStr.indexOf(","));
+            String detailMessage=messageEntryStr.substring(messageEntryStr.indexOf(",")+1);
+            String tStr=detailMessage.substring(0,detailMessage.indexOf(":"));
+            String idStr=detailMessage.substring(detailMessage.indexOf(":")+1);
+            messageEntry.setMessage(message);
+            messageEntry.setType(tStr);
+            messageEntry.setTypeId(idStr);
+            messageList.add(messageEntry);
         }
+
         return messageList;
     }
 

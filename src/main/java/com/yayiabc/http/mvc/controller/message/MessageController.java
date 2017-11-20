@@ -35,9 +35,10 @@ public class MessageController {
     @RequestMapping("getDetail")
     public DataWrapper<Object> getDetail(
             @RequestHeader(value="token",required = false) String token,
-            @RequestParam(value="type",required = true) Integer type
+            @RequestParam(value="type",required = true) Integer type,
+            @RequestParam(value="numberPerPage",required = false,defaultValue = "10") Integer numberPerPage
     ) {
-            return messageService.getDetail(token,type);
+            return messageService.getDetail(token,type,numberPerPage);
     }
 
 }

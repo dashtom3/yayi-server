@@ -35,7 +35,7 @@ public class VideoManageController {
      @ResponseBody
      public DataWrapper<Object> showVid(
              @RequestParam(value="rule",required = false,defaultValue = "3") Integer rule,//1,最多播放//2.最多评论
-             @RequestParam(value="videoCategory",required = false,defaultValue = "6")Integer videoCategory,//1.外科2.内科3.修复4.种植5.正畸6全部
+             @RequestParam(value="videoCategory",required = false)Integer videoCategory,//1.外科2.内科3.修复4.种植5.正畸
              @RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
              @RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
     		 ){

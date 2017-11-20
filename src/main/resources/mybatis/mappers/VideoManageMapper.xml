@@ -51,11 +51,11 @@
 	<select id="showVid" resultMap="videoRM">
 		select vi_id,video_name,video_type,video_route,video_category,DATE_FORMAT(vedio_time,'%Y-%m-%d %H:%i:%s') As vedio_time,vedio_pic from vid_manage
 		<where>
-			<if test="videoCategory!=null and videoCategory!=6">
+			<if test="videoCategory!=null">
 				video_category=#{videoCategory}
 			</if>
 			<if test="keyWord!=null">
-				or video_name like '%${keyWord}%'
+				and video_name like '%${keyWord}%'
 			</if>
 		</where>
 		order by vedio_time DESC

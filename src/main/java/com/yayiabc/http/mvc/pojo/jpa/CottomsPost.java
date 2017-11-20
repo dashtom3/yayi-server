@@ -12,7 +12,7 @@ public class CottomsPost {
 	private String userId;
 	private int postId;
 	private String headline;
-	private String classify;
+	private Integer classify;
 	private String freeContent;
 	private String chargeContent;
 	@DateTimeFormat(pattern="yy-MM-dd HH:mm:ss")
@@ -46,10 +46,10 @@ public class CottomsPost {
 	public void setHeadline(String headline) {
 		this.headline = headline;
 	}
-	public String getClassify() {
+	public Integer getClassify() {
 		return classify;
 	}
-	public void setClassify(String classify) {
+	public void setClassify(Integer classify) {
 		this.classify = classify;
 	}
 	public String getFreeContent() {
@@ -146,7 +146,7 @@ public class CottomsPost {
 				+ printUrl + ", replyTime=" + replyTime + ", token=" + ", postStater=" + postStater
 				+ ", chargeNumber=" + chargeNumber + ", user=" + user + "]";
 	}
-	public CottomsPost(String userId, int postId, String headline, String classify, String freeContent,
+	public CottomsPost(String userId, int postId, String headline, Integer classify, String freeContent,
 			String chargeContent, Date postTime, String writer, int readNumber, int commentNumber, int postFavour,
 			List<Comments> commentsList, String cover, String printUrl, Date replyTime, String token,
 			Integer postStater, Integer chargeNumber, User user) {

@@ -38,13 +38,15 @@ public class PostController {
 	@RequestMapping("queryPost")
 	@ResponseBody
 	public DataWrapper<List<CottomsPost>> queryPost(
+			@RequestHeader(value="token",required=false)String token,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
 			@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-			@RequestParam(value="classify",required=false) String classify,//分类
+			@RequestParam(value="classify",required=false) Integer classify,//分类1:外科2内科3修复4种植5正畸
 			@RequestParam(value="order",required=false,defaultValue="0") Integer order,//0:按时间排序1:按阅读数排序3:暗点赞数排序
-			@RequestParam(value="postStater",required=true) Integer postStater//病例状态1：发布2：草稿3：删除
+			@RequestParam(value="postStater",required=true,defaultValue="1") Integer postStater,//病例状态1：发布2：草稿3：删除
+			@RequestParam(value="type",required=false,defaultValue="1") int type//1:病例列表。2:我的病例列表
 			){
-		return cottomsPostService.queryPost(currentPage,numberPerPage,classify,order,postStater);
+		return cottomsPostService.queryPost(currentPage,numberPerPage,classify,order,postStater,token,type);
 	}
 	
 	//查看病例详情
@@ -52,9 +54,9 @@ public class PostController {
 	@ResponseBody
 	public DataWrapper<CottomsPost> cottomsDetail(
 			@RequestHeader(value="token",required=false) String token,
-			@ModelAttribute(value="CottomsPost")CottomsPost cottomsPost
+			@RequestParam(value="postId")String postId
 			){
-		return cottomsPostService.cottomsDetail(cottomsPost,token);
+		return cottomsPostService.cottomsDetail(postId,token);
 		
 	}
 	//删除病例

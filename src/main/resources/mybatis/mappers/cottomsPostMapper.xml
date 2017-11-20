@@ -51,6 +51,9 @@
 		left join user
 		on cp.user_id=user.user_id
 		<where>
+			<if test="userId!=null and userId!=''">
+				cp.user_id=#{userId} and
+			</if>
 			<if test="classify!=null and classify!=''">
 				classify = #{classify} and
 			</if>

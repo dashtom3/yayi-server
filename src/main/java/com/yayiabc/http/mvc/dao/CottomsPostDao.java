@@ -23,16 +23,17 @@ public interface CottomsPostDao {
 	//显示病例
 	public List<CottomsPost> queryPost(
 			@Param("page") Page page,
-			@Param("classify")String classify,
+			@Param("classify")Integer classify,
 			@Param("order")Integer order,
 			@Param("postStater")Integer postStater,
-			@Param("list") List<String> list
+			@Param("list") List<String> list,
+			@Param("userId") String userId
 			);
 	
 	public List<Map<String,Object>> queryPost(Page page);
 	public int getTotalNumber(@Param("classify") String classify);
 	public int getTotalCommentNumber();
-	public CottomsPost cottomsDetail(CottomsPost cottomsPost);
+	public CottomsPost cottomsDetail(String postId);
 	public void comment(CottomsComment cottomsComment);
 	//public void reply(CottomsReply cottomsReply);
 	

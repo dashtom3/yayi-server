@@ -7,15 +7,17 @@ import javax.servlet.http.HttpServletResponse;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.CottomsPost;
 
+import aj.org.objectweb.asm.Type;
+
 public interface CottomsPostService {
 	//发布病例
 	public DataWrapper<Void> addPost(CottomsPost cottomsPost,String token);
 	
-	//显示病例
-	public DataWrapper<List<CottomsPost>> queryPost(Integer currentPage,Integer numberPerPage,String classify,Integer order,Integer postStater);
+	//显示病例 type:1:是病例列表。2:是我的病例列表
+	public DataWrapper<List<CottomsPost>> queryPost(Integer currentPage,Integer numberPerPage,Integer classify,Integer order,Integer postStater,String token,int type);
 	
 	//病例详情
-	public DataWrapper<CottomsPost> cottomsDetail(CottomsPost cottomsPost,String token);
+	public DataWrapper<CottomsPost> cottomsDetail(String postId,String token);
 	
 	//删除病例
 	public DataWrapper<Void> deletePost(String token, Integer postId);

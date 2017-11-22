@@ -532,10 +532,7 @@
 					a_qb = a_qb+${nn},
 				</if>
 				<if test="index==2">
-					b_qb = b_qb+${nn},
-				</if>
-				<if test="index==3">
-					c_qb = c_qb+${nn}
+					c_qb = c_qb+${nn},
 				</if>
 			</set>
 			where user_id=#{userId}

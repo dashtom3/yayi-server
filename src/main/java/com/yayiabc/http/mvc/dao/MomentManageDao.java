@@ -30,4 +30,6 @@ public interface MomentManageDao {
     Map<String,String> getMomentTitleByTrain(Integer momentContentId);
 
     String getUserIdByMomentId(Integer beCommentedId);
+
+    Moment getMomentByMomentId(Integer momentId);
 }

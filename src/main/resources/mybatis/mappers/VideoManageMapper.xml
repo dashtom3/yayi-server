@@ -51,7 +51,7 @@
 	<select id="showVid" resultMap="videoRM">
 		select vi_id,video_name,video_type,video_route,video_category,DATE_FORMAT(vedio_time,'%Y-%m-%d %H:%i:%s') As vedio_time,vedio_pic from vid_manage
 		<where>
-			<if test="videoCategory!=null">
+			<if test="videoCategory!=null and videoCategory!=''">
 				video_category=#{videoCategory}
 			</if>
 			<if test="keyWord!=null">

@@ -37,7 +37,13 @@ public class VideoManageServiceImpl implements VideoManageService {
 
 
 	@Override
-	public DataWrapper<Object> showVid(Integer rule, Integer videoCategory, Integer currentPage, Integer numberPerPage,String keyWord) {
+	public DataWrapper<Object> showVid(Integer rule, Integer videoCategory, Integer currentPage, Integer numberPerPage,String keyWord,String token) {
+		//如果登录；后面要判断是否已经收藏
+		String userId=null;
+		if(token!=null){
+			User user=utilsDao.getUserByToken(token);
+			userId=user.getUserId();
+		}
 		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
@@ -58,7 +64,6 @@ public class VideoManageServiceImpl implements VideoManageService {
 			}
 		}
 		System.out.println(redisService.SORTSET.zrevrange("视频播放量",0,-1));
-		System.out.println("viIdSet"+viIdSet);
 		System.out.println(page.getCurrentNumber());
 		System.out.println(currentPage*numberPerPage);
 		if(rule==2){//最多评论
@@ -82,6 +87,12 @@ public class VideoManageServiceImpl implements VideoManageService {
 					//填充收藏数
 					int starNum=(int)redisService.SETS.scard("视频收藏用户列表"+viId);
 					vidManage.setStarNumber(starNum);
+					//填充是否已收藏
+					if(userId!=null){
+						if(redisService.SETS.sismember("视频收藏用户列表"+id,userId)){
+							vidManage.setIsStar(1);
+						}
+					}
 					vidManages.add(vidManage);
 					break;
 				}
@@ -107,16 +118,16 @@ public class VideoManageServiceImpl implements VideoManageService {
 	public DataWrapper<Void> insertVid(VidManage vidManage) {
 		// TODO Auto-generated method stub
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
-		String fileName=getFileName(vidManage.getVidRoute());
+		String vidRoute=vidManage.getVidRoute();//获取视频的外链
+		String fileName=getFileName(vidRoute);
 		videoScreenPicService.qiNiuMediaPrtScreen(fileName,"jpg");
 		int index=fileName.indexOf(".");
-		String vedioPic=vidManage.getVidRoute()+".jpg";
+		String vedioPic=vidRoute+".jpg";
 		if(index!=-1){
-			vedioPic=vidManage.getVidRoute().substring(0,vidManage.getVidRoute().lastIndexOf("."))+".jpg";
+			vedioPic=vidRoute.substring(0,vidRoute.lastIndexOf("."))+".jpg";
 		}
 		vidManage.setVedioPic(vedioPic);
 		videoManageDao.insertVid(vidManage);
-		Integer viId=vidManage.getViId();
 		return dataWrapper;
 	}
 
@@ -128,6 +139,7 @@ public class VideoManageServiceImpl implements VideoManageService {
 
 		redisService.SORTSET.zrem("视频播放量",viId+"");
 		redisService.SORTSET.zrem("视频评论数",viId+"");
+		redisService.SORTSET.zrem("视频时间倒叙",viId+"");
 		if(state>0){
 			dataWrapper.setMsg("操作成功");
 		}else{
@@ -171,7 +183,7 @@ public class VideoManageServiceImpl implements VideoManageService {
 
 	//获取七牛文件名称
 	public String getFileName(String videoRout){
-		String fileName=videoRout.substring(videoRout.lastIndexOf("/"));
+		String fileName=videoRout.substring(videoRout.lastIndexOf("/")+1);
 		return fileName;
 	}
 

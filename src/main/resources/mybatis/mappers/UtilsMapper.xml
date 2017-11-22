@@ -123,6 +123,7 @@
 		<result property="phone" column="phone" />
 		<result property="saleId" column="sale_id" />
 		<result property="aQb" column="a_qb" />
+		<result property="bQb" column="b_qb" />
 		<result property="cQb" column="c_qb" />
 		<result property="qbBalance" column="qb_balance" />
 		<association property="certification"
@@ -148,7 +149,7 @@
 	<select id="queryUserByUserId" resultMap="userss">
 		select
 		us.user_id,us.true_name,us.phone,us.sale_id
-		,us.a_qb,us.c_qb,us.qb_balance,ce.*
+		,us.a_qb,us.b_qb,us.c_qb,us.qb_balance,ce.*
 		from `user` us join certification ce on  us.user_id=ce.user_id 
 		where us.user_id=#{uid}
 	</select>
@@ -174,12 +175,14 @@
 		<id property="userId" column="user_id" />
 		<result property="trueName" column="true_name"/>
 		<result property="aQb" column="a_qb" />
+		<result property="bQb" column="b_qb" />
 		<result property="cQb" column="c_qb" />
 		<result property="qbBalance" column="qb_balance" />
 		<result property="phone" column="phone" />
 	</resultMap>
 	<select id="getUserByToken" resultMap="getUser">
-		select user_id,true_name,a_qb,c_qb,qb_balance,phone from user
+-- 		select user_id,true_name,a_qb,b_qb,c_qb,qb_balance,phone from user
+select user_id,true_name,a_qb,c_qb,qb_balance,phone from user
 		where user_id=(select user_id from user_token where token=#{token})
 	</select>
 

@@ -49,14 +49,13 @@ public class VideoScreenPicServiceImpl implements VideoScreenPicService {
         String key = fileName;
         // 设置截图操作参数
         String fops = "vframe/" + format + "/offset/1/w/640/h/480/rotate/auto";
-//        String fops = "vframe/" + format + "/offset/1/rotate/auto";
         // 设置截图的队列
         String pipeline = UploadFile.bucket;
         // 可以对截图后的文件进行使用saveas参数自定义命名，当然也可以不指定文件会默认命名并保存在当前空间。
         int index=fileName.indexOf(".");
         String str=fileName;
         if(index!=-1){
-            str = fileName.substring(0, fileName.indexOf("."));
+            str = fileName.substring(0,index);
         }
         String urlbase64 = UrlSafeBase64.encodeToString(UploadFile.bucket + ":" + str
                 + "." + format);
@@ -65,7 +64,6 @@ public class VideoScreenPicServiceImpl implements VideoScreenPicService {
         StringMap params = new StringMap().putWhen("force", 1, true);
         try {
             String persistid = operater.pfop(bucket, key, pfops, params);
-
             screenPic = this.getFileResourceUrl(str + "." + format);
             logger.info("视频截图成功.[persistid={}]"+ persistid);
             logger.info("截图成功");

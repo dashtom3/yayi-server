@@ -67,6 +67,10 @@
 		select user_id from moment where moment_id=#{beCommentedId}
 	</select>
 
+	<select id="getMomentByMomentId" resultType="Moment">
+		select * from moment where moment_id=#{momentId}
+	</select>
+
 
 
 

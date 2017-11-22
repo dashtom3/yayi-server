@@ -144,7 +144,7 @@ ON d.p_id=c.item_brand_id
 		SELECT a.*,d.item_brand_logo,d.item_brand_home,d.item_brand_name,b.item_id as d_id,q.item_property_name,
 q.item_property_info,b.video,b.item_pica,b.item_picb,b.item_picc,b.item_picd,b.item_pice,b.commission,b.store_item_id,b.apparatus_type,b.unit,b.produce_pompany,b.register_id,b.register_date,b.item_packing,b.item_levels,b.item_range,b.remark,b.item_desc,b.item_use,
 c.comment_id,f.true_name,f.phone,c.comment_grade,c.comment_content,c.reply_content,c.created AS co_created,c.updated AS co_updated,q.item_sku_price,q.item_sKU,q.item_property_name_two,q.item_property_two_value,q.item_property_name_three,q.item_property_three_value,q.can_use,
-q.stock_num,q.item_value_id FROM
+q.stock_num,q.item_value_id,q.item_qb FROM
 		(select * from item_info WHERE item_id=#{itemId}) a
 		inner JOIN item_detail b ON a.item_id=b.item_id
 		inner JOIN item_brand d  ON a.item_brand_id=d.item_brand_id

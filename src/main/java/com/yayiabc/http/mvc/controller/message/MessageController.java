@@ -22,7 +22,7 @@ public class MessageController {
     private MessageService messageService;
 
 
-    //获取评论消息，问答消息的个数
+    //获取评论消息，问答消息的总个数
     @RequestMapping("getNumber")
     @ResponseBody
     public DataWrapper<MessageNumber> getNumber(
@@ -33,6 +33,7 @@ public class MessageController {
 
     //获取系统消息 1评论消息 2.问答TODO
     @RequestMapping("getDetail")
+    @ResponseBody
     public DataWrapper<Object> getDetail(
             @RequestHeader(value="token",required = false) String token,
             @RequestParam(value="type",required = true) Integer type,

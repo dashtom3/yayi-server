@@ -9,6 +9,7 @@ import com.yayiabc.http.mvc.service.MessageService;
 import com.yayiabc.http.mvc.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+import redis.clients.jedis.Jedis;
 
 import java.util.ArrayList;
 import java.util.List;
@@ -36,6 +37,7 @@ public class MessageServiceImpl implements MessageService{
         }
         String userId=user.getUserId();
         //获取评论相关的信息
+        System.out.println("userId"+userId);
         Integer commentNumber=(int)redisService.LISTS.llen("评论消息推送"+userId);
         MessageNumber messageNumber=new MessageNumber(commentNumber);
         dataWrapper.setData(messageNumber);
@@ -69,9 +71,15 @@ public class MessageServiceImpl implements MessageService{
             typeStr="评论消息推送";
         }
         List<MessageEntry> messageList=new ArrayList<MessageEntry>();
+        System.out.println("key为"+typeStr+userId);
         int totalNumber=(int)redisService.LISTS.llen(typeStr+userId);
+        numberPerPage=totalNumber>numberPerPage?numberPerPage:totalNumber;
+        Jedis jedis=RedisService.getInstance().getJedis();
         for(int i=0;i<numberPerPage;i++){
-            String messageEntryStr=redisService.LISTS.lpop(typeStr+userId);
+            System.out.println(redisService.LISTS);
+//            String messageEntryStr=redisService.LISTS.lpop(typeStr+userId);
+            String messageEntryStr=jedis.rpop(typeStr+userId);
+            System.out.println("messageEntryStr"+messageEntryStr);
             MessageEntry messageEntry=new MessageEntry();
             String message=messageEntryStr.substring(0,messageEntryStr.indexOf(","));
             String detailMessage=messageEntryStr.substring(messageEntryStr.indexOf(",")+1);

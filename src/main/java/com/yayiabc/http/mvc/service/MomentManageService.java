@@ -15,4 +15,6 @@ public interface MomentManageService {
 
 
     DataWrapper<List<Moment>> myMoment(Integer currentPage, Integer numberPerPage, String token);
+
+    DataWrapper<Moment> detail(Integer momentId, String token);
 }

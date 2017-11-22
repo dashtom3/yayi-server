@@ -26,7 +26,7 @@ public class FindServiceImpl implements FindService {
         if(type==1){//病例
             return cottomsPostService.queryPost(currentPage,numberPerPage,classify,0,1,null,1,keyWord);
         }else if(type==2){//视频
-            return videoManageService.showVid(3,classify,currentPage,numberPerPage,keyWord);
+            return videoManageService.showVid(3,classify,currentPage,numberPerPage,keyWord,null);
         }
         //3.问答,TODO
         return null;

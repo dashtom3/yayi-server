@@ -64,6 +64,16 @@ public class MomentManageController {
         return momentManageService.myMoment(currentPage,numberPerPage,token);
     }
 
+    //查看某条动态的详情
+    @RequestMapping("detail")
+    @ResponseBody
+    public DataWrapper<Moment> detail(
+            @RequestParam(value="momentId",required = true) Integer momentId,
+            @RequestHeader(value="token",required = true) String token
+    ){
+        return momentManageService.detail(momentId,token);
+    }
+
 
 
 

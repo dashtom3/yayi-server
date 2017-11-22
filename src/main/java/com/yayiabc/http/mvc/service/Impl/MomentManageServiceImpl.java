@@ -22,6 +22,7 @@ import com.yayiabc.http.mvc.pojo.jpa.Moment;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.MomentManageService;
 import com.yayiabc.http.mvc.service.RedisService;
+import redis.clients.jedis.Jedis;
 
 @Service
 public class MomentManageServiceImpl implements MomentManageService{
@@ -58,11 +59,14 @@ public class MomentManageServiceImpl implements MomentManageService{
     public DataWrapper<Void> delete(Integer momentId) {
         DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
         momentManageDao.deleteMoment(momentId);
+        Jedis jedis=redisService.getJedis();
         //TODO delete the comments of moment
         //删除评论列表
-        redisService.getJedis().del("牙医圈评论"+momentId);
-        //删除对应的点赞数
-        redisService.SORTSET.zrem("点赞数11"+momentId);
+        jedis.del("牙医圈评论"+momentId);
+        //删除点赞计数列表
+        redisService.SORTSET.zrem("点赞计数列表牙医圈",momentId+"");
+        //删除点赞用户列表
+        jedis.del("点赞用户列表牙医圈:"+momentId);
         return dataWrapper;
     }
 
@@ -74,6 +78,21 @@ public class MomentManageServiceImpl implements MomentManageService{
     @Override
     public DataWrapper<List<Moment>> myMoment(Integer currentPage, Integer numberPerPage, String token) {
         return getMommentList(currentPage,numberPerPage,token,2);
+    }
+
+    @Override
+    public DataWrapper<Moment> detail(Integer momentId, String token) {
+        DataWrapper<Moment> dataWrapper=new DataWrapper<Moment>();
+        Moment moment=momentManageDao.getMomentByMomentId(momentId);
+        User user=null;
+        String userId=null;
+        if(token!=null){
+            user=utilsDao.getUserByToken(token);
+            userId=user.getUserId();
+        }
+        fillCommentAndUpvoteMessage(moment,userId);
+        dataWrapper.setData(moment);
+        return dataWrapper;
     }
 
 
@@ -109,43 +128,49 @@ public class MomentManageServiceImpl implements MomentManageService{
         List<Moment> momentList=momentManageDao.queryList(page,userId,type);//数据集
         for (Moment moment:momentList
                 ) {
-            //填充评论
-            List<SubComment> subCommentList=getSubCommentList(moment.getMomentId());
-            moment.setSubCommentList(subCommentList);
-            //填充点赞数
-            int zanNumber=zanService.getZanNumber("牙医圈",moment.getMomentId(),null,null);
-            moment.setZanNumber(zanNumber);
-            //判断用户是否已经点赞
-            if(userId!=null){
-                boolean flag = redisService.SETS.sismember("点赞用户列表"+"牙医圈:"+moment.getMomentId(), userId);
-                if(flag){
-                    moment.setIsZan(1);
-                }
-            }
-            //如果是病例，培训，视频，填充图片和标题
-            Map<String,String> map=new HashMap<String,String>();
-            if(moment.getMomentType()==2){//如果是2视频
-                map=momentManageDao.getMomentTitleByVedio(moment.getMomentContentId());
-            }else if(moment.getMomentType()==3){//如果是3病例
-                map=momentManageDao.getMomentTitleByPost(moment.getMomentContentId());
-            }else if(moment.getMomentType()==4) {//如果是4培训
-                map = momentManageDao.getMomentTitleByTrain(moment.getMomentContentId());
-            }
-            if(map!=null){
-                String momentContentTitle=map.get("contentTitle");
-                String momentPicture=map.get("contentPic");
-                if(momentContentTitle!=null){
-                    moment.setMomentContentTitle(momentContentTitle);
-                }
-                if(momentPicture!=null){
-                    moment.setMomentPicture(momentPicture);
-                }
-            }
+            fillCommentAndUpvoteMessage(moment,userId);
         }
         dataWrapper.setData(momentList);
         dataWrapper.setPage(page,totalNumber);
         return dataWrapper;
     }
+
+    //填充单条牙医圈动态的评论信息和点赞信息
+    public void fillCommentAndUpvoteMessage(Moment moment,String userId){
+        //填充评论
+        List<SubComment> subCommentList=getSubCommentList(moment.getMomentId());
+        moment.setSubCommentList(subCommentList);
+        //填充点赞数
+        int zanNumber=zanService.getZanNumber("牙医圈",moment.getMomentId(),null,null);
+        moment.setZanNumber(zanNumber);
+        //判断用户是否已经点赞
+        if(userId!=null){
+            boolean flag = redisService.SETS.sismember("点赞用户列表"+"牙医圈:"+moment.getMomentId(), userId);
+            if(flag){
+                moment.setIsZan(1);
+            }
+        }
+        //如果是病例，培训，视频，填充图片和标题
+        Map<String,String> map=new HashMap<String,String>();
+        if(moment.getMomentType()==2){//如果是2视频
+            map=momentManageDao.getMomentTitleByVedio(moment.getMomentContentId());
+        }else if(moment.getMomentType()==3){//如果是3病例
+            map=momentManageDao.getMomentTitleByPost(moment.getMomentContentId());
+        }else if(moment.getMomentType()==4) {//如果是4培训
+            map = momentManageDao.getMomentTitleByTrain(moment.getMomentContentId());
+        }
+        if(map!=null){
+            String momentContentTitle=map.get("contentTitle");
+            String momentPicture=map.get("contentPic");
+            if(momentContentTitle!=null){
+                moment.setMomentContentTitle(momentContentTitle);
+            }
+            if(momentPicture!=null){
+                moment.setMomentPicture(momentPicture);
+            }
+        }
+    }
+
 
 
 

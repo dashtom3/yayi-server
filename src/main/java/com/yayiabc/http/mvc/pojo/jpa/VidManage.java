@@ -18,6 +18,7 @@ public class VidManage implements Serializable{
 	private Integer starNumber;//视频收藏数
 	@DateTimeFormat(pattern = "yy-MM-dd HH:mm:ss")
 	private Date vedioTime;
+	private int isStar=0;
 
 	public Integer getViId() {
 		return viId;
@@ -91,10 +92,18 @@ public class VidManage implements Serializable{
 		this.vedioTime = vedioTime;
 	}
 
+	public int getIsStar() {
+		return isStar;
+	}
+
+	public void setIsStar(int isStar) {
+		this.isStar = isStar;
+	}
+
 	public VidManage() {
 	}
 
-	public VidManage(Integer viId, String vidName, String videoType, String vidRoute, Integer videoCategory, Integer vedioCommentNumber, String vedioPic, Integer starNumber, Date vedioTime) {
+	public VidManage(Integer viId, String vidName, String videoType, String vidRoute, Integer videoCategory, Integer vedioCommentNumber, String vedioPic, Integer starNumber, Date vedioTime, int isStar) {
 		this.viId = viId;
 		this.vidName = vidName;
 		this.videoType = videoType;
@@ -104,6 +113,7 @@ public class VidManage implements Serializable{
 		this.vedioPic = vedioPic;
 		this.starNumber = starNumber;
 		this.vedioTime = vedioTime;
+		this.isStar = isStar;
 	}
 
 	@Override
@@ -118,6 +128,7 @@ public class VidManage implements Serializable{
 				", vedioPic='" + vedioPic + '\'' +
 				", starNumber=" + starNumber +
 				", vedioTime=" + vedioTime +
+				", isStar=" + isStar +
 				'}';
 	}
 }

@@ -76,14 +76,15 @@ public class CommentServiceImpl implements CommentService {
         comment.setUserId(user.getUserId());
         comment.setUserName(user.getTrueName());
         comment.setUserPic(user.getUserPic());
+        //生成评论自增主键的STRING类型
+        long commentId = redisService.STRINGS.incrBy("自增序列"+type + beCommentedId+str , 1);
+        //初始化或者自增一个点赞计数的SET
+        System.out.println("点赞计数列表"+type+":"+beCommentedId+str);
+        redisService.SORTSET.zadd("点赞计数列表"+type+":"+beCommentedId+str,0,commentId+"");
         //牙医圈的评论拿出来做
         if(type.equals("牙医圈")){
             return addMomentCom(token,type,beCommentedId,comment,parentId,dataWrapper,str,postFix,preFix);
         }
-        //生成评论自增主键的STRING类型
-        long commentId = redisService.STRINGS.incrBy("自增序列"+type + beCommentedId+str , 1);
-        //初始化或者自增一个点赞计数的SET
-        redisService.SORTSET.zadd("点赞计数列表"+type+":"+beCommentedId+str,0,commentId+"");
         comment.setCommentId(commentId);
         comment.setCommentTime(new Date());
         //生成评论的key
@@ -114,11 +115,9 @@ public class CommentServiceImpl implements CommentService {
                 if((int)comment1.getCommentId()==parentId.intValue()){
                     replyUserId=comment1.getUserId();
                     replyUserName=comment1.getUserName();
-                    if("病例".equals(type)){
                         //被回复人的id
                         userIdStr=replyUserId;
                         message=MESSAGE_TWO;
-                    }
                     break;
                 }
             }
@@ -146,7 +145,7 @@ public class CommentServiceImpl implements CommentService {
     //牙医圈的评论,只有一级评论
     private DataWrapper<Object> addMomentCom(String token, String type, Integer beCommentedId, Comment comment, Integer parentId,DataWrapper<Object> dataWrapper,String str,String postFix,String preFix) {
         //生成评论的自增主键序列
-        long commentId = redisService.STRINGS.incrBy("自增序列"+type + beCommentedId, 1);
+        long commentId = redisService.STRINGS.incrBy("自增序列"+type+":"+ beCommentedId, 1);
         SubComment subComment=new SubComment();
         subComment.setCommentId(commentId);
         subComment.setCommentTime(new Date());

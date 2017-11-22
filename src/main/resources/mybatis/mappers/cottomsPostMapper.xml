@@ -52,7 +52,7 @@
 		on cp.user_id=user.user_id
 		<where>
 			<if test="type==2">
-				cp.user_id=#{suerId} and
+				cp.user_id=#{userId} and
 			</if>
 			<if test="userId!=null and userId!=''">
 				cp.user_id=#{userId} and

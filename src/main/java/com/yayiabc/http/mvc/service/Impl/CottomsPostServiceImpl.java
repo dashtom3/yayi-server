@@ -9,6 +9,7 @@ import java.io.InputStream;
 import java.net.URLEncoder;
 import java.util.ArrayList;
 import java.util.HashMap;
+import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -98,10 +99,11 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		}
 		//	if(classify==null){
 		int totalNumber=cottomsPostDao.getTotalNumber(classify,keyWord);
+		System.err.println(totalNumber);
 		Set<String> set = RedisService.SORTSET.zrevrange("点赞计数列表病例:", 0, totalNumber);
 		List<String> list =new ArrayList<String>();
 		list.addAll(set);
-		List<CottomsPost> cottomsPosts=cottomsPostDao.queryPost(page,classify,order,postStater,list,userId,keyWord);
+		List<CottomsPost> cottomsPosts=cottomsPostDao.queryPost(page,classify,order,postStater,list,userId,keyWord,type);
 		for (CottomsPost cottomsPost2 : cottomsPosts) {
 			int readNumber = (int)RedisService.SORTSET.zscore("阅读数", cottomsPost2.getPostId()+"");//获取阅读数
 			int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost2.getPostId());//获取评论数
@@ -253,16 +255,87 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 
 	//付费病例
 	public DataWrapper<Void> playChargePost(String token, Integer chargeNumber, Integer postId){
-		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 		String userId=utilsDao.getUserID(token);
 		String remark = "付费病例:支付"+chargeNumber+"个乾币。(乾币余额:userQbNum个)";
-		if(payAfterOrderUtil.newQbDed(userId, chargeNumber, "", remark)!=null){
-			cottomsPostDao.insertUserToPost(postId,userId);
+		DataWrapper<Void> dw =new DataWrapper<>();
+		if(userId!=null){
+			Integer p=cottomsPostDao.existBuyPostId(postId,userId);//判断是否已购买
+			if(p==0){
+				if(payAfterOrderUtil.newQbDed(userId, chargeNumber, "", remark)!=null){
+					cottomsPostDao.insertUserToPost(postId,userId);
+				}
+				dw.setMsg("支付成功");
+			}else{
+				dw.setMsg("该病例已购买");
+			}
+		}else{
+			dw.setMsg("请登录");
 		}
-		return dataWrapper;
+		return dw;
 	}
 
+	//收藏病例
+	@Override
+	public DataWrapper<Void> collect(String token,Integer postId) {
+		DataWrapper<Void> dw =new DataWrapper<>();
+		String userId=utilsDao.getUserID(token);
+		if(userId!=null){
+			Integer p=cottomsPostDao.existPostId(postId,userId);//判断收藏是否存在
+			if(p==0){
+				cottomsPostDao.collect(postId,userId);
+				dw.setMsg("收藏成功");
+			}else{
+				dw.setMsg("收藏已存在");
+			}
+		}else{
+			dw.setMsg("请登录");
+		}
+		return dw;
+	}
+	
+	//我的已购病例
+	public DataWrapper<List<CottomsPost>> myBuy(String token){
+		String userId=utilsDao.getUserID(token);
+		System.out.println(userId);
+		List<Integer> list=cottomsPostDao.queryMyBuyPostId(userId);
+		System.out.println(list);
+		List<CottomsPost> cottomsPosts = cottomsPostDao.myBuy(list);
+		DataWrapper<List<CottomsPost>> dw=new DataWrapper<>();
+		for (CottomsPost cottomsPost : cottomsPosts) {
+			cottomsPost.setChargeContent(null);
+			int readNumber = (int)RedisService.SORTSET.zscore("阅读数",cottomsPost.getPostId()+"");//阅读数
+			int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost.getPostId());//评论数
+			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+cottomsPost.getPostId());//点赞数
+			cottomsPost.setReadNumber(readNumber);
+			cottomsPost.setPostFavour(favourNumber);
+			cottomsPost.setCommentNumber(commentNumber);
+		}
+		dw.setData(cottomsPosts);
+		return dw;
+		
+	}
+	//我的收藏
+	public DataWrapper<List<CottomsPost>> myCollect(String token) {
+		String userId=utilsDao.getUserID(token);
+		System.out.println(userId);
+		List<Integer> list=cottomsPostDao.queryMyCollect(userId);
+		System.out.println(list);
+		List<CottomsPost> cottomsPosts = cottomsPostDao.myCollect(list);
+		
+		DataWrapper<List<CottomsPost>> dw=new DataWrapper<>();
+		for (CottomsPost cottomsPost : cottomsPosts) {
+			cottomsPost.setChargeContent(null);
+			int readNumber = (int)RedisService.SORTSET.zscore("阅读数",cottomsPost.getPostId()+"");//阅读数
+			int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost.getPostId());//评论数
+			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+cottomsPost.getPostId());//点赞数
+			cottomsPost.setReadNumber(readNumber);
+			cottomsPost.setPostFavour(favourNumber);
+			cottomsPost.setCommentNumber(commentNumber);
+		}
+		dw.setData(cottomsPosts);
+		return dw;
+	}
 	//导出表格
 	private List<Map<String, Object>> createExcel(List<See> sees) {
 		List<Map<String, Object>> listmap = new ArrayList<Map<String, Object>>();

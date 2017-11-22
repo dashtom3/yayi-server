@@ -51,6 +51,9 @@
 		left join user
 		on cp.user_id=user.user_id
 		<where>
+			<if test="type==2">
+				cp.user_id=#{suerId} and
+			</if>
 			<if test="userId!=null and userId!=''">
 				cp.user_id=#{userId} and
 			</if>
@@ -58,7 +61,7 @@
 				classify = #{classify} and
 			</if>
 			<if test="keyWord!=null and keyWord!=''">
-			 	headline like '%${keyWord}%' and
+				headline like '%${keyWord}%' and
 			</if>
 			post_stater=#{postStater}
 			and
@@ -154,7 +157,63 @@
 		AND remark LIKE '%充值%'
 	</select>
 
-	<select id="getUserIdByPostId" resultType="string">
-		select user_id from cottoms_post where post_id=#{beCommentedId}
+	<!-- 收藏病例 -->
+	<insert id="collect">
+		insert collect (user_id,post_id)
+		values(#{userId},#{postId})
+	</insert>
+
+	<!--查询收藏postId -->
+	<select id="queryMyCollect" resultType="java.lang.Integer">
+		select post_id from
+		collect where user_id=#{userId}
+	</select>
+
+	<!--我的收藏 -->
+	<select id="myCollect" resultType="CottomsPost">
+		select
+		headline,classify,post_time,free_content,charge_content,writer,cover,cottoms_post.user_id,charge_number,read_number
+		from collect inner join cottoms_post on
+		cottoms_post.user_id=collect.user_id
+		<where>
+			cottoms_post.post_id in
+			<foreach collection="list" item="postId" index="index" open="("
+				separator="," close=")">
+				#{postId}
+			</foreach>
+		</where>
+	</select>
+
+	<!--收藏是否存在 -->
+	<select id="existPostId" resultType="java.lang.Integer">
+		select count(post_id) from
+		collect where user_id=#{userId} and post_id=#{postId}
+	</select>
+
+	<!--病例是否购买 -->
+	<select id="existBuyPostId" resultType="java.lang.Integer">
+		select count(post_id) from
+		user_to_post where user_id=#{userId} and post_id=#{postId}
+	</select>
+
+	<!--查询购买postId -->
+	<select id="queryMyBuyPostId" resultType="java.lang.Integer">
+		select post_id from
+		user_to_post where user_id=#{userId}
+	</select>
+
+	<!--我的购买病例 -->
+	<select id="myBuy" resultType="CottomsPost">
+		select
+		headline,classify,post_time,free_content,charge_content,writer,cover,cottoms_post.user_id,charge_number,read_number
+		from collect inner join cottoms_post on
+		cottoms_post.user_id=user_to_post.user_id
+		<where>
+			cottoms_post.post_id in
+			<foreach collection="list" item="postId" index="index" open="("
+				separator="," close=")">
+				#{postId}
+			</foreach>
+		</where>
 	</select>
 </mapper>

@@ -29,4 +29,12 @@ public interface CottomsPostService {
 	//病例付费
 	public DataWrapper<Void> playChargePost(String token, Integer chargeNumber, Integer postId);
 	
-}
+	//收藏病例
+	public DataWrapper<Void> collect(String token,Integer postId);
+	
+	//我的收藏
+	public DataWrapper<List<CottomsPost>> myCollect(String token);
+	
+	//我的购买病例
+	public DataWrapper<List<CottomsPost>> myBuy(String token);
+ }

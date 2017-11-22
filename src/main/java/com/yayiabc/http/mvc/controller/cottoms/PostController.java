@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.controller.cottoms;
 
+import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -24,7 +25,7 @@ import com.yayiabc.http.mvc.service.CottomsPostService;
 public class PostController {
 	@Autowired
 	private CottomsPostService cottomsPostService;
-	
+
 	//发布病例
 	@RequestMapping("add")
 	@ResponseBody
@@ -33,7 +34,7 @@ public class PostController {
 			@ModelAttribute(value="CottomsPost") CottomsPost cottomsPost){
 		return cottomsPostService.addPost(cottomsPost,token);
 	}
-	
+
 	//病例列表
 	@RequestMapping("queryPost")
 	@ResponseBody
@@ -49,7 +50,7 @@ public class PostController {
 			){
 		return cottomsPostService.queryPost(currentPage,numberPerPage,classify,order,postStater,token,type,keyWord);
 	}
-	
+
 	//查看病例详情
 	@RequestMapping("cottomsDetail")
 	@ResponseBody
@@ -58,7 +59,7 @@ public class PostController {
 			@RequestParam(value="postId")String postId
 			){
 		return cottomsPostService.cottomsDetail(postId,token);
-		
+
 	}
 	//删除病例
 	@RequestMapping("deletePost")
@@ -69,9 +70,9 @@ public class PostController {
 			){
 		cottomsPostService.deletePost(token,postId);
 		return cottomsPostService.deletePost(token,postId);
-		
+
 	}
-	
+
 	//病例付费
 	@RequestMapping("playChargePost")
 	@ResponseBody
@@ -82,41 +83,70 @@ public class PostController {
 			){
 		return cottomsPostService.playChargePost(token,chargeNumber,postId);
 	}
-	
-//	@RequestMapping("comment")//评论
-//	@ResponseBody
-//	public void comment(
-//			@RequestHeader String token,
-//			@ModelAttribute(value="CottomsComment")CottomsComment cottomsComment
-//			){
-//		cottomsComment.setToken(token);
-//		cottomsPostService.comment(cottomsComment);
-//	}
-//	@RequestMapping("reply")//回复
-//	@ResponseBody
-//	public void reply(
-//			@RequestHeader String token,
-//			@ModelAttribute(value="CottomsReply")CottomsReply cottomsReply
-//			){
-//		cottomsReply.setToken(token);
-//		cottomsPostService.reply(cottomsReply);
-//	}
-//	@RequestMapping("postLike")//病例点赞
-//	@ResponseBody
-//	public void postList(CottomsPost cottomsPost){
-//		cottomsPostService.postLike(cottomsPost);
-//	}
-//	
-//	@RequestMapping("commentsLike")//评论点赞
-//	@ResponseBody
-//	public void commentsLike(CottomsComment cottomsComment){
-//		cottomsPostService.commentsLike(cottomsComment);
-//	}
-//	@RequestMapping("postReader")//病例阅读数
-//	@ResponseBody
-//	public void postReader(CottomsPost cottomsPost){
-//		cottomsPostService.postReader(cottomsPost);
-//	}
+
+	//收藏病例
+	@RequestMapping("collect")
+	@ResponseBody
+	public DataWrapper<Void> collect(
+			@RequestHeader(value="token") String token,
+			@RequestParam(value="postId")Integer postId
+			){
+		return cottomsPostService.collect(token,postId);
+
+	}
+
+	//我的收藏
+	@RequestMapping("myCollect")
+	@ResponseBody
+	public DataWrapper<List<CottomsPost>> myCollect(
+			@RequestHeader("token")String token
+			){
+		return cottomsPostService.myCollect(token);
+
+	}
+	//我的购买病例
+	@RequestMapping("myBuy")
+	@ResponseBody
+	public DataWrapper<List<CottomsPost>> myBuy(
+			@RequestHeader("token")String token
+			){
+		return cottomsPostService.myCollect(token);
+
+	}
+	//	@RequestMapping("comment")//评论
+	//	@ResponseBody
+	//	public void comment(
+	//			@RequestHeader String token,
+	//			@ModelAttribute(value="CottomsComment")CottomsComment cottomsComment
+	//			){
+	//		cottomsComment.setToken(token);
+	//		cottomsPostService.comment(cottomsComment);
+	//	}
+	//	@RequestMapping("reply")//回复
+	//	@ResponseBody
+	//	public void reply(
+	//			@RequestHeader String token,
+	//			@ModelAttribute(value="CottomsReply")CottomsReply cottomsReply
+	//			){
+	//		cottomsReply.setToken(token);
+	//		cottomsPostService.reply(cottomsReply);
+	//	}
+	//	@RequestMapping("postLike")//病例点赞
+	//	@ResponseBody
+	//	public void postList(CottomsPost cottomsPost){
+	//		cottomsPostService.postLike(cottomsPost);
+	//	}
+	//	
+	//	@RequestMapping("commentsLike")//评论点赞
+	//	@ResponseBody
+	//	public void commentsLike(CottomsComment cottomsComment){
+	//		cottomsPostService.commentsLike(cottomsComment);
+	//	}
+	//	@RequestMapping("postReader")//病例阅读数
+	//	@ResponseBody
+	//	public void postReader(CottomsPost cottomsPost){
+	//		cottomsPostService.postReader(cottomsPost);
+	//	}
 	//查询
 	@RequestMapping("see")
 	@ResponseBody

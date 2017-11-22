@@ -13,13 +13,13 @@ import com.yayiabc.http.mvc.pojo.jpa.CottomsPost;
 import com.yayiabc.http.mvc.pojo.jpa.See;
 @Repository
 public interface CottomsPostDao {
-	
+
 	//获取用户名
 	public String gettrueName(String userId);
-	
+
 	//发布病例
 	public Integer addPost(CottomsPost cottomsPost);
-	
+
 	//显示病例
 	public List<CottomsPost> queryPost(
 			@Param("page") Page page,
@@ -28,16 +28,20 @@ public interface CottomsPostDao {
 			@Param("postStater")Integer postStater,
 			@Param("list") List<String> list,
 			@Param("userId") String userId,
-			@Param("keyWord") String keyWord
+			@Param("keyWord") String keyWord,
+			@Param("type")int type
 			);
-	
+
 	public List<Map<String,Object>> queryPost(Page page);
+	
+	//获取总条数
 	public int getTotalNumber(@Param("classify") Integer classify,@Param("keyWord")String keyWord);
+	
 	public int getTotalCommentNumber();
 	public CottomsPost cottomsDetail(String postId);
 	public void comment(CottomsComment cottomsComment);
 	//public void reply(CottomsReply cottomsReply);
-	
+
 	//根据type查分类
 	public String getClassify(Integer postId);
 	//分类查询排序
@@ -45,24 +49,54 @@ public interface CottomsPostDao {
 			@Param("list") List<String> list,
 			@Param("postStater") Integer postStater
 			);
-	
+
 	public int postLike(CottomsPost cottomsPost);
-	
+
 	public void postLikeAdd(CottomsPost cottomsPost);
-	
-//	public int postReaderNumber(CottomsPost cottomsPost);
+
+	//	public int postReaderNumber(CottomsPost cottomsPost);
 	//public int commentNumber(CottomsPost cottomsPost);
 	public void postReader(CottomsPost cottomsPost);
 	//public int commentsLike(CottomsComment cottomsComment);
 	public void commentsLikeAdd(CottomsComment cottomsComment);
 	//查询
 	public List<See> see();
+	
 	public List<String> queryFees(String userId);
+	
 	public void setPost(CottomsPost cottomsPost);
 	//查看用户的帖子
 	public List<Integer> queryByIdPost(String userId);
+	
+	
 	public void deletePost(Integer postId);
+	
+	//购买病例
 	public void insertUserToPost(@Param("postId")Integer postId, @Param("userId")String userId);
 
 	String getUserIdByPostId(Integer beCommentedId);
+
+	//收藏病例
+	public void collect(
+			@Param("postId") Integer postId,
+			@Param("userId")String userId
+			);
+	//我的收藏postId
+	public List<Integer> queryMyCollect(String userId);
+	//我的收藏列表
+	public List<CottomsPost> myCollect(List<Integer> list);
+	
+	//判断收藏是否存在
+	public Integer existPostId(
+			@Param("postId")Integer postId,
+			@Param("userId")String userId
+			);
+	//判断是否购买
+	public Integer existBuyPostId(@Param("postId")Integer postId,@Param("userId")String userId);
+	
+	//我的购买病例
+	public List<CottomsPost> myBuy(List<Integer> list);
+	
+	//获取购买病历PostId
+	public List<Integer> queryMyBuyPostId(String userId);
 }

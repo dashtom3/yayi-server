@@ -12,6 +12,7 @@ public class SubComment {
     private String replyUserId;
     private String replyUserName;
     private int zan=0;
+    private int isZan=0;
 
     public String getUserId() {
         return userId;
@@ -85,10 +86,18 @@ public class SubComment {
         this.zan = zan;
     }
 
+    public int getIsZan() {
+        return isZan;
+    }
+
+    public void setIsZan(int isZan) {
+        this.isZan = isZan;
+    }
+
     public SubComment() {
     }
 
-    public SubComment(String userId, String userName, String userPic, long commentId, String commentContent, Date commentTime, String replyUserId, String replyUserName, int zan) {
+    public SubComment(String userId, String userName, String userPic, long commentId, String commentContent, Date commentTime, String replyUserId, String replyUserName, int zan, int isZan) {
         this.userId = userId;
         this.userName = userName;
         this.userPic = userPic;
@@ -98,6 +107,7 @@ public class SubComment {
         this.replyUserId = replyUserId;
         this.replyUserName = replyUserName;
         this.zan = zan;
+        this.isZan = isZan;
     }
 
     @Override
@@ -112,6 +122,7 @@ public class SubComment {
                 ", replyUserId='" + replyUserId + '\'' +
                 ", replyUserName='" + replyUserName + '\'' +
                 ", zan=" + zan +
+                ", isZan=" + isZan +
                 '}';
     }
 }

@@ -183,7 +183,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     @Override
-    public List<Comment> queryCom(String type, Integer beCommentedId,Integer currentPage,Integer numberPerPage) {
+    public List<Comment> queryCom(String type, Integer beCommentedId,Integer currentPage,Integer numberPerPage,String token) {
         Set<String> idSet=redisService.SORTSET.zrevrange("点赞计数列表"+type+":"+beCommentedId,(currentPage-1)*numberPerPage,currentPage*numberPerPage-1);
         System.out.println("点赞计数列表"+idSet);
         List<Comment> commentModelList = new ArrayList<Comment>();
@@ -191,6 +191,11 @@ public class CommentServiceImpl implements CommentService {
         List<String> jsonList = redisService.LISTS.lrange(key, 0, -1);
         System.out.println("jsonList"+jsonList);
         List<Comment> comments = new ArrayList<Comment>();
+        String userId=null;
+        if(token!=null){
+            User user=utilsDao.getUserByToken(token);
+            userId=user.getUserId();
+        }
         for (String id : idSet
                 ) {
             for (String json : jsonList
@@ -201,7 +206,13 @@ public class CommentServiceImpl implements CommentService {
                     //填充点赞数
                     int zan=zanService.getZanNumber(type,beCommentedId,(int)commentModel.getCommentId(),null);
                     commentModel.setZan(zan);
-                    List<SubComment> subCommentList=querySubCom(type,beCommentedId,commentModel.getCommentId(),currentPage,numberPerPage);
+                    //填充是否点赞
+                    if(userId!=null){
+                        if(redisService.SETS.sismember("点赞用户列表"+type+":"+beCommentedId+":"+id,userId)){
+                            commentModel.setIsZan(1);
+                        }
+                    }
+                    List<SubComment> subCommentList=querySubCom(type,beCommentedId,commentModel.getCommentId(),currentPage,numberPerPage,userId);
                     System.out.println(subCommentList);
                     commentModel.setSubCommentList(subCommentList);
                     comments.add(commentModel);
@@ -213,7 +224,7 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public List<SubComment> querySubCom(String type,Integer beCommentedId,long preCommentId,Integer currentPage,Integer numberPerPage) {
+    public List<SubComment> querySubCom(String type,Integer beCommentedId,long preCommentId,Integer currentPage,Integer numberPerPage,String userId) {
         Set<String> idSet=redisService.SORTSET.zrevrange("点赞计数列表"+type+":"+beCommentedId+":"+preCommentId,(currentPage-1)*numberPerPage,currentPage*numberPerPage-1);
         System.out.println("子评论idset"+idSet);
         String key = type + "评论" + beCommentedId+":"+preCommentId;
@@ -230,6 +241,12 @@ public class CommentServiceImpl implements CommentService {
                     //填充赞数
                     int zan=zanService.getZanNumber(type,beCommentedId,(int)preCommentId,(int)subComment.getCommentId());
                     subComment.setZan(zan);
+                    //填充是否点赞
+                    if(userId!=null){
+                        if(redisService.SETS.sismember("点赞用户列表"+type+":"+beCommentedId+":"+preCommentId+":"+id,userId)){
+                            subComment.setIsZan(1);
+                        }
+                    }
                     subCommentList.add(subComment);
                     break;
                 }

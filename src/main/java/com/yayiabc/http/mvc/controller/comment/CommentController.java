@@ -46,7 +46,8 @@ public class CommentController {
             @RequestParam(value="type",required = true) String type,
             @RequestParam(value="beCommentedId",required = true) Integer beCommentedId,
             @RequestParam(value="currentPage",required = false,defaultValue = "1")Integer currentPage,
-            @RequestParam(value="numberPerPage",required=false,defaultValue="10")Integer numberPerPage
+            @RequestParam(value="numberPerPage",required=false,defaultValue="10")Integer numberPerPage,
+            @RequestHeader(value="token",required = false) String token
     ){
         DataWrapper<List<Comment>> dataWrapper=new DataWrapper<List<Comment>>();
         int totalNumber=(int)redisService.LISTS.llen(type+"评论"+beCommentedId);
@@ -56,7 +57,7 @@ public class CommentController {
         page.setCurrentPage(currentPage);
         dataWrapper.setPage(page,totalNumber);
         System.out.println(page);
-        dataWrapper.setData(commentService.queryCom(type,beCommentedId,currentPage,numberPerPage));
+        dataWrapper.setData(commentService.queryCom(type,beCommentedId,currentPage,numberPerPage,token));
         return dataWrapper;
     }
 

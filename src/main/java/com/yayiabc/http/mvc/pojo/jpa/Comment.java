@@ -12,6 +12,7 @@ public class Comment {
     private Date commentTime;
     private int zan=0;
     private int replyNumber=0;
+    private int isZan=0;
     private List<SubComment> subCommentList;
 
     public String getUserId() {
@@ -78,6 +79,14 @@ public class Comment {
         this.replyNumber = replyNumber;
     }
 
+    public int getIsZan() {
+        return isZan;
+    }
+
+    public void setIsZan(int isZan) {
+        this.isZan = isZan;
+    }
+
     public List<SubComment> getSubCommentList() {
         return subCommentList;
     }
@@ -89,7 +98,7 @@ public class Comment {
     public Comment() {
     }
 
-    public Comment(String userId, String userName, String userPic, long commentId, String commentContent, Date commentTime, int zan, int replyNumber, List<SubComment> subCommentList) {
+    public Comment(String userId, String userName, String userPic, long commentId, String commentContent, Date commentTime, int zan, int replyNumber, int isZan, List<SubComment> subCommentList) {
         this.userId = userId;
         this.userName = userName;
         this.userPic = userPic;
@@ -98,6 +107,7 @@ public class Comment {
         this.commentTime = commentTime;
         this.zan = zan;
         this.replyNumber = replyNumber;
+        this.isZan = isZan;
         this.subCommentList = subCommentList;
     }
 
@@ -112,6 +122,7 @@ public class Comment {
                 ", commentTime=" + commentTime +
                 ", zan=" + zan +
                 ", replyNumber=" + replyNumber +
+                ", isZan=" + isZan +
                 ", subCommentList=" + subCommentList +
                 '}';
     }

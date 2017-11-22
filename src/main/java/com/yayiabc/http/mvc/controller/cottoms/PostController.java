@@ -110,7 +110,7 @@ public class PostController {
 	public DataWrapper<List<CottomsPost>> myBuy(
 			@RequestHeader("token")String token
 			){
-		return cottomsPostService.myCollect(token);
+		return cottomsPostService.myBuy(token);
 
 	}
 	//	@RequestMapping("comment")//评论

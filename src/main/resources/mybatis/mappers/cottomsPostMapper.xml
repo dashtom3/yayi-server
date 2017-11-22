@@ -192,7 +192,8 @@
 
 	<!--病例是否购买 -->
 	<select id="existBuyPostId" resultType="java.lang.Integer">
-		select count(post_id) from
+		select count(post_id)
+		from
 		user_to_post where user_id=#{userId} and post_id=#{postId}
 	</select>
 
@@ -204,9 +205,9 @@
 
 	<!--我的购买病例 -->
 	<select id="myBuy" resultType="CottomsPost">
-		select
+		SELECT
 		headline,classify,post_time,free_content,charge_content,writer,cover,cottoms_post.user_id,charge_number,read_number
-		from collect inner join cottoms_post on
+		FROM user_to_post INNER JOIN cottoms_post ON
 		cottoms_post.user_id=user_to_post.user_id
 		<where>
 			cottoms_post.post_id in

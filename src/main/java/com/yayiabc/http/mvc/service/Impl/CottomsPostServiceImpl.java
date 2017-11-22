@@ -297,7 +297,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	//我的已购病例
 	public DataWrapper<List<CottomsPost>> myBuy(String token){
 		String userId=utilsDao.getUserID(token);
-		System.out.println(userId);
+		System.out.println("suerId"+userId);
 		List<Integer> list=cottomsPostDao.queryMyBuyPostId(userId);
 		System.out.println(list);
 		List<CottomsPost> cottomsPosts = cottomsPostDao.myBuy(list);

@@ -147,7 +147,7 @@ public class PayAfterOrderUtil {
 		//放入redis 维护赠送乾币数
 //		limitWithQb(userId,-u.getQbBalance());
 		int a=DedNum;
-		String qbDes=null;
+		String qbDes="";
 		StringBuffer sb=new StringBuffer();
 		StringBuilder sb1=new StringBuilder();
 		String qbRout=null;
@@ -181,7 +181,7 @@ public class PayAfterOrderUtil {
 
 	/**
 	 * 增加乾币记录工具类（更改用户乾币）
-	 * listData，0下标是qb_balance，1下标是a_qb，2下标是b_qb，3下标是c_qb
+	 * listData，0下标是qb_balance，1下标是a_qb，2下标是c_qb
 	 * userId，用户id
 	 * 
 	 * @return

@@ -376,6 +376,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	}
 	private double calculQbNum(List<FinalList> finalList, List<OrderItem> orderItemList){
 		double giveQbNum=0;
+		System.out.println(finalList);
+		System.out.println(orderItemList);
 	    for(int i=0;i<finalList.size();i++){
 	    	giveQbNum+=finalList.get(i).getItemQb()*orderItemList.get(i).getNum();
 	    }

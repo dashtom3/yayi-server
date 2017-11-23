@@ -43,7 +43,7 @@ public class PlaceOrderController {
 	 @UserLog(description="使用钱币抵扣")
 	public DataWrapper<Integer> Ded(
 			@RequestHeader(value="token") String token,
-			@RequestParam(value="qbnum") Integer num
+			@RequestParam(value="qbnum",required=false,defaultValue="0") Integer num
 			){
 		return placeOrderService.ded(token,num);
 	}

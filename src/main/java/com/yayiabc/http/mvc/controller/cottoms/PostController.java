@@ -31,7 +31,7 @@ public class PostController {
 	@ResponseBody
 	public DataWrapper<Void> addPost(
 			@RequestHeader String token,
-			@ModelAttribute(value="CottomsPost") CottomsPost cottomsPost){
+			@ModelAttribute CottomsPost cottomsPost){
 		return cottomsPostService.addPost(cottomsPost,token);
 	}
 

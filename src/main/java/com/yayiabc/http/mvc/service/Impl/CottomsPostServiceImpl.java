@@ -57,7 +57,8 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			cottomsPost.setUserId(userId);
 			String trueName= cottomsPostDao.gettrueName(userId);
 			cottomsPost.setWriter(trueName);
-			if(cottomsPost.getPostId()==0){
+			System.out.println(cottomsPost.getPostId());
+			if(cottomsPost.getPostId()==null){
 				cottomsPostDao.addPost(cottomsPost);
 				//发布病例点赞默认为0
 				RedisService.SORTSET.zadd("点赞计数列表病例:", 0, cottomsPost.getPostId()+"");
@@ -159,14 +160,16 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		DataWrapper<CottomsPost> dataWrapper=new DataWrapper<CottomsPost>();
 
 		List<String> postIdFees=cottomsPostDao.queryFees(userId);//获取本用户付费病例id
+		CottomsPost cottomsPost1=cottomsPostDao.cottomsDetail(postId);
 		boolean userIde=false;
 		String post=postId+"";
 		for(int i=0;i<postIdFees.size();i++){
 			if(postIdFees.get(i).equals(post)){
 				userIde=true;
+			}else if(cottomsPost1.getUserId()==userId){
+				userIde=true;
 			}
 		}
-		CottomsPost cottomsPost1=cottomsPostDao.cottomsDetail(postId);
 		int readNumber = (int)RedisService.SORTSET.zscore("阅读数", postId+"");
 		int commentNumber = (int)RedisService.LISTS.llen("病例评论"+postId);//评论数
 		int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+postId);//点赞数

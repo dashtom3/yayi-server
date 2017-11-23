@@ -10,7 +10,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 
 public class CottomsPost {
 	private String userId;
-	private int postId;
+	private Integer postId;
 	private String headline;
 	private Integer classify;
 	private String freeContent;
@@ -34,10 +34,10 @@ public class CottomsPost {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	public int getPostId() {
+	public Integer getPostId() {
 		return postId;
 	}
-	public void setPostId(int postId) {
+	public void setPostId(Integer postId) {
 		this.postId = postId;
 	}
 	public String getHeadline() {
@@ -146,7 +146,7 @@ public class CottomsPost {
 				+ printUrl + ", replyTime=" + replyTime + ", token=" + ", postStater=" + postStater
 				+ ", chargeNumber=" + chargeNumber + ", user=" + user + "]";
 	}
-	public CottomsPost(String userId, int postId, String headline, Integer classify, String freeContent,
+	public CottomsPost(String userId, Integer postId, String headline, Integer classify, String freeContent,
 			String chargeContent, Date postTime, String writer, int readNumber, int commentNumber, int postFavour,
 			List<Comments> commentsList, String cover, String printUrl, Date replyTime, String token,
 			Integer postStater, Integer chargeNumber, User user) {

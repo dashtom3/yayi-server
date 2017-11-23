@@ -1,6 +1,5 @@
 package com.yayiabc.http.mvc.controller.cottoms;
 
-import java.util.Collection;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
@@ -108,9 +107,11 @@ public class PostController {
 	@RequestMapping("myBuy")
 	@ResponseBody
 	public DataWrapper<List<CottomsPost>> myBuy(
-			@RequestHeader("token")String token
+			@RequestHeader("token")String token,
+			@RequestParam(value="currentPage",required=true,defaultValue="1")Integer currentPage,
+			@RequestParam(value="numberPerPage",required=true,defaultValue="10" )Integer numberPerPage
 			){
-		return cottomsPostService.myBuy(token);
+		return cottomsPostService.myBuy(token,currentPage,numberPerPage);
 
 	}
 	//	@RequestMapping("comment")//评论

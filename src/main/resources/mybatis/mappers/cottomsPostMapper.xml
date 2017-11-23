@@ -205,9 +205,9 @@
 
 	<!--我的购买病例 -->
 	<select id="myBuy" resultType="CottomsPost">
-		SELECT
+		select
 		headline,classify,post_time,free_content,charge_content,writer,cover,cottoms_post.user_id,charge_number,read_number
-		FROM user_to_post INNER JOIN cottoms_post ON
+		from user_to_post inner join cottoms_post on
 		cottoms_post.user_id=user_to_post.user_id
 		<where>
 			cottoms_post.post_id in
@@ -215,6 +215,7 @@
 				separator="," close=")">
 				#{postId}
 			</foreach>
+			limit #{page.currentPage},#{page.numberPerPage}
 		</where>
 	</select>
 </mapper>

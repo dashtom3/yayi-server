@@ -85,7 +85,7 @@ public class FaqServiceImpl implements FaqService {
     @Override
     public DataWrapper<List<FaqQuestion>> myQuestion(String token, Integer currentPage, Integer numberPerPage) {
         DataWrapper<List<FaqQuestion>> dataWrapper=new DataWrapper<List<FaqQuestion>>();
-        Assert.isTrue(token==null,"还未登录");
+        if(token==null) return dataWrapper;
         Page page=new Page();
         page.setNumberPerPage(numberPerPage);
         page.setCurrentPage(currentPage);
@@ -100,7 +100,7 @@ public class FaqServiceImpl implements FaqService {
     @Override
     public DataWrapper<List<FaqQuestion>> myAnswer(String token, Integer currentPage, Integer numberPerPage) {
         DataWrapper<List<FaqQuestion>> dataWrapper=new DataWrapper<List<FaqQuestion>>();
-        Assert.isTrue(token==null,"还未登录");
+        if(token==null) return dataWrapper;
         Page page=new Page();
         page.setNumberPerPage(numberPerPage);
         page.setCurrentPage(currentPage);

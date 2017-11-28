@@ -15,10 +15,12 @@
 
 	<select id="getFaqQuestionList" resultType="FaqQuestion">
 		select a.faq_question_id,a.faq_question_title,a.faq_question_type,a.faq_user_id AS user_id,a.faq_question_content,a.faq_question_time,a.faq_answer_num,b.true_name as user_name,b.user_pic
-		FROM faq_question a,user b on a.faq_user_id=b.user_id
+		FROM faq_question a
+		LEFT JOIN
+		`user` b on a.faq_user_id=b.user_id
 		<where>
 			<if test="faqQuestionType!=null and faqQuestionType!=''">
-				faq_question_type=#{faqQuestionType}
+				a.faq_question_type=#{faqQuestionType}
 			</if>
 		</where>
 		order BY
@@ -96,7 +98,7 @@
 	</select>
 
 	<select id="getFaqQuestionIdList" resultType="java.lang.Integer">
-		select faq_question_answer_id FROM faq_answer where faq_answer_user_id=#{userId} GROUP BY faq_question_answer_id order by faq_answer_time
+		select faq_question_answer_id FROM faq_answer where faq_answer_user_id=#{userId} GROUP BY faq_question_answer_id order by faq_answer_time DESC
 	</select>
 
 	<resultMap id="faqQuestion" type="FaqQuestion" autoMapping="true">

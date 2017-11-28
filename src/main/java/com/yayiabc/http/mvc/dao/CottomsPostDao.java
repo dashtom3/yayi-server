@@ -85,8 +85,8 @@ public interface CottomsPostDao {
 	public List<Integer> queryMyCollect(String userId);
 	//我的收藏列表
 	public List<CottomsPost> myCollect(
-			@Param("page") Page page,
-			List<Integer> list);
+			@Param("list")List<Integer> list,
+			@Param("page") Page page);
 	
 	//判断收藏是否存在
 	public Integer existPostId(

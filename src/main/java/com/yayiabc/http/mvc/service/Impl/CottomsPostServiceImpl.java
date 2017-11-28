@@ -276,7 +276,9 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		String userId=utilsDao.getUserID(token);
 		//获取已购买postId
 		List<Integer> list=cottomsPostDao.queryMyBuyPostId(userId);
+		System.out.println(list);
 		List<CottomsPost> cottomsPosts = cottomsPostDao.myBuy(list,page);
+		System.err.println(cottomsPosts);
 		DataWrapper<List<CottomsPost>> dw=new DataWrapper<>();
 		for (CottomsPost cottomsPost : cottomsPosts) {
 			cottomsPost.setChargeContent(null);
@@ -298,7 +300,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		page.setCurrentPage(currentPage);
 		page.setNumberPerPage(numberPerPage);
 		List<Integer> list=cottomsPostDao.queryMyCollect(userId);
-		List<CottomsPost> cottomsPosts = cottomsPostDao.myCollect(page,list);
+		List<CottomsPost> cottomsPosts = cottomsPostDao.myCollect(list,page);
 		DataWrapper<List<CottomsPost>> dw=new DataWrapper<>();
 		for (CottomsPost cottomsPost : cottomsPosts) {
 			cottomsPost.setChargeContent(null);

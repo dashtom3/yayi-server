@@ -171,8 +171,8 @@
 	<!--我的收藏 -->
 	<select id="myCollect" resultType="CottomsPost">
 		select
-		headline,classify,post_time,free_content,charge_content,writer,cover,cottoms_post.user_id,charge_number,read_number
-		from collect inner join cottoms_post on
+		cottoms_post.post_id,headline,classify,post_time,free_content,charge_content,writer,cover,cottoms_post.user_id,charge_number,read_number
+		from collect right join cottoms_post on
 		cottoms_post.user_id=collect.user_id
 		<where>
 			cottoms_post.post_id in
@@ -207,7 +207,7 @@
 	<select id="myBuy" resultType="CottomsPost">
 		select
 		headline,classify,post_time,free_content,charge_content,writer,cover,cottoms_post.user_id,charge_number,read_number
-		from user_to_post inner join cottoms_post on
+		from user_to_post right join cottoms_post on
 		cottoms_post.user_id=user_to_post.user_id
 		<where>
 			cottoms_post.post_id in

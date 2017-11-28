@@ -67,6 +67,7 @@ public class MyCollectionServiceImpl implements MyCollectionService{
         if(!list.isEmpty()){
             totalNumber=list.size();
             cottomsPosts = cottomsPostDao.myCollect(list,page);
+            System.err.println(cottomsPosts);
             for (CottomsPost cottomsPost : cottomsPosts) {
                 cottomsPost.setChargeContent(null);
                 int readNumber = (int)redisService.SORTSET.zscore("阅读数",cottomsPost.getPostId()+"");//阅读数

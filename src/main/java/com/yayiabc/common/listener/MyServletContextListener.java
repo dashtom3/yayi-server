@@ -1,7 +1,6 @@
 package com.yayiabc.common.listener;
 
 import com.alibaba.fastjson.JSON;
-import com.yayiabc.http.Example.JedisSubScribe;
 import com.yayiabc.http.mvc.dao.VideoManageDao;
 import com.yayiabc.http.mvc.pojo.jpa.VidManage;
 import com.yayiabc.http.mvc.service.RedisService;

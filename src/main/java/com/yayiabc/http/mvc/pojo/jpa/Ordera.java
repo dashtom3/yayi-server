@@ -15,7 +15,7 @@ public class Ordera extends BasePojo implements Serializable{
 	private String orderId;
 	private String userId;
 	private Double actualPay;
-	@DateTimeFormat(pattern = "yyyy-MM-dd")
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private Date created;
 	private Integer payType;
 

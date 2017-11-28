@@ -132,7 +132,7 @@
 			<if test="qbType!=null and qbType!=''">
 				and qr.remark like '%${qbType}%'
 			</if>
-			<if test="payType!=null and payType!=''">
+			<if test="payType!=null and payType!=''  and qbType!=4">
 				and qr.referer=#{payType}
 			</if>
 			<if test="orderCTime !=null and orderCTime !=''">
@@ -140,6 +140,9 @@
 			</if>
 			<if test="orderETime !=null and orderETime !=''">
 				and DATE_FORMAT(qr.created,'%Y-%m-%d') <![CDATA[  <=  ]]>#{orderETime}
+			</if>
+			<if test=" qbType==4">
+				and qr.referer in(2,3);
 			</if>
 		</where>
 		order by qr.created desc

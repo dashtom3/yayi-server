@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import org.apache.ibatis.annotations.Param;
+import org.junit.runners.Parameterized.Parameters;
 
 import com.yayiabc.http.mvc.pojo.jpa.Invoice;
 import com.yayiabc.http.mvc.pojo.jpa.ItemValue;
@@ -104,7 +105,8 @@ public interface OrderManagementDao {
 
 	int saveRefundMessageToReturnQbMsg(@Param("returnQbMsg")String returnQbMsg, @Param("orderId")String orderId);
 	
-    List<QbRecord> queryUserQbList(@Param("userId")String userId);
+    List<QbRecord> queryUserQbList(@Param("userId")String userId, @Param("numberPerpage")String string, @Param("currentNum")String string2);
 	
 	List<ItemValue> getItemQb(List<OrderItem> itemList);
+	int queryCounty(String userId);
 }

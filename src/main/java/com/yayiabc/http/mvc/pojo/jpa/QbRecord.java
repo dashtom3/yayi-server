@@ -1,6 +1,7 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
-import java.util.Date;
+
+import com.fasterxml.jackson.annotation.JsonFormat;
 
 /**
  * 
@@ -8,13 +9,13 @@ import java.util.Date;
  */
 public class QbRecord extends BasePojo {
 	private String chargeId;
-  private Integer qbRid;
+	private Integer qbRid;
 	private String userId;
 
 	private String qbRget;
 
 	private String qbRout;
-
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private String qbTime;
 
 	private Integer referer; //充值的  支付方式
@@ -25,10 +26,10 @@ public class QbRecord extends BasePojo {
 
 	private User user;
 	private String qbType;
-	
+
 	private String qbBalances;
-	
-	
+
+
 	public String getQbBalances() {
 		return qbBalances;
 	}
@@ -53,7 +54,7 @@ public class QbRecord extends BasePojo {
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	
+
 	public String getQbRget() {
 		return qbRget;
 	}
@@ -67,9 +68,11 @@ public class QbRecord extends BasePojo {
 	public void setQbRout(String qbRout) {
 		this.qbRout = qbRout;
 	}
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public String getQbTime() {
 		return qbTime;
 	}
+	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public void setQbTime(String qbTime) {
 		this.qbTime = qbTime;
 	}

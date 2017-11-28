@@ -233,19 +233,19 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 				}
 			}
 			System.out.println(itemList);
-			
+
 			//获取商品赠送的铅笔数
 			List<ItemValue> itemQbList=orderManagementDao.getItemQb(itemList);
 			System.out.println(itemQbList);
 			double refundAfterGiveQbNum=0;
-			  for(int i=0;i<itemList.size();i++){
-				  for(int x=0;x<itemQbList.size();x++){
-					  if(itemList.get(i).getItemSKU().equals(itemQbList.get(x).getItemSKU())){
-						  refundAfterGiveQbNum+=itemQbList.get(x).getItemQb()*itemList.get(i).getNum();
-					  }
-				  }
-			    }
-		   
+			for(int i=0;i<itemList.size();i++){
+				for(int x=0;x<itemQbList.size();x++){
+					if(itemList.get(i).getItemSKU().equals(itemQbList.get(x).getItemSKU())){
+						refundAfterGiveQbNum+=itemQbList.get(x).getItemQb()*itemList.get(i).getNum();
+					}
+				}
+			}
+
 			//退款还原库存   ++
 			int d=orderManagementDao.stillItemsListValueNums(SendorderItemList);
 			//还原销量   --
@@ -258,8 +258,8 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			count=0;
 			//扣除钱币数
 			int dedQbNums=(int) (order.getGiveQb()-refundAfterGiveQbNum);
-			
-			
+
+
 			System.out.println("扣除乾币数："+dedQbNums);
 			Integer dedQbNum=(int) Math.round(dedQbNums);
 
@@ -375,11 +375,11 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		//查询乾币余额
 		User user=userMyQbDao.getUserQbNum(order.getUserId());
 		int qbbalance=user.getQbBalance();
-		
+
 		//维护 赠送铅笔书
 		/*PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 		payAfterOrderUtil.limitWithQb(order.getUserId(), -qbbalance);*/
-		
+
 		int aqb=user.getaQb();
 		int cqb=user.getcQb();
 		int userQbNums=qbbalance+aqb+cqb;
@@ -392,7 +392,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		String qbDe=order.getQbDes();
 		List<Integer> list=new ArrayList<Integer>();
 		String[] str=qbDe.split(","); // qb_balance   a_qb   b_qb   c_qb 
-		
+
 		PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 		payAfterOrderUtil.limitWithQb(order.getUserId(), Integer.parseInt(str[0]));
 		Integer sum=0;
@@ -731,11 +731,11 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 					filess[i].delete();
 				}
 			}
-			
+
 			//压缩
 			FolderTOZip ftz=new FolderTOZip();
 			ftz.zip("D:/yayi", "D:/后台订单详情.zip");
-			
+
 			/**
 			 * 把包发送给浏览器
 			 */
@@ -903,12 +903,24 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 	 * 后台订单点击 显示该用户的充值记录
 	 */
 	@Override
-	public DataWrapper<List<QbRecord>> queryUserQbList(String phone) {
+	public DataWrapper<List<QbRecord>> queryUserQbList(String phone,Integer currentPage, Integer numberPerpage) {
 		// TODO Auto-generated method stub
 		DataWrapper<List<QbRecord>> dataWrapper=new DataWrapper<List<QbRecord>>();
 		//phone ----userId
+
 		User user=utilsDao.queryUserByPhone(phone);
-		List<QbRecord> qr=orderManagementDao.queryUserQbList(user.getUserId());
+		if(user==null){
+			dataWrapper.setMsg("此用户不存在");
+			return dataWrapper;
+		}
+		Page page=new Page();
+
+		page.setNumberPerPage(numberPerpage);
+		page.setCurrentPage(currentPage);
+
+		List<QbRecord> qr=orderManagementDao.queryUserQbList(user.getUserId(),String.valueOf(page.getNumberPerPage()),String.valueOf(page.getCurrentNumber()));
+		int count=orderManagementDao.queryCounty(user.getUserId());//totalnumber
+		dataWrapper.setPage(page, count);
 		dataWrapper.setData(qr);
 		return dataWrapper;
 	}
@@ -924,178 +936,178 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		return null;
 	}
 	//电商ID
-		private String EBusinessID="1292696";
-		//电商加密私钥，快递鸟提供，注意保管，不要泄漏
-		private String AppKey="e1cae6b8-ca6f-4a29-953b-0c41dd461ffb";
-		//请求url, 正式环境地址：http://api.kdniao.cc/api/Eorderservice    测试环境地址：http://testapi.kdniao.cc:8081/api/EOrderService
-		private String ReqURL="http://testapi.kdniao.cc:8081/api/EOrderService";	
-		
+	private String EBusinessID="1292696";
+	//电商加密私钥，快递鸟提供，注意保管，不要泄漏
+	private String AppKey="e1cae6b8-ca6f-4a29-953b-0c41dd461ffb";
+	//请求url, 正式环境地址：http://api.kdniao.cc/api/Eorderservice    测试环境地址：http://testapi.kdniao.cc:8081/api/EOrderService
+	private String ReqURL="http://testapi.kdniao.cc:8081/api/EOrderService";	
 
-		/**
-	     * Json方式 电子面单
-		 * @throws Exception 
-	     */
-		public String orderOnlineByJson() throws Exception{
-			String requestData= "{'OrderCode': '012657700387'," +
-	                "'ShipperCode':'SF'," +
-	                "'PayType':1," +
-	                "'ExpType':1," +
-	                "'Cost':1.0," +
-	                "'OtherCost':1.0," +
-	                "'Sender':" +
-	                "{" +
-	                "'Company':'LV','Name':'Taylor','Mobile':'15018442396','ProvinceName':'上海','CityName':'上海','ExpAreaName':'青浦区','Address':'明珠路73号'}," +
-	                "'Receiver':" +
-	                "{" +
-	                "'Company':'GCCUI','Name':'Yann','Mobile':'15018442396','ProvinceName':'北京','CityName':'北京','ExpAreaName':'朝阳区','Address':'三里屯街道雅秀大厦'}," +
-	                "'Commodity':" +
-	                "[{" +
-	                "'GoodsName':'鞋子','Goodsquantity':1,'GoodsWeight':1.0}]," +
-	                "'Weight':1.0," +
-	                "'Quantity':1," +
-	                "'Volume':0.0," +
-	                "'Remark':'小心轻放'," +
-	                "'IsReturnPrintTemplate':1}";
-			Map<String, String> params = new HashMap<String, String>();
-			params.put("RequestData", urlEncoder(requestData, "UTF-8"));
-			params.put("EBusinessID", EBusinessID);
-			params.put("RequestType", "1007");
-			String dataSign=encrypt(requestData, AppKey, "UTF-8");
-			params.put("DataSign", urlEncoder(dataSign, "UTF-8"));
-			params.put("DataType", "2");
-			
-			String result=sendPost(ReqURL, params);	
-			
-			//根据公司业务处理返回的信息......
-			
-			return result;
-		}
-		/**
-	     * MD5加密
-	     * @param str 内容       
-	     * @param charset 编码方式
-		 * @throws Exception 
-	     */
-		@SuppressWarnings("unused")
-		private String MD5(String str, String charset) throws Exception {
-		    MessageDigest md = MessageDigest.getInstance("MD5");
-		    md.update(str.getBytes(charset));
-		    byte[] result = md.digest();
-		    StringBuffer sb = new StringBuffer(32);
-		    for (int i = 0; i < result.length; i++) {
-		        int val = result[i] & 0xff;
-		        if (val <= 0xf) {
-		            sb.append("0");
-		        }
-		        sb.append(Integer.toHexString(val));
-		    }
-		    return sb.toString().toLowerCase();
-		}
-		
-		/**
-	     * base64编码
-	     * @param str 内容       
-	     * @param charset 编码方式
-		 * @throws UnsupportedEncodingException 
-	     */
-		private String base64(String str, String charset) throws UnsupportedEncodingException{
-			String encoded = Base64.encode(str.getBytes(charset));
-			return encoded;    
-		}	
-		
-		@SuppressWarnings("unused")
-		private String urlEncoder(String str, String charset) throws UnsupportedEncodingException{
-			String result = URLEncoder.encode(str, charset);
-			return result;
-		}
-		
-		/**
-	     * 电商Sign签名生成
-	     * @param content 内容   
-	     * @param keyValue Appkey  
-	     * @param charset 编码方式
-		 * @throws UnsupportedEncodingException ,Exception
-		 * @return DataSign签名
-	     */
-		@SuppressWarnings("unused")
-		private String encrypt (String content, String keyValue, String charset) throws UnsupportedEncodingException, Exception
-		{
-			if (keyValue != null)
-			{
-				return base64(MD5(content + keyValue, charset), charset);
+
+	/**
+	 * Json方式 电子面单
+	 * @throws Exception 
+	 */
+	public String orderOnlineByJson() throws Exception{
+		String requestData= "{'OrderCode': '012657700387'," +
+				"'ShipperCode':'SF'," +
+				"'PayType':1," +
+				"'ExpType':1," +
+				"'Cost':1.0," +
+				"'OtherCost':1.0," +
+				"'Sender':" +
+				"{" +
+				"'Company':'LV','Name':'Taylor','Mobile':'15018442396','ProvinceName':'上海','CityName':'上海','ExpAreaName':'青浦区','Address':'明珠路73号'}," +
+				"'Receiver':" +
+				"{" +
+				"'Company':'GCCUI','Name':'Yann','Mobile':'15018442396','ProvinceName':'北京','CityName':'北京','ExpAreaName':'朝阳区','Address':'三里屯街道雅秀大厦'}," +
+				"'Commodity':" +
+				"[{" +
+				"'GoodsName':'鞋子','Goodsquantity':1,'GoodsWeight':1.0}]," +
+				"'Weight':1.0," +
+				"'Quantity':1," +
+				"'Volume':0.0," +
+				"'Remark':'小心轻放'," +
+				"'IsReturnPrintTemplate':1}";
+		Map<String, String> params = new HashMap<String, String>();
+		params.put("RequestData", urlEncoder(requestData, "UTF-8"));
+		params.put("EBusinessID", EBusinessID);
+		params.put("RequestType", "1007");
+		String dataSign=encrypt(requestData, AppKey, "UTF-8");
+		params.put("DataSign", urlEncoder(dataSign, "UTF-8"));
+		params.put("DataType", "2");
+
+		String result=sendPost(ReqURL, params);	
+
+		//根据公司业务处理返回的信息......
+
+		return result;
+	}
+	/**
+	 * MD5加密
+	 * @param str 内容       
+	 * @param charset 编码方式
+	 * @throws Exception 
+	 */
+	@SuppressWarnings("unused")
+	private String MD5(String str, String charset) throws Exception {
+		MessageDigest md = MessageDigest.getInstance("MD5");
+		md.update(str.getBytes(charset));
+		byte[] result = md.digest();
+		StringBuffer sb = new StringBuffer(32);
+		for (int i = 0; i < result.length; i++) {
+			int val = result[i] & 0xff;
+			if (val <= 0xf) {
+				sb.append("0");
 			}
-			return base64(MD5(content, charset), charset);
+			sb.append(Integer.toHexString(val));
 		}
-		
-		 /**
-	     * 向指定 URL 发送POST方法的请求     
-	     * @param url 发送请求的 URL    
-	     * @param params 请求的参数集合     
-	     * @return 远程资源的响应结果
-	     */
-		@SuppressWarnings("unused")
-		private String sendPost(String url, Map<String, String> params) {
-	        OutputStreamWriter out = null;
-	        BufferedReader in = null;        
-	        StringBuilder result = new StringBuilder(); 
-	        try {
-	            URL realUrl = new URL(url);
-	            HttpURLConnection conn =(HttpURLConnection) realUrl.openConnection();
-	            // 发送POST请求必须设置如下两行
-	            conn.setDoOutput(true);
-	            conn.setDoInput(true);
-	            // POST方法
-	            conn.setRequestMethod("POST");
-	            // 设置通用的请求属性
-	            conn.setRequestProperty("accept", "*/*");
-	            conn.setRequestProperty("connection", "Keep-Alive");
-	            conn.setRequestProperty("user-agent",
-	                    "Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
-	            conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
-	            conn.connect();
-	            // 获取URLConnection对象对应的输出流
-	            out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
-	            // 发送请求参数            
-	            if (params != null) {
-			          StringBuilder param = new StringBuilder(); 
-			          for (Map.Entry<String, String> entry : params.entrySet()) {
-			        	  if(param.length()>0){
-			        		  param.append("&");
-			        	  }	        	  
-			        	  param.append(entry.getKey());
-			        	  param.append("=");
-			        	  param.append(entry.getValue());		        	  
-			        	//  System.out.println(entry.getKey()+":"+entry.getValue());
-			          }
-			          //System.out.println("param:"+param.toString());
-			          out.write(param.toString());
-	            }
-	            // flush输出流的缓冲
-	            out.flush();
-	            // 定义BufferedReader输入流来读取URL的响应
-	            in = new BufferedReader(
-	                    new InputStreamReader(conn.getInputStream(), "UTF-8"));
-	            String line;
-	            while ((line = in.readLine()) != null) {
-	                result.append(line);
-	            }
-	        } catch (Exception e) {            
-	            e.printStackTrace();
-	        }
-	        //使用finally块来关闭输出流、输入流
-	        finally{
-	            try{
-	                if(out!=null){
-	                    out.close();
-	                }
-	                if(in!=null){
-	                    in.close();
-	                }
-	            }
-	            catch(IOException ex){
-	                ex.printStackTrace();
-	            }
-	        }
-	        return result.toString();
-	    }
+		return sb.toString().toLowerCase();
+	}
+
+	/**
+	 * base64编码
+	 * @param str 内容       
+	 * @param charset 编码方式
+	 * @throws UnsupportedEncodingException 
+	 */
+	private String base64(String str, String charset) throws UnsupportedEncodingException{
+		String encoded = Base64.encode(str.getBytes(charset));
+		return encoded;    
+	}	
+
+	@SuppressWarnings("unused")
+	private String urlEncoder(String str, String charset) throws UnsupportedEncodingException{
+		String result = URLEncoder.encode(str, charset);
+		return result;
+	}
+
+	/**
+	 * 电商Sign签名生成
+	 * @param content 内容   
+	 * @param keyValue Appkey  
+	 * @param charset 编码方式
+	 * @throws UnsupportedEncodingException ,Exception
+	 * @return DataSign签名
+	 */
+	@SuppressWarnings("unused")
+	private String encrypt (String content, String keyValue, String charset) throws UnsupportedEncodingException, Exception
+	{
+		if (keyValue != null)
+		{
+			return base64(MD5(content + keyValue, charset), charset);
+		}
+		return base64(MD5(content, charset), charset);
+	}
+
+	/**
+	 * 向指定 URL 发送POST方法的请求     
+	 * @param url 发送请求的 URL    
+	 * @param params 请求的参数集合     
+	 * @return 远程资源的响应结果
+	 */
+	@SuppressWarnings("unused")
+	private String sendPost(String url, Map<String, String> params) {
+		OutputStreamWriter out = null;
+		BufferedReader in = null;        
+		StringBuilder result = new StringBuilder(); 
+		try {
+			URL realUrl = new URL(url);
+			HttpURLConnection conn =(HttpURLConnection) realUrl.openConnection();
+			// 发送POST请求必须设置如下两行
+			conn.setDoOutput(true);
+			conn.setDoInput(true);
+			// POST方法
+			conn.setRequestMethod("POST");
+			// 设置通用的请求属性
+			conn.setRequestProperty("accept", "*/*");
+			conn.setRequestProperty("connection", "Keep-Alive");
+			conn.setRequestProperty("user-agent",
+					"Mozilla/4.0 (compatible; MSIE 6.0; Windows NT 5.1;SV1)");
+			conn.setRequestProperty("Content-Type", "application/x-www-form-urlencoded");
+			conn.connect();
+			// 获取URLConnection对象对应的输出流
+			out = new OutputStreamWriter(conn.getOutputStream(), "UTF-8");
+			// 发送请求参数            
+			if (params != null) {
+				StringBuilder param = new StringBuilder(); 
+				for (Map.Entry<String, String> entry : params.entrySet()) {
+					if(param.length()>0){
+						param.append("&");
+					}	        	  
+					param.append(entry.getKey());
+					param.append("=");
+					param.append(entry.getValue());		        	  
+					//  System.out.println(entry.getKey()+":"+entry.getValue());
+				}
+				//System.out.println("param:"+param.toString());
+				out.write(param.toString());
+			}
+			// flush输出流的缓冲
+			out.flush();
+			// 定义BufferedReader输入流来读取URL的响应
+			in = new BufferedReader(
+					new InputStreamReader(conn.getInputStream(), "UTF-8"));
+			String line;
+			while ((line = in.readLine()) != null) {
+				result.append(line);
+			}
+		} catch (Exception e) {            
+			e.printStackTrace();
+		}
+		//使用finally块来关闭输出流、输入流
+		finally{
+			try{
+				if(out!=null){
+					out.close();
+				}
+				if(in!=null){
+					in.close();
+				}
+			}
+			catch(IOException ex){
+				ex.printStackTrace();
+			}
+		}
+		return result.toString();
+	}
 }

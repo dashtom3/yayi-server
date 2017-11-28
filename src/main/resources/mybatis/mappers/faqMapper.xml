@@ -48,6 +48,7 @@
 		select a.faq_question_id,a.faq_question_title,a.faq_question_type,a.faq_user_id as user_id,a.faq_question_content,a.faq_question_time,a.faq_answer_num,b.true_name as user_name,b.user_pic
 		from faq_question a
 		left join `user` b on a.faq_user_id=b.user_id
+		where a.faq_question_id=#{faqQuestionId}
 	</select>
 
 
@@ -55,7 +56,7 @@
 		SELECT  a.faq_answer_id,a.faq_answer_content,a.faq_answer_user_id as user_id,a.faq_answer_time,b.true_name AS user_name,b.user_pic
 		from faq_answer a
 		left JOIN  `user` b on a.faq_answer_user_id=b.user_id
-		where a.faq_question_answer_id=#{id}
+		where a.faq_question_answer_id=#{faqQuestionId}
 		order by a.faq_answer_time DESC
 		limit #{currentNumber},#{numberPerPage}
 	</select>
@@ -68,17 +69,17 @@
 		select a.faq_question_id,a.faq_question_title,a.faq_question_type,a.faq_user_id as user_id,a.faq_question_content,a.faq_question_time,a.faq_answer_num,b.true_name as user_name,b.user_pic
 		from faq_question a
 		left join `user` b on a.faq_user_id=b.user_id
-		where a.user_id=#{userId}
+		where a.faq_user_id=#{userId}
 		order by faq_question_time DESC
 		limit #{currentNumber},#{numberPerPage}
 	</select>
 
 	<select id="getAnswerNumGroupByQuestionId" resultType="int">
-		SELECT  count(*) from (SELECT COUNT(faq_question_answer_id) FROM faq_answer where faq_answer_user_id=#{userId} GROUP BY faq_question_answer_id)
+		SELECT  count(*) from (SELECT COUNT(faq_question_answer_id) FROM faq_answer where faq_answer_user_id=#{userId} GROUP BY faq_question_answer_id) a
 	</select>
 
 	<select id="getMyAnswerList" resultMap="faqQuestion">
-		select  c.faq_question_id,c.faq_question_title,c.faq_question_type,c.faq_user_id as user_id,c.faq_question_content,c.faq_question_time,c.faq_answer_num,c.true_name as user_name,b.user_pic,
+		select  c.faq_question_id,c.faq_question_title,c.faq_question_type,c.faq_user_id as user_id,c.faq_question_content,c.faq_question_time,c.faq_answer_num,c.true_name as user_name,c.user_pic,
 		e.faq_answer_id,e.faq_answer_content,e.faq_answer_user_id,e.faq_answer_time,e.true_name as answer_user_name,e.user_pic as answer_user_pic
 		FROM
 		(select a.faq_question_id,a.faq_question_title,a.faq_question_type,a.faq_user_id,a.faq_question_content,a.faq_question_time,a.faq_answer_num,b.true_name,b.user_pic
@@ -89,12 +90,14 @@
 			#{id}
 		</foreach>
 		limit #{currentNumber},#{numberPerPage}
-		)	c
+		)c
 		left JOIN
-		(select d.faq_answer_id,d.faq_answer_content,d.faq_answer_user_id,d.faq_answer_time,f.true_name,f.user_pic
-		from faq_answer d,`user` f on d.faq_answer_user_id=f.user_id
+		(select d.faq_answer_id,d.faq_answer_content,d.faq_answer_user_id,d.faq_question_answer_id,d.faq_answer_time,f.true_name,f.user_pic
+		from faq_answer d
+		LEFT  JOIN
+		`user` f on d.faq_answer_user_id=f.user_id
 		where faq_answer_user_id=#{userId}
-		)e on c.faq_question_id=e.faq_question_answer_id
+		) e on c.faq_question_id=e.faq_question_answer_id
 	</select>
 
 	<select id="getFaqQuestionIdList" resultType="java.lang.Integer">

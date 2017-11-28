@@ -177,12 +177,12 @@ public class OrderManagementController {
 	@RequestMapping("queryUserQbList")
 	@ResponseBody
 	//@AdminLog(description="后台订单列表导出Excel表格")
-	public DataWrapper<QbRecord> queryUserQbList(
-			/*	@RequestHeader(value="adminToken",required=true) String adminToken,*/
-			@RequestParam(value="userId",required=false) String userId
+	public DataWrapper<List<QbRecord>> queryUserQbList(
+			@RequestHeader(value="adminToken",required=true) String adminToken,
+			@RequestParam(value="phone",required=false) String phone
 			){
 
-		return orderManagementService.queryUserQbList(userId);
+		return orderManagementService.queryUserQbList(phone);
 	}
 	@RequestMapping("electronicSheet ")
 	@ResponseBody

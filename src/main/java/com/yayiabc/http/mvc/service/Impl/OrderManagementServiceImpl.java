@@ -903,10 +903,12 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 	 * 后台订单点击 显示该用户的充值记录
 	 */
 	@Override
-	public DataWrapper<QbRecord> queryUserQbList(String userId) {
+	public DataWrapper<List<QbRecord>> queryUserQbList(String phone) {
 		// TODO Auto-generated method stub
-		DataWrapper<QbRecord> dataWrapper=new DataWrapper<QbRecord>();
-		QbRecord qr=orderManagementDao.queryUserQbList(userId);
+		DataWrapper<List<QbRecord>> dataWrapper=new DataWrapper<List<QbRecord>>();
+		//phone ----userId
+		User user=utilsDao.queryUserByPhone(phone);
+		List<QbRecord> qr=orderManagementDao.queryUserQbList(user.getUserId());
 		dataWrapper.setData(qr);
 		return dataWrapper;
 	}

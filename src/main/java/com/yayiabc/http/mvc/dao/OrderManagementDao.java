@@ -104,7 +104,7 @@ public interface OrderManagementDao {
 
 	int saveRefundMessageToReturnQbMsg(@Param("returnQbMsg")String returnQbMsg, @Param("orderId")String orderId);
 	
-	QbRecord queryUserQbList(@Param("userId")String userId);
+    List<QbRecord> queryUserQbList(@Param("userId")String userId);
 	
 	List<ItemValue> getItemQb(List<OrderItem> itemList);
 }

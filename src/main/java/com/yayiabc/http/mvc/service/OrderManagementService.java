@@ -40,6 +40,6 @@ public interface OrderManagementService {
 	
 	DataWrapper<Invoice> queryOrderInvoice(String orderId); 
 	DataWrapper<Void> exportExcel(String orderId, String buyerInfo, String orderState, String orderCTime, String orderETime, String isRefund, HttpServletResponse response);
-	DataWrapper<QbRecord> queryUserQbList(String userId);
+	DataWrapper<List<QbRecord>> queryUserQbList(String userId);
 	String electronicSheet();
 }

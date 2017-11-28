@@ -218,7 +218,8 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		String userId=utilsDao.getUserID(token);
 		List<Integer> postIdNumber =  cottomsPostDao.queryByIdPost(userId);
 		for(int i=0;i<postIdNumber.size();i++){
-			if(postIdNumber.get(i)==postId){
+			if(postIdNumber.get(i).equals(postId)){
+				System.err.println("进入2");
 				cottomsPostDao.deletePost(postId);
 				dataWrapper.setMsg("删除成功");
 				break;

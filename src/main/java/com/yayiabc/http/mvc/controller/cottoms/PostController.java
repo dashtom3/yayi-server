@@ -67,7 +67,6 @@ public class PostController {
 			@RequestHeader(value="token") String token,
 			@RequestParam(value="postId") Integer postId
 			){
-		cottomsPostService.deletePost(token,postId);
 		return cottomsPostService.deletePost(token,postId);
 
 	}

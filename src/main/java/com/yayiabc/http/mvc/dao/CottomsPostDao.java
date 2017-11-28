@@ -84,7 +84,9 @@ public interface CottomsPostDao {
 	//我的收藏postId
 	public List<Integer> queryMyCollect(String userId);
 	//我的收藏列表
-	public List<CottomsPost> myCollect(List<Integer> list);
+	public List<CottomsPost> myCollect(
+			@Param("page") Page page,
+			List<Integer> list);
 	
 	//判断收藏是否存在
 	public Integer existPostId(
@@ -92,10 +94,15 @@ public interface CottomsPostDao {
 			@Param("userId")String userId
 			);
 	//判断是否购买
-	public Integer existBuyPostId(@Param("postId")Integer postId,@Param("userId")String userId);
+	public Integer existBuyPostId(@Param(
+			"postId")Integer postId,
+			@Param("userId")String userId);
 	
 	//我的购买病例
-	public List<CottomsPost> myBuy(List<Integer> list);
+	public List<CottomsPost> myBuy(
+			@Param("list")List<Integer> list,
+			@Param("page") Page page
+			);
 	
 	//获取购买病历PostId
 	public List<Integer> queryMyBuyPostId(String userId);

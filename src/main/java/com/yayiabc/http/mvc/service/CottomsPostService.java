@@ -33,8 +33,8 @@ public interface CottomsPostService {
 	public DataWrapper<Void> collect(String token,Integer postId);
 	
 	//我的收藏
-	public DataWrapper<List<CottomsPost>> myCollect(String token);
+	public DataWrapper<List<CottomsPost>> myCollect(Integer currentPage,Integer numberPerPage,String token);
 	
 	//我的购买病例
-	public DataWrapper<List<CottomsPost>> myBuy(String token);
+	public DataWrapper<List<CottomsPost>> myBuy(String token,Integer currentPage,Integer numberPerPage);
  }

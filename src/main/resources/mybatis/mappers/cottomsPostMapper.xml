@@ -71,7 +71,7 @@
 				#{postId}
 			</foreach>
 		</where>
-		limit ${page.currentNumber},${page.numberPerPage}
+		LIMIt #{page.currentNumber},#{page.numberPerPage}
 		<!-- <foreach collection="postId" item="post_id" open="AND (" close=")" 
 			separator="OR"> postId=#{post_id} </foreach> -->
 	</select>
@@ -86,7 +86,6 @@
 			separator="," close=")">
 			#{postId}
 		</foreach>
-		limit
 	</select>
 
 	<!--查看用户的病例 -->
@@ -182,6 +181,7 @@
 				#{postId}
 			</foreach>
 		</where>
+		LIMIt #{page.currentNumber},#{page.numberPerPage}
 	</select>
 
 	<!--收藏是否存在 -->
@@ -215,7 +215,7 @@
 				separator="," close=")">
 				#{postId}
 			</foreach>
-			limit #{page.currentPage},#{page.numberPerPage}
+			LIMIt #{page.currentNumber},#{page.numberPerPage}
 		</where>
 	</select>
 </mapper>

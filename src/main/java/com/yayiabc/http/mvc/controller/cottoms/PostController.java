@@ -98,9 +98,11 @@ public class PostController {
 	@RequestMapping("myCollect")
 	@ResponseBody
 	public DataWrapper<List<CottomsPost>> myCollect(
-			@RequestHeader("token")String token
+			@RequestHeader("token")String token,
+			@RequestParam("currentPage")Integer currentPage,
+			@RequestParam("numberPerPage")Integer numberPerPage
 			){
-		return cottomsPostService.myCollect(token);
+		return cottomsPostService.myCollect(currentPage,numberPerPage,token);
 
 	}
 	//我的购买病例

@@ -59,6 +59,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			cottomsPost.setWriter(trueName);
 			System.out.println(cottomsPost.getPostId());
 			if(cottomsPost.getPostId()==null){
+				System.out.println(123);
 				cottomsPostDao.addPost(cottomsPost);
 				//发布病例点赞默认为0
 				RedisService.SORTSET.zadd("点赞计数列表病例:", 0, cottomsPost.getPostId()+"");
@@ -98,17 +99,15 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		}else{
 			key="";
 		}
-		//	if(classify==null){
 		int totalNumber=cottomsPostDao.getTotalNumber(classify,keyWord);
-		System.err.println(totalNumber);
 		Set<String> set = RedisService.SORTSET.zrevrange("点赞计数列表病例:", 0, totalNumber);
 		List<String> list =new ArrayList<String>();
 		list.addAll(set);
+		System.out.println(page.getCurrentNumber());
 		List<CottomsPost> cottomsPosts=cottomsPostDao.queryPost(page,classify,order,postStater,list,userId,keyWord,type);
 		for (CottomsPost cottomsPost2 : cottomsPosts) {
 			int readNumber = (int)RedisService.SORTSET.zscore("阅读数", cottomsPost2.getPostId()+"");//获取阅读数
 			int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost2.getPostId());//获取评论数
-			//			List<String> postId=RedisService.LISTS.lrange("2评论"+cottomsPost2.getPostId(), start, end);
 			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+cottomsPost2.getPostId());//获取点赞数
 			cottomsPost2.setReadNumber(readNumber);
 			cottomsPost2.setPostFavour(favourNumber);
@@ -119,34 +118,6 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			dataWrapper.setData(cottomsPosts);
 			dataWrapper.setPage(page, totalNumber);
 		}
-		//		}else {
-		//			//数据库获得总条数
-		//			int totalNumber=cottomsPostDao.getTotalNumber(classify);
-		//			//redise获取总条数
-		//			//int totalNumber=(int)(RedisService.SORTSET.zcard("口腔内科")+RedisService.SORTSET.zcard("口腔外科")+RedisService.SORTSET.zcard("口腔种植")+RedisService.SORTSET.zcard("口腔修复")+RedisService.SORTSET.zcard("口腔正畸"));
-		//			int start = (int)Math.floor((currentPage-1)*numberPerPage);//起始 
-		//			int end = (int)Math.floor((totalNumber-1)/numberPerPage+1);//总页数
-		//			Set<String> set = RedisService.SORTSET.zrevrange(classify+"点赞", start, start+numberPerPage-1);
-		//			List<String> list =new ArrayList<String>();
-		//			list.addAll(set);
-		//			System.out.println(list);
-		//			System.out.println(postStater);
-		//			List<CottomsPost> cottomsPosts = cottomsPostDao.queryClassifyPost(list,postStater);
-		//			for (CottomsPost cottomsPost2 : cottomsPosts) {
-		//				String readNumber = RedisService.STRINGS.get(cottomsPost.getPostId()+"");//获取阅读数
-		//				int commentNumber = (int)RedisService.LISTS.llen("2评论"+cottomsPost2.getPostId());//获取评论数
-		//				//List<String> postId=RedisService.LISTS.lrange("2评论"+cottomsPost2.getPostId(), start, end);
-		//				int favourNumber = (int)RedisService.SETS.scard("病例:"+cottomsPost2.getPostId());//获取点赞数
-		//				cottomsPost2.setReadNumber(readNumber);
-		//				cottomsPost2.setCommentNumber(favourNumber);
-		//				cottomsPost2.setCommentNumber(commentNumber);
-		//				cottomsPost.setChargeContent(null);
-		//				cottomsPost.setFreeContent(null);
-		//				dataWrapper.setData(cottomsPosts);
-		//				dataWrapper.setPage(page, totalNumber);
-		//			}
-		//			System.out.println(cottomsPosts);
-		//		}
 		return dataWrapper;
 	}
 	//病例详情
@@ -298,12 +269,14 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	}
 	
 	//我的已购病例
-	public DataWrapper<List<CottomsPost>> myBuy(String token){
+	public DataWrapper<List<CottomsPost>> myBuy(String token,Integer currentPage,Integer numberPerPage){
+		Page page=new Page();
+		page.setNumberPerPage(numberPerPage);
+		page.setCurrentPage(currentPage);
 		String userId=utilsDao.getUserID(token);
-		System.out.println("suerId"+userId);
+		//获取已购买postId
 		List<Integer> list=cottomsPostDao.queryMyBuyPostId(userId);
-		System.out.println(list);
-		List<CottomsPost> cottomsPosts = cottomsPostDao.myBuy(list);
+		List<CottomsPost> cottomsPosts = cottomsPostDao.myBuy(list,page);
 		DataWrapper<List<CottomsPost>> dw=new DataWrapper<>();
 		for (CottomsPost cottomsPost : cottomsPosts) {
 			cottomsPost.setChargeContent(null);
@@ -319,13 +292,13 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		
 	}
 	//我的收藏
-	public DataWrapper<List<CottomsPost>> myCollect(String token) {
+	public DataWrapper<List<CottomsPost>> myCollect(Integer currentPage,Integer numberPerPage,String token) {
 		String userId=utilsDao.getUserID(token);
-		System.out.println(userId);
+		Page page = new Page();
+		page.setCurrentPage(currentPage);
+		page.setNumberPerPage(numberPerPage);
 		List<Integer> list=cottomsPostDao.queryMyCollect(userId);
-		System.out.println(list);
-		List<CottomsPost> cottomsPosts = cottomsPostDao.myCollect(list);
-		
+		List<CottomsPost> cottomsPosts = cottomsPostDao.myCollect(page,list);
 		DataWrapper<List<CottomsPost>> dw=new DataWrapper<>();
 		for (CottomsPost cottomsPost : cottomsPosts) {
 			cottomsPost.setChargeContent(null);

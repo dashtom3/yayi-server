@@ -1,0 +1,113 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.FaqDao">
+    <insert id="addQuestion" >
+		insert into faq_question(faq_question_title,faq_question_type,faq_user_id,faq_question_content)
+		value (#{faqQuestionTitle},#{faqQuestionType},#{userId},#{faqQuestionContent})
+	</insert>
+
+	<insert id="addAnswer" >
+		insert into faq_answer(faq_answer_content,faq_answer_user_id,faq_question_answer_id)
+		value (#{faqAnswer.faqAnswerContent},#{faqAnswer.userId},#{faqQuestionId})
+	</insert>
+
+	<select id="getFaqQuestionList" resultType="FaqQuestion">
+		select a.faq_question_id,a.faq_question_title,a.faq_question_type,a.faq_user_id AS user_id,a.faq_question_content,a.faq_question_time,a.faq_answer_num,b.true_name as user_name,b.user_pic
+		FROM faq_question a,user b on a.faq_user_id=b.user_id
+		<where>
+			<if test="faqQuestionType!=null and faqQuestionType!=''">
+				faq_question_type=#{faqQuestionType}
+			</if>
+		</where>
+		order BY
+		<choose>
+			<when test="order==2">a.faq_question_time DESC </when>
+			<otherwise>a.faq_answer_num DESC </otherwise>
+		</choose>
+		limit #{currentNumber},#{numberPerPage}
+	</select>
+
+	<select id="getFaqQuestionTotalNumber" resultType="int">
+		select count(*) from faq_question
+		<where>
+			<if test="faqQuestionType!=null and faqQuestionType!=''">
+				faq_question_type=#{faqQuestionType}
+			</if>
+		</where>
+	</select>
+	
+	<select id="getAnswerTotalNum" resultType="int">
+		select count(*) from faq_answer where faq_question_answer_id=#{faqQuestionId}
+	</select>
+
+	<select id="questionDetail" resultType="FaqQuestion">
+		select a.faq_question_id,a.faq_question_title,a.faq_question_type,a.faq_user_id as user_id,a.faq_question_content,a.faq_question_time,a.faq_answer_num,b.true_name as user_name,b.user_pic
+		from faq_question a
+		left join `user` b on a.faq_user_id=b.user_id
+	</select>
+
+
+	<select id="questionAnswerList" resultType="FaqAnswer">
+		SELECT  a.faq_answer_id,a.faq_answer_content,a.faq_answer_user_id as user_id,a.faq_answer_time,b.true_name AS user_name,b.user_pic
+		from faq_answer a
+		left JOIN  `user` b on a.faq_answer_user_id=b.user_id
+		where a.faq_question_answer_id=#{id}
+		order by a.faq_answer_time DESC
+		limit #{currentNumber},#{numberPerPage}
+	</select>
+
+	<select id="getMyQuestionTotalNum" resultType="int">
+		select count(*) from faq_question where faq_user_id=#{userId}
+	</select>
+	
+	<select id="getMyQuestionList" resultType="FaqQuestion">
+		select a.faq_question_id,a.faq_question_title,a.faq_question_type,a.faq_user_id as user_id,a.faq_question_content,a.faq_question_time,a.faq_answer_num,b.true_name as user_name,b.user_pic
+		from faq_question a
+		left join `user` b on a.faq_user_id=b.user_id
+		where a.user_id=#{userId}
+		order by faq_question_time DESC
+		limit #{currentNumber},#{numberPerPage}
+	</select>
+
+	<select id="getAnswerNumGroupByQuestionId" resultType="int">
+		SELECT  count(*) from (SELECT COUNT(faq_question_answer_id) FROM faq_answer where faq_answer_user_id=#{userId} GROUP BY faq_question_answer_id)
+	</select>
+
+	<select id="getMyAnswerList" resultMap="faqQuestion">
+		select  c.faq_question_id,c.faq_question_title,c.faq_question_type,c.faq_user_id as user_id,c.faq_question_content,c.faq_question_time,c.faq_answer_num,c.true_name as user_name,b.user_pic,
+		e.faq_answer_id,e.faq_answer_content,e.faq_answer_user_id,e.faq_answer_time,e.true_name as answer_user_name,e.user_pic as answer_user_pic
+		FROM
+		(select a.faq_question_id,a.faq_question_title,a.faq_question_type,a.faq_user_id,a.faq_question_content,a.faq_question_time,a.faq_answer_num,b.true_name,b.user_pic
+		from faq_question a
+		left join `user` b on a.faq_user_id=b.user_id
+		where faq_question_id IN
+		<foreach collection="questionIdList" item="id" index="index" separator="," open="(" close=")">
+			#{id}
+		</foreach>
+		limit #{currentNumber},#{numberPerPage}
+		)	c
+		left JOIN
+		(select d.faq_answer_id,d.faq_answer_content,d.faq_answer_user_id,d.faq_answer_time,f.true_name,f.user_pic
+		from faq_answer d,`user` f on d.faq_answer_user_id=f.user_id
+		where faq_answer_user_id=#{userId}
+		)e on c.faq_question_id=e.faq_question_answer_id
+	</select>
+
+	<select id="getFaqQuestionIdList" resultType="java.lang.Integer">
+		select faq_question_answer_id FROM faq_answer where faq_answer_user_id=#{userId} GROUP BY faq_question_answer_id order by faq_answer_time
+	</select>
+
+	<resultMap id="faqQuestion" type="FaqQuestion" autoMapping="true">
+		<id property="faqQuestionId" column="faq_question_id"/>
+		<collection property="faqAnswerList" ofType="FaqAnswer" autoMapping="true">
+			<id property="faqAnswerId" column="faq_answer_id"/>
+			<result property="faqAnswerContent" column="faq_answer_content"/>
+			<result property="faqAnswerTime" column="faq_answer_time"/>
+			<result property="userId" column="faq_answer_user_id"/>
+			<result property="userName" column="answer_user_name"/>
+			<result property="userPic" column="answer_user_pic"/>
+		</collection>
+	</resultMap>
+</mapper>       

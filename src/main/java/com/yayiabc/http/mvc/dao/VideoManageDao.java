@@ -1,6 +1,7 @@
 package com.yayiabc.http.mvc.dao;
 
 import java.util.List;
+import java.util.Set;
 
 import org.apache.ibatis.annotations.Param;
 
@@ -23,4 +24,6 @@ public interface VideoManageDao {
 	List<VidManage> showVid(@Param("rule")Integer rule,@Param("videoCategory") Integer videoCategory,@Param("keyWord")String keyWord);
 
     VidManage detail(Integer viId);
+
+    List<VidManage> queryMyCollect(@Param("idList")List<String> idList,@Param("currentNumber") Integer currentNumber,@Param("numberPerPage") Integer numberPerPage);
 }

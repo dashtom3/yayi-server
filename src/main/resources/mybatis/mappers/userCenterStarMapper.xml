@@ -44,6 +44,6 @@
 	</select>
 	
 	<select id="queryCount"  resultType="java.lang.Integer">
-	   select count(1) from ${tablename}
+	   select count(*) from item_star where user_id=#{userId}
 	</select>
 </mapper>  

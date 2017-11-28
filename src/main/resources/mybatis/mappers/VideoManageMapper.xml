@@ -65,5 +65,13 @@
 		select vi_id,video_name,video_type,video_route,video_category,DATE_FORMAT(vedio_time,'%Y-%m-%d %H:%i:%s') As vedio_time,vedio_pic from vid_manage where vi_id=#{viId}
 	</select>
 
+	<select id="queryMyCollect" resultType="VidManage">
+		select * from vid_manage where vi_id IN 
+		<foreach collection="idList" index="index" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+		limit #{currentNumber},#{numberPerPage}
+	</select>
+
 
 </mapper>

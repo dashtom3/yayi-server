@@ -163,6 +163,7 @@ public class VideoManageServiceImpl implements VideoManageService {
 		return dataWrapper;
 	}
 
+
 	@Override
 	public DataWrapper<Void> star(String token, Integer viId) {
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
@@ -174,10 +175,12 @@ public class VideoManageServiceImpl implements VideoManageService {
 		//如果已经收藏，则取消收藏
 		if(flag){
 			unStar(userId,viId);
+			unUserStar(userId,viId);
 			return dataWrapper;
 		}
 		//如果未收藏，则添加到收藏
 		toStar(userId,viId);
+		userStar(userId,viId);
 		return dataWrapper;
 	}
 
@@ -202,7 +205,15 @@ public class VideoManageServiceImpl implements VideoManageService {
 		redisService.SETS.sadd("视频收藏用户列表"+viId,userId);
 	}
 
+	//去除个人收藏列表里面的视频Id
+	public void unUserStar(String userId,Integer viId){
+		redisService.SETS.srem(userId+"视频收藏列表",viId+"");
+	}
 
+	//加入个人收藏列表里面的视频id
+	public void userStar(String userId,Integer viId){
+		redisService.SETS.sadd(userId+"视频收藏列表",viId+"");
+	}
 
 
 }

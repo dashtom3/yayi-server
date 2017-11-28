@@ -17,5 +17,5 @@ public interface UserCenterStarDao {
 	List<Integer> queryOne(@Param("itemId")String itemId,@Param("userId")String userId);
 	
 	//查询总条数
-	int queryCount(@Param("tablename")String tablename);
+	int queryCount(@Param("userId")String userId);
 }

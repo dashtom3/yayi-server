@@ -122,14 +122,14 @@ public class Invoice {
 
 		if("0".equals(invoiceStyle)&&"1".equals(InvoiceState)){
 			//普通发票  公司发票
-			return "发票信息    \r\n发票类型:"+showInvoiceStyle(invoiceStyle)+"\r\n发票性质:"+ showInvoiceState(InvoiceState)+"\r\n公司抬头:" + companyName + "\r\n纳税人识别号:" + taxpayerNum;
+			return "\r\n发票类型:"+showInvoiceStyle(invoiceStyle)+"\r\n发票性质:"+ showInvoiceState(InvoiceState)+"\r\n公司抬头:" + companyName + "\r\n纳税人识别号:" + taxpayerNum;
 			
 		}else if("0".equals(invoiceStyle)&&"0".equals(InvoiceState)){
 			//普通发票  个人发票
-			return "发票信息    \r\n发票类型:"+showInvoiceStyle(invoiceStyle)+"\r\n发票性质:"+ showInvoiceState(InvoiceState)+"\r\n发票抬头:" + companyName;
+			return "\r\n发票类型:"+showInvoiceStyle(invoiceStyle)+"\r\n发票性质:"+ showInvoiceState(InvoiceState)+"\r\n发票抬头:" + companyName;
 		}else{
 			//增值税发票 公司发票
-			return "发票信息    \r\n发票类型:"+showInvoiceStyle(invoiceStyle)+"\r\n发票性质:公司发票"+"\r\n单位名称:" + companyName + "\r\n纳税人识别号:" + taxpayerNum
+			return "\r\n发票类型:"+showInvoiceStyle(invoiceStyle)+ "\r\n纳税人识别号:" + taxpayerNum +"\r\n单位名称:" + companyName + "\r\n纳税人识别号:" 
 					+ "\r\n注册地址:" + registeredAddress + "\r\n注册电话:" + registeredPhone + "\r\n开户银行:"
 					+ opneBank + "\r\n银行账号:" + bankNumber + "\r\n收票人姓名:" + stickNanme + "\r\n收票人手机号:" + stickPhone
 					+ "\r\n收票人地址:" + stickaddress
@@ -140,7 +140,7 @@ public class Invoice {
 	private String showInvoiceStyle(String invoiceStyle){
 		if("0".equals(invoiceStyle)){
 			return "普通发票";
-		}else if("1".equals(invoiceStyle)){
+		}else if("1".equals(invoiceStyle)||"2".equals(invoiceStyle)){
 			return "增值税发票";
 		}
 		return "非法发票";

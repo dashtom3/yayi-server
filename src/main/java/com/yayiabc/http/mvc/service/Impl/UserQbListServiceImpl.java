@@ -208,6 +208,7 @@ public class UserQbListServiceImpl implements UserQbListService {
 	 */
 	private DataWrapper<List<qbRecordModel>> QbExcel(HashMap<String, String> hm,HttpServletResponse response) {
 		// TODO Auto-generated method stub
+		System.out.println(hm);
 		DataWrapper<List<qbRecordModel>> dataWrapper=new DataWrapper<List<qbRecordModel>>();
 		List<qbRecordModel> qbRecordList=userQbListDao.queryQbRecord(hm);
 

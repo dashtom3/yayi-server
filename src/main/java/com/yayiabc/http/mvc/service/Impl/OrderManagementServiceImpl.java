@@ -504,12 +504,12 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		/**
 		 * 检查打包文件夹是否存在   不存在就创建
 		 */
-		File file = new File("C:/yayi");
+		File file = new File("D:/yayi");
 		if(!file.exists()){
 			file.mkdirs();
 		}else{
 			if(deleteDir(file)){
-				File fileZip = new File("C:/后台订单详情.zip");
+				File fileZip = new File("D:/后台订单详情.zip");
 				fileZip.delete();
 				file.mkdirs();
 			}
@@ -720,11 +720,11 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 
 		try  
 		{ 
-			FileOutputStream fout = new FileOutputStream("C:/yayi/order.xls");  
+			FileOutputStream fout = new FileOutputStream("D:/yayi/order.xls");  
 			wb.write(fout);  
 			fout.close();
 			//删除待压缩文件夹里的空发票文件
-			File files = new File("C:/yayi");
+			File files = new File("D:/yayi");
 			File[] filess = file.listFiles();
 			for(int i=0; i<filess.length; i++){
 				if(filess[i].getName().contains("不需要发票")){
@@ -734,12 +734,12 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			
 			//压缩
 			FolderTOZip ftz=new FolderTOZip();
-			ftz.zip("C:/yayi", "C:/后台订单详情.zip");
+			ftz.zip("D:/yayi", "D:/后台订单详情.zip");
 			
 			/**
 			 * 把包发送给浏览器
 			 */
-			File fil = new File("C:/后台订单详情.zip"); 
+			File fil = new File("D:/后台订单详情.zip"); 
 
 			System.out.println(fil);
 			FileInputStream fis = new FileInputStream(fil);  
@@ -853,7 +853,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 
 
 		String[] str=qbDes.split(",");
-		return "'赠' "+str[0]+"个；'9.5折' "+str[1]+"个；'9.0折' "+str[2]+"个；'8.0折' "+str[3]+"个；";
+		return "'赠' "+str[0]+"个；'8.0折' "+str[1]+"个；'9.0折' "+str[2]+"个；'9.5折' "+str[3]+"个；";
 	}
 	/*
 	 * 发票写入txt方法
@@ -863,11 +863,11 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		FileWriter writer = null;
 		try {
 			if("1".equals(ordera.getInvoiceHand())){
-				writer=new FileWriter("C:/yayi/"+ordera.getOrderId()+"订单发票信息.txt");
+				writer=new FileWriter("D:/yayi/"+ordera.getOrderId()+"订单发票信息.txt");
 				Invoice invoice	=utilsDao.getInvoiceByOrderId(ordera.getOrderId());
 				writer.write(invoice.toString());
 			}else{
-				writer=new FileWriter("C:/yayi/"+ordera.getOrderId()+"不需要发票");
+				writer=new FileWriter("D:/yayi/"+ordera.getOrderId()+"不需要发票");
 			}
 		} catch (Exception e) {
 			// TODO: handle exception

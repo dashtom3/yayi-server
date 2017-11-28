@@ -165,7 +165,7 @@ public class OrderManagementController {
 			@RequestParam(value="orderId",required=false) String orderId,
 			@RequestParam(value="buyerInfo",required=false)String buyerInfo,//卖家的姓名或者手机号码
 			@RequestParam(value="orderState",required=false)String orderState,
-			@RequestParam(value="orderCTime",required=false)String orderCTime,
+			@RequestParam(value="orderCTime",required=false)String orderCTime,// yyyy-MM-dd HH:mm:ss
 			@RequestParam(value="orderETime",required=false)String orderETime,
 			@RequestParam(value="isRefund",required=false)String isRefund,
 			HttpServletResponse response

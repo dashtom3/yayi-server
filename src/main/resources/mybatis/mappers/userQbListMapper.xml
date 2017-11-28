@@ -94,7 +94,7 @@
 		qr.user_id=us.user_id join charge ch on qr.charge_id=ch.charge_id
 		<where>
 			<if test="userMessage!=null and userMessage!=''">
-				userMessage in (us.true_name,us.phone)
+				#{userMessage} in (us.true_name,us.phone)
 			</if>
 			<if test="qbType!=null and qbType!=''">
 				and qr.remark like '%${qbType}%'
@@ -127,7 +127,7 @@
 		on qr.charge_id=ch.charge_id
 		<where>
 			<if test="userMessage!=null and userMessage!=''">
-				userMessage in (us.true_name,us.phone)
+				#{userMessage} in (us.true_name,us.phone)
 			</if>
 			<if test="qbType!=null and qbType!=''">
 				and qr.remark like '%${qbType}%'

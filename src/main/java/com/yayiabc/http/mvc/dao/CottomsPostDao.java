@@ -38,8 +38,12 @@ public interface CottomsPostDao {
 	public int getTotalNumber(@Param("classify") Integer classify,@Param("keyWord")String keyWord);
 	
 	public int getTotalCommentNumber();
+	
+	//查看病例详情
 	public CottomsPost cottomsDetail(String postId);
+	
 	public void comment(CottomsComment cottomsComment);
+	
 	//public void reply(CottomsReply cottomsReply);
 
 	//根据type查分类
@@ -106,4 +110,7 @@ public interface CottomsPostDao {
 	
 	//获取购买病历PostId
 	public List<Integer> queryMyBuyPostId(String userId);
+	
+	//查询账户余额
+	public List<Integer> queryqb(String userId);
 }

@@ -72,8 +72,7 @@
 			</foreach>
 		</where>
 		LIMIt #{page.currentNumber},#{page.numberPerPage}
-		<!-- <foreach collection="postId" item="post_id" open="AND (" close=")" 
-			separator="OR"> postId=#{post_id} </foreach> -->
+		
 	</select>
 
 	<!--根据点赞分类排序 -->
@@ -217,5 +216,11 @@
 			</foreach>
 			LIMIt #{page.currentNumber},#{page.numberPerPage}
 		</where>
+	</select>
+	
+	<!--查询钱币余额  -->
+	<select id="queryqb" resultType="java.lang.Integer">
+		select a_qb,qb_balance,c_qb from user 
+		where user_id=#{userId}
 	</select>
 </mapper>

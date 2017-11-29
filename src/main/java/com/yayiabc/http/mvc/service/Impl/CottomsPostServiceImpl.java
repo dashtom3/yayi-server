@@ -219,7 +219,6 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		List<Integer> postIdNumber =  cottomsPostDao.queryByIdPost(userId);
 		for(int i=0;i<postIdNumber.size();i++){
 			if(postIdNumber.get(i).equals(postId)){
-				System.err.println("进入2");
 				cottomsPostDao.deletePost(postId);
 				dataWrapper.setMsg("删除成功");
 				break;
@@ -234,18 +233,28 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		String userId=utilsDao.getUserID(token);
 		String remark = "付费病例:支付"+chargeNumber+"个乾币。(乾币余额:userQbNum个)";
 		DataWrapper<Void> dw =new DataWrapper<>();
-		if(userId!=null){
-			Integer p=cottomsPostDao.existBuyPostId(postId,userId);//判断是否已购买
-			if(p==0){
-				if(payAfterOrderUtil.newQbDed(userId, chargeNumber, "", remark)!=null){
-					cottomsPostDao.insertUserToPost(postId,userId);
+		List<Integer> qb=cottomsPostDao.queryqb(userId);//查询余额
+		Integer q=null;
+		for(int i=0;i<qb.size();i++){
+			q=qb.get(i);
+			q+=q;
+		}
+		if(q>=chargeNumber){
+			if(userId!=null){
+				Integer p=cottomsPostDao.existBuyPostId(postId,userId);//判断是否已购买
+				if(p==0){
+					if(payAfterOrderUtil.newQbDed(userId, chargeNumber, "", remark)!=null){
+						cottomsPostDao.insertUserToPost(postId,userId);
+					}
+					dw.setMsg("支付成功");
+				}else{
+					dw.setMsg("该病例已购买");
 				}
-				dw.setMsg("支付成功");
 			}else{
-				dw.setMsg("该病例已购买");
+				dw.setMsg("请登录");
 			}
 		}else{
-			dw.setMsg("请登录");
+			dw.setMsg("余额不足");
 		}
 		return dw;
 	}

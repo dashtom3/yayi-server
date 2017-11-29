@@ -563,9 +563,9 @@
 	</update>
 	
 	<select id="queryUserQbList" resultType="com.yayiabc.http.mvc.pojo.jpa.QbRecord">
-	 select * from qb_record where user_id=#{userId} and remark like '%充值%' order by created desc
+	 select * from qb_record where user_id=${userId} and remark like '%充值%' order by created desc
 	 
-	   limit #{currentNum} ,#{numberPerpage}
+	   limit ${currentNum},${numberPerpage}
 	</select>
 	<select id="queryCounty" resultType="int">
 	select count(1) from qb_record where user_id=#{userId} and remark like '%充值%'

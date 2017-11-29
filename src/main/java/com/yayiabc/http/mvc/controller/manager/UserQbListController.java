@@ -79,16 +79,14 @@ public class UserQbListController {
 	 * 查询乾币充值记录
 	 * 导出查询数据
 	 */
-	/**
-	 * 查询具体某位用户的钱币余额
-	 */
+	
 	@RequestMapping(value = "queryQbRecord")
 	@ResponseBody
 	//@AdminTokenValidate
 	public DataWrapper<List<qbRecordModel>> queryQbRecord(
 			@RequestParam(value = "userMessage", required = false) String userMessage,
 			@RequestParam(value="QbType",required=false)String QbType,
-			@RequestParam(value = "payType", required = false) String payType,
+			@RequestParam(value ="payType", required = false) String payType,
 			@RequestParam(value="orderCTime",required=false)String orderCTime,
 			@RequestParam(value="orderETime",required=false)String orderETime,
 			@RequestParam(value="currentPage",required=false)Integer currentPage,

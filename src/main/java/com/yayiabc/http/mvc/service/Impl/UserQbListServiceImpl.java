@@ -177,7 +177,7 @@ public class UserQbListServiceImpl implements UserQbListService {
 		hm.put("orderCTime", orderCTime);
 		hm.put("orderETime", orderETime);
 
-		if(currentPage!=null||numberPerpage!=null){
+		if(currentPage!=null||numberPerpage!=null||!currentPage.equals("")||!numberPerpage.equals("")){
 			Page page=new Page();
 			page.setNumberPerPage(numberPerpage);
 			page.setCurrentPage(currentPage);
@@ -187,15 +187,15 @@ public class UserQbListServiceImpl implements UserQbListService {
 			//总条数
 			int count=userQbListDao.queryCount(hm);//totalnumber
 			//查询date
+			System.out.println(hm);
 			List<qbRecordModel> qbRecordList=userQbListDao.queryQbRecord(hm);
 			dataWrapper.setPage(page, count);
 			dataWrapper.setData(qbRecordList);
 			return dataWrapper;
 		}else{
 			//导出excel
-			QbExcel(hm,response);
+			return QbExcel(hm,response);
 		}
-		return null;
 	}
 	/**
 	 * 
@@ -270,7 +270,7 @@ System.err.println( qbRecordList.size());
 			// 第四步，创建单元格，并设置值  
 			row.createCell((short) 0).setCellValue(qbRecordModel.getTrueName());  
 			row.createCell((short) 1).setCellValue(qbRecordModel.getPhone());  
-			row.createCell((short) 2).setCellValue(qbRecordModel.getQbDes()); 
+			row.createCell((short) 2).setCellValue(qbRecordModel.getQbRget()); 
 			row.createCell((short) 3).setCellValue(qbRecordModel.getRechargeMoney());  
 			row.createCell((short) 4).setCellValue(transformation(qbRecordModel.getReferer()));  
 			row.createCell((short) 5).setCellValue(simpleDateFormat.format(qbRecordModel.getCreated())); 
@@ -337,8 +337,10 @@ System.err.println( qbRecordList.size());
 			return "支付宝";
 		case 2: 
 			return "微信支付(公众号/网站)";
-		default: 
-			return "微信支付（app";
-		} 
+		case 3: 
+			return "微信支付（app)";
+		
+		}
+		return referer;
 	}
 }

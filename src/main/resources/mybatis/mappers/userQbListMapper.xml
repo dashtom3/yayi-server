@@ -111,17 +111,28 @@
 		</where>
 	</select>
 
+
+	
+	
 	<resultMap type="com.yayiabc.http.mvc.pojo.model.qbRecordModel"
 		id="qbListMaps">
 		<result property="trueName" column="true_name" />
 		<result property="phone" column="phone" />
-		<result property="qbDes" column="qb_rget" />
-		<result property="rechargeMoney" column="money" />
-		<result property="referer" column="referer" />
 		<result property="created" column="created" />
+		<result property="qbTime" column="qb_time"/>
+		<result property="chargeId" column="charge_id"/>
+		<result property="qbRid" column="qb_rid"/>
+		<result property="userId" column="user_id"/>
+		<result property="qbRget" column="qb_rget"/>
+		<result property="referer" column="referer" />
+		<result property="remark" column="remark"/>
+		<result property="millisecond" column="millisecond"/>
+		<result property="qbBalances" column="qb_balances"/>
+		<result property="rechargeMoney" column="money"/>
 	</resultMap>
 	<select id="queryQbRecord" resultMap="qbListMaps">
-		select us.true_name,us.phone,qr.qb_rget,ch.money,qr.referer,qr.created
+		select us.true_name,us.phone,qr.qb_rget,qr.referer,qr.created,qr.qb_time,ch.charge_id,qr.qb_rid,qr.remark,qr.millisecond,qr.qb_balances
+		,ch.money
 		from qb_record qr join user us on
 		qr.user_id=us.user_id join charge ch
 		on qr.charge_id=ch.charge_id
@@ -132,7 +143,7 @@
 			<if test="qbType!=null and qbType!=''">
 				and qr.remark like '%${qbType}%'
 			</if>
-			<if test="payType!=null and payType!=''  and qbType!=4">
+			<if test="payType!=null and payType!=''  and payType!=4">
 				and qr.referer=#{payType}
 			</if>
 			<if test="orderCTime !=null and orderCTime !=''">
@@ -141,7 +152,7 @@
 			<if test="orderETime !=null and orderETime !=''">
 				and DATE_FORMAT(qr.created,'%Y-%m-%d') <![CDATA[  <=  ]]>#{orderETime}
 			</if>
-			<if test=" qbType==4">
+			<if test=" payType==4">
 				and qr.referer in(2,3);
 			</if>
 		</where>

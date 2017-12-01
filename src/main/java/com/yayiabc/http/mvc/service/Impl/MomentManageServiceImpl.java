@@ -113,6 +113,7 @@ public class MomentManageServiceImpl implements MomentManageService{
 
     //查询列表 1表示朋友圈的动态列表，2.表示我的个人动态
     public DataWrapper<List<Moment>> getMommentList(Integer currentPage, Integer numberPerPage,String token,Integer type){
+        System.out.println("token为"+token);
         DataWrapper<List<Moment>> dataWrapper =new DataWrapper<List<Moment>>();
         Page page=new Page();
         page.setNumberPerPage(numberPerPage);
@@ -120,8 +121,11 @@ public class MomentManageServiceImpl implements MomentManageService{
         User user=null;
         String userId=null;
         if(token!=null){
-            user=utilsDao.getUserByToken(token);
-            userId=user.getUserId();
+            /*user=utilsDao.getUserByToken(token);
+            if(user!=null){
+                userId=user.getUserId();
+            }*/
+            userId=utilsDao.getUserID(token);
         }
         System.out.println(userId);
         int totalNumber=momentManageDao.getMomentTotalNumber(userId,type);;//总条数

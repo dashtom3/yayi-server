@@ -26,6 +26,7 @@
 		<result column="item_property_six_value" property="itemPropertySixValue" />
 		<result column="item_sort" property="itemSort"/>
 		<result column="item_brand_name" property="itemBrandName"/>
+		<result column="item_qb" property="itemQb"/>
 	</resultMap>
 
 	<select id="list" resultMap="cartRM">
@@ -46,7 +47,8 @@
 		iv.item_property_name_three,iv.item_property_three_value,
 		iv.item_property_four_name,iv.item_property_four_value,
 		iv.item_property_five_name,iv.item_property_five_value,
-		iv.item_property_six_name,iv.item_property_six_value
+		iv.item_property_six_name,iv.item_property_six_value,
+		iv.item_qb
 		FROM cart c
 		LEFT JOIN item_value iv ON c.item_SKU=iv.item_sKU
 		LEFT JOIN item_info ii ON iv.item_id=ii.item_id

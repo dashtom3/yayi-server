@@ -71,7 +71,7 @@
 				#{postId}
 			</foreach>
 		</where>
-		LIMIt #{page.currentNumber},#{page.numberPerPage}
+		LIMIT #{page.currentNumber},#{page.numberPerPage}
 		
 	</select>
 
@@ -180,7 +180,7 @@
 				#{postId}
 			</foreach>
 		</where>
-		LIMIt #{page.currentNumber},#{page.numberPerPage}
+		LIMIT #{page.currentNumber},#{page.numberPerPage}
 	</select>
 
 	<!--收藏是否存在 -->
@@ -214,9 +214,11 @@
 				separator="," close=")">
 				#{postId}
 			</foreach>
-			LIMIt #{page.currentNumber},#{page.numberPerPage}
+			limit #{page.currentNumber},#{page.numberPerPage}
 		</where>
 	</select>
+
+	<!--我是注释内容-->
 	
 	<!--查询钱币余额  -->
 	<select id="queryqb" resultType="java.lang.Integer">

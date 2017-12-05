@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.alibaba.fastjson.JSON;
 import com.alibaba.fastjson.JSONObject;
+import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
 import com.yayiabc.http.mvc.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -104,6 +105,14 @@ public class VideoManageController {
     ){
                 return videoManageService.star(token,viId);
     }
+
+    //视频相关商品
+    public DataWrapper<ItemInfo> videoItem(
+            @RequestParam(value="viId",required = true) Integer viId
+    ){
+            return videoManageService.videoItem(viId);
+    }
+
 
 
 }

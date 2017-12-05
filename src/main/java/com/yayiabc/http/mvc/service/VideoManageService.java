@@ -3,6 +3,7 @@ package com.yayiabc.http.mvc.service;
 import java.util.List;
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
 import com.yayiabc.http.mvc.pojo.jpa.VidManage;
 
 
@@ -23,4 +24,6 @@ public interface VideoManageService {
 	DataWrapper<VidManage> detail(Integer viId);
 
 	DataWrapper<Void> star(String token, Integer viId);
+
+	DataWrapper<ItemInfo> videoItem(Integer viId);
 }

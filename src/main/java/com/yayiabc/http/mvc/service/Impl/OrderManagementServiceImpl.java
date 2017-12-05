@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.service.Impl;
 
+import java.io.BufferedInputStream;
 import java.io.BufferedOutputStream;
 import java.io.BufferedReader;
 import java.io.File;
@@ -42,6 +43,7 @@ import com.yayiabc.common.sdk.KDN;
 import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.FolderTOZip;
+import com.yayiabc.common.utils.FolderTOZip2;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.common.utils.PayAfterOrderUtil;
 import com.yayiabc.http.mvc.dao.OrderDetailsDao;
@@ -504,12 +506,12 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		/**
 		 * 检查打包文件夹是否存在   不存在就创建
 		 */
-		File file = new File("D:/yayi");
+		File file= new File("C:/yayi");
 		if(!file.exists()){
 			file.mkdirs();
 		}else{
 			if(deleteDir(file)){
-				File fileZip = new File("D:/后台订单详情.zip");
+				File fileZip = new File("C:/zip.zip");
 				fileZip.delete();
 				file.mkdirs();
 			}
@@ -525,9 +527,13 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		hMap.put("isRefund", isRefund);
 		hMap.put("numberPerpage",null);
 		hMap.put("currentNum", null);
-		Date currentTime = new Date();
-		SimpleDateFormat formatter = new SimpleDateFormat("yyyyMMdd");
 		List<Ordera> OrderManagementList= orderDetailsDao.orderDetailsShow(hMap);
+		if(OrderManagementList.isEmpty()){
+			dataWrapper.setMsg("空");
+			return dataWrapper;
+		}
+		System.out.println(OrderManagementList);
+		System.out.println(OrderManagementList.size());
 		// 第一步，得到excel工作簿对象
 		HSSFWorkbook wb = new HSSFWorkbook();  
 		// 第二步 得到excel工作表对象中  
@@ -717,14 +723,14 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 
 			style.setWrapText(true);//设置自动换行
 		} 
-
+		OutputStream ous=null;
 		try  
 		{ 
-			FileOutputStream fout = new FileOutputStream("D:/yayi/order.xls");  
+			FileOutputStream fout = new FileOutputStream("C:/yayi/order.xls");  
 			wb.write(fout);  
 			fout.close();
 			//删除待压缩文件夹里的空发票文件
-			File files = new File("D:/yayi");
+			File files = new File("C:/yayi");
 			File[] filess = file.listFiles();
 			for(int i=0; i<filess.length; i++){
 				if(filess[i].getName().contains("不需要发票")){
@@ -733,15 +739,22 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			}
 
 			//压缩
-			FolderTOZip ftz=new FolderTOZip();
-			ftz.zip("D:/yayi", "D:/后台订单详情.zip");
+			
+			 boolean flag = FolderTOZip2.fileToZip("C:/yayi", "C:/", "zip");  
+			 if(flag){  
+		            System.out.println("文件打包成功!");  
+		        }else{  
+		            System.out.println("文件打包失败!");  
+		        }    
+			/*FolderTOZip ftz=new FolderTOZip();
+			ftz.zip("C:/yayi", "C:/后台订单详情.zip");*/
 
 			/**
 			 * 把包发送给浏览器
 			 */
-			File fil = new File("D:/后台订单详情.zip"); 
+			File fil = new File("C:/zip.zip"); 
 
-			System.out.println(fil);
+			/*System.out.println(fil);
 			FileInputStream fis = new FileInputStream(fil);  
 			byte [] buffer = new byte[fis.available()];
 			System.out.println("buffer.length"+buffer.length);
@@ -751,18 +764,38 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 			response.reset();  
 			response.addHeader("Content-Disposition", "attachment;filename=" + URLEncoder.encode(orderCTime+"~~"+orderCTime+" 后台订单.zip", "UTF-8"));  
 			response.addHeader("Content-Length", "" + file.length());  
-			OutputStream ous = new BufferedOutputStream(response.getOutputStream());  
+			 ous = new BufferedOutputStream(response.getOutputStream());  
 			response.setContentType("application/octet-stream");  
-			ous.write(buffer);  
-			ous.flush();  
-			ous.close();
+			ous.write(buffer); */ 
+			  // 以流的形式下载文件。
+	        BufferedInputStream fis = new BufferedInputStream(new FileInputStream(fil.getPath()));
+	        byte[] buffer = new byte[fis.available()];
+	        fis.read(buffer);
+	        fis.close();
+	        // 清空response
+	        response.reset();
+
+	        OutputStream toClient = new BufferedOutputStream(response.getOutputStream());
+	        response.setContentType("application/octet-stream");
+	        response.setHeader("Content-Disposition", "attachment;filename=" + fil.getName());
+	        toClient.write(buffer);
+	        toClient.flush();
+	        toClient.close();
+	        fil.delete(); 
 
 		}  
 		catch (Exception e)  
 		{  
 			e.printStackTrace();  
 		}finally {
-
+			if(ous!=null){
+				try {
+					ous.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 		return dataWrapper;
 	}
@@ -799,7 +832,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 	 */
 	private String showPayType(Integer payType) {
 		// TODO Auto-generated method stub
-		if(payType==null){
+		if(payType==null||payType.equals("null")){
 			return "订单未付款";
 		}
 		switch(payType){
@@ -848,12 +881,12 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 	private String QbDes(String qbDes) {
 		// TODO Auto-generated method stub'
 		if("暂无".equals(qbDes)){
-			return  "'赠' 0个；'9.5折' 0个；'9.0折' 0个；'8.0折' 0个；";
+			return  "'赠' 0个；'9.5折' 0个；'8.0折' 0个；";
 		}
 
 
 		String[] str=qbDes.split(",");
-		return "'赠' "+str[0]+"个；'8.0折' "+str[1]+"个；'9.0折' "+str[2]+"个；'9.5折' "+str[3]+"个；";
+		return "'赠' "+str[0]+"个；'8.0折' "+str[1]+"个；'9.5折' "+str[3]+"个；";
 	}
 	/*
 	 * 发票写入txt方法
@@ -863,11 +896,11 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		FileWriter writer = null;
 		try {
 			if("1".equals(ordera.getInvoiceHand())){
-				writer=new FileWriter("D:/yayi/"+ordera.getOrderId()+"订单发票信息.txt");
+				writer=new FileWriter("C:/yayi/"+ordera.getOrderId()+"订单发票信息.txt");
 				Invoice invoice	=utilsDao.getInvoiceByOrderId(ordera.getOrderId());
 				writer.write(invoice.toString());
 			}else{
-				writer=new FileWriter("D:/yayi/"+ordera.getOrderId()+"不需要发票");
+				writer=new FileWriter("C:/yayi/"+ordera.getOrderId()+"不需要发票");
 			}
 		} catch (Exception e) {
 			// TODO: handle exception

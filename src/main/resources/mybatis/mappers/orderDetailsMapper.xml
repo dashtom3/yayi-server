@@ -83,10 +83,8 @@
 		orde_it.item_property_nameb,orde_it.item_property_namec,orde_it.item_id,orde.post_fee,orde.qb_ded,orde.state,
 		orde.actual_pay,orde.total_fee,orde.pay_type,orde.qb_des,us.phone
 		,rece.*
-		FROM<!-- `user` 
-			us JOIN -->
+		FROM
 		ordera orde
-		<!-- ON us.user_id=orde.user_id -->
 		JOIN
 		receiver rece
 		ON
@@ -107,10 +105,17 @@
 			<if test="state !=null and state!=''  and state !=2">
 				and orde.state=#{state}
 			</if>
+			<if test="buyerInfo !=null and buyerInfo!=''">
+			    and  #{buyerInfo} in (us.phone,us.true_name)
+			</if>
 			<!-- 满足导出后台excel表格 -->
 			<if test="orderState!=null and orderState!=''">
 				and orde.state =#{orderState}
 			</if>
+			<if test="orderState==4">
+				and orde.state in(4,9)
+			</if>
+			
 			<if test="state==2">
 				and orde.state in(2,5)
 			</if>

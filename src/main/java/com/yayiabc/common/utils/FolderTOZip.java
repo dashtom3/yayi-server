@@ -9,11 +9,9 @@ import java.util.zip.ZipOutputStream;
 public class FolderTOZip {
 
 
-
+                      //C:/yayi                    C:/后台订单详情.zip
 	public void zip(String inputFileName,String  zipAfterName) throws Exception {
-		String zipFileName = zipAfterName; //"D:/test.zip"; //打包后文件名字
-		System.out.println("zipAfterName   "+zipAfterName);
-		zip(zipFileName, new File(inputFileName));
+		zip(zipAfterName, new File(inputFileName));
 	}
 
 	private void zip(String zipFileName, File inputFile) throws Exception {
@@ -34,7 +32,7 @@ public class FolderTOZip {
 		}else {
 			out.putNextEntry(new ZipEntry(base));
 			FileInputStream in = new FileInputStream(f);
-			int b;
+			int b=0;
 			System.err.println("base   "+base);
 			while ( (b = in.read()) != -1) {
 				out.write(b);

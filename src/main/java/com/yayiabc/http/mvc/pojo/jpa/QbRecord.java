@@ -15,7 +15,6 @@ public class QbRecord extends BasePojo {
 	private String qbRget;
 
 	private String qbRout;
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private String qbTime;
 
 	private Integer referer; //充值的  支付方式
@@ -68,11 +67,9 @@ public class QbRecord extends BasePojo {
 	public void setQbRout(String qbRout) {
 		this.qbRout = qbRout;
 	}
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public String getQbTime() {
 		return qbTime;
 	}
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public void setQbTime(String qbTime) {
 		this.qbTime = qbTime;
 	}

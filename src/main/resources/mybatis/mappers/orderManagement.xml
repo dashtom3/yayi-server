@@ -563,7 +563,8 @@
 	</update>
 	
 	<select id="queryUserQbList" resultType="com.yayiabc.http.mvc.pojo.jpa.QbRecord">
-	 select * from qb_record where user_id=${userId} and remark like '%充值%' order by created desc
+	 select charge_id,qb_rid,user_id,qb_rget,qb_rout,DATE_FORMAT(qb_time,
+		'%Y-%m-%d %H:%i:%S') qb_time,referer,remark,created,millisecond,qb_balances from qb_record where user_id=${userId} and remark like '%充值%' order by created desc
 	 
 	   limit ${currentNum},${numberPerpage}
 	</select>

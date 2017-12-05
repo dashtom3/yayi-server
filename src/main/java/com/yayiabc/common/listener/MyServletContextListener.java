@@ -1,10 +1,7 @@
 package com.yayiabc.common.listener;
 
 import com.alibaba.fastjson.JSON;
-<<<<<<< Updated upstream
-=======
 
->>>>>>> Stashed changes
 import com.yayiabc.http.mvc.dao.VideoManageDao;
 import com.yayiabc.http.mvc.pojo.jpa.VidManage;
 import com.yayiabc.http.mvc.service.RedisService;

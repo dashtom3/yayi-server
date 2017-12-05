@@ -44,6 +44,7 @@ public class LogisticsServiceImpl implements LogisticsService{
 	@Override
 	public int updateState(String orderId) {
 		// TODO Auto-generated method stub
+		System.out.println();
 		return logisticsDao.updateState(orderId);  
 	}
 }

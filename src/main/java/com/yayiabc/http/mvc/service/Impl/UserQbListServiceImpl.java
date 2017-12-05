@@ -177,7 +177,7 @@ public class UserQbListServiceImpl implements UserQbListService {
 		hm.put("orderCTime", orderCTime);
 		hm.put("orderETime", orderETime);
 
-		if(currentPage!=null||numberPerpage!=null||!currentPage.equals("")||!numberPerpage.equals("")){
+		if(currentPage!=null||numberPerpage!=null){
 			Page page=new Page();
 			page.setNumberPerPage(numberPerpage);
 			page.setCurrentPage(currentPage);

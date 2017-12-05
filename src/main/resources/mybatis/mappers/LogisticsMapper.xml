@@ -11,7 +11,7 @@
 	<select id="queryLog" resultMap="q">
 		select shipping_name,shipping_code from ordera where order_id=#{orderId}
 	</select>
-	
+	<!-- 交易成功 -->
 	<update id="updateState">
 	 update ordera set state=7 where order_id=#{orderId}
 	</update>

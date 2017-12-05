@@ -24,6 +24,7 @@ public class Cart extends BasePojo {
 	private Integer state;
 	
 	private Integer goodLeaveNum;
+	private Integer itemQb;
 
 	private String itemPropertyName;
 	private String itemPropertyInfo;
@@ -57,22 +58,6 @@ public class Cart extends BasePojo {
 		this.userId = userId;
 	}
 
-	public Integer getGoodLeaveNum() {
-		return goodLeaveNum;
-	}
-
-	public void setGoodLeaveNum(Integer goodLeaveNum) {
-		this.goodLeaveNum = goodLeaveNum;
-	}
-
-	public Integer getState() {
-		return state;
-	}
-
-	public void setState(Integer state) {
-		this.state = state;
-	}
-
 	public String getItemId() {
 		return itemId;
 	}
@@ -86,15 +71,7 @@ public class Cart extends BasePojo {
 	}
 
 	public void setName(String name) {
-		this.name = name == null ? null : name.trim();
-	}
-
-	public String getItemSKU() {
-		return itemSKU;
-	}
-
-	public void setItemSKU(String itemSKU) {
-		this.itemSKU = itemSKU;
+		this.name = name;
 	}
 
 	public String getPic() {
@@ -102,7 +79,7 @@ public class Cart extends BasePojo {
 	}
 
 	public void setPic(String pic) {
-		this.pic = pic == null ? null : pic.trim();
+		this.pic = pic;
 	}
 
 	public Integer getNum() {
@@ -119,6 +96,38 @@ public class Cart extends BasePojo {
 
 	public void setPrice(double price) {
 		this.price = price;
+	}
+
+	public String getItemSKU() {
+		return itemSKU;
+	}
+
+	public void setItemSKU(String itemSKU) {
+		this.itemSKU = itemSKU;
+	}
+
+	public Integer getState() {
+		return state;
+	}
+
+	public void setState(Integer state) {
+		this.state = state;
+	}
+
+	public Integer getGoodLeaveNum() {
+		return goodLeaveNum;
+	}
+
+	public void setGoodLeaveNum(Integer goodLeaveNum) {
+		this.goodLeaveNum = goodLeaveNum;
+	}
+
+	public Integer getItemQb() {
+		return itemQb;
+	}
+
+	public void setItemQb(Integer itemQb) {
+		this.itemQb = itemQb;
 	}
 
 	public String getItemPropertyName() {
@@ -233,66 +242,34 @@ public class Cart extends BasePojo {
 		this.itemSort = itemSort;
 	}
 
-	public Cart() {
-		super();
-	}
-
-	public Cart(Integer cartId, String userId, String itemId, String name,
-			String pic, Integer num, double price, String itemSKU,
-			Integer state, Integer goodLeaveNum, String itemPropertyName,
-			String itemPropertyInfo, String itemPropertyNameTwo,
-			String itemPropertyTwoValue, String itemPropertyNameThree,
-			String itemPropertyThreeValue, String itemPropertyFourName,
-			String itemPropertyFourValue, String itemPropertyFiveName,
-			String itemPropertyFiveValue, String itemPropertySixName,
-			String itemPropertySixValue, String itemBrandName, String itemSort) {
-		super();
-		this.cartId = cartId;
-		this.userId = userId;
-		this.itemId = itemId;
-		this.name = name;
-		this.pic = pic;
-		this.num = num;
-		this.price = price;
-		this.itemSKU = itemSKU;
-		this.state = state;
-		this.goodLeaveNum = goodLeaveNum;
-		this.itemPropertyName = itemPropertyName;
-		this.itemPropertyInfo = itemPropertyInfo;
-		this.itemPropertyNameTwo = itemPropertyNameTwo;
-		this.itemPropertyTwoValue = itemPropertyTwoValue;
-		this.itemPropertyNameThree = itemPropertyNameThree;
-		this.itemPropertyThreeValue = itemPropertyThreeValue;
-		this.itemPropertyFourName = itemPropertyFourName;
-		this.itemPropertyFourValue = itemPropertyFourValue;
-		this.itemPropertyFiveName = itemPropertyFiveName;
-		this.itemPropertyFiveValue = itemPropertyFiveValue;
-		this.itemPropertySixName = itemPropertySixName;
-		this.itemPropertySixValue = itemPropertySixValue;
-		this.itemBrandName = itemBrandName;
-		this.itemSort = itemSort;
-	}
-
 	@Override
 	public String toString() {
-		return "Cart [cartId=" + cartId + ", userId=" + userId + ", itemId="
-				+ itemId + ", name=" + name + ", pic=" + pic + ", num=" + num
-				+ ", price=" + price + ", itemSKU=" + itemSKU + ", state="
-				+ state + ", goodLeaveNum=" + goodLeaveNum
-				+ ", itemPropertyName=" + itemPropertyName
-				+ ", itemPropertyInfo=" + itemPropertyInfo
-				+ ", itemPropertyNameTwo=" + itemPropertyNameTwo
-				+ ", itemPropertyTwoValue=" + itemPropertyTwoValue
-				+ ", itemPropertyNameThree=" + itemPropertyNameThree
-				+ ", itemPropertyThreeValue=" + itemPropertyThreeValue
-				+ ", itemPropertyFourName=" + itemPropertyFourName
-				+ ", itemPropertyFourValue=" + itemPropertyFourValue
-				+ ", itemPropertyFiveName=" + itemPropertyFiveName
-				+ ", itemPropertyFiveValue=" + itemPropertyFiveValue
-				+ ", itemPropertySixName=" + itemPropertySixName
-				+ ", itemPropertySixValue=" + itemPropertySixValue
-				+ ", itemBrandName=" + itemBrandName + ", itemSort=" + itemSort
-				+ "]";
+		return "Cart{" +
+				"cartId=" + cartId +
+				", userId='" + userId + '\'' +
+				", itemId='" + itemId + '\'' +
+				", name='" + name + '\'' +
+				", pic='" + pic + '\'' +
+				", num=" + num +
+				", price=" + price +
+				", itemSKU='" + itemSKU + '\'' +
+				", state=" + state +
+				", goodLeaveNum=" + goodLeaveNum +
+				", itemQb=" + itemQb +
+				", itemPropertyName='" + itemPropertyName + '\'' +
+				", itemPropertyInfo='" + itemPropertyInfo + '\'' +
+				", itemPropertyNameTwo='" + itemPropertyNameTwo + '\'' +
+				", itemPropertyTwoValue='" + itemPropertyTwoValue + '\'' +
+				", itemPropertyNameThree='" + itemPropertyNameThree + '\'' +
+				", itemPropertyThreeValue='" + itemPropertyThreeValue + '\'' +
+				", itemPropertyFourName='" + itemPropertyFourName + '\'' +
+				", itemPropertyFourValue='" + itemPropertyFourValue + '\'' +
+				", itemPropertyFiveName='" + itemPropertyFiveName + '\'' +
+				", itemPropertyFiveValue='" + itemPropertyFiveValue + '\'' +
+				", itemPropertySixName='" + itemPropertySixName + '\'' +
+				", itemPropertySixValue='" + itemPropertySixValue + '\'' +
+				", itemBrandName='" + itemBrandName + '\'' +
+				", itemSort='" + itemSort + '\'' +
+				'}';
 	}
-
 }

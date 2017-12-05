@@ -151,6 +151,7 @@ public class WXPayServiceImpl implements WXPayService{
 //                            qbRecord.setQbRget(String.valueOf(charge.getQbNum()));
                             qbRecord.setQbType(charge.getQbType());
                             qbRecord.setUserId(userId);
+                            qbRecord.setChargeId(chargeId);
                             qbRecord.setMillisecond(System.nanoTime());
                             String zh=zh(charge.getQbType());
                             qbRecord.setQbRget(zh+":"+String.valueOf(charge.getQbNum())+"个");

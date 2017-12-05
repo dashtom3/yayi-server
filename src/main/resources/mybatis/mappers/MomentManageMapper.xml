@@ -46,7 +46,7 @@
 				user_id=#{userId}
 			</if>
 		</where>) a
-		join user b on a.user_id=b.user_id
+		LEFT join user b on a.user_id=b.user_id
 		order by a.moment_time DESC
 		limit #{page.currentNumber},#{page.numberPerPage}
 	</select>

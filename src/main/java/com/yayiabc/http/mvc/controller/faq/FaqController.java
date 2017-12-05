@@ -26,6 +26,7 @@ public class FaqController {
             @RequestHeader(value="token",required = true) String token,
             @ModelAttribute FaqQuestion faqQuestion
             ){
+        System.out.println("开始执行controller");
         return faqService.addQuestion(token,faqQuestion);
     }
 

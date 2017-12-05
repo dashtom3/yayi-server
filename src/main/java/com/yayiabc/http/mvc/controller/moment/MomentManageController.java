@@ -27,6 +27,7 @@ public class MomentManageController {
             @ModelAttribute Moment moment,
             @RequestHeader("token") String token
     ){
+        System.out.println("moment"+moment);
         return momentManageService.add(moment,token);
     }
 

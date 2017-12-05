@@ -3,6 +3,7 @@ package com.yayiabc.http.mvc.dao;
 import java.util.List;
 import java.util.Set;
 
+import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
 import org.apache.ibatis.annotations.Param;
 
 import com.yayiabc.http.mvc.pojo.jpa.VidManage;
@@ -26,4 +27,6 @@ public interface VideoManageDao {
     VidManage detail(Integer viId);
 
     List<VidManage> queryMyCollect(@Param("idList")List<String> idList,@Param("currentNumber") Integer currentNumber,@Param("numberPerPage") Integer numberPerPage);
+
+    ItemInfo videoItem(Integer viId);
 }

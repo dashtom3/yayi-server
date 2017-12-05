@@ -39,14 +39,7 @@
 		<url-pattern>/*</url-pattern>
 	</filter-mapping>
 	
-	<filter>
-		<filter-name>WebFilter</filter-name>
-		<filter-class>com.yayiabc.http.filter.WebFilter</filter-class>
-	</filter>
-	<filter-mapping>
-		<filter-name>WebFilter</filter-name>
-		<url-pattern>/*</url-pattern>
-	</filter-mapping>  
+
 	
 	<!--跨域访问的cors配置-->
     <filter>
@@ -110,32 +103,7 @@
 		<servlet-name>frontRcvResponse</servlet-name>
 		<url-pattern>/frontRcvResponse</url-pattern>
 	</servlet-mapping>
-	<!-- <servlet>
-		<servlet-name>backRcvResponse</servlet-name>
-		<servlet-class>com.yayiabc.http.mvc.controller.unionpay.demo.BackRcvResponse</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>backRcvResponse</servlet-name>
-		<url-pattern>/backRcvResponse</url-pattern>
-	</servlet-mapping> -->
-<!-- 	<servlet>
-		<servlet-name>form_6_2_FrontConsume</servlet-name>
-		<servlet-class>com.yayiabc.http.mvc.controller.unionpay.demo.consume.Form_6_2_FrontConsume</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>form_6_2_FrontConsume</servlet-name>
-		<url-pattern>/form_6_2_FrontConsume</url-pattern>
-	</servlet-mapping> -->
 
-	<!-- <servlet>
-		<servlet-name>form_6_2_FrontConsume2</servlet-name>
-		<servlet-class>com.yayiabc.http.mvc.controller.unionpay.demo.consume.Form_6_2_FrontConsume2</servlet-class>
-	</servlet>
-	<servlet-mapping>
-		<servlet-name>form_6_2_FrontConsume2</servlet-name>
-		<url-pattern>/form_6_2_FrontConsume2</url-pattern>
-	</servlet-mapping> -->
-	<!--  -->
 
 	<listener>
 		<listener-class>com.yayiabc.common.listener.MyServletContextListener</listener-class>
@@ -152,21 +120,7 @@
 		<session-timeout>2</session-timeout>
 	</session-config>
 
-	<!-- <listener>
-		<listener-class>com.yayiabc.common.listener.ServlectContextListener</listener-class>
-	</listener> -->
-	
-	<!-- <listener>
-		<listener-class>com.yayiabc.common.listener.SessionListener</listener-class>
-	</listener> -->
+
 	<!-- 项目启动加载 -->
-<!--  	<servlet>  
-    <servlet-name>testTimer</servlet-name>  
-    <servlet-class>com.yayiabc.http.mvc.controller.user.testTimer</servlet-class>  
-    <load-on-startup>7</load-on-startup>数字越小，启动的优先级越高，必须大于0  
-</servlet> 
-<servlet-mapping>
-	<servlet-name>testTimer</servlet-name>
-	<url-pattern>/aaa</url-pattern>
-</servlet-mapping> --> 
+
 </web-app>

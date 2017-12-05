@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.yayiabc.common.utils.ScoreUtil;
 import com.yayiabc.http.mvc.dao.UtilsDao;
+import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.VideoScreenPicService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -41,14 +42,12 @@ public class VideoManageServiceImpl implements VideoManageService {
 		//如果登录；后面要判断是否已经收藏
 		String userId=null;
 		if(token!=null){
-			User user=utilsDao.getUserByToken(token);
-			userId=user.getUserId();
+			userId=utilsDao.getUserID(token);
 		}
 		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-//		int totalNumber=videoManageDao.getTotalNumber(videoCategory);
 		List<VidManage> vidManageList=videoManageDao.showVid(rule,videoCategory,keyWord);
 		int totalNumber=vidManageList.size();
 		System.out.println(totalNumber);
@@ -181,6 +180,14 @@ public class VideoManageServiceImpl implements VideoManageService {
 		//如果未收藏，则添加到收藏
 		toStar(userId,viId);
 		userStar(userId,viId);
+		return dataWrapper;
+	}
+
+	@Override
+	public DataWrapper<ItemInfo> videoItem(Integer viId) {
+		DataWrapper<ItemInfo> dataWrapper=new DataWrapper<ItemInfo>();
+		ItemInfo itemInfo=videoManageDao.videoItem(viId);
+		dataWrapper.setData(itemInfo);
 		return dataWrapper;
 	}
 

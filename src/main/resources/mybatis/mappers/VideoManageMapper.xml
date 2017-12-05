@@ -5,7 +5,11 @@
 
 <mapper namespace="com.yayiabc.http.mvc.dao.VideoManageDao">
 
-
+	<select id="videoItem" resultType="ItemInfo">
+		SELECT a.item_name,a.sales,a.item_price,b.item_brand_name,c.item_pica
+FROM item_info a,item_brand b,item_detail c
+WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId}
+	</select>
 
 
 	<insert id="insertVid" parameterType="VidManage" useGeneratedKeys="true" keyProperty="viId">

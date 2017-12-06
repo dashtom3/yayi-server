@@ -26,64 +26,13 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 	@Override
 	public DataWrapper<User> updateUser(User user, String token) {
 		DataWrapper<User> dataWrapper = new DataWrapper<User>();
-		String userIda = utilsDao.getUserID(token);// 根据token查询userId
-		if (userIda == null) {
-			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-			dataWrapper.setMsg("token错误");
-		} else {
-			user.setUserId(userIda);
-			String userIdb = userPersonalInfoDao.getUserIdOnC(userIda);// 查询资质认证表userId
-			if (userIdb == null) {
-				userPersonalInfoDao.add(userIda);
-				int i = userPersonalInfoDao.updateUser(user);
-				if (i > 0) {
-					dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-				} else {
-					dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-				}
-			} else if (userIdb.equals(userIda) == true) {
-				int i = userPersonalInfoDao.updateUser(user);
-				if (i > 0) {
-					dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-				} else {
-					dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-				}
-			}
-		}
+		String userId = utilsDao.getUserID(token);// 根据token查询userId
+		user.setUserId(userId);
+		userPersonalInfoDao.updateUser(user);
+		userPersonalInfoDao.updateCertification(user.getCertification());
 		return dataWrapper;
 	}
 
-	@Override
-	public DataWrapper<Certification> updateCertification(
-			Certification certification, String token) {
-		DataWrapper<Certification> dataWrapper = new DataWrapper<Certification>();
-		String userId = utilsDao.getUserID(token);
-		if (userId == null) {
-			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-			dataWrapper.setMsg("token错误");
-		} else {
-			certification.setUserId(userId);
-			int i = userPersonalInfoDao.updateCertification(certification);
-			if (i > 0) {
-				UserPersonalInfo userPersonalInfo = userPersonalInfoDao.detail(userId);
-				if(userPersonalInfo.getType()==1){
-					if(userPersonalInfo.getDoctorPic() !=null ){
-						userPersonalInfoDao.updateState(userId);
-					}
-				}else if(userPersonalInfo.getType()==2){
-					if(userPersonalInfo.getMedicalLicense() !=null &&
-						userPersonalInfo.getBusinessLicense() !=null &&
-						userPersonalInfo.getTaxRegistration()!=null){
-						userPersonalInfoDao.updateState(userId);
-					}
-				}
-				dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
-			} else {
-				dataWrapper.setErrorCode(ErrorCodeEnum.Error);
-			}
-		}
-		return dataWrapper;
-	}
 
 	@Override
 	public DataWrapper<UserPersonalInfo> detail(String token) {

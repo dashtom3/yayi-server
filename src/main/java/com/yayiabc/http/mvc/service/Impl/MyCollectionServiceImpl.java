@@ -3,11 +3,9 @@ package com.yayiabc.http.mvc.service.Impl;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
-import com.yayiabc.http.mvc.dao.CottomsPostDao;
-import com.yayiabc.http.mvc.dao.UserCenterStarDao;
-import com.yayiabc.http.mvc.dao.UtilsDao;
-import com.yayiabc.http.mvc.dao.VideoManageDao;
+import com.yayiabc.http.mvc.dao.*;
 import com.yayiabc.http.mvc.pojo.jpa.CottomsPost;
+import com.yayiabc.http.mvc.pojo.jpa.FaqQuestion;
 import com.yayiabc.http.mvc.pojo.jpa.MyStar;
 import com.yayiabc.http.mvc.pojo.jpa.VidManage;
 import com.yayiabc.http.mvc.service.MyCollectionService;
@@ -38,6 +36,9 @@ public class MyCollectionServiceImpl implements MyCollectionService{
     @Autowired
     private VideoManageDao videoManageDao;
 
+    @Autowired
+    private FaqDao faqDao;
+
     @Override
     public DataWrapper<Object> queryList(String token, Integer type,Integer currentPage,Integer numberPerPage) {
         DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
@@ -53,8 +54,27 @@ public class MyCollectionServiceImpl implements MyCollectionService{
             return myVideoCollect(currentPage,numberPerPage,dataWrapper,page,userId);
         }else if(type==3){//3.商品收藏列表
             return myItemCollect(currentPage,numberPerPage,dataWrapper,page,userId);
+        }else if(type==4){//4.问答收藏列表
+            return myFaqCollect(currentPage,numberPerPage,dataWrapper,page,userId);
         }
         return null;
+    }
+
+    //显示问答收藏列表
+    //我的收藏
+    private DataWrapper<Object> myFaqCollect(Integer currentPage, Integer numberPerPage, DataWrapper<Object> dataWrapper, Page page, String userId) {
+        int totalNumber=(int)redisService.SETS.scard(userId+"问答收藏列表");
+        System.out.println("totalNumber"+totalNumber);
+        Set<String> idSet=redisService.SETS.smembers(userId+"问答收藏列表");
+        List<String> idList=new ArrayList<String>();
+        idList.addAll(idSet);
+        List<FaqQuestion> faqQuestionList=null;
+        if(idList.size()!=0){
+            faqQuestionList=faqDao.queryMyCollect(idList,page.getCurrentNumber(),numberPerPage);
+        }
+        dataWrapper.setData(faqQuestionList);
+        dataWrapper.setPage(page,totalNumber);
+        return dataWrapper;
     }
 
     //显示病例收藏列表

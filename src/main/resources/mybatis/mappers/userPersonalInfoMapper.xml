@@ -58,10 +58,7 @@
 		ON u.user_id=c.user_id 
 		WHERE u.user_id = #{userId};
 	</select>
-	
-	<select id="getUserIdOnC" resultType="String">	
-		SELECT user_id FROM certification WHERE user_id=#{userId};
-	</select>
+
 	
 	<insert id="add">
 		INSERT certification(user_id,created)

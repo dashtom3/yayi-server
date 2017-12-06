@@ -107,8 +107,6 @@ public class ItemInfoManageController {
 	public DataWrapper<Void> getItemId(){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		String itemId;
-		logger.debug("log日志");
-		logger.error("log错误日志");
 		synchronized (this){
 			try {
 				Thread.sleep(1000);

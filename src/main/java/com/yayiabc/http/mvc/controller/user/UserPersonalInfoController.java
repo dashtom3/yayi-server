@@ -55,20 +55,7 @@ public class UserPersonalInfoController {
 	){
 		    return userPersonalInfoService.updateUser(user,token);
 	}
-	
-	/**
-	 * 编辑个人资料资质认证
-	 */
-	@RequestMapping(value = "updateCertification", method = RequestMethod.POST)
-	@ResponseBody
-	@UserTokenValidate
-	@UserLog(description="用户编辑个人资料资质认证")
-	public DataWrapper<Certification> updateCertification(
-			@ModelAttribute Certification certification,
-			@RequestHeader(value = "token", required = true) String token
-	){
-		return userPersonalInfoService.updateCertification(certification,token);
-	}
+
 	
 	/**
 	 * 查询用户是否已绑定销售员

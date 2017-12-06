@@ -17,8 +17,7 @@ public interface UserPersonalInfoDao {
 	int updateUser(User user);
 
 	void updateState(String userId);
-	
-	String getUserIdOnC(String userId);
+
 	
 	int add(String userId);
 	

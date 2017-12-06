@@ -16,7 +16,7 @@ import org.springframework.web.bind.annotation.ResponseBody;
 @RequestMapping("api/collect")
 public class MyCollectionController {
 
-    //默认显示什么(病例)
+    //默认显示什么(病例)1.病例，2.视频 3.商品 4.问答 5.资料库
     private static final String DEFAULT_TYPE="1";
 
     @Autowired

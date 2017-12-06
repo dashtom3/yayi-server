@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.controller.faq;
 
+import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.FaqAnswer;
 import com.yayiabc.http.mvc.pojo.jpa.FaqQuestion;
@@ -33,6 +34,7 @@ public class FaqController {
     //回答问题
     @RequestMapping("addAnswer")
     @ResponseBody
+    @UserTokenValidate
     public DataWrapper<FaqAnswer> addAnswer(
             @RequestHeader(value="token",required = true) String token,
             @ModelAttribute FaqAnswer faqAnswer,
@@ -46,7 +48,7 @@ public class FaqController {
     @ResponseBody
     public DataWrapper<List<FaqQuestion>> list(
             @RequestParam(value="faqQuestionType",required = false) Integer faqQuestionType,//分类:1外科2内科3修复4种植5正畸不传为全部
-            @RequestParam(value="order",required = false,defaultValue = "1") Integer order,//1最新（默认）  2最多回答
+            @RequestParam(value="order",required = false,defaultValue = "0") Integer order,//0最新（默认）  1最多回答
             @RequestParam(value="currentPage",required = false,defaultValue = "1")Integer currentPage,
             @RequestParam(value="numberPerPage",required = false,defaultValue = "10")Integer numberPerPage
     ){
@@ -85,6 +87,19 @@ public class FaqController {
     ){
         return faqService.myAnswer(token,currentPage,numberPerPage);
     }
+
+    //添加收藏或者取消收藏
+    @RequestMapping("star")
+    @ResponseBody
+    @UserTokenValidate
+    public DataWrapper<Void> star(
+            @RequestHeader(value="token",required = true) String token,
+            @RequestParam(value="faqQuestionId",required = true) Integer faqQuestionId
+    ){
+        return faqService.star(token,faqQuestionId);
+    }
+
+
 
 
 }

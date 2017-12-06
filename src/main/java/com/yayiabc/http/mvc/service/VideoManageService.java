@@ -26,4 +26,6 @@ public interface VideoManageService {
 	DataWrapper<Void> star(String token, Integer viId);
 
 	DataWrapper<ItemInfo> videoItem(Integer viId);
+
+	DataWrapper<Void> starOrUnStar(String token,Integer viId,String type);
 }

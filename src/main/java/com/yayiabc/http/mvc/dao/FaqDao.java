@@ -32,4 +32,6 @@ public interface FaqDao {
     List<FaqQuestion> getMyAnswerList(@Param("questionIdList")List<Integer> questionIdList,@Param("currentNumber") Integer currentNumber,@Param("numberPerPage") Integer numberPerPage,@Param("userId")String userId);
 
     List<Integer> getFaqQuestionIdList(String userId);
+
+    List<FaqQuestion> queryMyCollect(List<String> idList, Integer currentNumber, Integer numberPerPage);
 }

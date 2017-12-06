@@ -165,21 +165,26 @@ public class VideoManageServiceImpl implements VideoManageService {
 
 	@Override
 	public DataWrapper<Void> star(String token, Integer viId) {
+		return starOrUnStar(token,viId,"视频");
+	}
+
+	@Override
+	public DataWrapper<Void> starOrUnStar(String token,Integer viId,String type){
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		//根据token来获取userId
 		User user=utilsDao.getUserByToken(token);
 		String userId=user.getUserId();
 		//判断是否已经收藏
-		boolean flag=isStar(userId,viId);
+		boolean flag=isStar(userId,viId,type);
 		//如果已经收藏，则取消收藏
 		if(flag){
-			unStar(userId,viId);
-			unUserStar(userId,viId);
+			unStar(userId,viId,type);
+			unUserStar(userId,viId,type);
 			return dataWrapper;
 		}
 		//如果未收藏，则添加到收藏
-		toStar(userId,viId);
-		userStar(userId,viId);
+		toStar(userId,viId,type);
+		userStar(userId,viId,type);
 		return dataWrapper;
 	}
 
@@ -198,28 +203,28 @@ public class VideoManageServiceImpl implements VideoManageService {
 	}
 
 	//判断是否已经收藏,维护一个收藏的userIdSet,key为收藏用户列表
-	public boolean isStar(String userId,Integer viId){
-		return redisService.SETS.sismember("视频收藏用户列表"+viId,userId);
+	public boolean isStar(String userId,Integer viId,String type){
+		return redisService.SETS.sismember(type+"收藏用户列表"+viId,userId);
 	}
 
 	//如果已经收藏了，则取消收藏
-	public void unStar(String userId,Integer viId){
-		redisService.SETS.srem("视频收藏用户列表"+viId,userId);
+	public void unStar(String userId,Integer viId,String type){
+		redisService.SETS.srem(type+"收藏用户列表"+viId,userId);
 	}
 
 	//如果未收藏了,则收藏
-	public void toStar(String userId,Integer viId){
-		redisService.SETS.sadd("视频收藏用户列表"+viId,userId);
+	public void toStar(String userId,Integer viId,String type){
+		redisService.SETS.sadd(type+"收藏用户列表"+viId,userId);
 	}
 
 	//去除个人收藏列表里面的视频Id
-	public void unUserStar(String userId,Integer viId){
-		redisService.SETS.srem(userId+"视频收藏列表",viId+"");
+	public void unUserStar(String userId,Integer viId,String type){
+		redisService.SETS.srem(userId+type+"收藏列表",viId+"");
 	}
 
 	//加入个人收藏列表里面的视频id
-	public void userStar(String userId,Integer viId){
-		redisService.SETS.sadd(userId+"视频收藏列表",viId+"");
+	public void userStar(String userId,Integer viId,String type){
+		redisService.SETS.sadd(userId+type+"收藏列表",viId+"");
 	}
 
 

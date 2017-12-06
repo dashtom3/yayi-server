@@ -105,9 +105,7 @@
 	</servlet-mapping>
 
 
-	<listener>
-		<listener-class>com.yayiabc.common.listener.MyServletContextListener</listener-class>
-	</listener>
+
 	
 
 	

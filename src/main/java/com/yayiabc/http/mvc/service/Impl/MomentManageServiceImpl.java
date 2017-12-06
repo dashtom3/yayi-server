@@ -44,7 +44,7 @@ public class MomentManageServiceImpl implements MomentManageService{
         User user=utilsDao.getUserByToken(token);
         moment.setUserId(user.getUserId());
         try {
-            if (moment.getMomentType() < 3) {
+            if (moment.getMomentType() ==1) {
                 momentManageDao.addLower(moment);
             } else {
                 momentManageDao.addHigh(moment);

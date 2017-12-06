@@ -7,7 +7,9 @@ import com.yayiabc.http.mvc.dao.FaqDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.FaqAnswer;
 import com.yayiabc.http.mvc.pojo.jpa.FaqQuestion;
+import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.FaqService;
+import com.yayiabc.http.mvc.service.VideoManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -22,6 +24,9 @@ public class FaqServiceImpl implements FaqService {
 
     @Autowired
     private UtilsDao utilsDao;
+
+    @Autowired
+    private VideoManageService videoManageService;
     @Override
     public DataWrapper<FaqQuestion> addQuestion(String token, FaqQuestion faqQuestion) {
         DataWrapper<FaqQuestion> dataWrapper=new DataWrapper<FaqQuestion>();
@@ -42,8 +47,11 @@ public class FaqServiceImpl implements FaqService {
     public DataWrapper<FaqAnswer> addAnswer(String token, FaqAnswer faqAnswer,Integer faqQuestionId) {
         DataWrapper<FaqAnswer> dataWrapper=new DataWrapper<FaqAnswer>();
         //获取userId
-        String userId=utilsDao.getUserID(token);
-        faqAnswer.setUserId(userId);
+//        String userId=utilsDao.getUserID(token);
+        User user=utilsDao.getUserByToken(token);
+        faqAnswer.setUserId(user.getUserId());
+        faqAnswer.setUserName(user.getTrueName());
+        faqAnswer.setUserPic(user.getUserPic());
         //保存进数据库
         int reflectRows=faqDao.addAnswer(faqAnswer,faqQuestionId);
         if(reflectRows==0){
@@ -116,4 +124,13 @@ public class FaqServiceImpl implements FaqService {
         dataWrapper.setData(faqQuestionList);
         return dataWrapper;
     }
+
+    @Override
+    public DataWrapper<Void> star(String token, Integer faqQuestionId) {
+        return videoManageService.starOrUnStar(token,faqQuestionId,"问答");
+    }
+
+
+
+
 }

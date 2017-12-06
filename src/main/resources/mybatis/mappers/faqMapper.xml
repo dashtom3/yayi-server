@@ -25,8 +25,8 @@
 		</where>
 		order BY
 		<choose>
-			<when test="order==2">a.faq_question_time DESC </when>
-			<otherwise>a.faq_answer_num DESC </otherwise>
+			<when test="order==1"> a.faq_answer_num DESC</when>
+			<otherwise>a.faq_question_time DESC </otherwise>
 		</choose>
 		limit #{currentNumber},#{numberPerPage}
 	</select>
@@ -115,4 +115,12 @@
 			<result property="userPic" column="answer_user_pic"/>
 		</collection>
 	</resultMap>
+
+	<select id="queryMyCollect" resultType="FaqQuestion">
+		select * from faq_question where faq_question_id IN
+		<foreach collection="idList" index="index" item="id" open="(" close=")" separator=",">
+			#{id}
+		</foreach>
+		limit #{currentNumber},#{numberPerPage}
+	</select>
 </mapper>       

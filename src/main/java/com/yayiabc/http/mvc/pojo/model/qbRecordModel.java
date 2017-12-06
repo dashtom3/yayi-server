@@ -22,7 +22,6 @@ public class qbRecordModel {
 
 	private String qbRget;
 
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	private String qbTime;
 
 	private String referer; //

@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.CrawlerYellowPagesDao">
+
+
+
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.Sheet1" id="sheetMap">
+		<result property="uid" column="uid" />
+		<result property="POIName" column="POIName" />
+		<result property="lat" column="lat" />
+		<result property="lng" column="lng" />
+		<result property="cityName" column="cityName" />
+		<result property="address" column="address" />
+		<result property="telephone" column="telephone" />
+		<result property="distance" column="distance" />
+		<result property="type" column="type" />
+		<result property="tag" column="tag" />
+		<result property="detailUrl" column="detail_url" />
+		<result property="price" column="price" />
+		<result property="shopHours" column="shop_hours" />
+		<result property="overallRating" column="overall_rating" />
+		<result property="tasteRating" column="taste_rating" />
+		<result property="serviceRating" column="service_rating" />
+		<result property="environmentRating" column="environment_rating" />
+		<result property="facilityRating" column="facility_rating" />
+		<result property="hygieneRating" column="hygiene_rating" />
+		<result property="technologyRating" column="technology_rating" />
+		<result property="imageNum" column="image_num" />
+		<result property="grouponNum" column="groupon_num" />
+		<result property="discountNum" column="discount_num" />
+		<result property="commentNum" column="comment_num" />
+		<result property="favoriteNum" column="favorite_num" />
+		<result property="checkinNum" column="checkin_num" />
+	</resultMap>
+	<select id="getYellowPage" resultMap="sheetMap">
+		select * from sheet1$
+		<if test="currentNum!=null and numberPerpage!=null">
+			limit ${currentNum} , ${numberPerpage}
+		</if>
+	</select>
+	<select id="queryCountTOSheet1" resultType="int">
+		select count(1) from sheet1$
+	</select>
+
+
+	<select id="getList" resultType="java.util.HashMap">
+		select * from xxx
+		<if test="currentNum!=null and numberPerpage!=null">
+			limit ${currentNum} , ${numberPerpage}
+		</if>
+	</select>
+
+	<select id="queryCountTOX" resultType="int">
+		select count(1) from xxx
+	</select>
+</mapper>       

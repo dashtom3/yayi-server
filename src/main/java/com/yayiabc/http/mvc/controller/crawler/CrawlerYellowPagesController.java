@@ -1,6 +1,5 @@
 package com.yayiabc.http.mvc.controller.crawler;
 
-import java.util.HashMap;
 import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
@@ -10,11 +9,12 @@ import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.pojo.jpa.DaForDentistYa;
 import com.yayiabc.http.mvc.pojo.jpa.Sheet1;
 import com.yayiabc.http.mvc.service.CrawlerYellowPagesService;
 
 @Controller
-@RequestMapping("api/yellowPages")
+@RequestMapping("api/crawlerPages")
 public class CrawlerYellowPagesController {
    
 	@Autowired
@@ -32,7 +32,7 @@ public class CrawlerYellowPagesController {
 	
 	@RequestMapping("getList")
 	@ResponseBody
-	public DataWrapper<List<HashMap<Object,Object>>> getList(
+	public DataWrapper<List<DaForDentistYa> > getList(
 			@RequestParam(value = "token", required = false) String token,
 			@RequestParam(value="currentPage",required=false,defaultValue="1")Integer currentPage,
 			@RequestParam(value="numberPerpage",required=false,defaultValue="10")Integer numberPerpage

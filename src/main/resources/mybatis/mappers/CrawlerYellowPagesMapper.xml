@@ -41,18 +41,19 @@
 		</if>
 	</select>
 	<select id="queryCountTOSheet1" resultType="int">
-		select count(1) from sheet1$
+		select count(1) from
+		sheet1$
 	</select>
 
-
-	<select id="getList" resultType="java.util.HashMap">
-		select * from xxx
+	<select id="getList" resultType="com.yayiabc.http.mvc.pojo.jpa.DaForDentistYa">
+		select * from da_for_dentistya
 		<if test="currentNum!=null and numberPerpage!=null">
 			limit ${currentNum} , ${numberPerpage}
 		</if>
 	</select>
 
 	<select id="queryCountTOX" resultType="int">
-		select count(1) from xxx
+		select count(1) from
+		da_for_dentistya
 	</select>
 </mapper>       

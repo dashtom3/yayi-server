@@ -9,6 +9,7 @@ import org.springframework.stereotype.Service;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.dao.CrawlerYellowPagesDao;
+import com.yayiabc.http.mvc.pojo.jpa.DaForDentistYa;
 import com.yayiabc.http.mvc.pojo.jpa.Sheet1;
 import com.yayiabc.http.mvc.service.CrawlerYellowPagesService;
 @Service
@@ -36,9 +37,9 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 	}
 	
 	@Override
-	public DataWrapper<List<HashMap<Object,Object>>> getList(Integer currentPage, Integer numberPerpage) {
+	public DataWrapper<List<DaForDentistYa>> getList(Integer currentPage, Integer numberPerpage) {
 		// TODO Auto-generated method stub
-		DataWrapper<List<HashMap<Object,Object>>> dataWrapper=new DataWrapper<List<HashMap<Object,Object>>>();
+		DataWrapper<List<DaForDentistYa>> dataWrapper=new DataWrapper<List<DaForDentistYa>>();
 		HashMap<Object,Object> hm=new HashMap<Object,Object>();
 		Page page=new Page();
 		
@@ -48,7 +49,7 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 		Integer currentNum=page.getCurrentNumber();
 		hm.put("currentNum", String.valueOf(currentNum));
 		
-		List<HashMap<Object,Object>> listhm=crawlerYellowPagesDao.getList(hm);
+		List<DaForDentistYa> listhm=crawlerYellowPagesDao.getList(hm);
 		int count=crawlerYellowPagesDao.queryCountTOX(hm);
 		dataWrapper.setPage(page, count);
 		dataWrapper.setData(listhm);

@@ -83,7 +83,7 @@ public class CommentServiceImpl implements CommentService {
         redisService.SORTSET.zadd("点赞计数列表"+type+":"+beCommentedId+str,0,commentId+"");
         //牙医圈的评论拿出来做
         if(type.equals("牙医圈")){
-            return addMomentCom(token,type,beCommentedId,comment,parentId,dataWrapper,str,postFix,preFix);
+            return addMomentCom(type,beCommentedId,comment,parentId,dataWrapper,str,postFix,preFix);
         }
         comment.setCommentId(commentId);
         comment.setCommentTime(new Date());
@@ -143,7 +143,7 @@ public class CommentServiceImpl implements CommentService {
     }
 
     //牙医圈的评论,只有一级评论
-    private DataWrapper<Object> addMomentCom(String token, String type, Integer beCommentedId, Comment comment, Integer parentId,DataWrapper<Object> dataWrapper,String str,String postFix,String preFix) {
+    private DataWrapper<Object> addMomentCom(String type, Integer beCommentedId, Comment comment, Integer parentId,DataWrapper<Object> dataWrapper,String str,String postFix,String preFix) {
         //生成评论的自增主键序列
         long commentId = redisService.STRINGS.incrBy("自增序列"+type+":"+ beCommentedId, 1);
         SubComment subComment=new SubComment();
@@ -173,9 +173,11 @@ public class CommentServiceImpl implements CommentService {
                 }
             }
         }
-        String key=preFix+userId;
-        String message=userName+mstr+postFix;
-        redisService.LISTS.rpush(key,message);
+        if(!userId.equals(comment.getUserId())){
+            String key=preFix+userId;
+            String message=userName+mstr+postFix;
+            redisService.LISTS.rpush(key,message);
+        }
         String subComJsonStr= JSONObject.fromObject(subComment).toString();
         redisService.LISTS.rpush(type+"评论"+ beCommentedId,subComJsonStr);
         dataWrapper.setData(subComment);
@@ -309,6 +311,18 @@ public class CommentServiceImpl implements CommentService {
         }
         //删除子评论
         redisService.getJedis().del(type+"评论"+beCommentedId+":"+parentId);
+    }
+
+    //判断父级内容是否是自己,可以去除自己评论自己时有消息通知,str为空则为一级评论，不为空则为二级评论
+    public boolean ifCommentMySelf(String userId, String type, Integer beCommentedId){
+        String contentUserId="";
+        if("牙医圈".equals(type)){
+
+        }else if("视频".equals(type)){
+
+        }else if("病例".equals(type)){
+
+        }
     }
 
 

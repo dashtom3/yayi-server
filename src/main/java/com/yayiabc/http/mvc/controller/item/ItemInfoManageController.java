@@ -6,7 +6,6 @@ package com.yayiabc.http.mvc.controller.item;
 import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.enums.ErrorCodeEnum;
-import com.yayiabc.common.listener.MyServletContextListener;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.ItemIdUtils;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;

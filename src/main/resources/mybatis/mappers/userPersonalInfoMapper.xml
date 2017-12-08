@@ -82,8 +82,8 @@
 		<set>
 			<if test="type != null and type !=''">type=#{type},</if>
 			<if test="companyName != null and companyName !=''">company_name=#{companyName},</if>
-			part=#{part},
-			work_address=#{workAddress},
+			<if test="part != null and part !=''">part=#{part},</if>
+			<if test="workAddress != null and workAddress !=''">work_address=#{workAddress},</if>
 			<if test="doctorPic != null and doctorPic !=''">doctor_pic=#{doctorPic},</if>
 			<if test="judge !=null and judge !=''">judge=#{judge},</if>
 			<if test="medicalLicense !=null and medicalLicense !=''">medical_license=#{medicalLicense},</if>

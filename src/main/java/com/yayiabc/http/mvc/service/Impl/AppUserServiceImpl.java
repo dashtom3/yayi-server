@@ -51,22 +51,6 @@ public class AppUserServiceImpl implements AppUserService {
                 qbRecord.setQbType("qb_balance");
                 userMyQbService.add(qbRecord, token);
                 userDao.registerUserInfo(user);
-                //注册时判断资质认证相关信息是否填写
-                if(user.getCertification().getType()==1){
-                    if(user.getCertification().getDoctorPic().isEmpty() ||user.getCertification().getDoctorPic()==""){
-                        user.getCertification().setState(null);
-                    }else{
-                        user.getCertification().setState(1);
-                    }
-                }else if(user.getCertification().getType()==2){
-                    if(user.getCertification().getMedicalLicense()==null ||user.getCertification().getBusinessLicense()==null ||user.getCertification().getTaxRegistration()==null
-                            ||user.getCertification().getMedicalLicense()=="" ||user.getCertification().getBusinessLicense()=="" ||user.getCertification().getTaxRegistration()=="") {
-                        user.getCertification().setState(null);
-                    }else if(user.getCertification().getMedicalLicense()!=null && user.getCertification().getBusinessLicense()!=null && user.getCertification().getTaxRegistration()!=null){
-                        System.out.println("进来了,开始加入资质审核");
-                        user.getCertification().setState(1);
-                    }
-                }
                 userDao.registerUserCertification(user);
                 user.setCreated(new Date());
                 dataWrapper.setData(user);

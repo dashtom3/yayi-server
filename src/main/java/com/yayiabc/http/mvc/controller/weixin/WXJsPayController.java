@@ -16,6 +16,7 @@ import com.yayiabc.http.mvc.pojo.jpa.WXEntry;
 import com.yayiabc.http.mvc.service.AliPayService;
 
 import com.yayiabc.http.mvc.service.WXPayService;
+import com.yayiabc.http.mvc.service.WxPrepareService;
 import org.apache.http.HttpEntity;
 import org.apache.http.HttpResponse;
 import org.apache.http.HttpStatus;
@@ -54,6 +55,9 @@ public class WXJsPayController {
 
     @Autowired
     private WXPayService wxPayService;
+
+    @Autowired
+    private WxPrepareService wxPrepareService;
 
     @RequestMapping("unifiedOrderReturnUrl")
     @ResponseBody
@@ -157,36 +161,15 @@ public class WXJsPayController {
                                    @RequestHeader(value="token",required=true) String token,
                                    HttpServletRequest request,
                                    HttpServletResponse response){
-        System.out.println(qbType+"钱币类型");
-        System.out.println(money+"钱币金额");
         DataWrapper<WXAppEntry> dataWrapper =new DataWrapper<WXAppEntry>();
-        String chargeId=UUID.randomUUID().toString();
-        String[] str=chargeId.split("-");
-        chargeId="";
-        for (String string : str) {
-            chargeId+=string;
-        }
-        double totalMoney= QbExchangeUtil.getQbByMoney(money,qbType);
-        Charge charge=new Charge();
-        charge.setChargeId(chargeId);
-        charge.setQbNum(money);
-        String totalFee=(int)(totalMoney*100)+"";
-        charge.setMoney(totalFee);
-        charge.setState(1);
-        charge.setToken(utilsDao.getUserID(token));
-        charge.setQbType(qbType);
-        wXPayDao.deleteChargeByToken(utilsDao.getUserID(token));
-        wXPayDao.addCharge(charge);
+        Map<String,String> paramMap=wxPrepareService.addToCharge(money,qbType,token);
         try {
             WXPay wxPay = new WXPay(WXPayConfigImpl.getInstance(), GlobalVariables.domain+"/api/wxRoom/getChargeReturnUrl",false,true);
             Map<String,String> reqData =new HashMap<String,String>();
             reqData.put("body","乾币充值");//必传
-            reqData.put("out_trade_no",chargeId);
+            reqData.put("out_trade_no",paramMap.get("chargeId"));
             reqData.put("fee_type", "CNY");
-
-
-
-            reqData.put("total_fee",totalFee);//必传,总金额,接口中单位为分,对账单中的单位为元,必须为整数,可以通过参数传进来
+            reqData.put("total_fee",paramMap.get("totalFee"));//必传,总金额,接口中单位为分,对账单中的单位为元,必须为整数,可以通过参数传进来
             reqData.put("spbill_create_ip",request.getRemoteAddr());//终端ip,必传,APP和网页支付提交用户端ip，Native支付填调用微信支付API的机器IP。
             reqData.put("trade_type","JSAPI");//必传,现场扫码付
             reqData.put("product_id",System.currentTimeMillis()+"");//扫码支付时此参数必传,可以通过参数传进来,trade_type=NATIVE，此参数必传。此id为二维码中包含的商品ID，商户自行定义。

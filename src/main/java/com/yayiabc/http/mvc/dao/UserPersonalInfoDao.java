@@ -12,7 +12,7 @@ import java.util.Map;
 public interface UserPersonalInfoDao {
 	UserPersonalInfo detail(String userId);
 	
-	int updateCertification(Certification certification);  
+	int updateCertification(Certification certification);
 	
 	int updateUser(User user);
 

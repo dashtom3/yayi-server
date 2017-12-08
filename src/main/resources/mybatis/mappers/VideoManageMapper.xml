@@ -78,4 +78,6 @@ WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId
 	</select>
 
 
+
+
 </mapper>

@@ -121,10 +121,6 @@ public class MomentManageServiceImpl implements MomentManageService{
         User user=null;
         String userId=null;
         if(token!=null){
-            /*user=utilsDao.getUserByToken(token);
-            if(user!=null){
-                userId=user.getUserId();
-            }*/
             userId=utilsDao.getUserID(token);
         }
         System.out.println(userId);

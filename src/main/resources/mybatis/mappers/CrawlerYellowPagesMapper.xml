@@ -34,8 +34,16 @@
 		<result property="favoriteNum" column="favorite_num" />
 		<result property="checkinNum" column="checkin_num" />
 	</resultMap>
-	<select id="getYellowPage" resultMap="sheetMap">
+	<select id="getList" resultMap="sheetMap">
 		select * from sheet1$
+		<where>
+		 <if test="minlng!=null and minlng!='' and minlat!=null and minlat !=''">
+		   lat BETWEEN #{minlat}  AND #{maxlat} AND lng BETWEEN #{minlng}  AND #{maxlng}
+		 </if>
+		 <if test="cityName!=null and cityName!=''">
+		 and  cityName =#{cityName}
+		 </if>
+		</where>
 		<if test="currentNum!=null and numberPerpage!=null">
 			limit ${currentNum} , ${numberPerpage}
 		</if>
@@ -45,11 +53,11 @@
 		sheet1$
 	</select>
 
-	<select id="getList" resultType="com.yayiabc.http.mvc.pojo.jpa.DaForDentistYa">
+		
+	<select id="getYellowPage" resultType="com.yayiabc.http.mvc.pojo.jpa.DaForDentistYa">
 		select * from da_for_dentistya
-		<if test="currentNum!=null and numberPerpage!=null">
+		
 			limit ${currentNum} , ${numberPerpage}
-		</if>
 	</select>
 
 	<select id="queryCountTOX" resultType="int">

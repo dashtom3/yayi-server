@@ -11,6 +11,6 @@ public interface CrawlerYellowPagesService {
 
 	DataWrapper<List<Sheet1>> getYellowPage(Integer currentPage, Integer numberPerpage);
 
-	DataWrapper<List<DaForDentistYa> > getList(Integer currentPage, Integer numberPerpage);
+	DataWrapper<List<DaForDentistYa> > getList(Integer currentPage, Integer numberPerpage, double lng, double lat, String cityName);
 
 }

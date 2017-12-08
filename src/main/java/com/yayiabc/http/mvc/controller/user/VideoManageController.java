@@ -4,8 +4,6 @@ import java.util.ArrayList;
 import java.util.List;
 import java.util.Set;
 
-import com.alibaba.fastjson.JSON;
-import com.alibaba.fastjson.JSONObject;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
 import com.yayiabc.http.mvc.service.RedisService;
 import org.springframework.beans.factory.annotation.Autowired;

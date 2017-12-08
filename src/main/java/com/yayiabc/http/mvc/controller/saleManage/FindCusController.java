@@ -23,7 +23,6 @@ public class FindCusController {
 	//未注册客户
 	@RequestMapping("unregistered")
 	@ResponseBody
-	@SaleTokenValidate
 	@SaleLog(description="发现客户资源:未注册客户")
 	public DataWrapper<List<CusResources>>  unregistered(
 			@RequestHeader(value="saleToken",required=true)String saleToken,
@@ -36,7 +35,6 @@ public class FindCusController {
 	//已注册客户待绑定
 	@RequestMapping("registered")
 	@ResponseBody
-	@SaleTokenValidate
 	@SaleLog(description="发现客户资源:已注册客户 待绑定")
 	public DataWrapper<List<User>>  registered(
 			@RequestHeader(value="saleToken",required=true)String saleToken,

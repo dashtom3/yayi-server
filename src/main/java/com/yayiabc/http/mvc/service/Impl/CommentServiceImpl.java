@@ -323,6 +323,7 @@ public class CommentServiceImpl implements CommentService {
         }else if("病例".equals(type)){
 
         }
+        return true;
     }
 
 

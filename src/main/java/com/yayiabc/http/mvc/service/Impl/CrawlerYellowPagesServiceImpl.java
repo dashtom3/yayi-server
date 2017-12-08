@@ -37,10 +37,18 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 	}
 	
 	@Override
-	public DataWrapper<List<DaForDentistYa>> getList(Integer currentPage, Integer numberPerpage) {
+	public DataWrapper<List<DaForDentistYa>> getList(Integer currentPage, Integer numberPerpage, double lng, double lat, String cityName) {
 		// TODO Auto-generated method stub
 		DataWrapper<List<DaForDentistYa>> dataWrapper=new DataWrapper<List<DaForDentistYa>>();
 		HashMap<Object,Object> hm=new HashMap<Object,Object>();
+		Double[] ds=findNeighPosition(lng,lat);
+		if(ds!=null){
+		hm.put("minlng", ds[0]);
+		hm.put("maxlng", ds[1]);
+		hm.put("minlat", ds[2]);
+		hm.put("maxlat", ds[3]);
+		}
+		hm.put("cityName", cityName);
 		Page page=new Page();
 		
 		page.setNumberPerPage(numberPerpage);
@@ -55,5 +63,25 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 		dataWrapper.setData(listhm);
 		return dataWrapper;
 	}
-
+	
+	public  Double[] findNeighPosition(double lng,double lat){ 
+		if(lng==0.0&&lat==0.0){
+			return null;
+		}
+        //先计算查询点的经纬度范围  
+        double r = 6371;//地球半径千米  
+        double dis = 20;//20千米距离  
+        double dlng =  2*Math.asin(Math.sin(dis/(2*r))/Math.cos(lat*Math.PI/180));  
+        dlng = dlng*180/Math.PI;//角度转为弧度  
+        double dlat = dis/r;  
+        dlat = dlat*180/Math.PI;          
+        double minlat =lat-dlat;  
+        double maxlat = lat+dlat;  
+        double minlng = lng -dlng;  
+        double maxlng = lng + dlng;  
+          
+        Double[] values = {minlng,maxlng,minlat,maxlat};  
+          
+        return values;  
+    }  
 }

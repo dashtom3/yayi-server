@@ -22,7 +22,8 @@ public interface FindCusDao {
     
 	
 	//注册 未绑定currentNum,numberPerpage
-	List<User> showsss(@Param("state")String state, @Param("currentNum")Integer currentPage, @Param("numberPerpage")Integer numberPerPage);
+	List<User> showsss(@Param("state")String state, @Param("currentNum")Integer currentPage, @Param("numberPerpage")Integer numberPerPage, 
+			 @Param("cityName")String cityName);
 
-	Integer queryCounts(@Param("state")String state);
+	Integer queryCounts(@Param("state")String state, @Param("cityName")String cityName);
 }

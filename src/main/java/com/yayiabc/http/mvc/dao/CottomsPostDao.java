@@ -112,5 +112,5 @@ public interface CottomsPostDao {
 	public List<Integer> queryMyBuyPostId(String userId);
 	
 	//查询账户余额
-	public List<Integer> queryqb(String userId);
+	public Integer queryqb(String userId);
 }

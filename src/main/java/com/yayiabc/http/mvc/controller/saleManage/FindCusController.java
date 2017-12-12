@@ -39,10 +39,11 @@ public class FindCusController {
 	public DataWrapper<List<User>>  registered(
 			@RequestHeader(value="saleToken",required=true)String saleToken,
 			@RequestParam(value="state",required=false)String state,
+			@RequestParam(value="cityName",required=false)String cityName,
 			@RequestParam(value = "currentPage",required=false,defaultValue="1") Integer currentPage,//当前页
 		    @RequestParam(value = "numberPerPage",required=false,defaultValue="10") Integer numberPerPage//取多少
 			){
-		return  findCusService.show(state,currentPage,numberPerPage);
+		return  findCusService.show(state,currentPage,numberPerPage,cityName);
 	}
 	//我已经绑定的客户
 	//调用张鹏接口

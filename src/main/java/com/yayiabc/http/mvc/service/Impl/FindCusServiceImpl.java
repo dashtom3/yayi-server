@@ -22,18 +22,18 @@ public class FindCusServiceImpl implements FindCusService {
 	
 	@Override
 	//查询  已注册  未绑定的
-	public DataWrapper<List<User>> show(String state,Integer currentPage,Integer numberPerPage) {
+	public DataWrapper<List<User>> show(String state,Integer currentPage,Integer numberPerPage,String cityName) {
 		
 		DataWrapper<List<User>> dataWrapper=new DataWrapper<List<User>>();
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
 		//总条数
-		Integer count=findDao.queryCounts(state);
+		Integer count=findDao.queryCounts(state,cityName);
 		Integer numberPerpage=page.getNumberPerPage();
 		Integer currentNum=page.getCurrentNumber();
 		dataWrapper.setPage(page,count);
-		dataWrapper.setData(findDao.showsss(state,currentNum,numberPerpage));
+		dataWrapper.setData(findDao.showsss(state,currentNum,numberPerpage,cityName));
 		return dataWrapper;
 	}
 	@Override

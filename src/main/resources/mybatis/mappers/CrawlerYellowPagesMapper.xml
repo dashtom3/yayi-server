@@ -43,6 +43,9 @@
 		 <if test="cityName!=null and cityName!=''">
 		 and  cityName =#{cityName}
 		 </if>
+		  <if test="keyWord!=null and keyWord!=''">
+		 and  POIName  like '%${keyWord}%'
+		 </if>
 		</where>
 		<if test="currentNum!=null and numberPerpage!=null">
 			limit ${currentNum} , ${numberPerpage}
@@ -62,6 +65,17 @@
 
 	<select id="queryCountTOX" resultType="int">
 		select count(1) from
-		da_for_dentistya
+		sheet1$
+		<where>
+		 <if test="minlng!=null and minlng!='' and minlat!=null and minlat !=''">
+		   lat BETWEEN #{minlat}  AND #{maxlat} AND lng BETWEEN #{minlng}  AND #{maxlng}
+		 </if>
+		 <if test="cityName!=null and cityName!=''">
+		 and  cityName =#{cityName}
+		 </if>
+		  <if test="keyWord!=null and keyWord!=''">
+		 and  POIName  like '%${keyWord}%'
+		 </if>
+		</where>
 	</select>
 </mapper>       

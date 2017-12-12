@@ -57,9 +57,12 @@
 	 <where>
 	  <if test="state!=null and state!=''">
 	  us.true_name like '%${state}%' and us.sale_id is null  or us.phone like '%${state}%' and us.sale_id is null or  cert.company_name like '%${state}%'
-	  and us.sale_id is null and  
+	  and us.sale_id is null   
 	  </if>
-	 us.sale_id is null
+	   <if test="cityName!=null  and cityName!=''">
+	    and  cert.part like '%${cityName}%'
+	  </if>
+	and us.sale_id is null
 	  order by us.created DESC
 	 </where> 
 	 limit #{currentNum} ,#{numberPerpage}
@@ -73,9 +76,12 @@
 	 <where>
 	  <if test="state!=null and state!=''">
 	  us.true_name like '%${state}%' and us.sale_id is null  or us.phone like '%${state}%' and us.sale_id is null or  cert.company_name like '%${state}%'
-	  and us.sale_id is null and  
+	  and us.sale_id is null   
 	  </if>
-	 us.sale_id is null
+	  <if test="cityName!=null  and cityName!=''">
+	    and  cert.part like '%${cityName}%'
+	  </if>
+	  and us.sale_id is null
 	 </where> 
 	</select>
 </mapper>       

@@ -117,6 +117,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			cottomsPost.setUserId(userId);
 			dataWrapper.setData(cottomsPosts);
 			dataWrapper.setPage(page, totalNumber);
+			
 		}
 		return dataWrapper;
 	}
@@ -233,13 +234,9 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		String userId=utilsDao.getUserID(token);
 		String remark = "付费病例:支付"+chargeNumber+"个乾币。(乾币余额:userQbNum个)";
 		DataWrapper<Void> dw =new DataWrapper<>();
-		List<Integer> qb=cottomsPostDao.queryqb(userId);//查询余额
-		Integer q=null;
-		for(int i=0;i<qb.size();i++){
-			q=qb.get(i);
-			q+=q;
-		}
-		if(q>=chargeNumber){
+		Integer qb=cottomsPostDao.queryqb(userId);//查询余额
+		System.out.println(qb);
+		if(qb>=chargeNumber){
 			if(userId!=null){
 				Integer p=cottomsPostDao.existBuyPostId(postId,userId);//判断是否已购买
 				if(p==0){

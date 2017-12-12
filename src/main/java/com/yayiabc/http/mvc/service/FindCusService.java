@@ -8,7 +8,7 @@ import com.yayiabc.http.mvc.pojo.jpa.User;
 
 public interface FindCusService {
    //已经注册  待绑定 
-	DataWrapper<List<User>> show(String state,Integer currentPage,Integer numberPerPage);
+	DataWrapper<List<User>> show(String state,Integer currentPage,Integer numberPerPage, String cityName);
 //------------
 	DataWrapper<List<User>> showMyCus(String saleToken);
 	

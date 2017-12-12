@@ -37,7 +37,7 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 	}
 	
 	@Override
-	public DataWrapper<List<DaForDentistYa>> getList(Integer currentPage, Integer numberPerpage, double lng, double lat, String cityName) {
+	public DataWrapper<List<DaForDentistYa>> getList(Integer currentPage, Integer numberPerpage, double lng, double lat, String cityName,String keyWord) {
 		// TODO Auto-generated method stub
 		DataWrapper<List<DaForDentistYa>> dataWrapper=new DataWrapper<List<DaForDentistYa>>();
 		HashMap<Object,Object> hm=new HashMap<Object,Object>();
@@ -49,6 +49,7 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 		hm.put("maxlat", ds[3]);
 		}
 		hm.put("cityName", cityName);
+		hm.put("keyWord", keyWord);
 		Page page=new Page();
 		
 		page.setNumberPerPage(numberPerpage);

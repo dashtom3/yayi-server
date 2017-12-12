@@ -1,0 +1,23 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.BaiDuMapCollectDao">
+   
+   
+   <insert id="collect1" parameterType="com.yayiabc.http.mvc.pojo.model.Pojo">
+    insert into sheet1$(uid,POIName,lat,lng,cityName,
+    address,telephone,distance,type,tag,
+    detail_url,price,shop_hours,overall_rating,taste_rating,
+    
+    service_rating,environment_rating,facility_rating,hygiene_rating,technology_rating,
+    
+    image_num,groupon_num,discount_num,comment_num,favorite_num,checkin_num
+    )values(#{pojo.uid},#{pojo.name},#{pojo.location.lat},#{pojo.location.lng},#{pojo.cityName},
+    #{pojo.address},#{pojo.telephone},0,#{pojo.detail_info.type},#{pojo.detail_info.tag},
+    #{pojo.detail_info.detail_url},#{pojo.detail_info.price},#{pojo.detail_info.shop_hours},0,0,
+    #{pojo.detail_info.service_rating},0,0,0,0,
+    #{pojo.detail_info.image_num},0,0, #{pojo.detail_info.comment_num},0,0
+    )
+   </insert>
+</mapper>       

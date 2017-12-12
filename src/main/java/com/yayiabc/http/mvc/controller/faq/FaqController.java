@@ -59,11 +59,12 @@ public class FaqController {
     @RequestMapping("detail")
     @ResponseBody
     public DataWrapper<FaqQuestion> detail(
+            @RequestHeader(value="token",required = false) String token,
             @RequestParam(value="faqQuestionId",required = true) Integer faqQuestionId,
             @RequestParam(value="currentPage",required = false,defaultValue = "1")Integer currentPage,
             @RequestParam(value="numberPerPage",required = false,defaultValue = "10")Integer numberPerPage
     ){
-        return faqService.questionDetail(faqQuestionId,currentPage,numberPerPage);
+        return faqService.questionDetail(token,faqQuestionId,currentPage,numberPerPage);
     }
 
     //我的提问

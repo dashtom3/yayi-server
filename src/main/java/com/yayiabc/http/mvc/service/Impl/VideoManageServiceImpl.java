@@ -191,7 +191,8 @@ public class VideoManageServiceImpl implements VideoManageService {
 	@Override
 	public DataWrapper<ItemInfo> videoItem(Integer viId) {
 		DataWrapper<ItemInfo> dataWrapper=new DataWrapper<ItemInfo>();
-		ItemInfo itemInfo=videoManageDao.videoItem(viId);
+		String videoRoute=videoManageDao.getVideoRoute(viId);
+		ItemInfo itemInfo=videoManageDao.videoItem(videoRoute);
 		dataWrapper.setData(itemInfo);
 		return dataWrapper;
 	}

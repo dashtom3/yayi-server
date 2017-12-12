@@ -28,5 +28,7 @@ public interface VideoManageDao {
 
     List<VidManage> queryMyCollect(@Param("idList")List<String> idList,@Param("currentNumber") Integer currentNumber,@Param("numberPerPage") Integer numberPerPage);
 
-    ItemInfo videoItem(Integer viId);
+    ItemInfo videoItem(String viId);
+
+	String getVideoRoute(Integer viId);
 }

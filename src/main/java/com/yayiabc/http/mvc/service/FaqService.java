@@ -13,7 +13,7 @@ public interface FaqService {
 
     DataWrapper<List<FaqQuestion>> list(Integer faqQuestionType, Integer order,Integer currentPage,Integer numberPerPage);
 
-    DataWrapper<FaqQuestion> questionDetail(Integer faqQuestionId, Integer currentPage, Integer numberPerPage);
+    DataWrapper<FaqQuestion> questionDetail(String token,Integer faqQuestionId, Integer currentPage, Integer numberPerPage);
 
     DataWrapper<List<FaqQuestion>> myQuestion(String token, Integer currentPage, Integer numberPerPage);
 

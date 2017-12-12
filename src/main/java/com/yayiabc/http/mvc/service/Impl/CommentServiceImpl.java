@@ -196,7 +196,9 @@ public class CommentServiceImpl implements CommentService {
         String userId=null;
         if(token!=null){
             User user=utilsDao.getUserByToken(token);
-            userId=user.getUserId();
+            if(user!=null){
+                userId=user.getUserId();
+            }
         }
         for (String id : idSet
                 ) {

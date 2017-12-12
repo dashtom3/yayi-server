@@ -77,6 +77,10 @@ WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId
 		limit #{currentNumber},#{numberPerPage}
 	</select>
 
+	<select id="getVideoRoute" resultType="string">
+		select video_route from vid_manage where vi_id=#{viId}
+	</select>
+
 
 
 

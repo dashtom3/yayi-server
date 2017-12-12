@@ -16,6 +16,7 @@ public class FaqQuestion {
     private String userPic;//提问者的头像
     private Date faqQuestionTime;//提问时间
     private Integer faqAnswerNum;//回答次数，通过Mysql的触发器实现
+    private int isStar;//是否点赞,1表示点赞0表示未点赞
     private List<FaqAnswer> faqAnswerList;//回答的list
 
     public Integer getFaqQuestionId() {
@@ -90,6 +91,14 @@ public class FaqQuestion {
         this.faqAnswerNum = faqAnswerNum;
     }
 
+    public int getIsStar() {
+        return isStar;
+    }
+
+    public void setIsStar(int isStar) {
+        this.isStar = isStar;
+    }
+
     public List<FaqAnswer> getFaqAnswerList() {
         return faqAnswerList;
     }
@@ -101,7 +110,7 @@ public class FaqQuestion {
     public FaqQuestion() {
     }
 
-    public FaqQuestion(Integer faqQuestionId, Integer faqQuestionType, String faqQuestionTitle, String faqQuestionContent, String userId, String userName, String userPic, Date faqQuestionTime, Integer faqAnswerNum, List<FaqAnswer> faqAnswerList) {
+    public FaqQuestion(Integer faqQuestionId, Integer faqQuestionType, String faqQuestionTitle, String faqQuestionContent, String userId, String userName, String userPic, Date faqQuestionTime, Integer faqAnswerNum, int isStar, List<FaqAnswer> faqAnswerList) {
         this.faqQuestionId = faqQuestionId;
         this.faqQuestionType = faqQuestionType;
         this.faqQuestionTitle = faqQuestionTitle;
@@ -111,6 +120,7 @@ public class FaqQuestion {
         this.userPic = userPic;
         this.faqQuestionTime = faqQuestionTime;
         this.faqAnswerNum = faqAnswerNum;
+        this.isStar = isStar;
         this.faqAnswerList = faqAnswerList;
     }
 
@@ -126,6 +136,7 @@ public class FaqQuestion {
                 ", userPic='" + userPic + '\'' +
                 ", faqQuestionTime=" + faqQuestionTime +
                 ", faqAnswerNum=" + faqAnswerNum +
+                ", isStar=" + isStar +
                 ", faqAnswerList=" + faqAnswerList +
                 '}';
     }

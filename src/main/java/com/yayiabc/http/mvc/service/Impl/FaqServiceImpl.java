@@ -9,6 +9,7 @@ import com.yayiabc.http.mvc.pojo.jpa.FaqAnswer;
 import com.yayiabc.http.mvc.pojo.jpa.FaqQuestion;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.FaqService;
+import com.yayiabc.http.mvc.service.RedisService;
 import com.yayiabc.http.mvc.service.VideoManageService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -27,6 +28,10 @@ public class FaqServiceImpl implements FaqService {
 
     @Autowired
     private VideoManageService videoManageService;
+
+    @Autowired
+    private RedisService redisService;
+
     @Override
     public DataWrapper<FaqQuestion> addQuestion(String token, FaqQuestion faqQuestion) {
         DataWrapper<FaqQuestion> dataWrapper=new DataWrapper<FaqQuestion>();
@@ -76,7 +81,7 @@ public class FaqServiceImpl implements FaqService {
     }
 
     @Override
-    public DataWrapper<FaqQuestion> questionDetail(Integer faqQuestionId, Integer currentPage, Integer numberPerPage) {
+    public DataWrapper<FaqQuestion> questionDetail(String token,Integer faqQuestionId, Integer currentPage, Integer numberPerPage) {
         DataWrapper<FaqQuestion> dataWrapper=new DataWrapper<FaqQuestion>();
         Page page=new Page();
         page.setNumberPerPage(numberPerPage);
@@ -86,6 +91,13 @@ public class FaqServiceImpl implements FaqService {
         FaqQuestion faqQuestion=faqDao.questionDetail(faqQuestionId);
         List<FaqAnswer> faqAnswerList=faqDao.questionAnswerList(faqQuestionId,page.getCurrentNumber(),numberPerPage);
         faqQuestion.setFaqAnswerList(faqAnswerList);
+        //判断是否已收藏
+        if(token!=null){
+            String userId=utilsDao.getUserID(token);
+            if(redisService.SETS.sismember(userId+"问答收藏列表",faqQuestionId+"")){
+                faqQuestion.setIsStar(1);
+            }
+        }
         dataWrapper.setData(faqQuestion);
         return dataWrapper;
     }

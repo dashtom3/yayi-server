@@ -117,7 +117,8 @@
 	</resultMap>
 
 	<select id="queryMyCollect" resultType="FaqQuestion">
-		select * from faq_question where faq_question_id IN
+		select a.faq_question_id,a.faq_question_title,a.faq_question_type,a.faq_user_id AS user_id,a.faq_question_content,a.faq_question_time,a.faq_answer_num,b.true_name AS user_name,b.user_pic
+		from faq_question a,`user` b where a.faq_user_id=b.user_id and a.faq_question_id IN
 		<foreach collection="idList" index="index" item="id" open="(" close=")" separator=",">
 			#{id}
 		</foreach>

@@ -64,14 +64,17 @@
 				headline like '%${keyWord}%' and
 			</if>
 			post_stater=#{postStater}
-			and
-			post_id in
+			
+			<if test="list.size > 0">
+			and  post_id in
 			<foreach collection="list" item="postId" index="index" open="("
 				separator="," close=")">
 				#{postId}
 			</foreach>
+			</if>
+			
 		</where>
-		LIMIT #{page.currentNumber},#{page.numberPerPage}
+		limit #{page.currentNumber},#{page.numberPerPage}
 		
 	</select>
 

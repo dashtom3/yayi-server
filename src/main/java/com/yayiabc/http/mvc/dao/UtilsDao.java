@@ -79,6 +79,8 @@ public interface UtilsDao {
 	TrainOrdera queryTrainOrder(String trainOrderaId);
 
 	Invoice getInvoiceByOrderId(@Param("orderId")String orderId);
+
+	String getUserPcImgById(@Param("userId")String userId);
 	
 
 }

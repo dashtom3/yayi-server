@@ -74,10 +74,8 @@ public class BaiDuMapCollectServiceImpl implements BaiDuMapCollectService {
 	    	    Pojo pojo=(Pojo)JSONObject.toBean(jsonObject2, Pojo.class);
 	    	    
 	    	    pojo.setCityName(cityName);
-	    	   // System.out.println("jsonObject2.toString()::  "+jsonObject2);
 	    	    System.out.println(pojo);
-	    	    
-	    	    baiDuMapCollectDao.collect1(pojo);
+ 	    	    baiDuMapCollectDao.collect1(pojo);
 			}
 		}
 }

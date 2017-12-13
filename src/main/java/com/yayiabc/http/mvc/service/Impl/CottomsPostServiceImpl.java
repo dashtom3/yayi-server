@@ -133,6 +133,10 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 
 		List<String> postIdFees=cottomsPostDao.queryFees(userId);//获取本用户付费病例id
 		CottomsPost cottomsPost1=cottomsPostDao.cottomsDetail(postId);
+		
+		System.out.println(cottomsPost1+"   000");
+		
+		dataWrapper.setFl((utilsDao.getUserPcImgById(cottomsPost1.getUserId())));
 		boolean userIde=false;
 		String post=postId+"";
 		for(int i=0;i<postIdFees.size();i++){

@@ -170,6 +170,9 @@
 		from ordera where state=1
 	</select>
 
+<select id="getUserPcImgById" resultType="java.lang.String">
+ select user_pic from user where user_id=#{userId}
+</select>
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.User" id="getUser">
 		<id property="userId" column="user_id" />
 		<result property="trueName" column="true_name"/>

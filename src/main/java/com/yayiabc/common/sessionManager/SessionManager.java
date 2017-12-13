@@ -23,16 +23,18 @@ public class SessionManager {
     }
 
     public static User getSession(String key) {  //叫做getUser  更合理
-        if(USER_SESSION_MAP.containsKey(key))
+        if(USER_SESSION_MAP.containsKey(key)) {
             return USER_SESSION_MAP.get(key);
-        else
+        } else {
             return null;
+        }
     }
     public static String getSessionByUserID(String userId){
         Set<String> set = USER_SESSION_MAP.keySet();
         for(String key :set){
-            if(USER_SESSION_MAP.get(key).getUserId().equals(userId))
+            if(USER_SESSION_MAP.get(key).getUserId().equals(userId)) {
                 return key;
+            }
         }
         return null;
     }

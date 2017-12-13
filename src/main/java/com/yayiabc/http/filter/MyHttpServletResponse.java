@@ -16,11 +16,13 @@ public class MyHttpServletResponse extends HttpServletResponseWrapper {
                  super(response) ;
              }
      //处理字节流输出的情况
+             @Override
              public ServletOutputStream getOutputStream() throws IOException {
                  return new MyServletOutputStream(bos);
             }
 
             //处理字符流输出的情况:用字符流时要注意乱码：字节转字符要查码表，字符转字节也要查码表
+           @Override
            public PrintWriter getWriter() throws IOException {
                  printWriter  = new PrintWriter(new OutputStreamWriter(bos, super.getCharacterEncoding())) ;
                 return printWriter;
@@ -28,8 +30,9 @@ public class MyHttpServletResponse extends HttpServletResponseWrapper {
     //获取response 写出的数据
     public byte[] getBufferedBytes(){
              try {
-                   if (printWriter != null)
-                         printWriter.close() ;
+                   if (printWriter != null) {
+                       printWriter.close();
+                   }
              bos.flush() ;
             } catch (IOException e) {
            e.printStackTrace();

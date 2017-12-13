@@ -117,7 +117,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		return dataWrapper;
 	}
 	//更改收货地址
-	public DataWrapper<HashMap<String, Object>>  upateAddress(Integer receiverId,Double sumPrice,Integer itemSum){
+	@Override
+    public DataWrapper<HashMap<String, Object>>  upateAddress(Integer receiverId, Double sumPrice, Integer itemSum){
 		DataWrapper<HashMap<String, Object>> dataWrapper=new DataWrapper<HashMap<String, Object>>();
 
 		Receiver receiver=placeOrderDao.queryReceiver(receiverId);
@@ -331,15 +332,16 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	//分别计算该单下的分类价格AllSuppliesSumPrice
 	private HashMap<String, Object> partItemPrices(List<OrderItem> orderItemList, double AllSuppliesSumPrice, double AllTooldevicesSumPrice){
 		HashMap<String, Object> hm=new HashMap<String,Object>();
-		if(!orderItemList.isEmpty())
-			for(int i=0;i<orderItemList.size();i++){
-				//这里计算除道邦之外的商品分类价格  耗材类  工具设备类
-				if("耗材类".equals(orderItemList.get(i).getItemType())){
-					AllSuppliesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
-				}else if("工具设备类".equals(orderItemList.get(i).getItemType())){
-					AllTooldevicesSumPrice+=orderItemList.get(i).getNum()*orderItemList.get(i).getPrice();
-				}
-			}
+		if(!orderItemList.isEmpty()) {
+            for (int i = 0; i < orderItemList.size(); i++) {
+                //这里计算除道邦之外的商品分类价格  耗材类  工具设备类
+                if ("耗材类".equals(orderItemList.get(i).getItemType())) {
+                    AllSuppliesSumPrice += orderItemList.get(i).getNum() * orderItemList.get(i).getPrice();
+                } else if ("工具设备类".equals(orderItemList.get(i).getItemType())) {
+                    AllTooldevicesSumPrice += orderItemList.get(i).getNum() * orderItemList.get(i).getPrice();
+                }
+            }
+        }
 		hm.put("AllSuppliesSumPrice", keepTwo(AllSuppliesSumPrice));
 		hm.put("AllTooldevicesSumPrice", keepTwo(AllTooldevicesSumPrice));
 		hm.put("sumPrice",keepTwo(AllSuppliesSumPrice+AllTooldevicesSumPrice));

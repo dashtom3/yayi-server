@@ -77,11 +77,13 @@ public class SaleInfo extends BasePojo {
 
 
 
-	public Date getCreated() {
+	@Override
+    public Date getCreated() {
 		return created;
 	}
 
-	public void setCreated(Date created) {
+	@Override
+    public void setCreated(Date created) {
 		this.created = created;
 	}
 

@@ -75,7 +75,7 @@ public class UserQbListServiceImpl implements UserQbListService {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 			dataWrapper.setMsg("请填写正确的乾币数");
 		} else {
-			if(sign.equals("1")){
+			if("1".equals(sign)){
 				//减少
 				if(userQbListDao.updateDed(qbBalance, phone,qbType)>0){
 					if(!addQbRecord(userId,qbBalance,phone,qbType,sign,MI)){
@@ -85,7 +85,7 @@ public class UserQbListServiceImpl implements UserQbListService {
 					dataWrapper.setMsg("减少失败");
 				}
 				//增加钱币记录
-			}else if(sign.equals("2")){
+			}else if("2".equals(sign)){
 				//增加
 				if(userQbListDao.updateAdd(qbBalance, phone,qbType)>0){
 					if(!addQbRecord(userId,qbBalance,phone,qbType,sign,MI)){
@@ -110,12 +110,12 @@ public class UserQbListServiceImpl implements UserQbListService {
 		int cqb=user.getcQb();
 		int userQbNum=qbbalance+aqb+cqb;
 		//q.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.0折\""+bqb+"个；"+"\"9.5折\""+cqb+"个；");
-		if(sign.equals("1")){
+		if("1".equals(sign)){
 			//增加 钱币减少记录
 			qbRecord.setQbRout(zh(qbType)+"："+qbBalance+"个");
 
 			qbRecord.setRemark("管理员修改乾币余额，扣除"+qbBalance+"个乾币。（乾币余额："+userQbNum+"个。）");
-		}else if(sign.equals("2")){
+		}else if("2".equals(sign)){
 			//增加 钱币增加记录
 			qbRecord.setQbRget(zh(qbType)+"："+qbBalance+"个");
 			qbRecord.setRemark("管理员修改乾币余额，新增"+qbBalance+"个乾币。（乾币余额："+userQbNum+"个。）");
@@ -146,14 +146,14 @@ public class UserQbListServiceImpl implements UserQbListService {
 		return dataWrapper;
 	}
 	private String zh(String zh){
-		if(zh.equals("a_qb")){
+		if("a_qb".equals(zh)){
 			return "\"8.0折\" ";
-		} else if(zh.equals("b_qb"))
+		} else if("b_qb".equals(zh))
 		{
 			return "\"9.0折\" ";
-		}else if(zh.equals("c_qb")){
+		}else if("c_qb".equals(zh)){
 			return "\"9.5折\" ";
-		}else if(zh.equals("qb_balance")){
+		}else if("qb_balance".equals(zh)){
 			return "\"赠\" ";
 		}
 		return "非法钱币类型";
@@ -306,20 +306,22 @@ System.err.println( qbRecordList.size());
 			e.printStackTrace();
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 		} finally {
-			if (bis != null)
-				try {
-					bis.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			if (bos != null)
-				try {
-					bos.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+			if (bos != null) {
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
 		}
 		return dataWrapper;
 	}

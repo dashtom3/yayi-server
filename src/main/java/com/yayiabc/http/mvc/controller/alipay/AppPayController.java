@@ -115,14 +115,14 @@ public class AppPayController {
 			@RequestParam(value="id",required=true) String id
 			){
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
-		if(sign.equals("orderPay")){
+		if("orderPay".equals(sign)){
 			int ss= alipayDao.querySatetIsTwo(id);
 			if(ss==2){
 				dataWrapper.setMsg("成功");
 			}else{
 				dataWrapper.setMsg("失败");
 			}
-		}else if(sign.equals("coinPay")){
+		}else if("coinPay".equals(sign)){
 			int ss= alipayDao.queryChargeIsTwo(id);
 			if(ss==2){
 				dataWrapper.setMsg("成功");

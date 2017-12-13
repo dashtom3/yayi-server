@@ -27,14 +27,17 @@ public class WXPayConfigImpl extends WXPayConfig{
         return INSTANCE;
     }
 
+    @Override
     public String getAppID() {
             return "wx4b1a6fde77626a32";
     }
 
+    @Override
     public String getMchID() {
         return "1377180402";
     }
 
+    @Override
     public String getKey() {
         return "xiaojiangxiaojiangxiaojiangjiang";
         
@@ -47,14 +50,17 @@ public class WXPayConfigImpl extends WXPayConfig{
     }*/
 
 
+    @Override
     public int getHttpConnectTimeoutMs() {
         return 2000;
     }
 
+    @Override
     public int getHttpReadTimeoutMs() {
         return 10000;
     }
 
+    @Override
     IWXPayDomain getWXPayDomain() {
         return WXPayDomainSimpleImpl.instance();
     }

@@ -19,6 +19,15 @@ public class VidManage implements Serializable{
 	@DateTimeFormat(pattern = "yy-MM-dd HH:mm:ss")
 	private Date vedioTime;
 	private int isStar=0;
+	private ItemInfo itemInfo;
+
+	public ItemInfo getItemInfo() {
+		return itemInfo;
+	}
+
+	public void setItemInfo(ItemInfo itemInfo) {
+		this.itemInfo = itemInfo;
+	}
 
 	public Integer getViId() {
 		return viId;
@@ -103,7 +112,7 @@ public class VidManage implements Serializable{
 	public VidManage() {
 	}
 
-	public VidManage(Integer viId, String vidName, String videoType, String vidRoute, Integer videoCategory, Integer vedioCommentNumber, String vedioPic, Integer starNumber, Date vedioTime, int isStar) {
+	public VidManage(Integer viId, String vidName, String videoType, String vidRoute, Integer videoCategory, Integer vedioCommentNumber, String vedioPic, Integer starNumber, Date vedioTime, int isStar, ItemInfo itemInfo) {
 		this.viId = viId;
 		this.vidName = vidName;
 		this.videoType = videoType;
@@ -114,6 +123,7 @@ public class VidManage implements Serializable{
 		this.starNumber = starNumber;
 		this.vedioTime = vedioTime;
 		this.isStar = isStar;
+		this.itemInfo = itemInfo;
 	}
 
 	@Override
@@ -129,6 +139,7 @@ public class VidManage implements Serializable{
 				", starNumber=" + starNumber +
 				", vedioTime=" + vedioTime +
 				", isStar=" + isStar +
+				", itemInfo=" + itemInfo +
 				'}';
 	}
 }

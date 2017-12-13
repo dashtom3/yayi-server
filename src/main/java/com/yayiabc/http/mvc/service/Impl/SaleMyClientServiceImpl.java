@@ -3,6 +3,7 @@ package com.yayiabc.http.mvc.service.Impl;
 import java.util.Collections;
 import java.util.Comparator;
 import java.util.List;
+import java.util.Objects;
 
 import com.yayiabc.common.utils.PageModel;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -49,13 +50,14 @@ public class SaleMyClientServiceImpl implements SaleMyClientService {
 		}
 		if(state == 3 || state ==4){
 			Collections.sort(list, new Comparator<UserStatistics>() {
+				@Override
 				public int compare(UserStatistics o1, UserStatistics o2) {
 					if(state == 3){
 						//按照订单总数进行降序排列
 						if(o1.getOrderaCount() < o2.getOrderaCount()){
 							return 1;
 						}
-						if(o1.getOrderaCount() == o2.getOrderaCount()){
+						if(Objects.equals(o1.getOrderaCount(), o2.getOrderaCount())){
 							return 0;
 						}
 					}else if(state == 4){
@@ -63,7 +65,7 @@ public class SaleMyClientServiceImpl implements SaleMyClientService {
 						if(o1.getOrderaMoneyCount() < o2.getOrderaMoneyCount()){
 							return 1;
 						}
-						if(o1.getOrderaMoneyCount() == o2.getOrderaMoneyCount()){
+						if(Objects.equals(o1.getOrderaMoneyCount(), o2.getOrderaMoneyCount())){
 							return 0;
 						}
 					}

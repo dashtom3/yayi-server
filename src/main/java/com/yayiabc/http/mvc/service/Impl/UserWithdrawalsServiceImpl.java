@@ -236,8 +236,9 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 			dataWrapper.setMsg("NONONO");
 		}else{
 			User user=userWithdrawalsServiceDao.showUserQbNum(userId);
-			if(user!=null)
-				dataWrapper.setData(user);
+			if(user!=null) {
+                dataWrapper.setData(user);
+            }
 			dataWrapper.setMsg(sign+"");
 			dataWrapper.setFl(user.getaQb()+user.getcQb()+user.getQbBalance()+"");
 		}

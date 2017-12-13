@@ -25,19 +25,22 @@ public class ParamUtil {
     }
 
     public static String arrayToString(Object[] arrayParam) {
-        if (arrayParam == null)
+        if (arrayParam == null) {
             return "null";
+        }
 
         int iMax = arrayParam.length - 1;
-        if (iMax == -1)
+        if (iMax == -1) {
             return "[]";
+        }
 
         StringBuilder b = new StringBuilder();
         b.append('[');
         for (int i = 0; ; i++) {
             b.append(String.valueOf(arrayParam[i]));
-            if (i == iMax)
+            if (i == iMax) {
                 return b.append(']').toString();
+            }
             b.append(",");
         }
     }

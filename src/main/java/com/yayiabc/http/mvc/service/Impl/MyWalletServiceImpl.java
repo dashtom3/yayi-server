@@ -21,10 +21,11 @@ public class MyWalletServiceImpl implements MyWalletService{
 	@Autowired
 	private UtilsDao utilsDao;
 	
-	public DataWrapper<List<Balance>> detail(HashMap<String, Object> hm,
-			Integer currentPage,
-			Integer numberPerpage,
-			String token
+	@Override
+    public DataWrapper<List<Balance>> detail(HashMap<String, Object> hm,
+                                             Integer currentPage,
+                                             Integer numberPerpage,
+                                             String token
 			) {
 		// TODO Auto-generated method stub
 		Page page=new Page();
@@ -104,8 +105,9 @@ public class MyWalletServiceImpl implements MyWalletService{
 			dataWrapper.setData(balance);
 			return dataWrapper;
 		}
-		else
-			dataWrapper.setMsg("该销售员不存在的");
+		else {
+            dataWrapper.setMsg("该销售员不存在的");
+        }
 		return dataWrapper;
 	}
 	@Override

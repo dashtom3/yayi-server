@@ -106,6 +106,7 @@ public class CacheMgr {
 	  * 继承Thread线程类
 	  */
 	 private static class ClearCache extends Thread{
+		  @Override
 		  public void run(){
 		   while(true){
 		    Set tempSet = new HashSet();
@@ -116,7 +117,7 @@ public class CacheMgr {
 		     CacheConfModel ccm = (CacheConfModel)cacheConfMap.get(key);
 		     //比较是否需要清除
 		     if(!ccm.isForever()){
-		      if((new Date().getTime()-ccm.getBeginTime())>= ccm.getDurableTime()*60*1000){
+		      if((System.currentTimeMillis()-ccm.getBeginTime())>= ccm.getDurableTime()*60*1000){
 		       //可以清除，先记录下来
 		       tempSet.add(key);
 		      }

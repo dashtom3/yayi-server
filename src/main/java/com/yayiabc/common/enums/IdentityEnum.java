@@ -27,7 +27,8 @@ public enum IdentityEnum {
 		this.label = label;
 		this.code = code;
 	}
-	public String toString(){
+	@Override
+    public String toString(){
 		return label;
 	}
 }

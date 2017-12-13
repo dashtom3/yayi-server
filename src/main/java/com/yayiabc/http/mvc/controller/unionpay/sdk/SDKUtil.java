@@ -583,8 +583,9 @@ public class SDKUtil {
 			String encoding) {
 		String strCert = resData.get(SDKConstants.param_encryptPubKeyCert);
 		String certType = resData.get(SDKConstants.param_certType);
-		if (isEmpty(strCert) || isEmpty(certType))
-			return -1;
+		if (isEmpty(strCert) || isEmpty(certType)) {
+            return -1;
+        }
 		X509Certificate x509Cert = CertUtil.genCertificateByStr(strCert);
 		if (CERTTYPE_01.equals(certType)) {
 			// 更新敏感信息加密公钥
@@ -594,11 +595,13 @@ public class SDKUtil {
 				String localCertPath = SDKConfig.getConfig().getEncryptCertPath();
 				String newLocalCertPath = genBackupName(localCertPath);
 				// 1.将本地证书进行备份存储
-				if (!copyFile(localCertPath, newLocalCertPath))
-					return -1;
+				if (!copyFile(localCertPath, newLocalCertPath)) {
+                    return -1;
+                }
 				// 2.备份成功,进行新证书的存储
-				if (!writeFile(localCertPath, strCert, encoding))
-					return -1;
+				if (!writeFile(localCertPath, strCert, encoding)) {
+                    return -1;
+                }
 				LogUtil.writeLog("save new encryptPubKeyCert success");
 				CertUtil.resetEncryptCertPublicKey();
 				return 1;
@@ -676,14 +679,18 @@ public class SDKUtil {
 			LogUtil.writeErrorLog("CopyFile fail", e);
 		} finally {
 			try {
-				if (null != fin)
-					fin.close();
-				if (null != fout)
-					fout.close();
-				if (null != fcin)
-					fcin.close();
-				if (null != fcout)
-					fcout.close();
+				if (null != fin) {
+                    fin.close();
+                }
+				if (null != fout) {
+                    fout.close();
+                }
+				if (null != fcin) {
+                    fcin.close();
+                }
+				if (null != fcout) {
+                    fcout.close();
+                }
 			} catch (IOException ex) {
 				LogUtil.writeErrorLog("Releases any system resources fail", ex);
 			}
@@ -728,10 +735,12 @@ public class SDKUtil {
 			return false;
 		} finally {
 			try {
-				if (null != fout)
-					fout.close();
-				if (null != fcout)
-					fcout.close();
+				if (null != fout) {
+                    fout.close();
+                }
+				if (null != fcout) {
+                    fcout.close();
+                }
 			} catch (IOException ex) {
 				LogUtil.writeErrorLog("Releases any system resources fail", ex);
 				return false;
@@ -748,8 +757,9 @@ public class SDKUtil {
 	 * @return
 	 */
 	public static String genBackupName(String fileName) {
-		if (isEmpty(fileName))
-			return "";
+		if (isEmpty(fileName)) {
+            return "";
+        }
 		int i = fileName.lastIndexOf(POINT);
 		String leftFileName = fileName.substring(0, i);
 		String rightFileName = fileName.substring(i + 1);

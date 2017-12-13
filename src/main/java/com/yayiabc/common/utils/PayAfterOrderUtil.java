@@ -108,7 +108,7 @@ public class PayAfterOrderUtil {
 		}
 		//判断 该用户是否绑定了销售员
 		String saleId=utilsDao.getSaleIdByOrderId(orderId);
-		if(saleId!=null&&!saleId.equals("")){
+		if(saleId!=null&&!"".equals(saleId)){
 			//删除redis exprice key
 			jedis.del("expireOrder"+orderId);
 			jedis.close();
@@ -299,12 +299,12 @@ public class PayAfterOrderUtil {
 		return false;
 	}
 	private String zh(String zh){
-		if(zh.equals("a_qb")){
+		if("a_qb".equals(zh)){
 			return "\"8.0折\" ";
-		} else if(zh.equals("b_qb"))
+		} else if("b_qb".equals(zh))
 		{
 			return "\"9.0折\" ";
-		}else if(zh.equals("c_qb")){
+		}else if("c_qb".equals(zh)){
 			return "\"9.5折\" ";
 		}
 		return "非法乾币类型";

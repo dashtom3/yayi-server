@@ -116,17 +116,23 @@ public class AcpService {
 
         Pattern p = Pattern.compile("\\s*\"sign\"\\s*:\\s*\"([^\"]*)\"\\s*");
 		Matcher m = p.matcher(jsonData);
-		if(!m.find()) return false;
+		if(!m.find()) {
+            return false;
+        }
 		String sign = m.group(1);
 
 		p = Pattern.compile("\\s*\"data\"\\s*:\\s*\"([^\"]*)\"\\s*");
 		m = p.matcher(jsonData);
-		if(!m.find()) return false;
+		if(!m.find()) {
+            return false;
+        }
 		String data = m.group(1);
 
 		p = Pattern.compile("cert_id=(\\d*)");
 		m = p.matcher(jsonData);
-		if(!m.find()) return false;
+		if(!m.find()) {
+            return false;
+        }
 		String certId = m.group(1);
 
 		try {
@@ -360,13 +366,14 @@ public class AcpService {
 	 */
 	public static String getCustomerInfo(Map<String,String> customerInfoMap,String accNo,String encoding) {
 		
-		if(customerInfoMap.isEmpty())
-			return "{}";
+		if(customerInfoMap.isEmpty()) {
+            return "{}";
+        }
 		StringBuffer sf = new StringBuffer("{");
 		for(Iterator<String> it = customerInfoMap.keySet().iterator(); it.hasNext();){
 			String key = it.next();
 			String value = customerInfoMap.get(key);
-			if(key.equals("pin")){
+			if("pin".equals(key)){
 				if(null == accNo || "".equals(accNo.trim())){
 					LogUtil.writeLog("送了密码（PIN），必须在getCustomerInfo参数中上传卡号");
 					throw new RuntimeException("加密PIN没送卡号无法后续处理");
@@ -375,8 +382,9 @@ public class AcpService {
 				}
 			}
 			sf.append(key).append(SDKConstants.EQUAL).append(value);
-			if(it.hasNext())
-				sf.append(SDKConstants.AMPERSAND);
+			if(it.hasNext()) {
+                sf.append(SDKConstants.AMPERSAND);
+            }
 		}
 		String customerInfo = sf.append("}").toString();
 		LogUtil.writeLog("组装的customerInfo明文："+customerInfo);
@@ -408,8 +416,9 @@ public class AcpService {
 	 * @return base64后的持卡人信息域字段 <br>
 	 */
 	public static String getCustomerInfoWithEncrypt(Map<String,String> customerInfoMap,String accNo,String encoding) {
-		if(customerInfoMap.isEmpty())
-			return "{}";
+		if(customerInfoMap.isEmpty()) {
+            return "{}";
+        }
 		StringBuffer sf = new StringBuffer("{");
 		//敏感信息加密域
 		StringBuffer encryptedInfoSb = new StringBuffer("");
@@ -417,10 +426,10 @@ public class AcpService {
 		for(Iterator<String> it = customerInfoMap.keySet().iterator(); it.hasNext();){
 			String key = it.next();
 			String value = customerInfoMap.get(key);
-			if(key.equals("phoneNo") || key.equals("cvn2") || key.equals("expired")){
+			if("phoneNo".equals(key) || "cvn2".equals(key) || "expired".equals(key)){
 				encryptedInfoSb.append(key).append(SDKConstants.EQUAL).append(value).append(SDKConstants.AMPERSAND);
 			}else{
-				if(key.equals("pin")){
+				if("pin".equals(key)){
 					if(null == accNo || "".equals(accNo.trim())){
 						LogUtil.writeLog("送了密码（PIN），必须在getCustomerInfoWithEncrypt参数中上传卡号");
 						throw new RuntimeException("加密PIN没送卡号无法后续处理");
@@ -432,7 +441,7 @@ public class AcpService {
 			}
 		}
 		
-		if(!encryptedInfoSb.toString().equals("")){
+		if(!"".equals(encryptedInfoSb.toString())){
 			encryptedInfoSb.setLength(encryptedInfoSb.length()-1);//去掉最后一个&符号
 			LogUtil.writeLog("组装的customerInfo encryptedInfo明文："+ encryptedInfoSb.toString());
 			sf.append("encryptedInfo").append(SDKConstants.EQUAL).append(encryptData(encryptedInfoSb.toString(), encoding));

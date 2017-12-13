@@ -163,10 +163,11 @@ public class PageModel {
      * @return
      */
     public List getObjects(int page) {
-        if (page == 0)
+        if (page == 0) {
             this.setPage(1);
-        else
+        } else {
             this.setPage(page);
+        }
         this.disposePage();
         if (page * pageRecorders < totalRows) {// 判断是否为最后一页
             pageEndRow = page * pageRecorders;

@@ -570,8 +570,9 @@ public class SecureUtil {
            }
        }
        int check = 10 - ((s1 + s2) % 10);
-       if (check == 10)
+       if (check == 10) {
            check = 0;
+       }
        return check;
    }
 }

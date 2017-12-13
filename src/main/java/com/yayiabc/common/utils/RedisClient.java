@@ -723,8 +723,9 @@ public class RedisClient {
 			Jedis sjedis = getJedis(); 
 			Double score = sjedis.zscore(key, memebr);
 			returnJedis(sjedis);
-			if (score != null)
-				return score;
+			if (score != null) {
+                return score;
+            }
 			return 0;
 		}
 	

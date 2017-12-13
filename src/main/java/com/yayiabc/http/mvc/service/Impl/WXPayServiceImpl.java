@@ -190,12 +190,12 @@ public class WXPayServiceImpl implements WXPayService{
     }
 
     private String zh(String zh){
-        if(zh.equals("a_qb")){
+        if("a_qb".equals(zh)){
             return "\"8.0折\" ";
-        } else if(zh.equals("b_qb"))
+        } else if("b_qb".equals(zh))
         {
             return "\"9.0折\" ";
-        }else if(zh.equals("c_qb")){
+        }else if("c_qb".equals(zh)){
             return "\"9.5折\" ";
         }
         return "非法钱币类型";

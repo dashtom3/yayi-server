@@ -121,7 +121,7 @@ public class BenefitChangeServiceImpl implements BenefitChangeService{
 		Integer currentNumber =page.getCurrentNumber();
 		List<Benefit> benefitList=benefitChangeDao.getBenefitList(benefitName,enable,currentNumber,numberPerPage);
 		for (Benefit benefit : benefitList) {
-			if(benefit.getBenefitValueNum()!=0&&benefit.getUpdated().getTime()>new Date().getTime()){
+			if(benefit.getBenefitValueNum()!=0&&benefit.getUpdated().getTime()>System.currentTimeMillis()){
 				benefit.setEnable(1);
 			}else{
 				benefit.setEnable(2);
@@ -196,20 +196,22 @@ public class BenefitChangeServiceImpl implements BenefitChangeService{
             e.printStackTrace();
             dataWrapper.setErrorCode(ErrorCodeEnum.Error);
         } finally {
-            if (bis != null)
-				try {
-					bis.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-            if (bos != null)
-				try {
-					bos.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+            if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+            if (bos != null) {
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
         }
         return dataWrapper;
     }

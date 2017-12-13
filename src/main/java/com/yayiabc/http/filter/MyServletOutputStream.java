@@ -9,6 +9,7 @@ public class MyServletOutputStream extends ServletOutputStream {
     public MyServletOutputStream (ByteArrayOutputStream bos) {
                  this.bos = bos ;
              }
+     @Override
      public void write(int b) throws IOException {
                  bos.write(b) ;
      }

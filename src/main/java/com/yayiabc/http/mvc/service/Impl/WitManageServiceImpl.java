@@ -33,7 +33,7 @@ public class WitManageServiceImpl implements WitManageService{
 		//根据saleId  得到该sale的钱包余额
 		//防止 非法用户直接调接口提现
 	List<SaleWitModel> saleNowMoney=witManageDao.queryMoney(saleId);
-		if(saleNowMoney.get(0).getDescribey().substring(0,6).equals("提现申请中")){
+		if("提现申请中".equals(saleNowMoney.get(0).getDescribey().substring(0, 6))){
 			dataWrapper.setMsg("NONONO");
 			return dataWrapper;
 		}

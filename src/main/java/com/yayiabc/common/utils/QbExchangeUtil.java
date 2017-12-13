@@ -15,11 +15,11 @@ public class QbExchangeUtil {
 		}else if(0<qbNum&&qbNum<3000){
 			
 		}*/
-		if(qbType.equals("c_qb")&&qbNum>=1){
+		if("c_qb".equals(qbType) &&qbNum>=1){
 			monery=(qbNum*0.95);
-		}else if(qbType.equals("b_qb")&&qbNum>=2000){
+		}else if("b_qb".equals(qbType) &&qbNum>=2000){
 			monery=(qbNum*0.90);
-		}else if(qbType.equals("a_qb")&&qbNum>=5000){
+		}else if("a_qb".equals(qbType) &&qbNum>=5000){
 			monery=(qbNum*0.80);
 		}else{
 			 

@@ -405,14 +405,16 @@ public class SDKConfig {
 		
 		value = pro.getProperty(SDK_IF_VALIDATE_CN_NAME);
 		if (!SDKUtil.isEmpty(value)) {
-			if( SDKConstants.FALSE_STRING.equals(value.trim()))
-					this.ifValidateCNName = false;
+			if( SDKConstants.FALSE_STRING.equals(value.trim())) {
+                this.ifValidateCNName = false;
+            }
 		}
 		
 		value = pro.getProperty(SDK_IF_VALIDATE_REMOTE_CERT);
 		if (!SDKUtil.isEmpty(value)) {
-			if( SDKConstants.TRUE_STRING.equals(value.trim()))
-					this.ifValidateRemoteCert = true;
+			if( SDKConstants.TRUE_STRING.equals(value.trim())) {
+                this.ifValidateRemoteCert = true;
+            }
 		}
 		
 		value = pro.getProperty(SDK_SIGN_METHOD);

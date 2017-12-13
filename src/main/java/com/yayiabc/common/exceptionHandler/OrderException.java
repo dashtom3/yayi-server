@@ -46,7 +46,8 @@ public class OrderException extends RuntimeException {
 	        this.bizCode = bizCode;  
 	    }  
 	  
-	    public String getMessage() {  
+	    @Override
+        public String getMessage() {
 	        return message;  
 	    }  
 	  

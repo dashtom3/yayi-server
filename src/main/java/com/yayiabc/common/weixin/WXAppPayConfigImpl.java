@@ -32,6 +32,7 @@ public class WXAppPayConfigImpl extends WXPayConfig{
 //    public String getAppID() {
 //        return "wx983825eaeef912b7";
 //    }
+    @Override
     public String getAppID() {
         return "wx2fa041dffd1025c5";
     }
@@ -42,6 +43,7 @@ public class WXAppPayConfigImpl extends WXPayConfig{
     /*public String getMchID() {
         return "1377180402";
     }*/
+    @Override
     public String getMchID() {
         return "1490371212";
     }
@@ -49,6 +51,7 @@ public class WXAppPayConfigImpl extends WXPayConfig{
     /*public String getKey() {
         return "d3592e6d6642995950d3451c1ea36607";
     }*/
+    @Override
     public String getKey() {
         return "xiaojiangxiaojiangxiaojiangjiang";
     }
@@ -60,14 +63,17 @@ public class WXAppPayConfigImpl extends WXPayConfig{
     }*/
 
 
+    @Override
     public int getHttpConnectTimeoutMs() {
         return 2000;
     }
 
+    @Override
     public int getHttpReadTimeoutMs() {
         return 10000;
     }
 
+    @Override
     IWXPayDomain getWXPayDomain() {
         return WXPayDomainSimpleImpl.instance();
     }

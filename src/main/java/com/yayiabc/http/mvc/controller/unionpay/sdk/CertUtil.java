@@ -499,8 +499,9 @@ public class CertUtil {
 			LogUtil.writeErrorLog("getKeyInfo Error", e);
 			return null;
 		} finally {
-			if(null!=fis)
-				fis.close();
+			if(null!=fis) {
+                fis.close();
+            }
 		}
 	}
 	
@@ -626,8 +627,9 @@ public class CertUtil {
 		if ((tDN != null)) {
 			String tSplitStr[] = tDN.substring(tDN.indexOf("CN=")).split("@");
 			if (tSplitStr != null && tSplitStr.length > 2
-					&& tSplitStr[2] != null)
-				tPart = tSplitStr[2];
+					&& tSplitStr[2] != null) {
+                tPart = tSplitStr[2];
+            }
 		}
 		return tPart;
 	}
@@ -782,7 +784,8 @@ public class CertUtil {
 				return false;
 			}
 		}
-		public boolean accept(File dir, String name) {
+		@Override
+        public boolean accept(File dir, String name) {
 			return isCer(name);
 		}
 	}

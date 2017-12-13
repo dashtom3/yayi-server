@@ -39,7 +39,7 @@ public class getTimeUtil {
      */
     public static String getLastMonth() {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
-        cal.add(cal.MONTH, -1);
+        cal.add(Calendar.MONTH, -1);
         SimpleDateFormat dft = new SimpleDateFormat("MM");
         String lastMonth = dft.format(cal.getTime());
         return lastMonth;
@@ -53,7 +53,7 @@ public class getTimeUtil {
      */
     public static String getPreMonth() {
         Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
-        cal.add(cal.MONTH, 1);
+        cal.add(Calendar.MONTH, 1);
         SimpleDateFormat dft = new SimpleDateFormat("MM");
         String preMonth = dft.format(cal.getTime());
         return preMonth;
@@ -67,7 +67,7 @@ public class getTimeUtil {
      */
     public static String getMonth(){
     	 Calendar cal = Calendar.getInstance(TimeZone.getTimeZone("GMT+08:00"));
-         cal.add(cal.MONTH,0);
+         cal.add(Calendar.MONTH,0);
          SimpleDateFormat dft = new SimpleDateFormat("MM");
          String month = dft.format(cal.getTime());
          return month;

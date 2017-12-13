@@ -341,7 +341,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 				 * 1 如果发货了 便不退回乾币
 				 * 2如果没发货  便退回乾币
 				 */
-				if(order.getState().equals("2")){
+				if("2".equals(order.getState())){
 					//付款，未发货
 					returnQbUtils(a,order);
 				}else{
@@ -832,7 +832,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 	 */
 	private String showPayType(Integer payType) {
 		// TODO Auto-generated method stub
-		if(payType==null||payType.equals("null")){
+		if(payType==null|| "null".equals(payType)){
 			return "订单未付款";
 		}
 		switch(payType){

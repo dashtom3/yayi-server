@@ -125,7 +125,7 @@ public class WXJsPayController {
             //1.获取ACCESS_token,
             Long dateTime=(Long)cache.get("date");
             String jsapi_ticket="";
-            if(!cache.isEmpty()&&dateTime!=null&&(new Date().getTime()-dateTime<7200000)){
+            if(!cache.isEmpty()&&dateTime!=null&&(System.currentTimeMillis()-dateTime<7200000)){
                 jsapi_ticket=(String)cache.get("jsapi_ticket");
             }else{
                 Map<String, Object> map=HttpUtil.sendGet("https://api.weixin.qq.com/cgi-bin/token?grant_type=client_credential&appid=wx4b1a6fde77626a32&secret=90d4bae1c1843cec9aff6b4533f05881");

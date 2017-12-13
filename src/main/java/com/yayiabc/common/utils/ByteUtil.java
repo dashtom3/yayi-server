@@ -141,10 +141,10 @@ public class ByteUtil {
 		abyte0[1] = (byte) ((0xff00 & i) >> 8);
 		abyte0[2] = (byte) ((0xff0000 & i) >> 16);
 		abyte0[3] = (byte) ((0xff000000 & i) >> 24);
-		abyte0[4] = (byte) ((0xff00000000l & i) >> 32);
-		abyte0[5] = (byte) ((0xff0000000000l & i) >> 40);
-		abyte0[6] = (byte) ((0xff000000000000l & i) >> 48);
-		abyte0[7] = (byte) ((0xff00000000000000l & i) >> 56);
+		abyte0[4] = (byte) ((0xff00000000L & i) >> 32);
+		abyte0[5] = (byte) ((0xff0000000000L & i) >> 40);
+		abyte0[6] = (byte) ((0xff000000000000L & i) >> 48);
+		abyte0[7] = (byte) ((0xff00000000000000L & i) >> 56);
 		return abyte0;
 
 	}
@@ -185,9 +185,9 @@ public class ByteUtil {
 
 		mint = (long) (((mint) >> 56 & 0xFF) | ((mint) >> 48 & 0xFF00)
 				| ((mint) >> 24 & 0xFF0000) | ((mint) >> 8 & 0xFF000000)
-				| ((mint) << 8 & 0xFF00000000l)
-				| ((mint) << 24 & 0xFF0000000000l)
-				| ((mint) << 40 & 0xFF000000000000l) | ((mint) << 56 & 0xFF00000000000000l));
+				| ((mint) << 8 & 0xFF00000000L)
+				| ((mint) << 24 & 0xFF0000000000L)
+				| ((mint) << 40 & 0xFF000000000000L) | ((mint) << 56 & 0xFF00000000000000L));
 
 		return mint;
 	}
@@ -408,7 +408,7 @@ public class ByteUtil {
 				sb.append(" ");
 			}
 		}
-		if(sb.equals("")){
+		if("".equals(sb)){
 			System.out.println(true);
 		}
 		return sb.toString();
@@ -464,7 +464,7 @@ public class ByteUtil {
 	 * @return
 	 */
 	public static String binaryToHex(String bString) {
-		if (bString == null || bString.equals("") || bString.length() % 8 != 0){
+		if (bString == null || "".equals(bString) || bString.length() % 8 != 0){
 			return null;
 		}
 		StringBuffer tmp = new StringBuffer();

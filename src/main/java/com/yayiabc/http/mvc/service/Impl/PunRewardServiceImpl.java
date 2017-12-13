@@ -51,10 +51,11 @@ public class PunRewardServiceImpl implements PunRewardService {
 				   return dataWrapper;
 			   }
 		}else{
-			 if(sign==1)
-				punRewardDao.addMoney(saleId,moneys, (Double)punRewardDao.show(saleId).get(0)+moneys); 
-			 else
-				punRewardDao.delMoney(saleId,moneys,(Double)punRewardDao.show(saleId).get(0)-moneys);
+			 if(sign==1) {
+                 punRewardDao.addMoney(saleId, moneys, (Double) punRewardDao.show(saleId).get(0) + moneys);
+             } else {
+                 punRewardDao.delMoney(saleId, moneys, (Double) punRewardDao.show(saleId).get(0) - moneys);
+             }
 		}
 		return dataWrapper;
 	}

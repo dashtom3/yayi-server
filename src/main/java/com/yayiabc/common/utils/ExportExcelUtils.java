@@ -109,17 +109,18 @@ public class ExportExcelUtils {
                      }*/
                     if (currentRow.getCell(colNum) != null) {
                         HSSFCell currentCell = currentRow.getCell(colNum);
-                        if (currentCell!=null)
-                        if (currentCell.getCellType() == HSSFCell.CELL_TYPE_STRING) {
-                            int length = 0;
-                            try {
-                            	System.out.println("12312321321312"+currentCell);
-                                length = currentCell.getStringCellValue().getBytes().length;
-                            } catch (Exception e) {
-                                e.printStackTrace();
-                            }
-                            if (columnWidth < length) {
-                                columnWidth = length;
+                        if (currentCell!=null) {
+                            if (currentCell.getCellType() == HSSFCell.CELL_TYPE_STRING) {
+                                int length = 0;
+                                try {
+                                    System.out.println("12312321321312" + currentCell);
+                                    length = currentCell.getStringCellValue().getBytes().length;
+                                } catch (Exception e) {
+                                    e.printStackTrace();
+                                }
+                                if (columnWidth < length) {
+                                    columnWidth = length;
+                                }
                             }
                         }
                     }

@@ -39,8 +39,9 @@ public class FileUtil {
 	public static boolean writeFile(String fiePath,String content,boolean append) {//append是否文件末尾追加
 		 try {
 			 File file = new File(fiePath);
-	         if(!file.exists())
-				 file.createNewFile();
+	         if(!file.exists()) {
+                 file.createNewFile();
+             }
 
 	         FileOutputStream out=new FileOutputStream(file,append);       
 	         StringBuffer sb=new StringBuffer();
@@ -57,8 +58,9 @@ public class FileUtil {
 	
 	public static boolean deleteFile(String filePath) {
 		File file = new File(filePath);
-		if(file.exists()) 
-			file.delete();
+		if(file.exists()) {
+            file.delete();
+        }
 		return true;
 	}
 

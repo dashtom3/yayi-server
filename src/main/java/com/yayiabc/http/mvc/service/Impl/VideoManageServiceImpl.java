@@ -80,6 +80,9 @@ public class VideoManageServiceImpl implements VideoManageService {
 			for (VidManage vidManage:vidManageList
 			 ) {
 				if(vidManage.getViId().equals(id)){
+					String videoRout=videoManageDao.getVideoRoute(Integer.parseInt(viId));
+					ItemInfo itemInfo=videoManageDao.getVideoItem(videoRout);
+					vidManage.setItemInfo(itemInfo);
 					//填充评论数
 					int commentNum=(int)redisService.SORTSET.zscore("视频评论数",viId);
 					vidManage.setVedioCommentNumber(commentNum);

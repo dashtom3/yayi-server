@@ -21,7 +21,8 @@ public class UnionpayServiceImpl implements UnionpayService{
 	@Autowired
 	UserMyQbService userMyQbService;
 	
-	public String UnionPayJudge(String orderId, String respCode) {
+	@Override
+    public String UnionPayJudge(String orderId, String respCode) {
 		//判断是否支付成功
 		if("00".equals(respCode) || "A6".equals(respCode)){
 			int sign = aliPayDao.querySatetIsTwo(orderId);

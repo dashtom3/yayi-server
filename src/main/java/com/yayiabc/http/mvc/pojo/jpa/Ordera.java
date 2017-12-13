@@ -117,11 +117,13 @@ public class Ordera extends BasePojo implements Serializable{
 	public void setUserId(String userId) {
 		this.userId = userId;
 	}
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+	@Override
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public Date getCreated() {
 		return created;
 	}
-	@JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
+	@Override
+    @JsonFormat(pattern="yyyy-MM-dd HH:mm:ss",timezone = "GMT+8")
 	public void setCreated(Date created) {
 		this.created = created;
 	}

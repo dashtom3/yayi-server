@@ -163,7 +163,8 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	}
 	
 //导出表格
-	public void see(HttpServletResponse response){
+	@Override
+    public void see(HttpServletResponse response){
 
 		List<See> listsee = cottomsPostDao.see();
 		String fileName="充值支出记录表";
@@ -200,20 +201,22 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		} catch (IOException e) {
 			e.printStackTrace();
 		} finally {
-			if (bis != null)
-				try {
-					bis.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
-			if (bos != null)
-				try {
-					bos.close();
-				} catch (IOException e) {
-					// TODO Auto-generated catch block
-					e.printStackTrace();
-				}
+			if (bis != null) {
+                try {
+                    bis.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
+			if (bos != null) {
+                try {
+                    bos.close();
+                } catch (IOException e) {
+                    // TODO Auto-generated catch block
+                    e.printStackTrace();
+                }
+            }
 		}
 	}
 	//删除病例
@@ -233,7 +236,8 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	}
 
 	//付费病例
-	public DataWrapper<Void> playChargePost(String token, Integer chargeNumber, Integer postId){
+	@Override
+    public DataWrapper<Void> playChargePost(String token, Integer chargeNumber, Integer postId){
 		PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 		String userId=utilsDao.getUserID(token);
 		String remark = "付费病例:支付"+chargeNumber+"个乾币。(乾币余额:userQbNum个)";
@@ -280,7 +284,8 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	}
 	
 	//我的已购病例
-	public DataWrapper<List<CottomsPost>> myBuy(String token,Integer currentPage,Integer numberPerPage){
+	@Override
+    public DataWrapper<List<CottomsPost>> myBuy(String token, Integer currentPage, Integer numberPerPage){
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
@@ -305,7 +310,8 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		
 	}
 	//我的收藏
-	public DataWrapper<List<CottomsPost>> myCollect(Integer currentPage,Integer numberPerPage,String token) {
+	@Override
+    public DataWrapper<List<CottomsPost>> myCollect(Integer currentPage, Integer numberPerPage, String token) {
 		String userId=utilsDao.getUserID(token);
 		Page page = new Page();
 		page.setCurrentPage(currentPage);

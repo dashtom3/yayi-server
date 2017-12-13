@@ -80,8 +80,12 @@ public final class FolderTOZip2 {
             } finally{  
                 //关闭流  
                 try {  
-                    if(null != bis) bis.close();  
-                    if(null != zos) zos.close();  
+                    if(null != bis) {
+                        bis.close();
+                    }
+                    if(null != zos) {
+                        zos.close();
+                    }
                 } catch (IOException e) {  
                     e.printStackTrace();  
                     throw new RuntimeException(e);  

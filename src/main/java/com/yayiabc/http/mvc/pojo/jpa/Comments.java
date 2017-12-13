@@ -96,19 +96,23 @@ public class Comments extends BasePojo implements Serializable{
 		this.replyContent = replyContent;
 	}
 
-	public Date getCreated() {
+	@Override
+    public Date getCreated() {
 		return created;
 	}
 
-	public void setCreated(Date created) {
+	@Override
+    public void setCreated(Date created) {
 		this.created = created;
 	}
 
-	public Date getUpdated() {
+	@Override
+    public Date getUpdated() {
 		return updated;
 	}
 
-	public void setUpdated(Date updated) {
+	@Override
+    public void setUpdated(Date updated) {
 		this.updated = updated;
 	}
 

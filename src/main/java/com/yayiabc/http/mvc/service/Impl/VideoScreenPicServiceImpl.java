@@ -34,6 +34,7 @@ public class VideoScreenPicServiceImpl implements VideoScreenPicService {
      * @uesr "xinzhifu@knet.cn"
      * @date 2016年11月21日下午2:43:42
      */
+    @Override
     public String qiNiuMediaPrtScreen(String fileName, String format) {
 
         String screenPic = "";

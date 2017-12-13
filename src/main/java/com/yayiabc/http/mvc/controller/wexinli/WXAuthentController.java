@@ -188,7 +188,7 @@ public class WXAuthentController{
 			){
 		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
 		//1是牙医
-		if(type.equals("1")){
+		if("1".equals(type)){
 			//到user表示查phone 是否存在
 			User user= utilsDao.queryUserByPhone(phone);
 			if(user==null){

@@ -82,7 +82,7 @@ public class CommentServiceImpl implements CommentService {
         System.out.println("点赞计数列表"+type+":"+beCommentedId+str);
         redisService.SORTSET.zadd("点赞计数列表"+type+":"+beCommentedId+str,0,commentId+"");
         //牙医圈的评论拿出来做
-        if(type.equals("牙医圈")){
+        if("牙医圈".equals(type)){
             return addMomentCom(type,beCommentedId,comment,parentId,dataWrapper,str,postFix,preFix);
         }
         comment.setCommentId(commentId);

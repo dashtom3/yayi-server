@@ -16,7 +16,8 @@ import redis.clients.jedis.ShardedJedis;
 public class ReadNumberImpl implements ReadNumberServer{
 	@Autowired
     RedisService redisService;
-	public DataWrapper<CottomsPost> readNumber(Integer postId) {
+	@Override
+    public DataWrapper<CottomsPost> readNumber(Integer postId) {
 		DataWrapper<CottomsPost> dataWrapper=new DataWrapper<CottomsPost>();
 		redisService.SORTSET.zadd("阅读数", 1, postId+"");
 		return dataWrapper;

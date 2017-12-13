@@ -21,18 +21,21 @@ import com.yayiabc.http.mvc.controller.unionpay.demo.DemoBase;
  */
 public class CharsetEncodingFilter implements Filter {
 
-	public void destroy() {
+	@Override
+    public void destroy() {
 	}
 
-	public void doFilter(ServletRequest request, ServletResponse response,
-			FilterChain chain) throws IOException, ServletException {
+	@Override
+    public void doFilter(ServletRequest request, ServletResponse response,
+                         FilterChain chain) throws IOException, ServletException {
 		
 		request.setCharacterEncoding(DemoBase.encoding);
 		response.setContentType("text/html; charset="+ DemoBase.encoding);
 		chain.doFilter(request, response);
 	}
 
-	public void init(FilterConfig filterConfig) throws ServletException {
+	@Override
+    public void init(FilterConfig filterConfig) throws ServletException {
 	}
 
 }

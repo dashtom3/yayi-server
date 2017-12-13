@@ -31,6 +31,7 @@ public class ItemBrandServiceImpl implements ItemBrandService{
 //    private RedisClient redisClient=RedisClient.getInstance();
 
 
+    @Override
     public DataWrapper<List<ItemBrand>> brandList(){
         DataWrapper<List<ItemBrand>> dataWrapper = new DataWrapper<List<ItemBrand>>();
         List<ItemBrand> itemBrandList = itemBrandDao.brandList();
@@ -39,7 +40,8 @@ public class ItemBrandServiceImpl implements ItemBrandService{
         return dataWrapper;
     }
 
-    public DataWrapper<List<ItemInfo>> brandItemList(Integer itemBrandId,Integer currentPage,Integer numberPerPage,Integer rule)
+    @Override
+    public DataWrapper<List<ItemInfo>> brandItemList(Integer itemBrandId, Integer currentPage, Integer numberPerPage, Integer rule)
     {   
         DataWrapper<List<ItemInfo>> dataWrapper = new DataWrapper<List<ItemInfo>>();
         Search search =new Search();
@@ -59,7 +61,8 @@ public class ItemBrandServiceImpl implements ItemBrandService{
         return dataWrapper;
     }
 
-    public DataWrapper<ItemInfo> itemDetailDes(String itemId,String token) {
+    @Override
+    public DataWrapper<ItemInfo> itemDetailDes(String itemId, String token) {
         DataWrapper<ItemInfo> dataWrapper = new DataWrapper<ItemInfo>();
         String userId =itemBrandDao.getUserIdByToken(token);
         List<String> starItemId=itemBrandDao.getItemIdByUserId(userId);

@@ -35,10 +35,11 @@ public class LogisticsController {
 			//@RequestParam(value="LogisticCode",required=false) String  LogisticCode,//物流编号
 			){
 		DataWrapper<String>  l=logisticsService.queryLog(orderId);
-		if(l!=null)
-			return l;
-		else
-			return null;
+		if(l!=null) {
+            return l;
+        } else {
+            return null;
+        }
 	}
 	@RequestMapping("queryExpQS")
 	@ResponseBody
@@ -54,7 +55,7 @@ public class LogisticsController {
 		for (int i = 0; i < mapListJson.size(); i++) {
 			Map<String,Object> obj=mapListJson.get(i);
 			for(String key:obj.keySet()){
-				if(key.equals("state")){
+				if("state".equals(key)){
 					if(obj.get(key).equals(3)){
 						sign= logisticsService.updateState((String)obj.get("OrderCode")); 
 					}

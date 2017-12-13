@@ -55,7 +55,8 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 		return dataWrapper;
 	}
    
-	public boolean adds(QbRecord qbRecord){
+	@Override
+    public boolean adds(QbRecord qbRecord){
 		if(userMyQbDao.add(qbRecord)>0){
 			System.out.println("到这里了了了了");
 			return true;

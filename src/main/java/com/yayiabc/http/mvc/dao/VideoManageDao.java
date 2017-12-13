@@ -31,4 +31,6 @@ public interface VideoManageDao {
     ItemInfo videoItem(String viId);
 
 	String getVideoRoute(Integer viId);
+
+    ItemInfo getVideoItem(String videoRout);
 }

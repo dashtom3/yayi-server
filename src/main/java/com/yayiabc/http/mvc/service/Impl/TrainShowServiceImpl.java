@@ -213,7 +213,8 @@ public class TrainShowServiceImpl implements TrainShowService {
 	/**
 	 * 分享
 	 */
-	public DataWrapper<Void> share(String trainId){
+	@Override
+    public DataWrapper<Void> share(String trainId){
 		RedisClient redisClient=RedisClient.getInstance();
 		Jedis jedis=redisClient.getJedis();
 		byte[] byts=redisClient.get((trainId+"ToTrainDetails").getBytes());
@@ -229,7 +230,8 @@ public class TrainShowServiceImpl implements TrainShowService {
 	 * 点赞
 	 * 
 	 */
-	public DataWrapper<Void> spotFabulous(String trainId,String token){
+	@Override
+    public DataWrapper<Void> spotFabulous(String trainId, String token){
 		String userId=utilsDao.getUserID(token);
 		//点赞集合
 		if(rediService.SETS.sismember(trainId+"dianZanSet",userId)){
@@ -269,10 +271,10 @@ public class TrainShowServiceImpl implements TrainShowService {
 			return dataWrapper;
 		}
 		//支付
-		if(trainOrdera.getPayType().equals("0")){
+		if("0".equals(trainOrdera.getPayType())){
 			//支付宝
 			return packingParameter(trainOrdera.getTrainOrderId()+"",actualPrice+"",train.getTrainName(),train.getTrainName(),"QUICK_MSECURITY_PAY");	
-		}else if(trainOrdera.getPayType().equals("1")){
+		}else if("1".equals(trainOrdera.getPayType())){
 			//微信
 		}
 		return dataWrapper;

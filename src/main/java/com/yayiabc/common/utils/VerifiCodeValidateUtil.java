@@ -9,9 +9,9 @@ import com.yayiabc.common.sessionManager.VerifyCodeManager;
 public class VerifiCodeValidateUtil {
     public static ErrorCodeEnum verifiCodeValidate(String phone, String code){
         String serverCode = VerifyCodeManager.getPhoneCode(phone);
-        if (serverCode.equals("noCode")) {
+        if ("noCode".equals(serverCode)) {
             return ErrorCodeEnum.Verify_Code_notExist;
-        } else if (serverCode.equals("overdue")) {
+        } else if ("overdue".equals(serverCode)) {
             return ErrorCodeEnum.Verify_Code_5min;
         } else if (serverCode.equals(code)) {
             return ErrorCodeEnum.No_Error;

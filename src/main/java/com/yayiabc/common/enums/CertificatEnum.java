@@ -27,7 +27,8 @@ public enum CertificatEnum {
 	public void setCode(Integer code) {
 		this.code = code;
 	}
-	public String toString(){
+	@Override
+    public String toString(){
 		return label;
 	}
 	

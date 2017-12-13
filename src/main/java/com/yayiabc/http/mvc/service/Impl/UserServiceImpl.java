@@ -39,7 +39,8 @@ public class UserServiceImpl implements UserService {
     private SaleInfoDao saleInfoDao;
 
 
-    public DataWrapper<Void> getVerifyCode(String phone,Integer type) {
+    @Override
+    public DataWrapper<Void> getVerifyCode(String phone, Integer type) {
         DataWrapper<Void> dataWrapper = new DataWrapper<Void>();
         ErrorCodeEnum errorCodeEnum=checkState(phone,type);
         if(errorCodeEnum!=null){
@@ -121,7 +122,9 @@ public class UserServiceImpl implements UserService {
                 dataWrapper.setToken(token);
                 newUser.setCreated(new Date());
                 dataWrapper.setData(newUser);
-                if (openid != null) wxAppDao.addUser(newUser.getUserId(),openid,newUser.getPhone());
+                if (openid != null) {
+                    wxAppDao.addUser(newUser.getUserId(), openid, newUser.getPhone());
+                }
             } else {
                 dataWrapper.setErrorCode(ErrorCodeEnum.Register_Error);
             }

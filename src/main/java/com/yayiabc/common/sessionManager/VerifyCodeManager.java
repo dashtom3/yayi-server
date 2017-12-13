@@ -20,12 +20,12 @@ public class VerifyCodeManager {
         String code = String.valueOf(a);
         String oldCode = getPhoneCodeNew(phoneNum);
         Date nowTime = new Date();
-        if(oldCode.equals("overdue")||oldCode.equals("noCode")){
+        if("overdue".equals(oldCode)||"noCode".equals(oldCode)){
             USER_CODE_MAP.put(phoneNum,code+ TimeUtil.changeDateToString(nowTime));
             return code;
-        }
-        else
+        } else{
             return null;
+        }
 
 
     }
@@ -42,8 +42,9 @@ public class VerifyCodeManager {
                     return  a;
                 }
             }
-            else
+            else {
                 return "noCode";
+            }
 
         }catch (Exception e){
             e.printStackTrace();
@@ -68,8 +69,9 @@ public class VerifyCodeManager {
                     return  a;
                 }
             }
-            else
+            else {
                 return "noCode";
+            }
 
         }catch (Exception e){
             e.printStackTrace();

@@ -52,11 +52,11 @@ public class CoinRechargeController {
 			}
 			utilsdao.saveRechargeMessage(codeId,userId,String.valueOf(qbNum),qbType,money+"");
 			//test  钱币充值  前台传来的钱币类型 为: a_qb b_qb ,c_qb
-			if(computerOrPhone.equals("computer")){
+			if("computer".equals(computerOrPhone)){
 				//调用PC网页支付宝.
 				String sHtmlText=alipay.packingParameter(codeId, "乾币充值", String.valueOf(money),"乾币");
 				ppp.write(sHtmlText);
-			}else if(computerOrPhone.equals("phone")){
+			}else if("phone".equals(computerOrPhone)){
 				//调用移动端 支付宝.
 				String product_code="QUICK_WAP_PAY";
 				String sHtmlText=phoneAliPayService.packingParameter(codeId, "乾币充值", String.valueOf(money),"乾币",product_code);

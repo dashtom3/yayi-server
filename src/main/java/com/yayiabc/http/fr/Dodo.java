@@ -45,11 +45,13 @@ public class Dodo implements Filter {
         return false;
     }
 
+    @Override
     public void destroy() {
         // TODO Auto-generated method stub
 
     }
 
+    @Override
     public void doFilter(ServletRequest request, ServletResponse response,
                          FilterChain chain) throws IOException, ServletException {
         HttpServletRequest httpRequest = (HttpServletRequest) request;
@@ -78,6 +80,7 @@ public class Dodo implements Filter {
         return;
     }
 
+    @Override
     public void init(FilterConfig fc) throws ServletException {
         LogUtil.writeLog("防盗链配置开始...");
         String filename;
@@ -116,7 +119,7 @@ public class Dodo implements Filter {
 
     }
     private List<String> parseStr(List<String> li, String str) {
-        if (null == str || str.trim().equals("")) {
+        if (null == str || "".equals(str.trim())) {
             return null;
         }
         String[] spl = str.split(",");

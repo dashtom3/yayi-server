@@ -30,7 +30,8 @@ public class FastJsonMessageConverter extends AbstractMessageConverter {
                 : DEFAULT_CHARSET;  
     }  
   
-    public Object fromMessage(Message message)  
+    @Override
+    public Object fromMessage(Message message)
             throws MessageConversionException {  
         Object o = new CommonMessage();  
         try{  
@@ -53,8 +54,9 @@ public class FastJsonMessageConverter extends AbstractMessageConverter {
         return (T) JSONObject.parseObject(json, t.getClass());
     }  
   
-    protected Message createMessage(Object objectToConvert,  
-            MessageProperties messageProperties)  
+    @Override
+    protected Message createMessage(Object objectToConvert,
+                                    MessageProperties messageProperties)
             throws MessageConversionException {  
         byte[] bytes = null;  
         try {  

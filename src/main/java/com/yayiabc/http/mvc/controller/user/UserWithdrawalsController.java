@@ -1,6 +1,7 @@
 package com.yayiabc.http.mvc.controller.user;
 
 import java.util.HashMap;
+import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -14,6 +15,7 @@ import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.sessionManager.VerifyCodeManager;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.UserWith;
+import com.yayiabc.http.mvc.pojo.model.UserWithExtend;
 import com.yayiabc.http.mvc.service.UserWithdrawalsService;
 
 @Controller
@@ -113,4 +115,14 @@ public class UserWithdrawalsController {
 		   ){
 	  return  userWithdrawalsService.latelyWithRecord(token);
    }
+   /**
+    * 首页 提现成功小喇叭通知
+    */
+   @ResponseBody
+   @RequestMapping("withHornPrompt")
+   DataWrapper<List<UserWithExtend>> withHornPrompt(
+		   ){
+	  return  userWithdrawalsService.withHornPrompt();
+   }
+   
 }

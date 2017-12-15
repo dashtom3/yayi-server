@@ -4,6 +4,8 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.jpa.UserWitSetUp;
 import com.yayiabc.http.mvc.pojo.jpa.UserWith;
+import com.yayiabc.http.mvc.pojo.model.UserWithExtend;
+
 import org.apache.ibatis.annotations.Param;
 
 import java.util.HashMap;
@@ -54,4 +56,7 @@ public interface UserWithdrawalsDao {
 
 
 	UserWith latelyWithRecord(String userId);
+
+
+	List<UserWithExtend> withHornPrompt();
 }

@@ -51,18 +51,6 @@
 			limit ${currentNum} , ${numberPerpage}
 		</if>
 	</select>
-	<select id="queryCountTOSheet1" resultType="int">
-		select count(1) from
-		sheet1$
-	</select>
-
-		
-	<select id="getYellowPage" resultType="com.yayiabc.http.mvc.pojo.jpa.DaForDentistYa">
-		select * from da_for_dentistya
-		
-			limit ${currentNum} , ${numberPerpage}
-	</select>
-
 	<select id="queryCountTOX" resultType="int">
 		select count(1) from
 		sheet1$
@@ -77,5 +65,35 @@
 		 and  POIName  like '%${keyWord}%'
 		 </if>
 		</where>
+	</select>
+	
+	<!-- 上面是黄页 -->
+	
+	
+	
+	<!-- 下面是资料库 ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！-->
+	<select id="queryCountTOSheet1" resultType="int">
+		select count(1) from
+		data_for_dentist
+		<where>
+		<if test="keyWord !=null and keyWord != ''">
+		  title like '%${keyWord}%' or  first_classify like '%${keyWord}%'
+		</if>
+		</where>
+	</select>
+
+		
+	<select id="getMaterList" resultType="com.yayiabc.http.mvc.pojo.jpa.DaForDentist">
+		select * from data_for_dentist
+		<where>
+		<if test="keyWord !=null and keyWord !=''">
+		  title like '%${keyWord}%' or  first_classify like '%${keyWord}%'
+		</if>
+		</where>
+			limit ${currentNum} , ${numberPerpage}
+	</select>
+    <!-- 资料库详情 -->
+	<select id="getMaterDetail" resultType="com.yayiabc.http.mvc.pojo.jpa.DaForDentist">
+	 select content from data_for_dentist where id=#{id}
 	</select>
 </mapper>       

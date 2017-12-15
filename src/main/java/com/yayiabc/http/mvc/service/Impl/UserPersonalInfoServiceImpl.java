@@ -29,6 +29,10 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 		String userId = utilsDao.getUserID(token);// 根据token查询userId
 		user.setUserId(userId);
 		Certification certification=user.getCertification();
+		if(certification==null){
+			dataWrapper.setMsg("警告");
+			return dataWrapper;
+		}
 		certification.setUserId(userId);
 		userPersonalInfoDao.updateUser(user);
 		userPersonalInfoDao.updateCertification(certification);

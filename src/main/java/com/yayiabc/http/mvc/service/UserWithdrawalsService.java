@@ -1,9 +1,11 @@
 package com.yayiabc.http.mvc.service;
 
 import java.util.HashMap;
+import java.util.List;
 
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.UserWith;
+import com.yayiabc.http.mvc.pojo.model.UserWithExtend;
 
 public interface UserWithdrawalsService {
 	 DataWrapper<Object> submit(UserWith userWith,String token,String vCode);
@@ -19,4 +21,6 @@ public interface UserWithdrawalsService {
 	DataWrapper<Object> showUserQbNum(String token);
 
 	DataWrapper<Object> latelyWithRecord(String token);
+
+	DataWrapper< List<UserWithExtend>> withHornPrompt();
 }

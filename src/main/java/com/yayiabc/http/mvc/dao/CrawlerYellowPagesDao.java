@@ -3,20 +3,25 @@ package com.yayiabc.http.mvc.dao;
 import java.util.HashMap;
 import java.util.List;
 
-import com.yayiabc.http.mvc.pojo.jpa.DaForDentistYa;
+import org.apache.ibatis.annotations.Param;
+
+import com.yayiabc.http.mvc.pojo.jpa.DaForDentist;
 import com.yayiabc.http.mvc.pojo.jpa.Sheet1;
 
 public interface CrawlerYellowPagesDao {
 
-	List<Sheet1> getYellowPage(HashMap<Object, Object> hm);
+	List<DaForDentist> getMaterList(HashMap<String, String> hm);
 
 
-	int  queryCountTOSheet1(HashMap<Object, Object> hm);
+	int  queryCountTOSheet1(HashMap<String, String> hm);
+
+	
+	List<Sheet1> getList(HashMap<String, Object> hm);
 
 
-	List<DaForDentistYa> getList(HashMap<Object, Object> hm);
+	int queryCountTOX(HashMap<String, Object> hm);
 
 
-	int queryCountTOX(HashMap<Object, Object> hm);
+	DaForDentist getMaterDetail(@Param("id")String id);
 
 }

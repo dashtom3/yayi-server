@@ -19,6 +19,7 @@ import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.jpa.UserWitSetUp;
 import com.yayiabc.http.mvc.pojo.jpa.UserWith;
+import com.yayiabc.http.mvc.pojo.model.UserWithExtend;
 import com.yayiabc.http.mvc.service.UserMyQbService;
 import com.yayiabc.http.mvc.service.UserWithdrawalsService;
 
@@ -89,6 +90,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 			    	return dataWrapper;
 			    }
 			}else{
+				
 				dataWrapper.setMsg("提现错误，\"赠乾币\"乾币，数额不对（里面包含注册赠送乾币）");
 		    	return dataWrapper;
 			}
@@ -210,7 +212,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		//}
 		return dataWrapper;
 	}
-	//显示体现设置
+	//显示提现设置
 	@Override
 	public DataWrapper<Object> witSetUpShow(String token) {
 		// TODO Auto-generated method stub
@@ -255,5 +257,16 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		DataWrapper<Object> da=new DataWrapper<Object>();
 		da.setData(userWithdrawalsServiceDao.latelyWithRecord(userId));
 		return da;
+	}
+	/**
+	 * 小喇叭提示
+	 */
+	@Override
+	public DataWrapper< List<UserWithExtend>> withHornPrompt() {
+		// TODO Auto-generated method stub
+		 DataWrapper<List<UserWithExtend>> dataWrapper=new DataWrapper<List<UserWithExtend>>();
+         List<UserWithExtend> userWithExtendList = userWithdrawalsServiceDao.withHornPrompt();
+         dataWrapper.setData(userWithExtendList);
+		 return dataWrapper;
 	}
 }

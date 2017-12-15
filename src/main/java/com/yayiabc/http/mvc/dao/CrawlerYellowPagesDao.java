@@ -7,6 +7,7 @@ import org.apache.ibatis.annotations.Param;
 
 import com.yayiabc.http.mvc.pojo.jpa.DaForDentist;
 import com.yayiabc.http.mvc.pojo.jpa.Sheet1;
+import com.yayiabc.http.mvc.pojo.jpa.UserCollectDataforDst;
 
 public interface CrawlerYellowPagesDao {
 
@@ -23,5 +24,17 @@ public interface CrawlerYellowPagesDao {
 
 
 	DaForDentist getMaterDetail(@Param("id")String id);
+
+
+	int collectionMater(@Param("userId")String userId, @Param("id")String id);
+
+
+	List<UserCollectDataforDst> queryUserCollect(String userId);
+
+     
+	List<DaForDentist> userCollectionList(String userId);
+
+
+	List<Integer> queryCollectId(String userId);
 
 }

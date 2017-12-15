@@ -9,10 +9,14 @@ import com.yayiabc.http.mvc.pojo.jpa.Sheet1;
 
 public interface CrawlerYellowPagesService {
 
-	DataWrapper<List<DaForDentist>> getMaterList(Integer currentPage, Integer numberPerpage, String keyWord);
+	DataWrapper<List<DaForDentist>> getMaterList(Integer currentPage, Integer numberPerpage, String keyWord, String token);
 	
 	DataWrapper<List<Sheet1> > getList(Integer currentPage, Integer numberPerpage, double lng, double lat, String cityName, String keyWord);
 
 	DataWrapper<DaForDentist> getMaterDetail(String id);
+
+	DataWrapper<Void> collectionMater(String token, String id);
+
+	DataWrapper<List<DaForDentist>> userCollectionList(String token);
 
 }

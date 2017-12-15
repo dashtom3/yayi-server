@@ -4,6 +4,7 @@ import java.util.List;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.RequestHeader;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
@@ -30,12 +31,12 @@ public class CrawlerYellowPagesController {
 	@RequestMapping("getMaterList")
 	@ResponseBody
 	public DataWrapper<List<DaForDentist>> getMaterList(
-			@RequestParam(value = "token", required = false) String token,
+			@RequestHeader(value = "token", required = false) String token,
 			@RequestParam(value = "keyWord", required = false) String keyWord,
 			@RequestParam(value="currentPage",required=false,defaultValue="1")Integer currentPage,
 			@RequestParam(value="numberPerpage",required=false,defaultValue="10")Integer numberPerpage
 			) {
-	        return crawlerYellowPagesService.getMaterList(currentPage,numberPerpage,keyWord);
+	        return crawlerYellowPagesService.getMaterList(currentPage,numberPerpage,keyWord,token);
 	}
 	/**
 	 * 资料库详情
@@ -48,6 +49,32 @@ public class CrawlerYellowPagesController {
 			@RequestParam(value = "id", required = false) String id
 			) {
 	        return crawlerYellowPagesService.getMaterDetail(id);
+	}
+	/**
+	 * 资料库收藏
+	 * @param token
+	 * @param id
+	 * @return
+	 */
+	@RequestMapping("collectionMater")
+	@ResponseBody
+	public DataWrapper<Void> collectionMater(
+			@RequestHeader(value = "token", required = false) String token,
+			@RequestParam(value = "id", required = false) String id
+			) {
+	        return crawlerYellowPagesService.collectionMater(token,id);
+	}
+	/**
+	 * 我的资料收藏
+	 * @param token
+	 * @return
+	 */
+	@RequestMapping("userCollectionList")
+	@ResponseBody
+	public DataWrapper<List<DaForDentist>> userCollectionList(
+			@RequestHeader(value = "token", required = false) String token
+			) {
+	  return crawlerYellowPagesService.userCollectionList(token);
 	}
 	
 	/**

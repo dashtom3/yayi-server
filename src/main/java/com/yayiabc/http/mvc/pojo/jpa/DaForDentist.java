@@ -10,9 +10,25 @@ package com.yayiabc.http.mvc.pojo.jpa;
 public class DaForDentist {
 	private int id;
 	private String title;
-	private String context;
+	private String content;
 	private String firstClassify;
 	private String secondClassify;
+	private String browseNumber;
+	private String isCollect; //1是收藏  0是未收藏
+	
+	
+	public String getIsCollect() {
+		return isCollect;
+	}
+	public void setIsCollect(String isCollect) {
+		this.isCollect = isCollect;
+	}
+	public String getBrowseNumber() {
+		return browseNumber;
+	}
+	public void setBrowseNumber(String browseNumber) {
+		this.browseNumber = browseNumber;
+	}
 	public int getId() {
 		return id;
 	}
@@ -25,11 +41,11 @@ public class DaForDentist {
 	public void setTitle(String title) {
 		this.title = title;
 	}
-	public String getContext() {
-		return context;
+	public String getContent() {
+		return content;
 	}
-	public void setContext(String context) {
-		this.context = context;
+	public void setContent(String content) {
+		this.content = content;
 	}
 	public String getFirstClassify() {
 		return firstClassify;
@@ -45,9 +61,10 @@ public class DaForDentist {
 	}
 	@Override
 	public String toString() {
-		return "DaForDentist [id=" + id + ", title=" + title + ", context=" + context + ", firstClassify="
-				+ firstClassify + ", secondClassify=" + secondClassify + "]";
+		return "DaForDentist [id=" + id + ", title=" + title + ", content=" + content + ", firstClassify="
+				+ firstClassify + ", secondClassify=" + secondClassify + ", browseNumber=" + browseNumber
+				+ ", isCollect=" + isCollect + "]";
 	}
 	
-   
+	
 }

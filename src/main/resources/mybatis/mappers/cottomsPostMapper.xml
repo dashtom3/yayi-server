@@ -229,4 +229,8 @@
 		select (a_qb+qb_balance+c_qb) qb_balance from user 
 		where user_id=#{userId}
 	</select>
+
+	<select id="getUserIdByPostId" resultType="string">
+		select user_id from cottoms_post where post_id=#{beCommentedId}
+	</select>
 </mapper>

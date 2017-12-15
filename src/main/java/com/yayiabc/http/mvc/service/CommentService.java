@@ -8,9 +8,6 @@ import java.util.List;
 
 public interface CommentService {
 
-
-
-
     DataWrapper<Object> addCom(String token, String type,Integer beCommentedId, Comment comment,Integer parentId);
 
     List<Comment> queryCom(String type, Integer beCommentedId,Integer currentPage,Integer numberPerPage,String token);

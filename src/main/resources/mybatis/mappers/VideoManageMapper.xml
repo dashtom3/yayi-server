@@ -81,9 +81,14 @@ WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId
 		select video_route from vid_manage where vi_id=#{viId}
 	</select>
 
-	<select id="getVideoItem" resultType="ItemInfo">
-		select a.item_id,a.item_name from item_info a,item_detail b where a.item_id=b.item_id and b.video=#{videoRout}
+	<select id="getVideoItem" resultMap="itemInfo">
+		select a.item_id,a.item_name from item_info a,item_detail b where a.item_id=b.item_id and b.video=#{videoRout} limit 1
 	</select>
+
+	<resultMap id="itemInfo" type="ItemInfo">
+		<id column="item_id" property="itemId"/>
+		<result column="item_name" property="itemName"/>
+	</resultMap>
 
 
 

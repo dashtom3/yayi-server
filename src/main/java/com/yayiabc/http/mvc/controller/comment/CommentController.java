@@ -28,6 +28,7 @@ public class CommentController {
     //添加评论redis
     @RequestMapping("addCom")
     @ResponseBody
+    @UserTokenValidate
     public DataWrapper<Object> addCom(
             @RequestHeader(value="token",required = true) String token,
             @RequestParam(value="type",required = true) String type,//1.视频2.病例3.培训4.牙医圈

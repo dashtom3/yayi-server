@@ -4,6 +4,7 @@ import java.io.IOException;
 import java.util.ArrayList;
 import java.util.List;
 
+
 import org.jsoup.Jsoup;
 import org.jsoup.nodes.Document;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -53,7 +54,7 @@ public class BaiDuMapCollectServiceImpl implements BaiDuMapCollectService {
 	}
 	//调用查看门诊详情百度接口  参数uid 
 		private  void mzDetails(String uid,String cityName){
-			 Document doc = null; 
+			 Document doc = null;
 			 try {
 				doc = Jsoup.connect(
 						 "http://api.map.baidu.com/place/v2/detail?uid="+uid+"&output=json&scope=2&ak=8lCwcMl9Xu52zceGpn41j4S14Kuc6PSx"

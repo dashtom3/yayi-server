@@ -175,6 +175,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		String userId=null;
 		try {
 			userId=utilsDao.getUserID(token);
+			
 			//obtain orderId 
 			String orderId=OrderIdUtils.createOrderId(userId);
 			//将订单信息保存在订单里 你如是否需要发表  留言等。。2[=。 
@@ -231,8 +232,14 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			sumPrice=(Double) priceMap.get("sumPrice");
 			AllSuppliesSumPrice=(Double) priceMap.get("AllSuppliesSumPrice");
 			AllTooldevicesSumPrice=(Double) priceMap.get("AllTooldevicesSumPrice");
-
-
+              
+			//检查是否为首单  true 是  ，false 不是
+			boolean flg=inspectIsFirstOrder(userId);
+			if(flg){
+				if(sumPrice<120){
+					
+				}
+			}
 			//创建订单并保存订单数据
 			placeOrderDao.createOrder(orderId,userId,order);
 
@@ -466,5 +473,19 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	//double保留最后两位小数
 	private Double keepTwo(Double ouble){
 		return (double) Math.round(ouble);
+	}
+	/**
+	 * 检查是否未首单
+	 * @param userId
+	 * @return
+	 */
+	private boolean inspectIsFirstOrder(String userId){
+		int sign=placeOrderDao.inspectIsFirstOrder(userId);
+		
+		if(sign==0){
+			return true;
+		}else{
+		return false;
+		}
 	}
 }

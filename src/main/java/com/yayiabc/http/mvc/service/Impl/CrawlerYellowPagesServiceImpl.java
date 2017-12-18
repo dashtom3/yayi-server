@@ -141,14 +141,33 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 	 * @return
 	 */
 	@Override
-	public DataWrapper<DaForDentist> getMaterDetail(String id) {
+	public DataWrapper<DaForDentist> getMaterDetail(String id, String token) {
 		DataWrapper<DaForDentist> dataWrapper=new DataWrapper<DaForDentist>();
 		DaForDentist daForDentist=crawlerYellowPagesDao.getMaterDetail(id);
+		String userId=null;
+		if(token!=null){
+			userId= utilsDao.getUserID(token);
+			List<Integer> idList=crawlerYellowPagesDao.queryCollectId(userId);
+
+			for(int x=0;x<idList.size();x++){
+                     if(idList.get(x).equals(daForDentist.getId())){
+                    	 daForDentist.setIsCollect("1");
+                     }else{
+                    	 daForDentist.setIsCollect("0");
+                     }
+			}
+
+		}else{
+			daForDentist.setIsCollect("0");
+		}
+
+		
 		System.out.println(daForDentist);
 		dataWrapper.setData(daForDentist);
 		//这里需要记录资料库的浏览数
 		Jedis jedis=RedisClient.getInstance().getJedis();
 		Double lon=jedis.zincrby("Master_Browse_Num", 1, id);
+		daForDentist.setBrowseNumber(jedis.zscore("Master_Browse_Num", daForDentist.getId()+"")+"");
 		jedis.close();
 		return dataWrapper;
 	}
@@ -176,7 +195,7 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 		}else{
 			dataWrapper.setMsg("收藏失败");
 		}
-		return null;
+		return dataWrapper;
 	}
 	/**
 	 * 我的资料收藏

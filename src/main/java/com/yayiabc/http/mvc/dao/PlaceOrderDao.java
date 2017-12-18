@@ -147,4 +147,7 @@ public interface PlaceOrderDao {
 	int dedItemStockNum(List<OrderItem> orderItemList);
 
 
+	int inspectIsFirstOrder(String userId);
+
+
 }

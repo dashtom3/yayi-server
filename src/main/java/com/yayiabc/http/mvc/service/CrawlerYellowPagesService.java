@@ -13,7 +13,7 @@ public interface CrawlerYellowPagesService {
 	
 	DataWrapper<List<Sheet1> > getList(Integer currentPage, Integer numberPerpage, double lng, double lat, String cityName, String keyWord);
 
-	DataWrapper<DaForDentist> getMaterDetail(String id);
+	DataWrapper<DaForDentist> getMaterDetail(String id,String  token);
 
 	DataWrapper<Void> collectionMater(String token, String id);
 

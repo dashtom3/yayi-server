@@ -154,7 +154,7 @@
 				and qr.referer in(2,3);
 			</if>
 			<if test="userMessage!=null and userMessage!=''">
-			us.true_name like '%userMessage%' or us.phone like '%userMessage%'
+			us.true_name like '%${userMessage}%' or us.phone like '%${userMessage}%'
 			</if>
 		</where>
 		order by qr.created desc

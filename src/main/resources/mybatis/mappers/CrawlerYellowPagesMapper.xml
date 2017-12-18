@@ -37,15 +37,16 @@
 	<select id="getList" resultMap="sheetMap">
 		select * from sheet1$
 		<where>
-		 <if test="minlng!=null and minlng!='' and minlat!=null and minlat !=''">
-		   lat BETWEEN #{minlat}  AND #{maxlat} AND lng BETWEEN #{minlng}  AND #{maxlng}
-		 </if>
-		 <if test="cityName!=null and cityName!=''">
-		 and  cityName =#{cityName}
-		 </if>
-		  <if test="keyWord!=null and keyWord!=''">
-		 and  POIName  like '%${keyWord}%'
-		 </if>
+			<if test="minlng!=null and minlng!='' and minlat!=null and minlat !=''">
+				lat BETWEEN #{minlat} AND #{maxlat} AND lng BETWEEN #{minlng} AND
+				#{maxlng}
+			</if>
+			<if test="cityName!=null and cityName!=''">
+				and cityName =#{cityName}
+			</if>
+			<if test="keyWord!=null and keyWord!=''">
+				and POIName like '%${keyWord}%'
+			</if>
 		</where>
 		<if test="currentNum!=null and numberPerpage!=null">
 			limit ${currentNum} , ${numberPerpage}
@@ -55,45 +56,74 @@
 		select count(1) from
 		sheet1$
 		<where>
-		 <if test="minlng!=null and minlng!='' and minlat!=null and minlat !=''">
-		   lat BETWEEN #{minlat}  AND #{maxlat} AND lng BETWEEN #{minlng}  AND #{maxlng}
-		 </if>
-		 <if test="cityName!=null and cityName!=''">
-		 and  cityName =#{cityName}
-		 </if>
-		  <if test="keyWord!=null and keyWord!=''">
-		 and  POIName  like '%${keyWord}%'
-		 </if>
+			<if test="minlng!=null and minlng!='' and minlat!=null and minlat !=''">
+				lat BETWEEN #{minlat} AND #{maxlat} AND lng BETWEEN #{minlng} AND
+				#{maxlng}
+			</if>
+			<if test="cityName!=null and cityName!=''">
+				and cityName =#{cityName}
+			</if>
+			<if test="keyWord!=null and keyWord!=''">
+				and POIName like '%${keyWord}%'
+			</if>
 		</where>
 	</select>
-	
+
 	<!-- 上面是黄页 -->
-	
-	
-	
-	<!-- 下面是资料库 ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！-->
+
+
+
+	<!-- 下面是资料库 ！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！！ -->
 	<select id="queryCountTOSheet1" resultType="int">
 		select count(1) from
 		data_for_dentist
 		<where>
-		<if test="keyWord !=null and keyWord != ''">
-		  title like '%${keyWord}%' or  first_classify like '%${keyWord}%'
-		</if>
+			<if test="keyWord !=null and keyWord != ''">
+				title like '%${keyWord}%' or first_classify like '%${keyWord}%'
+			</if>
 		</where>
 	</select>
 
-		
+
 	<select id="getMaterList" resultType="com.yayiabc.http.mvc.pojo.jpa.DaForDentist">
 		select * from data_for_dentist
 		<where>
-		<if test="keyWord !=null and keyWord !=''">
-		  title like '%${keyWord}%' or  first_classify like '%${keyWord}%'
-		</if>
+			<if test="keyWord !=null and keyWord !=''">
+				title like '%${keyWord}%' or first_classify like '%${keyWord}%'
+			</if>
 		</where>
-			limit ${currentNum} , ${numberPerpage}
+		limit ${currentNum} , ${numberPerpage}
 	</select>
-    <!-- 资料库详情 -->
-	<select id="getMaterDetail" resultType="com.yayiabc.http.mvc.pojo.jpa.DaForDentist">
-	 select content from data_for_dentist where id=#{id}
+	
+	<!-- 资料库详情 -->
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.DaForDentist"
+		id="getMaterDetail">
+		<id column="id" property="id" />
+			<result column="content" property="content" />
+			<result column="title" property="title" />
+			<result column="second_classify" property="secondClassify"/>
+			<result column="first_classify" property="firstClassify"/>
+	</resultMap>
+	
+	<select id="getMaterDetail" resultMap="getMaterDetail">
+		select content ,id,title,second_classify,first_classify  from data_for_dentist where id=${id}
+	</select>
+	
+	<!-- 收藏资料 -->
+	<insert id="collectionMater">
+	 insert into user_collect_datafordst values(#{userId},#{id},now())
+	</insert>
+	
+	<select id="queryUserCollect" resultType="com.yayiabc.http.mvc.pojo.jpa.UserCollectDataforDst">
+	 select * from user_collect_datafordst where user_id=#{userId}
+	</select>
+	
+	<!-- 我的资料收藏 -->
+	<select id="userCollectionList" resultType="com.yayiabc.http.mvc.pojo.jpa.DaForDentist">
+	select * from data_for_dentist where id in (select id from user_collect_datafordst where user_id=#{userId} order by collect_time desc)
+	</select>
+	
+	<select id="queryCollectId" resultType="int">
+	 select id from user_collect_datafordst  order by collect_time desc
 	</select>
 </mapper>       

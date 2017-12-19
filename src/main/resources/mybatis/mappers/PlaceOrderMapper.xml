@@ -68,7 +68,10 @@
 		,now()
 		)
 	</insert>
-
+  <select id="getUserQbExceptReg" resultType="int">
+  
+  select (qb_balance+a_qb+c_qb) qb from user where user_id=#{userId}
+  </select>
 	<!-- //把订单保存到数据库 -->
 	<update id="saveMessage" parameterType="com.yayiabc.http.mvc.pojo.jpa.Ordera">
 		<!-- insert into ordera values( #{order.userId},#{order.actualPay},#{order.payType},#{order.postFee},#{order.paymentTime},#{order.consignTime}, 

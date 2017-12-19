@@ -224,7 +224,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 				dataWrapper.setMsg("库存不足");
 				return dataWrapper;
 			}
-
+			RedisClient rc=RedisClient.getInstance();
+			Jedis jedis=rc.getJedis();
 
 
 			//计算改单商品金额
@@ -232,14 +233,36 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			sumPrice=(Double) priceMap.get("sumPrice");
 			AllSuppliesSumPrice=(Double) priceMap.get("AllSuppliesSumPrice");
 			AllTooldevicesSumPrice=(Double) priceMap.get("AllTooldevicesSumPrice");
-              
+             //开关器  检测 是否可以使用  注册赠送的60 的乾币
+			 
 			//检查是否为首单  true 是  ，false 不是
-			//boolean flg=inspectIsFirstOrder(userId);
-			/*if(flg){
+			
+			Integer qbDedNum=order.getQbDed();
+			boolean flg=inspectIsFirstOrder(userId,jedis);
+			if(flg){
+				System.out.println(sumPrice+"sumPricesumPricesumPricesumPrice");
 				if(sumPrice<120){
-					
-				}
-			}*/
+					//首单 商品总价（不包括运费小于120） 不能 使用注册赠送的钱币
+					if(qbDedNum!=0||qbDedNum!=null){
+						//检查  用户此时余额 除去注册赠送的60钱币   是否够支付该订单
+                       boolean f=cheackUserQb(userId,qbDedNum);
+                       if(!f){
+                    	   dataWrapper.setMsg("首单订单金额必须大于120元（不包括运费），才可使用注册赠送的钱币");
+                    	   return dataWrapper;
+                       }
+					}
+					//System.out.println("00000000000");
+					//jedis.hset("isFirstOrder", orderId, "0");
+				}/*else{
+					//首单商品总价（不包括运费大于120） 可以使用注册赠送的钱币
+					System.out.println("1111111");
+					jedis.hset("isFirstOrder", orderId, "1");
+				}*/
+			 }else{
+				 //不是首单可以使注册赠送的钱币
+				 System.out.println(6666666);
+				 jedis.hset("isFirstOrder", orderId, "1");
+			 }
 			//创建订单并保存订单数据
 			placeOrderDao.createOrder(orderId,userId,order);
 
@@ -311,8 +334,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			
 			JSONArray json = JSONArray.fromObject(expireOrderList); 
 			System.out.println("json.toString() "+json.toString());
-			RedisClient rc=RedisClient.getInstance();
-			Jedis jedis=rc.getJedis();
+			
 			jedis.select(1);
 			jedis.set("expireOrder"+orderId, json.toString());  
 			jedis.expire("expireOrder"+orderId,60*1);
@@ -335,7 +357,16 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			throw new RuntimeException(e); 
 		}
 	}
-
+	
+	//检查  用户此时余额 除去注册赠送的60钱币   是否够支付该订单
+	private boolean cheackUserQb(String userId, Integer qbDedNum) {
+		// TODO Auto-generated method stub
+		int userQbExceptReg=placeOrderDao.getUserQbExceptReg(userId);
+		if(userQbExceptReg>=qbDedNum){
+			return true;
+		}
+		return false;
+	}
 	//分别计算该单下的分类价格AllSuppliesSumPrice
 	private HashMap<String, Object> partItemPrices(List<OrderItem> orderItemList, double AllSuppliesSumPrice, double AllTooldevicesSumPrice){
 		HashMap<String, Object> hm=new HashMap<String,Object>();
@@ -479,13 +510,24 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	 * @param userId
 	 * @return
 	 */
-	private boolean inspectIsFirstOrder(String userId){
-		int sign=placeOrderDao.inspectIsFirstOrder(userId);
+	private boolean inspectIsFirstOrder(String userId,Jedis jedis){
+	jedis.select(11);
+	if(jedis.exists(userId)){
+		//不是首单
+		System.out.println("不是首单。。。。。。。。。。。。。。。。。。。。。。");
+		return false;
+	}else{
+		//是首单
+		System.out.println("是首单。。。。。。。。。。。。。。。。。。。。。。");
+		jedis.set(userId, "");
+		return true;
+	}
+		/*int sign=placeOrderDao.inspectIsFirstOrder(userId);
 		
 		if(sign==0){
 			return true;
 		}else{
 		return false;
-		}
+		}*/
 	}
 }

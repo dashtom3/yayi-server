@@ -8,7 +8,7 @@ public class UserWith {
 	private  int withId;
 	private double aType;
 	private double cType;
-	private double giveType;
+	private double giveType; //赠送的 可提现的乾币
 	@DateTimeFormat(pattern="yyyy-MM-dd HH:mm:ss",style="GMT+8")
 	private Date created; //发起申请时间
 	private Date determineTime;  //批准提现时间

@@ -137,9 +137,18 @@ public class PayAfterOrderUtil {
 	public String  newQbDed(String userId,Integer  DedNum,String orderId
 			,String remark
 			){
+	
+		
 		//dednum <= max used qb //钱币够用
 		User u=utilsDao.queryUserByUserId(userId);
-
+         System.out.println(orderId+"orderIdorderIdorderIdorderIdorderIdorderId");
+		//这里检查是否可以使用注册赠送的60钱币
+				/*Jedis jedis =RedisClient.getInstance().getJedis();
+				jedis.select(11);
+				String sign=jedis.hget("isFirstOrder", orderId);
+				if(sign.equals("0")){
+					u.setQbNotwtih(0);
+				}*/
 		List<Integer> listData=new ArrayList<Integer>();
 		listData.add(u.getQbNotwtih());
 		listData.add(u.getQbBalance()); 
@@ -176,6 +185,13 @@ public class PayAfterOrderUtil {
 		qr.setRemark(remark);
 		qr.setMillisecond(System.nanoTime());
 		System.out.println(listData);
+		
+		//这里检查是否可以使用注册赠送的60钱币
+		/*if(sign.equals("0")){
+			listData.remove(0);
+			listData.add(0,60);
+		}*/
+		System.out.println(listData);
 		addQbRecord(listData,userId,qr);
 		//userMyQbService.addMessageQbQ(qbRout,userId,"下单使用"+a+"个乾币。（乾币余额："+userQbNum+"）订单编号："+orderId,System.nanoTime()); //新增钱币记录表   
 		return mosaicString(qbDes);
@@ -190,6 +206,7 @@ public class PayAfterOrderUtil {
 	 */
 	public  boolean addQbRecord(List<Integer> listData,String userId,QbRecord qr){
 		//更改用户乾币
+		System.out.println(listData.size());
 		int i=userMyQbService.updateDataToUser(listData,userId);
 		//查询乾币余额
 		User user=userMyQbDao.getUserQbNum(userId);

@@ -62,16 +62,16 @@
 			close="" separator=";">
 			update user
 			<set>
-			    <if test="index==0">
+			    <if test="index==0 and  nn !=null">
 					qb_notwith = ${nn},
 				</if>
-				<if test="index==1">
+				<if test="index==1 and  nn !=null">
 					qb_balance = ${nn},
 				</if>
-				<if test="index==2">
+				<if test="index==2 and  nn !=null">
 					a_qb = ${nn},
 				</if>
-				<if test="index==3">
+				<if test="index==3 and  nn !=null">
 					c_qb = ${nn},
 				</if>
 				

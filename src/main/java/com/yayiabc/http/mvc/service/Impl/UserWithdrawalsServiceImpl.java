@@ -78,22 +78,9 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 			return dataWrapper;
 		}
 		//验证是否是注册赠送乾币
-		RedisClient rc=RedisClient.getInstance();
-		Jedis jedis=rc.getJedis();
 		double giveQb=userWith.getGiveType();
 		if(giveQb!=0){
-			if(jedis.hexists("userGiveQbNums",user.getUserId())){
-				String userGiveQb=jedis.hget("userGiveQbNums", user.getUserId());
-			    if(Integer.parseInt(userGiveQb)<giveQb){
-			    	dataWrapper.setMsg("提现错误，\"赠乾币\"乾币，数额不对（里面包含注册赠送乾币）");
-			    	dataWrapper.setFl(userGiveQb);
-			    	return dataWrapper;
-			    }
-			}else{
-				
-				dataWrapper.setMsg("提现错误，\"赠乾币\"乾币，数额不对（里面包含注册赠送乾币）");
-		    	return dataWrapper;
-			}
+			
 		}
 		userWith.setUserId(user.getUserId());
 		//校验 用户是否是提现成功状态下 发起的提现申请
@@ -242,7 +229,18 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
                 dataWrapper.setData(user);
             }
 			dataWrapper.setMsg(sign+"");
-			dataWrapper.setFl(user.getaQb()+user.getcQb()+user.getQbBalance()+user.getQbNotwtih()+"");
+			Jedis jedis=RedisClient.getInstance().getJedis();
+			jedis.select(11);
+			String useMaxQbNum=null;
+			if(jedis.exists(userId)){
+				System.out.println("不是首单。。。。。。。。。。。。。。。。。。。。。。");
+				useMaxQbNum=user.getaQb()+user.getcQb()+user.getQbBalance()+user.getQbNotwtih()+"";
+				dataWrapper.setMsg("u不是首单钱币使用不具有限制");
+			}else{
+				useMaxQbNum=user.getaQb()+user.getcQb()+user.getQbBalance()+"";
+				dataWrapper.setMsg("首单具有钱币使用限制");
+			}
+			dataWrapper.setFl(useMaxQbNum);
 		}
 		return dataWrapper;
 	}

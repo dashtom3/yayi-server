@@ -150,4 +150,7 @@ public interface PlaceOrderDao {
 	int inspectIsFirstOrder(String userId);
 
 
+	int getUserQbExceptReg(String userId);
+
+
 }

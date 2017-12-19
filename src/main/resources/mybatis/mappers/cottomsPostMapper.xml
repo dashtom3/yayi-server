@@ -141,6 +141,10 @@
 		(#{userId},#{postId})
 	</insert>
 
+	<!-- 发布者获取乾币 -->
+	<update id="addQB">
+		update user set qb_notwith=qb_notwith+#{chargeNumber} where user_id=#{userId}
+	</update>
 	<!-- <select id="commentsLike" resultType="java.lang.Integer"> select comment_favour 
 		from cottoms_comment where comment_id=#{commentId} </select> <update id="commentsLikeAdd"> 
 		update cottoms_comment set comment_favour=#{commentFavour} where comment_id=#{commentId} 
@@ -226,7 +230,7 @@
 	
 	<!--查询钱币余额  -->
 	<select id="queryqb" resultType="java.lang.Integer">
-		select (a_qb+qb_balance+c_qb) qb_balance from user 
+		select (a_qb+qb_notwith+c_qb+qb_balance) qb_balance from user 
 		where user_id=#{userId}
 	</select>
 

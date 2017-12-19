@@ -243,13 +243,18 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		String remark = "付费病例:支付"+chargeNumber+"个乾币。(乾币余额:userQbNum个)";
 		DataWrapper<Void> dw =new DataWrapper<>();
 		Integer qb=cottomsPostDao.queryqb(userId);//查询余额
+		CottomsPost cottomsPost=new CottomsPost();
+		CottomsPost c=cottomsPostDao.cottomsDetail(postId+"");
 		System.out.println(qb);
 		if(qb>=chargeNumber){
 			if(userId!=null){
 				Integer p=cottomsPostDao.existBuyPostId(postId,userId);//判断是否已购买
 				if(p==0){
 					if(payAfterOrderUtil.newQbDed(userId, chargeNumber, "", remark)!=null){
+						//购买病例
 						cottomsPostDao.insertUserToPost(postId,userId);
+						//作者获取钱币
+						cottomsPostDao.addQB(chargeNumber,c.getUserId());
 					}
 					dw.setMsg("支付成功");
 				}else{

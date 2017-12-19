@@ -77,7 +77,10 @@ public interface CottomsPostDao {
 	
 	//购买病例
 	public void insertUserToPost(@Param("postId")Integer postId, @Param("userId")String userId);
-
+	
+	//作者获取钱币
+	public void addQB(@Param("chargeNumber")Integer chargeNumber,@Param("userId")String userId);
+	
 	String getUserIdByPostId(Integer beCommentedId);
 
 	//收藏病例

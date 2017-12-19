@@ -33,8 +33,8 @@ public class User extends BasePojo implements Serializable {
 
 	private String qq;
 
-	private Integer qbBalance;
-
+	private Integer qbBalance;//下单赠送的乾币（可提现）
+    private Integer qbNotwtih;//除下单赠送的乾币之外的免费乾币（不可提现）   这个wtih有点坑
 	private String reflect;
 
 	private Certification certification;
@@ -55,6 +55,15 @@ public class User extends BasePojo implements Serializable {
 	
 
 
+
+
+	public Integer getQbNotwtih() {
+		return qbNotwtih;  
+	}
+
+	public void setQbNotwtih(Integer qbNotwtih) {
+		this.qbNotwtih = qbNotwtih;
+	}
 
 	public String getUserId() {
 		return userId;
@@ -212,19 +221,16 @@ public class User extends BasePojo implements Serializable {
 		this.qbRecordList = qbRecordList;
 	}
 
-	public User() {
-		super();
-	}
-
-
 	@Override
 	public String toString() {
-		return "User [userId=" + userId + ", phone=" + phone + ", pwd=" + pwd
-				+ ", identity=" + identity + ", trueName=" + trueName
-				+ ", sex=" + sex + ", userPic=" + userPic + ", birthday="
-				+ birthday + ", qq=" + qq + ", qbBalance=" + qbBalance
-				+ ", reflect=" + reflect + ", certification=" + certification
-				+ ", saleinfo=" + saleinfo + ", orderaList=" + orderaList + "]";
+		return "User [userId=" + userId + ", saleId=" + saleId + ", phone=" + phone + ", pwd=" + pwd + ", identity="
+				+ identity + ", trueName=" + trueName + ", sex=" + sex + ", userPic=" + userPic + ", birthday="
+				+ birthday + ", qq=" + qq + ", qbBalance=" + qbBalance + ", qbNotwtih=" + qbNotwtih + ", reflect="
+				+ reflect + ", certification=" + certification + ", saleinfo=" + saleinfo + ", orderaList=" + orderaList
+				+ ", qbRecordList=" + qbRecordList + ", aQb=" + aQb + ", cQb=" + cQb + ", userWithList=" + userWithList
+				+ "]";
 	}
+
+
 
 }

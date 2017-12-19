@@ -242,7 +242,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
                 dataWrapper.setData(user);
             }
 			dataWrapper.setMsg(sign+"");
-			dataWrapper.setFl(user.getaQb()+user.getcQb()+user.getQbBalance()+"");
+			dataWrapper.setFl(user.getaQb()+user.getcQb()+user.getQbBalance()+user.getQbNotwtih()+"");
 		}
 		return dataWrapper;
 	}

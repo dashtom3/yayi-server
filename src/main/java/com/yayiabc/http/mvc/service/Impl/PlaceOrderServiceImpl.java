@@ -234,12 +234,12 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			AllTooldevicesSumPrice=(Double) priceMap.get("AllTooldevicesSumPrice");
               
 			//检查是否为首单  true 是  ，false 不是
-			boolean flg=inspectIsFirstOrder(userId);
-			if(flg){
+			//boolean flg=inspectIsFirstOrder(userId);
+			/*if(flg){
 				if(sumPrice<120){
 					
 				}
-			}
+			}*/
 			//创建订单并保存订单数据
 			placeOrderDao.createOrder(orderId,userId,order);
 

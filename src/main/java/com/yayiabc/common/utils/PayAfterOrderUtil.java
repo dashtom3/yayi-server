@@ -100,7 +100,7 @@ public class PayAfterOrderUtil {
 			int userQbNum=qbbalance+aqb+cqb;
 			
 			//放入redis 维护赠送乾币数
-			limitWithQb(o.getUserId(),user.getQbBalance());
+			//limitWithQb(o.getUserId(),user.getQbBalance());
 			
 			q.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；");
 			q.setRemark("下单获得"+o.getGiveQb()+"个乾币。（乾币余额："+userQbNum+"）订单编号："+orderId);
@@ -141,6 +141,7 @@ public class PayAfterOrderUtil {
 		User u=utilsDao.queryUserByUserId(userId);
 
 		List<Integer> listData=new ArrayList<Integer>();
+		listData.add(u.getQbNotwtih());
 		listData.add(u.getQbBalance()); 
 		listData.add( u.getaQb());      
 		listData.add( u.getcQb());   
@@ -174,6 +175,7 @@ public class PayAfterOrderUtil {
 		//根据orderId  来判断这个方法的使用。---代加 
 		qr.setRemark(remark);
 		qr.setMillisecond(System.nanoTime());
+		System.out.println(listData);
 		addQbRecord(listData,userId,qr);
 		//userMyQbService.addMessageQbQ(qbRout,userId,"下单使用"+a+"个乾币。（乾币余额："+userQbNum+"）订单编号："+orderId,System.nanoTime()); //新增钱币记录表   
 		return mosaicString(qbDes);

@@ -393,7 +393,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 	String returnQbUtils(int rQbNum,Ordera order){
 		String qbDe=order.getQbDes();
 		List<Integer> list=new ArrayList<Integer>();
-		String[] str=qbDe.split(","); // qb_balance   a_qb   b_qb   c_qb 
+		String[] str=qbDe.split(","); //qb_notwith qb_balance   a_qb    c_qb 
 
 		PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 		payAfterOrderUtil.limitWithQb(order.getUserId(), Integer.parseInt(str[0]));

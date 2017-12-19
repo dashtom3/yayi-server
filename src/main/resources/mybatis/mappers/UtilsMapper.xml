@@ -125,6 +125,7 @@
 		<result property="aQb" column="a_qb" />
 		<result property="cQb" column="c_qb" />
 		<result property="qbBalance" column="qb_balance" />
+		<result property="qbNotwtih" column="qb_notwith" />
 		<association property="certification"
 			javaType="com.yayiabc.http.mvc.pojo.jpa.Certification">
 			<result property="type" column="type" />
@@ -148,7 +149,7 @@
 	<select id="queryUserByUserId" resultMap="userss">
 		select
 		us.user_id,us.true_name,us.phone,us.sale_id
-		,us.a_qb,us.c_qb,us.qb_balance,ce.*
+		,us.a_qb,us.c_qb,us.qb_balance,qb_notwith,ce.*
 		from `user` us join certification ce on  us.user_id=ce.user_id 
 		where us.user_id=#{uid}
 	</select>

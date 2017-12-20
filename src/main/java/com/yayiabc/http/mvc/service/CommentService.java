@@ -16,4 +16,6 @@ public interface CommentService {
     List<SubComment> querySubCom(String type, Integer beCommentedId,long preCommentId,Integer currentPage,Integer numberPerPage,String userId);
 
     DataWrapper<Void> delete(String type, String beCommentedId, Integer parentId, Integer presentId);
+
+    void sendMessage(String userId,String beCommentedUserId,String key,String message);
 }

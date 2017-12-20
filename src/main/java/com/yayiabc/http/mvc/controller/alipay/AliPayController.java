@@ -54,7 +54,6 @@ public class AliPayController {
 			//写到页面的自动提交表单数据
 			response.getWriter().write(sHtmlText);
 		} catch (IOException e) {
-			// TODO Auto-generated catch block
 			e.printStackTrace();
 		}
 	}

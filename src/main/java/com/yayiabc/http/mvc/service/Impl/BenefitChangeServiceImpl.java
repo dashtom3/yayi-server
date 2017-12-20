@@ -154,7 +154,7 @@ public class BenefitChangeServiceImpl implements BenefitChangeService{
 			HttpServletResponse response){
 		DataWrapper<Void> dataWrapper =new DataWrapper<Void>();
 		Benefit benefit =benefitChangeDao.getBenefitByBenefitId(benefitId);
-		String fileName=benefit.getBenefitName()+new Date().getTime();
+		String fileName=benefit.getBenefitName()+System.currentTimeMillis();
 		System.out.println(fileName);
 		fileName =fileName+".xls";
 		List<ExcelEntry> excelEntryList=benefitChangeDao.getExcelEntryList(benefitId);

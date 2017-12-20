@@ -184,7 +184,6 @@
 		<result property="phone" column="phone" />
 	</resultMap>
 	<select id="getUserByToken" resultMap="getUser">
--- 		select user_id,true_name,a_qb,c_qb,qb_balance,phone from user
 select user_id,true_name,user_pic,a_qb,c_qb,qb_balance,phone from user
 		where user_id=(select user_id from user_token where token=#{token})
 	</select>

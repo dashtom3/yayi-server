@@ -136,8 +136,10 @@ public class CommentServiceImpl implements CommentService {
         }
         String json = jsonObject.toString();
         redisService.LISTS.rpush(key, json);
-        if(!"".equals(message)){
-            redisService.LISTS.rpush(preFix+userIdStr,comment.getUserName()+message+postFix);
+        if(!user.getUserId().equals(userIdStr)){
+            if(!"".equals(message)){
+                sendMessage(user.getUserId(),userIdStr,preFix+userIdStr,comment.getUserName()+message+postFix);
+            }
         }
         return dataWrapper;
     }
@@ -176,7 +178,7 @@ public class CommentServiceImpl implements CommentService {
         if(!userId.equals(comment.getUserId())){
             String key=preFix+userId;
             String message=userName+mstr+postFix;
-            redisService.LISTS.rpush(key,message);
+            sendMessage(comment.getUserId(),userId,key,message);
         }
         String subComJsonStr= JSONObject.fromObject(subComment).toString();
         redisService.LISTS.rpush(type+"评论"+ beCommentedId,subComJsonStr);
@@ -278,6 +280,20 @@ public class CommentServiceImpl implements CommentService {
         return dataWrapper;
     }
 
+    /**
+     * 发送消息
+     * @param userId
+     * @param beCommentedUserId
+     * @param key
+     * @param message
+     */
+    @Override
+    public void sendMessage(String userId, String beCommentedUserId, String key, String message) {
+        if(!userId.equals(beCommentedUserId)){
+            redisService.LISTS.rpush(key,message);
+        }
+    }
+
     private DataWrapper<Void> deleteYayiCom(String type, String beCommentedId, Integer parentId,DataWrapper<Void> dataWrapper) {
         List<String> jsonList=redisService.LISTS.lrange(type+"评论"+beCommentedId,0,-1);
         for (int i=0;i<jsonList.size();i++) {
@@ -315,18 +331,7 @@ public class CommentServiceImpl implements CommentService {
         redisService.getJedis().del(type+"评论"+beCommentedId+":"+parentId);
     }
 
-    //判断父级内容是否是自己,可以去除自己评论自己时有消息通知,str为空则为一级评论，不为空则为二级评论
-    public boolean ifCommentMySelf(String userId, String type, Integer beCommentedId){
-        String contentUserId="";
-        if("牙医圈".equals(type)){
 
-        }else if("视频".equals(type)){
-
-        }else if("病例".equals(type)){
-
-        }
-        return true;
-    }
 
 
 }

@@ -4,7 +4,15 @@
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yayiabc.http.mvc.dao.UserDao">
 
-
+<!--注册成功赠送邀请人乾币  -->
+	<update id="presented" >
+		update user set qb_notwith=qb_notwith+10 where user_id=#{id}
+	</update>
+	<!--记录注册人和邀请人信息  -->
+	<insert id="addUser" >
+		insert into invite(user_id,id) values (#{byid},#{id})
+	</insert>
+	
 	<insert id="register" parameterType="User" useGeneratedKeys="true" keyProperty="userId">
 		insert into user(phone,pwd,created,updated)
 		values(#{phone},#{pwd},now(),now())

@@ -49,6 +49,8 @@ public class User extends BasePojo implements Serializable {
 	private int aQb;
 	private int cQb;
 	
+	private Integer id;
+	
 	private List<UserWith> userWithList;
     
 	
@@ -56,6 +58,14 @@ public class User extends BasePojo implements Serializable {
 
 
 
+
+	public Integer getId() {
+		return id;
+	}
+
+	public void setId(Integer id) {
+		this.id = id;
+	}
 
 	public Integer getQbNotwtih() {
 		return qbNotwtih;  
@@ -227,9 +237,11 @@ public class User extends BasePojo implements Serializable {
 				+ identity + ", trueName=" + trueName + ", sex=" + sex + ", userPic=" + userPic + ", birthday="
 				+ birthday + ", qq=" + qq + ", qbBalance=" + qbBalance + ", qbNotwtih=" + qbNotwtih + ", reflect="
 				+ reflect + ", certification=" + certification + ", saleinfo=" + saleinfo + ", orderaList=" + orderaList
-				+ ", qbRecordList=" + qbRecordList + ", aQb=" + aQb + ", cQb=" + cQb + ", userWithList=" + userWithList
-				+ "]";
+				+ ", qbRecordList=" + qbRecordList + ", aQb=" + aQb + ", cQb=" + cQb + ", byId=" + id
+				+ ", userWithList=" + userWithList + "]";
 	}
+
+	
 
 
 

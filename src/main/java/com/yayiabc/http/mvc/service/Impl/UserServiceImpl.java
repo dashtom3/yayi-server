@@ -11,6 +11,7 @@ import com.yayiabc.http.mvc.dao.*;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
+import com.yayiabc.http.mvc.pojo.model.Invite;
 import com.yayiabc.http.mvc.service.TokenService;
 import com.yayiabc.http.mvc.service.UserMyQbService;
 import com.yayiabc.http.mvc.service.UserService;
@@ -97,7 +98,7 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public DataWrapper<User> register(String phone, String password, String code,String openid) {
+    public DataWrapper<User> register(String phone, String password, String code,String openid,Integer id) {
         DataWrapper<User> dataWrapper = new DataWrapper<User>();
         if (userDao.getUserByPhone(phone) == null) {
             //验证码判断
@@ -122,6 +123,12 @@ public class UserServiceImpl implements UserService {
                 dataWrapper.setToken(token);
                 newUser.setCreated(new Date());
                 dataWrapper.setData(newUser);
+                String byid=newUser.getUserId();
+                //赠送邀请人乾币
+                userDao.presented(id);
+                Invite invite =new Invite();
+                //记录邀请人和被邀请人数据
+                userDao.addUser(id,byid);
                 if (openid != null) {
                     wxAppDao.addUser(newUser.getUserId(), openid, newUser.getPhone());
                 }

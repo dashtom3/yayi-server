@@ -4,6 +4,7 @@ import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
 import com.yayiabc.http.mvc.pojo.jpa.User;
+import com.yayiabc.http.mvc.pojo.model.Invite;
 import com.yayiabc.http.mvc.pojo.model.UserToken;
 
 import java.util.List;
@@ -11,8 +12,13 @@ import java.util.Map;
 
 @Repository
 public interface UserDao {
-
-	int register(User newUser);
+	
+	//注册成功赠送邀请人乾币
+	void presented(Integer id);
+	//记录注册人邀请人信息
+	void addUser(@Param("id")Integer id,@Param("byid")String byid);
+	
+	Integer register(User newUser);
 
 	int getCartNum(User user);
 

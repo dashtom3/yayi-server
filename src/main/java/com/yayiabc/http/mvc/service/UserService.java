@@ -9,7 +9,7 @@ public interface UserService {
 
 	DataWrapper<Void> getVerifyCode(String phone,Integer type);
 
-	DataWrapper<User> register(String phone, String password, String code,String openid);
+	DataWrapper<User> register(String phone, String password, String code,String openid,Integer id);
 
 	DataWrapper<User> noteLogin(String phone, String code);
 

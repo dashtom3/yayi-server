@@ -7,6 +7,8 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
+import java.sql.Date;
+import java.text.SimpleDateFormat;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.LinkedList;
@@ -18,6 +20,7 @@ import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.stereotype.Service;
 
 import com.yayiabc.common.utils.BeanUtil;
@@ -51,15 +54,17 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	//发布或更改病例（传过来无postId为发布，有postId为更改）
 	@Override
 	public DataWrapper<Void> addPost(CottomsPost cottomsPost,String token) {
+		
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		if(token!=null){
+			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+			System.out.println(df);
 			String userId=utilsDao.getUserID(token);
 			cottomsPost.setUserId(userId);
 			String trueName= cottomsPostDao.gettrueName(userId);
 			cottomsPost.setWriter(trueName);
 			System.out.println(cottomsPost.getPostId());
 			if(cottomsPost.getPostId()==null){
-				System.out.println(123);
 				cottomsPostDao.addPost(cottomsPost);
 				//发布病例点赞默认为0
 				RedisService.SORTSET.zadd("点赞计数列表病例:", 0, cottomsPost.getPostId()+"");

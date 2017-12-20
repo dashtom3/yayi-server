@@ -36,9 +36,10 @@ public class UserController {
 			@RequestParam(value = "phone", required = true) String phone,
 			@RequestParam(value = "password", required = true) String password,
 			@RequestParam(value = "code", required = true) String code,
-			@RequestParam(value = "openid", required = false) String openid
+			@RequestParam(value = "openid", required = false) String openid,
+			@RequestParam(value = "id",required=false) Integer id
 			){
-		return userService.register(phone,password,code,openid);
+		return userService.register(phone,password,code,openid,id);
 	}
 	
 	

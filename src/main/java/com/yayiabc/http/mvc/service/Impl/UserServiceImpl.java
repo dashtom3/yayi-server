@@ -65,15 +65,13 @@ public class UserServiceImpl implements UserService {
     //判断用户是否已经注册
     public boolean checkIfRegistered(String phone,Integer type){
         boolean flag=true;
-        if(type!=null){
-            if(type<=2){
-                if (userDao.getUserByPhone(phone) == null) {
-                    flag=false;
-                }
-            }else{
-                if(saleInfoDao.getSaleIdBySalePhone(phone)==null){
-                    flag=false;
-                }
+        if(type<=2){
+            if (userDao.getUserByPhone(phone) == null) {
+                flag=false;
+            }
+        }else{
+            if(saleInfoDao.getSaleIdBySalePhone(phone)==null){
+                flag=false;
             }
         }
         return flag;
@@ -81,16 +79,17 @@ public class UserServiceImpl implements UserService {
 
     //判断两种情况下,是否发送消息
     public ErrorCodeEnum checkState(String phone,Integer type) {
+        if(type==null){
+            return null;
+        }
         boolean flag = checkIfRegistered(phone, type);
-        if (type != null) {
-            if (type % 2 == 1) {//注册时发送验证码
-                if (flag) {
-                    return ErrorCodeEnum.Username_Already_Exist;
-                }
-            } else if (type % 2 == 0) {//登录时发送的验证码
-                if (!flag) {
-                    return ErrorCodeEnum.Username_NOT_Exist;
-                }
+        if (type % 2 == 1) {//注册时发送验证码
+            if (flag) {
+                return ErrorCodeEnum.Username_Already_Exist;
+            }
+        } else if (type % 2 == 0) {//登录时发送的验证码
+            if (!flag) {
+                return ErrorCodeEnum.Username_NOT_Exist;
             }
         }
         return null;

@@ -68,14 +68,14 @@ public class FaqServiceImpl implements FaqService {
     }
 
     @Override
-    public DataWrapper<List<FaqQuestion>> list(Integer faqQuestionType, Integer order,Integer currentPage,Integer numberPerPage) {
-        DataWrapper<List<FaqQuestion>> dataWrapper=new DataWrapper<List<FaqQuestion>>();
+    public DataWrapper<Object> list(Integer faqQuestionType, Integer order,Integer currentPage,Integer numberPerPage,String keyWord) {
+        DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
         Page page=new Page();
         page.setNumberPerPage(numberPerPage);
         page.setCurrentPage(currentPage);
-        int totalNumber=faqDao.getFaqQuestionTotalNumber(faqQuestionType);
+        int totalNumber=faqDao.getFaqQuestionTotalNumber(faqQuestionType,keyWord);
         dataWrapper.setPage(page,totalNumber);
-        List<FaqQuestion> faqQuestionList=faqDao.getFaqQuestionList(faqQuestionType,order,page.getCurrentNumber(),numberPerPage);
+        List<FaqQuestion> faqQuestionList=faqDao.getFaqQuestionList(faqQuestionType,order,page.getCurrentNumber(),numberPerPage,keyWord);
         dataWrapper.setData(faqQuestionList);
         return dataWrapper;
     }

@@ -11,7 +11,7 @@ public interface FaqService {
 
     DataWrapper<FaqAnswer> addAnswer(String token, FaqAnswer faqAnswer,Integer faqQuestionId);
 
-    DataWrapper<List<FaqQuestion>> list(Integer faqQuestionType, Integer order,Integer currentPage,Integer numberPerPage);
+    DataWrapper<Object> list(Integer faqQuestionType, Integer order,Integer currentPage,Integer numberPerPage,String keyWord);
 
     DataWrapper<FaqQuestion> questionDetail(String token,Integer faqQuestionId, Integer currentPage, Integer numberPerPage);
 

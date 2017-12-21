@@ -13,9 +13,9 @@ public interface FaqDao {
 
     int addAnswer(@Param("faqAnswer")FaqAnswer faqAnswer,@Param("faqQuestionId") Integer faqQuestionId);
 
-    List<FaqQuestion> getFaqQuestionList(@Param("faqQuestionType")Integer faqQuestionType,@Param("order") Integer order,@Param("currentNumber")Integer currentNumber,@Param("numberPerPage")Integer numberPerPage);
+    List<FaqQuestion> getFaqQuestionList(@Param("faqQuestionType")Integer faqQuestionType,@Param("order") Integer order,@Param("currentNumber")Integer currentNumber,@Param("numberPerPage")Integer numberPerPage,@Param("keyWord")String keyWord);
 
-    int getFaqQuestionTotalNumber(@Param("faqQuestionType")Integer faqQuestionType);
+    int getFaqQuestionTotalNumber(@Param("faqQuestionType")Integer faqQuestionType,@Param("keyWord")String keyWord);
 
     int getAnswerTotalNum(Integer faqQuestionId);
 

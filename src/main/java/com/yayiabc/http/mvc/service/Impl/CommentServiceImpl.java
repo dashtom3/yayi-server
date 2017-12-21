@@ -3,6 +3,7 @@ package com.yayiabc.http.mvc.service.Impl;
 
 
 import com.qiniu.util.Json;
+import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.JsonDateValueProcessor;
 import com.yayiabc.common.utils.Page;
@@ -115,6 +116,11 @@ public class CommentServiceImpl implements CommentService {
                 if((int)comment1.getCommentId()==parentId.intValue()){
                     replyUserId=comment1.getUserId();
                     replyUserName=comment1.getUserName();
+                    //自己不能回复自己
+                    if(user.getUserId().equals(replyUserId)){
+                        dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+                        return dataWrapper;
+                    }
                         //被回复人的id
                         userIdStr=replyUserId;
                         message=MESSAGE_TWO;
@@ -330,6 +336,12 @@ public class CommentServiceImpl implements CommentService {
         //删除子评论
         redisService.getJedis().del(type+"评论"+beCommentedId+":"+parentId);
     }
+
+    /**
+     * 自己不能回复自己评论
+     */
+
+
 
 
 

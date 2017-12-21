@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.service.Impl;
 
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.service.CottomsPostService;
+import com.yayiabc.http.mvc.service.FaqService;
 import com.yayiabc.http.mvc.service.FindService;
 import com.yayiabc.http.mvc.service.VideoManageService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -20,6 +21,9 @@ public class FindServiceImpl implements FindService {
     @Autowired
     private CottomsPostService cottomsPostService;
 
+    @Autowired
+    private FaqService faqService;
+
     @Override
     public DataWrapper<Object> findList(String keyWord, Integer type, Integer classify,Integer currentPage,Integer numberPerPage) {
         DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
@@ -27,6 +31,8 @@ public class FindServiceImpl implements FindService {
             return cottomsPostService.queryPost(currentPage,numberPerPage,classify,0,1,null,1,keyWord);
         }else if(type==2){//视频
             return videoManageService.showVid(3,classify,currentPage,numberPerPage,keyWord,null);
+        }else if(type==3){//问答
+            return faqService.list(classify,0,currentPage,numberPerPage,keyWord);
         }
         //3.问答,TODO
         return null;

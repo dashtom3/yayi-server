@@ -22,6 +22,9 @@
 			<if test="faqQuestionType!=null and faqQuestionType!=''">
 				a.faq_question_type=#{faqQuestionType}
 			</if>
+			<if test="keyWord!=null and keyWord!=''">
+				and locate(#{keyWord},faq_question_title)&gt;0
+			</if>
 		</where>
 		order BY
 		<choose>
@@ -36,6 +39,9 @@
 		<where>
 			<if test="faqQuestionType!=null and faqQuestionType!=''">
 				faq_question_type=#{faqQuestionType}
+			</if>
+			<if test="keyWord!=null and keyWord!=''">
+				and locate(#{keyWord},faq_question_title)&gt;0
 			</if>
 		</where>
 	</select>

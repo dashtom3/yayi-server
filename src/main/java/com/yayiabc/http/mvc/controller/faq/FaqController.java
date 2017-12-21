@@ -46,13 +46,13 @@ public class FaqController {
     //问答列表
     @RequestMapping("list")
     @ResponseBody
-    public DataWrapper<List<FaqQuestion>> list(
+    public DataWrapper<Object> list(
             @RequestParam(value="faqQuestionType",required = false) Integer faqQuestionType,//分类:1外科2内科3修复4种植5正畸不传为全部
             @RequestParam(value="order",required = false,defaultValue = "0") Integer order,//0最新（默认）  1最多回答
             @RequestParam(value="currentPage",required = false,defaultValue = "1")Integer currentPage,
             @RequestParam(value="numberPerPage",required = false,defaultValue = "10")Integer numberPerPage
     ){
-        return faqService.list(faqQuestionType,order,currentPage,numberPerPage);
+        return faqService.list(faqQuestionType,order,currentPage,numberPerPage,null);
     }
 
     //问答详情

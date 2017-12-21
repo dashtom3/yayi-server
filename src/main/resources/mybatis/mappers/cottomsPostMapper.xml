@@ -61,7 +61,7 @@
 				classify = #{classify} and
 			</if>
 			<if test="keyWord!=null and keyWord!=''">
-				headline like '%${keyWord}%' and
+				locate(#{keyWord},headline)&gt;0 and
 			</if>
 			post_stater=#{postStater}
 			
@@ -111,7 +111,7 @@
 				classify=#{classify}
 			</if>
 			<if test="keyWord!=null and keyWord!=''">
-				and headline like '%${keyWord}%'
+				and locate(#{keyWord},headline)&gt;0
 			</if>
 		</where>
 	</select>

@@ -80,12 +80,12 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		//验证是否是注册赠送乾币
 		double giveQb=userWith.getGiveType();
 		if(giveQb!=0){
-			
+
 		}
 		userWith.setUserId(user.getUserId());
 		//校验 用户是否是提现成功状态下 发起的提现申请
 		Integer sign=userWithdrawalsServiceDao.queryWitSign(user.getUserId());
-		if(sign==null||sign==2){
+		if(sign==null||sign==2||sign==3){
 			int userQb=user.getaQb()+user.getcQb()+user.getQbBalance();
 
 			if(userWith!=null){
@@ -97,6 +97,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 					if(userWithdrawalsServiceDao.updateUserQb(userWith)<=0){
 						throw new RuntimeException("提现错误");
 					}
+					User user2=utilsDao.getUserByToken(token);
 					//这里做处理 保存到用户提现表中  String.format("%.2f", f)
 					int a=(int) userWith.getaType();
 					int c=(int) userWith.getcType();
@@ -107,10 +108,11 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 					dataWrapper.setData( userWithdrawalsServiceDao.submit(userWith));
 					//增加钱币记录
 					//用户钱币余额
-					int qbbalance=user.getQbBalance();
-					int aqb=user.getaQb();
-					int cqb=user.getcQb();
-					int userQbNum=qbbalance+aqb+cqb;
+					int qbbalance=user2.getQbBalance();
+					int qbnotwith=user2.getQbNotwtih();
+					int aqb=user2.getaQb();
+					int cqb=user2.getcQb();
+					int userQbNum=qbbalance+aqb+cqb+qbnotwith;
 					String qbBalance="\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；";
 					userMyQbService.addMessageQbQ("\"赠\"："+give+"个， \"9.5折\"："+c+"个 ，  \"8.0折\"："+a+"个",user.getUserId(),"乾币提现。（乾币余额："+userQbNum+"个）",System.nanoTime(),qbBalance); //新增钱币记录表   
 				}
@@ -145,10 +147,11 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 
 						//用户钱币余额
 						User user=userMyQbDao.getUserQbNum(userWith.getUserId());
+						int qbnotwith=user.getQbNotwtih();
 						int qbbalance=user.getQbBalance();
 						int aqb=user.getaQb();
 						int cqb=user.getcQb();
-						int userQbNum=qbbalance+aqb+cqb;
+						int userQbNum=qbbalance+aqb+cqb+qbnotwith;
 						String qbBalance="\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；";
 						userMyQbService.addMessageQbQRget("\"赠\"："+give+"个， \"9.5折\"："+c+"个 ，  \"8.0折\"："+a+"个",userWith.getUserId(),"乾币提现审核不通过。（乾币余额："+userQbNum+"个）",System.nanoTime(),qbBalance); //新增钱币记录表   
 						dataWrapper.setMsg("拒绝提现申请，成功");
@@ -226,21 +229,57 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		}else{
 			User user=userWithdrawalsServiceDao.showUserQbNum(userId);
 			if(user!=null) {
-                dataWrapper.setData(user);
-            }
-			dataWrapper.setMsg(sign+"");
-			Jedis jedis=RedisClient.getInstance().getJedis();
-			jedis.select(11);
-			String useMaxQbNum=null;
-			if(jedis.exists(userId)){
-				System.out.println("不是首单。。。。。。。。。。。。。。。。。。。。。。");
-				useMaxQbNum=user.getaQb()+user.getcQb()+user.getQbBalance()+user.getQbNotwtih()+"";
-				dataWrapper.setMsg("u不是首单钱币使用不具有限制");
-			}else{
-				useMaxQbNum=user.getaQb()+user.getcQb()+user.getQbBalance()+"";
-				dataWrapper.setMsg("首单具有钱币使用限制");
+				dataWrapper.setData(user);
 			}
+			String useMaxQbNum=null;
+			dataWrapper.setMsg(sign+"");
+			
+
+			useMaxQbNum=user.getaQb()+user.getcQb()+user.getQbBalance()+user.getQbNotwtih()+"";
 			dataWrapper.setFl(useMaxQbNum);
+		}
+		return dataWrapper;
+	}
+
+	@Override
+	public DataWrapper<Object> showUserQbNumPo(String token, String sumItemsPrice) {
+		// TODO Auto-generated method stub
+		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
+		String userId=utilsDao.getUserID(token);
+		Integer sign=userWithdrawalsServiceDao.queryWitSign(userId);
+		
+		Jedis jedis=RedisClient.getInstance().getJedis();
+		if(userId==null){
+			dataWrapper.setMsg("NONONO");
+		}else{
+			User user=userWithdrawalsServiceDao.showUserQbNum(userId);
+			
+			String useMaxQbNum=null;
+			
+			if(Integer.parseInt(sumItemsPrice)>=120){
+				useMaxQbNum=user.getaQb()+user.getcQb()+user.getQbBalance()+user.getQbNotwtih()+"";
+				dataWrapper.setMsg("2");
+			}else{
+				jedis.select(11);
+				if(jedis.exists(userId)){
+					System.out.println("不是首单。。。。。。。。。。。。。。。。。。。。。。");
+					useMaxQbNum=user.getaQb()+user.getcQb()+user.getQbBalance()+user.getQbNotwtih()+"";
+					dataWrapper.setMsg("1");
+				}else{
+					useMaxQbNum=user.getaQb()+user.getcQb()+user.getQbBalance()+"";
+					dataWrapper.setMsg("0");
+				}
+			}
+			
+
+			if(user!=null) {
+				dataWrapper.setData(user);
+			}
+			
+//			dataWrapper.setMsg(sign+"");
+			
+			dataWrapper.setFl(useMaxQbNum);
+			jedis.close();
 		}
 		return dataWrapper;
 	}
@@ -262,9 +301,9 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 	@Override
 	public DataWrapper< List<UserWithExtend>> withHornPrompt() {
 		// TODO Auto-generated method stub
-		 DataWrapper<List<UserWithExtend>> dataWrapper=new DataWrapper<List<UserWithExtend>>();
-         List<UserWithExtend> userWithExtendList = userWithdrawalsServiceDao.withHornPrompt();
-         dataWrapper.setData(userWithExtendList);
-		 return dataWrapper;
+		DataWrapper<List<UserWithExtend>> dataWrapper=new DataWrapper<List<UserWithExtend>>();
+		List<UserWithExtend> userWithExtendList = userWithdrawalsServiceDao.withHornPrompt();
+		dataWrapper.setData(userWithExtendList);
+		return dataWrapper;
 	}
 }

@@ -106,9 +106,9 @@ public class UserQbListServiceImpl implements UserQbListService {
 		User user=userMyQbDao.getUserQbNum(userId);
 		int qbbalance=user.getQbBalance();
 		int aqb=user.getaQb();
-		
+		int qbNotwith=user.getQbNotwtih();
 		int cqb=user.getcQb();
-		int userQbNum=qbbalance+aqb+cqb;
+		int userQbNum=qbbalance+aqb+cqb+qbNotwith;
 		//q.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.0折\""+bqb+"个；"+"\"9.5折\""+cqb+"个；");
 		if("1".equals(sign)){
 			//增加 钱币减少记录
@@ -120,7 +120,7 @@ public class UserQbListServiceImpl implements UserQbListService {
 			qbRecord.setQbRget(zh(qbType)+"："+qbBalance+"个");
 			qbRecord.setRemark("管理员修改乾币余额，新增"+qbBalance+"个乾币。（乾币余额："+userQbNum+"个。）");
 		}
-		qbRecord.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；");
+		qbRecord.setQbBalances("\"赠：\""+qbbalance+qbNotwith+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；");
 		qbRecord.setMillisecond(MI);
 		if(userMyQbDao.add(qbRecord)>0){
 			return true;

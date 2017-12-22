@@ -18,6 +18,7 @@ import com.yayiabc.common.utils.OrderIdUtils;
 import com.yayiabc.common.utils.PayAfterOrderUtil;
 import com.yayiabc.common.utils.RedisClient;
 import com.yayiabc.http.mvc.dao.PlaceOrderDao;
+import com.yayiabc.http.mvc.dao.UserWithdrawalsDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.FreeShipping;
 import com.yayiabc.http.mvc.pojo.jpa.Invoice;
@@ -25,6 +26,7 @@ import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.PostFee;
 import com.yayiabc.http.mvc.pojo.jpa.Receiver;
+import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.ExpireOrder;
 import com.yayiabc.http.mvc.pojo.model.FinalList;
 import com.yayiabc.http.mvc.service.PlaceOrderService;
@@ -96,24 +98,39 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		}
 		return 0;
 	}
+	@Autowired
+	private UserWithdrawalsDao userWithdrawalsServiceDao;
+	
 	//钱币抵扣
 	@Override
-	public DataWrapper<Integer> ded(String token, int num/*,Integer  receiverId*/) {
+	public DataWrapper<Integer> ded(String token, int num,String sumItemsPrice/*,Integer  receiverId*/) {
 		DataWrapper<Integer> dataWrapper=new DataWrapper<Integer>();
-
 		String userId=utilsDao.getUserID(token);
-		if(userId==null){
-			dataWrapper.setMsg("token验证过期");
-			return dataWrapper;
-		}
-		//查询当前用户的钱币剩余
-		int su= placeOrderDao.ded(userId);
-		dataWrapper.setData(su);
-		if(su>=num){
-			dataWrapper.setMsg("余额充足");
+		User user=userWithdrawalsServiceDao.showUserQbNum(userId);
+		String useMaxQbNum=null;
+		Jedis jedis=RedisClient.getInstance().getJedis();
+		if(Double.parseDouble(sumItemsPrice)>=120){
+			useMaxQbNum=user.getaQb()+user.getcQb()+user.getQbBalance()+user.getQbNotwtih()+"";
+			dataWrapper.setMsg("2");
 		}else{
-			dataWrapper.setMsg("余额不足");
+			jedis.select(11);
+			if(jedis.exists(userId)){
+				System.out.println("不是首单。。。。。。。。。。。。。。。。。。。。。。");
+				useMaxQbNum=user.getaQb()+user.getcQb()+user.getQbBalance()+user.getQbNotwtih()+"";
+				if(num>Double.parseDouble(sumItemsPrice)){
+					dataWrapper.setMsg("余额不足");
+					return null;
+				}
+			}else{
+				System.out.println("是首单。。。。。。。。。。。。。。。。。。。。。。");
+				useMaxQbNum=user.getaQb()+user.getcQb()+user.getQbBalance()+"";
+				if(num>Double.parseDouble(sumItemsPrice)){
+					dataWrapper.setMsg("余额不足");
+					return null;
+				}
+			}
 		}
+		dataWrapper.setData(Integer.parseInt(useMaxQbNum));
 		return dataWrapper;
 	}
 	//更改收货地址
@@ -159,13 +176,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		if(order.getQbDed()==null){
 			order.setQbDed(0);
 		}
-		DataWrapper<Integer> data=ded(token,order.getQbDed());
-		if(data!=null){
-			int qbBalance=data.getData();
-			if(qbBalance<order.getQbDed()){
-				throw new OrderException(ErrorCodeEnum.QBDED_Error);
-			}
-		}
+		
 		//记录工具设备类的商品 个数
 		int TooldevicesSumCount=0;
 		// TODO Auto-generated method stub
@@ -233,12 +244,38 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			sumPrice=(Double) priceMap.get("sumPrice");
 			AllSuppliesSumPrice=(Double) priceMap.get("AllSuppliesSumPrice");
 			AllTooldevicesSumPrice=(Double) priceMap.get("AllTooldevicesSumPrice");
-             //开关器  检测 是否可以使用  注册赠送的60 的乾币
+           
+			
+			DataWrapper<Integer> data=ded(token,order.getQbDed(),sumPrice+"");
+			if(data!=null){
+				int qbBalance=data.getData();
+				if(qbBalance<order.getQbDed()){
+					throw new OrderException(ErrorCodeEnum.QBDED_Error);
+				}
+			}
 			 
 			//检查是否为首单  true 是  ，false 不是
+             if(sumPrice<120){
+            	 Integer qbDedNum=order.getQbDed();
+            	 boolean flg=inspectIsFirstOrder(userId,jedis,orderId,sumPrice);
+            	if(flg){
+            		 if(qbDedNum!=0||qbDedNum!=null){
+ 						//检查  用户此时余额 除去注册赠送的60钱币   是否够支付该订单
+                     boolean f=cheackUserQb(userId,qbDedNum);
+                     if(!f){
+                  	   dataWrapper.setMsg("首单订单金额必须大于120元（不包括运费），才可使用注册赠送的钱币");
+                  	   return dataWrapper;
+                     }
+ 					}
+            	}else{
+                 	//不是首单可以使注册赠送的钱币
+    				 System.out.println(6666666);
+    				 jedis.hset("isFirstOrder", orderId, "1");
+                 }
+             }
 			
-			Integer qbDedNum=order.getQbDed();
-			boolean flg=inspectIsFirstOrder(userId,jedis);
+			/*Integer qbDedNum=order.getQbDed();
+			boolean flg=inspectIsFirstOrder(userId,jedis,orderId,sumPrice);
 			if(flg){
 				System.out.println(sumPrice+"sumPricesumPricesumPricesumPrice");
 				if(sumPrice<120){
@@ -253,16 +290,12 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 					}
 					//System.out.println("00000000000");
 					//jedis.hset("isFirstOrder", orderId, "0");
-				}/*else{
-					//首单商品总价（不包括运费大于120） 可以使用注册赠送的钱币
-					System.out.println("1111111");
-					jedis.hset("isFirstOrder", orderId, "1");
-				}*/
+				}
 			 }else{
 				 //不是首单可以使注册赠送的钱币
 				 System.out.println(6666666);
 				 jedis.hset("isFirstOrder", orderId, "1");
-			 }
+			 }*/
 			//创建订单并保存订单数据
 			placeOrderDao.createOrder(orderId,userId,order);
 
@@ -510,7 +543,8 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	 * @param userId
 	 * @return
 	 */
-	private boolean inspectIsFirstOrder(String userId,Jedis jedis){
+	private boolean inspectIsFirstOrder(String userId,Jedis jedis,String orderId,Double sumPrice){
+		
 	jedis.select(11);
 	if(jedis.exists(userId)){
 		//不是首单
@@ -518,8 +552,9 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		return false;
 	}else{
 		//是首单
-		System.out.println("是首单。。。。。。。。。。。。。。。。。。。。。。");
-		jedis.set(userId, "");
+		System.out.println("是首单。。。。。。。。。。。。。。。。。。。。。。且总额小于120");
+		//jedis.set(userId, "");
+		jedis.hset("isFirstOrders", orderId,"Y");
 		return true;
 	}
 		/*int sign=placeOrderDao.inspectIsFirstOrder(userId);

@@ -381,11 +381,11 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		//维护 赠送铅笔书
 		/*PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 		payAfterOrderUtil.limitWithQb(order.getUserId(), -qbbalance);*/
-
+        int qbNotwith=user.getQbNotwtih();
 		int aqb=user.getaQb();
 		int cqb=user.getcQb();
-		int userQbNums=qbbalance+aqb+cqb;
-		q.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；");
+		int userQbNums=qbbalance+aqb+cqb+qbNotwith;
+		q.setQbBalances("\"赠：\""+qbbalance+qbNotwith+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；");
 		q.setRemark("订单有退款，下单时赠送的乾币需扣除："+dedQbNum+"个乾币。（乾币余额："+userQbNums+"）订单编号:"+order.getOrderId());
 		userMyQbDao.add(q);
 	}
@@ -396,7 +396,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		String[] str=qbDe.split(","); //qb_notwith qb_balance   a_qb    c_qb 
 
 		PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-		payAfterOrderUtil.limitWithQb(order.getUserId(), Integer.parseInt(str[0]));
+		//payAfterOrderUtil.limitWithQb(order.getUserId(), Integer.parseInt(str[0]));
 		Integer sum=0;
 		String s="订单有退款，下单时使用的乾币需退回"+rQbNum+"个乾币。";
 		StringBuffer sb=new StringBuffer();
@@ -431,11 +431,12 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		//查询乾币余额
 		User user=userMyQbDao.getUserQbNum(order.getUserId());
 		int qbbalance=user.getQbBalance();
+		 int qbNotwith=user.getQbNotwtih();
 		int aqb=user.getaQb();
 		int cqb=user.getcQb();
-		int userQbNums=qbbalance+aqb+cqb;
+		int userQbNums=qbbalance+aqb+cqb+qbNotwith;
 		s=s+/*s+sb.toString()+*/"（乾币余额："+userQbNums+"）。订单编号:"+order.getOrderId();
-		String qbBalance="\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；";
+		String qbBalance="\"赠：\""+qbbalance+qbNotwith+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；";
 		userMyQbDao.addMessageQbQRget(sb.toString(), order.getUserId(), s, System.nanoTime(),qbBalance);
 		//---无语
 		orderManagementDao.saveRefundMessageToReturnQbMsg(sb.toString(),order.getOrderId());

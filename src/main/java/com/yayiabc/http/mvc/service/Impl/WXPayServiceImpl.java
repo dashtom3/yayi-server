@@ -162,9 +162,9 @@ public class WXPayServiceImpl implements WXPayService{
                             User user=userMyQbDao.getUserQbNum(userId);
                     		int qbbalance=user.getQbBalance();
                     		int aqb=user.getaQb();
-                    		
+                    		int qbNotwith=user.getQbNotwtih();
                     		int cqb=user.getcQb();
-                    		int userQbNum=qbbalance+aqb+cqb;
+                    		int userQbNum=qbbalance+aqb+cqb+qbNotwith;
                     		qbRecord.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；");
                             qbRecord.setReferer(type);
                             qbRecord.setRemark(zh+"乾币充值"+charge.getQbNum()+"个。（乾币余额："+userQbNum+"个）");

@@ -43,6 +43,10 @@ public class PayAfterOrderUtil {
 	private UserMyQbDao userMyQbDao;
 	//更改支付类型
 	public  boolean universal(String orderId,String type){
+		
+		
+	
+		
 		/**
 		 * 如果redis里没有该订单 就说明该订单已经关闭
 		 */
@@ -61,6 +65,12 @@ public class PayAfterOrderUtil {
 		/*int ax=aliPayDao.updateStateAndPayTime(orderId);*/
 
 		Ordera o=aliPayDao.queryOrder(orderId);
+		
+		RedisClient rcQ=RedisClient.getInstance();
+		Jedis jedisQ=rcQ.getJedis();
+		jedisQ.select(11);
+		jedisQ.set(o.getUserId(), "");
+		jedisQ.close();
 		//QbRecord q=new QbRecord();
 		if(o.getQbDed()!=0){
 			//
@@ -97,7 +107,8 @@ public class PayAfterOrderUtil {
 			int qbbalance=user.getQbBalance();
 			int aqb=user.getaQb();
 			int cqb=user.getcQb();
-			int userQbNum=qbbalance+aqb+cqb;
+			int qbNotwith=user.getQbNotwtih();
+			int userQbNum=qbbalance+aqb+cqb+qbNotwith;
 			
 			//放入redis 维护赠送乾币数
 			//limitWithQb(o.getUserId(),user.getQbBalance());
@@ -140,15 +151,16 @@ public class PayAfterOrderUtil {
 	
 		
 		//dednum <= max used qb //钱币够用
-		User u=utilsDao.queryUserByUserId(userId);
+		User u=utilsDao.queryUserByUserIdYa(userId);
          System.out.println(orderId+"orderIdorderIdorderIdorderIdorderIdorderId");
 		//这里检查是否可以使用注册赠送的60钱币
-				/*Jedis jedis =RedisClient.getInstance().getJedis();
+				Jedis jedis =RedisClient.getInstance().getJedis();
 				jedis.select(11);
-				String sign=jedis.hget("isFirstOrder", orderId);
-				if(sign.equals("0")){
-					u.setQbNotwtih(0);
-				}*/
+				String sign=jedis.hget("isFirstOrders", orderId);
+					if("Y".equals(sign)){
+						u.setQbNotwtih(0);
+					}
+					System.out.println(u);
 		List<Integer> listData=new ArrayList<Integer>();
 		listData.add(u.getQbNotwtih());
 		listData.add(u.getQbBalance()); 
@@ -187,10 +199,11 @@ public class PayAfterOrderUtil {
 		System.out.println(listData);
 		
 		//这里检查是否可以使用注册赠送的60钱币
-		/*if(sign.equals("0")){
+		//这里 首单支付  商品价格小于120  不扣除 注册赠送钱币，
+		if("Y".equals(jedis.hget("isFirstOrders", orderId))){
 			listData.remove(0);
 			listData.add(0,60);
-		}*/
+		}
 		System.out.println(listData);
 		addQbRecord(listData,userId,qr);
 		//userMyQbService.addMessageQbQ(qbRout,userId,"下单使用"+a+"个乾币。（乾币余额："+userQbNum+"）订单编号："+orderId,System.nanoTime()); //新增钱币记录表   
@@ -213,9 +226,10 @@ public class PayAfterOrderUtil {
 		int qbbalance=user.getQbBalance();
 		int aqb=user.getaQb();
 		int cqb=user.getcQb();
-		int userQbNum=qbbalance+aqb+cqb;
+		int qbNotwith=user.getQbNotwtih();
+		int userQbNum=qbbalance+aqb+cqb+qbNotwith;
 		
-		String qbBalance="\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；";
+		String qbBalance="\"赠：\""+qbbalance+qbNotwith+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；";
 
 		int iii=userMyQbService.addMessageQbQ(qr.getQbRout(),userId,qr.getRemark().replace("userQbNum",userQbNum+""),qr.getMillisecond(),qbBalance);
 		if(i+iii>=2){
@@ -226,10 +240,12 @@ public class PayAfterOrderUtil {
 	private String ut(int i){
 		switch (i) {
 		case 0:
-			return "\"赠\"：";
+			return "\"赠（不可提现）\"：";
 		case 1:
-			return "\"8.0折\"：";
+			return "\"赠（可提现）\"：";
 		case 2:
+			return "\"8.0折\"：";
+		case 3:
 			return "\"9.5折\"：";
 	
 		default:
@@ -282,7 +298,8 @@ public class PayAfterOrderUtil {
 					int qbbalance=user.getQbBalance();
 					int aqb=user.getaQb();
 					int cqb=user.getcQb();
-					int userQbNum=qbbalance+aqb+cqb;
+					int qbNotwith=user.getQbNotwtih();
+					int userQbNum=qbbalance+aqb+cqb+qbNotwith;
 					q.setRemark(zh(charge.getQbType())+"乾币充值"+charge.getQbNum()+"个。（乾币余额："+userQbNum+"个）");
 					//支付宝乾币充值
 					q.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；");
@@ -367,7 +384,7 @@ public class PayAfterOrderUtil {
 	/**
 	 * 项目前期 注册送60乾币，限制用户这60乾币 不能直接提现
 	 */
-	public void  limitWithQb(String userId,int qb){
+	/*public void  limitWithQb(String userId,int qb){
 		
 		RedisClient rc=RedisClient.getInstance();
 		Jedis jedis=rc.getJedis();
@@ -378,5 +395,5 @@ public class PayAfterOrderUtil {
 			 jedis.hset("userGiveQbNums", userId,qb+"");
 		}
 		jedis.close();
-	}
+	}*/
 }

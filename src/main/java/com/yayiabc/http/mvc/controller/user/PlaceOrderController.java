@@ -43,9 +43,10 @@ public class PlaceOrderController {
 	 @UserLog(description="使用钱币抵扣")
 	public DataWrapper<Integer> Ded(
 			@RequestHeader(value="token") String token,
-			@RequestParam(value="qbnum",required=false,defaultValue="0") Integer num
+			@RequestParam(value="qbnum",required=false,defaultValue="0") Integer num,
+			@RequestParam(value="sumItemsPrice",required=false,defaultValue="0") String sumItemsPrice
 			){
-		return placeOrderService.ded(token,num);
+		return placeOrderService.ded(token,num,sumItemsPrice);
 	}
 	//选择地址
 	@RequestMapping("upateAddress")

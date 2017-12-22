@@ -89,6 +89,16 @@ public class OrderItem extends BasePojo {
 		this.itemSKU = itemSKU;
 	}
 
+	public String getItemId() {
+		return itemId;
+	}
+
+
+	public void setItemId(String itemId) {
+		this.itemId = itemId;
+	}
+
+
 	public String getOrderId() {
 		return orderId;
 	}
@@ -149,13 +159,6 @@ public class OrderItem extends BasePojo {
 		this.itemInfo = itemInfo;
 	}
 
-	public String getItemId() {
-		return itemId;
-	}
-
-	public void setItemId(String itemId) {
-		this.itemId = itemId;
-	}
 
 	public Integer getQbDed() {
 		return qbDed;

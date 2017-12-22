@@ -188,12 +188,13 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 			return dataWrapper;
 		}
 		//一个人  同一个资料 不能收藏两次  在数据库中用复合主键实现
-
-		int sign=crawlerYellowPagesDao.collectionMater(userId,id);
-		if(sign>0){
+		int qqq=crawlerYellowPagesDao.queryIsCollect(userId,id);
+		if(qqq==0){
+			int sign=crawlerYellowPagesDao.collectionMater(userId,id);
 			dataWrapper.setMsg("收藏成功");
 		}else{
-			dataWrapper.setMsg("收藏失败");
+			crawlerYellowPagesDao.deleteCollect(userId,id);
+			dataWrapper.setMsg("取消收藏成功");
 		}
 		return dataWrapper;
 	}

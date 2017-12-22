@@ -1,15 +1,23 @@
 package com.yayiabc.http.mvc.controller.faq;
 
+import java.util.List;
+
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.stereotype.Controller;
+import org.springframework.web.bind.annotation.ModelAttribute;
+import org.springframework.web.bind.annotation.RequestHeader;
+import org.springframework.web.bind.annotation.RequestMapping;
+import org.springframework.web.bind.annotation.RequestParam;
+import org.springframework.web.bind.annotation.ResponseBody;
+
 import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.FaqAnswer;
 import com.yayiabc.http.mvc.pojo.jpa.FaqQuestion;
 import com.yayiabc.http.mvc.service.FaqService;
-import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.stereotype.Controller;
-import org.springframework.web.bind.annotation.*;
+import com.yayiabc.http.mvc.service.RedisService;
 
-import java.util.List;
+import redis.clients.jedis.Jedis;
 
 /**
  * 问答的管理
@@ -19,7 +27,8 @@ import java.util.List;
 public class FaqController {
     @Autowired
     private FaqService faqService;
-
+    @Autowired
+    private RedisService redisService;
     //提问
     @RequestMapping("addQuestion")
     @ResponseBody
@@ -40,6 +49,7 @@ public class FaqController {
             @ModelAttribute FaqAnswer faqAnswer,
             @RequestParam(value="faqQuestionId",required = true)Integer faqQuestionId
     ){
+    	
         return faqService.addAnswer(token,faqAnswer,faqQuestionId);
     }
 

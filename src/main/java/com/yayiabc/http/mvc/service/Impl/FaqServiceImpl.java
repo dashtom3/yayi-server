@@ -11,6 +11,9 @@ import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.FaqService;
 import com.yayiabc.http.mvc.service.RedisService;
 import com.yayiabc.http.mvc.service.VideoManageService;
+
+import redis.clients.jedis.Jedis;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
@@ -57,6 +60,10 @@ public class FaqServiceImpl implements FaqService {
         faqAnswer.setUserId(user.getUserId());
         faqAnswer.setUserName(user.getTrueName());
         faqAnswer.setUserPic(user.getUserPic());
+        //根据提供问题id 去找提问者userId
+        
+        Jedis jedis=redisService.getInstance().getJedis();
+        
         //保存进数据库
         int reflectRows=faqDao.addAnswer(faqAnswer,faqQuestionId);
         if(reflectRows==0){

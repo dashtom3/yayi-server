@@ -94,9 +94,10 @@
 		<result column="qb_balance" property="qbBalance" />
 		<result column="a_qb" property="aQb" />
 		<result column="c_qb" property="cQb" />
+		<result column="qb_notwith" property="qbNotwtih" />
 	</resultMap>
 
 	<select id="getUserQbNum" resultMap="qbBalanceMap">
-		select qb_balance,a_qb,c_qb from user where user_id=#{userId}
+		select qb_balance,a_qb,c_qb,qb_notwith from user where user_id=#{userId}
 	</select>
 </mapper>        

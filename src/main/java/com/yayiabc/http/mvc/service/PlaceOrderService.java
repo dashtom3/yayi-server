@@ -13,7 +13,7 @@ import com.yayiabc.http.mvc.pojo.model.FinalList;
 public interface PlaceOrderService {
    //点击购买 购物车
 
-	DataWrapper<Integer> ded(String phone, int num);
+	DataWrapper<Integer> ded(String phone, int num, String sumItemsPrice);
 
 
     //下面的更改地址

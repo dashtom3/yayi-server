@@ -243,10 +243,16 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	//付费病例
 	@Override
     public DataWrapper<Void> playChargePost(String token, Integer chargeNumber, Integer postId){
+		DataWrapper<Void> dw =new DataWrapper<>();
 		PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 		String userId=utilsDao.getUserID(token);
+		if(userId==null){
+			dw.setMsg("token错误");
+			return dw;
+		}
+		System.out.println("userid   "+userId);
 		String remark = "付费病例:支付"+chargeNumber+"个乾币。(乾币余额:userQbNum个)";
-		DataWrapper<Void> dw =new DataWrapper<>();
+		
 		Integer qb=cottomsPostDao.queryqb(userId);//查询余额
 		CottomsPost cottomsPost=new CottomsPost();
 		CottomsPost c=cottomsPostDao.cottomsDetail(postId+"");
@@ -296,6 +302,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	//我的已购病例
 	@Override
     public DataWrapper<List<CottomsPost>> myBuy(String token, Integer currentPage, Integer numberPerPage){
+		DataWrapper<List<CottomsPost>> dw=new DataWrapper<>();
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
@@ -303,9 +310,13 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		//获取已购买postId
 		List<Integer> list=cottomsPostDao.queryMyBuyPostId(userId);
 		System.out.println(list);
+		if(list.isEmpty()){
+			dw.setMsg("未购买病例");
+			return dw;
+		}
 		List<CottomsPost> cottomsPosts = cottomsPostDao.myBuy(list,page);
 		System.err.println(cottomsPosts);
-		DataWrapper<List<CottomsPost>> dw=new DataWrapper<>();
+		
 		for (CottomsPost cottomsPost : cottomsPosts) {
 			cottomsPost.setChargeContent(null);
 			int readNumber = (int)RedisService.SORTSET.zscore("阅读数",cottomsPost.getPostId()+"");//阅读数

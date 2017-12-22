@@ -105,11 +105,11 @@
 		from order_item
 		where order_id=#{orderId} AND itm_SKU=#{itemSKU}
 	</select>
-	<!--	utilsdao.saveRechargeMessage(codeId,utilsdao.getUserID(token),String.valueOf(qbNum),qbType,String.valueOf(money)); -->
+	<!-- utilsdao.saveRechargeMessage(codeId,utilsdao.getUserID(token),String.valueOf(qbNum),qbType,String.valueOf(money)); -->
 	<insert id="saveRechargeMessage">
 		insert into
 		charge(charge_id,token,qb_num,state,qb_type,money,created)values
-		      (#{codeId},#{userID},#{qbNum},1,#{qbType},#{money},now())
+		(#{codeId},#{userID},#{qbNum},1,#{qbType},#{money},now())
 	</insert>
 
 	<select id="queryUserByToken" resultType="java.lang.String">
@@ -150,10 +150,32 @@
 		select
 		us.user_id,us.true_name,us.phone,us.sale_id
 		,us.a_qb,us.c_qb,us.qb_balance,qb_notwith,ce.*
-		from `user` us join certification ce on  us.user_id=ce.user_id 
+		from `user` us join
+		certification ce on us.user_id=ce.user_id
 		where us.user_id=#{uid}
 	</select>
 
+	<!-- 拓展12 -->
+
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.User" id="userssYa">
+		<id property="userId" column="user_id" />
+		<result property="trueName" column="true_name" />
+		<result property="phone" column="phone" />
+		<result property="saleId" column="sale_id" />
+		<result property="aQb" column="a_qb" />
+		<result property="cQb" column="c_qb" />
+		<result property="qbBalance" column="qb_balance" />
+		<result property="qbNotwtih" column="qb_notwith" />
+	</resultMap>
+
+	<select id="queryUserByUserIdYa" resultMap="userssYa">
+		select
+		us.user_id,us.true_name,us.phone,us.sale_id
+		,us.a_qb,us.c_qb,us.qb_balance,qb_notwith
+		from `user` us
+		where
+		us.user_id=#{uid}
+	</select>
 	<select id="queryUserByPhone" resultType="com.yayiabc.http.mvc.pojo.jpa.User">
 		select * from `user`
 		where phone =#{phone}
@@ -171,25 +193,26 @@
 		from ordera where state=1
 	</select>
 
-<select id="getUserPcImgById" resultType="java.lang.String">
- select user_pic from user where user_id=#{userId}
-</select>
+	<select id="getUserPcImgById" resultType="java.lang.String">
+		select user_pic from user where user_id=#{userId}
+	</select>
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.User" id="getUser">
 		<id property="userId" column="user_id" />
-		<result property="trueName" column="true_name"/>
-		<result property="userPic" column="user_pic"/>
+		<result property="trueName" column="true_name" />
+		<result property="userPic" column="user_pic" />
 		<result property="aQb" column="a_qb" />
 		<result property="cQb" column="c_qb" />
 		<result property="qbBalance" column="qb_balance" />
 		<result property="phone" column="phone" />
 	</resultMap>
 	<select id="getUserByToken" resultMap="getUser">
-select user_id,true_name,user_pic,a_qb,c_qb,qb_balance,phone from user
-		where user_id=(select user_id from user_token where token=#{token})
+		select user_id,true_name,user_pic,a_qb,c_qb,qb_balance,phone from user
+		where
+		user_id=(select user_id from user_token where token=#{token})
 	</select>
 
-  <select id="getInvoiceByOrderId" resultType="com.yayiabc.http.mvc.pojo.jpa.Invoice">
-   select * from invoice where order_id=#{orderId}
-  </select>
+	<select id="getInvoiceByOrderId" resultType="com.yayiabc.http.mvc.pojo.jpa.Invoice">
+		select * from invoice where order_id=#{orderId}
+	</select>
 
 </mapper>       

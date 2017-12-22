@@ -29,12 +29,18 @@ public interface CrawlerYellowPagesDao {
 	int collectionMater(@Param("userId")String userId, @Param("id")String id);
 
 
-	List<UserCollectDataforDst> queryUserCollect(String userId);
+	List<UserCollectDataforDst> queryUserCollect(@Param("userId")String userId);
 
      
-	List<DaForDentist> userCollectionList(String userId);
+	List<DaForDentist> userCollectionList(@Param("userId")String userId);
 
 
-	List<Integer> queryCollectId(String userId);
+	List<Integer> queryCollectId(@Param("userId")String userId);
+
+
+	int queryIsCollect(@Param("userId")String userId, @Param("id")String id);
+
+
+	int deleteCollect(@Param("userId")String userId, @Param("id")String id);
 
 }

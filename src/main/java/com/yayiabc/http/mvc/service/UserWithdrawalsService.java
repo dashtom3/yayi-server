@@ -23,4 +23,6 @@ public interface UserWithdrawalsService {
 	DataWrapper<Object> latelyWithRecord(String token);
 
 	DataWrapper< List<UserWithExtend>> withHornPrompt();
+	
+	DataWrapper<Object> showUserQbNumPo(String token, String sumItemsPrice);
 }

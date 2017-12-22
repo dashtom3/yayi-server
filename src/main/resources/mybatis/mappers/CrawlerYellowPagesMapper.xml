@@ -126,4 +126,12 @@
 	<select id="queryCollectId" resultType="int">
 	 select id from user_collect_datafordst  order by collect_time desc
 	</select>
+	
+	<select id="queryIsCollect"  resultType="int">
+	select count(1) from user_collect_datafordst where id=#{id} and  user_id=#{userId}
+	</select>
+	 
+	 <delete id="deleteCollect">
+	  delete from user_collect_datafordst where id=#{id} and  user_id=#{userId}
+	 </delete>
 </mapper>       

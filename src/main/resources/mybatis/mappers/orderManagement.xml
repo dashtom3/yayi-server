@@ -545,7 +545,7 @@
 			update user
 			<set>
 				<if test="index==0">
-					qb_qbwith = qb_qbwith+${nn},
+					qb_notwith = qb_notwith+${nn},
 				</if>
 				<if test="index==1">
 					qb_balance = qb_balance+${nn},

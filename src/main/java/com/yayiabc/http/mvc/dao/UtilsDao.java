@@ -81,6 +81,8 @@ public interface UtilsDao {
 	Invoice getInvoiceByOrderId(@Param("orderId")String orderId);
 
 	String getUserPcImgById(@Param("userId")String userId);
+
+	User queryUserByUserIdYa(@Param("uid")String userId);
 	
 
 }

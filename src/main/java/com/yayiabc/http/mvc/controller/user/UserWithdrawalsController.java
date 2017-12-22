@@ -107,6 +107,16 @@ public class UserWithdrawalsController {
 		   ){
 	  return  userWithdrawalsService.showUserQbNum(token);
    }
+   
+ //为下单服务的钱币情况
+   @ResponseBody
+   @RequestMapping("showUserQbNumPo")
+   DataWrapper<Object> showUserQbNumPo(
+		   @RequestHeader(value="token",required=true) String token,
+		   @RequestParam(value="sumItemsPrice",required=false) String sumItemsPrice
+		   ){
+	  return  userWithdrawalsService.showUserQbNumPo(token,sumItemsPrice);
+   }
    //获取单用户最近的一次提现记录
    @ResponseBody
    @RequestMapping("latelyWithRecord")

@@ -24,23 +24,38 @@ public class CommentController {
     private RedisService redisService;
 
 
-
-    //添加评论redis
+    /**
+     * 添加评论
+     * @param token             用户的身份标识
+     * @param type             1.视频2.病例3.培训4.牙医圈
+     * @param beCommentedId  评论的内容的id
+     * @param parentId      父评论Id,如果是子评论就传Null
+     * @param comment      接收评论相关信息
+     * @return
+     */
     @RequestMapping("addCom")
     @ResponseBody
     @UserTokenValidate
     public DataWrapper<Object> addCom(
             @RequestHeader(value="token",required = true) String token,
-            @RequestParam(value="type",required = true) String type,//1.视频2.病例3.培训4.牙医圈
-            @RequestParam(value="beCommentedId",required = true) Integer beCommentedId,//以上内容的id
-            @RequestParam(value="parentId",required = true) Integer parentId,//父评论Id
+            @RequestParam(value="type",required = true) String type,
+            @RequestParam(value="beCommentedId",required = true) Integer beCommentedId,
+            @RequestParam(value="parentId",required = true) Integer parentId,
             @ModelAttribute Comment comment
             ){
        return commentService.addCom(token,type,beCommentedId,comment,parentId);
     }
 
 
-    //显示评论
+    /**
+     * 查找评论
+     * @param type               1.视频2.病例3.培训4.牙医圈
+     * @param beCommentedId     评论的内容的id
+     * @param currentPage       当前第几页(默认为1)
+     * @param numberPerPage     每页显示多少条(默认为10)
+     * @param token             用户的身份标识
+     * @return
+     */
     @RequestMapping("queryCom")
     @ResponseBody
     public DataWrapper<List<Comment>> queryCom(
@@ -50,19 +65,18 @@ public class CommentController {
             @RequestParam(value="numberPerPage",required=false,defaultValue="10")Integer numberPerPage,
             @RequestHeader(value="token",required = false) String token
     ){
-        DataWrapper<List<Comment>> dataWrapper=new DataWrapper<List<Comment>>();
-        int totalNumber=(int)redisService.LISTS.llen(type+"评论"+beCommentedId);
-        System.out.println("totalNumber"+totalNumber);
-        Page page=new Page();
-        page.setNumberPerPage(numberPerPage);
-        page.setCurrentPage(currentPage);
-        dataWrapper.setPage(page,totalNumber);
-        System.out.println(page);
-        dataWrapper.setData(commentService.queryCom(type,beCommentedId,currentPage,numberPerPage,token));
-        return dataWrapper;
+        return commentService.queryCom(type,beCommentedId,currentPage,numberPerPage,token);
     }
 
-    //删除评论
+    /**
+     * 删除评论
+     * @param token                 用户的身份标识，必须，只有自己才能删除自己
+     * @param type                  1.视频2.病例3.培训4.牙医圈
+     * @param beCommentedId         评论的内容的id
+     * @param parentId              一级评论的id
+     * @param presentId             二级评论的id
+     * @return
+     */
     @RequestMapping("delete")
     @ResponseBody
     public DataWrapper<Void> delete(

@@ -1,7 +1,10 @@
 package com.yayiabc.http.mvc.dao;
 
 import com.yayiabc.common.utils.Page;
+import com.yayiabc.http.mvc.pojo.jpa.Comment;
 import com.yayiabc.http.mvc.pojo.jpa.Moment;
+import com.yayiabc.http.mvc.pojo.jpa.SubComment;
+import com.yayiabc.http.mvc.pojo.jpa.User;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
@@ -27,9 +30,15 @@ public interface MomentManageDao {
 
     Map<String,String> getMomentTitleByPost(Integer momentContentId);
 
-    Map<String,String> getMomentTitleByTrain(Integer momentContentId);
-
-    String getUserIdByMomentId(Integer beCommentedId);
-
     Moment getMomentByMomentId(Integer momentId);
+
+    User getUserByMomentId(Integer beCommentedId);
+
+    User getUserBySubMomentId(Integer parentId);
+
+    int addComment(@Param("beCommentedId")Integer beCommentedId,@Param("coment") Comment coment,@Param("parentId") Integer parentId,@Param("userId")String userId);
+
+    List<SubComment> getMomentCommentList(Integer momentId);
+
+    Map<String,String> getMomentTitleByFaq(Integer momentContentId);
 }

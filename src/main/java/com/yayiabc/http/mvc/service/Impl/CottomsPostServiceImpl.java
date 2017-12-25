@@ -19,6 +19,7 @@ import java.util.Set;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
+import com.yayiabc.http.mvc.dao.CommentDao;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.stereotype.Service;
@@ -48,6 +49,9 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 
 	@Autowired 
 	ReadNumberServer readNumberServer;
+
+	@Autowired
+	private CommentDao commentDao;
 
 	@Autowired
 	RedisService redisService;
@@ -112,7 +116,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		List<CottomsPost> cottomsPosts=cottomsPostDao.queryPost(page,classify,order,postStater,list,userId,keyWord,type);
 		for (CottomsPost cottomsPost2 : cottomsPosts) {
 			int readNumber = (int)RedisService.SORTSET.zscore("阅读数", cottomsPost2.getPostId()+"");//获取阅读数
-			int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost2.getPostId());//获取评论数
+			int commentNumber =commentDao.getCommentNum(cottomsPost2.getPostId()+"",2);
 			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+cottomsPost2.getPostId());//获取点赞数
 			cottomsPost2.setReadNumber(readNumber);
 			cottomsPost2.setPostFavour(favourNumber);
@@ -152,7 +156,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			}
 		}
 		int readNumber = (int)RedisService.SORTSET.zscore("阅读数", postId+"");
-		int commentNumber = (int)RedisService.LISTS.llen("病例评论"+postId);//评论数
+		int commentNumber = commentDao.getCommentNum(postId,2);
 		int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+postId);//点赞数
 		cottomsPost1.setReadNumber(readNumber);
 		cottomsPost1.setPostFavour(favourNumber);

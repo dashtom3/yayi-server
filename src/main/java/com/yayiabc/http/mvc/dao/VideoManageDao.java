@@ -3,6 +3,7 @@ package com.yayiabc.http.mvc.dao;
 import java.util.List;
 import java.util.Set;
 
+import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
 import org.apache.ibatis.annotations.Param;
 
@@ -22,7 +23,7 @@ public interface VideoManageDao {
 
 
 
-	List<VidManage> showVid(@Param("rule")Integer rule,@Param("videoCategory") Integer videoCategory,@Param("keyWord")String keyWord);
+	List<VidManage> showVid(@Param("rule")Integer rule,@Param("videoCategory") Integer videoCategory,@Param("keyWord")String keyWord,@Param("page")Page page);
 
     VidManage detail(Integer viId);
 
@@ -33,4 +34,9 @@ public interface VideoManageDao {
 	String getVideoRoute(Integer viId);
 
     ItemInfo getVideoItem(String videoRout);
+
+
+    void playVideo(Integer viId);
+
+    int getVideoTotalNum(@Param("videoCategory")Integer videoCategory,@Param("keyWord") String keyWord);
 }

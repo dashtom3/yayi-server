@@ -5,6 +5,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
+import com.yayiabc.common.utils.GlobalVariables;
 import com.yayiabc.http.mvc.pojo.jpa.Comment;
 import com.yayiabc.http.mvc.pojo.jpa.SubComment;
 import com.yayiabc.http.mvc.service.CommentService;
@@ -26,6 +27,9 @@ import redis.clients.jedis.Jedis;
 
 @Service
 public class MomentManageServiceImpl implements MomentManageService{
+
+
+
     @Autowired
     private MomentManageDao momentManageDao;
     @Autowired
@@ -35,8 +39,6 @@ public class MomentManageServiceImpl implements MomentManageService{
     @Autowired
     private ZanService zanService;
 
-  /*  @Autowired
-    private RedisService redisService;*/
 
     @Override
     public DataWrapper<Void> add(Moment moment,String token) {
@@ -44,7 +46,7 @@ public class MomentManageServiceImpl implements MomentManageService{
         User user=utilsDao.getUserByToken(token);
         moment.setUserId(user.getUserId());
         try {
-            if (moment.getMomentType() ==1) {
+            if (moment.getMomentType() == GlobalVariables.BASE_MOMENT) {
                 momentManageDao.addLower(moment);
             } else {
                 momentManageDao.addHigh(moment);
@@ -60,7 +62,6 @@ public class MomentManageServiceImpl implements MomentManageService{
         DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
         momentManageDao.deleteMoment(momentId);
         Jedis jedis=redisService.getJedis();
-        //TODO delete the comments of moment
         //删除评论列表
         jedis.del("牙医圈评论"+momentId);
         //删除点赞计数列表
@@ -97,17 +98,8 @@ public class MomentManageServiceImpl implements MomentManageService{
 
 
     //获取牙医圈的评论列表
-    public List<SubComment> getSubCommentList(Integer parentId){
-        List<String> comListStr= redisService.LISTS.lrange("牙医圈评论"+ parentId,0,-1);
-        List<SubComment> subCommentList=new ArrayList<SubComment>();
-        JSONObject jsonObject=null;
-        SubComment subComment=null;
-        for (String jsonList:comListStr
-             ) {
-            jsonObject=JSONObject.fromObject(jsonList);
-            subComment=(SubComment)JSONObject.toBean(jsonObject,SubComment.class);
-            subCommentList.add(subComment);
-        }
+    public List<SubComment> getSubCommentList(Integer momentId){
+        List<SubComment> subCommentList=momentManageDao.getMomentCommentList(momentId);
         return subCommentList;
     }
 
@@ -152,12 +144,13 @@ public class MomentManageServiceImpl implements MomentManageService{
         }
         //如果是病例，培训，视频，填充图片和标题
         Map<String,String> map=new HashMap<String,String>();
-        if(moment.getMomentType()==2){//如果是2视频
+        //2.视频3.病例4.培训
+        if(moment.getMomentType()==GlobalVariables.VIDEO_MOMENT){
             map=momentManageDao.getMomentTitleByVedio(moment.getMomentContentId());
-        }else if(moment.getMomentType()==3){//如果是3病例
+        }else if(moment.getMomentType()==GlobalVariables.POST_MOMENT){
             map=momentManageDao.getMomentTitleByPost(moment.getMomentContentId());
-        }else if(moment.getMomentType()==4) {//如果是4培训
-            map = momentManageDao.getMomentTitleByTrain(moment.getMomentContentId());
+        }else if(moment.getMomentType()==GlobalVariables.FAQ_MOMENT) {
+            map = momentManageDao.getMomentTitleByFaq(moment.getMomentContentId());
         }
         if(map!=null){
             String momentContentTitle=map.get("contentTitle");

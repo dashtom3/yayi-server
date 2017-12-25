@@ -10,13 +10,13 @@ import com.yayiabc.http.mvc.pojo.jpa.VidManage;
 
 
 public interface VideoManageService {
-     //show
+
 	DataWrapper<Object>  showVid(Integer rule,Integer videoCategory,Integer currentPage,Integer numberPerPage,String keyWord,String token);
-	  //update
+
 	DataWrapper<Void> updateVid(VidManage vidManage);
-	//insert 
+
 	 DataWrapper<Void> insertVid(VidManage vidManage);
-	 //delete
+
 	 DataWrapper<Void> deleteVid(Integer viId);
 
 	DataWrapper<Void> play(Integer viId);

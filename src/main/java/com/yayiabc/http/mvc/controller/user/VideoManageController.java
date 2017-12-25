@@ -26,23 +26,34 @@ public class VideoManageController {
      @Autowired
      private VideoManageService videoManageService;
 
-    // @Autowired
-     private RedisService redisService;
-    
-     //
+
+    /**
+     * 显示视频列表
+     * @param rule                    排序规则  (1,最多播放2.最多评论,3.最新)
+     * @param videoCategory           视频分类  (1.外科2.内科3.修复4.种植5.正畸)
+     * @param currentPage             当前第几页(默认为 1)
+     * @param numberPerPage           每页显示多少条(默认为 10)
+     * @param token                    用户的身份标识，不传表示未登录
+     * @return
+     */
      @RequestMapping("showVid")
      @ResponseBody
      public DataWrapper<Object> showVid(
-             @RequestParam(value="rule",required = false,defaultValue = "3") Integer rule,//1,最多播放//2.最多评论
-             @RequestParam(value="videoCategory",required = false)Integer videoCategory,//1.外科2.内科3.修复4.种植5.正畸
+             @RequestParam(value="rule",required = false,defaultValue = "3") Integer rule,
+             @RequestParam(value="videoCategory",required = false)Integer videoCategory,
              @RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
              @RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
              @RequestHeader(value="token",required = false) String token
     		 ){
      	return videoManageService.showVid(rule,videoCategory,currentPage,numberPerPage,null,token);
      }
-     
-   //update
+
+    /**
+     * 修改视频
+     * @param adminToken     管理员身份凭证
+     * @param vidManage      以一个视频对象接收视频的信息
+     * @return
+     */
      @RequestMapping("updateVid")
      @ResponseBody
      @AdminTokenValidate
@@ -53,8 +64,13 @@ public class VideoManageController {
      		){
      	return videoManageService.updateVid(vidManage);
      }
-     
-     //insert
+
+    /**
+     * 管理员添加视频
+     * @param adminToken        管理员身份凭证
+     * @param vidManage         以一个视频对象接收视频的信息
+     * @return
+     */
      @RequestMapping("insertVid")
      @ResponseBody
      public DataWrapper<Void> insertVid(
@@ -63,8 +79,13 @@ public class VideoManageController {
      		){
          return videoManageService.insertVid(vidManage);
      }
-     
-   //delete
+
+    /**
+     * 删除视频
+     * @param adminToken        管理员身份凭证
+     * @param viId              要删除的视频id
+     * @return
+     */
      @RequestMapping("deleteVid")
      @ResponseBody
      @AdminTokenValidate
@@ -76,7 +97,11 @@ public class VideoManageController {
      	return videoManageService.deleteVid(viId);
      }
 
-     //播放视频
+    /**
+     * 视频播放
+     * @param viId  视频Id
+     * @return
+     */
     @RequestMapping("play")
     @ResponseBody
     public DataWrapper<Void> play(
@@ -85,7 +110,11 @@ public class VideoManageController {
     	return videoManageService.play(viId);
     }
 
-    //获取视频详情
+    /**
+     * 视频详情
+     * @param viId      要查看的视频的id
+     * @return
+     */
     @RequestMapping("detail")
     @ResponseBody
     public DataWrapper<VidManage> detail(
@@ -94,7 +123,12 @@ public class VideoManageController {
             return videoManageService.detail(viId);
     }
 
-    //添加收藏或者取消收藏
+    /**
+     * 添加收藏或者取消收藏
+     * @param token         用户的身份标识
+     * @param viId          视频Id
+     * @return
+     */
     @RequestMapping("star")
     @ResponseBody
     public DataWrapper<Void> star(
@@ -104,7 +138,11 @@ public class VideoManageController {
                 return videoManageService.star(token,viId);
     }
 
-    //视频相关商品
+    /**
+     * 获取视频相关商品的信息
+     * @param viId          视频id
+     * @return
+     */
     public DataWrapper<ItemInfo> videoItem(
             @RequestParam(value="viId",required = true) Integer viId
     ){

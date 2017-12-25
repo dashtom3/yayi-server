@@ -53,7 +53,8 @@ WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId
 	</resultMap>
 
 	<select id="showVid" resultMap="videoRM">
-		select vi_id,video_name,video_type,video_route,video_category,DATE_FORMAT(vedio_time,'%Y-%m-%d %H:%i:%s') As vedio_time,vedio_pic from vid_manage
+		select vi_id,video_name,video_type,video_route,video_category,DATE_FORMAT(vedio_time,'%Y-%m-%d %H:%i:%s') As
+		vedio_time,vedio_pic,play_num from vid_manage
 		<where>
 			<if test="videoCategory!=null and videoCategory!=''">
 				video_category=#{videoCategory}
@@ -62,7 +63,13 @@ WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId
 				and video_name like '%${keyWord}%'
 			</if>
 		</where>
-		order by vedio_time DESC
+		order by 
+		<choose>
+			<when test="rule==1">play_num DESC </when>
+			<when test="rule==2">comment_num DESC </when>
+			<otherwise>vedio_time DESC </otherwise>
+		</choose>
+		limit #{page.currentNumber},#{page.numberPerPage}
 	</select>
 
 	<select id="detail" resultMap="videoRM">
@@ -89,6 +96,24 @@ WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId
 		<id column="item_id" property="itemId"/>
 		<result column="item_name" property="itemName"/>
 	</resultMap>
+
+	<update id="playVideo">
+		update vid_manage set play_num=play_num+1 where vi_id=#{viId}
+	</update>
+
+	<select id="getVideoTotalNum" resultType="int">
+		select count(*) FROM vid_manage
+		<where>
+			<if test="videoCategory!=null">
+				video_type=#{videoCategory}
+			</if>
+			<if test="keyWord!=null and keyWord!=''">
+				and video_name like '%${keyWord}%'
+			</if>
+		</where>
+	</select>
+
+
 
 
 

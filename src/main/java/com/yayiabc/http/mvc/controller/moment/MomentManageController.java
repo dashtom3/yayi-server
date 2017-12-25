@@ -20,7 +20,7 @@ public class MomentManageController {
 
     
     //在朋友圈发布新动态
-    @RequestMapping("add")
+    @RequestMapping(value = "add")
     @ResponseBody
     @UserTokenValidate
     public DataWrapper<Void> add(

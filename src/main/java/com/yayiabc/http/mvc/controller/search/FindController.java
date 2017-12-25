@@ -9,6 +9,8 @@ import org.springframework.web.bind.annotation.RequestMethod;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import javax.servlet.http.HttpServletRequest;
+
 @Controller
 @RequestMapping("api/search")
 public class FindController {
@@ -26,6 +28,8 @@ public class FindController {
             @RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
             @RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
     ){
+        System.out.println("keyWord"+keyWord);
+        System.out.println("classify"+classify);
         return findService.findList(keyWord,type,classify,currentPage,numberPerPage);
     }
 }

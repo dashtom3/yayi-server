@@ -60,14 +60,17 @@ public class CommentServiceImpl implements CommentService {
     @Override
     public DataWrapper<Object> addCom(String token, String type, Integer beCommentedId, Comment comment,Integer parentId) {
         DataWrapper<Object> dataWrapper = new DataWrapper<Object>();
+        System.out.println("type"+type);
         //将类型转换成数字，存储进数据库
         int num= TypeToNumUtil.typeToNum(type);
+        System.out.println("num"+num);
         //如果为0则标识传入错误
         if(num==0){
             dataWrapper.setErrorCode(ErrorCodeEnum.Error);
             return dataWrapper;
         }
         User user = utilsDao.getUserByToken(token);
+        System.out.println("user"+user);
         //初始化点赞计数列表
 //        redisService.SORTSET.zadd("点赞计数列表"+type+":"+beCommentedId+str,0,commentId+"");
         //牙医圈
@@ -123,6 +126,8 @@ public class CommentServiceImpl implements CommentService {
             suffix=MESSAGE_TWO;
         }
         //自己不能评论自己
+        System.out.println("currentUser"+currentUser);
+        System.out.println("user"+user);
         boolean flag=currentUser.getUserId().equals(user.getUserId());
         if(flag&&(parentId!=null)){
             dataWrapper.setErrorCode(ErrorCodeEnum.Error);

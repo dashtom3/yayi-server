@@ -10,6 +10,7 @@ import javax.servlet.FilterConfig;
 import javax.servlet.ServletException;
 import javax.servlet.ServletRequest;
 import javax.servlet.ServletResponse;
+import javax.servlet.http.HttpServletRequest;
 import javax.servlet.http.HttpServletResponse;
 
 
@@ -33,28 +34,8 @@ public class CorsFilter implements Filter {
         response.setHeader("Access-Control-Max-Age", "3600");
         response.setHeader("Access-Control-Allow-Headers","x-requested-with,Authorization,Content-Type,token,admintoken,saletoken,date,Content-Encoding,server,connection,transfer-encoding");
         response.setHeader("Access-Control-Allow-Credentials", "true");
-//        filterChain.doFilter(servletRequest,response);
         response.setHeader("Content-Type","application/json;charset=UTF-8,application/gzip");
-        //创建HttpServletResponse 包装类的实例
-        MyHttpServletResponse myResponse = new MyHttpServletResponse(response) ;
-        filterChain.doFilter(servletRequest,myResponse);
-        //GZIP压缩：
-        byte[] buff = myResponse.getBufferedBytes() ;
-        //创建缓存容器：
-        ByteArrayOutputStream baos = new ByteArrayOutputStream() ;
-
-        GZIPOutputStream gzip = new GZIPOutputStream(baos) ;
-
-        gzip.write(buff) ;
-
-        gzip.close() ;
-
-        buff = baos.toByteArray() ;
-
-        //设置响应头；
-        response.setHeader("Content-Encoding", "gzip");
-        response.setContentLength(buff.length) ;
-        response.getOutputStream().write( buff) ;
+        filterChain.doFilter(servletRequest,response);
     }
 
     @Override

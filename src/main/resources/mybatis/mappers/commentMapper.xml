@@ -31,7 +31,9 @@
 		select count(*) from top_comment where type=#{numberType} and becommented_id=#{beCommentedId}
 	</select>
 
-	<select id="getCommentList" resultMap="comment">
+
+
+	<select id="getCommentList" resultType="Comment">
 		SELECT * FROM
 		(SELECT a.id,a.content,a.created,a.reply_num,b.user_id,b.true_name,b.user_pic
 		FROM top_comment a
@@ -39,7 +41,7 @@
 		WHERE a.becommented_id=#{beCommentedId} AND a.type=#{numberType} order by a.created DESC ) c
 		LEFT JOIN
 		(
-		SELECT d.id AS sub_id,d.content AS sub_content,d.created AS sub_created,e.user_id AS sub_user_id,e.true_name AS sub_user_name,e.user_pic AS sub_user_pic
+		SELECT d.id AS sub_id,d.content AS sub_content,d.created AS sub_created,e.user_id AS sub_user_id,e.true_name AS sub_user_name,e.user_pic AS sub_user_pic,d.top_id
 		FROM lower_comment d
 		LEFT JOIN `user` e ON d.user_id=e.user_id
 		) f ON c.id=f.top_id

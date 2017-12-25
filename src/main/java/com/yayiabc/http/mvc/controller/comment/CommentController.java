@@ -11,6 +11,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.io.UnsupportedEncodingException;
 import java.util.List;
 
 @Controller
@@ -33,7 +34,7 @@ public class CommentController {
      * @param comment      接收评论相关信息
      * @return
      */
-    @RequestMapping("addCom")
+    @RequestMapping(value="addCom",method = RequestMethod.POST)
     @ResponseBody
     @UserTokenValidate
     public DataWrapper<Object> addCom(
@@ -42,8 +43,7 @@ public class CommentController {
             @RequestParam(value="beCommentedId",required = true) Integer beCommentedId,
             @RequestParam(value="parentId",required = true) Integer parentId,
             @ModelAttribute Comment comment
-            ){
-    	System.out.println("type"+type);
+            ) {
        return commentService.addCom(token,type,beCommentedId,comment,parentId);
     }
 

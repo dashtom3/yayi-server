@@ -43,6 +43,7 @@ public class CommentController {
             @RequestParam(value="parentId",required = true) Integer parentId,
             @ModelAttribute Comment comment
             ){
+    	System.out.println("type"+type);
        return commentService.addCom(token,type,beCommentedId,comment,parentId);
     }
 

@@ -19,7 +19,42 @@ public interface CottomsPostDao {
 
 	//发布病例
 	public Integer addPost(CottomsPost cottomsPost);
-
+	
+	//每天获取乾币限制
+	public Integer dayGain(String userId);
+	
+	//按时间排序
+	public List<CottomsPost> queryPostTime(
+			@Param("page") Page page,
+			@Param("classify")Integer classify,
+			@Param("postStater")Integer postStater,
+			@Param("userId") String userId,
+			@Param("keyWord") String keyWord,
+			@Param("type")int type
+			);
+	
+	//查看病例按收藏数排序
+	public List<CottomsPost> queryPostCollect(
+			@Param("page") Page page,
+			@Param("classify")Integer classify,
+			@Param("postStater")Integer postStater,
+			@Param("userId") String userId,
+			@Param("keyWord") String keyWord,
+			@Param("type")int type
+			);
+	
+	//每周获取乾币限制
+	public Integer weekGain(String userId);
+	
+	//每天获取乾币次数加1，到达上限不能获取钱币
+	public void addDayNumber(String userId);
+	
+	//每周获取乾币次数加1，到达上限不能获取钱币
+	public void addWeekNumber(String userId);
+		
+	//发病例获取钱币
+	public void addQBWith(String userId);
+	
 	//显示病例
 	public List<CottomsPost> queryPost(
 			@Param("page") Page page,
@@ -97,7 +132,7 @@ public interface CottomsPostDao {
 	
 	//判断收藏是否存在
 	public Integer existPostId(
-			@Param("postId")Integer postId,
+			@Param("postId")String postId,
 			@Param("userId")String userId
 			);
 	//判断是否购买

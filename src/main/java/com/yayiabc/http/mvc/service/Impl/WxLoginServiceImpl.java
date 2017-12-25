@@ -10,6 +10,7 @@ import com.yayiabc.http.mvc.dao.SaleInfoDao;
 import com.yayiabc.http.mvc.dao.SaleLogDao;
 import com.yayiabc.http.mvc.dao.UserDao;
 import com.yayiabc.http.mvc.dao.WxAppDao;
+import com.yayiabc.http.mvc.pojo.jpa.Certification;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
@@ -122,7 +123,7 @@ public class WxLoginServiceImpl implements WxLoginService {
 
 
 	@Override
-	public DataWrapper<User> updateUserInfo(User user,Integer number,String openid) {
+	public DataWrapper<User> updateUserInfo(User user,Certification certification,Integer number,String openid) {
 		DataWrapper<User> dataWrapper =new DataWrapper<User>();
 		if(number==1){//已注册
 			userDao.updateUserInfo(user);
@@ -149,14 +150,10 @@ public class WxLoginServiceImpl implements WxLoginService {
 		}else{
 			 User newUser = new User();
              newUser.setPhone(user.getPhone());
-             newUser.setPwd(MD5Util.getMD5String("123456"));
-             if (1 == userDao.register(newUser)) {
+             newUser.setPwd(user.getPwd());
+             newUser.setPwd(MD5Util.getMD5String(user.getPwd()));
+             if (1 == userDao.register(newUser)){
                     String token = tokenService.getToken(newUser.getUserId());
-                    QbRecord qbRecord=new QbRecord();
-                    qbRecord.setQbRget(60+"");
-                    qbRecord.setRemark("注册送60乾币");
-                    qbRecord.setQbType("qb_balance");
-                    userMyQbService.add(qbRecord, token);
                     user.setUserId(newUser.getUserId());
                     userDao.registerUserInfo(user);
                     //微信注册完善资料时判断资质认证相关信息是否填写

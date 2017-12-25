@@ -29,6 +29,11 @@
 		<result column="id_card_otherside" property="idCardOtherside"/>
 	</resultMap>
 	
+		<!--查看资格证是否存在！不存在则为第一次认证！送60乾币  -->
+	<select id="seeDoctorPic" resultType="java.lang.String">
+		select doctor_pic from certification where user_id=#{userId}
+	</select>
+	
 	<select id="detail" resultMap="userPersonalInfoRM">
 		SELECT 
 		u.phone,

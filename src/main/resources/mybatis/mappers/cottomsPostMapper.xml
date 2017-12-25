@@ -8,8 +8,35 @@
 		select true_name,phone from
 		user where user_id=#{userId}
 	</select>
+	<!--每天发病例次数 -->
+	<select id="dayGain" resultType="java.lang.Integer">
+		select day from user where
+		user_id=#{userId}
+	</select>
 
-	<!--添加病例 -->
+	<!--每周发病例次数 -->
+	<select id="weekGain" resultType="java.lang.Integer">
+		select week from user where
+		user_id=#{userId}
+	</select>
+
+	<!--发布病例每天次数加1 -->
+	<update id="addDayNumber">
+		update user set day=day+1 where user_id=#{userId}
+	</update>
+
+	<!--发布病例每周次数加1 -->
+	<update id="addWeekNumber">
+		update user set week=week+1 where user_id=#{userId}
+	</update>
+
+	<!--获取钱币 -->
+	<update id="addQBWith">
+		update user set qb_notwith=qb_notwith+1 where
+		user_id=#{userId}
+	</update>
+
+	<!--发布病例 -->
 	<insert id="addPost" useGeneratedKeys="true" keyProperty="postId">
 		insert
 		into cottoms_post
@@ -27,7 +54,7 @@
 	</update>
 
 	<!--显示病例 -->
-	<resultMap type="CottomsPost" id="map">
+	<!-- <resultMap type="CottomsPost" id="map">
 		<result property="postStater" column="post_stater" />
 		<result property="headline" column="headline" />
 		<result property="classify" column="classify" />
@@ -42,10 +69,10 @@
 		<association property="user" javaType="User">
 			<result property="userPic" column="user_pic" />
 		</association>
-	</resultMap>
-	<select id="queryPost" resultMap="map">
+	</resultMap> -->
+	<select id="queryPost" resultType="com.yayiabc.http.mvc.pojo.jpa.CottomsPost">
 		select
-		cp.post_id,cp.headline,cp.classify,cp.writer,cp.cover,cp.post_time,charge_number,user.user_pic,cp.post_stater
+		cp.post_id,cp.headline,cp.classify,cp.writer,cp.cover,cp.post_time,cp.charge_number,user.user_pic,cp.post_stater
 		from
 		cottoms_post cp
 		left join user
@@ -58,27 +85,88 @@
 				cp.user_id=#{userId} and
 			</if>
 			<if test="classify!=null and classify!=''">
-				classify = #{classify} and
+				cp.classify = #{classify} and
 			</if>
 			<if test="keyWord!=null and keyWord!=''">
-				locate(#{keyWord},headline)&gt;0 and
+				cp.headline like '%${keyWord}%' and
 			</if>
-			post_stater=#{postStater}
-			
+			cp.post_stater=#{postStater}
+
 			<if test="list.size > 0">
-			and  post_id in
-			<foreach collection="list" item="postId" index="index" open="("
-				separator="," close=")">
-				#{postId}
-			</foreach>
+				and cp.post_id in
+				<foreach collection="list" item="postId" index="index" open="("
+					separator="," close=")">
+					#{postId}
+				</foreach>
 			</if>
-			
+
 		</where>
-		order by post_time desc 
-		limit #{page.currentNumber},#{page.numberPerPage}
-		
+		order by cp.post_time desc
+		limit
+		#{page.currentNumber},#{page.numberPerPage}
+
 	</select>
 
+	<!--查看病例列表按时间排序 -->
+	<select id="queryPostTime" resultType="com.yayiabc.http.mvc.pojo.jpa.CottomsPost">
+		select
+		cp.post_id,cp.headline,cp.classify,cp.writer,cp.cover,cp.post_time,cp.charge_number,user.user_pic,cp.post_stater
+		from
+		cottoms_post cp
+		left join user
+		on cp.user_id=user.user_id
+		<where>
+			<if test="type==2">
+				cp.user_id=#{userId} and
+			</if>
+			<if test="userId!=null and userId!=''">
+				cp.user_id=#{userId} and
+			</if>
+			<if test="classify!=null and classify!=''">
+				cp.classify = #{classify} and
+			</if>
+			<if test="keyWord!=null and keyWord!=''">
+				cp.headline like '%${keyWord}%' and
+			</if>
+			cp.post_stater=#{postStater}
+		</where>
+		order by cp.post_time desc
+		limit
+		#{page.currentNumber},#{page.numberPerPage}
+
+	</select>
+
+	<!--查看安收藏数排序 -->
+	<select id="queryPostCollect" resultType="com.yayiabc.http.mvc.pojo.jpa.CottomsPost">
+		SELECT
+		cp.post_id,cp.headline,cp.classify,cp.writer,cp.cover,cp.post_time,cp.charge_number,user.user_pic,cp.post_stater
+		FROM
+		cottoms_post cp
+		LEFT JOIN user
+		ON cp.user_id=user.user_id
+		LEFT JOIN
+		(SELECT post_id,COUNT(user_id) collectNumber FROM collect GROUP BY
+		post_id) AS a
+		ON a.post_id = cp.post_id
+		<where>
+			<if test="type==2">
+				cp.user_id=#{userId} and
+			</if>
+			<if test="userId!=null and userId!=''">
+				cp.user_id=#{userId} and
+			</if>
+			<if test="classify!=null and classify!=''">
+				cp.classify = #{classify} and
+			</if>
+			<if test="keyWord!=null and keyWord!=''">
+				cp.headline like '%${keyWord}%' and
+			</if>
+			cp.post_stater=#{postStater}
+		</where>
+		ORDER BY a.collectNumber DESC
+		limit #{page.currentNumber},#{page.numberPerPage}
+
+	</select>
 	<!--根据点赞分类排序 -->
 	<select id="queryClassifyPost" resultType="CottomsPost">
 		select * from cottoms_post where
@@ -111,7 +199,7 @@
 				classify=#{classify}
 			</if>
 			<if test="keyWord!=null and keyWord!=''">
-				and locate(#{keyWord},headline)&gt;0
+				and headline like '%${keyWord}%'
 			</if>
 		</where>
 	</select>
@@ -143,7 +231,8 @@
 
 	<!-- 发布者获取乾币 -->
 	<update id="addQB">
-		update user set qb_notwith=qb_notwith+#{chargeNumber} where user_id=#{userId}
+		update user set qb_notwith=qb_notwith+#{chargeNumber}
+		where user_id=#{userId}
 	</update>
 	<!-- <select id="commentsLike" resultType="java.lang.Integer"> select comment_favour 
 		from cottoms_comment where comment_id=#{commentId} </select> <update id="commentsLikeAdd"> 
@@ -176,19 +265,21 @@
 	</select>
 
 	<!--我的收藏 -->
-	<select id="myCollect" resultType="CottomsPost">
+	<select id="myCollect" resultMap="IBuy">
 		select
-		cottoms_post.post_id,headline,classify,post_time,free_content,charge_content,writer,cover,cottoms_post.user_id,charge_number,read_number
-		from collect right join cottoms_post on
-		cottoms_post.user_id=collect.user_id
+		cottoms_post.headline,cottoms_post.classify,cottoms_post.post_time,cottoms_post.free_content,cottoms_post.charge_content,
+		cottoms_post.writer,cottoms_post.cover,cottoms_post.user_id,cottoms_post.charge_number,cottoms_post.read_number,
+		cottoms_post.post_id,user.user_pic
+		from cottoms_post right join user on
+		cottoms_post.user_id=user.user_id
 		<where>
 			cottoms_post.post_id in
 			<foreach collection="list" item="postId" index="index" open="("
 				separator="," close=")">
 				#{postId}
 			</foreach>
+			limit #{page.currentNumber},#{page.numberPerPage}
 		</where>
-		LIMIT #{page.currentNumber},#{page.numberPerPage}
 	</select>
 
 	<!--收藏是否存在 -->
@@ -211,32 +302,50 @@
 	</select>
 
 	<!--我的购买病例 -->
-	<select id="myBuy" resultType="CottomsPost">
+	<resultMap type="CottomsPost" id="IBuy">
+		<result property="headline" column="headline" />
+		<result property="classify" column="classify" />
+		<result property="freeContent" column="free_content" />
+		<result property="chargeContent" column="charge_content" />
+		<result property="writer" column="writer" />
+		<result property="chargeNumber" column="charge_number" />
+		<result property="cover" column="cover" />
+		<result property="userId" column="user_id" />
+		<result property="postId" column="post_id" />
+		<result property="postTime" column="post_time" />
+		<association property="user" javaType="User">
+			<result property="userPic" column="user_pic" />
+		</association>
+	</resultMap>
+	<select id="myBuy" resultMap="IBuy">
 		select
-		headline,classify,post_time,free_content,charge_content,writer,
-		cover,cottoms_post.user_id,charge_number,read_number,cottoms_post.post_id
-		from user_to_post right join cottoms_post on
-		cottoms_post.user_id=user_to_post.user_id
+		cottoms_post.headline,cottoms_post.classify,cottoms_post.post_time,cottoms_post.free_content,cottoms_post.charge_content,
+		cottoms_post.writer,cottoms_post.cover,cottoms_post.user_id,cottoms_post.charge_number,cottoms_post.read_number,
+		cottoms_post.post_id,user.user_pic
+		from cottoms_post right join user on
+		cottoms_post.user_id=user.user_id
 		<where>
 			cottoms_post.post_id in
 			<foreach collection="list" item="postId" index="index" open="("
 				separator="," close=")">
 				#{postId}
 			</foreach>
-			
+			limit #{page.currentNumber},#{page.numberPerPage}
 		</where>
-		limit #{page.currentNumber},#{page.numberPerPage}
 	</select>
 
-	<!--我是注释内容-->
-	
-	<!--查询钱币余额  -->
+	<!--我是注释内容 -->
+
+	<!--查询钱币余额 -->
 	<select id="queryqb" resultType="java.lang.Integer">
-		select (a_qb+qb_notwith+c_qb+qb_balance) qb_balance from user 
-		where user_id=#{userId}
+		select
+		(a_qb+qb_notwith+c_qb+qb_balance) qb_balance from user
+		where
+		user_id=#{userId}
 	</select>
 
 	<select id="getUserIdByPostId" resultType="string">
-		select user_id from cottoms_post where post_id=#{beCommentedId}
+		select user_id from
+		cottoms_post where post_id=#{beCommentedId}
 	</select>
 </mapper>

@@ -14,8 +14,19 @@
 	</insert>
 	
 	<insert id="register" parameterType="User" useGeneratedKeys="true" keyProperty="userId">
-		insert into user(phone,pwd,created,updated)
-		values(#{phone},#{pwd},now(),now())
+		insert into
+		user
+		(phone,pwd,created,updated,true_name)
+		values
+		(#{phone},#{pwd},now(),now(),#{trueName})
+	</insert>
+	
+	<insert id="register1" parameterType="Certification">
+		insert into
+		certification
+		(user_id,company_name,part,work_address)
+		values
+		(#{userId},#{companyName},#{part},#{workAddress})
 	</insert>
 
 	<select id="getUserByUserId" resultMap="userMap">
@@ -110,7 +121,6 @@
 		 tax_registration=#{certification.taxRegistration},opening_permit=#{certification.openingPermit},radiological_permit=#{certification.radiologicalPermit},
 		 id_card_positive=#{certification.idCardPositive},id_card_otherside=#{certification.idCardOtherside} where user_id=#{userId}
 	</update>
-	
 	<select id="getUserIdByPhone" resultType="string">
 		select user_id from user where phone=#{phone}
 	</select>

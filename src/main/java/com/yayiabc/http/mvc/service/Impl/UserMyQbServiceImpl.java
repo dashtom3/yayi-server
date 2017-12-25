@@ -41,7 +41,6 @@ public class UserMyQbServiceImpl implements UserMyQbService {
 			//Integer qb = userMyQbDao.queryQbbalance(userId,qbRecord.getQbType());
 			if (qbRecord.getQbRget() != null) {
 				userMyQbDao.updateUserQb(qbRecord.getQbRget(), userId,qbRecord.getQbType());
-				System.out.println("到这里了");
 				qbRecord.setMillisecond(MI);
 				adds(qbRecord);
 			} else if (qbRecord.getQbRout() != null) {

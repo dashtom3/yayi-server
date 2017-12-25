@@ -4,6 +4,10 @@ import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.UserService;
+
+import okhttp3.MultipartBody.Part;
+
+import org.bouncycastle.crypto.digests.Blake2bDigest;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
@@ -35,11 +39,16 @@ public class UserController {
 	public DataWrapper<User> register(
 			@RequestParam(value = "phone", required = true) String phone,
 			@RequestParam(value = "password", required = true) String password,
+			@RequestParam(value="trueName",required = true)String trueName,
+			@RequestParam(value="companyName",required=true)String companyName,
+			@RequestParam(value="part",required=true)String part,
+			@RequestParam(value="workAddress",required=true) String workAddress,
 			@RequestParam(value = "code", required = true) String code,
 			@RequestParam(value = "openid", required = false) String openid,
-			@RequestParam(value = "id",required=false) Integer id
+			@RequestParam(value = "id",required=false) Integer id,
+			@RequestParam(value = "userType",required=true) Integer userType
 			){
-		return userService.register(phone,password,code,openid,id);
+		return userService.register(phone,password,trueName,companyName,part,workAddress,code,openid,id,userType);
 	}
 	
 	
@@ -103,7 +112,7 @@ public class UserController {
 	){
 		return userService.bindSale(token,salePhone);
 	}
-
+	
 	//彻底删除
 	@RequestMapping(value = "deleteInGrainUser",method = RequestMethod.POST)
 	@ResponseBody

@@ -1,6 +1,7 @@
 package com.yayiabc.http.mvc.service;
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.pojo.jpa.Certification;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 
@@ -13,7 +14,7 @@ public interface WxLoginService {
 
     DataWrapper<Object> bindUser(String phone, String verifyCode, String type);
 
-	DataWrapper<User> updateUserInfo(User user,Integer number,String openid);
+	DataWrapper<User> updateUserInfo(User user,Certification certification,Integer number,String openid);
 
 	DataWrapper<SaleInfo> updateSaleInfo(SaleInfo saleInfo, Integer number,String openid);
 

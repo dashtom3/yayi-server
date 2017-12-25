@@ -15,7 +15,7 @@ public class Certification extends BasePojo {
 
 	private String doctorPic;
 
-	private String workAddress;
+	private String s;
 
 	private Integer state;
 
@@ -23,6 +23,8 @@ public class Certification extends BasePojo {
 
 	private Integer judge;
 
+	private String workAddress;
+	
 	private String medicalLicense; // 医疗机构执业许可证
 	private String businessLicense; // 营业执照
 	private String taxRegistration; // 税务登记证

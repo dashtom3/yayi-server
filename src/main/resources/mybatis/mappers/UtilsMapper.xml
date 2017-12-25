@@ -46,6 +46,11 @@
 		where
 		order_id =#{orderId}
 	</select>
+	<!--查看资格证是否存在！不存在则为第一次认证！送60乾币 -->
+	<select id="seeDoctorPic">
+		select doctor_pic from certification where
+		user_id=#{userId}
+	</select>
 	<!-- @Param("saleId")String saleId, @Param("orderId")String orderId, @Param("refund_money_haocai")String 
 		refund_money_haocai, @Param("refund_money_gongju")String refund_money_gongju, 
 		@Param("Supplies_sumprice")String Supplies_sumprice, @Param("Tooldevices_sumprice")String 

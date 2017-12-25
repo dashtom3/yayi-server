@@ -4,6 +4,7 @@ import com.fasterxml.jackson.annotation.JsonFormat;
 import org.springframework.format.annotation.DateTimeFormat;
 
 import java.io.Serializable;
+import java.sql.Time;
 import java.util.Date;
 import java.util.List;
 
@@ -38,7 +39,8 @@ public class User extends BasePojo implements Serializable {
 	private String reflect;
 
 	private Certification certification;
-
+	
+	private CottomsPost cottomsPost;
 	// private List<Refund> refundList;
 
 	private SaleInfo saleinfo;
@@ -52,12 +54,26 @@ public class User extends BasePojo implements Serializable {
 	private Integer id;
 	
 	private List<UserWith> userWithList;
-    
 	
+	private Integer day;
 	
+	private Integer week;
 
+	public Integer getDay() {
+		return day;
+	}
 
+	public void setDay(Integer day) {
+		this.day = day;
+	}
 
+	public Integer getWeek() {
+		return week;
+	}
+
+	public void setWeek(Integer week) {
+		this.week = week;
+	}
 
 	public Integer getId() {
 		return id;
@@ -126,12 +142,13 @@ public class User extends BasePojo implements Serializable {
 		this.phone = phone == null ? null : phone.trim();
 	}
 
+	
 	public String getPwd() {
 		return pwd;
 	}
 
 	public void setPwd(String pwd) {
-		this.pwd = pwd == null ? null : pwd.trim();
+		this.pwd = pwd;
 	}
 
 	public Integer getIdentity() {
@@ -231,15 +248,27 @@ public class User extends BasePojo implements Serializable {
 		this.qbRecordList = qbRecordList;
 	}
 
+	
+
 	@Override
 	public String toString() {
 		return "User [userId=" + userId + ", saleId=" + saleId + ", phone=" + phone + ", pwd=" + pwd + ", identity="
 				+ identity + ", trueName=" + trueName + ", sex=" + sex + ", userPic=" + userPic + ", birthday="
 				+ birthday + ", qq=" + qq + ", qbBalance=" + qbBalance + ", qbNotwtih=" + qbNotwtih + ", reflect="
-				+ reflect + ", certification=" + certification + ", saleinfo=" + saleinfo + ", orderaList=" + orderaList
-				+ ", qbRecordList=" + qbRecordList + ", aQb=" + aQb + ", cQb=" + cQb + ", byId=" + id
-				+ ", userWithList=" + userWithList + "]";
+				+ reflect + ", certification=" + certification + ", cottomsPost=" + cottomsPost + ", saleinfo="
+				+ saleinfo + ", orderaList=" + orderaList + ", qbRecordList=" + qbRecordList + ", aQb=" + aQb + ", cQb="
+				+ cQb + ", id=" + id + ", userWithList=" + userWithList + ", day=" + day + ", week=" + week + "]";
 	}
+
+	public CottomsPost getCottomsPost() {
+		return cottomsPost;
+	}
+
+	public void setCottomsPost(CottomsPost cottomsPost) {
+		this.cottomsPost = cottomsPost;
+	}
+
+	
 
 	
 

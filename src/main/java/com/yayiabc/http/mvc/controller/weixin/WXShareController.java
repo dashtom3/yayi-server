@@ -22,7 +22,7 @@ import com.yayiabc.http.mvc.pojo.jpa.WXEntry;
 @Controller
 @RequestMapping("api/weixin")
 public class WXShareController {
-	
+//	
 //	@RequestMapping("share")
 //	@ResponseBody
 //	public DataWrapper<WXEntry> share (
@@ -53,7 +53,7 @@ public class WXShareController {
 //		System.out.println(signMap);
 //		wXEntry.setNonceStr(signMap.get("nonceStr"));
 //		wXEntry.setSignature(signMap.get("signature"));
-//		wXEntry.setTimestamp(signMap.get("timestamp"));
+//		wXEntry.setTimestamp(signMap.get(""));
 //		dataWrapper.setData(wXEntry);
 //		dataWrapper.setErrorCode(ErrorCodeEnum.No_Error);
 //		return dataWrapper;

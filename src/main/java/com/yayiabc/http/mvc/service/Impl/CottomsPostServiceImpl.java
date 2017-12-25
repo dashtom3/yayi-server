@@ -16,6 +16,7 @@ import java.util.List;
 import java.util.Map;
 import java.util.Set;
 
+import javax.lang.model.util.ElementScanner6;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
@@ -24,6 +25,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.stereotype.Service;
 
+import com.alibaba.druid.sql.ast.statement.SQLIfStatement.Else;
 import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.ExcelUtil;
@@ -58,7 +60,6 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	//发布或更改病例（传过来无postId为发布，有postId为更改）
 	@Override
 	public DataWrapper<Void> addPost(CottomsPost cottomsPost,String token) {
-		
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		if(token!=null){
 			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
@@ -68,6 +69,27 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			String trueName= cottomsPostDao.gettrueName(userId);
 			cottomsPost.setWriter(trueName);
 			System.out.println(cottomsPost.getPostId());
+			int day=0;
+			int week=0;
+			if(cottomsPostDao.dayGain(userId)==null){
+				day=0;
+			}else{
+				day=cottomsPostDao.dayGain(userId);
+			}
+			if(cottomsPostDao.weekGain(userId)==null){
+				week=0;
+			}else{
+				week=cottomsPostDao.weekGain(userId);
+			}
+			if(day>=5||week>=20){
+				
+			}else{
+				if(day<=5){
+					cottomsPostDao.addDayNumber(userId);
+					cottomsPostDao.addWeekNumber(userId);
+					cottomsPostDao.addQBWith(userId);
+				}
+			}
 			if(cottomsPost.getPostId()==null){
 				cottomsPostDao.addPost(cottomsPost);
 				//发布病例点赞默认为0
@@ -100,20 +122,21 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		String key="";
-		if(order==2){
-			key="点赞计数列表";
-		}else if(order==1){
-			key="自增序列";
-		}else{
-			key="";
-		}
+		
 		int totalNumber=cottomsPostDao.getTotalNumber(classify,keyWord);
 		Set<String> set = RedisService.SORTSET.zrevrange("点赞计数列表病例:", 0, totalNumber);
 		List<String> list =new ArrayList<String>();
 		list.addAll(set);
+		System.out.println(set);
 		System.out.println(page.getCurrentNumber());
-		List<CottomsPost> cottomsPosts=cottomsPostDao.queryPost(page,classify,order,postStater,list,userId,keyWord,type);
+		List<CottomsPost> cottomsPosts=null;
+		if(order==0){
+			cottomsPosts=cottomsPostDao.queryPostTime(page, classify, postStater, userId, keyWord, type);
+		}else if(order==1){
+			cottomsPosts=cottomsPostDao.queryPost(page,classify,order,postStater,list,userId,keyWord,type);
+		}else if(order==2){
+			cottomsPosts=cottomsPostDao.queryPostCollect(page,classify,postStater,userId,keyWord,type);
+		}
 		for (CottomsPost cottomsPost2 : cottomsPosts) {
 			int readNumber = (int)RedisService.SORTSET.zscore("阅读数", cottomsPost2.getPostId()+"");//获取阅读数
 			int commentNumber =commentDao.getCommentNum(cottomsPost2.getPostId()+"",2);
@@ -142,9 +165,6 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 
 		List<String> postIdFees=cottomsPostDao.queryFees(userId);//获取本用户付费病例id
 		CottomsPost cottomsPost1=cottomsPostDao.cottomsDetail(postId);
-		
-		System.out.println(cottomsPost1+"   000");
-		
 		dataWrapper.setFl((utilsDao.getUserPcImgById(cottomsPost1.getUserId())));
 		boolean userIde=false;
 		String post=postId+"";
@@ -155,12 +175,20 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 				userIde=true;
 			}
 		}
+		boolean isPraise = redisService.SETS.sismember("点赞用户列表病例:"+postId, userId);
+		Integer isCollect=cottomsPostDao.existPostId(postId,userId);
+		int a=0;
+		if(isPraise){
+			a=1;
+		}
 		int readNumber = (int)RedisService.SORTSET.zscore("阅读数", postId+"");
 		int commentNumber = commentDao.getCommentNum(postId,2);
 		int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+postId);//点赞数
 		cottomsPost1.setReadNumber(readNumber);
 		cottomsPost1.setPostFavour(favourNumber);
 		cottomsPost1.setCommentNumber(commentNumber);
+		cottomsPost1.setIsPraise(a);
+		cottomsPost1.setIsCollect(isCollect);
 		if(token!=null&&userIde==true) {
 			dataWrapper.setData(cottomsPost1);
 			return dataWrapper;
@@ -247,16 +275,10 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	//付费病例
 	@Override
     public DataWrapper<Void> playChargePost(String token, Integer chargeNumber, Integer postId){
-		DataWrapper<Void> dw =new DataWrapper<>();
 		PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 		String userId=utilsDao.getUserID(token);
-		if(userId==null){
-			dw.setMsg("token错误");
-			return dw;
-		}
-		System.out.println("userid   "+userId);
 		String remark = "付费病例:支付"+chargeNumber+"个乾币。(乾币余额:userQbNum个)";
-		
+		DataWrapper<Void> dw =new DataWrapper<>();
 		Integer qb=cottomsPostDao.queryqb(userId);//查询余额
 		CottomsPost cottomsPost=new CottomsPost();
 		CottomsPost c=cottomsPostDao.cottomsDetail(postId+"");
@@ -290,7 +312,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		DataWrapper<Void> dw =new DataWrapper<>();
 		String userId=utilsDao.getUserID(token);
 		if(userId!=null){
-			Integer p=cottomsPostDao.existPostId(postId,userId);//判断收藏是否存在
+			Integer p=cottomsPostDao.existPostId(postId+"",userId);//判断收藏是否存在
 			if(p==0){
 				cottomsPostDao.collect(postId,userId);
 				dw.setMsg("收藏成功");
@@ -306,21 +328,15 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	//我的已购病例
 	@Override
     public DataWrapper<List<CottomsPost>> myBuy(String token, Integer currentPage, Integer numberPerPage){
-		DataWrapper<List<CottomsPost>> dw=new DataWrapper<>();
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
 		String userId=utilsDao.getUserID(token);
 		//获取已购买postId
 		List<Integer> list=cottomsPostDao.queryMyBuyPostId(userId);
-		System.out.println(list);
-		if(list.isEmpty()){
-			dw.setMsg("未购买病例");
-			return dw;
-		}
 		List<CottomsPost> cottomsPosts = cottomsPostDao.myBuy(list,page);
 		System.err.println(cottomsPosts);
-		
+		DataWrapper<List<CottomsPost>> dw=new DataWrapper<>();
 		for (CottomsPost cottomsPost : cottomsPosts) {
 			cottomsPost.setChargeContent(null);
 			int readNumber = (int)RedisService.SORTSET.zscore("阅读数",cottomsPost.getPostId()+"");//阅读数

@@ -3,6 +3,7 @@ package com.yayiabc.http.mvc.dao;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import com.yayiabc.http.mvc.pojo.jpa.Certification;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.Invite;
 import com.yayiabc.http.mvc.pojo.model.UserToken;
@@ -17,9 +18,10 @@ public interface UserDao {
 	void presented(Integer id);
 	//记录注册人邀请人信息
 	void addUser(@Param("id")Integer id,@Param("byid")String byid);
-	
+	//添加user信息
 	Integer register(User newUser);
-
+	//完善信息
+	Integer register1(Certification certification);
 	int getCartNum(User user);
 
 	void updatePwd(@Param("phone")String phone,@Param("pwd")String pwd);

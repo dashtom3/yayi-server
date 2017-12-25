@@ -23,8 +23,7 @@ public interface UtilsDao {
 	String getSaleToken(@Param("saleId")String saleId);
      
 	String queryPhone(@Param("userId")String userId);
-
-     
+	
 	String getSaleIdByOrderId(@Param("orderId")String orderId);
 
 	String querySalePhoneBySaleId(@Param("saleId")String saleId);

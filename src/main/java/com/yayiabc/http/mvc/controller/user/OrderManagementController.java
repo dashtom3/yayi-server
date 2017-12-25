@@ -1,12 +1,18 @@
 package com.yayiabc.http.mvc.controller.user;
 
 import java.io.IOException;
+import java.io.UnsupportedEncodingException;
 import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
+import org.apache.poi.hssf.usermodel.HSSFCell;
+import org.apache.poi.hssf.usermodel.HSSFCellStyle;
+import org.apache.poi.hssf.usermodel.HSSFRow;
+import org.apache.poi.hssf.usermodel.HSSFSheet;
+import org.apache.poi.hssf.usermodel.HSSFWorkbook;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.RequestHeader;
@@ -18,6 +24,7 @@ import com.alibaba.fastjson.JSONObject;
 import com.yayiabc.common.annotation.AdminLog;
 import com.yayiabc.common.annotation.AdminTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.common.utils.SerializeUtil;
 import com.yayiabc.http.mvc.pojo.jpa.Invoice;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
@@ -179,7 +186,6 @@ public class OrderManagementController {
 
 		return orderManagementService.queryUserQbList(phone,currentPage,numberPerpage);
 	}
-	
 	@RequestMapping("electronicSheet ")
 	@ResponseBody
 	//@AdminLog(description="后台订单列表导出Excel表格")

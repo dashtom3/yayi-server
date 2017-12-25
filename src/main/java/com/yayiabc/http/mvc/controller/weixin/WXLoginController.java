@@ -4,6 +4,7 @@ import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.dao.SaleInfoDao;
 import com.yayiabc.http.mvc.dao.UserDao;
+import com.yayiabc.http.mvc.pojo.jpa.Certification;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.WxLoginService;
@@ -55,10 +56,11 @@ public class WXLoginController {
     @ResponseBody
     public DataWrapper<User> updateUserInfo(
     		@ModelAttribute User user,
+    		@ModelAttribute Certification certification,
             @RequestParam(value="openid",required=true) String openid,
     		@RequestParam(value="number",required=true) Integer number//1表示已注册2.表示未注册
     		){
-    	return wxLoginService.updateUserInfo(user,number,openid);
+    	return wxLoginService.updateUserInfo(user,certification,number,openid);
     }
     
     @RequestMapping("updateSaleInfo")

@@ -1,6 +1,7 @@
 package com.yayiabc.http.mvc.controller.app;
 
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.pojo.jpa.Certification;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.AppUserService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -27,9 +28,10 @@ public class AppUserController {
     @ResponseBody
     public DataWrapper<User> register(
             @ModelAttribute User user,
+            @ModelAttribute Certification certification,
             @RequestParam(value="code",required = true) String code
     ){
 
-        return appUserService.regiseter(user,code);
+        return appUserService.regiseter(user,certification,code);
     }
 }

@@ -7,6 +7,7 @@ import com.yayiabc.common.utils.MD5Util;
 import com.yayiabc.common.utils.VerifiCodeValidateUtil;
 import com.yayiabc.http.mvc.dao.AppUserDao;
 import com.yayiabc.http.mvc.dao.UserDao;
+import com.yayiabc.http.mvc.pojo.jpa.Certification;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.AppUserService;
@@ -33,7 +34,7 @@ public class AppUserServiceImpl implements AppUserService {
     @Autowired
     private TokenService tokenService;
     @Override
-    public DataWrapper<User> regiseter(User user,String code) {
+    public DataWrapper<User> regiseter(User user,Certification certification,String code) {
         DataWrapper<User> dataWrapper = new DataWrapper<User>();
         if (userDao.getUserByPhone(user.getPhone()) == null) {
             ErrorCodeEnum codeEnum= VerifiCodeValidateUtil.verifiCodeValidate(user.getPhone(),code);
@@ -43,13 +44,10 @@ public class AppUserServiceImpl implements AppUserService {
             }
             user.setPwd(MD5Util.getMD5String(user.getPwd()));
             if (1 == userDao.register(user)) {
+            	certification.setUserId(user.getUserId());
+            	userDao.register1(certification);
                 VerifyCodeManager.removePhoneCodeByPhoneNum(user.getPhone());
                 String token = tokenService.getToken(user.getUserId());
-                QbRecord qbRecord=new QbRecord();
-                qbRecord.setQbRget(60+"");
-                qbRecord.setRemark("注册送60乾币");
-                qbRecord.setQbType("qb_balance");
-                userMyQbService.add(qbRecord, token);
                 userDao.registerUserInfo(user);
                 userDao.registerUserCertification(user);
                 user.setCreated(new Date());

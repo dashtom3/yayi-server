@@ -27,7 +27,8 @@ public class CottomsPost {
 	private Date replyTime;
 	private Integer postStater;
 	private Integer chargeNumber;
-	private User user;
+	private int isPraise;//是否点赞
+	private int isCollect;//是否收藏
 	public String getUserId() {
 		return userId;
 	}
@@ -131,11 +132,19 @@ public class CottomsPost {
 	public void setChargeNumber(Integer chargeNumber) {
 		this.chargeNumber = chargeNumber;
 	}
-	public User getUser() {
-		return user;
+	
+	
+	public int getIsPraise() {
+		return isPraise;
 	}
-	public void setUser(User user) {
-		this.user = user;
+	public void setIsPraise(int isPraise) {
+		this.isPraise = isPraise;
+	}
+	public int getIsCollect() {
+		return isCollect;
+	}
+	public void setIsCollect(int isCollect) {
+		this.isCollect = isCollect;
 	}
 	@Override
 	public String toString() {
@@ -143,13 +152,13 @@ public class CottomsPost {
 				+ classify + ", freeContent=" + freeContent + ", chargeContent=" + chargeContent + ", postTime="
 				+ postTime + ", writer=" + writer + ", readNumber=" + readNumber + ", commentNumber=" + commentNumber
 				+ ", postFavour=" + postFavour + ", commentsList=" + commentsList + ", cover=" + cover + ", printUrl="
-				+ printUrl + ", replyTime=" + replyTime + ", token=" + ", postStater=" + postStater
-				+ ", chargeNumber=" + chargeNumber + ", user=" + user + "]";
+				+ printUrl + ", replyTime=" + replyTime + ", postStater=" + postStater + ", chargeNumber="
+				+ chargeNumber + ", isPraise=" + isPraise + ", isCollect=" + isCollect + "]";
 	}
 	public CottomsPost(String userId, Integer postId, String headline, Integer classify, String freeContent,
 			String chargeContent, Date postTime, String writer, int readNumber, int commentNumber, int postFavour,
-			List<Comments> commentsList, String cover, String printUrl, Date replyTime, String token,
-			Integer postStater, Integer chargeNumber, User user) {
+			List<Comments> commentsList, String cover, String printUrl, Date replyTime, Integer postStater,
+			Integer chargeNumber, int isPraise, int isCollect) {
 		super();
 		this.userId = userId;
 		this.postId = postId;
@@ -168,11 +177,13 @@ public class CottomsPost {
 		this.replyTime = replyTime;
 		this.postStater = postStater;
 		this.chargeNumber = chargeNumber;
-		this.user = user;
+		this.isPraise = isPraise;
+		this.isCollect = isCollect;
 	}
 	public CottomsPost() {
 		super();
 		// TODO Auto-generated constructor stub
 	}
 
+	
 }

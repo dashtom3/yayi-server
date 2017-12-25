@@ -8,6 +8,7 @@ import com.yayiabc.common.utils.MD5Util;
 import com.yayiabc.common.utils.VerifiCodeValidateUtil;
 import com.yayiabc.http.mvc.controller.unionpay.sdk.LogUtil;
 import com.yayiabc.http.mvc.dao.*;
+import com.yayiabc.http.mvc.pojo.jpa.Certification;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.jpa.SaleInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
@@ -15,11 +16,15 @@ import com.yayiabc.http.mvc.pojo.model.Invite;
 import com.yayiabc.http.mvc.service.TokenService;
 import com.yayiabc.http.mvc.service.UserMyQbService;
 import com.yayiabc.http.mvc.service.UserService;
+
+import org.bouncycastle.crypto.tls.HashAlgorithm;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
 import java.util.Date;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 import java.util.UUID;
 
 @Service
@@ -97,7 +102,8 @@ public class UserServiceImpl implements UserService {
 
 
     @Override
-    public DataWrapper<User> register(String phone, String password, String code,String openid,Integer id) {
+    public DataWrapper<User> register(String phone, String password,String trueName,String companyName,
+			String part,String workAddress, String code,String openid,Integer id,Integer userType) {
         DataWrapper<User> dataWrapper = new DataWrapper<User>();
         if (userDao.getUserByPhone(phone) == null) {
             //验证码判断
@@ -109,25 +115,35 @@ public class UserServiceImpl implements UserService {
             User newUser = new User();
             newUser.setUserId(UUID.randomUUID().toString());
             newUser.setPhone(phone);
+            newUser.setTrueName(trueName);
             newUser.setPwd(MD5Util.getMD5String(password));
+            Certification certification=new Certification();
+            certification.setCompanyName(companyName);
+            certification.setPart(part);
+            certification.setWorkAddress(workAddress);
             if (1 == userDao.register(newUser)) {
+            	certification.setUserId(newUser.getUserId());
+            	userDao.register1(certification);
                 //绉婚櫎楠岃瘉鐮�
                 VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
                 String token = tokenService.getToken(newUser.getUserId());
-                QbRecord qbRecord=new QbRecord();
-                qbRecord.setQbRget(60+"");
-                qbRecord.setRemark("注册送60乾币");
-                qbRecord.setQbType("qb_balance");
-                userMyQbService.add(qbRecord, token);
                 dataWrapper.setToken(token);
                 newUser.setCreated(new Date());
                 dataWrapper.setData(newUser);
                 String byid=newUser.getUserId();
-                //赠送邀请人乾币
-                userDao.presented(id);
-                Invite invite =new Invite();
-                //记录邀请人和被邀请人数据
-                userDao.addUser(id,byid);
+                if(userType==1){
+                	//赠送邀请人乾币
+                    userDao.presented(id);
+                    Invite invite =new Invite();
+                    if(id==0&&id!=null){
+                    	//记录邀请人和被邀请人数据
+                        userDao.addUser(id,byid);
+                    }
+                    
+                }else if(userType==2){
+                	int i = userDao.bindSale(byid,id+"");
+                }
+               
                 if (openid != null) {
                     wxAppDao.addUser(newUser.getUserId(), openid, newUser.getPhone());
                 }

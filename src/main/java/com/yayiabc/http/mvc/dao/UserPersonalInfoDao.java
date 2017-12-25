@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.dao;
 
+import com.yayiabc.api.Back.userStatisticsApi;
 import com.yayiabc.http.mvc.pojo.jpa.Certification;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.UserPersonalInfo;
@@ -11,6 +12,8 @@ import java.util.Map;
 @Repository
 public interface UserPersonalInfoDao {
 	UserPersonalInfo detail(String userId);
+	
+	public String seeDoctorPic(String userId);
 	
 	int updateCertification(Certification certification);
 	

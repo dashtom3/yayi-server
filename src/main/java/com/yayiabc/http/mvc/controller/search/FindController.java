@@ -28,8 +28,6 @@ public class FindController {
             @RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
             @RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
     ){
-        System.out.println("keyWord"+keyWord);
-        System.out.println("classify"+classify);
         return findService.findList(keyWord,type,classify,currentPage,numberPerPage);
     }
 }

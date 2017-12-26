@@ -5,7 +5,7 @@
 <mapper namespace="com.yayiabc.http.mvc.dao.CommentDao">
 	<insert id="addComment">
 		insert into top_comment(user_id,content,becommented_id,`type`)
-		VALUES (#{userId},#{coment.commentContent},#{beCommentedId},#{num})
+		VALUES (#{userId},#{comment.commentContent},#{beCommentedId},#{num})
 	</insert>
 
 	<insert id="addSubComment">
@@ -31,21 +31,33 @@
 		select count(*) from top_comment where type=#{numberType} and becommented_id=#{beCommentedId}
 	</select>
 
+	<resultMap id="comment" type="Comment" autoMapping="true">
+		<id property="commentId" column="comment_id"/>
+		<collection property="subCommentList" ofType="SubComment">
+			<id property="subCommentId" column="sub_id"/>
+			<result property="userId" column="sub_user_id"/>
+			<result property="userName" column="sub_user_name"/>
+			<result property="userPic" column="sub_user_pic"/>
+			<result property="commentContent" column="sub_content"/>
+			<result property="commentTime" column="sub_created"/>
+		</collection>
+	</resultMap>
 
 
-	<select id="getCommentList" resultType="Comment">
+	<select id="getCommentList" resultMap="comment">
 		SELECT * FROM
-		(SELECT a.id,a.content,a.created,a.reply_num,b.user_id,b.true_name,b.user_pic
+		(SELECT a.id AS comment_id,a.content AS comment_content,a.created AS comment_time,a.reply_num,b.user_id,b.true_name AS user_name,b.user_pic,a.zan_num AS zan
 		FROM top_comment a
 		LEFT JOIN `user` b ON a.user_id=b.user_id
-		WHERE a.becommented_id=#{beCommentedId} AND a.type=#{numberType} order by a.created DESC ) c
+		WHERE a.becommented_id=#{beCommentedId} AND a.type=#{numberType} order by a.zan_num,a.created DESC
+		limit #{page.currentNumber},#{page.numberPerPage}
+		) c
 		LEFT JOIN
 		(
 		SELECT d.id AS sub_id,d.content AS sub_content,d.created AS sub_created,e.user_id AS sub_user_id,e.true_name AS sub_user_name,e.user_pic AS sub_user_pic,d.top_id
 		FROM lower_comment d
 		LEFT JOIN `user` e ON d.user_id=e.user_id
-		) f ON c.id=f.top_id
-		limit #{page.currentNumber},#{page.numberPerPage}
+		) f ON c.comment_id=f.top_id
 	</select>
 
 	<delete id="deleteYayiCom">
@@ -74,6 +86,39 @@
 
 	<update id="addCommentNumberToVideo">
 		update vid_manage set comment_num=comment_num+1 where vi_id=#{beCommentedId}
+	</update>
+
+	<update id="addTopCommentZanNum">
+		update top_comment set zan_num=zan_num+1 where id=#{parentId}
+	</update>
+
+	<update id="addSubCommentZanNum">
+		update addSubCommentZanNum set zan_num=zan_num+1 where id=#{presentId}
+	</update>
+
+	<update id="delTopCommentZanNum">
+		update top_comment set zan_num=zan_num-1 where id=#{parentId}
+	</update>
+
+	<update id="delSubCommentZanNum">
+		update addSubCommentZanNum set zan_num=zan_num-1 where id=#{presentId}
+	</update>
+
+	<update id="addCommentNumberToCottom">
+		update cottoms_post set zan_num=zan_num+1 where post_id=#{beCommentedId}
+	</update>
+
+	<update id="delCommentNumberToCottom">
+		update cottoms_post set zan_num=zan_num-1 where post_id=#{beCommentedId}
+	</update>
+
+
+	<update id="delCommentNumberToVideo">
+		update vid_manage set comment_num=comment_num-1 where vi_id=#{beCommentedId}
+	</update>
+
+	<update id="delCommentReplyNum">
+		update top_comment set reply_num=reply_num-1 where id=#{parentId}
 	</update>
 
 

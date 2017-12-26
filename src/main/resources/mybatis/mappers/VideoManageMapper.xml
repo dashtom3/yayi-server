@@ -113,6 +113,16 @@ WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId
 		</where>
 	</select>
 
+	<update id="addVideoZanNum">
+		update vid_manage set zan_num=zan_num+1 where vi_id=#{typeId}
+	</update>
+
+	<update id="delVideoZanNum">
+		update vid_manage set zan_num=zan_num-1 where vi_id=#{typeId}
+	</update>
+
+
+
 
 
 

@@ -10,7 +10,7 @@ public class Comment {
     private long commentId;
     private String commentContent;
     private Date commentTime;
-    private int zan=0;
+    private int zan=0;//点赞数
     private int replyNumber=0;
     private int isZan=0;
     private List<SubComment> subCommentList;

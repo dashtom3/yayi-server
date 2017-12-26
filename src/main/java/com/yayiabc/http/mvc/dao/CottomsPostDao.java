@@ -151,4 +151,8 @@ public interface CottomsPostDao {
 	
 	//查询账户余额
 	public Integer queryqb(String userId);
+
+    void addCottomsZanNum(Integer typeId);
+
+	void delCottomsZanNum(Integer typeId);
 }

@@ -39,4 +39,8 @@ public interface VideoManageDao {
     void playVideo(Integer viId);
 
     int getVideoTotalNum(@Param("videoCategory")Integer videoCategory,@Param("keyWord") String keyWord);
+
+    void addVideoZanNum(Integer typeId);
+
+    void delVideoZanNum(Integer typeId);
 }

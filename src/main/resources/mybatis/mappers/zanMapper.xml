@@ -1,0 +1,18 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.ZanDao">
+	<select id="getCount" resultType="int">
+		select count(*) FROM zan where user_id=#{userId} and type=#{type} and type_id=#{typeId} and parent_id=#{parentId} and present_id=#{presentId}
+	</select>
+
+	<insert id="addStatus">
+		insert INTO zan(user_id,type,type_id,parent_id,present_id)
+		values(#{userId},#{type},#{typeId},#{parentId},#{presentId})
+	</insert>
+
+	<delete id="deleteStatus">
+		delete from zan where user_id=#{userId} and type=#{type} and type_id=#{typeId} and parent_id=#{parentId} and present_id=#{presentId}
+	</delete>
+</mapper>       

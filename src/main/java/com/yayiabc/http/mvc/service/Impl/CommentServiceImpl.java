@@ -1,30 +1,17 @@
 package com.yayiabc.http.mvc.service.Impl;
 
-
-
-import com.qiniu.util.Json;
 import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.*;
 import com.yayiabc.http.mvc.dao.*;
 import com.yayiabc.http.mvc.pojo.jpa.Comment;
-
-import com.yayiabc.http.mvc.pojo.jpa.CottomsPost;
-import com.yayiabc.http.mvc.pojo.jpa.SubComment;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.CommentService;
 import com.yayiabc.http.mvc.service.RedisService;
 import com.yayiabc.http.mvc.service.ZanService;
-import net.sf.json.JSON;
-import net.sf.json.JSONObject;
-import net.sf.json.JsonConfig;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
-
-
-import java.util.ArrayList;
-import java.util.Date;
 import java.util.List;
-import java.util.Set;
+
 
 /**
  * 评论中心，同时推送，推送策略key为评论消息推送+userId
@@ -62,6 +49,7 @@ public class CommentServiceImpl implements CommentService {
         DataWrapper<Object> dataWrapper = new DataWrapper<Object>();
         //将类型转换成数字，存储进数据库
         int num= TypeToNumUtil.typeToNum(type);
+        System.out.println("num"+num);
         //如果为0则标识传入错误
         if(num==0){
             dataWrapper.setErrorCode(ErrorCodeEnum.Error);
@@ -78,9 +66,10 @@ public class CommentServiceImpl implements CommentService {
             User beCommentedUser=null;
             if(parentId==null){
                 if(num==1){
-                    commentDao.addCommentNumber(beCommentedId);
+                    commentDao.addCommentNumberToVideo(beCommentedId);
                 }
                 if(num==2){
+                    commentDao.addCommentNumberToCottom(beCommentedId);
                     suffix=MESSAGE_THREE;
                     beCommentedUser=commentDao.getUserByPostId(beCommentedId);
                 }
@@ -148,6 +137,7 @@ public class CommentServiceImpl implements CommentService {
         page.setNumberPerPage(numberPerPage);
         page.setCurrentPage(currentPage);
         int numberType=TypeToNumUtil.typeToNum(type);
+        System.out.println("numberType"+numberType);
         int totalNumber=commentDao.getCommentTotalNum(numberType,beCommentedId);
         dataWrapper.setPage(page,totalNumber);
         String userId=null;
@@ -159,14 +149,9 @@ public class CommentServiceImpl implements CommentService {
             for (Comment comment:commentList
                     ) {
                 //填充是否点赞
-                if(userId!=null){
-                    if(redisService.SETS.sismember("点赞用户列表"+type+":"+beCommentedId+":"+comment.getCommentId(),userId)){
-                        comment.setIsZan(1);
-                    }
+                if(redisService.SETS.sismember("点赞用户列表"+type+":"+beCommentedId+":"+comment.getCommentId(),userId)){
+                    comment.setIsZan(1);
                 }
-                //填充点赞数
-                int zan=zanService.getZanNumber(type,beCommentedId,(int)comment.getCommentId(),null);
-                comment.setZan(zan);
             }
         }
         dataWrapper.setData(commentList);
@@ -185,8 +170,17 @@ public class CommentServiceImpl implements CommentService {
         }
         //子评论
         if(presentId!=null){
+            //一级评论的回复数-1
+            commentDao.delCommentReplyNum(parentId);
             commentDao.deleteSubComment(presentId);
         }else{
+            if(numType==1){
+                //视频的一级评论数-1
+                commentDao.delCommentNumberToVideo(beCommentedId);
+            }else if(numType==2){
+                //病例的一级评论数-1
+                commentDao.delCommentNumberToCottom(beCommentedId);
+            }
             commentDao.deleteComment(parentId);
             commentDao.deleteWithSubComment(parentId);
         }

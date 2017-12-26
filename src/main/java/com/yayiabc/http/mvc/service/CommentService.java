@@ -15,4 +15,6 @@ public interface CommentService {
     DataWrapper<Void> delete(String type, String beCommentedId, Integer parentId, Integer presentId);
 
     void sendMessage(String userId,String beCommentedUserId,String key,String message);
+
+
 }

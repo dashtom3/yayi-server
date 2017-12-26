@@ -35,5 +35,22 @@ public interface CommentDao {
 
     void updateCommentReplyNum(Integer parentId);
 
-    void addCommentNumber(Integer beCommentedId);
+
+    void addTopCommentZanNum(Integer parentId);
+
+    void addSubCommentZanNum(Integer presentId);
+
+    void delSubCommentZanNum(Integer presentId);
+
+    void delTopCommentZanNum(Integer parentId);
+
+    void addCommentNumberToVideo(Integer beCommentedId);
+
+    void addCommentNumberToCottom(Integer beCommentedId);
+
+    void delCommentNumberToVideo(String beCommentedId);
+
+    void delCommentNumberToCottom(String beCommentedId);
+
+    void delCommentReplyNum(Integer parentId);
 }

@@ -348,4 +348,12 @@
 		select user_id from
 		cottoms_post where post_id=#{beCommentedId}
 	</select>
+
+	<update id="addCottomsZanNum">
+		update cottoms_post set zan_num=zan_num+1 where post_id=#{typeId}
+	</update>
+
+	<update id="delCottomsZanNum">
+		update cottoms_post set zan_num=zan_num-1 where post_id=#{typeId}
+	</update>
 </mapper>

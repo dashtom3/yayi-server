@@ -12,14 +12,23 @@ import org.springframework.web.bind.annotation.*;
 
 import java.util.List;
 
+/**
+ * 牙医圈动态管理
+ * @author  yehu
+ */
 @Controller
 @RequestMapping("api/moment")
 public class MomentManageController {
     @Autowired
     private MomentManageService momentManageService;
 
-    
-    //在朋友圈发布新动态
+
+    /**
+     * 牙医圈发布新动态
+     * @param moment        动态的实体类对象
+     * @param token         发布对象的用户标识
+     * @return
+     */
     @RequestMapping(value = "add")
     @ResponseBody
     @UserTokenValidate
@@ -30,7 +39,12 @@ public class MomentManageController {
         return momentManageService.add(moment,token);
     }
 
-    //删除朋友圈的动态
+    /**
+     * 删除牙医圈的动态
+     * @param momentId      动态id
+     * @param token         用户的身份标识
+     * @return
+     */
     @RequestMapping("delete")
     @ResponseBody
     @UserTokenValidate
@@ -41,7 +55,13 @@ public class MomentManageController {
         return momentManageService.delete(momentId);
     }
 
-    //查询朋友圈的动态
+    /**
+     * 查询朋友圈的动态列表
+     * @param currentPage       当前第几页(默认为1)
+     * @param numberPerPage     每页显示多少条(默认为10)
+     * @param token             用户的身份标识(可不传)
+     * @return
+     */
     @RequestMapping("queryList")
     @ResponseBody
     public DataWrapper<List<Moment>> queryList(
@@ -49,10 +69,16 @@ public class MomentManageController {
             @RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
             @RequestHeader(value="token",required = false) String token
     ){
-        return momentManageService.queryList(currentPage,numberPerPage,token);
+        return momentManageService.getMommentList(currentPage,numberPerPage,token,1);
     }
 
-    //我的动态
+    /**
+     * 我的动态列表
+     * @param currentPage       当前第几页(默认为1)
+     * @param numberPerPage     每页显示多少条(默认为10)
+     * @param token             用户的身份标识
+     * @return
+     */
     @RequestMapping("myMoment")
     @ResponseBody
     @UserTokenValidate
@@ -61,10 +87,15 @@ public class MomentManageController {
             @RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
             @RequestHeader(value="token",required = false) String token
     ){
-        return momentManageService.myMoment(currentPage,numberPerPage,token);
+        return momentManageService.getMommentList(currentPage,numberPerPage,token,2);
     }
 
-    //查看某条动态的详情
+    /**
+     * 查看单条动态详情
+     * @param momentId          动态id
+     * @param token             用户的身份标识
+     * @return
+     */
     @RequestMapping("detail")
     @ResponseBody
     public DataWrapper<Moment> detail(

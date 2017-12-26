@@ -6,6 +6,7 @@ import java.util.List;
 import java.util.Map;
 
 import com.yayiabc.common.utils.GlobalVariables;
+import com.yayiabc.http.mvc.dao.ZanDao;
 import com.yayiabc.http.mvc.pojo.jpa.Comment;
 import com.yayiabc.http.mvc.pojo.jpa.SubComment;
 import com.yayiabc.http.mvc.service.CommentService;
@@ -35,9 +36,7 @@ public class MomentManageServiceImpl implements MomentManageService{
     @Autowired
     private UtilsDao utilsDao;
     @Autowired
-    private RedisService redisService;
-    @Autowired
-    private ZanService zanService;
+    private ZanDao zanDao;
 
 
     @Override
@@ -61,25 +60,13 @@ public class MomentManageServiceImpl implements MomentManageService{
     public DataWrapper<Void> delete(Integer momentId) {
         DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
         momentManageDao.deleteMoment(momentId);
-        Jedis jedis=redisService.getJedis();
-        //删除评论列表
-        jedis.del("牙医圈评论"+momentId);
-        //删除点赞计数列表
-        redisService.SORTSET.zrem("点赞计数列表牙医圈",momentId+"");
-        //删除点赞用户列表
-        jedis.del("点赞用户列表牙医圈:"+momentId);
+        //删除评论
+        momentManageDao.deleteMomentComment(momentId);
+        //删除点赞
+        momentManageDao.deleteMomentZan(momentId,"牙医圈");
         return dataWrapper;
     }
 
-    @Override
-    public DataWrapper<List<Moment>> queryList(Integer currentPage, Integer numberPerPage,String token) {
-        return getMommentList(currentPage,numberPerPage,token,1);
-    }
-
-    @Override
-    public DataWrapper<List<Moment>> myMoment(Integer currentPage, Integer numberPerPage, String token) {
-        return getMommentList(currentPage,numberPerPage,token,2);
-    }
 
     @Override
     public DataWrapper<Moment> detail(Integer momentId, String token) {
@@ -88,8 +75,7 @@ public class MomentManageServiceImpl implements MomentManageService{
         User user=null;
         String userId=null;
         if(token!=null){
-            user=utilsDao.getUserByToken(token);
-            userId=user.getUserId();
+            userId=utilsDao.getUserID(token);
         }
         fillCommentAndUpvoteMessage(moment,userId);
         dataWrapper.setData(moment);
@@ -97,13 +83,16 @@ public class MomentManageServiceImpl implements MomentManageService{
     }
 
 
-    //获取牙医圈的评论列表
-    public List<SubComment> getSubCommentList(Integer momentId){
-        List<SubComment> subCommentList=momentManageDao.getMomentCommentList(momentId);
-        return subCommentList;
-    }
-
-    //查询列表 1表示朋友圈的动态列表，2.表示我的个人动态
+    /**
+     * 查询列表 1表示朋友圈的动态列表，2.表示我的个人动态
+     *
+     * @param currentPage           当前第几页(默认为1)
+     * @param numberPerPage         每页显示多少条(默认为10)
+     * @param token                 用户的身份标识
+     * @param type                  1.牙医圈动态列表 2.我发表的动态
+     * @return
+     */
+    @Override
     public DataWrapper<List<Moment>> getMommentList(Integer currentPage, Integer numberPerPage,String token,Integer type){
         System.out.println("token为"+token);
         DataWrapper<List<Moment>> dataWrapper =new DataWrapper<List<Moment>>();
@@ -116,8 +105,8 @@ public class MomentManageServiceImpl implements MomentManageService{
             userId=utilsDao.getUserID(token);
         }
         System.out.println(userId);
-        int totalNumber=momentManageDao.getMomentTotalNumber(userId,type);;//总条数
-        List<Moment> momentList=momentManageDao.queryList(page,userId,type);//数据集
+        int totalNumber=momentManageDao.getMomentTotalNumber(userId,type);
+        List<Moment> momentList=momentManageDao.queryList(page,userId,type);
         for (Moment moment:momentList
                 ) {
             fillCommentAndUpvoteMessage(moment,userId);
@@ -130,15 +119,12 @@ public class MomentManageServiceImpl implements MomentManageService{
     //填充单条牙医圈动态的评论信息和点赞信息
     public void fillCommentAndUpvoteMessage(Moment moment,String userId){
         //填充评论
-        List<SubComment> subCommentList=getSubCommentList(moment.getMomentId());
+        List<SubComment> subCommentList=momentManageDao.getMomentCommentList(moment.getMomentId());
         moment.setSubCommentList(subCommentList);
-        //填充点赞数
-        int zanNumber=zanService.getZanNumber("牙医圈",moment.getMomentId(),null,null);
-        moment.setZanNumber(zanNumber);
         //判断用户是否已经点赞
         if(userId!=null){
-            boolean flag = redisService.SETS.sismember("点赞用户列表"+"牙医圈:"+moment.getMomentId(), userId);
-            if(flag){
+            int count=zanDao.getCount(userId,"牙医圈",moment.getMomentId(),null,null);
+            if(count!=0){
                 moment.setIsZan(1);
             }
         }

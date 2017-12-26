@@ -6,7 +6,7 @@ public class SubComment {
     private String userId;
     private String userName;
     private String userPic;
-    private long commentId;
+    private long subCommentId;
     private String commentContent;
     private Date commentTime;
     private String replyUserId;
@@ -38,12 +38,12 @@ public class SubComment {
         this.userPic = userPic;
     }
 
-    public long getCommentId() {
-        return commentId;
+    public long getSubCommentId() {
+        return subCommentId;
     }
 
-    public void setCommentId(long commentId) {
-        this.commentId = commentId;
+    public void setSubCommentId(long subCommentId) {
+        this.subCommentId = subCommentId;
     }
 
     public String getCommentContent() {
@@ -97,11 +97,11 @@ public class SubComment {
     public SubComment() {
     }
 
-    public SubComment(String userId, String userName, String userPic, long commentId, String commentContent, Date commentTime, String replyUserId, String replyUserName, int zan, int isZan) {
+    public SubComment(String userId, String userName, String userPic, long subCommentId, String commentContent, Date commentTime, String replyUserId, String replyUserName, int zan, int isZan) {
         this.userId = userId;
         this.userName = userName;
         this.userPic = userPic;
-        this.commentId = commentId;
+        this.subCommentId = subCommentId;
         this.commentContent = commentContent;
         this.commentTime = commentTime;
         this.replyUserId = replyUserId;
@@ -116,7 +116,7 @@ public class SubComment {
                 "userId='" + userId + '\'' +
                 ", userName='" + userName + '\'' +
                 ", userPic='" + userPic + '\'' +
-                ", commentId=" + commentId +
+                ", subCommentId=" + subCommentId +
                 ", commentContent='" + commentContent + '\'' +
                 ", commentTime=" + commentTime +
                 ", replyUserId='" + replyUserId + '\'' +

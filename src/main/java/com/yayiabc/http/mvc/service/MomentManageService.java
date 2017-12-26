@@ -11,10 +11,8 @@ public interface MomentManageService {
 
     DataWrapper<Void> delete(Integer momentId);
 
-    DataWrapper<List<Moment>> queryList(Integer currentPage, Integer numberPerPage,String token);
-
-
-    DataWrapper<List<Moment>> myMoment(Integer currentPage, Integer numberPerPage, String token);
 
     DataWrapper<Moment> detail(Integer momentId, String token);
+
+    DataWrapper<List<Moment>> getMommentList(Integer currentPage, Integer numberPerPage,String token,Integer type);
 }

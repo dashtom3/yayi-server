@@ -39,7 +39,7 @@
 
 
 	<select id="queryList" resultMap="moment">
-		select a.moment_id,b.user_id,b.true_name,b.user_pic,a.moment_content,a.moment_picture,a.moment_content_id,a.moment_type,a.moment_time FROM
+		select a.moment_id,b.user_id,b.true_name,b.user_pic,a.moment_content,a.moment_picture,a.moment_content_id,a.moment_type,a.moment_time,a.zan_num AS zan_number FROM
 		(select * from moment
 			<where>
 			<if test="type==2">
@@ -112,6 +112,40 @@
 	<select id="getMomentTitleByFaq" resultType="java.util.Map">
 		select faq_question_title from faq_question where faq_question_id=#{momentContentId}
 	</select>
+	
+	<update id="addMomentZanNum">
+		update moment set zan_num=zan_num+1 where moment_id=#{typeId}
+	</update>
+
+
+	<update id="addMomentFirstZanNum">
+		update dentist_comment set zan_num+1 where id=#{parentId}
+	</update>
+
+	<update id="addMomentSecondZanNum">
+		update dentist_comment set zan_num+1 where id=#{presentId}
+	</update>
+
+	<update id="delMomentZanNum">
+		update moment set zan_num=zan_num-1 where moment_id=#{typeId}
+	</update>
+
+
+	<update id="delMomentFirstZanNum">
+		update dentist_comment set zan_num-1 where id=#{parentId}
+	</update>
+
+	<update id="delMomentSecondZanNum">
+		update dentist_comment set zan_num-1 where id=#{presentId}
+	</update>
+	
+	<delete id="deleteMomentComment">
+		delete from dentist_comment where moment_id=#{momentId}
+	</delete>
+
+	<delete id="deleteMomentZan">
+		delete from zan where type_id=#{momentId} and type=#{type};
+	</delete>
 
 
 

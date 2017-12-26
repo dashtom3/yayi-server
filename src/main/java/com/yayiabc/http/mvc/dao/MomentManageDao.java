@@ -41,4 +41,20 @@ public interface MomentManageDao {
     List<SubComment> getMomentCommentList(Integer momentId);
 
     Map<String,String> getMomentTitleByFaq(Integer momentContentId);
+
+    void addMomentZanNum(Integer typeId);
+
+    void addMomentFirstZanNum(Integer parentId);
+
+    void addMomentSecondZanNum(Integer presentId);
+
+    void delMomentSecondZanNum(Integer presentId);
+
+    void delMomentFirstZanNum(Integer parentId);
+
+    void delMomentZanNum(Integer typeId);
+
+    void deleteMomentComment(Integer momentId);
+
+    void deleteMomentZan(@Param("momentId")Integer momentId,@Param("type")String type);
 }

@@ -86,16 +86,16 @@ public class MyCollectionServiceImpl implements MyCollectionService{
         List<CottomsPost> cottomsPosts=null;
         if(!list.isEmpty()){
             totalNumber=list.size();
-            cottomsPosts = cottomsPostDao.myCollect(list,page);
+            cottomsPosts = cottomsPostDao.myCollect(userId,page);
             System.err.println(cottomsPosts);
             for (CottomsPost cottomsPost : cottomsPosts) {
                 cottomsPost.setChargeContent(null);
-                int readNumber = (int)redisService.SORTSET.zscore("阅读数",cottomsPost.getPostId()+"");//阅读数
-                int commentNumber = (int)redisService.LISTS.llen("病例评论"+cottomsPost.getPostId());//评论数
-                int favourNumber = (int)redisService.SETS.scard("点赞用户列表病例:"+cottomsPost.getPostId());//点赞数
-                cottomsPost.setReadNumber(readNumber);
-                cottomsPost.setPostFavour(favourNumber);
-                cottomsPost.setCommentNumber(commentNumber);
+//                int readNumber = (int)redisService.SORTSET.zscore("阅读数",cottomsPost.getPostId()+"");//阅读数
+//                int commentNumber = (int)redisService.LISTS.llen("病例评论"+cottomsPost.getPostId());//评论数
+//                int favourNumber = (int)redisService.SETS.scard("点赞用户列表病例:"+cottomsPost.getPostId());//点赞数
+//                cottomsPost.setReadNumber(readNumber);
+//                cottomsPost.setPostFavour(favourNumber);
+//                cottomsPost.setCommentNumber(commentNumber);
             }
         }
         dataWrapper.setData(cottomsPosts);

@@ -19,8 +19,8 @@ public class CottomsPost {
 	private Date postTime;
 	private String writer;
 	private int readNumber;
-	private int commentNumber;
-	private int postFavour;
+	private int commentNum;
+	private int zanNum;
 	private List<Comments> commentsList;
 	private String cover;
 	private String printUrl;
@@ -29,6 +29,15 @@ public class CottomsPost {
 	private Integer chargeNumber;
 	private int isPraise;//是否点赞
 	private int isCollect;//是否收藏
+	private User user;
+	
+	
+	public User getUser() {
+		return user;
+	}
+	public void setUser(User user) {
+		this.user = user;
+	}
 	public String getUserId() {
 		return userId;
 	}
@@ -77,24 +86,23 @@ public class CottomsPost {
 	public void setWriter(String writer) {
 		this.writer = writer;
 	}
-	
 	public int getReadNumber() {
 		return readNumber;
 	}
 	public void setReadNumber(int readNumber) {
 		this.readNumber = readNumber;
 	}
-	public int getCommentNumber() {
-		return commentNumber;
+	public int getCommentNum() {
+		return commentNum;
 	}
-	public void setCommentNumber(int commentNumber) {
-		this.commentNumber = commentNumber;
+	public void setCommentNum(int commentNum) {
+		this.commentNum = commentNum;
 	}
-	public int getPostFavour() {
-		return postFavour;
+	public int getZanNum() {
+		return zanNum;
 	}
-	public void setPostFavour(int postFavour) {
-		this.postFavour = postFavour;
+	public void setZanNum(int zanNum) {
+		this.zanNum = zanNum;
 	}
 	public List<Comments> getCommentsList() {
 		return commentsList;
@@ -132,8 +140,6 @@ public class CottomsPost {
 	public void setChargeNumber(Integer chargeNumber) {
 		this.chargeNumber = chargeNumber;
 	}
-	
-	
 	public int getIsPraise() {
 		return isPraise;
 	}
@@ -150,40 +156,11 @@ public class CottomsPost {
 	public String toString() {
 		return "CottomsPost [userId=" + userId + ", postId=" + postId + ", headline=" + headline + ", classify="
 				+ classify + ", freeContent=" + freeContent + ", chargeContent=" + chargeContent + ", postTime="
-				+ postTime + ", writer=" + writer + ", readNumber=" + readNumber + ", commentNumber=" + commentNumber
-				+ ", postFavour=" + postFavour + ", commentsList=" + commentsList + ", cover=" + cover + ", printUrl="
+				+ postTime + ", writer=" + writer + ", readNumber=" + readNumber + ", commentNum=" + commentNum
+				+ ", zanNum=" + zanNum + ", commentsList=" + commentsList + ", cover=" + cover + ", printUrl="
 				+ printUrl + ", replyTime=" + replyTime + ", postStater=" + postStater + ", chargeNumber="
-				+ chargeNumber + ", isPraise=" + isPraise + ", isCollect=" + isCollect + "]";
+				+ chargeNumber + ", isPraise=" + isPraise + ", isCollect=" + isCollect + ", user=" + user + "]";
 	}
-	public CottomsPost(String userId, Integer postId, String headline, Integer classify, String freeContent,
-			String chargeContent, Date postTime, String writer, int readNumber, int commentNumber, int postFavour,
-			List<Comments> commentsList, String cover, String printUrl, Date replyTime, Integer postStater,
-			Integer chargeNumber, int isPraise, int isCollect) {
-		super();
-		this.userId = userId;
-		this.postId = postId;
-		this.headline = headline;
-		this.classify = classify;
-		this.freeContent = freeContent;
-		this.chargeContent = chargeContent;
-		this.postTime = postTime;
-		this.writer = writer;
-		this.readNumber = readNumber;
-		this.commentNumber = commentNumber;
-		this.postFavour = postFavour;
-		this.commentsList = commentsList;
-		this.cover = cover;
-		this.printUrl = printUrl;
-		this.replyTime = replyTime;
-		this.postStater = postStater;
-		this.chargeNumber = chargeNumber;
-		this.isPraise = isPraise;
-		this.isCollect = isCollect;
-	}
-	public CottomsPost() {
-		super();
-		// TODO Auto-generated constructor stub
-	}
-
+	
 	
 }

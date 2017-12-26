@@ -33,16 +33,6 @@ public interface CottomsPostDao {
 			@Param("type")int type
 			);
 	
-	//查看病例按收藏数排序
-	public List<CottomsPost> queryPostCollect(
-			@Param("page") Page page,
-			@Param("classify")Integer classify,
-			@Param("postStater")Integer postStater,
-			@Param("userId") String userId,
-			@Param("keyWord") String keyWord,
-			@Param("type")int type
-			);
-	
 	//每周获取乾币限制
 	public Integer weekGain(String userId);
 	
@@ -76,6 +66,9 @@ public interface CottomsPostDao {
 	
 	//查看病例详情
 	public CottomsPost cottomsDetail(String postId);
+	
+	//阅读数加1
+	public void upadteReadNum(String postId);
 	
 	public void comment(CottomsComment cottomsComment);
 	
@@ -127,7 +120,7 @@ public interface CottomsPostDao {
 	public List<Integer> queryMyCollect(String userId);
 	//我的收藏列表
 	public List<CottomsPost> myCollect(
-			@Param("list")List<Integer> list,
+			@Param("userId")String userId,
 			@Param("page") Page page);
 	
 	//判断收藏是否存在

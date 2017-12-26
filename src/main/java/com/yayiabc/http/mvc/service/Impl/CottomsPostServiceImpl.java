@@ -153,6 +153,8 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		String userId=null;
 		if(token!=null){
 			userId=utilsDao.getUserID(token);
+		}else{
+			userId="";
 		}
 		DataWrapper<CottomsPost> dataWrapper=new DataWrapper<CottomsPost>();
 
@@ -270,10 +272,17 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	//付费病例
 	@Override
     public DataWrapper<Void> playChargePost(String token, Integer chargeNumber, Integer postId){
+		if(chargeNumber==null){
+			chargeNumber=0;
+		}
 		PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 		String userId=utilsDao.getUserID(token);
 		String remark = "付费病例:支付"+chargeNumber+"个乾币。(乾币余额:userQbNum个)";
 		DataWrapper<Void> dw =new DataWrapper<>();
+		if(token==null){
+			dw.setMsg("令牌错误");
+			return dw;
+		}
 		Integer qb=cottomsPostDao.queryqb(userId);//查询余额
 		CottomsPost cottomsPost=new CottomsPost();
 		CottomsPost c=cottomsPostDao.cottomsDetail(postId+"");

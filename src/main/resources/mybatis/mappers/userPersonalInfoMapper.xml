@@ -138,7 +138,7 @@
 	</select>
 	
 	<!-- 123 -->
-	<select id="seeMedicalLicense" resultType="java.util.String">
+	<select id="seeMedicalLicense" resultType="java.lang.String">
 	 select  medical_license from certification where user_id=#{userId}
 	</select>
 </mapper>

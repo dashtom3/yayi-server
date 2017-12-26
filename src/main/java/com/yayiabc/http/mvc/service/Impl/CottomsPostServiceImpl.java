@@ -166,9 +166,10 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		for(int i=0;i<postIdFees.size();i++){
 			if(postIdFees.get(i).equals(post)){
 				userIde=true;
-			}else if(cottomsPost1.getUserId()==userId){
-				userIde=true;
 			}
+			}
+		if(cottomsPost1.getUserId().equals(userId)){
+			userIde=true;
 		}
 //		boolean isPraise = redisService.SETS.sismember("点赞用户列表病例:"+postId, userId);
 //		Integer isCollect=cottomsPostDao.existPostId(postId,userId);
@@ -184,14 +185,17 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 //		cottomsPost1.setCommentNumber(commentNumber);
 //		cottomsPost1.setIsPraise(a);
 //		cottomsPost1.setIsCollect(isCollect);
-//		if(token!=null&&userIde==true) {
-//			dataWrapper.setData(cottomsPost1);
-//			return dataWrapper;
-//		}else{
+		System.err.println("userIde="+userIde);
+		if(token!=null&&userIde==true) {
+			dataWrapper.setData(cottomsPost1);
+			System.out.println(cottomsPost1);
+			return dataWrapper;
+		}else{
 			cottomsPost1.setChargeContent(null);
 			dataWrapper.setData(cottomsPost1);
+			System.out.println(cottomsPost1+"123");
 			return dataWrapper;
-//		}
+		}
 	}
 	
 //导出表格

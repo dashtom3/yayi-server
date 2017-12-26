@@ -28,10 +28,10 @@ public class AppUserController {
     @ResponseBody
     public DataWrapper<User> register(
             @ModelAttribute User user,
-            @ModelAttribute Certification certification,
+           
             @RequestParam(value="code",required = true) String code
     ){
 
-        return appUserService.regiseter(user,certification,code);
+        return appUserService.regiseter(user,code);
     }
 }

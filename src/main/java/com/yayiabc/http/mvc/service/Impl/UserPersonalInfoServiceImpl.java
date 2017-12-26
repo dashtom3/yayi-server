@@ -80,7 +80,7 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 			 QbRecord qbRecord=new QbRecord();
              qbRecord.setQbRget(60+"");
              qbRecord.setRemark("注册送60乾币");
-             qbRecord.setQbType("qb_balance");
+             qbRecord.setQbType("qb_notwith");
              userMyQbService.add(qbRecord, token);
 		}
 		return dataWrapper;

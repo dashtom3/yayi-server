@@ -34,8 +34,9 @@ public class AppUserServiceImpl implements AppUserService {
     @Autowired
     private TokenService tokenService;
     @Override
-    public DataWrapper<User> regiseter(User user,Certification certification,String code) {
+    public DataWrapper<User> regiseter(User user,String code) {
         DataWrapper<User> dataWrapper = new DataWrapper<User>();
+        Certification certification= user.getCertification();
         if (userDao.getUserByPhone(user.getPhone()) == null) {
             ErrorCodeEnum codeEnum= VerifiCodeValidateUtil.verifiCodeValidate(user.getPhone(),code);
             dataWrapper.setErrorCode(codeEnum);
@@ -46,6 +47,8 @@ public class AppUserServiceImpl implements AppUserService {
             if (1 == userDao.register(user)) {
             	certification.setUserId(user.getUserId());
             	userDao.register1(certification);
+            	System.out.println(user+"   user");
+            	System.out.println(certification+"   certification");
                 VerifyCodeManager.removePhoneCodeByPhoneNum(user.getPhone());
                 String token = tokenService.getToken(user.getUserId());
                 userDao.registerUserInfo(user);

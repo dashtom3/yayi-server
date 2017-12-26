@@ -121,6 +121,8 @@ public class UserServiceImpl implements UserService {
             certification.setCompanyName(companyName);
             certification.setPart(part);
             certification.setWorkAddress(workAddress);
+            System.out.println(newUser+"   useruser");
+            System.out.println(certification+"   certificationcertification");
             if (1 == userDao.register(newUser)) {
             	certification.setUserId(newUser.getUserId());
             	userDao.register1(certification);

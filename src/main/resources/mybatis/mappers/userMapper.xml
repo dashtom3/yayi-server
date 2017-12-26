@@ -21,7 +21,7 @@
 		(#{phone},#{pwd},now(),now(),#{trueName})
 	</insert>
 	
-	<insert id="register1" parameterType="Certification">
+	<insert id="register1">
 		insert into
 		certification
 		(user_id,company_name,part,work_address)
@@ -134,7 +134,7 @@
 		values(#{userId},#{certification.type},#{certification.companyName},#{certification.part},#{certification.workAddress},
 		#{certification.doctorPic},#{certification.medicalLicense},#{certification.businessLicense},#{certification.taxRegistration},#{certification.openingPermit},#{certification.radiologicalPermit},
 		#{certification.idCardPositive},#{certification.idCardOtherside},#{certification.state})
-		ON DUPLICATE KEY UPDATE state=1;
+		ON DUPLICATE KEY UPDATE state=0;
 	</insert>
 
 	<select id="getCountByUserId" resultType="java.lang.Integer">

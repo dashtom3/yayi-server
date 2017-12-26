@@ -12,6 +12,8 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.*;
 
+import java.util.List;
+
 import javax.servlet.http.HttpServletRequest;
 
 @Controller
@@ -122,5 +124,17 @@ public class UserController {
 			@RequestParam("userId") Integer userId
 	){
 		return userService.deleteInGrainUser(userId);
+	}
+	
+	//获取邀请列表
+	@RequestMapping(value="inviteChart",method = RequestMethod.POST)
+	@ResponseBody
+	public DataWrapper<List<User>> inviterChart(
+			@RequestHeader(value="token",required=true) String token,
+			@RequestParam(value="userType")Integer userType,
+			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
+			@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage
+			){
+		return userService.inviterChart(token,userType,currentPage,numberPerPage);
 	}
 }

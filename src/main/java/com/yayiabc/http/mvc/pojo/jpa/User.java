@@ -14,8 +14,10 @@ import java.util.List;
  */
 public class User extends BasePojo implements Serializable {
 	private String userId;
-
+	
     private String saleId;
+    //普通用户邀请人
+    private String inviterId;
 
 	private String phone;
 
@@ -250,14 +252,12 @@ public class User extends BasePojo implements Serializable {
 
 	
 
-	@Override
-	public String toString() {
-		return "User [userId=" + userId + ", saleId=" + saleId + ", phone=" + phone + ", pwd=" + pwd + ", identity="
-				+ identity + ", trueName=" + trueName + ", sex=" + sex + ", userPic=" + userPic + ", birthday="
-				+ birthday + ", qq=" + qq + ", qbBalance=" + qbBalance + ", qbNotwtih=" + qbNotwtih + ", reflect="
-				+ reflect + ", certification=" + certification + ", cottomsPost=" + cottomsPost + ", saleinfo="
-				+ saleinfo + ", orderaList=" + orderaList + ", qbRecordList=" + qbRecordList + ", aQb=" + aQb + ", cQb="
-				+ cQb + ", id=" + id + ", userWithList=" + userWithList + ", day=" + day + ", week=" + week + "]";
+	public String getInviterId() {
+		return inviterId;
+	}
+
+	public void setInviterId(String inviterId) {
+		this.inviterId = inviterId;
 	}
 
 	public CottomsPost getCottomsPost() {
@@ -266,6 +266,17 @@ public class User extends BasePojo implements Serializable {
 
 	public void setCottomsPost(CottomsPost cottomsPost) {
 		this.cottomsPost = cottomsPost;
+	}
+
+	@Override
+	public String toString() {
+		return "User [userId=" + userId + ", saleId=" + saleId + ", inviterId=" + inviterId + ", phone=" + phone
+				+ ", pwd=" + pwd + ", identity=" + identity + ", trueName=" + trueName + ", sex=" + sex + ", userPic="
+				+ userPic + ", birthday=" + birthday + ", qq=" + qq + ", qbBalance=" + qbBalance + ", qbNotwtih="
+				+ qbNotwtih + ", reflect=" + reflect + ", certification=" + certification + ", cottomsPost="
+				+ cottomsPost + ", saleinfo=" + saleinfo + ", orderaList=" + orderaList + ", qbRecordList="
+				+ qbRecordList + ", aQb=" + aQb + ", cQb=" + cQb + ", id=" + id + ", userWithList=" + userWithList
+				+ ", day=" + day + ", week=" + week + "]";
 	}
 
 	

@@ -170,28 +170,28 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 				userIde=true;
 			}
 		}
-		boolean isPraise = redisService.SETS.sismember("点赞用户列表病例:"+postId, userId);
-		Integer isCollect=cottomsPostDao.existPostId(postId,userId);
-		int a=0;
-		if(isPraise){
-			a=1;
-		}
+//		boolean isPraise = redisService.SETS.sismember("点赞用户列表病例:"+postId, userId);
+//		Integer isCollect=cottomsPostDao.existPostId(postId,userId);
+//		int a=0;
+//		if(isPraise){
+//			a=1;
+//		}
 //		int readNumber = (int)RedisService.SORTSET.zscore("阅读数", postId+"");
 //		int commentNumber = commentDao.getCommentNum(postId,2);
 //		int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+postId);//点赞数
 //		cottomsPost1.setReadNumber(readNumber);
 //		cottomsPost1.setZanNum(zanNum);(favourNumber);
 //		cottomsPost1.setCommentNumber(commentNumber);
-		cottomsPost1.setIsPraise(a);
-		cottomsPost1.setIsCollect(isCollect);
-		if(token!=null&&userIde==true) {
-			dataWrapper.setData(cottomsPost1);
-			return dataWrapper;
-		}else{
+//		cottomsPost1.setIsPraise(a);
+//		cottomsPost1.setIsCollect(isCollect);
+//		if(token!=null&&userIde==true) {
+//			dataWrapper.setData(cottomsPost1);
+//			return dataWrapper;
+//		}else{
 			cottomsPost1.setChargeContent(null);
 			dataWrapper.setData(cottomsPost1);
 			return dataWrapper;
-		}
+//		}
 	}
 	
 //导出表格

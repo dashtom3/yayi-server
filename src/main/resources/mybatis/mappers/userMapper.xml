@@ -10,9 +10,33 @@
 	</update>
 	<!--记录注册人和邀请人信息  -->
 	<insert id="addUser" >
-		insert into invite(user_id,id) values (#{byid},#{id})
+		update user set inviter_id=#{id} <where> user_id=#{byid} </where>
 	</insert>
-	
+	<!--邀请列表  -->
+	<select id="inviterChart" resultType="User">
+		select * from user 
+		<where>
+		<if test="userType==1">
+			inviter_id=#{userId}
+		</if>
+		<if test="userType==2">
+			sale_id=#{userId}
+		</if>
+		</where>
+		limit #{page.currentNumber},#{page.numberPerPage}
+	</select>
+	<!--查看总条数  -->
+	<select id="getTotalNumber" resultType="java.lang.Integer">
+		select count(0) from user 
+		<where>
+			<if test="userType==1">
+				inviter_id=#{userId}
+			</if>
+			<if test="userType==2">
+				sale_id=#{userId}
+			</if>
+		</where>
+	</select>
 	<insert id="register" parameterType="User" useGeneratedKeys="true" keyProperty="userId">
 		insert into
 		user

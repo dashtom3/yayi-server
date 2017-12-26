@@ -38,4 +38,8 @@
 	<select id="getSaleTokenByLoginToken" resultType="SaleToken">
 		select * from sale_token where sale_token=#{loginToken}
 	</select>
+	
+	<select id="getSalesaleIdByLoginToken" resultType="java.lang.String">
+		select sale_id from sale_token where sale_token=#{loginToken}
+	</select>
 </mapper>       

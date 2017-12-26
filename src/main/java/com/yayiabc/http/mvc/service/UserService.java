@@ -25,4 +25,6 @@ public interface UserService {
 	DataWrapper<Void> deleteInGrainUser(Integer userId);
 
 	List<String> getAllPhoneList();
+	
+	DataWrapper<List<User>> inviterChart(String token,Integer userType,Integer currentPage,Integer numberPerPage);
 }

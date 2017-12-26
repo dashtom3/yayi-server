@@ -3,6 +3,7 @@ package com.yayiabc.http.mvc.dao;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.pojo.jpa.Certification;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.pojo.model.Invite;
@@ -73,4 +74,8 @@ public interface UserDao {
     int getCertificationCount(String userId);
 
     List<String> getPhoneList();
+    
+    List<User> inviterChart(@Param("page")Page page,@Param("userId")String userId,@Param("userType")Integer userType);
+    
+    Integer getTotalNumber(@Param("userType")Integer userType,@Param("userId")String userId);
 }

@@ -22,4 +22,6 @@ public interface TokenValidateDao {
     UserToken getUserTokenByLoginToken(String loginToken);
 
     SaleToken getSaleTokenByLoginToken(String loginToken);
+    
+    String getSalesaleIdByLoginToken(String loginToken);
 }

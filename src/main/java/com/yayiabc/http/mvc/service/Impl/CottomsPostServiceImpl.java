@@ -121,7 +121,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
 		
-		int totalNumber=cottomsPostDao.getTotalNumber(classify,keyWord);
+		int totalNumber=cottomsPostDao.getTotalNumber(classify,keyWord,postStater);
 //		Set<String> set = RedisService.SORTSET.zrevrange("点赞计数列表病例:", 0, totalNumber);
 		List<String> list =new ArrayList<String>();
 //		list.addAll(set);

@@ -60,7 +60,7 @@ public interface CottomsPostDao {
 	public List<Map<String,Object>> queryPost(Page page);
 	
 	//获取总条数
-	public int getTotalNumber(@Param("classify") Integer classify,@Param("keyWord")String keyWord);
+	public int getTotalNumber(@Param("classify") Integer classify,@Param("keyWord")String keyWord,@Param("postStater")Integer postStater);
 	
 	public int getTotalCommentNumber();
 	

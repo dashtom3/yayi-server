@@ -128,6 +128,9 @@
 			<if test="keyWord!=null and keyWord!=''">
 				and headline like '%${keyWord}%'
 			</if>
+			<if test="postStater!=null and postStater!=''">
+				and post_stater=#{postStater}
+			</if>
 		</where>
 	</select>
 	<select id="getTotalCommentNumber" resultType="int">

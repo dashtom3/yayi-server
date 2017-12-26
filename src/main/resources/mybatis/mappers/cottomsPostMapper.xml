@@ -258,8 +258,8 @@
 				separator="," close=")">
 				#{postId}
 			</foreach>
-			limit #{page.currentNumber},#{page.numberPerPage}
 		</where>
+		limit #{page.currentNumber},#{page.numberPerPage}
 	</select>
 
 	<!--我是注释内容 -->

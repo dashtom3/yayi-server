@@ -49,7 +49,7 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 		DataWrapper<Certification> dataWrapper = new DataWrapper<Certification>();
 		String userId = utilsDao.getUserID(token);
 		certification.setUserId(userId);
-		String pic=userPersonalInfoDao.seeDoctorPic(userId);
+		String pic=userPersonalInfoDao.seeMedicalLicense(userId);
 		int a=0;
 		if(pic==null){
 			a=a+1;
@@ -72,7 +72,7 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 		} else {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 		}
-		pic=userPersonalInfoDao.seeDoctorPic(userId);
+		pic=userPersonalInfoDao.seeMedicalLicense(userId);
 		if(pic!=null){
 			a=a+1;
 		}

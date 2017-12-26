@@ -281,6 +281,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		}
 		PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 		String userId=utilsDao.getUserID(token);
+		
 		String remark = "付费病例:支付"+chargeNumber+"个乾币。(乾币余额:userQbNum个)";
 		DataWrapper<Void> dw =new DataWrapper<>();
 		if(token==null){
@@ -290,6 +291,8 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		Integer qb=cottomsPostDao.queryqb(userId);//查询余额
 		CottomsPost cottomsPost=new CottomsPost();
 		CottomsPost c=cottomsPostDao.cottomsDetail(postId+"");
+		
+		System.out.println(userId+"      "+qb);
 		if(qb>=chargeNumber){
 			if(userId!=null){
 				Integer p=cottomsPostDao.existBuyPostId(postId,userId);//判断是否已购买
@@ -335,14 +338,21 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	//我的已购病例
 	@Override
     public DataWrapper<List<CottomsPost>> myBuy(String token, Integer currentPage, Integer numberPerPage){
+		DataWrapper<List<CottomsPost>> dw=new DataWrapper<>();
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
 		String userId=utilsDao.getUserID(token);
 		//获取已购买postId
 		List<Integer> list=cottomsPostDao.queryMyBuyPostId(userId);
+		if(list.isEmpty()){
+			dw.setMsg("null了");
+			return dw;
+		}
+		System.out.println(list);
+		System.out.println(page);
 		List<CottomsPost> cottomsPosts = cottomsPostDao.myBuy(list,page);
-		DataWrapper<List<CottomsPost>> dw=new DataWrapper<>();
+	
 		for (CottomsPost cottomsPost : cottomsPosts) {
 			cottomsPost.setChargeContent(null);
 //			int readNumber = (int)RedisService.SORTSET.zscore("阅读数",cottomsPost.getPostId()+"");//阅读数

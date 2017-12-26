@@ -136,4 +136,9 @@
 	<select id="querySale" resultType="java.util.Map">
 		SELECT phone,true_name FROM sale_info WHERE phone=#{salePhone};
 	</select>
+	
+	<!-- 123 -->
+	<select id="seeMedicalLicense" resultType="java.util.String">
+	 select  medical_license from certification where user_id=#{userId}
+	</select>
 </mapper>

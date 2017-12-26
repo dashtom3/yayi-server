@@ -27,4 +27,6 @@ public interface UserPersonalInfoDao {
 	List<String> queryBind(String userId);
 	
 	Map<String,String> querySale(String salePhone);
+
+	String seeMedicalLicense(String userId);
 }

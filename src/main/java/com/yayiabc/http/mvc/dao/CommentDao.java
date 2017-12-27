@@ -21,7 +21,7 @@ public interface CommentDao {
     int getCommentTotalNum(@Param("numberType")int numberType,@Param("beCommentedId") Integer beCommentedId);
 
 
-    List<Comment> getCommentList(@Param("numberType")int numberType,@Param("beCommentedId") Integer beCommentedId,@Param("page") Page page);
+    List<Comment> getCommentList(@Param("numberType")int numberType,@Param("beCommentedId") Integer beCommentedId,@Param("page") Page page,@Param("order")Integer order);
 
     void deleteYayiCom(Integer parentId);
 

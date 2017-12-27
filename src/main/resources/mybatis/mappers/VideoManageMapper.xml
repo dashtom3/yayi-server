@@ -104,10 +104,10 @@ WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId
 	<select id="getVideoTotalNum" resultType="int">
 		select count(*) FROM vid_manage
 		<where>
-			<if test="videoCategory!=null">
-				video_type=#{videoCategory}
+			<if test="videoCategory!=null and videoCategory!=''">
+				video_category=#{videoCategory}
 			</if>
-			<if test="keyWord!=null and keyWord!=''">
+			<if test="keyWord!=null">
 				and video_name like '%${keyWord}%'
 			</if>
 		</where>

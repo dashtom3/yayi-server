@@ -131,20 +131,19 @@ public class CommentServiceImpl implements CommentService {
 
 
     @Override
-    public DataWrapper<List<Comment>> queryCom(String type, Integer beCommentedId,Integer currentPage,Integer numberPerPage,String token) {
+    public DataWrapper<List<Comment>> queryCom(String type, Integer beCommentedId,Integer currentPage,Integer numberPerPage,String token,Integer order) {
         DataWrapper<List<Comment>> dataWrapper=new DataWrapper<List<Comment>>();
         Page page=new Page();
         page.setNumberPerPage(numberPerPage);
         page.setCurrentPage(currentPage);
         int numberType=TypeToNumUtil.typeToNum(type);
-        System.out.println("numberType"+numberType);
         int totalNumber=commentDao.getCommentTotalNum(numberType,beCommentedId);
         dataWrapper.setPage(page,totalNumber);
         String userId=null;
         if(token!=null){
             userId=utilsDao.getUserID(token);
         }
-        List<Comment> commentList=commentDao.getCommentList(numberType,beCommentedId,page);
+        List<Comment> commentList=commentDao.getCommentList(numberType,beCommentedId,page,order);
         if(userId!=null){
             for (Comment comment:commentList
                     ) {

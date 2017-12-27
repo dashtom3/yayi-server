@@ -55,6 +55,7 @@ public class CommentController {
      * @param currentPage       当前第几页(默认为1)
      * @param numberPerPage     每页显示多少条(默认为10)
      * @param token             用户的身份标识
+     * @param order             排序(默认为1.时间,2.点赞数)
      * @return
      */
     @RequestMapping("queryCom")
@@ -64,9 +65,10 @@ public class CommentController {
             @RequestParam(value="beCommentedId",required = true) Integer beCommentedId,
             @RequestParam(value="currentPage",required = false,defaultValue = "1")Integer currentPage,
             @RequestParam(value="numberPerPage",required=false,defaultValue="10")Integer numberPerPage,
-            @RequestHeader(value="token",required = false) String token
+            @RequestHeader(value="token",required = false) String token,
+            @RequestParam(value="order",required = false,defaultValue = "1") Integer order
     ){
-        return commentService.queryCom(type,beCommentedId,currentPage,numberPerPage,token);
+        return commentService.queryCom(type,beCommentedId,currentPage,numberPerPage,token,order);
     }
 
     /**

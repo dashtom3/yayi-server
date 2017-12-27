@@ -22,6 +22,8 @@ public interface TokenValidateDao {
     UserToken getUserTokenByLoginToken(String loginToken);
 
     SaleToken getSaleTokenByLoginToken(String loginToken);
-    
+    //根据创客token获取userid
     String getSalesaleIdByLoginToken(String loginToken);
+    //根据管理员token获取userid
+    String getAdminIdBytoken(String token);
 }

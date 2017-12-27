@@ -79,7 +79,7 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 		if(a==2){
 			 QbRecord qbRecord=new QbRecord();
              qbRecord.setQbRget(60+"");
-             qbRecord.setRemark("注册送60乾币");
+             qbRecord.setRemark("完善资料送60乾币");
              qbRecord.setQbType("qb_notwith");
              userMyQbService.add(qbRecord, token);
 		}

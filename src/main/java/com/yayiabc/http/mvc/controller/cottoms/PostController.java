@@ -57,9 +57,10 @@ public class PostController {
 	@ResponseBody
 	public DataWrapper<CottomsPost> cottomsDetail(
 			@RequestHeader(value="token",required=false) String token,
-			@RequestParam(value="postId")String postId
+			@RequestParam(value="postId")String postId,
+			@RequestParam(value="type",required=false,defaultValue="病例")String type
 			){
-		return cottomsPostService.cottomsDetail(postId,token);
+		return cottomsPostService.cottomsDetail(postId,token,type);
 
 	}
 	//删除病例
@@ -89,9 +90,10 @@ public class PostController {
 	@ResponseBody
 	public DataWrapper<Void> collect(
 			@RequestHeader(value="token") String token,
-			@RequestParam(value="postId")Integer postId
+			@RequestParam(value="postId")Integer postId,
+			@RequestParam(value="type")String type
 			){
-		return cottomsPostService.collect(token,postId);
+		return cottomsPostService.collect(token,postId,type);
 
 	}
 
@@ -156,5 +158,16 @@ public class PostController {
 	@ResponseBody
 	public void see(HttpServletResponse response){
 		cottomsPostService.see(response);
+	}
+	
+	//更改病历状态
+	@RequestMapping("check")
+	@ResponseBody
+	public DataWrapper<Void> updateStater(
+			@RequestParam("token")String token,
+			@RequestParam("postId")String postId,
+			@RequestParam("postStater")Integer postStater
+			){
+		return cottomsPostService.updateStater(token,postId,postStater);
 	}
 }

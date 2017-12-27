@@ -18,7 +18,7 @@ public interface CottomsPostService {
 			Integer order,Integer postStater,String token,int type,String keyWord);
 	
 	//病例详情
-	public DataWrapper<CottomsPost> cottomsDetail(String postId,String token);
+	public DataWrapper<CottomsPost> cottomsDetail(String postId,String token,String type);
 	
 	//删除病例
 	public DataWrapper<Void> deletePost(String token, Integer postId);
@@ -30,11 +30,14 @@ public interface CottomsPostService {
 	public DataWrapper<Void> playChargePost(String token, Integer chargeNumber, Integer postId);
 	
 	//收藏病例
-	public DataWrapper<Void> collect(String token,Integer postId);
+	public DataWrapper<Void> collect(String token,Integer postId,String type);
 	
 	//我的收藏
 	public DataWrapper<List<CottomsPost>> myCollect(Integer currentPage,Integer numberPerPage,String token);
 	
 	//我的购买病例
 	public DataWrapper<List<CottomsPost>> myBuy(String token,Integer currentPage,Integer numberPerPage);
+	
+	//
+	public DataWrapper<Void> updateStater(String token,String postId,Integer postStater);
  }

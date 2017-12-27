@@ -7,6 +7,7 @@ import java.util.Set;
 import org.apache.ibatis.annotations.Param;
 import org.springframework.stereotype.Repository;
 
+import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.http.mvc.pojo.jpa.CottomsComment;
 import com.yayiabc.http.mvc.pojo.jpa.CottomsPost;
@@ -114,7 +115,8 @@ public interface CottomsPostDao {
 	//收藏病例
 	public void collect(
 			@Param("postId") Integer postId,
-			@Param("userId")String userId
+			@Param("userId")String userId,
+			@Param("type")String type
 			);
 	//我的收藏postId
 	public List<Integer> queryMyCollect(String userId);
@@ -124,9 +126,16 @@ public interface CottomsPostDao {
 			@Param("page") Page page);
 	
 	//判断收藏是否存在
-	public Integer existPostId(
+	public Integer existCollect(
 			@Param("postId")String postId,
-			@Param("userId")String userId
+			@Param("userId")String userId,
+			@Param("type")String type
+			);
+	//判断赞是否存在
+	public Integer exisPraise(
+			@Param("postId")String postId,
+			@Param("userId")String userId,
+			@Param("type")String type
 			);
 	//判断是否购买
 	public Integer existBuyPostId(@Param(
@@ -148,4 +157,9 @@ public interface CottomsPostDao {
     void addCottomsZanNum(Integer typeId);
 
 	void delCottomsZanNum(Integer typeId);
+	
+	DataWrapper<Void> updateStater(
+			@Param("postId")String postId,
+			@Param("postStater")Integer postStater
+			);
 }

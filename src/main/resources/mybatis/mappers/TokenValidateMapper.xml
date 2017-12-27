@@ -42,4 +42,11 @@
 	<select id="getSalesaleIdByLoginToken" resultType="java.lang.String">
 		select sale_id from sale_token where sale_token=#{loginToken}
 	</select>
-</mapper>       
+	
+	<select id="getAdminIdBytoken">
+		select adminstrator_id from adminstrator_token 
+		<where>
+			adminstrator_token=#{token}
+		</where>
+	</select>
+</mapper>        

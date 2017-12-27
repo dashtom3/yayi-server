@@ -32,6 +32,7 @@ import com.yayiabc.common.utils.ExcelUtil;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.common.utils.PayAfterOrderUtil;
 import com.yayiabc.http.mvc.dao.CottomsPostDao;
+import com.yayiabc.http.mvc.dao.TokenValidateDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.CottomsPost;
 import com.yayiabc.http.mvc.pojo.jpa.See;
@@ -56,6 +57,8 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	private CommentDao commentDao;
 
 	@Autowired
+	TokenValidateDao tokenValidateDao;
+	@Autowired
 	RedisService redisService;
 	//发布或更改病例（传过来无postId为发布，有postId为更改）
 	@Override
@@ -67,33 +70,30 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			cottomsPost.setUserId(userId);
 			String trueName= cottomsPostDao.gettrueName(userId);
 			cottomsPost.setWriter(trueName);
-			int day=0;
-			int week=0;
-			if(cottomsPostDao.dayGain(userId)==null){
-				day=0;
-			}else{
-				day=cottomsPostDao.dayGain(userId);
-			}
-			if(cottomsPostDao.weekGain(userId)==null){
-				week=0;
-			}else{
-				week=cottomsPostDao.weekGain(userId);
-			}
-			if(day>=5||week>=20){
-				
-			}else{
-				if(day<=5){
-					cottomsPostDao.addDayNumber(userId);
-					cottomsPostDao.addWeekNumber(userId);
-					cottomsPostDao.addQBWith(userId);
-				}
-			}
+//			//发病例获取钱币
+//			int day=0;
+//			int week=0;
+//			if(cottomsPostDao.dayGain(userId)==null){
+//				day=0;
+//			}else{
+//				day=cottomsPostDao.dayGain(userId);
+//			}
+//			if(cottomsPostDao.weekGain(userId)==null){
+//				week=0;
+//			}else{
+//				week=cottomsPostDao.weekGain(userId);
+//			}
+//			if(day>=5||week>=20){
+//
+//			}else{
+//				if(day<=5){
+//					cottomsPostDao.addDayNumber(userId);
+//					cottomsPostDao.addWeekNumber(userId);
+//					cottomsPostDao.addQBWith(userId);
+//				}
+//			}
 			if(cottomsPost.getPostId()==null){
 				cottomsPostDao.addPost(cottomsPost);
-//				//发布病例点赞默认为0
-//				RedisService.SORTSET.zadd("点赞计数列表病例:", 0, cottomsPost.getPostId()+"");
-//				//发布阅读数默认为0
-//				RedisService.SORTSET.zadd("阅读数", 0, cottomsPost.getPostId()+"");
 			}else{
 				cottomsPostDao.setPost(cottomsPost);
 			}
@@ -108,7 +108,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	@Override
 	public DataWrapper<Object> queryPost(Integer currentPage,Integer numberPerPage,
 			Integer classify,Integer order,Integer postStater,String token,int type,String keyWord) {
-		
+
 		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
 		CottomsPost cottomsPost = new CottomsPost();
 		String userId=utilsDao.getUserID(token);
@@ -120,36 +120,36 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
-		
+
 		int totalNumber=cottomsPostDao.getTotalNumber(classify,keyWord,postStater);
-//		Set<String> set = RedisService.SORTSET.zrevrange("点赞计数列表病例:", 0, totalNumber);
+		//		Set<String> set = RedisService.SORTSET.zrevrange("点赞计数列表病例:", 0, totalNumber);
 		List<String> list =new ArrayList<String>();
-//		list.addAll(set);
+		//		list.addAll(set);
 		List<CottomsPost> cottomsPosts=null;
 		cottomsPosts=cottomsPostDao.queryPost(page,classify,order,postStater,list,userId,keyWord,type);
 		for (CottomsPost cottomsPost2 : cottomsPosts) {
-//			int readNumber = (int)RedisService.SORTSET.zscore("阅读数", cottomsPost2.getPostId()+"");//获取阅读数
-//			int commentNumber =commentDao.getCommentNum(cottomsPost2.getPostId()+"",2);
-//			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+cottomsPost2.getPostId());//获取点赞数
-//			cottomsPost2.setReadNumber(readNumber);
-//			cottomsPost2.setPostFavour(favourNumber);
-//			cottomsPost2.setCommentNumber(commentNumber);
+			//			int readNumber = (int)RedisService.SORTSET.zscore("阅读数", cottomsPost2.getPostId()+"");//获取阅读数
+			//			int commentNumber =commentDao.getCommentNum(cottomsPost2.getPostId()+"",2);
+			//			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+cottomsPost2.getPostId());//获取点赞数
+			//			cottomsPost2.setReadNumber(readNumber);
+			//			cottomsPost2.setPostFavour(favourNumber);
+			//			cottomsPost2.setCommentNumber(commentNumber);
 			cottomsPost.setChargeContent(null);
 			cottomsPost.setFreeContent(null);
 			cottomsPost.setUserId(userId);
 			dataWrapper.setData(cottomsPosts);
 			dataWrapper.setPage(page, totalNumber);
-			
+
 		}
 		return dataWrapper;
 	}
 	//病例详情
 	@Override
-	public DataWrapper<CottomsPost> cottomsDetail(String postId,String token) {
+	public DataWrapper<CottomsPost> cottomsDetail(String postId,String token,String type) {
 		/*RedisService.SORTSET.zincrby("阅读数", 1, postId+"");*/
 		//阅读数加1
 		cottomsPostDao.upadteReadNum(postId);
-		
+
 		String userId=null;
 		if(token!=null){
 			userId=utilsDao.getUserID(token);
@@ -160,6 +160,21 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 
 		List<String> postIdFees=cottomsPostDao.queryFees(userId);//获取本用户付费病例id
 		CottomsPost cottomsPost1=cottomsPostDao.cottomsDetail(postId);
+		
+		Integer isCollect=cottomsPostDao.existCollect(postId+"",userId,type);//判断收藏是否存在
+		if(isCollect==0){
+			cottomsPost1.setIsCollect(0);//未收藏
+		}else{
+			cottomsPost1.setIsCollect(1);//已收藏
+		}
+		
+		Integer isPraise=cottomsPostDao.exisPraise(postId+"",userId,type);//判断赞是否存在
+		if(isPraise==0){
+			cottomsPost1.setIsPraise(0);//未点赞
+		}else{
+			cottomsPost1.setIsPraise(1);//已点赞
+		}
+		
 		dataWrapper.setFl((utilsDao.getUserPcImgById(cottomsPost1.getUserId())));
 		boolean userIde=false;
 		String post=postId+"";
@@ -167,40 +182,38 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			if(postIdFees.get(i).equals(post)){
 				userIde=true;
 			}
-			}
+		}
 		if(cottomsPost1.getUserId().equals(userId)){
 			userIde=true;
 		}
-//		boolean isPraise = redisService.SETS.sismember("点赞用户列表病例:"+postId, userId);
-//		Integer isCollect=cottomsPostDao.existPostId(postId,userId);
-//		int a=0;
-//		if(isPraise){
-//			a=1;
-//		}
-//		int readNumber = (int)RedisService.SORTSET.zscore("阅读数", postId+"");
-//		int commentNumber = commentDao.getCommentNum(postId,2);
-//		int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+postId);//点赞数
-//		cottomsPost1.setReadNumber(readNumber);
-//		cottomsPost1.setZanNum(zanNum);(favourNumber);
-//		cottomsPost1.setCommentNumber(commentNumber);
-//		cottomsPost1.setIsPraise(a);
-//		cottomsPost1.setIsCollect(isCollect);
+		//		boolean isPraise = redisService.SETS.sismember("点赞用户列表病例:"+postId, userId);
+		//		Integer isCollect=cottomsPostDao.existPostId(postId,userId);
+		//		int a=0;
+		//		if(isPraise){
+		//			a=1;
+		//		}
+		//		int readNumber = (int)RedisService.SORTSET.zscore("阅读数", postId+"");
+		//		int commentNumber = commentDao.getCommentNum(postId,2);
+		//		int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+postId);//点赞数
+		//		cottomsPost1.setReadNumber(readNumber);
+		//		cottomsPost1.setZanNum(zanNum);(favourNumber);
+		//		cottomsPost1.setCommentNumber(commentNumber);
+		//		cottomsPost1.setIsPraise(a);
+		//		cottomsPost1.setIsCollect(isCollect);
 		System.err.println("userIde="+userIde);
 		if(token!=null&&userIde==true) {
 			dataWrapper.setData(cottomsPost1);
-			System.out.println(cottomsPost1);
 			return dataWrapper;
 		}else{
 			cottomsPost1.setChargeContent(null);
 			dataWrapper.setData(cottomsPost1);
-			System.out.println(cottomsPost1+"123");
 			return dataWrapper;
 		}
 	}
-	
-//导出表格
+
+	//导出表格
 	@Override
-    public void see(HttpServletResponse response){
+	public void see(HttpServletResponse response){
 
 		List<See> listsee = cottomsPostDao.see();
 		String fileName="充值支出记录表";
@@ -238,21 +251,21 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			e.printStackTrace();
 		} finally {
 			if (bis != null) {
-                try {
-                    bis.close();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
+				try {
+					bis.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 			if (bos != null) {
-                try {
-                    bos.close();
-                } catch (IOException e) {
-                    // TODO Auto-generated catch block
-                    e.printStackTrace();
-                }
-            }
+				try {
+					bos.close();
+				} catch (IOException e) {
+					// TODO Auto-generated catch block
+					e.printStackTrace();
+				}
+			}
 		}
 	}
 	//删除病例
@@ -275,13 +288,12 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 
 	//付费病例
 	@Override
-    public DataWrapper<Void> playChargePost(String token, Integer chargeNumber, Integer postId){
+	public DataWrapper<Void> playChargePost(String token, Integer chargeNumber, Integer postId){
 		if(chargeNumber==null){
 			chargeNumber=0;
 		}
 		PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
 		String userId=utilsDao.getUserID(token);
-		
 		String remark = "付费病例:支付"+chargeNumber+"个乾币。(乾币余额:userQbNum个)";
 		DataWrapper<Void> dw =new DataWrapper<>();
 		if(token==null){
@@ -291,8 +303,6 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		Integer qb=cottomsPostDao.queryqb(userId);//查询余额
 		CottomsPost cottomsPost=new CottomsPost();
 		CottomsPost c=cottomsPostDao.cottomsDetail(postId+"");
-		
-		System.out.println(userId+"      "+qb);
 		if(qb>=chargeNumber){
 			if(userId!=null){
 				Integer p=cottomsPostDao.existBuyPostId(postId,userId);//判断是否已购买
@@ -318,15 +328,16 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 
 	//收藏病例
 	@Override
-	public DataWrapper<Void> collect(String token,Integer postId) {
+	public DataWrapper<Void> collect(String token,Integer postId,String type) {
 		DataWrapper<Void> dw =new DataWrapper<>();
 		String userId=utilsDao.getUserID(token);
 		if(userId!=null){
-			Integer p=cottomsPostDao.existPostId(postId+"",userId);//判断收藏是否存在
+			Integer p=cottomsPostDao.existCollect(postId+"",userId,type);//判断收藏是否存在
 			if(p==0){
-				cottomsPostDao.collect(postId,userId);
+				cottomsPostDao.collect(postId,userId,type);
 				dw.setMsg("收藏成功");
 			}else{
+
 				dw.setMsg("收藏已存在");
 			}
 		}else{
@@ -334,41 +345,40 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		}
 		return dw;
 	}
-	
+
 	//我的已购病例
 	@Override
-    public DataWrapper<List<CottomsPost>> myBuy(String token, Integer currentPage, Integer numberPerPage){
-		DataWrapper<List<CottomsPost>> dw=new DataWrapper<>();
+	public DataWrapper<List<CottomsPost>> myBuy(String token, Integer currentPage, Integer numberPerPage){
 		Page page=new Page();
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
 		String userId=utilsDao.getUserID(token);
 		//获取已购买postId
 		List<Integer> list=cottomsPostDao.queryMyBuyPostId(userId);
-		if(list.isEmpty()){
-			dw.setMsg("null了");
-			return dw;
-		}
+		List<CottomsPost> cottomsPosts=null;
 		System.out.println(list);
-		System.out.println(page);
-		List<CottomsPost> cottomsPosts = cottomsPostDao.myBuy(list,page);
-	
-		for (CottomsPost cottomsPost : cottomsPosts) {
-			cottomsPost.setChargeContent(null);
-//			int readNumber = (int)RedisService.SORTSET.zscore("阅读数",cottomsPost.getPostId()+"");//阅读数
-//			int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost.getPostId());//评论数
-//			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+cottomsPost.getPostId());//点赞数
-//			cottomsPost.setReadNumber(readNumber);
-//			cottomsPost.setPostFavour(favourNumber);
-//			cottomsPost.setCommentNumber(commentNumber);
+		DataWrapper<List<CottomsPost>> dw=new DataWrapper<>();
+		if(list.size()>0){
+			System.err.println(123);
+			cottomsPosts = cottomsPostDao.myBuy(list,page);
+			for (CottomsPost cottomsPost : cottomsPosts) {
+				cottomsPost.setChargeContent(null);
+				//			int readNumber = (int)RedisService.SORTSET.zscore("阅读数",cottomsPost.getPostId()+"");//阅读数
+				//			int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost.getPostId());//评论数
+				//			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+cottomsPost.getPostId());//点赞数
+				//			cottomsPost.setReadNumber(readNumber);
+				//			cottomsPost.setPostFavour(favourNumber);
+				//			cottomsPost.setCommentNumber(commentNumber);
+			}
 		}
+		
 		dw.setData(cottomsPosts);
 		return dw;
-		
+
 	}
 	//我的收藏
 	@Override
-    public DataWrapper<List<CottomsPost>> myCollect(Integer currentPage, Integer numberPerPage, String token) {
+	public DataWrapper<List<CottomsPost>> myCollect(Integer currentPage, Integer numberPerPage, String token) {
 		String userId=utilsDao.getUserID(token);
 		Page page = new Page();
 		page.setCurrentPage(currentPage);
@@ -378,12 +388,12 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		DataWrapper<List<CottomsPost>> dw=new DataWrapper<>();
 		for (CottomsPost cottomsPost : cottomsPosts) {
 			cottomsPost.setChargeContent(null);
-//			int readNumber = (int)RedisService.SORTSET.zscore("阅读数",cottomsPost.getPostId()+"");//阅读数
-//			int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost.getPostId());//评论数
-//			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+cottomsPost.getPostId());//点赞数
-//			cottomsPost.setReadNumber(readNumber);
-//			cottomsPost.setPostFavour(favourNumber);
-//			cottomsPost.setCommentNumber(commentNumber);
+			//			int readNumber = (int)RedisService.SORTSET.zscore("阅读数",cottomsPost.getPostId()+"");//阅读数
+			//			int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost.getPostId());//评论数
+			//			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+cottomsPost.getPostId());//点赞数
+			//			cottomsPost.setReadNumber(readNumber);
+			//			cottomsPost.setPostFavour(favourNumber);
+			//			cottomsPost.setCommentNumber(commentNumber);
 		}
 		dw.setData(cottomsPosts);
 		return dw;
@@ -408,6 +418,18 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			listmap.add(mapValue);
 		}
 		return listmap;
+	}
+
+	@Override
+	public DataWrapper<Void> updateStater(String token, String postId, Integer postStater) {
+		// TODO Auto-generated method stub
+		//tokenValidateDao.getAdminIdBytoken(token);
+		DataWrapper<Void> dataWrapper = new DataWrapper<>();
+		if(token!=null){
+			cottomsPostDao.updateStater(postId,postStater);
+			dataWrapper.setMsg("操作成功");
+		}
+		return dataWrapper;
 	}
 
 }

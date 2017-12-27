@@ -548,11 +548,11 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 	jedis.select(11);
 	if(jedis.exists(userId)){
 		//不是首单
-		System.out.println("不是首单。。。。。。。。。。。。。。。。。。。。。。");
+		System.out.println("不是首单，提交订单进行时。");
 		return false;
 	}else{
 		//是首单
-		System.out.println("是首单。。。。。。。。。。。。。。。。。。。。。。且总额小于120");
+		System.out.println("是首单，提交订单进行时。且总额小于120");
 		//jedis.set(userId, "");
 		jedis.hset("isFirstOrders", orderId,"Y");
 		return true;

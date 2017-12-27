@@ -246,7 +246,7 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 		// TODO Auto-generated method stub
 		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
 		String userId=utilsDao.getUserID(token);
-		Integer sign=userWithdrawalsServiceDao.queryWitSign(userId);
+		//Integer sign=userWithdrawalsServiceDao.queryWitSign(userId);
 		
 		Jedis jedis=RedisClient.getInstance().getJedis();
 		if(userId==null){

@@ -9,7 +9,7 @@ import java.io.Serializable;
 public class ItemDetail extends BasePojo implements Serializable{
 	private String itemId;
 
-	private String video;
+	private VidManage vidManage;
 
 	private String itemPica;
 
@@ -73,14 +73,6 @@ public class ItemDetail extends BasePojo implements Serializable{
 
 	public void setItemUse(String itemUse) {
 		this.itemUse = itemUse;
-	}
-
-	public String getVideo() {
-		return video;
-	}
-
-	public void setVideo(String video) {
-		this.video = video == null ? null : video.trim();
 	}
 
 	public String getItemPica() {
@@ -258,56 +250,39 @@ public class ItemDetail extends BasePojo implements Serializable{
 		this.remark = remark == null ? null : remark.trim();
 	}
 
-	public ItemDetail() {
-		super();
+	public VidManage getVidManage() {
+		return vidManage;
 	}
 
-	public ItemDetail(String itemId, String video, String itemPica,
-			String itemPicb, String itemPicc, String itemPicd, String itemPice,
-			Integer commission, Integer isQbBuy, Integer qbNum,
-			String storeItemId, String apparatusType, String unit,
-			String producePompany, String registerId, String registerDate,
-			String itemPacking, String itemLevels, String itemRange,
-			String remark, String itemDesc, String itemUse) {
-		super();
-		this.itemId = itemId;
-		this.video = video;
-		this.itemPica = itemPica;
-		this.itemPicb = itemPicb;
-		this.itemPicc = itemPicc;
-		this.itemPicd = itemPicd;
-		this.itemPice = itemPice;
-		this.commission = commission;
-		this.isQbBuy = isQbBuy;
-		this.qbNum = qbNum;
-		this.storeItemId = storeItemId;
-		this.apparatusType = apparatusType;
-		this.unit = unit;
-		this.producePompany = producePompany;
-		this.registerId = registerId;
-		this.registerDate = registerDate;
-		this.itemPacking = itemPacking;
-		this.itemLevels = itemLevels;
-		this.itemRange = itemRange;
-		this.remark = remark;
-		this.itemDesc = itemDesc;
-		this.itemUse = itemUse;
+	public void setVidManage(VidManage vidManage) {
+		this.vidManage = vidManage;
 	}
 
 	@Override
 	public String toString() {
-		return "ItemDetail [itemId=" + itemId + ", video=" + video
-				+ ", itemPica=" + itemPica + ", itemPicb=" + itemPicb
-				+ ", itemPicc=" + itemPicc + ", itemPicd=" + itemPicd
-				+ ", itemPice=" + itemPice + ", commission=" + commission
-				+ ", isQbBuy=" + isQbBuy + ", qbNum=" + qbNum
-				+ ", storeItemId=" + storeItemId + ", apparatusType="
-				+ apparatusType + ", unit=" + unit + ", producePompany="
-				+ producePompany + ", registerId=" + registerId
-				+ ", registerDate=" + registerDate + ", itemPacking="
-				+ itemPacking + ", itemLevels=" + itemLevels + ", itemRange="
-				+ itemRange + ", remark=" + remark + ", itemDesc=" + itemDesc
-				+ ", itemUse=" + itemUse + "]";
+		return "ItemDetail{" +
+				"itemId='" + itemId + '\'' +
+				", vidManage=" + vidManage +
+				", itemPica='" + itemPica + '\'' +
+				", itemPicb='" + itemPicb + '\'' +
+				", itemPicc='" + itemPicc + '\'' +
+				", itemPicd='" + itemPicd + '\'' +
+				", itemPice='" + itemPice + '\'' +
+				", commission=" + commission +
+				", isQbBuy=" + isQbBuy +
+				", qbNum=" + qbNum +
+				", storeItemId='" + storeItemId + '\'' +
+				", apparatusType='" + apparatusType + '\'' +
+				", unit='" + unit + '\'' +
+				", producePompany='" + producePompany + '\'' +
+				", registerId='" + registerId + '\'' +
+				", registerDate='" + registerDate + '\'' +
+				", itemPacking='" + itemPacking + '\'' +
+				", itemLevels='" + itemLevels + '\'' +
+				", itemRange='" + itemRange + '\'' +
+				", remark='" + remark + '\'' +
+				", itemDesc='" + itemDesc + '\'' +
+				", itemUse='" + itemUse + '\'' +
+				'}';
 	}
-
 }

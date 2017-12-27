@@ -110,11 +110,11 @@
 	</update>
 
 	<update id="addCommentNumberToCottom">
-		update cottoms_post set zan_num=zan_num+1 where post_id=#{beCommentedId}
+		update cottoms_post set comment_num=comment_num+1 where post_id=#{beCommentedId}
 	</update>
 
 	<update id="delCommentNumberToCottom">
-		update cottoms_post set zan_num=zan_num-1 where post_id=#{beCommentedId}
+		update cottoms_post set comment_num=comment_num-1 where post_id=#{beCommentedId}
 	</update>
 
 

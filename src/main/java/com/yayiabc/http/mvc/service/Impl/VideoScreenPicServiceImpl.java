@@ -16,10 +16,13 @@ import com.yayiabc.common.utils.UploadFile;
 import com.yayiabc.http.mvc.service.VideoScreenPicService;
 import org.apache.log4j.LogManager;
 import org.apache.log4j.Logger;
+import org.bouncycastle.util.encoders.UrlBase64;
 import org.springframework.stereotype.Service;
 import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
+
+import java.lang.reflect.Method;
 
 @Service
 public class VideoScreenPicServiceImpl implements VideoScreenPicService {
@@ -47,7 +50,7 @@ public class VideoScreenPicServiceImpl implements VideoScreenPicService {
         OperationManager operater = new OperationManager(auth, c);
         // 设置要截图的空间和key，并且这个key在你空间中存在(key就是文件的名字)
         String bucket = UploadFile.bucket;
-        String key = fileName;
+        String key= new String(UrlBase64.decode(fileName));
         // 设置截图操作参数
         String fops = "vframe/" + format + "/offset/1/w/640/h/480/rotate/auto";
         // 设置截图的队列
@@ -117,5 +120,13 @@ public class VideoScreenPicServiceImpl implements VideoScreenPicService {
         String url=qiNiuMediaPrtScreen(fileName,format);
         dataWrapper.setMsg(url);
         return dataWrapper;
+    }
+
+    public static byte[] decodeBase64(String input) throws Exception{
+        Class clazz=Class.forName("com.sun.org.apache.xerces.internal.impl.dv.util.Base64");
+        Method mainMethod= clazz.getMethod("decode", String.class);
+        mainMethod.setAccessible(true);
+        Object retObj=mainMethod.invoke(null, input);
+        return (byte[])retObj;
     }
 }

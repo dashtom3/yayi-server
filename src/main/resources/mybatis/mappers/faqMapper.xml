@@ -130,4 +130,8 @@
 		</foreach>
 		limit #{currentNumber},#{numberPerPage}
 	</select>
+
+	<select id="getQuestionUid" resultType="string">
+		select faq_user_id FROM faq_question where faq_question_id=#{faqQuestionId}
+	</select>
 </mapper>       

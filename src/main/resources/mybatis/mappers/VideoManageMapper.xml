@@ -84,9 +84,14 @@ WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId
 	</select>
 
 	<select id="detail" resultMap="videoRM">
-		SELECT a.vi_id,a.video_name,a.video_type,a.video_route,a.video_category,DATE_FORMAT(a.vedio_time,'%Y-%m-%d %H:%i:%s') AS vedio_time,a.vedio_pic ,d.item_brand_name,b.item_id,b.item_name,b.item_price,c.item_pica
-FROM vid_manage a,item_info b,item_detail c,item_brand d WHERE a.vi_id=#{viId} AND b.item_id=c.item_id AND a.video_route=c.video and d.item_brand_id=b.item_brand_id
+			SELECT a.vi_id,a.video_name,a.video_type,a.video_route,a.video_category,DATE_FORMAT(a.vedio_time,'%Y-%m-%d %H:%i:%s') AS vedio_time,a.vedio_pic,
+			b.item_id,c.item_name,c.item_price,d.item_brand_name
+		FROM (SELECT * FROM vid_manage WHERE vi_id=#{viId}) a
+		LEFT JOIN item_detail b ON a.video_route=b.video
+		LEFT JOIN item_info c ON b.item_id=c.item_id
+		LEFT JOIN item_brand d ON c.item_brand_id=d.item_brand_id
 	</select>
+
 
 	<select id="queryMyCollect" resultType="VidManage">
 		select * from vid_manage where vi_id IN 

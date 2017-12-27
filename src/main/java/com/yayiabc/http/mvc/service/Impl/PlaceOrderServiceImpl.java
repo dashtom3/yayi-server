@@ -115,18 +115,18 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 		}else{
 			jedis.select(11);
 			if(jedis.exists(userId)){
-				System.out.println("不是首单。。。。。。。。。。。。。。。。。。。。。。");
+				System.out.println("不是首单");
 				useMaxQbNum=user.getaQb()+user.getcQb()+user.getQbBalance()+user.getQbNotwtih()+"";
 				if(num>Double.parseDouble(sumItemsPrice)){
 					dataWrapper.setMsg("余额不足");
-					return null;
+					return dataWrapper;
 				}
 			}else{
-				System.out.println("是首单。。。。。。。。。。。。。。。。。。。。。。");
+				System.out.println("是首单");
 				useMaxQbNum=user.getaQb()+user.getcQb()+user.getQbBalance()+"";
 				if(num>Double.parseDouble(sumItemsPrice)){
 					dataWrapper.setMsg("余额不足");
-					return null;
+					return dataWrapper;
 				}
 			}
 		}

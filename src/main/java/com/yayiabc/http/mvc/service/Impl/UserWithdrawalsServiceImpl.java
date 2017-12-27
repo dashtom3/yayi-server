@@ -262,10 +262,11 @@ public class UserWithdrawalsServiceImpl implements UserWithdrawalsService {
 			}else{
 				jedis.select(11);
 				if(jedis.exists(userId)){
-					System.out.println("不是首单。。。。。。。。。。。。。。。。。。。。。。");
+					System.out.println("不是首单。showUserQbNumPo");
 					useMaxQbNum=user.getaQb()+user.getcQb()+user.getQbBalance()+user.getQbNotwtih()+"";
 					dataWrapper.setMsg("1");
 				}else{
+					System.out.println("是首单。showUserQbNumPo");
 					useMaxQbNum=user.getaQb()+user.getcQb()+user.getQbBalance()+"";
 					dataWrapper.setMsg("0");
 				}

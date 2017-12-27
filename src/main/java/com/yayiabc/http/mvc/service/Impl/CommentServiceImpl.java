@@ -4,12 +4,15 @@ import com.yayiabc.common.enums.ErrorCodeEnum;
 import com.yayiabc.common.utils.*;
 import com.yayiabc.http.mvc.dao.*;
 import com.yayiabc.http.mvc.pojo.jpa.Comment;
+import com.yayiabc.http.mvc.pojo.jpa.SubComment;
 import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.CommentService;
 import com.yayiabc.http.mvc.service.RedisService;
 import com.yayiabc.http.mvc.service.ZanService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
+
+import java.util.Date;
 import java.util.List;
 
 
@@ -93,11 +96,16 @@ public class CommentServiceImpl implements CommentService {
             if(num==2&&(beCommentedUser!=null)&&!(user.getUserId().equals(beCommentedUser.getUserId()))){
                 redisService.LISTS.rpush(PREFIX+beCommentedUser.getUserId(),beCommentedUser.getTrueName()+suffix+",病例:" + beCommentedId);
             }
+            SubComment subComment=new SubComment();
+            subComment.setUserId(user.getUserId());
+            subComment.setUserPic(user.getUserPic());
+            subComment.setCommentTime(new Date());
+            if(parentId!=null&&beCommentedUser!=null){
+                subComment.setReplyUserId(beCommentedUser.getUserId());
+                subComment.setReplyUserName(beCommentedUser.getTrueName());
+            }
+            dataWrapper.setData(subComment);
         }
-        comment.setUserId(user.getUserId());
-        comment.setUserName(user.getTrueName());
-        comment.setUserPic(user.getUserPic());
-        dataWrapper.setData(comment);
         return dataWrapper;
     }
 
@@ -130,9 +138,14 @@ public class CommentServiceImpl implements CommentService {
        if(i==0){
            dataWrapper.setErrorCode(ErrorCodeEnum.Error);
        }
-       coment.setUserId(currentUser.getUserId());
-       coment.setUserName(currentUser.getTrueName());
-       coment.setUserPic(currentUser.getUserPic());
+       SubComment subComment=new SubComment();
+       subComment.setUserId(currentUser.getUserId());
+       subComment.setUserPic(currentUser.getUserPic());
+       subComment.setUserName(currentUser.getTrueName());
+       if(parentId!=null&&user!=null){
+            subComment.setReplyUserId(user.getUserId());
+            subComment.setReplyUserName(user.getTrueName());
+       }
        dataWrapper.setData(coment);
        return dataWrapper;
     }

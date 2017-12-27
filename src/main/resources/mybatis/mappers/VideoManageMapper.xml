@@ -50,6 +50,17 @@ WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId
 		<result property="videoCategory" column="video_category"/>
 		<result property="vedioTime" column="vedio_time"/>
 		<result property="vedioPic" column="vedio_pic"/>
+		<association property="itemInfo" javaType="ItemInfo">
+			<id property="itemId" column="item_id"/>
+			<result property="itemName" column="item_name"/>
+			<result property="itemPrice" column="item_price"/>
+			<association property="itemBrand" javaType="ItemBrand">
+				<result property="itemBrandName" column="item_brand_name"/>
+			</association>
+			<association property="itemDetail" javaType="ItemDetail">
+				<result property="itemPica" column="item_pica"/>
+			</association>
+		</association>
 	</resultMap>
 
 	<select id="showVid" resultMap="videoRM">
@@ -73,7 +84,8 @@ WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId
 	</select>
 
 	<select id="detail" resultMap="videoRM">
-		select vi_id,video_name,video_type,video_route,video_category,DATE_FORMAT(vedio_time,'%Y-%m-%d %H:%i:%s') As vedio_time,vedio_pic from vid_manage where vi_id=#{viId}
+		SELECT a.vi_id,a.video_name,a.video_type,a.video_route,a.video_category,DATE_FORMAT(a.vedio_time,'%Y-%m-%d %H:%i:%s') AS vedio_time,a.vedio_pic ,d.item_brand_name,b.item_id,b.item_name,b.item_price,c.item_pica
+FROM vid_manage a,item_info b,item_detail c,item_brand d WHERE a.vi_id=#{viId} AND b.item_id=c.item_id AND a.video_route=c.video and d.item_brand_id=b.item_brand_id
 	</select>
 
 	<select id="queryMyCollect" resultType="VidManage">

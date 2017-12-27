@@ -77,8 +77,9 @@ public class CommentServiceImpl implements CommentService {
             }else{//二级评论
                 //自己不能评论自己
                 beCommentedUser=commentDao.getUserByTopCommentId(parentId);
-                if(user.getUserId().equals(beCommentedUser.getUserId())){
+                if(user!=null&&beCommentedUser!=null&&user.getUserId().equals(beCommentedUser.getUserId())){
                     dataWrapper.setErrorCode(ErrorCodeEnum.Error);
+                    dataWrapper.setMsg("自己不能评论自己");
                     return dataWrapper;
                 }else{
                     if(num==2){

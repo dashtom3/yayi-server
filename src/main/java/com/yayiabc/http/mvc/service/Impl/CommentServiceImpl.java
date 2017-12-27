@@ -94,6 +94,10 @@ public class CommentServiceImpl implements CommentService {
                 redisService.LISTS.rpush(PREFIX+beCommentedUser.getUserId(),beCommentedUser.getTrueName()+suffix+",病例:" + beCommentedId);
             }
         }
+        comment.setUserId(user.getUserId());
+        comment.setUserName(user.getTrueName());
+        comment.setUserPic(user.getUserPic());
+        dataWrapper.setData(comment);
         return dataWrapper;
     }
 
@@ -126,6 +130,10 @@ public class CommentServiceImpl implements CommentService {
        if(i==0){
            dataWrapper.setErrorCode(ErrorCodeEnum.Error);
        }
+       coment.setUserId(currentUser.getUserId());
+       coment.setUserName(currentUser.getTrueName());
+       coment.setUserPic(currentUser.getUserPic());
+       dataWrapper.setData(coment);
        return dataWrapper;
     }
 

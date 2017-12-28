@@ -46,7 +46,7 @@ public class ItemInfo extends BasePojo implements Serializable{
 
 	private String threeClassify;
 
-	private String itemPnamea;   //这里改为了String
+	private String itemPnamea;
 
 	private String itemPnameb;
 

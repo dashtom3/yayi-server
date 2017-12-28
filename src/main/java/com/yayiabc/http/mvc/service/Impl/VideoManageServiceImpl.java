@@ -69,6 +69,9 @@ public class VideoManageServiceImpl implements VideoManageService {
 					}
 				}
 		}
+		if(vidManageList==null||vidManageList.size()==0){
+			vidManageList=null;
+		}
 		dataWrapper.setData(vidManageList);
 		dataWrapper.setPage(page,totalNumber);
 		return dataWrapper;

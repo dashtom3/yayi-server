@@ -9,6 +9,8 @@ import java.io.Serializable;
 public class ItemDetail extends BasePojo implements Serializable{
 	private String itemId;
 
+	private String video;
+
 	private VidManage vidManage;
 
 	private String itemPica;
@@ -50,6 +52,14 @@ public class ItemDetail extends BasePojo implements Serializable{
 	private String itemDesc;
 
 	private String itemUse;
+
+	public String getVideo() {
+		return video;
+	}
+
+	public void setVideo(String video) {
+		this.video = video;
+	}
 
 	public String getItemId() {
 		return itemId;

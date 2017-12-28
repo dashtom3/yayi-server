@@ -94,6 +94,7 @@ public class ItemInfoManageController {
 	public DataWrapper<Void> update(
 			@RequestHeader(value="adminToken",required=true)String adminToken,
 			@ModelAttribute ItemInfo itemInfo
+
 	){
 		return itemInfoManageService.updateItem(itemInfo);
 	}
@@ -124,7 +125,7 @@ public class ItemInfoManageController {
 	@AdminTokenValidate
 	@AdminLog(description="管理员新增商品")
 	public DataWrapper<Void> addItem(
-			@RequestHeader(value="adminToken",required=true)String adminToken	,
+			@RequestHeader(value="adminToken",required=true)String adminToken,
 			@ModelAttribute ItemInfo itemInfo
 	){
 		return itemInfoManageService.addItem(itemInfo);

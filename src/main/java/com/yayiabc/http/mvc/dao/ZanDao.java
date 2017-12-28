@@ -8,5 +8,5 @@ public interface ZanDao {
 
     void addStatus(@Param("userId")String userId,@Param("type") String type,@Param("typeId") Integer typeId,@Param("parentId") Integer parentId,@Param("presentId") Integer presentId);
 
-    void deleteStatus(String userId, String type, Integer typeId, Integer parentId, Integer presentId);
+    void deleteStatus(@Param("userId")String userId,@Param("type") String type,@Param("typeId") Integer typeId,@Param("parentId") Integer parentId,@Param("presentId") Integer presentId);
 }

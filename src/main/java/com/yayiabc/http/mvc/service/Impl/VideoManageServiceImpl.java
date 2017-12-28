@@ -90,13 +90,15 @@ public class VideoManageServiceImpl implements VideoManageService {
 		//获取视频的外链
 		String vidRoute=vidManage.getVidRoute();
 		String fileName=getFileName(vidRoute);
-		videoScreenPicService.qiNiuMediaPrtScreen(fileName,"jpg");
+		String vidName=vidManage.getVidName();
+		videoScreenPicService.qiNiuMediaPrtScreen(vidName,"jpg");
 		int index=fileName.indexOf(".");
 		String vedioPic=vidRoute+".jpg";
 		if(index!=-1){
 			vedioPic=vidRoute.substring(0,vidRoute.lastIndexOf("."))+".jpg";
 		}
 		vidManage.setVedioPic(vedioPic);
+		vidManage.setVidName(vidName.substring(0,vidName.indexOf(".")));
 		videoManageDao.insertVid(vidManage);
 		return dataWrapper;
 	}

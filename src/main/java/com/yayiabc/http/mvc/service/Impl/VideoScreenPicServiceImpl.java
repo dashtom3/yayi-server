@@ -50,7 +50,8 @@ public class VideoScreenPicServiceImpl implements VideoScreenPicService {
         OperationManager operater = new OperationManager(auth, c);
         // 设置要截图的空间和key，并且这个key在你空间中存在(key就是文件的名字)
         String bucket = UploadFile.bucket;
-        String key= new String(UrlBase64.decode(fileName));
+        System.out.println("fileName"+fileName);
+        String key= fileName;
         // 设置截图操作参数
         String fops = "vframe/" + format + "/offset/1/w/640/h/480/rotate/auto";
         // 设置截图的队列
@@ -65,7 +66,7 @@ public class VideoScreenPicServiceImpl implements VideoScreenPicService {
                 + "." + format);
         String pfops = fops + "|saveas/" + urlbase64;
         // 设置pipeline参数
-        StringMap params = new StringMap().putWhen("force", 1, true);
+        StringMap params = new StringMap().putWhen("force",1, true);
         try {
             String persistid = operater.pfop(bucket, key, pfops, params);
             screenPic = this.getFileResourceUrl(str + "." + format);

@@ -42,7 +42,9 @@ public class ZanServiceImpl implements ZanService{
 		User user = utilsDao.getUserByToken(token);
 		String userId = user.getUserId();
 		//判断是否已经点赞
+		System.out.println(userId+":"+type+":"+typeId+":"+parentId+":"+presentId);
 		int count=zanDao.getCount(userId,type,typeId,parentId,presentId);
+		System.out.println("count"+count);
 		if(count==0){
 			if("视频".equals(type)){
 				if(parentId!=null){

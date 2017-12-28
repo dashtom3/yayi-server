@@ -43,7 +43,7 @@
 		select sale_id from sale_token where sale_token=#{loginToken}
 	</select>
 	
-	<select id="getAdminIdBytoken">
+	<select id="getAdminIdBytoken" resultType="java.lang.String">
 		select adminstrator_id from adminstrator_token 
 		<where>
 			adminstrator_token=#{token}

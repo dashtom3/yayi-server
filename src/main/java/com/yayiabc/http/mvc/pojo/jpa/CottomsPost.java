@@ -30,8 +30,15 @@ public class CottomsPost {
 	private int isPraise;//是否点赞
 	private int isCollect;//是否收藏
 	private User user;
+	private refuseCauser refuseCauser;
 	
 	
+	public refuseCauser getRefuseCauser() {
+		return refuseCauser;
+	}
+	public void setRefuseCauser(refuseCauser refuseCauser) {
+		this.refuseCauser = refuseCauser;
+	}
 	public User getUser() {
 		return user;
 	}
@@ -159,8 +166,10 @@ public class CottomsPost {
 				+ postTime + ", writer=" + writer + ", readNumber=" + readNumber + ", commentNum=" + commentNum
 				+ ", zanNum=" + zanNum + ", commentsList=" + commentsList + ", cover=" + cover + ", printUrl="
 				+ printUrl + ", replyTime=" + replyTime + ", postStater=" + postStater + ", chargeNumber="
-				+ chargeNumber + ", isPraise=" + isPraise + ", isCollect=" + isCollect + ", user=" + user + "]";
+				+ chargeNumber + ", isPraise=" + isPraise + ", isCollect=" + isCollect + ", user=" + user
+				+ ", refuseCauser=" + refuseCauser + "]";
 	}
+	
 	
 	
 }

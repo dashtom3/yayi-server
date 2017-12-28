@@ -32,8 +32,10 @@ public class PostController {
 	@UserTokenValidate
 	public DataWrapper<Void> addPost(
 			@RequestHeader String token,
-			@ModelAttribute CottomsPost cottomsPost){
-		return cottomsPostService.addPost(cottomsPost,token);
+			@ModelAttribute CottomsPost cottomsPost,
+			@RequestParam(value="refuseCauser",required=false)String refuseCauser
+			){
+		return cottomsPostService.addPost(cottomsPost,token,refuseCauser);
 	}
 
 	//病例列表
@@ -164,10 +166,14 @@ public class PostController {
 	@RequestMapping("check")
 	@ResponseBody
 	public DataWrapper<Void> updateStater(
-			@RequestParam("token")String token,
-			@RequestParam("postId")String postId,
-			@RequestParam("postStater")Integer postStater
+			@RequestHeader("token")String token,
+			@RequestParam("postId")Integer postId,
+			@RequestParam("postStater")Integer postStater,
+			@RequestParam("userId")Integer userId,
+			@RequestParam("refuseCauser")String refuseCauser
 			){
-		return cottomsPostService.updateStater(token,postId,postStater);
+		return cottomsPostService.updateStater(token,postId,postStater,userId,refuseCauser);
 	}
+	
+	//审核
 }

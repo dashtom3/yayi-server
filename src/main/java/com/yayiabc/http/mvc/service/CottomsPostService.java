@@ -11,7 +11,7 @@ import aj.org.objectweb.asm.Type;
 
 public interface CottomsPostService {
 	//发布病例
-	public DataWrapper<Void> addPost(CottomsPost cottomsPost,String token);
+	public DataWrapper<Void> addPost(CottomsPost cottomsPost,String token,String refuseCauser);
 	
 	//显示病例 type:1:是病例列表。2:是我的病例列表
 	public DataWrapper<Object> queryPost(Integer currentPage,Integer numberPerPage,Integer classify,
@@ -39,5 +39,5 @@ public interface CottomsPostService {
 	public DataWrapper<List<CottomsPost>> myBuy(String token,Integer currentPage,Integer numberPerPage);
 	
 	//
-	public DataWrapper<Void> updateStater(String token,String postId,Integer postStater);
+	public DataWrapper<Void> updateStater(String token,Integer postId,Integer postStater,Integer userId,String refuseCauser);
  }

@@ -35,8 +35,8 @@ public class RedisClient {
 	 /** 对存储结构为HashMap类型的操作 */
 	 /** 对存储结构为Set(排序的)类型的操作 */
 	// public SortSet SORTSET;
-	 private static JedisPool jedisPool = null;  
 		 
+	 private static JedisPool jedisPool = null;  
 	 private RedisClient() {   
 		
 	 } 

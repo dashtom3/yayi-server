@@ -13,7 +13,7 @@ public class DaForDentist {
 	private String content;
 	private String firstClassify;
 	private String secondClassify;
-	private String browseNumber;
+	private int browseNumber;
 	private String isCollect; //1是收藏  0是未收藏
 	
 	
@@ -23,10 +23,10 @@ public class DaForDentist {
 	public void setIsCollect(String isCollect) {
 		this.isCollect = isCollect;
 	}
-	public String getBrowseNumber() {
+	public int getBrowseNumber() {
 		return browseNumber;
 	}
-	public void setBrowseNumber(String browseNumber) {
+	public void setBrowseNumber(int browseNumber) {
 		this.browseNumber = browseNumber;
 	}
 	public int getId() {

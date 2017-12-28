@@ -49,14 +49,38 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 		DataWrapper<Certification> dataWrapper = new DataWrapper<Certification>();
 		String userId = utilsDao.getUserID(token);
 		certification.setUserId(userId);
-		String pic=userPersonalInfoDao.seeMedicalLicense(userId);
+		//拿必传的医疗机构资格证判断  是个人资质认证  还是 机构资字认证
+		System.out.println(certification);
+		String gerenPic=null;
+		String jigouPic=null;
+		/*if(certification.getType()==1){
+			//个人
+			System.out.println(1);
+			gerenPic=userPersonalInfoDao.seeDoctorPic(userId);
+		}else if(certification.getType()==2){
+			//机构
+			System.out.println(2);
+			jigouPic=userPersonalInfoDao.seeMedicalLicense(userId);
+		}else{
+			dataWrapper.setMsg("参数错误");
+			return dataWrapper;
+		}*/
+		//暂时先如此
+		gerenPic=userPersonalInfoDao.seeDoctorPic(userId);
+		jigouPic=userPersonalInfoDao.seeMedicalLicense(userId);
 		int a=0;
-		if(pic==null){
+		if(gerenPic==null&&jigouPic==null){
 			a=a+1;
+			 QbRecord qbRecord=new QbRecord();
+             qbRecord.setQbRget(60+"");
+             qbRecord.setRemark("首次完善资质赠60乾币");
+             qbRecord.setQbType("qb_notwith");
+             userMyQbService.add(qbRecord, token);
 		}
 		int i = userPersonalInfoDao.updateCertification(certification);
 		if (i > 0) {
 			UserPersonalInfo userPersonalInfo = userPersonalInfoDao.detail(userId);
+			System.out.println(userPersonalInfo);
 			if(userPersonalInfo.getType()==1){
 				if(userPersonalInfo.getDoctorPic() !=null ){
 					userPersonalInfoDao.updateState(userId);
@@ -72,17 +96,17 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 		} else {
 			dataWrapper.setErrorCode(ErrorCodeEnum.Error);
 		}
-		pic=userPersonalInfoDao.seeMedicalLicense(userId);
+		/*pic=userPersonalInfoDao.seeMedicalLicense(userId);
 		if(pic!=null){
 			a=a+1;
-		}
-		if(a==2){
+		}*/
+		/*if(a==2){
 			 QbRecord qbRecord=new QbRecord();
              qbRecord.setQbRget(60+"");
              qbRecord.setRemark("完善资料送60乾币");
              qbRecord.setQbType("qb_notwith");
              userMyQbService.add(qbRecord, token);
-		}
+		}*/
 		return dataWrapper;
 	}
 

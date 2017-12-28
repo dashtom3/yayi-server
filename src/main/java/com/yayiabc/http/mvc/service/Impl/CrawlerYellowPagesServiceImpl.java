@@ -73,11 +73,11 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 			}else{
 				dfd.setContent(conetnt.substring(0,30));	
 			}
-			String k=String.valueOf(jedis.zscore("Master_Browse_Num", dfd.getId()+""));
-			if(k.equals("null")){
-				dfd.setBrowseNumber(0+"");
+			Double k=jedis.zscore("Master_Browse_Num", dfd.getId()+"");
+			if(null==k){
+				dfd.setBrowseNumber(0);
 			}else{
-				dfd.setBrowseNumber(k);
+				dfd.setBrowseNumber((int) (k+0));
 			}
 		}
 		jedis.close();
@@ -167,7 +167,8 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 		//这里需要记录资料库的浏览数
 		Jedis jedis=RedisClient.getInstance().getJedis();
 		Double lon=jedis.zincrby("Master_Browse_Num", 1, id);
-		daForDentist.setBrowseNumber(jedis.zscore("Master_Browse_Num", daForDentist.getId()+"")+"");
+		Double BN=jedis.zscore("Master_Browse_Num", daForDentist.getId()+"");
+		daForDentist.setBrowseNumber((int) (BN+0));
 		jedis.close();
 		return dataWrapper;
 	}

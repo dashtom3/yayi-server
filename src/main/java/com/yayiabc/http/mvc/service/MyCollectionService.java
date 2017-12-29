@@ -3,5 +3,5 @@ package com.yayiabc.http.mvc.service;
 import com.yayiabc.common.utils.DataWrapper;
 
 public interface MyCollectionService {
-    DataWrapper<Object> queryList(String token, Integer type,Integer currentPage,Integer numberPerPage);
+    DataWrapper<Object> queryList(String type,Integer currentPage,Integer numberPerPage,String userId,Integer category);
 }

@@ -123,20 +123,7 @@ public class VideoManageController {
             return videoManageService.detail(viId);
     }
 
-    /**
-     * 添加收藏或者取消收藏
-     * @param token         用户的身份标识
-     * @param viId          视频Id
-     * @return
-     */
-    @RequestMapping("star")
-    @ResponseBody
-    public DataWrapper<Void> star(
-            @RequestHeader(value="token",required = true) String token,
-            @RequestParam(value="viId",required = true) Integer viId
-    ){
-                return videoManageService.star(token,viId);
-    }
+
 
     /**
      * 获取视频相关商品的信息

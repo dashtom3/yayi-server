@@ -148,10 +148,7 @@ public class FaqServiceImpl implements FaqService {
         return dataWrapper;
     }
 
-    @Override
-    public DataWrapper<Void> star(String token, Integer faqQuestionId) {
-        return videoManageService.starOrUnStar(token,faqQuestionId,"问答");
-    }
+
 
 
 

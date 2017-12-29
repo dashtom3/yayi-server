@@ -125,6 +125,10 @@
 	<update id="delCommentReplyNum">
 		update top_comment set reply_num=reply_num-1 where id=#{parentId}
 	</update>
+	
+	<select id="getZan" resultType="int">
+		select count(*) FROM zan where user_id=#{userId} AND type=#{type} AND type_id=#{beCommentedId} AND parent_id=#{commentId}
+	</select>
 
 
 </mapper>       

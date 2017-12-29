@@ -116,14 +116,17 @@ public interface CottomsPostDao {
 	public void collect(
 			@Param("postId") Integer postId,
 			@Param("userId")String userId,
-			@Param("type")String type
+			@Param("type")String type,
+			@Param("category")Integer category
 			);
 	//我的收藏postId
-	public List<Integer> queryMyCollect(String userId);
+	public List<Integer> queryMyCollect(@Param("userId")String userId,@Param("category")Integer category,@Param("type")String type);
 	//我的收藏列表
 	public List<CottomsPost> myCollect(
 			@Param("userId")String userId,
-			@Param("page") Page page);
+			@Param("page") Page page,
+			@Param("type")String type,
+			@Param("category")Integer category);
 
 	//判断收藏是否存在
 	public Integer existCollect(

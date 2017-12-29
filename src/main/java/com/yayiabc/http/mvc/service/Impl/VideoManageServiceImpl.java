@@ -6,6 +6,7 @@ import java.util.Set;
 
 import com.yayiabc.common.utils.ScoreUtil;
 import com.yayiabc.http.mvc.dao.CommentDao;
+import com.yayiabc.http.mvc.dao.CottomsPostDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.ItemInfo;
 import com.yayiabc.http.mvc.pojo.jpa.User;
@@ -39,6 +40,9 @@ public class VideoManageServiceImpl implements VideoManageService {
      @Autowired
 	 private CommentDao commentDao;
 
+     @Autowired
+	 private CottomsPostDao cottomsPostDao;
+
 
 
 	@Override
@@ -59,12 +63,9 @@ public class VideoManageServiceImpl implements VideoManageService {
 				String videoRout=videoManageDao.getVideoRoute(vidManage.getViId());
 				ItemInfo itemInfo=videoManageDao.getVideoItem(videoRout);
 				vidManage.setItemInfo(itemInfo);
-				//填充收藏数
-				int starNum=(int)redisService.SETS.scard("视频收藏用户列表"+vidManage.getViId());
-				vidManage.setStarNumber(starNum);
 				//填充是否已收藏
 				if(userId!=null){
-					if(redisService.SETS.sismember("视频收藏用户列表"+vidManage.getViId(),userId)){
+					if(cottomsPostDao.existCollect(vidManage.getViId()+"",userId,"视频")!=0){
 						vidManage.setIsStar(1);
 					}
 				}
@@ -134,30 +135,9 @@ public class VideoManageServiceImpl implements VideoManageService {
 	}
 
 
-	@Override
-	public DataWrapper<Void> star(String token, Integer viId) {
-		return starOrUnStar(token,viId,"视频");
-	}
 
-	@Override
-	public DataWrapper<Void> starOrUnStar(String token,Integer viId,String type){
-		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
-		//根据token来获取userId
-		User user=utilsDao.getUserByToken(token);
-		String userId=user.getUserId();
-		//判断是否已经收藏
-		boolean flag=isStar(userId,viId,type);
-		//如果已经收藏，则取消收藏
-		if(flag){
-			unStar(userId,viId,type);
-			unUserStar(userId,viId,type);
-			return dataWrapper;
-		}
-		//如果未收藏，则添加到收藏
-		toStar(userId,viId,type);
-		userStar(userId,viId,type);
-		return dataWrapper;
-	}
+
+
 
 	@Override
 	public DataWrapper<ItemInfo> videoItem(Integer viId) {
@@ -174,50 +154,12 @@ public class VideoManageServiceImpl implements VideoManageService {
 		return fileName;
 	}
 
-	//判断是否已经收藏,维护一个收藏的userIdSet,key为收藏用户列表
-	public boolean isStar(String userId,Integer viId,String type){
-		return redisService.SETS.sismember(type+"收藏用户列表"+viId,userId);
-	}
 
-	/**
-	 * 取消收藏
-	 * @param userId
-	 * @param viId
-	 * @param type
-	 */
-	public void unStar(String userId,Integer viId,String type){
-		redisService.SETS.srem(type+"收藏用户列表"+viId,userId);
-	}
 
-	/**
-	 * 收藏
-	 * @param userId
-	 * @param viId
-	 * @param type
-	 */
-	public void toStar(String userId,Integer viId,String type){
-		redisService.SETS.sadd(type+"收藏用户列表"+viId,userId);
-	}
 
-	/**
-	 * 去除个人收藏列表里面的视频Id
-	 * @param userId
-	 * @param viId
-	 * @param type
-	 */
-	public void unUserStar(String userId,Integer viId,String type){
-		redisService.SETS.srem(userId+type+"收藏列表",viId+"");
-	}
 
-	/**
-	 * 加入个人收藏列表里面的视频id
-	 * @param userId
-	 * @param viId
-	 * @param type
-	 */
-	public void userStar(String userId,Integer viId,String type){
-		redisService.SETS.sadd(userId+type+"收藏列表",viId+"");
-	}
+
+
 
 
 }

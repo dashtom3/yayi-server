@@ -171,7 +171,7 @@ public class CommentServiceImpl implements CommentService {
             for (Comment comment:commentList
                     ) {
                 //填充是否点赞
-                if(redisService.SETS.sismember("点赞用户列表"+type+":"+beCommentedId+":"+comment.getCommentId(),userId)){
+                if(commentDao.getZan(type,beCommentedId,userId,comment.getCommentId())!=0){
                     comment.setIsZan(1);
                 }
             }

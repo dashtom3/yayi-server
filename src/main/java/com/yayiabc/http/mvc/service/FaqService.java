@@ -19,5 +19,5 @@ public interface FaqService {
 
     DataWrapper<List<FaqQuestion>> myAnswer(String token, Integer currentPage, Integer numberPerPage);
 
-    DataWrapper<Void> star(String token, Integer faqQuestionId);
+
 }

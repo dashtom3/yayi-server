@@ -99,16 +99,7 @@ public class FaqController {
         return faqService.myAnswer(token,currentPage,numberPerPage);
     }
 
-    //添加收藏或者取消收藏
-    @RequestMapping("star")
-    @ResponseBody
-    @UserTokenValidate
-    public DataWrapper<Void> star(
-            @RequestHeader(value="token",required = true) String token,
-            @RequestParam(value="faqQuestionId",required = true) Integer faqQuestionId
-    ){
-        return faqService.star(token,faqQuestionId);
-    }
+
 
 
 

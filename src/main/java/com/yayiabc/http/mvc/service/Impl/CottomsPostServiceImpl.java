@@ -20,7 +20,7 @@ import javax.lang.model.util.ElementScanner6;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import com.yayiabc.http.mvc.dao.CommentDao;
+import com.yayiabc.http.mvc.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.support.StaticApplicationContext;
 import org.springframework.stereotype.Service;
@@ -31,9 +31,6 @@ import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.ExcelUtil;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.common.utils.PayAfterOrderUtil;
-import com.yayiabc.http.mvc.dao.CottomsPostDao;
-import com.yayiabc.http.mvc.dao.TokenValidateDao;
-import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.CottomsPost;
 import com.yayiabc.http.mvc.pojo.jpa.See;
 import com.yayiabc.http.mvc.service.CottomsPostService;
@@ -58,8 +55,10 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 
 	@Autowired
 	TokenValidateDao tokenValidateDao;
+
 	@Autowired
-	RedisService redisService;
+	private CollectDao collectDao;
+
 	//发布或更改病例（传过来无postId为发布，有postId为更改）
 	@Override
 	public DataWrapper<Void> addPost(CottomsPost cottomsPost,String token,String refuseCauser) {
@@ -136,12 +135,6 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		List<CottomsPost> cottomsPosts=null;
 		cottomsPosts=cottomsPostDao.queryPost(page,classify,order,postStater,list,userId,keyWord,type);
 		for (CottomsPost cottomsPost2 : cottomsPosts) {
-			//			int readNumber = (int)RedisService.SORTSET.zscore("阅读数", cottomsPost2.getPostId()+"");//获取阅读数
-			//			int commentNumber =commentDao.getCommentNum(cottomsPost2.getPostId()+"",2);
-			//			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+cottomsPost2.getPostId());//获取点赞数
-			//			cottomsPost2.setReadNumber(readNumber);
-			//			cottomsPost2.setPostFavour(favourNumber);
-			//			cottomsPost2.setCommentNumber(commentNumber);
 			cottomsPost.setChargeContent(null);
 			cottomsPost.setFreeContent(null);
 			cottomsPost.setUserId(userId);
@@ -154,10 +147,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	//病例详情
 	@Override
 	public DataWrapper<CottomsPost> cottomsDetail(String postId,String token,String type) {
-		/*RedisService.SORTSET.zincrby("阅读数", 1, postId+"");*/
-		//阅读数加1
 		cottomsPostDao.upadteReadNum(postId);
-
 		String userId=null;
 		if(token!=null){
 			userId=utilsDao.getUserID(token);
@@ -194,20 +184,6 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		if(cottomsPost1.getUserId().equals(userId)){
 			userIde=true;
 		}
-		//		boolean isPraise = redisService.SETS.sismember("点赞用户列表病例:"+postId, userId);
-		//		Integer isCollect=cottomsPostDao.existPostId(postId,userId);
-		//		int a=0;
-		//		if(isPraise){
-		//			a=1;
-		//		}
-		//		int readNumber = (int)RedisService.SORTSET.zscore("阅读数", postId+"");
-		//		int commentNumber = commentDao.getCommentNum(postId,2);
-		//		int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+postId);//点赞数
-		//		cottomsPost1.setReadNumber(readNumber);
-		//		cottomsPost1.setZanNum(zanNum);(favourNumber);
-		//		cottomsPost1.setCommentNumber(commentNumber);
-		//		cottomsPost1.setIsPraise(a);
-		//		cottomsPost1.setIsCollect(isCollect);
 		if(token!=null&&userIde==true) {
 			dataWrapper.setData(cottomsPost1);
 			return dataWrapper;
@@ -338,9 +314,17 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	public DataWrapper<Void> collect(String token,Integer postId,String type) {
 		DataWrapper<Void> dw =new DataWrapper<>();
 		String userId=utilsDao.getUserID(token);
-		Integer p=cottomsPostDao.existCollect(postId+"",userId,type);//判断收藏是否存在
+		Integer p=cottomsPostDao.existCollect(postId+"",userId,type);
+		Integer category=0;
 		if(p==0){
-			cottomsPostDao.collect(postId,userId,type);
+			if("病例".equals(type)){
+				category=collectDao.getCategoryFromPost(postId);
+			}else if("视频".equals(type)){
+				category=collectDao.getCategoryFromVideo(postId);
+			}else if("问答".equals(type)){
+				category=collectDao.getCategoryFromFaq(postId);
+			}
+			cottomsPostDao.collect(postId,userId,type,category);
 			dw.setMsg("收藏成功");
 		}else{
 			cottomsPostDao.disCollect(postId,userId,type);
@@ -364,12 +348,6 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			cottomsPosts = cottomsPostDao.myBuy(list,page);
 			for (CottomsPost cottomsPost : cottomsPosts) {
 				cottomsPost.setChargeContent(null);
-				//			int readNumber = (int)RedisService.SORTSET.zscore("阅读数",cottomsPost.getPostId()+"");//阅读数
-				//			int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost.getPostId());//评论数
-				//			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+cottomsPost.getPostId());//点赞数
-				//			cottomsPost.setReadNumber(readNumber);
-				//			cottomsPost.setPostFavour(favourNumber);
-				//			cottomsPost.setCommentNumber(commentNumber);
 			}
 		}
 
@@ -377,28 +355,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		return dw;
 
 	}
-	//我的收藏
-	@Override
-	public DataWrapper<List<CottomsPost>> myCollect(Integer currentPage, Integer numberPerPage, String token) {
-		String userId=utilsDao.getUserID(token);
-		Page page = new Page();
-		page.setCurrentPage(currentPage);
-		page.setNumberPerPage(numberPerPage);
-		List<Integer> list=cottomsPostDao.queryMyCollect(userId);
-		List<CottomsPost> cottomsPosts = cottomsPostDao.myCollect(userId,page);
-		DataWrapper<List<CottomsPost>> dw=new DataWrapper<>();
-		for (CottomsPost cottomsPost : cottomsPosts) {
-			cottomsPost.setChargeContent(null);
-			//			int readNumber = (int)RedisService.SORTSET.zscore("阅读数",cottomsPost.getPostId()+"");//阅读数
-			//			int commentNumber = (int)RedisService.LISTS.llen("病例评论"+cottomsPost.getPostId());//评论数
-			//			int favourNumber = (int)RedisService.SETS.scard("点赞用户列表病例:"+cottomsPost.getPostId());//点赞数
-			//			cottomsPost.setReadNumber(readNumber);
-			//			cottomsPost.setPostFavour(favourNumber);
-			//			cottomsPost.setCommentNumber(commentNumber);
-		}
-		dw.setData(cottomsPosts);
-		return dw;
-	}
+
 	//导出表格
 	private List<Map<String, Object>> createExcel(List<See> sees) {
 		List<Map<String, Object>> listmap = new ArrayList<Map<String, Object>>();

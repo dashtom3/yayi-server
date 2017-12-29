@@ -87,30 +87,10 @@ public class PostController {
 		return cottomsPostService.playChargePost(token,chargeNumber,postId);
 	}
 
-	//收藏
-	@RequestMapping("collect")
-	@ResponseBody
-	@UserTokenValidate
-	public DataWrapper<Void> collect(
-			@RequestHeader(value="token") String token,
-			@RequestParam(value="postId")Integer postId,
-			@RequestParam(value="type")String type
-			){
-		return cottomsPostService.collect(token,postId,type);
 
-	}
 
-	//我的收藏
-	@RequestMapping("myCollect")
-	@ResponseBody
-	public DataWrapper<List<CottomsPost>> myCollect(
-			@RequestHeader("token")String token,
-			@RequestParam("currentPage")Integer currentPage,
-			@RequestParam("numberPerPage")Integer numberPerPage
-			){
-		return cottomsPostService.myCollect(currentPage,numberPerPage,token);
 
-	}
+
 	//我的购买病例
 	@RequestMapping("myBuy")
 	@ResponseBody
@@ -122,40 +102,7 @@ public class PostController {
 		return cottomsPostService.myBuy(token,currentPage,numberPerPage);
 
 	}
-	//	@RequestMapping("comment")//评论
-	//	@ResponseBody
-	//	public void comment(
-	//			@RequestHeader String token,
-	//			@ModelAttribute(value="CottomsComment")CottomsComment cottomsComment
-	//			){
-	//		cottomsComment.setToken(token);
-	//		cottomsPostService.comment(cottomsComment);
-	//	}
-	//	@RequestMapping("reply")//回复
-	//	@ResponseBody
-	//	public void reply(
-	//			@RequestHeader String token,
-	//			@ModelAttribute(value="CottomsReply")CottomsReply cottomsReply
-	//			){
-	//		cottomsReply.setToken(token);
-	//		cottomsPostService.reply(cottomsReply);
-	//	}
-	//	@RequestMapping("postLike")//病例点赞
-	//	@ResponseBody
-	//	public void postList(CottomsPost cottomsPost){
-	//		cottomsPostService.postLike(cottomsPost);
-	//	}
-	//	
-	//	@RequestMapping("commentsLike")//评论点赞
-	//	@ResponseBody
-	//	public void commentsLike(CottomsComment cottomsComment){
-	//		cottomsPostService.commentsLike(cottomsComment);
-	//	}
-	//	@RequestMapping("postReader")//病例阅读数
-	//	@ResponseBody
-	//	public void postReader(CottomsPost cottomsPost){
-	//		cottomsPostService.postReader(cottomsPost);
-	//	}
+
 	//查询
 	@RequestMapping("see")
 	@ResponseBody

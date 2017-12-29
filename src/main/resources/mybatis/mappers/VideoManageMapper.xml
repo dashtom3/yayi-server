@@ -93,13 +93,7 @@ WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId
 	</select>
 
 
-	<select id="queryMyCollect" resultType="VidManage">
-		select * from vid_manage where vi_id IN 
-		<foreach collection="idList" index="index" item="id" open="(" close=")" separator=",">
-			#{id}
-		</foreach>
-		limit #{currentNumber},#{numberPerPage}
-	</select>
+
 
 	<select id="getVideoRoute" resultType="string">
 		select video_route from vid_manage where vi_id=#{viId}

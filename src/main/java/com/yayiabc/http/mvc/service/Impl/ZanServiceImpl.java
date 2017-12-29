@@ -115,22 +115,7 @@ public class ZanServiceImpl implements ZanService{
 		return dataWrapper;
 		
 	}
-	@Override
-	public int getZanNumber(String type,Integer typeId,Integer parentId,Integer presentId){
-		//剔除空，变成空串
-		String parentIdStr="";
-		String presentIdStr="";
-		if(parentId!=null){
-			parentIdStr=":"+parentId;
-			if(presentId!=null){
-				presentIdStr=":"+presentId;
-			}
-		}
-		String key=type+":"+typeId+parentIdStr+presentIdStr;
-		String keyTwo=key.substring(0,key.lastIndexOf(":"));
-		String member=key.substring(key.lastIndexOf(":")+1);
-		return (int)redisService.SORTSET.zscore("点赞计数列表"+keyTwo,member);
-	}
+
 
 
 }

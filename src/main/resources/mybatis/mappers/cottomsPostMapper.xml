@@ -225,24 +225,31 @@
 
 	<!-- 收藏病例 -->
 	<insert id="collect">
-		insert collect (user_id,post_id,type)
-		values(#{userId},#{postId},#{type})
+		insert into collect (user_id,post_id,type,category)
+		values(#{userId},#{postId},#{type},#{category})
 	</insert>
 
 	<!--查询收藏postId -->
 	<select id="queryMyCollect" resultType="java.lang.Integer">
 		select post_id from
-		collect where user_id=#{userId}
+		collect <where> user_id=#{userId} AND type=#{type}
+		<if test="category!=null">
+			AND category=#{category}
+		</if>
+		</where>
 	</select>
 
 	<!--我的收藏 -->
 	<select id="myCollect" resultMap="IBuy">
 		select user.user_pic,cottoms_post.* from cottoms_post
 		inner join
-		collect a on cottoms_post.post_id=a.post_id left join
+		collect a on cottoms_post.post_id=a.post_id and a.type=#{type}
+		left join
 		user on
 		a.user_id=user.user_id
-		<where>a.user_id=#{userId} </where>
+		<where>a.user_id=#{userId}
+			<if test="category!=null">category=#{category}</if>
+		</where>
 		limit
 		#{page.currentNumber},#{page.numberPerPage}
 	</select>

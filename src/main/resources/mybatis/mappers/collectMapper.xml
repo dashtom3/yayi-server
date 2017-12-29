@@ -1,0 +1,69 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<!DOCTYPE mapper
+        PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
+        "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
+<mapper namespace="com.yayiabc.http.mvc.dao.CollectDao">
+	<resultMap id="videoREM" type="VidManage" autoMapping="true">
+		<id property="viId" column="vi_id"/>
+		<result property="vidName" column="video_name"/>
+		<result property="videoType" column="video_type"/>
+		<result property="vidRoute" column="video_route"/>
+		<result property="videoCategory" column="video_category"/>
+		<result property="vedioTime" column="vedio_time"/>
+		<result property="vedioPic" column="vedio_pic"/>
+		<association property="itemInfo" javaType="ItemInfo">
+			<id property="itemId" column="item_id"/>
+			<result property="itemName" column="item_name"/>
+			<result property="itemPrice" column="item_price"/>
+			<association property="itemBrand" javaType="ItemBrand">
+				<result property="itemBrandName" column="item_brand_name"/>
+			</association>
+			<association property="itemDetail" javaType="ItemDetail">
+				<result property="itemPica" column="item_pica"/>
+			</association>
+		</association>
+	</resultMap>
+
+	<select id="getMyCollectTotalNo" resultType="int">
+		select count(*) from collect <where> user_id=#{userId} AND type=#{type}
+		<if test="category!=null">and category=#{category}</if>
+	</where>
+	</select>
+
+	<select id="getMyCollectVideoList" resultMap="videoREM">
+		SELECT b.vi_id,b.video_name,b.video_type,b.video_route,b.video_category,DATE_FORMAT(b.vedio_time,'%Y-%m-%d %H:%i:%s') AS vedio_time,b.vedio_pic,b.play_num,b.comment_num AS vedio_comment_number
+FROM collect a,vid_manage b
+<where> a.user_id=#{userId} AND a.type=#{type} AND a.post_id=b.vi_id
+	<if test="category!=null">AND a.category=#{category}</if>
+</where>
+limit #{page.currentNumber},#{page.numberPerPage}
+	</select>
+
+	<select id="getMyCollectFaqList" resultType="FaqQuestion">
+		select a.faq_question_id,a.faq_question_title,a.faq_question_type,a.faq_user_id AS user_id,a.faq_question_content,a.faq_question_time,a.faq_answer_num,b.true_name as user_name,b.user_pic,c.collect_time
+		FROM faq_question a
+		INNER JOIN collect c on a.faq_question_id=c.post_id and c.type=#{type}
+		LEFT JOIN
+		`user` b on a.faq_user_id=b.user_id
+		<where>
+			<if test="faqQuestionType!=null and faqQuestionType!=''">
+				a.faq_question_type=#{faqQuestionType}
+			</if>
+			<if test="category!=null">and category=#{category}</if>
+		</where>
+		order BY c.collect_time DESC
+		limit #{currentNumber},#{numberPerPage}
+	</select>
+
+	<select id="getCategoryFromPost" resultType="int">
+		select classify FROM cottoms_post where post_id=#{postId}
+	</select>
+
+	<select id="getCategoryFromVideo" resultType="int">
+		select video_category FROM vid_manage where vi_id=#{postId}
+	</select>
+
+	<select id="getCategoryFromFaq" resultType="int">
+		select faq_question_type FROM faq_question where faq_question_id=#{postId}
+	</select>
+</mapper>       

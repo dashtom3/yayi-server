@@ -1,5 +1,6 @@
 package com.yayiabc.http.mvc.controller.message;
 
+import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.service.MyCollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
@@ -17,19 +18,22 @@ import org.springframework.web.bind.annotation.ResponseBody;
 public class MyCollectionController {
 
     //默认显示什么(病例)1.病例，2.视频 3.商品 4.问答 5.资料库
-    private static final String DEFAULT_TYPE="1";
+    private static final String DEFAULT_TYPE="商品";
 
     @Autowired
     private MyCollectionService myCollectionService;
 
     @RequestMapping("queryList")
     @ResponseBody
+    @UserTokenValidate
     public DataWrapper<Object> queryList(
             @RequestHeader(value="token",required =false) String token,
-            @RequestParam(value="type",required = false,defaultValue = DEFAULT_TYPE) Integer type,
+            @RequestParam(value="userId",required = false) String userId,
+            @RequestParam(value="type",required = false) String type,
+            @RequestParam(value="category",required = false)Integer category,
             @RequestParam(value="currentPage",required = false,defaultValue = "1") Integer currentPage,
             @RequestParam(value="numberPerPage",required = false,defaultValue = "10")Integer numberPerPage
     ){
-        return myCollectionService.queryList(token,type,currentPage,numberPerPage);
+        return myCollectionService.queryList(type,currentPage,numberPerPage,userId,category);
     }
 }

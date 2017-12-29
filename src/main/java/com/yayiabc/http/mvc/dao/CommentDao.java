@@ -53,4 +53,6 @@ public interface CommentDao {
     void delCommentNumberToCottom(String beCommentedId);
 
     void delCommentReplyNum(Integer parentId);
+
+    int getZan(@Param("type")String type,@Param("beCommentedId") Integer beCommentedId,@Param("userId") String userId,@Param("commentId") long commentId);
 }

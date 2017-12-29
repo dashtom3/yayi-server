@@ -59,8 +59,6 @@ public class CommentServiceImpl implements CommentService {
             return dataWrapper;
         }
         User user = utilsDao.getUserByToken(token);
-        //初始化点赞计数列表
-//        redisService.SORTSET.zadd("点赞计数列表"+type+":"+beCommentedId+str,0,commentId+"");
         //牙医圈
         if(num==4){
             return addMomentCom(beCommentedId,comment,parentId,dataWrapper,user);
@@ -98,6 +96,8 @@ public class CommentServiceImpl implements CommentService {
             }
             SubComment subComment=new SubComment();
             subComment.setUserId(user.getUserId());
+            subComment.setUserName(user.getTrueName());
+            subComment.setCommentContent(comment.getCommentContent());
             subComment.setUserPic(user.getUserPic());
             subComment.setCommentTime(new Date());
             if(parentId!=null&&beCommentedUser!=null){
@@ -142,6 +142,7 @@ public class CommentServiceImpl implements CommentService {
        subComment.setUserId(currentUser.getUserId());
        subComment.setUserPic(currentUser.getUserPic());
        subComment.setUserName(currentUser.getTrueName());
+       subComment.setCommentContent(coment.getCommentContent());
        if(parentId!=null&&user!=null){
             subComment.setReplyUserId(user.getUserId());
             subComment.setReplyUserName(user.getTrueName());

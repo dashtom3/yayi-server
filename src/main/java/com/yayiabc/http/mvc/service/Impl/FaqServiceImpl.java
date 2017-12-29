@@ -54,8 +54,6 @@ public class FaqServiceImpl implements FaqService {
     @Override
     public DataWrapper<FaqAnswer> addAnswer(String token, FaqAnswer faqAnswer,Integer faqQuestionId) {
         DataWrapper<FaqAnswer> dataWrapper=new DataWrapper<FaqAnswer>();
-        //获取userId
-//        String userId=utilsDao.getUserID(token);
         User user=utilsDao.getUserByToken(token);
         faqAnswer.setUserId(user.getUserId());
         faqAnswer.setUserName(user.getTrueName());

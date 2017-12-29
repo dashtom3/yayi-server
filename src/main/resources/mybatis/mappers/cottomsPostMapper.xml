@@ -336,4 +336,8 @@
 			post_id=#{postId}
 		</where>
 	</update>
+
+	<delete id="disCollect">
+		delete from collect where user_id=#{userId} AND post_id=#{postId} AND type=#{type}
+	</delete>
 </mapper>

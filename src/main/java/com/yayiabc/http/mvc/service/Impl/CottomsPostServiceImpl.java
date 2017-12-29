@@ -338,17 +338,13 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	public DataWrapper<Void> collect(String token,Integer postId,String type) {
 		DataWrapper<Void> dw =new DataWrapper<>();
 		String userId=utilsDao.getUserID(token);
-		if(userId!=null){
-			Integer p=cottomsPostDao.existCollect(postId+"",userId,type);//判断收藏是否存在
-			if(p==0){
-				cottomsPostDao.collect(postId,userId,type);
-				dw.setMsg("收藏成功");
-			}else{
-
-				dw.setMsg("收藏已存在");
-			}
+		Integer p=cottomsPostDao.existCollect(postId+"",userId,type);//判断收藏是否存在
+		if(p==0){
+			cottomsPostDao.collect(postId,userId,type);
+			dw.setMsg("收藏成功");
 		}else{
-			dw.setMsg("请登录");
+			cottomsPostDao.disCollect(postId,userId,type);
+			dw.setMsg("取消收藏");
 		}
 		return dw;
 	}

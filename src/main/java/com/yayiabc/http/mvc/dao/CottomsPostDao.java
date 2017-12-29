@@ -168,4 +168,6 @@ public interface CottomsPostDao {
 			);
 
 	Integer exisRefuseCauser(Integer postId);
+
+	void disCollect(@Param("postId")Integer postId,@Param("userId") String userId,@Param("type") String type);
 }

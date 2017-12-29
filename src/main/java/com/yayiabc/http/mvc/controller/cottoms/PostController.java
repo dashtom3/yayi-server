@@ -87,9 +87,10 @@ public class PostController {
 		return cottomsPostService.playChargePost(token,chargeNumber,postId);
 	}
 
-	//收藏病例
+	//收藏
 	@RequestMapping("collect")
 	@ResponseBody
+	@UserTokenValidate
 	public DataWrapper<Void> collect(
 			@RequestHeader(value="token") String token,
 			@RequestParam(value="postId")Integer postId,

@@ -172,7 +172,7 @@
 		<result property="readNumber" column="read_number" />
 		<result property="commentNum" column="comment_num" />
 		<result property="zanNum" column="zan_num" />
-		<association property="refuseCauser" javaType="refuseCauser">
+		<association property="refuseCauser" javaType="RefuseCauser">
 			<result property="refuseCauser" column="refuse_causer" />
 		</association>
 	</resultMap>

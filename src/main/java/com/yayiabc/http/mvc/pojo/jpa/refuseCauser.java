@@ -1,6 +1,6 @@
 package com.yayiabc.http.mvc.pojo.jpa;
 
-public class refuseCauser {
+public class RefuseCauser {
 	private String refuseCauser;
 	private String postId;
 	private Integer id;

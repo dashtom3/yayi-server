@@ -30,13 +30,13 @@ public class CottomsPost {
 	private int isPraise;//是否点赞
 	private int isCollect;//是否收藏
 	private User user;
-	private refuseCauser refuseCauser;
+	private RefuseCauser refuseCauser;
 	
 	
-	public refuseCauser getRefuseCauser() {
+	public RefuseCauser getRefuseCauser() {
 		return refuseCauser;
 	}
-	public void setRefuseCauser(refuseCauser refuseCauser) {
+	public void setRefuseCauser(RefuseCauser refuseCauser) {
 		this.refuseCauser = refuseCauser;
 	}
 	public User getUser() {

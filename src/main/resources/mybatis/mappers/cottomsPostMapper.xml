@@ -169,7 +169,9 @@
 		<result property="userId" column="user_id" />
 		<result property="postId" column="post_id" />
 		<result property="postTime" column="post_time" />
-		<result property="postTime" column="post_time" />
+		<result property="readNumber" column="read_number" />
+		<result property="commentNum" column="comment_num" />
+		<result property="zanNum" column="zan_num" />
 		<association property="refuseCauser" javaType="refuseCauser">
 			<result property="refuseCauser" column="refuse_causer" />
 		</association>

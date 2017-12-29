@@ -16,9 +16,9 @@ import java.util.Map;
 public interface UserDao {
 	
 	//注册成功赠送邀请人乾币
-	void presented(Integer id);
+	void presented(String id);
 	//记录注册人邀请人信息
-	void addUser(@Param("id")Integer id,@Param("byid")String byid);
+	void addUser(@Param("id")String id,@Param("byid")String byid);
 	//添加user信息
 	Integer register(User newUser);
 	//完善信息

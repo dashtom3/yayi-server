@@ -106,7 +106,7 @@ public class UserServiceImpl implements UserService {
 
 	@Override
 	public DataWrapper<User> register(String phone, String password,String trueName,String companyName,
-			String part,String workAddress, String code,String openid,Integer id,Integer userType) {
+			String part,String workAddress, String code,String openid,String id,Integer userType) {
 		DataWrapper<User> dataWrapper = new DataWrapper<User>();
 		if (userDao.getUserByPhone(phone) == null) {
 			//验证码判断

@@ -56,7 +56,7 @@ public class RedisService {
             
 
             //redis如果设置了密码：
-            jedisPool = new JedisPool(config, "localhost",
+            jedisPool = new JedisPool(config, "116.62.228.3",
             		6379,
             		10000,"123");
 //		 jedisPool = new JedisPool(config, "47.93.48.111",

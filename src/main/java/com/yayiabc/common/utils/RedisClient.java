@@ -53,9 +53,9 @@ public class RedisClient {
             config.setTestOnBorrow(true);  
             
             //redis如果设置了密码：
-            jedisPool = new JedisPool(config, "localhost",
+            jedisPool = new JedisPool(config, "www.liqitian.top",
             		6379,
-            		10000,"123");
+            		10000,"123456");
             
             //redis未设置了密码：
           // jedisPool = new JedisPool(config, "47.93.48.111",6379,10000); 
@@ -158,7 +158,7 @@ public class RedisClient {
 		/**
 		 * 更改key,仅当新key不存在时才执行
 		 * @param String oldkey
-		 * @param String newkey 
+		 * @param String newkey
 		 * @return 状态码
 		 * */
 		public long renamenx(String oldkey, String newkey) {

@@ -47,8 +47,8 @@ public class UserController {
 			@RequestParam(value="workAddress",required=true) String workAddress,
 			@RequestParam(value = "code", required = true) String code,
 			@RequestParam(value = "openid", required = false) String openid,
-			@RequestParam(value = "id",required=false) Integer id,
-			@RequestParam(value = "userType",required=true) Integer userType
+			@RequestParam(value = "id",required=false) String id,
+			@RequestParam(value = "userType",required=false,defaultValue = "0") Integer userType
 			){
 		return userService.register(phone,password,trueName,companyName,part,workAddress,code,openid,id,userType);
 	}

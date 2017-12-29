@@ -39,7 +39,7 @@ public class VideoManageController {
      @RequestMapping("showVid")
      @ResponseBody
      public DataWrapper<Object> showVid(
-             @RequestParam(value="rule",required = false,defaultValue = "3") Integer rule,
+             @RequestParam(value="rule",required = false,defaultValue = "2") Integer rule,
              @RequestParam(value="videoCategory",required = false)Integer videoCategory,
              @RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
              @RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,

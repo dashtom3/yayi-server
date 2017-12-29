@@ -58,7 +58,7 @@ public class FaqController {
     @ResponseBody
     public DataWrapper<Object> list(
             @RequestParam(value="faqQuestionType",required = false) Integer faqQuestionType,//分类:1外科2内科3修复4种植5正畸不传为全部
-            @RequestParam(value="order",required = false,defaultValue = "0") Integer order,//0最新（默认）  1最多回答
+            @RequestParam(value="order",required = false,defaultValue = "1") Integer order,//0最新  1最多回答(默认)
             @RequestParam(value="currentPage",required = false,defaultValue = "1")Integer currentPage,
             @RequestParam(value="numberPerPage",required = false,defaultValue = "10")Integer numberPerPage
     ){

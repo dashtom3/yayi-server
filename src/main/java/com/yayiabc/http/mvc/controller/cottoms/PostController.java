@@ -81,10 +81,9 @@ public class PostController {
 	@ResponseBody
 	public DataWrapper<Void> playChargePost(
 			@RequestHeader(value="token") String token,
-			@RequestParam(value="chargeNumber") Integer chargeNumber,
 			@RequestParam(value="postId") Integer postId
 			){
-		return cottomsPostService.playChargePost(token,chargeNumber,postId);
+		return cottomsPostService.playChargePost(token,postId);
 	}
 
 

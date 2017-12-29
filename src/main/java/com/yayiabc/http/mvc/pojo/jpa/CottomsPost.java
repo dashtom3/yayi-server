@@ -29,6 +29,7 @@ public class CottomsPost {
 	private Integer chargeNumber;
 	private int isPraise;//是否点赞
 	private int isCollect;//是否收藏
+	private UserToPost userToPost;//是否已购买
 	private User user;
 	private RefuseCauser refuseCauser;
 	
@@ -159,6 +160,13 @@ public class CottomsPost {
 	public void setIsCollect(int isCollect) {
 		this.isCollect = isCollect;
 	}
+	
+	public UserToPost getUserToPost() {
+		return userToPost;
+	}
+	public void setUserToPost(UserToPost userToPost) {
+		this.userToPost = userToPost;
+	}
 	@Override
 	public String toString() {
 		return "CottomsPost [userId=" + userId + ", postId=" + postId + ", headline=" + headline + ", classify="
@@ -166,8 +174,8 @@ public class CottomsPost {
 				+ postTime + ", writer=" + writer + ", readNumber=" + readNumber + ", commentNum=" + commentNum
 				+ ", zanNum=" + zanNum + ", commentsList=" + commentsList + ", cover=" + cover + ", printUrl="
 				+ printUrl + ", replyTime=" + replyTime + ", postStater=" + postStater + ", chargeNumber="
-				+ chargeNumber + ", isPraise=" + isPraise + ", isCollect=" + isCollect + ", user=" + user
-				+ ", refuseCauser=" + refuseCauser + "]";
+				+ chargeNumber + ", isPraise=" + isPraise + ", isCollect=" + isCollect + ", userToPost=" + userToPost
+				+ ", user=" + user + ", refuseCauser=" + refuseCauser + "]";
 	}
 	
 	

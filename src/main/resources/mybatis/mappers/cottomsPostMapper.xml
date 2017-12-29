@@ -70,13 +70,16 @@
 
 	<select id="queryPost" resultMap="IBuy">
 		select
-		cp.post_id,cp.headline,cp.classify,cp.writer,cp.cover,cp.post_time,cp.charge_number,user.user_pic,cp.post_stater,cp.read_number,
-		cp.zan_num,cp.comment_num
+		cp.post_id cpostid,cp.headline,cp.classify,cp.writer,cp.cover,cp.post_time,cp.charge_number,user.user_pic,cp.post_stater,cp.read_number,
+		cp.zan_num,cp.comment_num,up.post_id upostid
 		from
 		cottoms_post cp
 		left join user
 		on
-		cp.user_id=user.user_id
+		cp.user_id=user.user_id 
+		left join user_to_post up
+		on up.post_id=cp.post_id
+		
 		<where>
 			<if test="type==2">
 				cp.user_id=#{userId} and
@@ -289,7 +292,7 @@
 		<result property="chargeNumber" column="charge_number" />
 		<result property="cover" column="cover" />
 		<result property="userId" column="user_id" />
-		<result property="postId" column="post_id" />
+		<result property="postId" column="cpostid" />
 		<result property="postTime" column="post_time" />
 		<result property="readNumber" column="read_number" />
 		<result property="commentNum" column="comment_num" />
@@ -297,7 +300,11 @@
 		<association property="user" javaType="User">
 			<result property="userPic" column="user_pic" />
 		</association>
+		<association property="userToPost" javaType="UserToPost">
+			<result property="postId" column="upostid" />
+		</association>
 	</resultMap>
+	
 	<select id="myBuy" resultMap="IBuy">
 		select
 		cottoms_post.headline,cottoms_post.classify,cottoms_post.post_time,cottoms_post.free_content,cottoms_post.charge_content,

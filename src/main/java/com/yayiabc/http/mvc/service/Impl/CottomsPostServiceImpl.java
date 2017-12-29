@@ -140,7 +140,6 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			cottomsPost.setUserId(userId);
 			dataWrapper.setData(cottomsPosts);
 			dataWrapper.setPage(page, totalNumber);
-
 		}
 		return dataWrapper;
 	}
@@ -271,7 +270,9 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 
 	//付费病例
 	@Override
-	public DataWrapper<Void> playChargePost(String token, Integer chargeNumber, Integer postId){
+	public DataWrapper<Void> playChargePost(String token, Integer postId){
+		CottomsPost c=cottomsPostDao.cottomsDetail(postId+"");
+		Integer chargeNumber=c.getChargeNumber();
 		if(chargeNumber==null){
 			chargeNumber=0;
 		}
@@ -284,8 +285,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			return dw;
 		}
 		Integer qb=cottomsPostDao.queryqb(userId);//查询余额
-		CottomsPost cottomsPost=new CottomsPost();
-		CottomsPost c=cottomsPostDao.cottomsDetail(postId+"");
+		
 		if(qb>=chargeNumber){
 			if(userId!=null){
 				Integer p=cottomsPostDao.existBuyPostId(postId,userId);//判断是否已购买

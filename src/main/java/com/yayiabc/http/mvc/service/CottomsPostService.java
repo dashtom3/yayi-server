@@ -27,7 +27,7 @@ public interface CottomsPostService {
 	public void see(HttpServletResponse response);
 	
 	//病例付费
-	public DataWrapper<Void> playChargePost(String token, Integer chargeNumber, Integer postId);
+	public DataWrapper<Void> playChargePost(String token, Integer postId);
 	
 	//收藏病例
 	public DataWrapper<Void> collect(String token,Integer postId,String type);

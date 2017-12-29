@@ -65,7 +65,7 @@ WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId
 
 	<select id="showVid" resultMap="videoRM">
 		select vi_id,video_name,video_type,video_route,video_category,DATE_FORMAT(vedio_time,'%Y-%m-%d %H:%i:%s') As
-		vedio_time,vedio_pic,play_num from vid_manage
+		vedio_time,vedio_pic,play_num,comment_num AS vedio_comment_number from vid_manage
 		<where>
 			<if test="videoCategory!=null and videoCategory!=''">
 				video_category=#{videoCategory}

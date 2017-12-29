@@ -259,7 +259,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
             	 Integer qbDedNum=order.getQbDed();
             	 boolean flg=inspectIsFirstOrder(userId,jedis,orderId,sumPrice);
             	if(flg){
-            		 if(qbDedNum!=0||qbDedNum!=null){
+            		 if(qbDedNum!=0){
  						//检查  用户此时余额 除去注册赠送的60钱币   是否够支付该订单
                      boolean f=cheackUserQb(userId,qbDedNum);
                      if(!f){
@@ -313,6 +313,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 
 			//该单计算运费
 			Receiver receiver=placeOrderDao.queryReceiver(order.getReceiverId());
+			
 			Integer postFee=getFreight(receiver,sumPrice,itemSum);
 			//是否需要发票
 			if("1".equals(order.getInvoiceHand())){
@@ -338,8 +339,6 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			hashMap.put("SuppliesSumPrice", SuppliesSumPrice);
 			hashMap.put("TooldevicesSumPrice", TooldevicesSumPrice);
 			hashMap.put("daoBnagSumPrice", daoBnagSumPrice);
-
-
 
 			//本单赠送钱币数保存到数据库
 			if(

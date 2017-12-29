@@ -113,7 +113,7 @@ public class UserWithdrawalsController {
    @RequestMapping("showUserQbNumPo")
    DataWrapper<Object> showUserQbNumPo(
 		   @RequestHeader(value="token",required=true) String token,
-		   @RequestParam(value="sumItemsPrice",required=false) String sumItemsPrice
+		   @RequestParam(value="sumItemsPrice",required=true) String sumItemsPrice
 		   ){
 	  return  userWithdrawalsService.showUserQbNumPo(token,sumItemsPrice);
    }

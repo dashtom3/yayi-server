@@ -246,13 +246,13 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			AllTooldevicesSumPrice=(Double) priceMap.get("AllTooldevicesSumPrice");
            
 			
-			DataWrapper<Integer> data=ded(token,order.getQbDed(),sumPrice+"");
+		/*	DataWrapper<Integer> data=ded(token,order.getQbDed(),sumPrice+"");
 			if(data!=null){
 				int qbBalance=data.getData();
 				if(qbBalance<order.getQbDed()){
 					throw new OrderException(ErrorCodeEnum.QBDED_Error);
 				}
-			}
+			}*/
 			 
 			//检查是否为首单  true 是  ，false 不是
              if(sumPrice<120){

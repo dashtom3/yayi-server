@@ -124,7 +124,7 @@
 	</select>
 	
 	<select id="queryCollectId" resultType="int">
-	 select id from user_collect_datafordst  order by collect_time desc
+	 select id from user_collect_datafordst where user_id=#{userId}  order by collect_time desc   
 	</select>
 	
 	<select id="queryIsCollect"  resultType="int">

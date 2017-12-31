@@ -38,35 +38,63 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 		Integer currentNum=page.getCurrentNumber();
 		hm.put("currentNum", String.valueOf(currentNum));
 		hm.put("keyWord", keyWord);
-		System.out.println(hm);
+		//System.out.println(hm);
 
 		List<DaForDentist> listhm=crawlerYellowPagesDao.getMaterList(hm);
 		//判断用户是否登陆浏览资料
+		//System.out.println(listhm);
 		String userId=null;
 		if(token!=null){
 			userId= utilsDao.getUserID(token);
 			List<Integer> idList=crawlerYellowPagesDao.queryCollectId(userId);
-
-			for(int x=0;x<idList.size();x++){
+			System.out.println(idList);
+			/*for(int x=0;x<idList.size();x++){
 				for(int i=0;i<listhm.size();i++){
-                     if(idList.get(x).equals(listhm.get(i).getId())){
-                    	 listhm.get(i).setIsCollect("1");
-                     }else{
-                    	 listhm.get(i).setIsCollect("0");
-                     }
+					if(idList.get(x).equals(listhm.get(i).getId())){
+						System.out.println("id为:"+x+" 被收藏");
+						listhm.get(i).setIsCollect("1");
+					}else{
+						listhm.get(i).setIsCollect("0");
+					}
+				}
+			}*/
+			if(idList.isEmpty()){
+				 for(int i=0;i<listhm.size();i++){
+					 listhm.get(i).setIsCollect("0");
+				 }
+			}else{
+				/*for(int  i=0;i<listhm.size();i++){
+					for(int x=0;x<idList.size();x++){
+						if(idList.get(x).equals(listhm.get(i).getId())){
+							//System.out.println("id为:"+listhm.get(i).getId()+" 被收藏");
+							listhm.get(i).setIsCollect("1");
+					        System.out.println(listhm.get(i));
+						}else{
+							listhm.get(i).setIsCollect("0");
+						}
+					}
+				}*/
+				for(DaForDentist dfd:listhm){
+					for(Integer id:idList){
+						if(dfd.getId()==id){
+							dfd.setIsCollect("1");
+					       break;
+						}else{
+							dfd.setIsCollect("0");
+						}
+					}
 				}
 			}
-
 		}
-
+		//System.out.println(listhm);
 		int count=crawlerYellowPagesDao.queryCountTOSheet1(hm);
 		dataWrapper.setPage(page, count);
-
+		
 		//获取浏览数
 		Jedis jedis=RedisClient.getInstance().getJedis();
-
+      
 		for(DaForDentist dfd:listhm){
-			System.out.println(dfd);
+			//	System.out.println(dfd);
 			String conetnt=dfd.getContent();
 			if(conetnt.length()>55){
 				dfd.setContent(conetnt.substring(0,50));	
@@ -80,8 +108,10 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 				dfd.setBrowseNumber((int) (k+0));
 			}
 		}
-		jedis.close();
+		 
+	
 		dataWrapper.setData(listhm);
+		jedis.close();
 		return dataWrapper;
 	}
 
@@ -142,26 +172,38 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 	 */
 	@Override
 	public DataWrapper<DaForDentist> getMaterDetail(String id, String token) {
+		System.out.println("u12t3123j213213hj2v312hj3v12jh312hj31v2hj31v2j3v21j3hv12");
+		
 		DataWrapper<DaForDentist> dataWrapper=new DataWrapper<DaForDentist>();
 		DaForDentist daForDentist=crawlerYellowPagesDao.getMaterDetail(id);
+		if(daForDentist==null){
+			dataWrapper.setMsg("资料库无此资料信息");
+			return dataWrapper;
+		}
 		String userId=null;
 		if(token!=null){
+			System.out.println(111);
 			userId= utilsDao.getUserID(token);
 			List<Integer> idList=crawlerYellowPagesDao.queryCollectId(userId);
-
-			for(int x=0;x<idList.size();x++){
-                     if(idList.get(x).equals(daForDentist.getId())){
-                    	 daForDentist.setIsCollect("1");
-                     }else{
-                    	 daForDentist.setIsCollect("0");
-                     }
+             System.out.println(idList);
+			if(idList.isEmpty()){
+				daForDentist.setIsCollect("0");
+			}else{
+				for(int x=0;x<idList.size();x++){
+					if(idList.get(x).equals(daForDentist.getId())){
+						daForDentist.setIsCollect("1");
+						break;
+					}else{
+						daForDentist.setIsCollect("0");
+					}
+				}
 			}
-
 		}else{
+			System.out.println(000);
 			daForDentist.setIsCollect("0");
 		}
 
-		
+
 		System.out.println(daForDentist);
 		dataWrapper.setData(daForDentist);
 		//这里需要记录资料库的浏览数

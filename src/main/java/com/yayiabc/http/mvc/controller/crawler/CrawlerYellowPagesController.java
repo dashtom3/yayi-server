@@ -47,7 +47,7 @@ public class CrawlerYellowPagesController {
 	@ResponseBody
 	public DataWrapper<DaForDentist> getMaterDetail(
 			@RequestParam(value = "id", required = false) String id,
-			@RequestParam(value = "token", required = false) String token
+			@RequestHeader(value = "token", required = false) String token
 			) {
 	        return crawlerYellowPagesService.getMaterDetail(id,token);
 	}

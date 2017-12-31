@@ -92,7 +92,7 @@ public class CommentServiceImpl implements CommentService {
             }
             //推送消息
             if(num==2&&(beCommentedUser!=null)&&!(user.getUserId().equals(beCommentedUser.getUserId()))){
-                redisService.LISTS.rpush(PREFIX+beCommentedUser.getUserId(),beCommentedUser.getTrueName()+suffix+",病例:" + beCommentedId);
+                redisService.LISTS.rpush(PREFIX+beCommentedUser.getUserId(),user.getTrueName()+suffix+","+type+":" + beCommentedId);
             }
             SubComment subComment=new SubComment();
             subComment.setUserId(user.getUserId());
@@ -161,21 +161,13 @@ public class CommentServiceImpl implements CommentService {
         page.setCurrentPage(currentPage);
         int numberType=TypeToNumUtil.typeToNum(type);
         int totalNumber=commentDao.getCommentTotalNum(numberType,beCommentedId);
+        System.out.println("totalNumber"+totalNumber);
         dataWrapper.setPage(page,totalNumber);
         String userId=null;
         if(token!=null){
             userId=utilsDao.getUserID(token);
         }
-        List<Comment> commentList=commentDao.getCommentList(numberType,beCommentedId,page,order);
-        if(userId!=null){
-            for (Comment comment:commentList
-                    ) {
-                //填充是否点赞
-                if(commentDao.getZan(type,beCommentedId,userId,comment.getCommentId())!=0){
-                    comment.setIsZan(1);
-                }
-            }
-        }
+        List<Comment> commentList=commentDao.getCommentList(numberType,beCommentedId,page,order,userId);
         dataWrapper.setData(commentList);
         return dataWrapper;
     }

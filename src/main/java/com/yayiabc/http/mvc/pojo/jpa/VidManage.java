@@ -19,7 +19,25 @@ public class VidManage implements Serializable{
 	@DateTimeFormat(pattern = "yy-MM-dd HH:mm:ss")
 	private Date vedioTime;
 	private int isStar=0;
+	private int isZan=0;//是否点赞
+	private Integer zanNumber;//点赞数
 	private ItemInfo itemInfo;
+
+	public int getIsZan() {
+		return isZan;
+	}
+
+	public void setIsZan(int isZan) {
+		this.isZan = isZan;
+	}
+
+	public Integer getZanNumber() {
+		return zanNumber;
+	}
+
+	public void setZanNumber(Integer zanNumber) {
+		this.zanNumber = zanNumber;
+	}
 
 	public ItemInfo getItemInfo() {
 		return itemInfo;

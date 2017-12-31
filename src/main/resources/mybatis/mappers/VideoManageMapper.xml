@@ -50,6 +50,8 @@ WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId
 		<result property="videoCategory" column="video_category"/>
 		<result property="vedioTime" column="vedio_time"/>
 		<result property="vedioPic" column="vedio_pic"/>
+		<result property="isStar" column="is_star"/>
+		<result property="zanNumber" column="zan_num"/>
 		<association property="itemInfo" javaType="ItemInfo">
 			<id property="itemId" column="item_id"/>
 			<result property="itemName" column="item_name"/>
@@ -64,8 +66,24 @@ WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId
 	</resultMap>
 
 	<select id="showVid" resultMap="videoRM">
-		select vi_id,video_name,video_type,video_route,video_category,DATE_FORMAT(vedio_time,'%Y-%m-%d %H:%i:%s') As
-		vedio_time,vedio_pic,play_num,comment_num AS vedio_comment_number from vid_manage
+		select a.vi_id,
+		a.video_name,
+		a.video_type,
+		a.video_route,
+		a.video_category,
+		DATE_FORMAT(a.vedio_time,'%Y-%m-%d %H:%i:%s') As vedio_time,
+		a.vedio_pic,
+		a.play_num,
+		a.zan_num,
+		a.comment_num AS vedio_comment_number,d.*,if(e.id is NULL ,0,1) AS is_star,
+		if(f.id is NULL,0,1) AS is_zan
+		from vid_manage a
+		LEFT JOIN
+		(SELECT b.item_id,b.item_name,c.video
+		FROM item_info b,item_detail c WHERE b.item_id=c.item_id) d
+		on a.video_route=d.video
+		LEFT JOIN collect e on a.vi_id=e.post_id and e.user_id=#{userId} AND e.type="视频"
+		LEFT JOIN zan f on f.type_id=vi_id AND f.type="视频" AND f.user_id=#{userId}
 		<where>
 			<if test="videoCategory!=null and videoCategory!=''">
 				video_category=#{videoCategory}

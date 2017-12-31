@@ -57,19 +57,7 @@ public class VideoManageServiceImpl implements VideoManageService {
 		page.setNumberPerPage(numberPerPage);
 		page.setCurrentPage(currentPage);
 		int totalNumber=videoManageDao.getVideoTotalNum(videoCategory,keyWord);
-		List<VidManage> vidManageList=videoManageDao.showVid(rule,videoCategory,keyWord,page);
-		for (VidManage vidManage:vidManageList
-		 ) {
-				String videoRout=videoManageDao.getVideoRoute(vidManage.getViId());
-				ItemInfo itemInfo=videoManageDao.getVideoItem(videoRout);
-				vidManage.setItemInfo(itemInfo);
-				//填充是否已收藏
-				if(userId!=null){
-					if(cottomsPostDao.existCollect(vidManage.getViId()+"",userId,"视频")!=0){
-						vidManage.setIsStar(1);
-					}
-				}
-		}
+		List<VidManage> vidManageList=videoManageDao.showVid(rule,videoCategory,keyWord,page,userId);
 		if(vidManageList==null||vidManageList.size()==0){
 			vidManageList=null;
 		}

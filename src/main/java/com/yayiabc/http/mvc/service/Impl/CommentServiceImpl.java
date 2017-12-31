@@ -100,6 +100,7 @@ public class CommentServiceImpl implements CommentService {
             subComment.setCommentContent(comment.getCommentContent());
             subComment.setUserPic(user.getUserPic());
             subComment.setCommentTime(new Date());
+            subComment.setSubCommentId(comment.getCommentId());
             if(parentId!=null&&beCommentedUser!=null){
                 subComment.setReplyUserId(beCommentedUser.getUserId());
                 subComment.setReplyUserName(beCommentedUser.getTrueName());
@@ -124,6 +125,8 @@ public class CommentServiceImpl implements CommentService {
             user=momentManageDao.getUserBySubMomentId(parentId);
             suffix=MESSAGE_TWO;
         }
+        System.out.println("currentUser"+currentUser);
+        System.out.println("user"+user);
         //自己不能评论自己
         boolean flag=currentUser.getUserId().equals(user.getUserId());
         if(flag&&(parentId!=null)){
@@ -143,11 +146,12 @@ public class CommentServiceImpl implements CommentService {
        subComment.setUserPic(currentUser.getUserPic());
        subComment.setUserName(currentUser.getTrueName());
        subComment.setCommentContent(coment.getCommentContent());
+       subComment.setSubCommentId(coment.getCommentId());
        if(parentId!=null&&user!=null){
             subComment.setReplyUserId(user.getUserId());
             subComment.setReplyUserName(user.getTrueName());
        }
-       dataWrapper.setData(coment);
+       dataWrapper.setData(subComment);
        return dataWrapper;
     }
 

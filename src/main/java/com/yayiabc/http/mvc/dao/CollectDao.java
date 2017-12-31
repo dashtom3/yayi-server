@@ -19,4 +19,8 @@ public interface CollectDao {
     Integer getCategoryFromVideo(Integer postId);
 
     Integer getCategoryFromFaq(Integer postId);
+
+    void addCollectNumToVideo(Integer postId);
+
+    void delCollectNumToVideo(Integer postId);
 }

@@ -8,7 +8,7 @@
 		value (#{faqQuestionTitle},#{faqQuestionType},#{userId},#{faqQuestionContent})
 	</insert>
 
-	<insert id="addAnswer" >
+	<insert id="addAnswer" useGeneratedKeys="true" keyProperty="faqAnswer.faqAnswerId" >
 		insert into faq_answer(faq_answer_content,faq_answer_user_id,faq_question_answer_id)
 		value (#{faqAnswer.faqAnswerContent},#{faqAnswer.userId},#{faqQuestionId})
 	</insert>

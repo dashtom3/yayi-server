@@ -107,10 +107,6 @@ public class MomentManageServiceImpl implements MomentManageService{
         System.out.println(userId);
         int totalNumber=momentManageDao.getMomentTotalNumber(userId,type);
         List<Moment> momentList=momentManageDao.queryList(page,userId,type);
-        for (Moment moment:momentList
-                ) {
-            fillCommentAndUpvoteMessage(moment,userId);
-        }
         dataWrapper.setData(momentList);
         dataWrapper.setPage(page,totalNumber);
         return dataWrapper;
@@ -121,16 +117,8 @@ public class MomentManageServiceImpl implements MomentManageService{
         //填充评论
         List<SubComment> subCommentList=momentManageDao.getMomentCommentList(moment.getMomentId());
         moment.setSubCommentList(subCommentList);
-        //判断用户是否已经点赞
-        if(userId!=null){
-            int count=zanDao.getCount(userId,"牙医圈",moment.getMomentId(),null,null);
-            if(count!=0){
-                moment.setIsZan(1);
-            }
-        }
-        //如果是病例，培训，视频，填充图片和标题
         Map<String,String> map=new HashMap<String,String>();
-        //2.视频3.病例4.培训
+        //2.视频3.病例
         if(moment.getMomentType()==GlobalVariables.VIDEO_MOMENT){
             map=momentManageDao.getMomentTitleByVedio(moment.getMomentContentId());
         }else if(moment.getMomentType()==GlobalVariables.POST_MOMENT){

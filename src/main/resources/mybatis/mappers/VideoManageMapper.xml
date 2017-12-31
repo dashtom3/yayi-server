@@ -52,6 +52,7 @@ WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId
 		<result property="vedioPic" column="vedio_pic"/>
 		<result property="isStar" column="is_star"/>
 		<result property="zanNumber" column="zan_num"/>
+		<result property="starNumber" column="star_num"/>
 		<association property="itemInfo" javaType="ItemInfo">
 			<id property="itemId" column="item_id"/>
 			<result property="itemName" column="item_name"/>
@@ -75,6 +76,7 @@ WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId
 		a.vedio_pic,
 		a.play_num,
 		a.zan_num,
+		a.star_num,
 		a.comment_num AS vedio_comment_number,d.*,if(e.id is NULL ,0,1) AS is_star,
 		if(f.id is NULL,0,1) AS is_zan
 		from vid_manage a

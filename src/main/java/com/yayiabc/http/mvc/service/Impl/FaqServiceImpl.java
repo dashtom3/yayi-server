@@ -18,6 +18,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 import org.springframework.util.Assert;
 
+import java.util.Date;
 import java.util.List;
 
 @Service
@@ -66,6 +67,7 @@ public class FaqServiceImpl implements FaqService {
         
         //保存进数据库
         int reflectRows=faqDao.addAnswer(faqAnswer,faqQuestionId);
+        faqAnswer.setFaqAnswerTime(new Date());
         if(reflectRows==0){
             dataWrapper.setErrorCode(ErrorCodeEnum.Error);
             return dataWrapper;

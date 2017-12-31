@@ -164,14 +164,12 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		}else{
 			cottomsPost1.setIsCollect(1);//已收藏
 		}
-
 		Integer isPraise=cottomsPostDao.exisPraise(postId+"",userId,type);//判断赞是否存在
 		if(isPraise==0){
 			cottomsPost1.setIsPraise(0);//未点赞
 		}else{
 			cottomsPost1.setIsPraise(1);//已点赞
 		}
-
 		dataWrapper.setFl((utilsDao.getUserPcImgById(cottomsPost1.getUserId())));
 		boolean userIde=false;
 		String post=postId+"";
@@ -309,7 +307,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		return dw;
 	}
 
-	//收藏病例
+	//收藏
 	@Override
 	public DataWrapper<Void> collect(String token,Integer postId,String type) {
 		DataWrapper<Void> dw =new DataWrapper<>();
@@ -321,12 +319,16 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 				category=collectDao.getCategoryFromPost(postId);
 			}else if("视频".equals(type)){
 				category=collectDao.getCategoryFromVideo(postId);
+				collectDao.addCollectNumToVideo(postId);
 			}else if("问答".equals(type)){
 				category=collectDao.getCategoryFromFaq(postId);
 			}
 			cottomsPostDao.collect(postId,userId,type,category);
 			dw.setMsg("收藏成功");
 		}else{
+			if("视频".equals(type)){
+				collectDao.delCollectNumToVideo(postId);
+			}
 			cottomsPostDao.disCollect(postId,userId,type);
 			dw.setMsg("取消收藏");
 		}

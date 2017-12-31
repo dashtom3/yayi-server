@@ -3,12 +3,12 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yayiabc.http.mvc.dao.CommentDao">
-	<insert id="addComment">
+	<insert id="addComment" useGeneratedKeys="true" keyProperty="comment.commentId">
 		insert into top_comment(user_id,content,becommented_id,`type`)
 		VALUES (#{userId},#{comment.commentContent},#{beCommentedId},#{num})
 	</insert>
 
-	<insert id="addSubComment">
+	<insert id="addSubComment" useGeneratedKeys="true" keyProperty="comment.commentId">
 		insert into lower_comment(user_id,content,top_id)
 		VALUES (#{userId},#{comment.commentContent},#{parentId})
 	</insert>

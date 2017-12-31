@@ -35,20 +35,55 @@
 		<result property="userId" column="user_id"/>
 		<result property="userName" column="true_name"/>
 		<result property="userPic" column="user_pic"/>
+		<result property="isZan" column="is_zan"/>
+		<collection property="subCommentList" ofType="SubComment">
+			<id property="subCommentId" column="comment_id"/>
+			<result property="userId" column="top_user_id"/>
+			<result property="userName" column="top_user_name"/>
+			<result property="userPic" column="top_user_pic"/>
+			<result property="commentContent" column="comment_content"/>
+			<result property="commentTime" column="comment_time"/>
+			<result property="replyUserId" column="reply_user_id"/>
+			<result property="replyUserName" column="reply_user_name"/>
+		</collection>
 	</resultMap>
 
 
 	<select id="queryList" resultMap="moment">
-		select a.moment_id,b.user_id,b.true_name,b.user_pic,a.moment_content,a.moment_picture,a.moment_content_id,a.moment_type,a.moment_time,a.zan_num AS zan_number FROM
+		select a.moment_id,b.user_id,b.true_name,b.user_pic,a.moment_content,
+		a.moment_content_id,a.moment_type,a.moment_time,
+		a.zan_num AS zan_number,if(c.id is NULL ,0,1) AS is_zan,
+		coalesce(a.moment_picture,d.vedio_pic,e.cover) AS moment_picture,
+		coalesce(d.video_name,e.headline,f.faq_question_title) AS moment_content_title,
+		i.id AS comment_id,i.content AS comment_content,i.created AS comment_time,
+		i.user_id AS top_user_id,i.true_name AS top_user_name,i.user_pic AS top_user_pic,
+		n.user_id AS reply_user_id,n.true_name AS reply_user_name FROM
 		(select * from moment
 			<where>
 			<if test="type==2">
 				user_id=#{userId}
 			</if>
-		</where>) a
+		</where>
+		order by moment_time DESC
+		limit #{page.currentNumber},#{page.numberPerPage}) a
 		LEFT join user b on a.user_id=b.user_id
-		order by a.moment_time DESC
-		limit #{page.currentNumber},#{page.numberPerPage}
+		LEFT JOIN zan c on c.type_id=a.moment_id AND c.type="牙医圈" AND c.user_id=#{userId}
+		LEFT JOIN vid_manage d on a.moment_content_id=d.vi_id AND a.moment_type=2
+		LEFT JOIN cottoms_post e on a.moment_content_id=e.post_id AND a.moment_type=3
+		LEFT JOIN faq_question f ON a.moment_content_id=f.faq_question_id AND a.moment_type=4
+		LEFT JOIN
+		(SELECT g.id,g.content,g.created,h.user_id,h.true_name,h.user_pic,g.moment_id
+		FROM dentist_comment g
+		LEFT JOIN `user` h ON g.user_id=h.user_id
+		) i on i.moment_id=a.moment_id
+		LEFT JOIN
+		(SELECT l.a_id,m.user_id,m.true_name,m.user_pic FROM
+		(SELECT j.user_id AS a_id,k.user_id
+		FROM dentist_comment j
+		LEFT JOIN dentist_comment k ON j.reply_id=k.id) l
+		LEFT JOIN `user` m ON m.user_id=l.user_id) n
+		ON i.id=n.a_id
+
 	</select>
 
 	<select id="getMomentTitleByVedio" resultType="java.util.Map">
@@ -87,7 +122,7 @@
 		WHERE a.id=#{parentId}
 	</select>
 
-	<insert id="addComment">
+	<insert id="addComment" useGeneratedKeys="true" keyProperty="coment.commentId">
 		insert into dentist_comment(user_id,content,moment_id,reply_id)
 		VALUES (#{userId},#{coment.commentContent},#{beCommentedId},#{parentId})
 	</insert>

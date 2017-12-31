@@ -66,4 +66,12 @@ limit #{page.currentNumber},#{page.numberPerPage}
 	<select id="getCategoryFromFaq" resultType="int">
 		select faq_question_type FROM faq_question where faq_question_id=#{postId}
 	</select>
+
+	<update id="addCollectNumToVideo">
+		update vid_manage set star_num=star_num+1 where vi_id=#{postId}
+	</update>
+
+	<update id="delCollectNumToVideo">
+		update vid_manage set star_num=star_num-1 where vi_id=#{postId}
+	</update>
 </mapper>       

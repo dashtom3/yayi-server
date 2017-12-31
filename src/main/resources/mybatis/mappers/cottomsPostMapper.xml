@@ -71,7 +71,7 @@
 	<select id="queryPost" resultMap="IBuy">
 		select
 		cp.post_id cpostid,cp.headline,cp.classify,cp.writer,cp.cover,cp.post_time,cp.charge_number,user.user_pic,cp.post_stater,cp.read_number,
-		cp.zan_num,cp.comment_num,up.post_id upostid
+		cp.zan_num,cp.comment_num,cp.post_stater,up.post_id upostid
 		from
 		cottoms_post cp
 		left join user
@@ -93,7 +93,13 @@
 			<if test="keyWord!=null and keyWord!=''">
 				cp.headline like '%${keyWord}%' and
 			</if>
+			<if test="postStater==0 or postStater==1 or postStater==2 or postStater==3 or postStater==4">
 			cp.post_stater=#{postStater}
+			</if>
+			<if test="postStater==5">
+			cp.post_stater=0 or cp.post_stater=1 or cp.post_stater=4
+			</if>
+			
 		</where>
 		<if test="order==0">
 			order by cp.post_time desc
@@ -297,6 +303,7 @@
 		<result property="readNumber" column="read_number" />
 		<result property="commentNum" column="comment_num" />
 		<result property="zanNum" column="zan_num" />
+		<result property="postStater" column="post_stater" />
 		<association property="user" javaType="User">
 			<result property="userPic" column="user_pic" />
 		</association>

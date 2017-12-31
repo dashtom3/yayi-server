@@ -119,9 +119,6 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
 		CottomsPost cottomsPost = new CottomsPost();
 		String userId=utilsDao.getUserID(token);
-		if (type==1) {
-			userId=null;
-		}
 		cottomsPost.setClassify(classify);
 		cottomsPost.setPostStater(postStater);
 		Page page=new Page();
@@ -135,6 +132,18 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		List<CottomsPost> cottomsPosts=null;
 		cottomsPosts=cottomsPostDao.queryPost(page,classify,order,postStater,list,userId,keyWord,type);
 		for (CottomsPost cottomsPost2 : cottomsPosts) {
+			Integer isCollect=cottomsPostDao.existCollect(cottomsPost2.getPostId()+"",userId,"病例");//判断收藏是否存在
+			if(isCollect==0){
+				cottomsPost2.setIsCollect(0);//未收藏
+			}else{
+				cottomsPost2.setIsCollect(1);//已收藏
+			}
+			Integer isPraise=cottomsPostDao.exisPraise(cottomsPost2.getPostId()+"",userId,"病例");//判断赞是否存在
+			if(isPraise==0){
+				cottomsPost2.setIsPraise(0);//未点赞
+			}else{
+				cottomsPost2.setIsPraise(1);//已点赞
+			}
 			cottomsPost.setChargeContent(null);
 			cottomsPost.setFreeContent(null);
 			cottomsPost.setUserId(userId);
@@ -165,6 +174,8 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			cottomsPost1.setIsCollect(1);//已收藏
 		}
 		Integer isPraise=cottomsPostDao.exisPraise(postId+"",userId,type);//判断赞是否存在
+		System.out.println(isPraise);
+		System.out.println(isCollect);
 		if(isPraise==0){
 			cottomsPost1.setIsPraise(0);//未点赞
 		}else{

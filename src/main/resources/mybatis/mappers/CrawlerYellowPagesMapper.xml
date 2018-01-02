@@ -92,6 +92,7 @@
 				title like '%${keyWord}%' or first_classify like '%${keyWord}%'
 			</if>
 		</where>
+		order by browse_num desc
 		limit ${currentNum} , ${numberPerpage}
 	</select>
 	

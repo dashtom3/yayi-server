@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.service.Impl;
 
 import java.util.HashMap;
 import java.util.List;
+import java.util.Set;
 
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
@@ -13,7 +14,6 @@ import com.yayiabc.http.mvc.dao.CrawlerYellowPagesDao;
 import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.DaForDentist;
 import com.yayiabc.http.mvc.pojo.jpa.Sheet1;
-import com.yayiabc.http.mvc.pojo.jpa.UserCollectDataforDst;
 import com.yayiabc.http.mvc.service.CrawlerYellowPagesService;
 
 import redis.clients.jedis.Jedis;
@@ -108,8 +108,18 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 				dfd.setBrowseNumber((int) (k+0));
 			}
 		}
-		 
-	
+		//排序
+		Object a[] =(Object [])listhm.toArray();
+		DaForDentist temp=null;
+		    for(int i=0;i<a.length-1;i++){  
+		        for(int j=0;j<a.length-1-i;j++){  
+		        if(((DaForDentist) a[j]).getBrowseNumber()>((DaForDentist) a[j+1]).getBrowseNumber()){  
+		            temp=(DaForDentist) a[j];  
+		            a[j]=a[j+1];  
+		            a[j+1]=temp;  
+		        }  
+		        }  
+		    }  
 		dataWrapper.setData(listhm);
 		jedis.close();
 		return dataWrapper;

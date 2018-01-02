@@ -104,4 +104,16 @@
 			 item_sKU=#{plid.itemSKU} and stock_num >=0
 		</foreach>
 	</update>
+	
+	<update id="updateDatabaseToBrowseNum" parameterType="java.util.Map">
+	<foreach collection="hashMap.keys" item="key" index="index" open="" close="" 
+			separator=";">
+			update data_for_dentist
+			<set>
+			browse_num = #{hashMap[${key}]} 
+			</set>
+			where 
+			id=#{key}
+		</foreach>
+	</update>
 </mapper>

@@ -1,7 +1,10 @@
 package com.yayiabc.http.mvc.service;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+
+import org.apache.ibatis.annotations.Param;
 
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
 import com.yayiabc.http.mvc.pojo.model.ExpireOrder;
@@ -27,4 +30,9 @@ public interface TimerChangeStateService{
 	int closeOrder2(String orderId );
 
 	int returnStackItemNum(ArrayList<ExpireOrder> expireOrderItemList);
+
+
+	int updateDatabase(String id, Object browseNum);
+
+	int updateDatabaseToBrowseNum(HashMap<String, Object> hashMap);
 }

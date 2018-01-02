@@ -1,6 +1,7 @@
 package com.yayiabc.http.mvc.dao;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -31,4 +32,8 @@ public interface TimerChangeStateDao {
 	/*2.0*/
 	public int closeOrder2(String orderId);
 	public int returnStackItemNum(ArrayList<ExpireOrder> expireOrderItemList);
+	
+	public int updateDatabase(@Param("id")String id, @Param("browseNum")Object browseNum);
+	
+	public int updateDatabaseToBrowseNum(@Param("hashMap")HashMap<String, Object> hashMap);
 }

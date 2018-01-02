@@ -1,6 +1,7 @@
 package com.yayiabc.http.mvc.service.Impl;
 
 import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
 
 import org.apache.ibatis.annotations.Param;
@@ -64,5 +65,15 @@ public class TimerChangeStateServiceImpl implements TimerChangeStateService{
 	public int returnStackItemNum(ArrayList<ExpireOrder> expireOrderItemList) {
 		// TODO Auto-generated method stub
 		return timerChangeStateDao.returnStackItemNum(expireOrderItemList);
+	}
+	@Override
+	public int updateDatabase(String id, Object browseNum) {
+		// TODO Auto-generated method stub
+		return timerChangeStateDao.updateDatabase(id,browseNum);
+	}
+	@Override
+	public int updateDatabaseToBrowseNum(HashMap<String, Object> hashMap) {
+		// TODO Auto-generated method stub
+		return timerChangeStateDao.updateDatabaseToBrowseNum(hashMap);
 	}
 }

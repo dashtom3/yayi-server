@@ -26,7 +26,7 @@ public class MessageServiceImpl implements MessageService{
     private UtilsDao utilsDao;
 
     @Override
-    public DataWrapper<MessageNumber> getNumber(String token) {
+    public DataWrapper<MessageNumber> getNumber(String token,String type) {
         DataWrapper<MessageNumber> dataWrapper=new DataWrapper<MessageNumber>();
         if(token==null){
             return dataWrapper;
@@ -38,14 +38,14 @@ public class MessageServiceImpl implements MessageService{
         String userId=user.getUserId();
         //获取评论相关的信息
         System.out.println("userId"+userId);
-        Integer commentNumber=(int)redisService.LISTS.llen("评论消息推送"+userId);
+        Integer commentNumber=(int)redisService.LISTS.llen(type+"消息推送"+userId);
         MessageNumber messageNumber=new MessageNumber(commentNumber);
         dataWrapper.setData(messageNumber);
         return dataWrapper;
     }
 
     @Override
-    public DataWrapper<Object> getDetail(String token, Integer type,Integer numberPerPage) {
+    public DataWrapper<Object> getDetail(String token, String type,Integer numberPerPage) {
         DataWrapper<Object> dataWrapper=new DataWrapper<Object>();
         if(token==null){//未登录
             return dataWrapper;
@@ -65,19 +65,14 @@ public class MessageServiceImpl implements MessageService{
     }
 
     //弹出消息,获取消息列表,这里获取消息后即会从消息列表中移除
-    public List<MessageEntry> messageList(Integer type,String userId,Integer numberPerPage){
-        String typeStr="";
-        if(type==1){//评论消息
-            typeStr="评论消息推送";
-        }
+    public List<MessageEntry> messageList(String type,String userId,Integer numberPerPage){
+        String typeStr=type+"消息推送";
         List<MessageEntry> messageList=new ArrayList<MessageEntry>();
-        System.out.println("key为"+typeStr+userId);
         int totalNumber=(int)redisService.LISTS.llen(typeStr+userId);
         numberPerPage=totalNumber>numberPerPage?numberPerPage:totalNumber;
         Jedis jedis=RedisService.getInstance().getJedis();
         for(int i=0;i<numberPerPage;i++){
             System.out.println(redisService.LISTS);
-//            String messageEntryStr=redisService.LISTS.lpop(typeStr+userId);
             String messageEntryStr=jedis.rpop(typeStr+userId);
             System.out.println("messageEntryStr"+messageEntryStr);
             MessageEntry messageEntry=new MessageEntry();

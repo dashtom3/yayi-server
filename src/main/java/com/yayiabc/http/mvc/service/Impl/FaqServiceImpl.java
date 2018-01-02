@@ -62,7 +62,7 @@ public class FaqServiceImpl implements FaqService {
         //根据提供问题id 去找提问者userId
         String questionUid=faqDao.getQuestionUid(faqQuestionId);
         if(!questionUid.equals(user.getUserId())){
-            redisService.LISTS.rpush("评论消息推送"+questionUid,user.getTrueName()+"回答了你的问题,问答:"+faqQuestionId);
+            redisService.LISTS.rpush("问答消息推送"+questionUid,user.getTrueName()+"回答了你的问题,问答:"+faqQuestionId);
         }
         
         //保存进数据库

@@ -26,9 +26,10 @@ public class MessageController {
     @RequestMapping("getNumber")
     @ResponseBody
     public DataWrapper<MessageNumber> getNumber(
-            @RequestHeader(value="token",required = false) String token
+            @RequestHeader(value="token",required = false) String token,
+            @RequestParam(value="type",required = true) String type
     ){
-        return messageService.getNumber(token);
+        return messageService.getNumber(token,type);
     }
 
     //获取系统消息 1评论消息 2.问答TODO
@@ -36,7 +37,7 @@ public class MessageController {
     @ResponseBody
     public DataWrapper<Object> getDetail(
             @RequestHeader(value="token",required = false) String token,
-            @RequestParam(value="type",required = true) Integer type,
+            @RequestParam(value="type",required = true) String type,
             @RequestParam(value="numberPerPage",required = false,defaultValue = "10") Integer numberPerPage
     ) {
             return messageService.getDetail(token,type,numberPerPage);

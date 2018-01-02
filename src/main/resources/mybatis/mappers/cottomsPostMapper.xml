@@ -79,12 +79,8 @@
 		cp.user_id=user.user_id 
 		left join user_to_post up
 		on up.post_id=cp.post_id
-		
 		<where>
 			<if test="type==2">
-				cp.user_id=#{userId} and
-			</if>
-			<if test="userId!=null and userId!=''">
 				cp.user_id=#{userId} and
 			</if>
 			<if test="classify!=null and classify!=''">

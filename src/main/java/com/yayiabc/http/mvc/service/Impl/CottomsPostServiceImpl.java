@@ -174,8 +174,6 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			cottomsPost1.setIsCollect(1);//已收藏
 		}
 		Integer isPraise=cottomsPostDao.exisPraise(postId+"",userId,type);//判断赞是否存在
-		System.out.println(isPraise);
-		System.out.println(isCollect);
 		if(isPraise==0){
 			cottomsPost1.setIsPraise(0);//未点赞
 		}else{

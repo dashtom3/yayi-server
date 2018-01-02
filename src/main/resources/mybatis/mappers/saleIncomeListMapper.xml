@@ -121,7 +121,7 @@
 		FROM sale_income si
 		LEFT JOIN sale_info s ON si.sale_id=s.sale_id
 		WHERE 
-		DATE_FORMAT(si.created,'%Y-%m-%d')  BETWEEN #{startDate} AND #{endDate} 
+		DATE_FORMAT(si.created,'%Y-%m-%d')  BETWEEN #{startDate} AND #{endDate}
 		<if test="saleName !=null and saleName !=''">
 			AND s.true_name LIKE '%${saleName}%'	
 		</if>
@@ -140,7 +140,7 @@
 			FROM sale_income si
 			LEFT JOIN sale_info s ON si.sale_id=s.sale_id
 			WHERE 
-			DATE_FORMAT(si.created,'%m-%d')  BETWEEN #{startDate} AND #{endDate} 
+			DATE_FORMAT(si.created,'%m-%d')  BETWEEN #{startDate} AND #{endDate}
 			<if test="saleName !=null and saleName !=''">
 				AND s.true_name LIKE '%${saleName}%'	
 			</if>

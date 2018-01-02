@@ -83,7 +83,7 @@
 		LEFT JOIN dentist_comment k ON j.reply_id=k.id) l
 		LEFT JOIN `user` m ON m.user_id=l.user_id) n
 		ON i.id=n.a_id
-
+		order by a.moment_time DESC
 	</select>
 
 	<select id="getMomentTitleByVedio" resultType="java.util.Map">
@@ -103,7 +103,7 @@
 	</select>
 
 	<select id="getMomentByMomentId" resultType="Moment">
-		select	a.*,b.true_name,b.user_pic FROM
+		select	a.moment_id,a.user_id,a.moment_content,a.moment_picture,a.moment_content_id,a.moment_type,a.moment_time,a.zan_num AS zan_number,b.true_name AS user_name,b.user_pic FROM
 		(select * from moment where moment_id=#{momentId}) a
 		JOIN `user` b on a.user_id=b.user_id
 	</select>

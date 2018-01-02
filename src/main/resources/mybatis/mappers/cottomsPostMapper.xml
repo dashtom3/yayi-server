@@ -3,7 +3,33 @@
         PUBLIC "-//mybatis.org//DTD Mapper 3.0//EN"
         "http://mybatis.org/dtd/mybatis-3-mapper.dtd">
 <mapper namespace="com.yayiabc.http.mvc.dao.CottomsPostDao">
-
+	<resultMap type="CottomsPost" id="IBuy">
+		<result property="headline" column="headline" />
+		<result property="classify" column="classify" />
+		<result property="freeContent" column="free_content" />
+		<result property="chargeContent" column="charge_content" />
+		<result property="writer" column="writer" />
+		<result property="chargeNumber" column="charge_number" />
+		<result property="cover" column="cover" />
+		<result property="userId" column="cuserId" />
+		<result property="postId" column="cpostid" />
+		<result property="postTime" column="post_time" />
+		<result property="readNumber" column="read_number" />
+		<result property="commentNum" column="comment_num" />
+		<result property="zanNum" column="zan_num" />
+		<result property="postStater" column="post_stater" />
+		<result property="isPraise" column="collect" />
+		<result property="isCollect" column="zan" />
+		<association property="user" javaType="User">
+			<result property="userPic" column="user_pic" />
+		</association>
+		<association property="userToPost" javaType="UserToPost">
+			<result property="postId" column="upostid" />
+		</association>
+		<association property="refuseCauser" javaType="RefuseCauser">
+			<result property="refuseCauser" column="refuse_causer" />
+		</association>
+	</resultMap>
 	<select id="gettrueName" resultType="java.lang.String">
 		select true_name,phone from
 		user where user_id=#{userId}
@@ -69,16 +95,26 @@
 	<!--显示病例 -->
 
 	<select id="queryPost" resultMap="IBuy">
-		select
-		cp.post_id cpostid,cp.headline,cp.classify,cp.writer,cp.cover,cp.post_time,cp.charge_number,user.user_pic,cp.post_stater,cp.read_number,
-		cp.zan_num,cp.comment_num,cp.post_stater,up.post_id upostid
-		from
+		SELECT
+		cp.post_id
+		cpostid,cp.headline,cp.classify,cp.writer,cp.cover,cp.post_time,cp.charge_number,user.user_pic,cp.post_stater,cp.read_number,
+		cp.zan_num,cp.comment_num,cp.post_stater,up.post_id upostid,IF(co.id
+		IS NULL,0,1) as collect,IF(zan.id IS NULL,0,1) zan
+		FROM
 		cottoms_post cp
-		left join user
-		on
-		cp.user_id=user.user_id 
-		left join user_to_post up
-		on up.post_id=cp.post_id
+		LEFT JOIN `user`
+		ON
+		cp.user_id=user.user_id
+		LEFT JOIN user_to_post up
+		ON
+		up.post_id=cp.post_id AND up.user_id=#{userId}
+		LEFT JOIN collect co
+		ON
+		cp.post_id=co.post_id AND co.user_id=13 AND
+		co.type='病例'
+		LEFT JOIN zan
+		ON cp.post_id=zan.type_id AND co.user_id=13
+		AND zan.type='病例'
 		<where>
 			<if test="type==2">
 				cp.user_id=#{userId} and
@@ -89,13 +125,14 @@
 			<if test="keyWord!=null and keyWord!=''">
 				cp.headline like '%${keyWord}%' and
 			</if>
-			<if test="postStater==0 or postStater==1 or postStater==2 or postStater==3 or postStater==4">
-			cp.post_stater=#{postStater}
+			<if
+				test="postStater==0 or postStater==1 or postStater==2 or postStater==3 or postStater==4">
+				cp.post_stater=#{postStater}
 			</if>
 			<if test="postStater==5">
-			cp.post_stater=0 or cp.post_stater=1 or cp.post_stater=4
+				cp.post_stater=0 or cp.post_stater=1 or cp.post_stater=4
 			</if>
-			
+
 		</where>
 		<if test="order==0">
 			order by cp.post_time desc
@@ -169,7 +206,7 @@
 		<result property="chargeContent" column="charge_content" />
 		<result property="writer" column="writer" />
 		<result property="chargeNumber" column="charge_number" />
-		<result property="postStater" column="post_stater"/>
+		<result property="postStater" column="post_stater" />
 		<result property="cover" column="cover" />
 		<result property="userId" column="user_id" />
 		<result property="postId" column="post_id" />
@@ -177,16 +214,41 @@
 		<result property="readNumber" column="read_number" />
 		<result property="commentNum" column="comment_num" />
 		<result property="zanNum" column="zan_num" />
+		<result property="isPraise" column="collect" />
+		<result property="isCollect" column="zan" />
 		<association property="refuseCauser" javaType="RefuseCauser">
 			<result property="refuseCauser" column="refuse_causer" />
 		</association>
 	</resultMap>
-	<select id="cottomsDetail" resultMap="refuseCauser">
+	<select id="cottomsDetail" resultMap="IBuy">
 		select
-		cottoms_post.*,refuseCauser.* from cottoms_post left join refuseCauser
-		on cottoms_post.post_id=refuseCauser.post_id
-		where
-		cottoms_post.post_id=#{postId}
+		re.*,cp.post_id cpostid,cp.headline,cp.classify,cp.writer,cp.cover,cp.post_time,cp.charge_number,
+		cp.user_id cuserId,cp.free_content,cp.charge_content,user.user_pic,cp.post_stater,cp.read_number,
+		cp.zan_num,cp.comment_num,cp.post_stater,up.post_id upostid,IF(co.id
+		IS NULL,0,1) as collect,IF(zan.id IS NULL,0,1) zan
+		FROM
+		cottoms_post cp
+		LEFT JOIN `user`
+		ON
+		cp.user_id=user.user_id
+		left join refuseCauser re
+		ON
+		cp.post_id=re.post_id
+		LEFT JOIN user_to_post up
+		ON up.post_id=cp.post_id
+		AND up.user_id=#{userId}
+		LEFT JOIN collect co
+		ON cp.post_id=co.post_id
+		AND co.user_id=13 AND
+		co.type='病例'
+		LEFT JOIN zan
+		ON
+		cp.post_id=zan.type_id AND co.user_id=13
+		AND zan.type='病例'
+		<where>
+			cp.post_id=#{postId}
+		</where>
+
 	</select>
 
 	<select id="postLike" resultType="java.lang.Integer">
@@ -237,10 +299,12 @@
 	<!--查询收藏postId -->
 	<select id="queryMyCollect" resultType="java.lang.Integer">
 		select post_id from
-		collect <where> user_id=#{userId} AND type=#{type}
-		<if test="category!=null">
-			AND category=#{category}
-		</if>
+		collect
+		<where>
+			user_id=#{userId} AND type=#{type}
+			<if test="category!=null">
+				AND category=#{category}
+			</if>
 		</where>
 	</select>
 
@@ -249,10 +313,12 @@
 		select user.user_pic,cottoms_post.* from cottoms_post
 		inner join
 		collect a on cottoms_post.post_id=a.post_id and a.type=#{type}
-		left join
+		left
+		join
 		user on
 		a.user_id=user.user_id
-		<where>a.user_id=#{userId}
+		<where>
+			a.user_id=#{userId}
 			<if test="category!=null">category=#{category}</if>
 		</where>
 		limit
@@ -285,29 +351,7 @@
 	</select>
 
 	<!--我的购买病例 -->
-	<resultMap type="CottomsPost" id="IBuy">
-		<result property="headline" column="headline" />
-		<result property="classify" column="classify" />
-		<result property="freeContent" column="free_content" />
-		<result property="chargeContent" column="charge_content" />
-		<result property="writer" column="writer" />
-		<result property="chargeNumber" column="charge_number" />
-		<result property="cover" column="cover" />
-		<result property="userId" column="user_id" />
-		<result property="postId" column="cpostid" />
-		<result property="postTime" column="post_time" />
-		<result property="readNumber" column="read_number" />
-		<result property="commentNum" column="comment_num" />
-		<result property="zanNum" column="zan_num" />
-		<result property="postStater" column="post_stater" />
-		<association property="user" javaType="User">
-			<result property="userPic" column="user_pic" />
-		</association>
-		<association property="userToPost" javaType="UserToPost">
-			<result property="postId" column="upostid" />
-		</association>
-	</resultMap>
-	
+
 	<select id="myBuy" resultMap="IBuy">
 		select
 		cottoms_post.headline,cottoms_post.classify,cottoms_post.post_time,cottoms_post.free_content,cottoms_post.charge_content,
@@ -357,6 +401,7 @@
 	</update>
 
 	<delete id="disCollect">
-		delete from collect where user_id=#{userId} AND post_id=#{postId} AND type=#{type}
+		delete from collect where user_id=#{userId} AND
+		post_id=#{postId} AND type=#{type}
 	</delete>
 </mapper>

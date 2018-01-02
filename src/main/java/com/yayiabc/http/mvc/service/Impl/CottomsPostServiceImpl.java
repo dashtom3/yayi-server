@@ -132,24 +132,12 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		List<CottomsPost> cottomsPosts=null;
 		cottomsPosts=cottomsPostDao.queryPost(page,classify,order,postStater,list,userId,keyWord,type);
 		for (CottomsPost cottomsPost2 : cottomsPosts) {
-			Integer isCollect=cottomsPostDao.existCollect(cottomsPost2.getPostId()+"",userId,"病例");//判断收藏是否存在
-			if(isCollect==0){
-				cottomsPost2.setIsCollect(0);//未收藏
-			}else{
-				cottomsPost2.setIsCollect(1);//已收藏
-			}
-			Integer isPraise=cottomsPostDao.exisPraise(cottomsPost2.getPostId()+"",userId,"病例");//判断赞是否存在
-			if(isPraise==0){
-				cottomsPost2.setIsPraise(0);//未点赞
-			}else{
-				cottomsPost2.setIsPraise(1);//已点赞
-			}
 			cottomsPost.setChargeContent(null);
 			cottomsPost.setFreeContent(null);
 			cottomsPost.setUserId(userId);
-			dataWrapper.setData(cottomsPosts);
-			dataWrapper.setPage(page, totalNumber);
 		}
+		dataWrapper.setData(cottomsPosts);
+		dataWrapper.setPage(page, totalNumber);
 		return dataWrapper;
 	}
 	//病例详情
@@ -166,19 +154,6 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 
 		List<String> postIdFees=cottomsPostDao.queryFees(userId);//获取本用户付费病例id
 		CottomsPost cottomsPost1=cottomsPostDao.cottomsDetail(postId);
-
-		Integer isCollect=cottomsPostDao.existCollect(postId+"",userId,type);//判断收藏是否存在
-		if(isCollect==0){
-			cottomsPost1.setIsCollect(0);//未收藏
-		}else{
-			cottomsPost1.setIsCollect(1);//已收藏
-		}
-		Integer isPraise=cottomsPostDao.exisPraise(postId+"",userId,type);//判断赞是否存在
-		if(isPraise==0){
-			cottomsPost1.setIsPraise(0);//未点赞
-		}else{
-			cottomsPost1.setIsPraise(1);//已点赞
-		}
 		dataWrapper.setFl((utilsDao.getUserPcImgById(cottomsPost1.getUserId())));
 		boolean userIde=false;
 		String post=postId+"";

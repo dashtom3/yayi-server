@@ -27,7 +27,7 @@ public class MessageController {
     @ResponseBody
     public DataWrapper<MessageNumber> getNumber(
             @RequestHeader(value="token",required = false) String token,
-            @RequestParam(value="type",required = true) String type
+            @RequestParam(value="type",required = false) String type
     ){
         return messageService.getNumber(token,type);
     }

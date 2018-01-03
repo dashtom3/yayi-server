@@ -37,8 +37,10 @@ public class MessageServiceImpl implements MessageService{
         }
         String userId=user.getUserId();
         //获取评论相关的信息
-        System.out.println("userId"+userId);
         Integer commentNumber=(int)redisService.LISTS.llen(type+"消息推送"+userId);
+        if(type==null||"".equals(type)){
+            commentNumber=(int)redisService.LISTS.llen("评论消息推送"+userId)+(int)redisService.LISTS.llen("问答消息推送"+userId);
+        }
         MessageNumber messageNumber=new MessageNumber(commentNumber);
         dataWrapper.setData(messageNumber);
         return dataWrapper;

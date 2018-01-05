@@ -59,7 +59,6 @@ public class OrderManagementController {
 		if("".equals(orderState)){
 			orderState=null;  
 		}
-
 		HashMap<String, Object> hMap=new HashMap<String,Object>();
 		hMap.put("orderId", orderId);
 		hMap.put("buyerInfo", buyerInfo);
@@ -161,7 +160,7 @@ public class OrderManagementController {
 	@ResponseBody
 	//@AdminLog(description="后台订单列表导出Excel表格")
 	public DataWrapper<Void>exportExcel(
-			/*	@RequestHeader(value="adminToken",required=true) String adminToken,*/
+				@RequestHeader(value="adminToken",required=true) String adminToken,
 			@RequestParam(value="orderId",required=false) String orderId,
 			@RequestParam(value="buyerInfo",required=false)String buyerInfo,//卖家的姓名或者手机号码
 			@RequestParam(value="orderState",required=false)String orderState,

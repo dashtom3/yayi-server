@@ -29,7 +29,7 @@ public class UserWithdrawalsController {
    @ResponseBody
    @RequestMapping("show")
    DataWrapper<Object> show(
-		  // @RequestHeader(value="adminToken",required=true) String adminToken,
+		   @RequestHeader(value="adminToken",required=true) String adminToken,
 		   @RequestParam(value="nameOrPhone",required=false) String nameOrPhone,
 		   @RequestParam(value="sign",required=false) String sign,  //申请中   1   成功 为  2
 		   @RequestParam(value="currentPage",required=false,defaultValue="1")Integer currentPage,

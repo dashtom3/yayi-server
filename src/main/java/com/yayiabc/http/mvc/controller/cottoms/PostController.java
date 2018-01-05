@@ -4,7 +4,6 @@ import java.util.List;
 
 import javax.servlet.http.HttpServletResponse;
 
-import com.yayiabc.common.annotation.UserTokenValidate;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.ModelAttribute;
@@ -29,7 +28,6 @@ public class PostController {
 	//发布病例
 	@RequestMapping("add")
 	@ResponseBody
-	@UserTokenValidate
 	public DataWrapper<Void> addPost(
 			@RequestHeader String token,
 			@ModelAttribute CottomsPost cottomsPost,

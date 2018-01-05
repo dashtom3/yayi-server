@@ -122,14 +122,14 @@ public class PostController {
 		return cottomsPostService.updateStater(token,postId,postStater,userId,refuseCauser);
 	}
 	
-	//我的收藏
-	@RequestMapping("queryList")
-	@ResponseBody
-	public DataWrapper<Void> queryList(
-			@RequestHeader("token")String token,
-			@RequestParam("postStater")Integer postStater,
-			@RequestParam("classfy")String refuseCauser
-			){
-		return cottomsPostService.updateStater(token,postId,postStater,userId,refuseCauser);
-	}
+//	//我的收藏
+//	@RequestMapping("queryList")
+//	@ResponseBody
+//	public DataWrapper<Void> queryList(
+//			@RequestHeader("token")String token,
+//			@RequestParam("postStater")Integer postStater,
+//			@RequestParam("classfy")String refuseCauser
+//			){
+//		return cottomsPostService.updateStater(token,postStater,refuseCauser);
+//	}
 }

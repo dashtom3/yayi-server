@@ -240,7 +240,9 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			return dw;
 		}
 		Integer qb=cottomsPostDao.queryqb(userId);//查询余额
-
+		if(qb==null){
+			qb=0;
+		}
 		if(qb>=chargeNumber){
 			if(userId!=null){
 				Integer p=cottomsPostDao.existBuyPostId(postId,userId);//判断是否已购买

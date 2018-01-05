@@ -109,7 +109,7 @@ public class PostController {
 		cottomsPostService.see(response);
 	}
 	
-	//更改病历状态
+	//更改病历状态,审核
 	@RequestMapping("check")
 	@ResponseBody
 	public DataWrapper<Void> updateStater(
@@ -122,5 +122,14 @@ public class PostController {
 		return cottomsPostService.updateStater(token,postId,postStater,userId,refuseCauser);
 	}
 	
-	//审核
+	//我的收藏
+	@RequestMapping("queryList")
+	@ResponseBody
+	public DataWrapper<Void> queryList(
+			@RequestHeader("token")String token,
+			@RequestParam("postStater")Integer postStater,
+			@RequestParam("classfy")String refuseCauser
+			){
+		return cottomsPostService.updateStater(token,postId,postStater,userId,refuseCauser);
+	}
 }

@@ -62,52 +62,25 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	//发布或更改病例（传过来无postId为发布，有postId为更改）
 	@Override
 	public DataWrapper<Void> addPost(CottomsPost cottomsPost,String token,String refuseCauser) {
+
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
-		if(token!=null){
-			SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
-			String userId=utilsDao.getUserID(token);
-			cottomsPost.setUserId(userId);
-			String trueName= cottomsPostDao.gettrueName(userId);
-			cottomsPost.setWriter(trueName);
-			//			if(cottomsPost.getPostStater()==1){
-			//								//发病例获取钱币
-			//								int day=0;
-			//								int week=0;
-			//								if(cottomsPostDao.dayGain(userId)==null){
-			//									day=0;
-			//								}else{
-			//									day=cottomsPostDao.dayGain(userId);
-			//								}
-			//								if(cottomsPostDao.weekGain(userId)==null){
-			//									week=0;
-			//								}else{
-			//									week=cottomsPostDao.weekGain(userId);
-			//								}
-			//								if(day>=5||week>=20){
-			//				
-			//								}else{
-			//									if(day<=5){
-			//										cottomsPostDao.addDayNumber(userId);
-			//										cottomsPostDao.addWeekNumber(userId);
-			//										cottomsPostDao.addQBWith(userId);
-			//									}
-			//								}
-			//			}else if(cottomsPost.getPostStater()==4){
-			//				if(cottomsPostDao.exisRefuseCauser(cottomsPost.getPostId())!=null){
-			//					
-			//				}else{
-			//					cottomsPostDao.refuseCauser(cottomsPost.getPostId(),refuseCauser);
-			//				}
-			//			}
-			if(cottomsPost.getPostId()==null){
-				cottomsPostDao.addPost(cottomsPost);
+		if(cottomsPost.getPostStater()!=1){
+			if(token!=null){
+				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				String userId=utilsDao.getUserID(token);
+				cottomsPost.setUserId(userId);
+				String trueName= cottomsPostDao.gettrueName(userId);
+				cottomsPost.setWriter(trueName);
+				if(cottomsPost.getPostId()==null){
+					cottomsPostDao.addPost(cottomsPost);
+				}else{
+					cottomsPostDao.setPost(cottomsPost);
+				}
 			}else{
-				cottomsPostDao.setPost(cottomsPost);
+				dataWrapper.setMsg("请登录");
 			}
-		}else{
-			dataWrapper.setMsg("请登录");
+			dataWrapper.setNum(cottomsPost.getPostId());
 		}
-		dataWrapper.setNum(cottomsPost.getPostId());
 		return dataWrapper;
 	}
 
@@ -267,7 +240,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 			return dw;
 		}
 		Integer qb=cottomsPostDao.queryqb(userId);//查询余额
-		
+
 		if(qb>=chargeNumber){
 			if(userId!=null){
 				Integer p=cottomsPostDao.existBuyPostId(postId,userId);//判断是否已购买
@@ -406,9 +379,9 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 				cottomsPostDao.updateStater(postId,postStater);
 				dataWrapper.setMsg("操作成功");
 			}	
-	}
+		}
 
-	return dataWrapper;
-}
+		return dataWrapper;
+	}
 
 }

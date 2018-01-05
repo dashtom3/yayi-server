@@ -130,7 +130,7 @@
 				cp.post_stater=#{postStater}
 			</if>
 			<if test="postStater==5">
-				cp.post_stater=0 or cp.post_stater=1 or cp.post_stater=4
+				(cp.post_stater=0 or cp.post_stater=1 or cp.post_stater=4)
 			</if>
 
 		</where>
@@ -355,8 +355,8 @@
 	<select id="myBuy" resultMap="IBuy">
 		select
 		cottoms_post.headline,cottoms_post.classify,cottoms_post.post_time,cottoms_post.free_content,cottoms_post.charge_content,
-		cottoms_post.writer,cottoms_post.cover,cottoms_post.user_id,cottoms_post.charge_number,cottoms_post.read_number,
-		cottoms_post.post_id,user.user_pic,cottoms_post.zan_num,cottoms_post.comment_num
+		cottoms_post.writer,cottoms_post.cover,cottoms_post.user_id cuserid,cottoms_post.charge_number,cottoms_post.read_number,
+		cottoms_post.post_id cpostid,user.user_pic,cottoms_post.zan_num,cottoms_post.comment_num
 		from cottoms_post right join user on
 		cottoms_post.user_id=user.user_id
 		<where>

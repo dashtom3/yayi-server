@@ -39,7 +39,7 @@ public class ItemStatisticsController {
 			@RequestParam(value="endDate",required=false)String endDate,
 			@RequestParam(value="currentPage",required=false,defaultValue="1") Integer currentPage,
     		@RequestParam(value="numberPerPage",required=false,defaultValue="10") Integer numberPerPage,
-    		@RequestParam(value="state",required=false,defaultValue="0") Integer state,
+    		@RequestParam(value="state",required=false,defaultValue="1") Integer state,
     		@RequestHeader(value="adminToken",required=true)String adminToken
 	){
 		return itemStatisticsService.query(itemName, itemId, itemSKU, itemBrandName, startDate, endDate, currentPage, numberPerPage, state);

@@ -49,7 +49,7 @@ public class WXShareController {
 		}
 		System.out.println(jsapi_ticket);
 		//3.生成签名
-		Map<String, String> signMap=Sign.sign(jsapi_ticket, url);
+		Map<String, String> signMap=Sign.sign(jsapi_ticket, url,Sign.create_nonce_str(),Sign.create_timestamp());
 		System.out.println(signMap);
 		wXEntry.setNonceStr(signMap.get("nonceStr"));
 		wXEntry.setSignature(signMap.get("signature"));

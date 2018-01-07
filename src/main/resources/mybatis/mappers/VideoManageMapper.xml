@@ -105,11 +105,14 @@ WHERE a.item_brand_id=b.item_brand_id AND a.item_id=c.item_id AND c.video=#{viId
 
 	<select id="detail" resultMap="videoRM">
 			SELECT a.vi_id,a.video_name,a.video_type,a.video_route,a.video_category,DATE_FORMAT(a.vedio_time,'%Y-%m-%d %H:%i:%s') AS vedio_time,a.vedio_pic,
-			b.item_id,c.item_name,c.item_price,d.item_brand_name,b.item_pica
+			b.item_id,c.item_name,c.item_price,d.item_brand_name,b.item_pica,if(e.id is NULL ,0,1) AS is_star,
+		if(f.id is NULL,0,1) AS is_zan
 		FROM (SELECT * FROM vid_manage WHERE vi_id=#{viId}) a
 		LEFT JOIN item_detail b ON a.video_route=b.video
 		LEFT JOIN item_info c ON b.item_id=c.item_id
 		LEFT JOIN item_brand d ON c.item_brand_id=d.item_brand_id
+		LEFT JOIN collect e on a.vi_id=e.post_id and e.user_id=#{userId} AND e.type="视频"
+		LEFT JOIN zan f on f.type_id=vi_id AND f.type="视频" AND f.user_id=#{userId}
 	</select>
 
 

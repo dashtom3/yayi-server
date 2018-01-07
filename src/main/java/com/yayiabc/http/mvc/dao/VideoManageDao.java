@@ -25,7 +25,7 @@ public interface VideoManageDao {
 
 	List<VidManage> showVid(@Param("rule")Integer rule,@Param("videoCategory") Integer videoCategory,@Param("keyWord")String keyWord,@Param("page")Page page,@Param("userId")String userId);
 
-    VidManage detail(Integer viId);
+    VidManage detail(@Param("viId")Integer viId,@Param("userId") String userId);
 
     List<VidManage> queryMyCollect(@Param("idList")List<String> idList,@Param("currentNumber") Integer currentNumber,@Param("numberPerPage") Integer numberPerPage);
 

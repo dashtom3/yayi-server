@@ -127,7 +127,7 @@ public class UserServiceImpl implements UserService {
 			if (1 == userDao.register(newUser)) {
 				certification.setUserId(newUser.getUserId());
 				userDao.register1(certification);
-				//绉婚櫎楠岃瘉鐮�
+
 				VerifyCodeManager.removePhoneCodeByPhoneNum(phone);
 				String token = tokenService.getToken(newUser.getUserId());
 				dataWrapper.setToken(token);

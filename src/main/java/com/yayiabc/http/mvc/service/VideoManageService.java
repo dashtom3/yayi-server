@@ -21,7 +21,7 @@ public interface VideoManageService {
 
 	DataWrapper<Void> play(Integer viId);
 
-	DataWrapper<VidManage> detail(Integer viId);
+	DataWrapper<VidManage> detail(Integer viId,String token);
 
 
 	DataWrapper<ItemInfo> videoItem(Integer viId);

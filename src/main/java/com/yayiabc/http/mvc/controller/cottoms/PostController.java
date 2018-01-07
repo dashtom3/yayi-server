@@ -12,6 +12,7 @@ import org.springframework.web.bind.annotation.RequestMapping;
 import org.springframework.web.bind.annotation.RequestParam;
 import org.springframework.web.bind.annotation.ResponseBody;
 
+import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.http.mvc.pojo.jpa.CottomsPost;
 import com.yayiabc.http.mvc.service.CottomsPostService;
@@ -26,8 +27,10 @@ public class PostController {
 	private CottomsPostService cottomsPostService;
 
 	//发布病例
+	
 	@RequestMapping("add")
 	@ResponseBody
+	@UserTokenValidate
 	public DataWrapper<Void> addPost(
 			@RequestHeader String token,
 			@ModelAttribute CottomsPost cottomsPost,

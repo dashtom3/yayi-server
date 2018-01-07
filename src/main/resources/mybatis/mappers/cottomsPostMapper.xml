@@ -130,7 +130,8 @@
 				cp.post_stater=#{postStater}
 			</if>
 			<if test="postStater==5">
-				(cp.post_stater=0 or cp.post_stater=1 or cp.post_stater=4)
+				(cp.post_stater=0 or cp.post_stater=1 or
+				cp.post_stater=4)
 			</if>
 
 		</where>
@@ -221,33 +222,31 @@
 		</association>
 	</resultMap>
 	<select id="cottomsDetail" resultMap="IBuy">
-		select
-		re.*,cp.post_id cpostid,cp.headline,cp.classify,cp.writer,cp.cover,cp.post_time,cp.charge_number,
-		cp.user_id cuserId,cp.free_content,cp.charge_content,user.user_pic,cp.post_stater,cp.read_number,
-		cp.zan_num,cp.comment_num,cp.post_stater,up.post_id upostid,IF(co.id
-		IS NULL,0,1) as collect,IF(zan.id IS NULL,0,1) zan
+		SELECT
+		re.*,cp.post_id
+		cpostid,cp.headline,cp.classify,cp.writer,cp.cover,cp.post_time,cp.charge_number,
+		cp.user_id
+		cuserId,cp.free_content,cp.charge_content,user.user_pic,cp.post_stater,cp.read_number,
+		cp.zan_num,cp.comment_num,cp.post_stater,up.post_id upostid,IF(e.id
+		IS
+		NULL,0,1) AS collect,IF(f.id IS NULL,0,1) zan
 		FROM
-		cottoms_post cp
+		(SELECT * FROM
+		cottoms_post WHERE post_id=#{postId}) cp
 		LEFT JOIN `user`
 		ON
 		cp.user_id=user.user_id
-		left join refuseCauser re
+		LEFT JOIN refuseCauser re
 		ON
 		cp.post_id=re.post_id
 		LEFT JOIN user_to_post up
 		ON up.post_id=cp.post_id
 		AND up.user_id=#{userId}
-		LEFT JOIN collect co
-		ON cp.post_id=co.post_id
-		AND co.user_id=13 AND
-		co.type='病例'
-		LEFT JOIN zan
-		ON
-		cp.post_id=zan.type_id AND co.user_id=13
-		AND zan.type='病例'
-		<where>
-			cp.post_id=#{postId}
-		</where>
+		LEFT JOIN collect e ON cp.post_id=e.post_id AND
+		e.user_id=#{userId} AND e.type="病例"
+		LEFT JOIN zan f ON f.type_id=cp.post_id
+		AND f.type="病例" AND f.user_id=#{userId}
+
 
 	</select>
 
@@ -355,8 +354,10 @@
 	<select id="myBuy" resultMap="IBuy">
 		select
 		cottoms_post.headline,cottoms_post.classify,cottoms_post.post_time,cottoms_post.free_content,cottoms_post.charge_content,
-		cottoms_post.writer,cottoms_post.cover,cottoms_post.user_id cuserid,cottoms_post.charge_number,cottoms_post.read_number,
-		cottoms_post.post_id cpostid,user.user_pic,cottoms_post.zan_num,cottoms_post.comment_num
+		cottoms_post.writer,cottoms_post.cover,cottoms_post.user_id
+		cuserid,cottoms_post.charge_number,cottoms_post.read_number,
+		cottoms_post.post_id
+		cpostid,user.user_pic,cottoms_post.zan_num,cottoms_post.comment_num
 		from cottoms_post right join user on
 		cottoms_post.user_id=user.user_id
 		<where>

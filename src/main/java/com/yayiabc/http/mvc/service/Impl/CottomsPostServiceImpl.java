@@ -126,7 +126,8 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 		DataWrapper<CottomsPost> dataWrapper=new DataWrapper<CottomsPost>();
 
 		List<String> postIdFees=cottomsPostDao.queryFees(userId);//获取本用户付费病例id
-		CottomsPost cottomsPost1=cottomsPostDao.cottomsDetail(postId);
+		CottomsPost cottomsPost1=cottomsPostDao.cottomsDetail(postId,userId);
+		System.err.println(cottomsPost1);
 		dataWrapper.setFl((utilsDao.getUserPcImgById(cottomsPost1.getUserId())));
 		boolean userIde=false;
 		String post=postId+"";
@@ -226,13 +227,13 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	//付费病例
 	@Override
 	public DataWrapper<Void> playChargePost(String token, Integer postId){
-		CottomsPost c=cottomsPostDao.cottomsDetail(postId+"");
+		String userId=utilsDao.getUserID(token);
+		CottomsPost c=cottomsPostDao.cottomsDetail(postId+"",userId);
 		Integer chargeNumber=c.getChargeNumber();
 		if(chargeNumber==null){
 			chargeNumber=0;
 		}
 		PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-		String userId=utilsDao.getUserID(token);
 		String remark = "付费病例:支付"+chargeNumber+"个乾币。(乾币余额:userQbNum个)";
 		DataWrapper<Void> dw =new DataWrapper<>();
 		if(token==null){
@@ -344,7 +345,7 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	public DataWrapper<Void> updateStater(String token, Integer postId, Integer postStater,Integer userId,String refuseCauser) {
 		DataWrapper<Void> dataWrapper = new DataWrapper<>();
 		if(tokenValidateDao.getAdminIdBytoken(token)!=null){
-			CottomsPost cottomsPost1=cottomsPostDao.cottomsDetail(postId+"");
+			CottomsPost cottomsPost1=cottomsPostDao.cottomsDetail(postId+"",userId+"");
 			System.err.println(cottomsPost1);
 			System.err.println(cottomsPost1.getPostStater());
 			if(cottomsPost1.getPostStater()==0){

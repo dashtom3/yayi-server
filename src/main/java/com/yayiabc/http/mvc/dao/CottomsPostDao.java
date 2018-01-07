@@ -66,7 +66,7 @@ public interface CottomsPostDao {
 	public int getTotalCommentNumber();
 
 	//查看病例详情
-	public CottomsPost cottomsDetail(String postId);
+	public CottomsPost cottomsDetail(@Param("postId")String postId,@Param("userId")String userId);
 
 	//阅读数加1
 	public void upadteReadNum(String postId);

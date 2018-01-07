@@ -34,7 +34,7 @@ public class AppUserServiceImpl implements AppUserService {
     @Autowired
     private TokenService tokenService;
     @Override
-    public DataWrapper<User> regiseter(User user,String code) {
+    public DataWrapper<User> regiseter(User user,String code,String id,Integer userType) {
         DataWrapper<User> dataWrapper = new DataWrapper<User>();
         Certification certification= user.getCertification();
         if (userDao.getUserByPhone(user.getPhone()) == null) {
@@ -47,14 +47,24 @@ public class AppUserServiceImpl implements AppUserService {
             if (1 == userDao.register(user)) {
             	certification.setUserId(user.getUserId());
             	userDao.register1(certification);
-            	System.out.println(user+"   user");
-            	System.out.println(certification+"   certification");
                 VerifyCodeManager.removePhoneCodeByPhoneNum(user.getPhone());
                 String token = tokenService.getToken(user.getUserId());
                 userDao.registerUserInfo(user);
                 userDao.registerUserCertification(user);
                 user.setCreated(new Date());
                 dataWrapper.setData(user);
+                String byid=user.getUserId();
+				if(userType==1){
+					//赠送邀请人乾币
+					userDao.presented(id);
+
+					//记录邀请人和被邀请人数据
+					userDao.addUser(id,byid);
+
+
+				}else if(userType==2){
+					int i = userDao.bindSale(byid,id+"");
+				}
                 dataWrapper.setToken(token);
             } else {
                 dataWrapper.setErrorCode(ErrorCodeEnum.Register_Error);

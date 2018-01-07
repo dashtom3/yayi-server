@@ -118,9 +118,10 @@ public class VideoManageController {
     @RequestMapping("detail")
     @ResponseBody
     public DataWrapper<VidManage> detail(
-            @RequestParam(value="viId",required = true) Integer viId
-    ){
-            return videoManageService.detail(viId);
+            @RequestParam(value="viId",required = true) Integer viId,
+            @RequestHeader(value="token",required = false) String token
+    		){
+            return videoManageService.detail(viId,token);
     }
 
 

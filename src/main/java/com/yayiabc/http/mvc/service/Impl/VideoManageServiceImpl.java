@@ -115,9 +115,13 @@ public class VideoManageServiceImpl implements VideoManageService {
 	}
 
 	@Override
-	public DataWrapper<VidManage> detail(Integer viId) {
+	public DataWrapper<VidManage> detail(Integer viId,String token) {
 		DataWrapper<VidManage> dataWrapper=new DataWrapper<VidManage>();
-		VidManage vidManage=videoManageDao.detail(viId);
+		String userId=null;
+		if(token!=null){
+			userId=utilsDao.getUserID(token);
+		}
+		VidManage vidManage=videoManageDao.detail(viId,userId);
 		dataWrapper.setData(vidManage);
 		return dataWrapper;
 	}

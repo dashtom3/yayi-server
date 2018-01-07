@@ -28,10 +28,11 @@ public class AppUserController {
     @ResponseBody
     public DataWrapper<User> register(
             @ModelAttribute User user,
-           
-            @RequestParam(value="code",required = true) String code
+            @RequestParam(value="code",required = true) String code,
+            @RequestParam(value="id",required = true)String id,
+            @RequestParam(value="userType",required = true)Integer userType
     ){
 
-        return appUserService.regiseter(user,code);
+        return appUserService.regiseter(user,code,id,userType);
     }
 }

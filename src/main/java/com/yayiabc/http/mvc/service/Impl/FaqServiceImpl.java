@@ -93,16 +93,20 @@ public class FaqServiceImpl implements FaqService {
     public DataWrapper<FaqQuestion> questionDetail(String token,Integer faqQuestionId, Integer currentPage, Integer numberPerPage) {
         DataWrapper<FaqQuestion> dataWrapper=new DataWrapper<FaqQuestion>();
         Page page=new Page();
+        String userId="";
+        if(token!=null){
+           userId=utilsDao.getUserID(token);
+        }
         page.setNumberPerPage(numberPerPage);
         page.setCurrentPage(currentPage);
         int totalNumber=faqDao.getAnswerTotalNum(faqQuestionId);
         dataWrapper.setPage(page,totalNumber);
-        FaqQuestion faqQuestion=faqDao.questionDetail(faqQuestionId);
+        FaqQuestion faqQuestion=faqDao.questionDetail(faqQuestionId,userId);
         List<FaqAnswer> faqAnswerList=faqDao.questionAnswerList(faqQuestionId,page.getCurrentNumber(),numberPerPage);
         faqQuestion.setFaqAnswerList(faqAnswerList);
         //判断是否已收藏
         if(token!=null){
-            String userId=utilsDao.getUserID(token);
+            userId=utilsDao.getUserID(token);
             if(redisService.SETS.sismember(userId+"问答收藏列表",faqQuestionId+"")){
                 faqQuestion.setIsStar(1);
             }

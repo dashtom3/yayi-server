@@ -19,7 +19,10 @@ public interface FaqDao {
 
     int getAnswerTotalNum(Integer faqQuestionId);
 
-    FaqQuestion questionDetail(@Param("faqQuestionId")Integer faqQuestionId);
+    FaqQuestion questionDetail(
+    		@Param("faqQuestionId")Integer faqQuestionId,
+    		@Param("userId")String userId
+    		);
 
     List<FaqAnswer> questionAnswerList(@Param("faqQuestionId")Integer faqQuestionId,@Param("currentNumber") Integer currentNumber,@Param("numberPerPage") Integer numberPerPage);
 

@@ -17,6 +17,9 @@ public class FaqQuestion {
     private Date faqQuestionTime;//提问时间
     private Integer faqAnswerNum;//回答次数，通过Mysql的触发器实现
     private int isStar;//是否点赞,1表示点赞0表示未点赞
+    private int isCollect;
+    private int collectNum;
+    private int zanNum;
     private List<FaqAnswer> faqAnswerList;//回答的list
 
     public Integer getFaqQuestionId() {
@@ -109,35 +112,66 @@ public class FaqQuestion {
 
     public FaqQuestion() {
     }
+    
 
-    public FaqQuestion(Integer faqQuestionId, Integer faqQuestionType, String faqQuestionTitle, String faqQuestionContent, String userId, String userName, String userPic, Date faqQuestionTime, Integer faqAnswerNum, int isStar, List<FaqAnswer> faqAnswerList) {
-        this.faqQuestionId = faqQuestionId;
-        this.faqQuestionType = faqQuestionType;
-        this.faqQuestionTitle = faqQuestionTitle;
-        this.faqQuestionContent = faqQuestionContent;
-        this.userId = userId;
-        this.userName = userName;
-        this.userPic = userPic;
-        this.faqQuestionTime = faqQuestionTime;
-        this.faqAnswerNum = faqAnswerNum;
-        this.isStar = isStar;
-        this.faqAnswerList = faqAnswerList;
-    }
+    public int getIsCollect() {
+		return isCollect;
+	}
 
-    @Override
-    public String toString() {
-        return "FaqQuestion{" +
-                "faqQuestionId=" + faqQuestionId +
-                ", faqQuestionType=" + faqQuestionType +
-                ", faqQuestionTitle='" + faqQuestionTitle + '\'' +
-                ", faqQuestionContent='" + faqQuestionContent + '\'' +
-                ", userId='" + userId + '\'' +
-                ", userName='" + userName + '\'' +
-                ", userPic='" + userPic + '\'' +
-                ", faqQuestionTime=" + faqQuestionTime +
-                ", faqAnswerNum=" + faqAnswerNum +
-                ", isStar=" + isStar +
-                ", faqAnswerList=" + faqAnswerList +
-                '}';
-    }
+	public void setIsCollect(int isCollect) {
+		this.isCollect = isCollect;
+	}
+	
+	
+	public int getCollectNum() {
+		return collectNum;
+	}
+
+	public void setCollectNum(int collectNum) {
+		this.collectNum = collectNum;
+	}
+
+	public int getZanNum() {
+		return zanNum;
+	}
+
+	public void setZanNum(int zanNum) {
+		this.zanNum = zanNum;
+	}
+	
+	
+	public FaqQuestion(Integer faqQuestionId, Integer faqQuestionType, String faqQuestionTitle,
+			String faqQuestionContent, String userId, String userName, String userPic, Date faqQuestionTime,
+			Integer faqAnswerNum, int isStar, int isCollect, int collectNum, int zanNum,
+			List<FaqAnswer> faqAnswerList) {
+		super();
+		this.faqQuestionId = faqQuestionId;
+		this.faqQuestionType = faqQuestionType;
+		this.faqQuestionTitle = faqQuestionTitle;
+		this.faqQuestionContent = faqQuestionContent;
+		this.userId = userId;
+		this.userName = userName;
+		this.userPic = userPic;
+		this.faqQuestionTime = faqQuestionTime;
+		this.faqAnswerNum = faqAnswerNum;
+		this.isStar = isStar;
+		this.isCollect = isCollect;
+		this.collectNum = collectNum;
+		this.zanNum = zanNum;
+		this.faqAnswerList = faqAnswerList;
+	}
+
+	@Override
+	public String toString() {
+		return "FaqQuestion [faqQuestionId=" + faqQuestionId + ", faqQuestionType=" + faqQuestionType
+				+ ", faqQuestionTitle=" + faqQuestionTitle + ", faqQuestionContent=" + faqQuestionContent + ", userId="
+				+ userId + ", userName=" + userName + ", userPic=" + userPic + ", faqQuestionTime=" + faqQuestionTime
+				+ ", faqAnswerNum=" + faqAnswerNum + ", isStar=" + isStar + ", isCollect=" + isCollect + ", collectNum="
+				+ collectNum + ", zanNum=" + zanNum + ", faqAnswerList=" + faqAnswerList + "]";
+	}
+
+	
+
+ 
+	
 }

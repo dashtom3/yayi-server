@@ -11,6 +11,7 @@ import org.springframework.stereotype.Service;
 import com.yayiabc.http.mvc.dao.PlaceOrderDao;
 import com.yayiabc.http.mvc.dao.TimerChangeStateDao;
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
+import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.model.ExpireOrder;
 import com.yayiabc.http.mvc.service.TimerChangeStateService;
 @Service
@@ -75,5 +76,10 @@ public class TimerChangeStateServiceImpl implements TimerChangeStateService{
 	public int updateDatabaseToBrowseNum(HashMap<String, Object> hashMap) {
 		// TODO Auto-generated method stub
 		return timerChangeStateDao.updateDatabaseToBrowseNum(hashMap);
+	}
+	@Override
+	public Ordera queryOrder(String orderId) {
+		// TODO Auto-generated method stub
+		return timerChangeStateDao.queryOrder(orderId);
 	}
 }

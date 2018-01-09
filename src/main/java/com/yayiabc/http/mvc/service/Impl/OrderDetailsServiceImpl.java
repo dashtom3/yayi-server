@@ -5,6 +5,8 @@ import com.yayiabc.common.exceptionHandler.OrderException;
 import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.Page;
+import com.yayiabc.common.utils.PayAfterOrderUtil;
+import com.yayiabc.common.utils.RedisClient;
 import com.yayiabc.http.mvc.dao.AliPayDao;
 import com.yayiabc.http.mvc.dao.OrderDetailsDao;
 import com.yayiabc.http.mvc.dao.ShippingAddressDao;
@@ -16,6 +18,9 @@ import com.yayiabc.http.mvc.pojo.model.OrderNums;
 import com.yayiabc.http.mvc.pojo.model.itemIdList;
 import com.yayiabc.http.mvc.service.OrderDetailsService;
 import com.yayiabc.http.mvc.service.TimerChangeStateService;
+
+import redis.clients.jedis.Jedis;
+
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Service;
 
@@ -87,6 +92,12 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		l.add(orderId);
 		List<OrderItem> OrderItemNums=timerChangeStateService.queryOrderItemNums(l);
 		int q=timerChangeStateService.stillItemsListValueNum(OrderItemNums);
+		
+		
+		
+		//钱币的退回
+		PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
+		payAfterOrderUtil.returnQbMed(orderId);
 		if(q>0){
 			int state=orderdetailsDao.cancel(orderId,userId);
 			if(state>0){
@@ -102,6 +113,9 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		}
  		return dataWrapper;
 	}
+	
+	
+	
 	
 //确定收货
 	@Override

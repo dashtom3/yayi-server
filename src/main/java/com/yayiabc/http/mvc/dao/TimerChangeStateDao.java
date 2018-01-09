@@ -7,6 +7,7 @@ import java.util.List;
 import org.apache.ibatis.annotations.Param;
 
 import com.yayiabc.http.mvc.pojo.jpa.OrderItem;
+import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.model.ExpireOrder;
 public interface TimerChangeStateDao {
 /*
@@ -36,4 +37,6 @@ public interface TimerChangeStateDao {
 	public int updateDatabase(@Param("id")String id, @Param("browseNum")Object browseNum);
 	
 	public int updateDatabaseToBrowseNum(@Param("hashMap")HashMap<String, Object> hashMap);
+	
+	public Ordera queryOrder(String orderId);
 }

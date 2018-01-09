@@ -378,9 +378,7 @@ public class OrderManagementServiceImpl implements OrderManagementService{
 		User user=userMyQbDao.getUserQbNum(order.getUserId());
 		int qbbalance=user.getQbBalance();
 
-		//维护 赠送铅笔书
-		/*PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-		payAfterOrderUtil.limitWithQb(order.getUserId(), -qbbalance);*/
+	
         int qbNotwith=user.getQbNotwtih();
 		int aqb=user.getaQb();
 		int cqb=user.getcQb();

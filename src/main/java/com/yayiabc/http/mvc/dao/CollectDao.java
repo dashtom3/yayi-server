@@ -12,7 +12,7 @@ public interface CollectDao {
 
     List<VidManage> getMyCollectVideoList(@Param("page")Page page,@Param("userId") String userId,@Param("type")String type,@Param("category")Integer category);
 
-    List<FaqQuestion> getMyCollectFaqList(@Param("page")Page page,@Param("userId") String userId,@Param("type")String type,@Param("category")Integer category);
+    List<FaqQuestion> getMyCollectFaqList(@Param("page")Page page,@Param("userId") String userId,@Param("faqQuestionType")String type,@Param("category")Integer category);
 
     Integer getCategoryFromPost(Integer postId);
 

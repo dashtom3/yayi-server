@@ -157,7 +157,7 @@
 	   <result column="with_money" property="withMoney"/>
 	</resultMap>
 	<select id="withHornPrompt" resultMap="withHornPrompt">
-	 select us.true_name,us.phone,(uw.a_type+uw.c_type) with_money from user_with uw join `user` us on uw.user_id=us.user_id
+	 select us.true_name,us.phone,(uw.a_type+uw.c_type+uw.give_type) with_money from user_with uw join `user` us on uw.user_id=us.user_id
 	 where uw.sign=2  limit 0,99
 	</select>
 </mapper>       

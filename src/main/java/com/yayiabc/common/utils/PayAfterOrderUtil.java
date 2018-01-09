@@ -22,6 +22,7 @@ import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
 import com.yayiabc.http.mvc.pojo.jpa.TrainOrdera;
 import com.yayiabc.http.mvc.pojo.jpa.User;
+import com.yayiabc.http.mvc.service.TimerChangeStateService;
 import com.yayiabc.http.mvc.service.UserMyQbService;
 
 import redis.clients.jedis.Jedis;
@@ -41,6 +42,26 @@ public class PayAfterOrderUtil {
 	
 	@Autowired
 	private UserMyQbDao userMyQbDao;
+	/**
+	 * 
+	 * @param orderId
+	 * @param type
+	 * @return 
+	 * 订单生成减少钱币方法
+	 */
+	 public boolean createOrderDedQbMed(Ordera order){
+				//
+				//更新到订单表最后一列
+				int a=aliPayDao.saveLast(newQbDed(order.getUserId(),order.getQbDed(),order.getOrderId()
+						,"下单使用"+order.getQbDed()+"个乾币。（乾币余额：userQbNum）订单编号："+order.getOrderId()
+						),order.getOrderId());
+				if(a<=0){
+					throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
+				}else{
+					return true;
+				}
+	 }
+	 
 	//更改支付类型
 	public  boolean universal(String orderId,String type){
 		
@@ -57,6 +78,7 @@ public class PayAfterOrderUtil {
 			System.out.println("redis里不存在该订单，可能是订单已经过期...");
 		     return false;	
 		}
+		Ordera o=aliPayDao.queryOrder(orderId);
 		
 		if(type!=null){
 			aliPayDao.updatePayType(orderId,type);
@@ -64,15 +86,17 @@ public class PayAfterOrderUtil {
 		//更改订单状态与付款时间
 		/*int ax=aliPayDao.updateStateAndPayTime(orderId);*/
 
-		Ordera o=aliPayDao.queryOrder(orderId);
+		
 		
 		RedisClient rcQ=RedisClient.getInstance();
 		Jedis jedisQ=rcQ.getJedis();
 		jedisQ.select(11);
-		jedisQ.set(o.getUserId(), "");
+		if(!jedisQ.exists(o.getUserId())){
+			jedisQ.set(o.getUserId(), "");
+		}
 		jedisQ.close();
 		//QbRecord q=new QbRecord();
-		if(o.getQbDed()!=0){
+		/*if(o.getQbDed()!=0){
 			//
 			//更新到订单表最后一列
 			int a=aliPayDao.saveLast(newQbDed(o.getUserId(),o.getQbDed(),o.getOrderId()
@@ -81,7 +105,7 @@ public class PayAfterOrderUtil {
 			if(a<=0){
 				throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
 			}
-		}
+		}*/
 
 		//统计销量
 		List<OrderItem> orderItemList=orderManagementDao.queryOrderItemList(orderId);
@@ -108,13 +132,13 @@ public class PayAfterOrderUtil {
 			int aqb=user.getaQb();
 			int cqb=user.getcQb();
 			int qbNotwith=user.getQbNotwtih();
-			int userQbNum=qbbalance+aqb+cqb+qbNotwith;
+			int userQbNumq=qbbalance+aqb+cqb+qbNotwith;
 			
 			//放入redis 维护赠送乾币数
 			//limitWithQb(o.getUserId(),user.getQbBalance());
 			
 			q.setQbBalances("\"赠：\""+qbbalance+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；");
-			q.setRemark("下单获得"+o.getGiveQb()+"个乾币。（乾币余额："+userQbNum+"）订单编号："+orderId);
+			q.setRemark("下单获得"+o.getGiveQb()+"个乾币。（乾币余额："+userQbNumq+"）订单编号："+orderId);
 			userMyQbDao.add(q);
 		}
 		//判断 该用户是否绑定了销售员
@@ -126,6 +150,7 @@ public class PayAfterOrderUtil {
 			return SetSaleInCome(orderId,o.getUserId(),saleId);
 		}
 		//删除redis exprice key
+		
 		jedis.del("expireOrder"+orderId);
 		jedis.close();
 		return true;
@@ -153,21 +178,25 @@ public class PayAfterOrderUtil {
 		//dednum <= max used qb //钱币够用
 		User u=utilsDao.queryUserByUserIdYa(userId);
          System.out.println(orderId+"orderIdorderIdorderIdorderIdorderIdorderId");
+         System.out.println(u);
 		//这里检查是否可以使用注册赠送的60钱币
 				Jedis jedis =RedisClient.getInstance().getJedis();
 				jedis.select(11);
 				String sign=jedis.hget("isFirstOrders", orderId);
 					if("Y".equals(sign)){
+						
 						u.setQbNotwtih(0);
 					}
 					System.out.println(u);
 		List<Integer> listData=new ArrayList<Integer>();
-		listData.add(u.getQbNotwtih());
-		listData.add(u.getQbBalance()); 
-		listData.add( u.getaQb());      
-		listData.add( u.getcQb());   
-		//放入redis 维护赠送乾币数
-//		limitWithQb(userId,-u.getQbBalance());
+		Integer qbNotWith=u.getQbNotwtih();
+		Integer qbBalance=u.getQbBalance();
+		Integer aQb=u.getaQb();
+		Integer cQb=u.getcQb();
+		listData.add(qbNotWith);
+		listData.add(qbBalance); 
+		listData.add(aQb);      
+		listData.add(cQb); 
 		int a=DedNum;
 		String qbDes="";
 		StringBuffer sb=new StringBuffer();
@@ -381,19 +410,63 @@ public class PayAfterOrderUtil {
 		}
 		return true;
 	}
-	/**
-	 * 项目前期 注册送60乾币，限制用户这60乾币 不能直接提现
-	 */
-	/*public void  limitWithQb(String userId,int qb){
-		
+	/*钱币的退回*/
+	public boolean returnQbMed(String orderId){
+		TimerChangeStateService timerChangeStateService=BeanUtil.getBean("TimerChangeStateServiceImpl");
+		Ordera order=timerChangeStateService.queryOrder(orderId);
+		String qbDe=order.getQbDes();
+		List<Integer> list=new ArrayList<Integer>();
+		String[] str=qbDe.split(","); //qb_notwith qb_balance   a_qb    c_qb 
+
+		PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
+		Integer rQbNum=order.getQbDed();
+		Integer sum=0;
+		String s="订单关闭，下单时使用的乾币需退回"+rQbNum+"个乾币。";
+		StringBuffer sb=new StringBuffer();
+		/*for(int i=0;i<str.length;i++){
+			sum+=Integer.parseInt(str[i]);
+		}*/
+		/*if(sum==rQbNum){
+			//退 完
+			orderManagementDao.returnQbAll(str,order.getUserId());
+			sb.append("该订单已全部退回");
+			s=  rQbNum+"（该订单已全部退回）。";
+
+		}else*/{
+			for(int x=0;x<str.length;x++){
+				if(rQbNum>Integer.parseInt(str[x])){
+					rQbNum=rQbNum-Integer.parseInt(str[x]);
+					list.add(Integer.parseInt(str[x]));
+					sb.append(ut(x)+Integer.parseInt(str[x])+"个，");
+				}else if(rQbNum<=Integer.parseInt(str[x])){
+					list.add(rQbNum);
+					sb.append(ut(x)+rQbNum+"个。");
+					break;
+				}
+			}
+			System.err.println(list);
+			orderManagementDao.returnQbAnyOthes(list,order.getUserId());
+		}
+		int returnQbNum=0;
+		for(int q=0;q<list.size();q++){
+			returnQbNum+=list.get(q);
+		}
+		//查询乾币余额
+		User user=userMyQbDao.getUserQbNum(order.getUserId());
+		int qbbalance=user.getQbBalance();
+		 int qbNotwith=user.getQbNotwtih();
+		int aqb=user.getaQb();
+		int cqb=user.getcQb();
+		int userQbNums=qbbalance+aqb+cqb+qbNotwith;
+		s=s+/*s+sb.toString()+*/"（乾币余额："+userQbNums+"）。订单编号:"+orderId;
+		String qbBalance="\"赠：\""+qbbalance+qbNotwith+"个；"+"\"8.0折\""+aqb+"个；"+"\"9.5折\""+cqb+"个；";
+		userMyQbDao.addMessageQbQRget(sb.toString(), order.getUserId(), s, System.nanoTime(),qbBalance);
+		//从redis清掉
 		RedisClient rc=RedisClient.getInstance();
 		Jedis jedis=rc.getJedis();
-		if(jedis.hexists("userGiveQbNums", userId)){
-			//有
-			jedis.hincrBy("userGiveQbNums", userId, qb);
-		}else{
-			 jedis.hset("userGiveQbNums", userId,qb+"");
-		}
+		jedis.select(1);
+		jedis.del("expireOrder"+orderId);
 		jedis.close();
-	}*/
+		return true;
+	}
 }

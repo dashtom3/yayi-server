@@ -221,4 +221,11 @@
 		select * from invoice where order_id=#{orderId}
 	</select>
 
+
+    <resultMap type="com.yayiabc.http.mvc.pojo.jpa.Ordera" id="onceEff">
+    <result property="userId" column="user_id"/>
+    </resultMap>
+    <select id="onceEff" resultMap="onceEff">
+     select user_id from ordera 
+    </select>
 </mapper>       

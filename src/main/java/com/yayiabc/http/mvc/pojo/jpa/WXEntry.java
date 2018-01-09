@@ -17,37 +17,25 @@ public class WXEntry {
 	public void setTimestamp(String timestamp) {
 		this.timestamp = timestamp;
 	}
-	public String getNonceStr() {
-		return nonceStr;
-	}
-	public void setNonceStr(String nonceStr) {
-		this.nonceStr = nonceStr;
-	}
 	public String getSignature() {
 		return signature;
 	}
 	public void setSignature(String signature) {
 		this.signature = signature;
 	}
-	public WXEntry(String appId, String timestamp, String nonceStr,
-			String signature) {
-		super();
-		this.appId = appId;
-		this.timestamp = timestamp;
-		this.nonceStr = nonceStr;
-		this.signature = signature;
+
+	public String getNonceStr() {
+		return nonceStr;
 	}
-	public WXEntry() {
-		super();
-		// TODO Auto-generated constructor stub
+	public void setNonceStr(String nonceStr) {
+		this.nonceStr = nonceStr;
 	}
 	@Override
 	public String toString() {
-		return "WXEntry [appId=" + appId + ", timestamp=" + timestamp
-				+ ", nonceStr=" + nonceStr + ", signature=" + signature + "]";
+		return "WXEntry [appId=" + appId + ", timestamp=" + timestamp + ", nonceStr=" + nonceStr + ", signature="
+				+ signature + "]";
 	}
 	
-	
-	
+
 	
 }

@@ -118,7 +118,8 @@ public class WXJsPayController {
             WXAppEntry wxAppEntry =new WXAppEntry(parameterMap.get("appId"),Long.parseLong(parameterMap.get("timeStamp")),respMap.get("partnerid"),respMap.get("prepay_id"),parameterMap.get("nonceStr"),sign);
             System.out.println("...................."+wxAppEntry);
             //获取签名
-            String url="wap.yayiabc.com";
+           // String url="wap.yayiabc.com";
+            String url="test.yayiabc.com";
             Map<String, Object> cache=Sign.map;
             WXEntry wXEntry =new WXEntry();
             wXEntry.setAppId("wx4b1a6fde77626a32");

@@ -21,7 +21,7 @@ public class Sign {
                   "&noncestr=" + nonce_str +
                   "&timestamp=" + timestamp +
                   "&url=" + url;
-        System.out.println(string1);
+        System.out.println("string1string1string1::::s  "+string1);
 
         try
         {

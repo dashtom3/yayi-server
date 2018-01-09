@@ -29,7 +29,7 @@ public class AppUserController {
     public DataWrapper<User> register(
             @ModelAttribute User user,
             @RequestParam(value="code",required = true) String code,
-            @RequestParam(value="id",required = true)String id,
+            @RequestParam(value="id",required = false)String id,
             @RequestParam(value="userType",required = true)Integer userType
     ){
 

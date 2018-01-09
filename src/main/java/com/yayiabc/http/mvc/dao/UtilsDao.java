@@ -15,21 +15,21 @@ import com.yayiabc.http.mvc.pojo.jpa.User;
 public interface UtilsDao {
 
 	String getUserID(@Param("token")String token);
-	
-	 String getSaleId(@Param("SaleToken")String saleToken);
-	 
-	 String getToken(@Param("userId")String userId);
-   
+
+	String getSaleId(@Param("SaleToken")String saleToken);
+
+	String getToken(@Param("userId")String userId);
+
 	String getSaleToken(@Param("saleId")String saleId);
-     
+
 	String queryPhone(@Param("userId")String userId);
-	
+
 	String getSaleIdByOrderId(@Param("orderId")String orderId);
 
 	String querySalePhoneBySaleId(@Param("saleId")String saleId);
-   
+
 	Ordera queryCalssSumPrice(@Param("orderId")String orderId);
-    //saleId, orderId, 0,0,order.getSupplies_sumprice(), order.getTooldevices_sumprice()
+	//saleId, orderId, 0,0,order.getSupplies_sumprice(), order.getTooldevices_sumprice()
 	int insert(
 			@Param("saleId")String saleId,
 			@Param("orderId")String orderId,
@@ -40,20 +40,20 @@ public interface UtilsDao {
 			);
 
 	SaleInfo getSaleBySaleId(String saleId);
-     //  //获取该订单的赠送钱币数  与userId
+	//  //获取该订单的赠送钱币数  与userId
 	Ordera queryGiveQBNumByOrderId(@Param("orderId")String orderId);
-	
+
 	//查询该用户钱币余额
 	int queryUserQbNum(@Param("userId")String userId);
-	 //把钱币放入该用户的余额中
+	//把钱币放入该用户的余额中
 	int saveQbToUser(@Param("userId")String userId,@Param("qb")String qb);
-       //根据orderId  查 user_token
+	//根据orderId  查 user_token
 	String queryTokenByOrderId(@Param("orderId")String orderId);
 
 	String queryNameByUserId(@Param("userId")String userId);
 
 	OrderItem queryIt(@Param("itemSKU")String itemSKU, @Param("orderId")String orderId);
-//utilsdao.saveRechargeMessage(codeId,utilsdao.getUserID(token),String.valueOf(qbNum),qbType,String.valueOf(money));
+	//utilsdao.saveRechargeMessage(codeId,utilsdao.getUserID(token),String.valueOf(qbNum),qbType,String.valueOf(money));
 	int saveRechargeMessage(@Param("codeId")String codeId,
 			@Param("userID")String userID,
 			@Param("qbNum")String qbNum,@Param("qbType")String qbType, @Param("money")String money);
@@ -62,7 +62,7 @@ public interface UtilsDao {
 
 	User queryUserByUserId(@Param("uid")String uid);
 
-	
+
 	User queryUserByPhone(@Param("phone")String phone);
 
 	SaleInfo getSaleByPhone(@Param("phone")String phone);
@@ -70,7 +70,7 @@ public interface UtilsDao {
 	//查询现在订单表放入map中
 	List<Ordera> queryNowOrder();
 
-	
+
 	//通过token 获取user实体
 	User getUserByToken(String token);
 
@@ -82,6 +82,11 @@ public interface UtilsDao {
 	String getUserPcImgById(@Param("userId")String userId);
 
 	User queryUserByUserIdYa(@Param("uid")String userId);
-	
+
+	/**
+	 * 上线3.0完成redis数据的统一接口，值调用一次
+	 * @return
+	 */
+	List<Ordera> onceEff();
 
 }

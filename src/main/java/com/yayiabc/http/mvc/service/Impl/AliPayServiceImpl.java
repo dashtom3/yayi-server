@@ -19,6 +19,7 @@ import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.Charge;
 import com.yayiabc.http.mvc.pojo.jpa.Ordera;
 import com.yayiabc.http.mvc.pojo.jpa.QbRecord;
+import com.yayiabc.http.mvc.pojo.jpa.User;
 import com.yayiabc.http.mvc.service.AliPayService;
 import com.yayiabc.http.mvc.service.UserMyQbService;
 
@@ -46,6 +47,20 @@ public class AliPayServiceImpl implements AliPayService{
 
 			//商品描述，可空
 			String body = new String(WIDbody.getBytes("ISO-8859-1"),"UTF-8");*/
+			Ordera o=aliPayDao.queryOrder(WIDout_trade_no);
+			/**
+			 * 检查余额是否充足
+			 */
+			User u=utilsDao.queryUserByUserIdYa(o.getUserId());
+			Integer qbNotWith=u.getQbNotwtih();
+			Integer qbBalance=u.getQbBalance();
+			Integer aQb=u.getaQb();
+			Integer cQb=u.getcQb();
+			int userQbNum=qbBalance+aQb+cQb+qbNotWith;
+			if(o.getQbDed()>userQbNum){
+				return "钱币不足";
+			}
+			
 			String out_trade_no=WIDout_trade_no;
 			String subject=WIDsubject;
 			String total_fee=WIDtotal_fee;

@@ -32,88 +32,98 @@
 	<!-- <update id="stillItemValueNum"> update item_value set stock_num=(stock_num+#{NUMM}) 
 		where item_sKU=#{itemSKU} </update> -->
 	<update id="stillItemValueNum" parameterType="java.util.List">
-		
-		<foreach collection="list" item="plid" index="index" open="" close="" 
-			separator=";">
+
+		<foreach collection="list" item="plid" index="index" open=""
+			close="" separator=";">
 			update item_value
 			<set>
-			stock_num = ${plid.num}+stock_num
+				stock_num = ${plid.num}+stock_num
 			</set>
-			where 
-			 item_sKU=#{plid.itemSKU}
-			
+			where
+			item_sKU=#{plid.itemSKU}
+
 		</foreach>
 	</update>
-	<!-- update item_value set stock_num=(stock_num+#{NUMM}) where
-		item_sKU=#{itemSKU} -->
-		
+	<!-- update item_value set stock_num=(stock_num+#{NUMM}) where item_sKU=#{itemSKU} -->
+
 	<update id="closeOrder" parameterType="java.util.List">
-	 <foreach collection="list" item="plid" index="index" open="" close="" 
-			separator=";">
+		<foreach collection="list" item="plid" index="index" open=""
+			close="" separator=";">
 			update ordera
 			<set>
-			state = 0,close_time=now()
+				state = 0,close_time=now()
 			</set>
-			where 
-			 order_id=#{plid}
+			where
+			order_id=#{plid}
 		</foreach>
 	</update>
 	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.OrderItem" id="poi">
-	 <result property="itemSKU" column="itm_SKU"/>
-	 <result property="num" column="num"/>
+		<result property="itemSKU" column="itm_SKU" />
+		<result property="num" column="num" />
 	</resultMap>
-	<select id="queryOrderItemNums" parameterType="java.util.List" resultMap="poi">
-	   SELECT
-            itm_SKU,num
-        FROM
-            order_item
-        <where>
-            order_id in
-            <foreach item="orderId" collection="list" separator="," open="(" close=")" index="">
-                #{orderId}
-            </foreach>
-        </where>
+	<select id="queryOrderItemNums" parameterType="java.util.List"
+		resultMap="poi">
+		SELECT
+		itm_SKU,num
+		FROM
+		order_item
+		<where>
+			order_id in
+			<foreach item="orderId" collection="list" separator="," open="("
+				close=")" index="">
+				#{orderId}
+			</foreach>
+		</where>
 	</select>
-	
+
 	<update id="stillItemsListValueNum" parameterType="java.util.List">
-	
-	<foreach collection="list" item="plid" index="index" open="" close="" 
-			separator=";">
+
+		<foreach collection="list" item="plid" index="index" open=""
+			close="" separator=";">
 			update item_value
 			<set>
-			stock_num = ${plid.num}+stock_num
+				stock_num = ${plid.num}+stock_num
 			</set>
-			where 
-			 item_sKU=#{plid.itemSKU} and stock_num >=0
+			where
+			item_sKU=#{plid.itemSKU} and stock_num >=0
 		</foreach>
 	</update>
-	<!-- 超时关闭订单  退回库存2.0 -->
+	<!-- 超时关闭订单 退回库存2.0 -->
 	<update id="closeOrder2">
-	update ordera set state=0 where order_id=#{orderId}
+		update ordera set state=0 where order_id=#{orderId}
 	</update>
-	
-	
+
+
 	<update id="returnStackItemNum" parameterType="java.util.List">
-	<foreach collection="list" item="plid" index="index" open="" close="" 
-			separator=";">
+		<foreach collection="list" item="plid" index="index" open=""
+			close="" separator=";">
 			update item_value
 			<set>
-			stock_num = ${plid.itemNum}+stock_num
+				stock_num = ${plid.itemNum}+stock_num
 			</set>
-			where 
-			 item_sKU=#{plid.itemSKU} and stock_num >=0
+			where
+			item_sKU=#{plid.itemSKU} and stock_num >=0
 		</foreach>
 	</update>
-	
+
 	<update id="updateDatabaseToBrowseNum" parameterType="java.util.Map">
-	<foreach collection="hashMap.keys" item="key" index="index" open="" close="" 
-			separator=";">
+		<foreach collection="hashMap.keys" item="key" index="index"
+			open="" close="" separator=";">
 			update data_for_dentist
 			<set>
-			browse_num = #{hashMap[${key}]} 
+				browse_num = #{hashMap[${key}]}
 			</set>
-			where 
+			where
 			id=#{key}
 		</foreach>
 	</update>
+
+	<resultMap type="com.yayiabc.http.mvc.pojo.jpa.Ordera" id="queryOrder">
+		<result property="qbDed" column="qb_ded" />
+		<result property="qbDes" column="qb_des" />
+		<result property="userId" column="user_id"/>
+	</resultMap>
+	<select id="queryOrder" resultMap="queryOrder">
+		select qb_ded,qb_des,user_id from ordera where order_id=#{orderId}
+	</select>
 </mapper>

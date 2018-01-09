@@ -351,6 +351,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			{
 				throw new OrderException(ErrorCodeEnum.ORDER_ERROR); 
 			}
+			
 			/*
 			 * 放入redis
 			 */
@@ -373,10 +374,25 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//保存主要数据
             jedis.hset("expireOrder1", "expireOrder"+orderId, json.toString());
 			jedis.close();
-
+			
+			/**
+			 * 这里减少钱币
+			 */
+			order.setOrderId(orderId);
+			order.setUserId(userId);
+			System.out.println(order);
+			PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
+			//判断  钱币抵扣是否等于0
+			 if(order.getQbDed()!=0){
+				 System.out.println("减呀");
+				boolean boo= payAfterOrderUtil.createOrderDedQbMed(order);
+				if(!boo){
+					throw new RuntimeException();
+				}
+			 }
 			//判断客服是否全额乾币支付
 			if(actualPay==0){
-				PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
+				
 
 				if(!payAfterOrderUtil.universal(orderId,"3")){
 					throw new RuntimeException();

@@ -39,7 +39,7 @@
 	<context:component-scan base-package="com.yayiabc.http.filter"/>
 	<context:component-scan base-package="com.yayiabc.http.mvc"/>
     <context:component-scan base-package="com.yayiabc.http.aop"/>
-   <!--  <context:component-scan base-package="com.yayiabc.http.rabbitmq"/> -->
+   <context:component-scan base-package="com.yayiabc.http.mvc.expand"/>
 	<!-- 强制使用cglib代理方式 -->
 	<aop:aspectj-autoproxy proxy-target-class="true"/>
 

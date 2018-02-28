@@ -38,16 +38,13 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 		Integer currentNum=page.getCurrentNumber();
 		hm.put("currentNum", String.valueOf(currentNum));
 		hm.put("keyWord", keyWord);
-		//System.out.println(hm);
 
 		List<DaForDentist> listhm=crawlerYellowPagesDao.getMaterList(hm);
 		//判断用户是否登陆浏览资料
-		//System.out.println(listhm);
 		String userId=null;
 		if(token!=null){
 			userId= utilsDao.getUserID(token);
 			List<Integer> idList=crawlerYellowPagesDao.queryCollectId(userId);
-			System.out.println(idList);
 			/*for(int x=0;x<idList.size();x++){
 				for(int i=0;i<listhm.size();i++){
 					if(idList.get(x).equals(listhm.get(i).getId())){
@@ -146,7 +143,7 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 		hm.put("numberPerpage", String.valueOf(page.getNumberPerPage()));
 		Integer currentNum=page.getCurrentNumber();
 		hm.put("currentNum", String.valueOf(currentNum));
-
+        System.out.println(hm);
 		List<Sheet1> listhm=crawlerYellowPagesDao.getList(hm);
 		int count=crawlerYellowPagesDao.queryCountTOX(hm);
 		dataWrapper.setPage(page, count);
@@ -182,7 +179,6 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 	 */
 	@Override
 	public DataWrapper<DaForDentist> getMaterDetail(String id, String token) {
-		System.out.println("u12t3123j213213hj2v312hj3v12jh312hj31v2hj31v2j3v21j3hv12");
 		
 		DataWrapper<DaForDentist> dataWrapper=new DataWrapper<DaForDentist>();
 		DaForDentist daForDentist=crawlerYellowPagesDao.getMaterDetail(id);
@@ -192,10 +188,8 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 		}
 		String userId=null;
 		if(token!=null){
-			System.out.println(111);
 			userId= utilsDao.getUserID(token);
 			List<Integer> idList=crawlerYellowPagesDao.queryCollectId(userId);
-             System.out.println(idList);
 			if(idList.isEmpty()){
 				daForDentist.setIsCollect("0");
 			}else{
@@ -209,12 +203,10 @@ public class CrawlerYellowPagesServiceImpl implements CrawlerYellowPagesService{
 				}
 			}
 		}else{
-			System.out.println(000);
 			daForDentist.setIsCollect("0");
 		}
 
 
-		System.out.println(daForDentist);
 		dataWrapper.setData(daForDentist);
 		//这里需要记录资料库的浏览数
 		Jedis jedis=RedisClient.getInstance().getJedis();

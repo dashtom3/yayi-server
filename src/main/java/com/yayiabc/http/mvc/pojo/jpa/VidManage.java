@@ -160,4 +160,5 @@ public class VidManage implements Serializable{
 				", itemInfo=" + itemInfo +
 				'}';
 	}
+	
 }

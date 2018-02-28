@@ -2,6 +2,7 @@ package com.yayiabc.http.mvc.controller.message;
 
 import com.yayiabc.common.annotation.UserTokenValidate;
 import com.yayiabc.common.utils.DataWrapper;
+import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.service.MyCollectionService;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.stereotype.Controller;
@@ -22,7 +23,8 @@ public class MyCollectionController {
 
     @Autowired
     private MyCollectionService myCollectionService;
-
+    @Autowired
+    private UtilsDao utilsDao;
     @RequestMapping("queryList")
     @ResponseBody
     @UserTokenValidate
@@ -33,7 +35,9 @@ public class MyCollectionController {
             @RequestParam(value="category",required = false)Integer category,
             @RequestParam(value="currentPage",required = false,defaultValue = "1") Integer currentPage,
             @RequestParam(value="numberPerPage",required = false,defaultValue = "10")Integer numberPerPage
-    ){
+    ){  
+           userId=utilsDao.getUserID(token);
+
         return myCollectionService.queryList(type,currentPage,numberPerPage,userId,category);
     }
 }

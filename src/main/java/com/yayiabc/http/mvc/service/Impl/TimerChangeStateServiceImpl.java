@@ -75,7 +75,12 @@ public class TimerChangeStateServiceImpl implements TimerChangeStateService{
 	@Override
 	public int updateDatabaseToBrowseNum(HashMap<String, Object> hashMap) {
 		// TODO Auto-generated method stub
-		return timerChangeStateDao.updateDatabaseToBrowseNum(hashMap);
+		if(hashMap.isEmpty()){
+			return 0;
+		}else{
+			return timerChangeStateDao.updateDatabaseToBrowseNum(hashMap);
+		}
+		
 	}
 	@Override
 	public Ordera queryOrder(String orderId) {

@@ -415,6 +415,9 @@ public class PayAfterOrderUtil {
 		TimerChangeStateService timerChangeStateService=BeanUtil.getBean("TimerChangeStateServiceImpl");
 		Ordera order=timerChangeStateService.queryOrder(orderId);
 		String qbDe=order.getQbDes();
+		if(qbDe.equals("暂无")){
+			return true;
+		}
 		List<Integer> list=new ArrayList<Integer>();
 		String[] str=qbDe.split(","); //qb_notwith qb_balance   a_qb    c_qb 
 

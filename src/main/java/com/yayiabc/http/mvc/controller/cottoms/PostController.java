@@ -34,9 +34,10 @@ public class PostController {
 	public DataWrapper<Void> addPost(
 			@RequestHeader String token,
 			@ModelAttribute CottomsPost cottomsPost,
-			@RequestParam(value="refuseCauser",required=false)String refuseCauser
+			@RequestParam(value="refuseCauser",required=false)String refuseCauser,
+			@RequestParam(value="sign",required=false,defaultValue="1") String sign
 			){
-		return cottomsPostService.addPost(cottomsPost,token,refuseCauser);
+		return cottomsPostService.addPost(cottomsPost,token,refuseCauser,sign);
 	}
 
 	//病例列表

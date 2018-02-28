@@ -46,13 +46,14 @@ limit #{page.currentNumber},#{page.numberPerPage}
 		LEFT JOIN
 		`user` b on a.faq_user_id=b.user_id
 		<where>
-			<if test="faqQuestionType!=null and faqQuestionType!=''">
+			<!-- <if test="faqQuestionType!=null and faqQuestionType!=''">
 				a.faq_question_type=#{faqQuestionType}
-			</if>
+			</if> -->
+			<if test="userId!=null and userId!=''">c.user_id=#{userId}</if>
 			<if test="category!=null">and category=#{category}</if>
 		</where>
 		order BY c.collect_time DESC
-		limit #{currentNumber},#{numberPerPage}
+		limit #{page.currentNumber},#{page.numberPerPage}
 	</select>
 
 	<select id="getCategoryFromPost" resultType="int">

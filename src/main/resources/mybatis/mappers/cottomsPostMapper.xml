@@ -18,8 +18,8 @@
 		<result property="commentNum" column="comment_num" />
 		<result property="zanNum" column="zan_num" />
 		<result property="postStater" column="post_stater" />
-		<result property="isPraise" column="collect" />
-		<result property="isCollect" column="zan" />
+		<result property="isPraise" column="zan" />
+		<result property="isCollect" column="collect" />
 		<association property="user" javaType="User">
 			<result property="userPic" column="user_pic" />
 		</association>
@@ -214,8 +214,8 @@
 		<result property="readNumber" column="read_number" />
 		<result property="commentNum" column="comment_num" />
 		<result property="zanNum" column="zan_num" />
-		<result property="isPraise" column="collect" />
-		<result property="isCollect" column="zan" />
+		<result property="isPraise" column="zan" />
+		<result property="isCollect" column="collect" />
 		<association property="refuseCauser" javaType="RefuseCauser">
 			<result property="refuseCauser" column="refuse_causer" />
 		</association>
@@ -224,7 +224,7 @@
 		SELECT
 		re.*,cp.post_id
 		cpostid,cp.headline,cp.classify,cp.writer,cp.cover,cp.post_time,cp.charge_number,
-		cp.user_id,
+		cp.user_id
 		cuserId,cp.free_content,cp.charge_content,user.user_pic,cp.post_stater,cp.read_number,
 		cp.zan_num,cp.comment_num,cp.post_stater,up.post_id upostid,IF(e.id
 		IS

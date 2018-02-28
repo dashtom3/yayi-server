@@ -101,7 +101,9 @@
 
 
 	
-
+	<!-- <listener>
+		<listener-class>com.yayiabc.common.listener.MyServletContextListener</listener-class>
+	</listener> -->
 	
 	<welcome-file-list>
 		<welcome-file>index.html</welcome-file>
@@ -111,7 +113,6 @@
 	<session-config>
 		<session-timeout>2</session-timeout>
 	</session-config>
-
 
 	<!-- 项目启动加载 -->
 

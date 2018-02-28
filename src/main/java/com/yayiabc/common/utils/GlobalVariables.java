@@ -10,7 +10,7 @@ public class GlobalVariables {
      * 服务器端口和地址
      */
     public static final int port=8080;
-    public static final String domain="http://116.62.228.3:"+port;
+    public static final String domain="http://47.93.48.111:"+port;
 
 
     /**

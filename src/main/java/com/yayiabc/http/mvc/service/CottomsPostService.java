@@ -11,7 +11,7 @@ import aj.org.objectweb.asm.Type;
 
 public interface CottomsPostService {
 	//发布病例
-	public DataWrapper<Void> addPost(CottomsPost cottomsPost,String token,String refuseCauser);
+	public DataWrapper<Void> addPost(CottomsPost cottomsPost,String token,String refuseCauser, String sign);
 	
 	//显示病例 type:1:是病例列表。2:是我的病例列表
 	public DataWrapper<Object> queryPost(Integer currentPage,Integer numberPerPage,Integer classify,

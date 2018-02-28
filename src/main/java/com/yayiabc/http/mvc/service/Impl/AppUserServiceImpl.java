@@ -54,6 +54,15 @@ public class AppUserServiceImpl implements AppUserService {
                 user.setCreated(new Date());
                 dataWrapper.setData(user);
                 String byid=user.getUserId();
+                /**
+                 * 注册赠送乾币
+                 */
+                QbRecord qbRecord=new QbRecord();
+                qbRecord.setQbRget(60+"");
+                qbRecord.setRemark("注册赠送60乾币");
+                qbRecord.setQbType("qb_notwith");
+                userMyQbService.add(qbRecord, token);
+                
 				if(userType==1){
 					//赠送邀请人乾币
 					userDao.presented(id);

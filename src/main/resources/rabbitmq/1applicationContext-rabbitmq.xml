@@ -1,4 +1,4 @@
-<?xml version="1.0" encoding="UTF-8"?>  
+<!-- <?xml version="1.0" encoding="UTF-8"?>  
 <beans xmlns="http://www.springframework.org/schema/beans"  
     xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"  
         xmlns:context="http://www.springframework.org/schema/context"  
@@ -12,37 +12,37 @@
                 http://www.springframework.org/schema/rabbit/spring-rabbit.xsd">  
   
     <bean id="taskExecutor" class="org.springframework.scheduling.concurrent.ThreadPoolTaskExecutor">            
-        <!-- 核心线程数，默认为10 -->            
+        核心线程数，默认为10            
         <property name="corePoolSize" value="10" />            
-        <!-- 最大线程数，默认为Integer.MAX_VALUE -->            
+        最大线程数，默认为Integer.MAX_VALUE            
         <property name="maxPoolSize" value="50" />            
-        <!-- 队列最大长度，一般需要设置值>=notifyScheduledMainExecutor.maxNum；默认为Integer.MAX_VALUE -->            
+        队列最大长度，一般需要设置值>=notifyScheduledMainExecutor.maxNum；默认为Integer.MAX_VALUE            
         <property name="queueCapacity" value="300" />            
-        <!-- 线程池维护线程所允许的空闲时间，默认为60s -->            
+        线程池维护线程所允许的空闲时间，默认为60s            
         <property name="keepAliveSeconds" value="300" />            
-        <!-- 线程池对拒绝任务（无线程可用）的处理策略，目前只支持AbortPolicy、CallerRunsPolicy；默认为后者 -->            
+        线程池对拒绝任务（无线程可用）的处理策略，目前只支持AbortPolicy、CallerRunsPolicy；默认为后者            
         <property name="rejectedExecutionHandler">            
-            <!-- AbortPolicy:直接抛出java.util.concurrent.RejectedExecutionException异常 -->            
-            <!-- CallerRunsPolicy:主线程直接执行该任务，执行完之后尝试添加下一个任务到线程池中，可以有效降低向线程池内添加任务的速度 -->            
-            <!-- DiscardOldestPolicy:抛弃旧的任务、暂不支持；会导致被丢弃的任务无法再次被执行 -->            
-            <!-- DiscardPolicy:抛弃当前任务、暂不支持；会导致被丢弃的任务无法再次被执行 -->            
+            AbortPolicy:直接抛出java.util.concurrent.RejectedExecutionException异常            
+            CallerRunsPolicy:主线程直接执行该任务，执行完之后尝试添加下一个任务到线程池中，可以有效降低向线程池内添加任务的速度            
+            DiscardOldestPolicy:抛弃旧的任务、暂不支持；会导致被丢弃的任务无法再次被执行            
+            DiscardPolicy:抛弃当前任务、暂不支持；会导致被丢弃的任务无法再次被执行            
             <bean class="java.util.concurrent.ThreadPoolExecutor$CallerRunsPolicy" />            
         </property>            
     </bean>  
   
-    <!-- 连接服务配置  -->  
+    连接服务配置   
     <rabbit:connection-factory id="connectionFactory" host="47.93.48.111" username="lihui"  
         password="123456" port="5672" publisher-confirms="true"  virtual-host="/" />  
   
     <rabbit:admin connection-factory="connectionFactory" />  
   
-    <!-- queue 队列声明 需要发送消息到哪些队列-->  
-    <!-- 消息系统监听队列   处理订单队列-->  
+    queue 队列声明 需要发送消息到哪些队列  
+    消息系统监听队列   处理订单队列  
     <rabbit:queue id="message_queue" durable="true" auto-delete="false" exclusive="false" name="message_queue"/>  
-    <!-- 消息系统监听队列   处理库存队列-->
+    消息系统监听队列   处理库存队列
      <rabbit:queue id="stock_queue" durable="true" auto-delete="false" exclusive="false" name="stock_queue"/>    
        
-    <!-- exchange queue binging key 绑定 -->  
+    exchange queue binging key 绑定  
     <rabbit:topic-exchange name="message-exchange" durable="true" auto-delete="false" id="message-exchange">  
         <rabbit:bindings>  
             <rabbit:binding queue="message_queue" pattern="message.*" />  
@@ -50,23 +50,23 @@
         </rabbit:bindings>  
     </rabbit:topic-exchange>  
   
-    <!-- spring amqp默认的是jackson 的一个插件,目的将生产者生产的数据转换为json存入消息队列，由于fastjson的速度快于jackson,这里替换为fastjson的一个实现 -->  
+    spring amqp默认的是jackson 的一个插件,目的将生产者生产的数据转换为json存入消息队列，由于fastjson的速度快于jackson,这里替换为fastjson的一个实现  
     <bean id="jsonMessageConverter"  class="com.yayiabc.http.rabbitmq.FastJsonMessageConverter"></bean>  
        
-    <!-- spring template声明-->  
+    spring template声明  
     <rabbit:template exchange="message-exchange" id="amqpTemplate"  connection-factory="connectionFactory" 
      message-converter="jsonMessageConverter"/>  
-    <!-- 默认消息处理类，可以重写 -->  
+    默认消息处理类，可以重写  
     <bean id="messageHandler" class="com.yayiabc.http.rabbitmq.MessageHandler"></bean>  
       
-    <!-- 用于消息的监听的代理类MessageListenerAdapter -->    
+    用于消息的监听的代理类MessageListenerAdapter    
     <bean id="messageQueueListenerAdapter"    
         class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">    
         <constructor-arg ref="messageHandler" />    
         <property name="defaultListenerMethod" value="onMessage"></property>    
         <property name="messageConverter" ref="jsonMessageConverter"></property>    
     </bean>   
-      <!-- 123 -->
+      123
        <bean id="messageQueueListenerAdapters"    
         class="org.springframework.amqp.rabbit.listener.adapter.MessageListenerAdapter">    
         <constructor-arg ref="messageHandler" />    
@@ -74,8 +74,8 @@
         <property name="messageConverter" ref="jsonMessageConverter"></property>    
     </bean> 
     
-    <!-- cus监听 --> 
-    <!-- 监听器acknowledge=manual表示手工确认消息已处理（异常时可以不确认消息），auto表示自动确认（只要不抛出异常，消息就会被消费） -->   
+    cus监听 
+    监听器acknowledge=manual表示手工确认消息已处理（异常时可以不确认消息），auto表示自动确认（只要不抛出异常，消息就会被消费）   
     <rabbit:listener-container  
         connection-factory="connectionFactory" acknowledge="auto"  
         task-executor="taskExecutor">  
@@ -86,7 +86,7 @@
                 class="com.yayiabc.http.rabbitmq.MessageSender">    
                 <property name="amqpTemplate" ref="amqpTemplate"></property>    
         </bean>  
-       <!-- 重发？ --> 
+       重发？ 
      <bean  id = "retryTemplate" class = "org.springframework.retry.support.RetryTemplate" > 
     <property  name = "backOffPolicy" > 
         <bean  class = "org.springframework.retry.backoff.ExponentialBackOffPolicy"> 
@@ -96,4 +96,4 @@
         </bean> 
     </property> 
 </bean>
- </beans>  
+ </beans>   -->

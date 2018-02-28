@@ -58,6 +58,7 @@ public class VideoManageServiceImpl implements VideoManageService {
 		page.setCurrentPage(currentPage);
 		int totalNumber=videoManageDao.getVideoTotalNum(videoCategory,keyWord);
 		List<VidManage> vidManageList=videoManageDao.showVid(rule,videoCategory,keyWord,page,userId);
+		System.out.println(vidManageList);
 		if(vidManageList==null||vidManageList.size()==0){
 			vidManageList=null;
 		}
@@ -80,6 +81,7 @@ public class VideoManageServiceImpl implements VideoManageService {
 	public DataWrapper<Void> insertVid(VidManage vidManage) {
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		//获取视频的外链
+		System.out.println(vidManage);
 		String vidRoute=vidManage.getVidRoute();
 		String fileName=getFileName(vidRoute);
 		String vidName=vidManage.getVidName();

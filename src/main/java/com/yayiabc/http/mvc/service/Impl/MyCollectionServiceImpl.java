@@ -60,6 +60,7 @@ public class MyCollectionServiceImpl implements MyCollectionService{
     //显示问答收藏列表
     //我的收藏
     private DataWrapper<Object> myFaqCollect(DataWrapper<Object> dataWrapper, Page page, String userId,Integer category) {
+    	System.out.println(page);
         int totalNumber=collectDao.getMyCollectTotalNo(userId,"问答",category);
         List<FaqQuestion> faqQuestionList=collectDao.getMyCollectFaqList(page,userId,"问答",category);
         dataWrapper.setData(faqQuestionList);

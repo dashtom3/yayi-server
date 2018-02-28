@@ -330,7 +330,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			//placeOrderDao.insertActualPay(orderId,String.valueOf(actualPay));
 			hashMap.put("OrderId",orderId);
 			hashMap.put("sumPrice",String.valueOf(sumPrice));
-			hashMap.put("giveQbNum", giveQbNum);
+			hashMap.put("giveQbNum", (int)giveQbNum);
 			hashMap.put("itemSum", itemSum);
 			hashMap.put("postFee", postFee);
 			hashMap.put("actualPay", actualPay);
@@ -342,7 +342,7 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 
 			//本单赠送钱币数保存到数据库
 			if(
-					placeOrderDao.saveGiveQbNum(String.valueOf(giveQbNum),String.valueOf(postFee),
+					placeOrderDao.saveGiveQbNum(String.valueOf((int)giveQbNum),String.valueOf(postFee),
 							String.valueOf(sumPrice)
 							,orderId,String.valueOf(AllSuppliesSumPrice),String.valueOf(AllTooldevicesSumPrice)
 							,String.valueOf(actualPay)
@@ -366,11 +366,12 @@ public class PlaceOrderServiceImpl implements PlaceOrderService{
 			}
 			
 			JSONArray json = JSONArray.fromObject(expireOrderList); 
-			System.out.println("json.toString() "+json.toString());
+			//System.out.println("json.toString() "+json.toString());
 			
 			jedis.select(1);
 			jedis.set("expireOrder"+orderId, json.toString());  
-			jedis.expire("expireOrder"+orderId,60*1);
+			jedis.expire("expireOrder"+orderId,60*30);
+			System.out.println("一分钟后关闭订单");
 			//保存主要数据
             jedis.hset("expireOrder1", "expireOrder"+orderId, json.toString());
 			jedis.close();

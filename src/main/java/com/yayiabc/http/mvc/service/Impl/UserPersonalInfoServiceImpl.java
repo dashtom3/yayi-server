@@ -53,29 +53,19 @@ public class UserPersonalInfoServiceImpl implements UserPersonalInfoService {
 		System.out.println(certification);
 		String gerenPic=null;
 		String jigouPic=null;
-		/*if(certification.getType()==1){
-			//个人
-			System.out.println(1);
-			gerenPic=userPersonalInfoDao.seeDoctorPic(userId);
-		}else if(certification.getType()==2){
-			//机构
-			System.out.println(2);
-			jigouPic=userPersonalInfoDao.seeMedicalLicense(userId);
-		}else{
-			dataWrapper.setMsg("参数错误");
-			return dataWrapper;
-		}*/
+		
 		//暂时先如此
 		gerenPic=userPersonalInfoDao.seeDoctorPic(userId);
 		jigouPic=userPersonalInfoDao.seeMedicalLicense(userId);
 		int a=0;
 		if(gerenPic==null&&jigouPic==null){
-			a=a+1;
+			/*a=a+1;
 			 QbRecord qbRecord=new QbRecord();
              qbRecord.setQbRget(60+"");
              qbRecord.setRemark("首次完善资质赠60乾币");
              qbRecord.setQbType("qb_notwith");
-             userMyQbService.add(qbRecord, token);
+             userMyQbService.add(qbRecord, token);*/
+		       System.out.println("这是第一次审核就啥都不做");
 		}
 		int i = userPersonalInfoDao.updateCertification(certification);
 		if (i > 0) {

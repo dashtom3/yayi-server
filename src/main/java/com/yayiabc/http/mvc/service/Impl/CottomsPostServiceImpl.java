@@ -7,33 +7,35 @@ import java.io.ByteArrayOutputStream;
 import java.io.IOException;
 import java.io.InputStream;
 import java.net.URLEncoder;
-import java.sql.Date;
-import java.text.SimpleDateFormat;
 import java.util.ArrayList;
+import java.util.Date;
 import java.util.HashMap;
-import java.util.LinkedList;
 import java.util.List;
 import java.util.Map;
-import java.util.Set;
 
-import javax.lang.model.util.ElementScanner6;
 import javax.servlet.ServletOutputStream;
 import javax.servlet.http.HttpServletResponse;
 
-import com.yayiabc.http.mvc.dao.*;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.context.support.StaticApplicationContext;
+import org.springframework.format.annotation.DateTimeFormat;
 import org.springframework.stereotype.Service;
 
-import com.alibaba.druid.sql.ast.statement.SQLIfStatement.Else;
 import com.yayiabc.common.utils.BeanUtil;
 import com.yayiabc.common.utils.DataWrapper;
 import com.yayiabc.common.utils.ExcelUtil;
 import com.yayiabc.common.utils.Page;
 import com.yayiabc.common.utils.PayAfterOrderUtil;
+import com.yayiabc.http.mvc.dao.CollectDao;
+import com.yayiabc.http.mvc.dao.CommentDao;
+import com.yayiabc.http.mvc.dao.CottomsPostDao;
+import com.yayiabc.http.mvc.dao.TokenValidateDao;
+import com.yayiabc.http.mvc.dao.UtilsDao;
 import com.yayiabc.http.mvc.pojo.jpa.CottomsPost;
+import com.yayiabc.http.mvc.pojo.jpa.Moment;
 import com.yayiabc.http.mvc.pojo.jpa.See;
+import com.yayiabc.http.mvc.pojo.jpa.SubComment;
 import com.yayiabc.http.mvc.service.CottomsPostService;
+import com.yayiabc.http.mvc.service.MomentManageService;
 import com.yayiabc.http.mvc.service.ReadNumberServer;
 import com.yayiabc.http.mvc.service.RedisService;
 @Service
@@ -59,20 +61,24 @@ public class CottomsPostServiceImpl implements CottomsPostService{
 	@Autowired
 	private CollectDao collectDao;
 
+	@Autowired
+	private MomentManageService momentManageService;
+
 	//发布或更改病例（传过来无postId为发布，有postId为更改）
 	@Override
-	public DataWrapper<Void> addPost(CottomsPost cottomsPost,String token,String refuseCauser) {
+	public DataWrapper<Void> addPost(CottomsPost cottomsPost,String token,String refuseCauser,String sign) {
 
 		DataWrapper<Void> dataWrapper=new DataWrapper<Void>();
 		if(cottomsPost.getPostStater()!=1){
 			if(token!=null){
-				SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
+				//SimpleDateFormat df = new SimpleDateFormat("yyyy-MM-dd");
 				String userId=utilsDao.getUserID(token);
 				cottomsPost.setUserId(userId);
 				String trueName= cottomsPostDao.gettrueName(userId);
 				cottomsPost.setWriter(trueName);
 				if(cottomsPost.getPostId()==null){
 					cottomsPostDao.addPost(cottomsPost);
+					System.out.println("发表病例返回主键:"+cottomsPost.getPostId());
 				}else{
 					cottomsPostDao.setPost(cottomsPost);
 				}

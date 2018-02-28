@@ -94,10 +94,12 @@ public class OrderDetailsServiceImpl implements OrderDetailsService {
 		int q=timerChangeStateService.stillItemsListValueNum(OrderItemNums);
 		
 		
-		
-		//钱币的退回
-		PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
-		payAfterOrderUtil.returnQbMed(orderId);
+		Ordera order=timerChangeStateService.queryOrder(orderId);
+		if(order.getQbDed()!=0){
+			//钱币的退回
+			PayAfterOrderUtil payAfterOrderUtil= BeanUtil.getBean("PayAfterOrderUtil");
+			payAfterOrderUtil.returnQbMed(orderId);
+		}
 		if(q>0){
 			int state=orderdetailsDao.cancel(orderId,userId);
 			if(state>0){
